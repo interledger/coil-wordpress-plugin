@@ -91,9 +91,6 @@ if ( ! class_exists( 'Coil' ) ) {
 			// Sets a body class if the singular post has enabled monetization.
 			add_filter( 'body_class', array( $this, 'body_classes' ) );
 
-			// Displays a modal to hide the post content until monetization is initialized.
-			//add_action( 'wp_footer', array( $this, 'wp_footer' ) );
-
 			// Enqueue front-end asset to initialize monetization.
 			add_action( 'wp_enqueue_scripts', array( $this, 'frontend_scripts' ) );
 
@@ -125,7 +122,7 @@ if ( ! class_exists( 'Coil' ) ) {
 			$this->define('COIL_SUPPORT_URL', '#');
 			$this->define('COIL_DOCUMENTATION_URL', '#');
 
-			$suffix = SCRIPT_DEBUG ? null : '.min';
+			$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 			$this->define('COIL_ASSET_SUFFIX', $suffix);
 		} // END setup_constants()
 
@@ -269,33 +266,6 @@ if ( ! class_exists( 'Coil' ) ) {
 		} // END body_classes()
 
 		/**
-		 * Displays a modal to hide the post content until monetization is initialized.
-		 *
-		 * @access public
-		 * @global object WP_Post - The post object.
-		 */
-		public function wp_footer() {
-			global $post;
-
-			$monetize_status = get_post_meta( $post->ID, '_coil_monetize_post_status', true );
-
-			if ( is_singular() && ! empty( $monetize_status ) && $monetize_status != 'no' ) {
-				?>
-				<div class="hidden-content" style="display:none;">
-					<p>This content is hidden!</p>
-				</div>
-				<script type="text/javascript">
-				$(document).ready(function() {
-					if ( $('body').hasClass('monetization-not-initialized') ) {
-						$('.site-content').before().html('This post is monetized. Please wait while we verify you are a subscriber.');
-					}
-				});
-				</script>
-				<?php
-			}
-		} // END wp_footer()
-
-		/**
 		 * Enqueue front-end asset to initialize monetization.
 		 *
 		 * @access public
@@ -327,7 +297,9 @@ if ( ! class_exists( 'Coil' ) ) {
 				'coil_for_wp_version'         => COIL_VERSION,
 				'content_container'           => get_option( 'coil_content_container' ),
 				'verifying_browser_extension' => __( 'This post is monetized. Please wait while we verify you are a subscriber...', 'coil-for-wp' ),
-				'browser_extension_missing'   => sprintf( __( 'You need to %1$sinstall the Coil browser extension%2$s in order to view this posts content.', 'coil-for-wp' ), '<a target="_blank" href="https://help.coil.com/en/articles/2701494-supported-browsers">', '</a>' )
+				'browser_extension_missing'   => sprintf( __( 'You need to %1$sinstall the Coil browser extension%2$s in order to view this posts content.', 'coil-for-wp' ), '<a target="_blank" href="https://help.coil.com/en/articles/2701494-supported-browsers">', '</a>' ),
+				'verifying_coil_account'      => __( 'Verifying your Coil account. Please wait...', 'coil-for-wp' ),
+				'loading_content'             => __( 'Loading content. Please wait...', 'coil-for-wp' )
 			) );
 		} // END frontend_scripts()
 

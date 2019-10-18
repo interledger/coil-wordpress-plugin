@@ -1,8 +1,10 @@
 (function($) {
-	var version                     = coil_params.coil_version,
+	var version                     = coil_params.coil_for_wp_version,
 		content_container           = coil_params.coil_content_container,
 		verifying_browser_extension = coil_params.verifying_browser_extension,
-		browser_extension_missing   = coil_params.browser_extension_missing;
+		browser_extension_missing   = coil_params.browser_extension_missing,
+		verifying_coil_account      = coil_params.verifying_coil_account,
+		loading_content             = coil_params.loading_content;
 
 	// Ensure "coil_params" exists to continue.
 	if ( typeof coil_params === 'undefined' ) {
@@ -10,29 +12,92 @@
 	}
 
 	$( document ).ready(function () {
-		var content = ( typeof content_container !== 'undefined' ) ? content_container : '.content-area'; // If not set, use default content container class.
+		console.log( 'Coil for WordPress version: ' + version );
 
+		var content  = ( typeof content_container !== 'undefined' ) ? content_container : '.content-area .entry-content'; // If not set, use default entry content container class.
+		var is_valid = true;
+
+		// If post is set for monetization then we run some magic.
 		if ( $('body').hasClass('monetization-not-initialized') ) {
+
+			if ( content !== '.content-area .entry-content' ) { $( content ).hide(); } // Hide content entry area if not default selector.
 			$( content ).before('<p class="monetize-msg" style="text-align:center;">' + verifying_browser_extension + '</p>');
-		}
 
-		// Check if monetization is implemented.
-		if ( document.monetization ) {
-			$('p.monetize-msg').remove(); // Remove message.
-			$('body').removeClass('monetization-not-initialized').addClass('monetization-initialized'); // Update body class to show content.
+			// Check if monetization is implemented.
+			if ( document.monetization ) {
 
-			// Monetization has started.
-			document.monetization.addEventListener( 'monetizationstart', function(event) {
-				monetizationStartEventOccurred = true;
-			});
+				// User might be paying you, hold on a second.
+				if ( document.monetization.state === 'pending' ) {
+					// Update message if browser extension is still verifying user.
+					setTimeout( function() {
+						$('p.monetize-msg').html( verifying_coil_account );
+					}, 2000 );
+				}
+				// User account verified, loading content.
+				else if ( document.monetization.state === 'started' ) {
+					$('p.monetize-msg').html( loading_content );
+				}
 
-			// Monetization progress event.
-			document.monetization.addEventListener('monetizationprogress', function(event){
-				//container.innerText = container.innerText + 'monetizationprogress: \n' + JSON.stringify(event.detail, null, 2) + '\n\n';
-				console.log('monetizationprogress', event);
-			});
-		} else {
-			$('p.monetize-msg').html( browser_extension_missing );
+				// Monetization has started.
+				document.monetization.addEventListener( 'monetizationstart', function(event) {
+					// Connect to backend to validate the session using the request id.
+					var paymentPointer = event.detail.paymentPointer,
+						requestId      = event.detail.requestId;
+
+					console.log(event.detail); // All event details.
+
+					// @todo: Add validation condition here.
+					/*if ( ! isValidSession( paymentPointer, requestId ) ) {
+						is_valid = false;
+						console.error( 'Invalid requestId for monetization.' );
+
+						// Trigger an event.
+						$( 'body' ).trigger( 'coil-invalid-session', [ event, paymentPointer, requestId ] );
+					} else {*/
+						monetizationStartEventOccurred = true;
+
+						console.log( 'Monetization has started. Yeah!' );
+
+						if ( content !== '.content-area' ) { $( content ).show(); } // Show content area if not default selector.
+						$('body').removeClass('monetization-not-initialized').addClass('monetization-initialized'); // Update body class to show content.
+						$('p.monetize-msg').remove(); // Remove status message.
+	
+						// Trigger an event.
+						$( 'body' ).trigger( 'coil-monetization-initialized', [ event ] );
+					//}
+				});
+
+				// Monetization progress event.
+				document.monetization.addEventListener( 'monetizationprogress', function(event) {
+					// Connect to backend to validate the payment.
+					var paymentPointer = event.detail.paymentPointer,
+						requestId      = event.detail.requestId,
+						amount         = event.detail.amount,
+						assetCode      = event.detail.assetCode,
+						assetScale     = event.detail.assetScale;
+
+					// @todo: Add validation condition here.
+					//if ( isValidPayment(paymentPointer, requestId, amount, assetCode, assetScale) ) {
+						// A payment has been received.
+						console.log('monetizationprogress', event);
+
+						// Trigger an event.
+						$( 'body' ).trigger( 'coil-monetization-progress', [
+							event,
+							paymentPointer,
+							requestId,
+							amount,
+							assetCode,
+							assetScale
+						] );
+					//}
+				});
+			} else {
+				$('p.monetize-msg').html( browser_extension_missing );
+
+				// Trigger an event.
+				$( 'body' ).trigger( 'coil-extension-not-found' );
+			}
 		}
 	});
 })(jQuery);
