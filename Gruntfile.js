@@ -82,7 +82,35 @@ module.exports = function(grunt) {
 			}
 		},
 
-		// Watch for changes made in SASS.
+		// Minify JavaScript
+		uglify: {
+			options: {
+				compress: {
+					global_defs: {
+						"EO_SCRIPT_DEBUG": false
+					},
+					dead_code: true
+				},
+				banner: '/*! <%= pkg.title %> v<%= pkg.version %> <%= grunt.template.today("dddd dS mmmm yyyy HH:MM:ss TT Z") %> */'
+			},
+			build: {
+				files: [{
+					expand: true, // Enable dynamic expansion.
+					src: [
+						// Admin
+						'assets/js/admin/*.js',
+						'!assets/js/admin/*.min.js',
+
+						// Frontend
+						'assets/js/*.js',
+						'!assets/js/*.min.js',
+					],
+					ext: '.min.js', // Dest filepaths will have this extension.
+				}]
+			}
+		},
+
+		// Watch for changes made in SASS and JavaScript.
 		watch: {
 			css: {
 				files: [
@@ -91,6 +119,45 @@ module.exports = function(grunt) {
 				],
 				tasks: ['sass', 'postcss']
 			},
+			js: {
+				files: [
+					// Admin
+					'assets/js/admin/*.js',
+					'!assets/js/admin/*.min.js',
+
+					// Frontend
+					'assets/js/*.js',
+					'!assets/js/*.min.js',
+				],
+				tasks: [
+					'jshint',
+					'uglify'
+				]
+			}
+		},
+
+		// Check for Javascript errors with "grunt-contrib-jshint"
+		// Reports provided by "jshint-stylish"
+		jshint: {
+			options: {
+				reporter: require('jshint-stylish'),
+				globals: {
+					"EO_SCRIPT_DEBUG": false,
+				},
+				'-W099': true, // Mixed spaces and tabs
+				'-W083': true, // Fix functions within loop
+				'-W082': true, // Declarations should not be placed in blocks
+				'-W020': true, // Read only - error when assigning EO_SCRIPT_DEBUG a value.
+			},
+			all: [
+				// Admin
+				'assets/js/admin/*.js',
+				'!assets/js/admin/*.min.js',
+
+				// Frontend
+				'assets/js/*.js',
+				'!assets/js/*.min.js'
+			]
 		},
 
 		// Check for Sass errors with "stylelint"
@@ -253,14 +320,13 @@ module.exports = function(grunt) {
 						src: [
 							'**',
 							'!.*',
-							'!**/*.{gif,jpg,jpeg,js,json,log,md,png,scss,sh,txt,xml,zip}',
+							'!**/*.{gif,jpg,jpeg,json,log,md,sh,txt,xml,zip}',
 							'!.*/**',
 							'!.DS_Store',
 							'!.htaccess',
-							'!assets/scss/**',
-							'!assets/**/*.scss',
 							'!<%= pkg.name %>-git/**',
 							'!<%= pkg.name %>-svn/**',
+							'!github/**',
 							'!node_modules/**',
 							'!releases/**',
 							'readme.txt'
@@ -303,10 +369,10 @@ module.exports = function(grunt) {
 	grunt.registerTask( 'check', [ 'devUpdate' ] );
 
 	// Checks for errors.
-	grunt.registerTask( 'test', [ 'stylelint', 'checktextdomain' ]);
+	grunt.registerTask( 'test', [ 'jshint', 'stylelint', 'checktextdomain' ]);
 
 	// Build CSS, minify CSS and runs i18n tasks.
-	grunt.registerTask( 'build', [ 'sass', 'postcss', 'cssmin', 'update-pot' ]);
+	grunt.registerTask( 'build', [ 'sass', 'postcss', 'cssmin', 'uglify', 'update-pot' ]);
 
 	// Update version of plugin.
 	grunt.registerTask( 'version', [ 'replace' ] );
