@@ -1,0 +1,107 @@
+// Monetization Not Initialized
+body.monetization-not-initialized {
+
+	.site-content .content-area {
+		display: none;
+	}
+
+	figure.coil-show-monetize-users img,
+	figure.coil-show-monetize-users div.wp-block-embed__wrapper,
+	img.coil-show-monetize-users {
+		-webkit-filter: blur(10px) grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
+		-moz-filter: blur(10px) greyscale(1); /* Firefox */
+		-o-filter: blur(10px) greyscale(1); /* Opera */
+		-ms-filter: blur(10px) greyscale(1); /* MS */
+		filter: blur(10px) grayscale(1); /* Microsoft Edge and Firefox 35+ */
+	}
+
+	*.coil-show-monetize-users,
+	.hidden-content {
+		position: relative;
+		display: block;
+		
+		&::before {
+			content: "";
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			z-index: 1;
+		}
+
+		&::after {
+			content: "Content is hidden";
+			position: absolute;
+			width: inherit;
+			height: inherit;
+			color: #000;
+			background: #fff;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			white-space: nowrap;
+			text-transform: uppercase;
+			cursor: pointer;
+			z-index: 100;
+			opacity: 0.8;
+			text-align: center;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+	}
+}
+
+// Monetization initialized
+body.monetization-initialized {
+
+	figure.coil-hide-monetize-users img,
+	figure.coil-hide-monetize-users div.wp-block-embed__wrapper,
+	img.coil-hide-monetize-users {
+		-webkit-filter: blur(10px) grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
+		-moz-filter: blur(10px) greyscale(1); /* Firefox */
+		-o-filter: blur(10px) greyscale(1); /* Opera */
+		-ms-filter: blur(10px) greyscale(1); /* MS */
+		filter: blur(10px) grayscale(1); /* Microsoft Edge and Firefox 35+ */
+	}
+
+	*.coil-hide-monetize-users,
+	.hidden-content {
+		position: relative;
+		display: block;
+		
+		&::before {
+			content: "";
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			z-index: 1;
+		}
+
+		&::after {
+			content: "Content is hidden";
+			position: absolute;
+			width: inherit;
+			height: inherit;
+			color: #000;
+			background: #fff;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			white-space: nowrap;
+			text-transform: uppercase;
+			cursor: pointer;
+			z-index: 100;
+			opacity: 0.8;
+			text-align: center;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+	}
+}

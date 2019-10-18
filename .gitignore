@@ -1,0 +1,15 @@
+# Folders and Grunt
+/assets/scss/
+/build/
+/releases/
+/node_modules/
+npm-debug.log
+
+# Various file types to ignore when exporting.
+.DS_Store
+Thumbs.db
+*.sh
+.gitconfig
+*.zip
+*.json
+*.yml
