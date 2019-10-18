@@ -1,7 +1,7 @@
 {
 	"title": "Coil for WordPress",
 	"name": "coil-for-wp",
-	"version": "1.0.0",
+	"version": "1.0.0-alpha.1",
 	"private": true,
 	"contributors": [
 		"sebd86"
@@ -14,7 +14,7 @@
 	"tested_up_to": "5.2.4",
 	"license": "GPL-3.0",
 	"copyright": "Copyright (c) 2019",
-	"description": "",
+	"description": "Enables support for Coil in WordPress.",
 	"scripts": {
 		"start": "cgb-scripts start",
 		"build": "cgb-scripts build",
