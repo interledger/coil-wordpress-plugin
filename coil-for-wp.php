@@ -2,10 +2,10 @@
 /**
  * Plugin Name: Coil for WordPress
  * Plugin URI: https://github.com/seb86/coil-for-wp
- * Description: Enables support for Coil in WordPress
+ * Description: Enables support for Coil in WordPress.
  * Author: Sébastien Dumont
  * Author URI: https://sebastiendumont.com
- * Version: 1.0.0
+ * Version: 1.0.0-alpha.1
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  *
@@ -26,7 +26,7 @@ if ( ! class_exists( 'Coil' ) ) {
 		 * @access public
 		 * @static
 		 */
-		public static $version = '1.0.0';
+		public static $version = '1.0.0-alpha.1';
 
 		/**
 		 * @var Coil - the single instance of the class.
