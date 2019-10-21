@@ -93,6 +93,8 @@
 					//}
 				});
 			} else {
+				$('body').addClass('coil-extension-not-found'); // Update body class to show free content.
+
 				$('p.monetize-msg').html( browser_extension_missing );
 
 				// Trigger an event.

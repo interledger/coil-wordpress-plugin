@@ -1,4 +1,4 @@
-// Monetization Not Initialized
+// Monetization not initialized.
 body.monetization-not-initialized {
 
 	.site-content .content-area .entry-content {
@@ -54,11 +54,25 @@ body.monetization-not-initialized {
 	}
 }
 
-// Monetization initialized
+// Monetization initialized.
 body.monetization-initialized {
 
 	*.coil-hide-monetize-users,
 	.hidden-content {
+		display: none;
+	}
+
+}
+
+// Coil Browser Extension not found.
+body.coil-extension-not-found {
+
+	.site-content .content-area .entry-content {
+		display: inherit;
+	}
+
+	*.coil-hide-monetize-users,
+	*.coil-show-monetize-users {
 		display: none;
 	}
 

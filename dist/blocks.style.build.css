@@ -56,3 +56,10 @@ body.monetization-not-initialized .hidden-content {
 body.monetization-initialized *.coil-hide-monetize-users,
 body.monetization-initialized .hidden-content {
   display: none; }
+
+body.coil-extension-not-found .site-content .content-area .entry-content {
+  display: inherit; }
+
+body.coil-extension-not-found *.coil-hide-monetize-users,
+body.coil-extension-not-found *.coil-show-monetize-users {
+  display: none; }
