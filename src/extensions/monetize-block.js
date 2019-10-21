@@ -144,6 +144,8 @@ function addAttributes( settings ) {
 const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 	return ( props ) => {
 
+		let hideInspector = false; // Note: Boolean value is in reverse.
+
 		const {
 			name,
 			attributes,
@@ -155,25 +157,31 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 			monetizeBlockDisplay,
 		} = attributes;
 
+		// Fetch the post meta.
+		const meta = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' );
+
 		// If the block is not supported then don't show the inspector.
 		/*if ( ! allowedBlockTypes( props.name ) || ! restrictedBlockTypes( props.name ) || ! props.isSelected ) {
 			return <BlockEdit { ...props } />;
 		}*/
 
+		if ( typeof meta._coil_monetize_post_status === 'undefined' || ( typeof meta._coil_monetize_post_status !== 'undefined' && meta._coil_monetize_post_status === 'no' ) ) {
+			hideInspector = false;
+		} else {
+			hideInspector = true;
+		}
+
 		return (
 			<Fragment>
 				<BlockEdit { ...props } />
-				{ isSelected &&
+				{ isSelected && hideInspector &&
 					<InspectorControls>
 						<PanelBody
 							title={ __( 'Web Monetization - Coil' ) } 
 							initialOpen={ false }
 							className="coil-panel"
 						>
-							<Dashicon icon="info" /> { __( 'You must have monetization set at the document level.' ) }
-
 							<RadioControl
-								//label={ __( 'Block Visibility' ) }
 								selected={ monetizeBlockDisplay }
 								options={
 									[
@@ -240,6 +248,7 @@ const wrapperClass = createHigherOrderComponent( ( BlockListBlock ) => {
 	return ( props ) => {
 		let wrapperProps = props.wrapperProps;
 		let customData = {};
+		let allowBlockIdentity = false; // Note: Boolean value is in reverse.
 
 		const {
 			attributes
@@ -248,6 +257,15 @@ const wrapperClass = createHigherOrderComponent( ( BlockListBlock ) => {
 		const {
 			monetizeBlockDisplay,
 		} = attributes;
+
+		// Fetch the post meta.
+		const meta = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' );
+
+		if ( typeof meta._coil_monetize_post_status === 'undefined' || ( typeof meta._coil_monetize_post_status !== 'undefined' && meta._coil_monetize_post_status === 'no' ) ) {
+			allowBlockIdentity = false;
+		} else {
+			allowBlockIdentity = true;
+		}
 
 		customData = Object.assign( customData, {
 			'data-coil-is-monetized': 1,
@@ -258,7 +276,8 @@ const wrapperClass = createHigherOrderComponent( ( BlockListBlock ) => {
 			...customData,
 		};
 
-		if ( typeof monetizeBlockDisplay !== 'undefined' && monetizeBlockDisplay !== "always-show" ) {
+		// Apply custom block wrapper class if monetization is set at the document level and block level.
+		if ( typeof monetizeBlockDisplay !== 'undefined' && monetizeBlockDisplay !== "always-show" && allowBlockIdentity ) {
 			return <BlockListBlock { ...props } className={ 'coil-' + monetizeBlockDisplay } wrapperProps={ wrapperProps } />;
 		} else {
 			return <BlockListBlock {...props} />
