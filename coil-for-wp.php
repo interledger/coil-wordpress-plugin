@@ -146,10 +146,11 @@ if ( ! class_exists( 'Coil' ) ) {
 		 * @return void
 		 */
 		public function includes() {
-			include_once( COIL_FILE_PATH . '/includes/class-coil-autoloader.php' );
-			include_once( COIL_FILE_PATH . '/includes/class-coil-block-assets.php' );
-			include_once( COIL_FILE_PATH . '/includes/class-coil-register-blocks.php' );
-			include_once( COIL_FILE_PATH . '/includes/class-coil-meta-box.php' );
+			require_once( COIL_FILE_PATH . '/includes/class-coil-autoloader.php' );
+			require_once( COIL_FILE_PATH . '/includes/class-coil-block-assets.php' );
+			require_once( COIL_FILE_PATH . '/includes/class-coil-register-blocks.php' );
+			require_once( COIL_FILE_PATH . '/includes/class-coil-meta-box.php' );
+			require_once( COIL_FILE_PATH . '/includes/class-coil-post-meta.php' );
 		} // END includes()
 
 		/**
@@ -160,7 +161,7 @@ if ( ! class_exists( 'Coil' ) ) {
 		 */
 		public function admin_includes() {
 			if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
-				include_once( dirname( __FILE__ ) . '/includes/admin/class-coil-admin.php' );
+				require_once( dirname( __FILE__ ) . '/includes/admin/class-coil-admin.php' );
 				require_once( dirname( __FILE__ ) . '/includes/class-coil-install.php' ); // Install Coil.
 			}
 		} // END admin_includes()
