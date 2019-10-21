@@ -2,7 +2,7 @@
 /**
  * Coil for WordPress - Meta Box.
  *
- * Adds a custom meta box for both the Classic Editor and Gutenberg.
+ * Adds a custom meta box for the Classic Editor.
  *
  * @author   Sébastien Dumont
  * @category Classes
@@ -48,6 +48,13 @@ class Coil_Meta_Box {
 	 * @access public
 	 */
 	public function add_metabox() {
+		global $post;
+
+		// If user loaded with the Gutenberg editor (plugin version) then don't register the meta box.
+		if ( function_exists( 'use_block_editor_for_post' ) && use_block_editor_for_post( $post ) ) {
+			return;
+		}
+
 		add_meta_box(
 			'coil', // Meta box ID (used in the 'id' attribute for the meta box).
 			sprintf( __( 'Web Monetization - %s', 'coil-for-wp' ), 'Coil' ), // Meta Box Title
@@ -79,11 +86,6 @@ class Coil_Meta_Box {
 			'no-gating'          => esc_html__( 'Monetize with No Gating', 'coil-for-wp' ),
 			'gate-all'           => esc_html__( 'Monetize all Content', 'coil-for-wp' )
 		);
-
-		// If user loaded with the Gutenberg editor, add additional option.
-		if ( function_exists( 'use_block_editor_for_post' ) && use_block_editor_for_post( $post ) ) {
-			$monet_options['gate-tagged-blocks'] = esc_html__( 'Monetize Tagged Blocks', 'coil-for-wp' );
-		}
 		?>
 		<fieldset>
 			<legend><?php esc_html_e( 'Select the monetization status of this content.', 'coil-for-wp' ); ?></legend>
