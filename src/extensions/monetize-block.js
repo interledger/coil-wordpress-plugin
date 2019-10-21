@@ -14,8 +14,11 @@ const { __ } = wp.i18n;
 const { addFilter } = wp.hooks;
 const { Fragment } = wp.element;
 const { InspectorControls } = wp.blockEditor;
+const { withSelect, withDispatch } = wp.data;
 const { createHigherOrderComponent } = wp.compose;
-const { Dashicon, PanelBody, RadioControl } = wp.components;
+const { PanelBody, RadioControl } = wp.components;
+const { registerPlugin } = wp.plugins;
+const { PluginDocumentSettingPanel } = wp.editPost;
 
 // Allow only specific blocks to use the extension attribute.
 const allowedBlocks = [
@@ -309,3 +312,63 @@ addFilter(
 	'coil/wrapperClass',
 	wrapperClass
 );
+
+// Post Monetization Fields
+const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
+	return {
+		updateMetaValue: ( value ) => {
+			dispatch( 'core/editor' ).editPost( {
+				meta: {
+					[ props.metaFieldName ]: value
+				},
+			} );
+		}
+	};
+} )( withSelect( ( select, props ) => {
+	return {
+		[ props.metaFieldName ]: select( 'core/editor' ).getEditedPostAttribute( 'meta' )[ '_coil_monetize_post_status' ]
+	};
+} )( ( props ) => (
+	<RadioControl
+		selected={ props[ props.metaFieldName ] }
+		options={
+			[
+				{
+					label: __( 'No Monetization', 'coil-for-wp' ),
+					value: 'no'
+				},
+				{
+					label: __( 'Monetize with No Gating', 'coil-for-wp' ),
+					value: 'no-gating'
+				},
+				{
+					label: __( 'Monetize all Content', 'coil-for-wp' ),
+					value: 'gate-all'
+				},
+				{
+					label: __( 'Monetize Tagged Blocks', 'coil-for-wp' ),
+					value: 'gate-tagged-blocks'
+				}
+			]
+		}
+		help={ __( 'Set the type of monetization for the post.' ) }
+		onChange={ ( value ) => props.updateMetaValue( value ) }
+/>
+) ) );
+
+// Register the panel.
+registerPlugin( 'coil-document-setting-panel', {
+	render: () => {
+		return (
+				<PluginDocumentSettingPanel
+					name="coil-meta"
+					title={ __( 'Web Monetization - Coil', 'coil-for-wp' ) }
+					initialOpen={ false }
+					className="coil-document-panel"
+					>
+						<PostMonetizationFields metaFieldName="_coil_monetize_post_status" />
+				</PluginDocumentSettingPanel>
+		)
+	},
+	icon: '' // Can if you want place an SVG version of the Coil logo here.
+} );

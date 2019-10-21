@@ -93,7 +93,7 @@ class Coil_Block_Assets {
 		wp_register_script(
 			$this->_slug . '-editor',
 			COIL_URL_PATH . '/dist/blocks.build.js',
-			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-plugins', 'wp-components', 'wp-edit-post', 'wp-api', 'wp-editor', 'wp-hooks' ),
+			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-plugins', 'wp-components', 'wp-edit-post', 'wp-api', 'wp-editor', 'wp-hooks', 'wp-data' ),
 			time(),
 			false
 		);
