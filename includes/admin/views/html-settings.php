@@ -24,6 +24,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			<h1 class="screen-reader-text"><?php echo 'Coil'; ?></h1>
 
+			<?php self::show_messages(); ?>
+
 			<p><strong><?php printf( __( 'Thanks for choosing %s.', 'coil-for-wp' ), 'Coil' ); ?></strong></p>
 
 			<p><?php esc_html_e( 'Please submit your payout pointer below in order for your content to be tracked for monetization.', 'coil-for-wp' ); ?></p>

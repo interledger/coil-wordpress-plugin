@@ -18,6 +18,24 @@ if ( ! class_exists( 'Coil_Admin' ) ) {
 	class Coil_Admin {
 
 		/**
+		 * Error messages.
+		 *
+		 * @access private
+		 * @static
+		 * @var array
+		 */
+		private static $errors = array();
+
+		/**
+		 * Update messages.
+		 *
+		 * @access private
+		 * @static
+		 * @var array
+		 */
+		private static $messages = array();
+
+		/**
 		 * Constructor
 		 *
 		 * @access public
@@ -59,6 +77,47 @@ if ( ! class_exists( 'Coil_Admin' ) ) {
 				COIL_URL_PATH . '/assets/images/coil-favicon-16.png'
 			);
 		} // END admin_menu()
+
+		/**
+		 * Add a message
+		 *
+		 * @access public
+		 * @static
+		 * @param  string $text Message
+		 */
+		public static function add_message( $text ) {
+			self::$messages[] = $text;
+		} // END add_message()
+
+		/**
+		 * Add an error
+		 *
+		 * @access public
+		 * @static
+		 * @param  string $text Error
+		 */
+		public static function add_error( $text ) {
+			self::$errors[] = $text;
+		} // END add_error()
+
+		/**
+		 * Output messages and errors.
+		 *
+		 * @access public
+		 * @static
+		 * @return string
+		 */
+		public static function show_messages() {
+			if ( count( self::$errors ) > 0 ) {
+				foreach ( self::$errors as $error ) {
+					echo '<div class="notice notice-error coil-notice"><p><strong>' . esc_html( $error ) . '</strong></p></div>';
+				}
+			} elseif ( count( self::$messages ) > 0 ) {
+				foreach ( self::$messages as $message ) {
+					echo '<div class="notice notice-success coil-notice"><p><strong>' . esc_html( $message ) . '</strong></p></div>';
+				}
+			}
+		} // END show_messages()
 
 		/**
 		 * Coil Page
@@ -106,6 +165,8 @@ if ( ! class_exists( 'Coil_Admin' ) ) {
 				else {
 					delete_option( 'coil_content_container' );
 				}
+
+				self::add_message( __( 'Your settings have been saved.', 'coil-for-wp' ) );
 			}
 		} // END save_settings()
 

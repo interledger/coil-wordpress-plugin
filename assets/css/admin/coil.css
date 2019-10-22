@@ -137,10 +137,17 @@
     font-size: 0;
     width: 64px; }
 
-body.coil .notice,
-body.coil .updated,
-body.coil .error {
+body.coil .notice:not(.coil-notice),
+body.coil .updated:not(.coil-notice),
+body.coil .error:not(.coil-notice) {
   display: none; }
+
+body.coil .notice.coil-notice {
+  padding: 10px; }
+
+body.coil .notice p {
+  padding: 0 !important;
+  margin: 0 !important; }
 
 @media (max-width: 767px) {
   .notice.coil-notice .coil-notice-inner {
