@@ -371,6 +371,9 @@ module.exports = function(grunt) {
 	// Checks for errors.
 	grunt.registerTask( 'test', [ 'jshint', 'stylelint', 'checktextdomain' ]);
 
+	// Build CSS only.
+	grunt.registerTask( 'css', [ 'sass', 'postcss' ] );
+
 	// Build CSS, minify CSS and runs i18n tasks.
 	grunt.registerTask( 'build', [ 'sass', 'postcss', 'cssmin', 'uglify', 'update-pot' ]);
 
