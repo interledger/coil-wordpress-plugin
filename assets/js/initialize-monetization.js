@@ -17,11 +17,11 @@
 		var content  = ( typeof content_container !== 'undefined' ) ? content_container : '.content-area .entry-content'; // If not set, use default entry content container class.
 		var is_valid = true;
 
+		if ( content !== '.content-area .entry-content' ) { $( content ).hide(); } // Hide content entry area if not default selector.
+
 		// If post is set for monetization then we run some magic.
 		if ( $('body').hasClass('monetization-not-initialized') ) {
-
-			if ( content !== '.content-area .entry-content' ) { $( content ).hide(); } // Hide content entry area if not default selector.
-			$( content ).before('<p class="monetize-msg" style="text-align:center;">' + verifying_browser_extension + '</p>');
+			$( content ).before('<p class="monetize-msg">' + verifying_browser_extension + '</p>');
 
 			// Check if monetization is implemented.
 			if ( document.monetization ) {
