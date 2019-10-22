@@ -118,7 +118,7 @@
 
 				// Trigger an event.
 				$( 'body' ).trigger( 'coil-missing-id' );
-		}
+			}
 		} // END if missing ID
 
 	});
