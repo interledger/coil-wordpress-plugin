@@ -57,9 +57,19 @@ body.monetization-initialized *.coil-hide-monetize-users,
 body.monetization-initialized .hidden-content {
   display: none; }
 
-body.coil-extension-not-found .site-content .content-area .entry-content {
+body.coil-extension-not-found .site-content .content-area .entry-content,
+body.coil-missing-id .site-content .content-area .entry-content {
   display: inherit; }
 
 body.coil-extension-not-found *.coil-hide-monetize-users,
-body.coil-extension-not-found *.coil-show-monetize-users {
+body.coil-extension-not-found *.coil-show-monetize-users,
+body.coil-missing-id *.coil-hide-monetize-users,
+body.coil-missing-id *.coil-show-monetize-users {
   display: none; }
+
+body.coil-show-admin-notice .monetize-msg {
+  background-color: #fa8072;
+  padding: 0.5em 0; }
+
+.monetize-msg {
+  text-align: center; }
