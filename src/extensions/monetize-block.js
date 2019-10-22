@@ -147,7 +147,7 @@ function addAttributes( settings ) {
 const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 	return ( props ) => {
 
-		let hideInspector = false; // Note: Boolean value is in reverse.
+		let showInspector = false;
 
 		const {
 			name,
@@ -168,16 +168,17 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 			return <BlockEdit { ...props } />;
 		}*/
 
-		if ( typeof meta._coil_monetize_post_status === 'undefined' || ( typeof meta._coil_monetize_post_status !== 'undefined' && meta._coil_monetize_post_status === 'no' ) ) {
-			hideInspector = false;
+		// Only show inspector options if set for block level monetization.
+		if ( typeof meta._coil_monetize_post_status === 'undefined' || ( typeof meta._coil_monetize_post_status !== 'undefined' && meta._coil_monetize_post_status === 'gate-tagged-blocks' ) ) {
+			showInspector = true;
 		} else {
-			hideInspector = true;
+			showInspector = false;
 		}
 
 		return (
 			<Fragment>
 				<BlockEdit { ...props } />
-				{ isSelected && hideInspector &&
+				{ isSelected && showInspector &&
 					<InspectorControls>
 						<PanelBody
 							title={ __( 'Web Monetization - Coil' ) } 
@@ -264,10 +265,10 @@ const wrapperClass = createHigherOrderComponent( ( BlockListBlock ) => {
 		// Fetch the post meta.
 		const meta = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' );
 
-		if ( typeof meta._coil_monetize_post_status === 'undefined' || ( typeof meta._coil_monetize_post_status !== 'undefined' && meta._coil_monetize_post_status === 'no' ) ) {
-			allowBlockIdentity = false;
-		} else {
+		if ( typeof meta._coil_monetize_post_status === 'undefined' || ( typeof meta._coil_monetize_post_status !== 'undefined' && meta._coil_monetize_post_status === 'gate-tagged-blocks' ) ) {
 			allowBlockIdentity = true;
+		} else {
+			allowBlockIdentity = false;
 		}
 
 		customData = Object.assign( customData, {
