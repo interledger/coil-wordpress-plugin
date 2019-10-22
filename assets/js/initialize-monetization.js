@@ -18,16 +18,16 @@
 		var content  = ( typeof content_container !== 'undefined' && content_container !== '' ) ? content_container : '.content-area .entry-content'; // If not set, use default entry content container class.
 		var is_valid = true;
 
-		// Hide content entry area if not default selector.
-		if ( content !== '.content-area .entry-content' ) {
-			$( content ).hide();
-			console.log( 'Hidden content via JS' );
-		}
-
-		console.log( 'Content Container is: "' + content + '"' );
-
 		// If post is set for monetization then we run some magic.
 		if ( $('body').hasClass('monetization-not-initialized') ) {
+			// Hide content entry area if not default selector.
+			if ( content !== '.content-area .entry-content' ) {
+				$( content ).hide();
+				console.log( 'Hidden content via JS' );
+			}
+
+			console.log( 'Content Container is: "' + content + '"' );
+
 			// Check if browser extension exists.
 			if ( document.monetization ) {
 
