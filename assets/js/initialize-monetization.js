@@ -20,6 +20,8 @@
 
 		if ( content !== '.content-area .entry-content' ) { $( content ).hide(); } // Hide content entry area if not default selector.
 
+		console.log( 'Content Container is: "' + content + '"' );
+
 		// If post is set for monetization then we run some magic.
 		if ( $('body').hasClass('monetization-not-initialized') ) {
 			$( content ).before('<p class="monetize-msg">' + verifying_browser_extension + '</p>');
@@ -100,6 +102,8 @@
 
 				// Trigger an event.
 				$( 'body' ).trigger( 'coil-extension-not-found' );
+
+				console.log( 'Browser extension not found.' );
 			}
 		} // END if post is ready for monetization.
 
@@ -116,10 +120,12 @@
 				$( content ).css( 'display', 'initial' );
 				$( content + '*.coil-hide-monetize-users' ).css( 'display', 'none' );
 				$( content + '*.coil-show-monetize-users' ).css( 'display', 'none' );
-
-				// Trigger an event.
-				$( 'body' ).trigger( 'coil-missing-id' );
 			}
+
+			// Trigger an event.
+			$( 'body' ).trigger( 'coil-missing-id' );
+
+			console.log( 'Payment pointer ID is missing.' );
 		} // END if missing ID
 
 	});
