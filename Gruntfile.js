@@ -68,7 +68,7 @@ module.exports = function(grunt) {
 				roundingPrecision: -1,
 				shorthandCompacting: false
 			},
-			target: {
+			admin: {
 				files: [{
 					expand: true,
 					cwd: 'assets/css/admin',
@@ -79,6 +79,12 @@ module.exports = function(grunt) {
 					dest: 'assets/css/admin',
 					ext: '.min.css'
 				}]
+			},
+			blocks: {
+				files: {
+					'dist/blocks.editor.build.min.css': [ 'dist/blocks.editor.build.css' ],
+					'dist/blocks.style.build.min.css': [ 'dist/blocks.style.build.css' ]
+				}
 			}
 		},
 
@@ -186,7 +192,7 @@ module.exports = function(grunt) {
 					potHeaders: {
 						'poedit': true,                                       // Includes common Poedit headers.
 						'x-poedit-keywordslist': true,                        // Include a list of all possible gettext functions.
-						'Report-Msgid-Bugs-To': 'https://github.com/seb86/coil-for-wp/issues',
+						'Report-Msgid-Bugs-To': 'https://bitbucket.org/pragmaticweb/coil-for-wp/issues',
 						'language-team': 'Sébastien Dumont <sebastien@pragmatic.agency>',
 						'language': 'en_US'
 					},
@@ -372,7 +378,7 @@ module.exports = function(grunt) {
 	grunt.registerTask( 'test', [ 'jshint', 'stylelint', 'checktextdomain' ]);
 
 	// Build CSS only.
-	grunt.registerTask( 'css', [ 'sass', 'postcss' ] );
+	grunt.registerTask( 'css', [ 'sass', 'postcss', 'cssmin' ] );
 
 	// Build CSS, minify CSS and runs i18n tasks.
 	grunt.registerTask( 'build', [ 'sass', 'postcss', 'cssmin', 'uglify', 'update-pot' ]);
