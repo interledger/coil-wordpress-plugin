@@ -145,7 +145,7 @@ if ( ! class_exists( 'Coil_Admin_Notices' ) ) {
 		public function plugin_review_notice() {
 			$install_date = self::$install_date;
 
-			include( COIL_FILE_PATH . '/includes/admin/views/html-notice-please-review.php' );
+			//include( COIL_FILE_PATH . '/includes/admin/views/html-notice-please-review.php' );
 		} // END plugin_review_notice()
 
 	} // END class.
