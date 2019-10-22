@@ -1,6 +1,6 @@
 (function($) {
 	var version                     = coil_params.coil_for_wp_version,
-		content_container           = coil_params.coil_content_container,
+		content_container           = coil_params.content_container,
 		verifying_browser_extension = coil_params.verifying_browser_extension,
 		browser_extension_missing   = coil_params.browser_extension_missing,
 		verifying_coil_account      = coil_params.verifying_coil_account,
