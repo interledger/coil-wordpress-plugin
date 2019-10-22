@@ -100,6 +100,26 @@
 				// Trigger an event.
 				$( 'body' ).trigger( 'coil-extension-not-found' );
 			}
+		} // END if post is ready for monetization.
+
+		// If the site is missing it's payment pointer ID.
+		if ( $('body').hasClass('coil-missing-id') ) {
+			if ( $('body').hasClass('coil-show-admin-notice') ) {
+				// Show message to site owner/administrators only.
+				$( content ).before('<p class="monetize-msg">Sebastien, this post is monetized but you have not set your payment pointer ID in the <a href="#">Coil settings page</a>. Only content set to show for all visitors will show.</p>');
+			}
+
+			// This ensures content written in Gutenberg is displayed according to 
+			// the block settings should the theme use different theme selectors.
+			if ( content !== '.content-area .entry-content' ) {
+				$( content ).css( 'display', 'initial' );
+				$( content + '*.coil-hide-monetize-users' ).css( 'display', 'none' );
+				$( content + '*.coil-show-monetize-users' ).css( 'display', 'none' );
+
+				// Trigger an event.
+				$( 'body' ).trigger( 'coil-missing-id' );
 		}
+		} // END if missing ID
+
 	});
 })(jQuery);
