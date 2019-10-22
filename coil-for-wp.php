@@ -5,7 +5,7 @@
  * Description: Enables support for Coil in WordPress.
  * Author: Sébastien Dumont
  * Author URI: https://sebastiendumont.com
- * Version: 1.0.0-alpha.3
+ * Version: 1.0.0-beta.1
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  *
@@ -26,7 +26,7 @@ if ( ! class_exists( 'Coil' ) ) {
 		 * @access public
 		 * @static
 		 */
-		public static $version = '1.0.0-alpha.3';
+		public static $version = '1.0.0-beta.1';
 
 		/**
 		 * @var Coil - the single instance of the class.
@@ -151,6 +151,7 @@ if ( ! class_exists( 'Coil' ) ) {
 			require_once( COIL_FILE_PATH . '/includes/class-coil-register-blocks.php' );
 			require_once( COIL_FILE_PATH . '/includes/class-coil-meta-box.php' );
 			require_once( COIL_FILE_PATH . '/includes/class-coil-post-meta.php' );
+			require_once( COIL_FILE_PATH . '/includes/class-coil-gate-content.php' );
 		} // END includes()
 
 		/**
@@ -292,6 +293,11 @@ if ( ! class_exists( 'Coil' ) ) {
 
 			// Custom scripts are not allowed in AMP, so short-circuit.
 			if ( self::is_amp() ) {
+				return;
+			}
+
+			// Prevent enqueue scripts if on the homepage, frontpage, feed or a preview of a post.
+			if ( is_home() || is_front_page() || is_feed() || is_preview() ) {
 				return;
 			}
 
