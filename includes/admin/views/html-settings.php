@@ -32,6 +32,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<label for="coil_payout_pointer_id"><?php _e( 'Payout Pointer', 'coil-for-wp' ); ?></label>
 				<input class="wide-input" type="text" name="coil_payout_pointer_id" id="coil_payout_pointer_id" value="<?php echo get_option( 'coil_payout_pointer_id' ); ?>" placeholder="$pay.stronghold.co/1a1b4654bdgj06ab547228c43af27ac0f2411" />
 
+				<label for="coil_content_container"><?php _e( 'Content Container', 'coil-for-wp' ); ?></label>
+				<input class="wide-input" type="text" name="coil_content_container" id="coil_content_container" value="<?php echo get_option( 'coil_content_container' ); ?>" placeholder=".content-area .entry-content" />
+
 				<p class="submit" style="text-align: center;">
 					<?php submit_button( esc_attr__( 'Save', 'coil-for-wp' ), 'button-primary button-hero', esc_attr__( 'Save', 'coil-for-wp' ), false, array( 'id' => 'save' ) ); ?>
 					<?php wp_nonce_field( 'coil_for_wp_settings_action', 'coil_for_wp_settings_nonce' ); ?>

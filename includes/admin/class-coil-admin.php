@@ -83,16 +83,28 @@ if ( ! class_exists( 'Coil_Admin' ) ) {
 			$nonce_name = isset( $_POST['coil_for_wp_settings_nonce'] ) ? $_POST['coil_for_wp_settings_nonce'] : '';
 
 			if ( wp_verify_nonce( $nonce_name, 'coil_for_wp_settings_action' ) ) {
-				$current_pointer = get_option( 'coil_payout_pointer_id' );
-				$new_pointer     = ! empty( $_POST['coil_payout_pointer_id'] ) ? sanitize_text_field( $_POST['coil_payout_pointer_id'] ) : '';
+				$current_pointer   = get_option( 'coil_content_container' );
+				$new_pointer       = ! empty( $_POST['coil_content_container'] ) ? sanitize_text_field( $_POST['coil_content_container'] ) : '';
+
+				// Content Container
+				$content_container = ! empty( $_POST['coil_content_container'] ) ? sanitize_text_field( $_POST['coil_content_container'] ) : '';
 
 				// Only save the pointer ID if one is not set or does not match the current pointer...
 				if ( ! empty( $new_pointer ) && $current_pointer != $new_pointer ) {
-					update_option( 'coil_payout_pointer_id', $new_pointer );
+					update_option( 'coil_content_container', $new_pointer );
 				}
 				// ... otherwise delete the option.
 				else {
-					delete_option( 'coil_payout_pointer_id' );
+					delete_option( 'coil_content_container' );
+				}
+
+				// Only save the content container if one is not set...
+				if ( ! empty( $content_container ) ) {
+					update_option( 'coil_content_container', $content_container );
+				}
+				// ... otherwise delete the option.
+				else {
+					delete_option( 'coil_content_container' );
 				}
 			}
 		} // END save_settings()
