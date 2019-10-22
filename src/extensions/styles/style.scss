@@ -64,8 +64,11 @@ body.monetization-initialized {
 
 }
 
-// Coil Browser Extension not found.
-body.coil-extension-not-found {
+// Coil Browser Extension not found or...
+// Coil Payment Pointer ID not found.
+// Only content that is set to show for all will show.
+body.coil-extension-not-found,
+body.coil-missing-id {
 
 	.site-content .content-area .entry-content {
 		display: inherit;
@@ -76,4 +79,13 @@ body.coil-extension-not-found {
 		display: none;
 	}
 
+}
+
+body.coil-show-admin-notice .monetize-msg {
+	background-color:#fa8072;
+	padding:0.5em 0;
+}
+
+.monetize-msg {
+	text-align:center;
 }
