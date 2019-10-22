@@ -20,7 +20,7 @@ Enables support for Coil in WordPress.
 
 ### 💻 Developers
 
-Below you will find some information on how to run scripts.
+Below you will find some information on how to run scripts for Gutenberg.
 
 >You can find the most recent version of this guide [here](https://github.com/ahmadawais/create-guten-block).
 
@@ -29,6 +29,8 @@ Below you will find some information on how to run scripts.
 - Watches for any changes and reports back any errors in your code.
 
 ## 👉  `npm run build`
+> ⚠️ I have found using this command causes the Gutenberg editor to fail because of minification issue so use at your own peril. ⚠️
+
 - Use to build production code for your block inside `dist` folder.
 - Runs once and reports back the gzip file sizes of the produced code.
 
