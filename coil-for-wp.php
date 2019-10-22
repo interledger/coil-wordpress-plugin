@@ -261,10 +261,10 @@ if ( ! class_exists( 'Coil' ) ) {
 			$monetize_status   = get_post_meta( $post->ID, '_coil_monetize_post_status', true );
 
 			if ( is_singular() && ! empty( $monetize_status ) && $monetize_status != 'no' ) {
-				if ( ! empty( $payout_pointer_id ) ) {
-					// JavaScript trigger class.
-					$classes[] = 'monetization-not-initialized';
+				// JavaScript trigger class.
+				$classes[] = 'monetization-not-initialized';
 
+				if ( ! empty( $payout_pointer_id ) ) {
 					// Monetize post status class
 					$classes[] = 'coil-' . $monetize_status;
 				} else {
