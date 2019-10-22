@@ -257,10 +257,25 @@ if ( ! class_exists( 'Coil' ) ) {
 		public function body_classes( $classes ) {
 			global $post;
 
-			$monetize_status = get_post_meta( $post->ID, '_coil_monetize_post_status', true );
+			$payout_pointer_id = get_option( "coil_payout_pointer_id" );
+			$monetize_status   = get_post_meta( $post->ID, '_coil_monetize_post_status', true );
 
 			if ( is_singular() && ! empty( $monetize_status ) && $monetize_status != 'no' ) {
-				$classes[] = 'monetization-not-initialized';
+				if ( ! empty( $payout_pointer_id ) ) {
+					// JavaScript trigger class.
+					$classes[] = 'monetization-not-initialized';
+
+					// Monetize post status class
+					$classes[] = 'coil-' . $monetize_status;
+				} else {
+					// Payment pointer ID is missing.
+					$classes[] = 'coil-missing-id';
+
+					// If the user logged in is admin then add a special class.
+					if ( is_user_logged_in() && current_user_can( 'manage_options' ) ) {
+						$classes[] = 'coil-show-admin-notice';
+					}
+				}
 			}
 
 			return $classes;
