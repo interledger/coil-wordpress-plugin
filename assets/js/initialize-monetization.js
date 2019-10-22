@@ -15,7 +15,7 @@
 	$( document ).ready(function () {
 		console.log( 'Coil for WordPress version: ' + version );
 
-		var content  = ( typeof content_container !== 'undefined' ) ? content_container : '.content-area .entry-content'; // If not set, use default entry content container class.
+		var content  = ( typeof content_container !== 'undefined' && content_container !== '' ) ? content_container : '.content-area .entry-content'; // If not set, use default entry content container class.
 		var is_valid = true;
 
 		if ( content !== '.content-area .entry-content' ) { $( content ).hide(); } // Hide content entry area if not default selector.
