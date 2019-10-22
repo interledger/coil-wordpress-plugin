@@ -61,7 +61,7 @@ class Coil_Block_Assets {
 		// Styles.
 		wp_enqueue_style(
 			$this->_slug . '-frontend',
-			COIL_URL_PATH . '/dist/blocks.style.build.css',
+			COIL_URL_PATH . '/dist/blocks.style.build' . COIL_ASSET_SUFFIX . '.css',
 			array(),
 			COIL_VERSION
 		);
@@ -84,7 +84,7 @@ class Coil_Block_Assets {
 		// Styles.
 		wp_register_style(
 			$this->_slug . '-editor',
-			COIL_URL_PATH . '/dist/blocks.editor.build.css',
+			COIL_URL_PATH . '/dist/blocks.editor.build' . COIL_ASSET_SUFFIX . '.css',
 			array(),
 			COIL_VERSION
 		);
