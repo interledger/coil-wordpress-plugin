@@ -34,7 +34,8 @@ module.exports = function(grunt) {
 			},
 			dist: {
 				files: {
-					'assets/css/admin/coil.css' : 'assets/scss/admin.scss'
+					'assets/css/admin/coil.css' : 'assets/scss/admin.scss',
+					'assets/css/frontend/coil.css' : 'assets/scss/frontend/coil.scss'
 				}
 			}
 		},
@@ -56,7 +57,9 @@ module.exports = function(grunt) {
 			dist: {
 				src: [
 					'!assets/css/admin/*.min.css',
-					'assets/css/admin/*.css'
+					'assets/css/admin/*.css',
+					'!assets/css/frontend/*.min.css',
+					'assets/css/frontend/*.css'
 				]
 			}
 		},
@@ -79,6 +82,11 @@ module.exports = function(grunt) {
 					dest: 'assets/css/admin',
 					ext: '.min.css'
 				}]
+			},
+			style: {
+				files: {
+					'assets/css/frontend/coil.min.css': [ 'assets/css/frontend/coil.css' ],
+				}
 			},
 			blocks: {
 				files: {
@@ -122,6 +130,7 @@ module.exports = function(grunt) {
 				files: [
 					'assets/scss/*.scss',
 					'assets/scss/admin/*.scss',
+					'assets/scss/frontend/*.scss',
 				],
 				tasks: ['sass', 'postcss']
 			},
@@ -371,7 +380,7 @@ module.exports = function(grunt) {
 	// Set the default grunt command to run test cases.
 	grunt.registerTask( 'default', [ 'test' ] );
 
-	// Checks for developer dependencie updates.
+	// Checks for developer dependence updates.
 	grunt.registerTask( 'check', [ 'devUpdate' ] );
 
 	// Checks for errors.

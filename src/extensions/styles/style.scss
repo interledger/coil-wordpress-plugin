@@ -1,10 +1,6 @@
 // Monetization not initialized.
 body.monetization-not-initialized {
 
-	.site-content .content-area .entry-content {
-		display: none;
-	}
-
 	figure.coil-show-monetize-users img,
 	figure.coil-show-monetize-users div.wp-block-embed__wrapper,
 	img.coil-show-monetize-users {
@@ -15,13 +11,12 @@ body.monetization-not-initialized {
 		filter: blur(10px) grayscale(1); /* Microsoft Edge and Firefox 35+ */
 	}
 
-	*.coil-show-monetize-users,
-	.hidden-content {
+	*.coil-show-monetize-users {
 		position: relative;
 		display: block;
 		
 		&::before {
-			content: "";
+			content: " ";
 			position: absolute;
 			top: 0;
 			bottom: 0;
@@ -31,7 +26,7 @@ body.monetization-not-initialized {
 		}
 
 		&::after {
-			content: "Content is hidden";
+			content: " ";
 			position: absolute;
 			width: inherit;
 			height: inherit;
@@ -57,8 +52,7 @@ body.monetization-not-initialized {
 // Monetization initialized.
 body.monetization-initialized {
 
-	*.coil-hide-monetize-users,
-	.hidden-content {
+	*.coil-hide-monetize-users {
 		display: none;
 	}
 
@@ -70,22 +64,9 @@ body.monetization-initialized {
 body.coil-extension-not-found,
 body.coil-missing-id {
 
-	.site-content .content-area .entry-content {
-		display: inherit;
-	}
-
 	*.coil-hide-monetize-users,
 	*.coil-show-monetize-users {
 		display: none;
 	}
 
-}
-
-body.coil-show-admin-notice .monetize-msg {
-	background-color:#fa8072;
-	padding:0.5em 0;
-}
-
-.monetize-msg {
-	text-align:center;
 }
