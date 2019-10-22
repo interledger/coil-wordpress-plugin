@@ -5,7 +5,7 @@
  * Description: Enables support for Coil in WordPress.
  * Author: Sébastien Dumont
  * Author URI: https://sebastiendumont.com
- * Version: 1.0.0-alpha.2
+ * Version: 1.0.0-alpha.3
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  *
@@ -26,7 +26,7 @@ if ( ! class_exists( 'Coil' ) ) {
 		 * @access public
 		 * @static
 		 */
-		public static $version = '1.0.0-alpha.2';
+		public static $version = '1.0.0-alpha.3';
 
 		/**
 		 * @var Coil - the single instance of the class.
