@@ -295,6 +295,7 @@ if ( ! class_exists( 'Coil' ) ) {
 				return;
 			}
 
+			$current_user    = wp_get_current_user();
 			$monetize_status = get_post_meta( $post->ID, '_coil_monetize_post_status', true );
 
 			// If the post is not monetizing then don't load asset.
@@ -315,7 +316,8 @@ if ( ! class_exists( 'Coil' ) ) {
 				'verifying_browser_extension' => __( 'This post is monetized. Please wait while we verify you are a subscriber...', 'coil-for-wp' ),
 				'browser_extension_missing'   => sprintf( __( 'You need to %1$sinstall the Coil browser extension%2$s in order to view this posts content.', 'coil-for-wp' ), '<a target="_blank" href="https://help.coil.com/en/articles/2701494-supported-browsers">', '</a>' ),
 				'verifying_coil_account'      => __( 'Verifying your Coil account. Please wait...', 'coil-for-wp' ),
-				'loading_content'             => __( 'Loading content. Please wait...', 'coil-for-wp' )
+				'loading_content'             => __( 'Loading content. Please wait...', 'coil-for-wp' ),
+				'admin_missing_id_notice'     => sprintf( __( '%1$s, this post is monetized but you have not set your payment pointer ID in the %2$sCoil settings page%3$s. Only content set to show for all visitors will show.', 'coil-for-wp' ), $current_user->display_name, '<a href="' . admin_url( 'admin.php?page=coil' ) . '">', '</a>' )
 			) );
 		} // END frontend_scripts()
 

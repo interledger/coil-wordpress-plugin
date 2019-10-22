@@ -4,7 +4,8 @@
 		verifying_browser_extension = coil_params.verifying_browser_extension,
 		browser_extension_missing   = coil_params.browser_extension_missing,
 		verifying_coil_account      = coil_params.verifying_coil_account,
-		loading_content             = coil_params.loading_content;
+		loading_content             = coil_params.loading_content,
+		admin_missing_id_notice     = coil_params.admin_missing_id_notice;
 
 	// Ensure "coil_params" exists to continue.
 	if ( typeof coil_params === 'undefined' ) {
@@ -106,7 +107,7 @@
 		if ( $('body').hasClass('coil-missing-id') ) {
 			if ( $('body').hasClass('coil-show-admin-notice') ) {
 				// Show message to site owner/administrators only.
-				$( content ).before('<p class="monetize-msg">Sebastien, this post is monetized but you have not set your payment pointer ID in the <a href="#">Coil settings page</a>. Only content set to show for all visitors will show.</p>');
+				$( content ).before('<p class="monetize-msg">' + admin_missing_id_notice + '</p>');
 			}
 
 			// This ensures content written in Gutenberg is displayed according to 
