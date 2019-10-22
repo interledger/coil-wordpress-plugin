@@ -1,5 +1,5 @@
 body.monetization-not-initialized .site-content .content-area .entry-content,
-body.coil-gate-all .site-content .content-area .entry-content {
+body.coil-extension-not-found.coil-gate-all .site-content .content-area .entry-content {
   display: none; }
 
 body.coil-extension-not-found:not(.coil-gate-all) .site-content .content-area .entry-content,
