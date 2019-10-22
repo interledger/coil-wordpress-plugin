@@ -1,0 +1,118 @@
+@font-face {
+	font-family: 'Circular Pro';
+	src: url('../../fonts/lineto-circular-pro-black.woff2') format('woff2'), url('../../fonts/lineto-circular-pro-black.eot') format('embedded-opentype'), url('../../fonts/lineto-circular-pro-black.woff') format('woff');
+	font-weight: 900;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Circular Pro';
+	src: url('../../fonts/lineto-circular-pro-bold.woff2') format('woff2'), url('../../fonts/lineto-circular-pro-bold.eot') format('embedded-opentype'), url('../../fonts/lineto-circular-pro-bold.woff') format('woff');
+	font-weight: 700;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Circular Pro';
+	src: url('../../fonts/lineto-circular-pro-blackitalic.woff2') format('woff2'), url('../../fonts/lineto-circular-pro-blackItalic.eot') format('embedded-opentype'), url('../../fonts/lineto-circular-pro-blackItalic.woff') format('woff');
+	font-weight: 900;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Circular Pro';
+	src: url('../../fonts/lineto-circular-pro-bookitalic.woff2') format('woff2'), url('../../fonts/lineto-circular-pro-bookItalic.eot') format('embedded-opentype'), url('../../fonts/lineto-circular-pro-bookItalic.woff') format('woff');
+	font-weight: 400;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Circular Pro';
+	src: url('../../fonts/lineto-circular-pro-bolditalic.woff2') format('woff2'), url('../../fonts/lineto-circular-pro-boldItalic.eot') format('embedded-opentype'), url('../../fonts/lineto-circular-pro-boldItalic.woff') format('woff');
+	font-weight: 700;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Circular Pro';
+	src: url('../../fonts/lineto-circular-pro-book.woff2') format('woff2'), url('../../fonts/lineto-circular-pro-book.eot') format('embedded-opentype'), url('../../fonts/lineto-circular-pro-book.woff') format('woff');
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Circular Pro';
+	src: url('../../fonts/lineto-circular-pro-medium.woff2') format('woff2'), url('../../fonts/lineto-circular-pro-medium.eot') format('embedded-opentype'), url('../../fonts/lineto-circular-pro-medium.woff') format('woff');
+	font-weight: 500;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Circular Pro';
+	src: url('../../fonts/lineto-circular-pro-mediumitalic.woff2') format('woff2'), url('../../fonts/lineto-circular-pro-mediumItalic.eot') format('embedded-opentype'), url('../../fonts/lineto-circular-pro-mediumitalic.woff') format('woff');
+	font-weight: 500;
+	font-style: italic;
+}
+
+.coil {
+	.container {
+		background-color: $white;
+		border: 1px solid $lightgrey;
+		box-shadow: 0 2px 30px $shadow;
+		-webkit-box-shadow: 0 2px 30px $shadow;
+		color: $black;
+		margin: 20px auto 80px;
+		max-width: 692px;
+		text-align: left;
+		width: calc(100% - 20px);
+		font-family: 'Circular Pro';
+
+		.content {
+			padding: 40px;
+
+			.logo {
+				text-align: center;
+			}
+
+			h1 {
+				color: #23282d;
+				font-size: 1.7em;
+				font-weight: 700;
+				line-height: 1.48;
+				margin-bottom: 28px;
+				margin-top: 0;
+			}
+
+			p {
+				color: #333;
+				font-size: 16px;
+				font-weight: 400;
+				line-height: 1.6;
+				margin-bottom: 20px;
+			}
+
+			p.submit {
+				margin-bottom: 0;
+			}
+
+			ul {
+				list-style: disc;
+			}
+
+			li {
+				margin-left: 12px;
+			}
+
+			input.wide-input {
+				margin-top: 0.4em;
+				width: 100%;
+			}
+
+			a.button.button-hero,
+			input[type='submit'].button-hero,
+			button.button-hero {
+				font-size: 20px;
+			}
+		}
+	}
+}
