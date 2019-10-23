@@ -1,5 +1,5 @@
 // Monetization not initialized.
-body.monetization-not-initialized {
+body.monetization-not-initialized:not(.coil-no-gating) {
 
 	figure.coil-show-monetize-users img,
 	figure.coil-show-monetize-users div.wp-block-embed__wrapper,
@@ -50,7 +50,7 @@ body.monetization-not-initialized {
 }
 
 // Monetization initialized.
-body.monetization-initialized {
+body.monetization-initialized:not(.coil-no-gating) {
 
 	*.coil-hide-monetize-users {
 		display: none;
@@ -61,8 +61,8 @@ body.monetization-initialized {
 // Coil Browser Extension not found or...
 // Coil Payment Pointer ID not found.
 // Only content that is set to show for all will show.
-body.coil-extension-not-found,
-body.coil-missing-id {
+body.coil-extension-not-found:not(.coil-no-gating),
+body.coil-missing-id:not(.coil-no-gating) {
 
 	*.coil-hide-monetize-users,
 	*.coil-show-monetize-users {
