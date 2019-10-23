@@ -1,9 +1,33 @@
-body.monetization-not-initialized .site-content .content-area .entry-content,
-body.coil-extension-not-found.coil-gate-all .site-content .content-area .entry-content {
+body.monetization-not-initialized:not(.coil-no-gating) #main #content .entry-content,
+body.monetization-not-initialized:not(.coil-no-gating) .site-content #content .entry-content,
+body.monetization-not-initialized:not(.coil-no-gating) .site-content .entry-content,
+body.monetization-not-initialized:not(.coil-no-gating) .site-main #content .entry-content,
+body.monetization-not-initialized:not(.coil-no-gating) .site-main .entry-content,
+body.monetization-not-initialized:not(.coil-no-gating) .site-content #primary .site-main .entry-content,
+body.monetization-not-initialized:not(.coil-no-gating) #site-content .post-inner .entry-content,
+body.coil-extension-not-found.coil-gate-all #main #content .entry-content,
+body.coil-extension-not-found.coil-gate-all .site-content #content .entry-content,
+body.coil-extension-not-found.coil-gate-all .site-content .entry-content,
+body.coil-extension-not-found.coil-gate-all .site-main #content .entry-content,
+body.coil-extension-not-found.coil-gate-all .site-main .entry-content,
+body.coil-extension-not-found.coil-gate-all .site-content #primary .site-main .entry-content,
+body.coil-extension-not-found.coil-gate-all #site-content .post-inner .entry-content {
   display: none; }
 
-body.coil-extension-not-found:not(.coil-gate-all) .site-content .content-area .entry-content,
-body.coil-missing-id:not(.coil-gate-all) .site-content .content-area .entry-content {
+body.coil-extension-not-found:not(.coil-gate-all) #main #content .entry-content,
+body.coil-extension-not-found:not(.coil-gate-all) .site-content #content .entry-content,
+body.coil-extension-not-found:not(.coil-gate-all) .site-content .entry-content,
+body.coil-extension-not-found:not(.coil-gate-all) .site-main #content .entry-content,
+body.coil-extension-not-found:not(.coil-gate-all) .site-main .entry-content,
+body.coil-extension-not-found:not(.coil-gate-all) .site-content #primary .site-main .entry-content,
+body.coil-extension-not-found:not(.coil-gate-all) #site-content .post-inner .entry-content,
+body.coil-missing-id:not(.coil-gate-all) #main #content .entry-content,
+body.coil-missing-id:not(.coil-gate-all) .site-content #content .entry-content,
+body.coil-missing-id:not(.coil-gate-all) .site-content .entry-content,
+body.coil-missing-id:not(.coil-gate-all) .site-main #content .entry-content,
+body.coil-missing-id:not(.coil-gate-all) .site-main .entry-content,
+body.coil-missing-id:not(.coil-gate-all) .site-content #primary .site-main .entry-content,
+body.coil-missing-id:not(.coil-gate-all) #site-content .post-inner .entry-content {
   display: inherit; }
 
 body.coil-show-admin-notice .monetize-msg {
@@ -11,4 +35,8 @@ body.coil-show-admin-notice .monetize-msg {
   padding: 0.5em 0; }
 
 .monetize-msg {
+  max-width: 100vw;
+  position: relative;
+  left: calc(50% - 50vw);
+  width: 100vw;
   text-align: center; }

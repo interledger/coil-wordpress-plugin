@@ -309,13 +309,24 @@ if ( ! class_exists( 'Coil' ) ) {
 				return;
 			}
 
+			// Styles.
+			wp_enqueue_style(
+				'coil',
+				COIL_URL_PATH . '/assets/css/frontend/coil' . COIL_ASSET_SUFFIX . '.css',
+				array(),
+				COIL_VERSION
+			);
+
+			// JavaScript
 			wp_enqueue_script(
 				'initialize-monetization',
 				COIL_URL_PATH . '/assets/js/initialize-monetization' . COIL_ASSET_SUFFIX . '.js',
 				array( 'jquery' ),
-				COIL_VERSION
+				COIL_VERSION,
+				true
 			);
 
+			// Localization for JavaScript
 			wp_localize_script( 'initialize-monetization', 'coil_params', array(
 				'coil_for_wp_version'         => COIL_VERSION,
 				'content_container'           => get_option( 'coil_content_container' ),
