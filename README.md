@@ -4,8 +4,8 @@
 **Tags:** coil, payment, monetization, traffic  
 **Requires at least:** 4.9  
 **Requires PHP:** 5.6  
-**Tested up to:** 5.2.4  
-**Stable tag:** 1.0.0  
+**Tested up to:** 5.3  
+**Stable tag:** 1.0.0-beta.1  
 **License:** GPL v2 or later  
 
 Enables support for Coil in WordPress.
