@@ -13,6 +13,7 @@ import './utils/block-category';
 //import './styles/style.scss';
 
 // Extensions
+//import './extensions/ui';
 import './extensions/monetize-block';
 
 // Register Blocks
