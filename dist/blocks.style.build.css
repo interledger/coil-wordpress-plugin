@@ -1,9 +1,6 @@
-body.monetization-not-initialized .site-content .content-area .entry-content {
-  display: none; }
-
-body.monetization-not-initialized figure.coil-show-monetize-users img,
-body.monetization-not-initialized figure.coil-show-monetize-users div.wp-block-embed__wrapper,
-body.monetization-not-initialized img.coil-show-monetize-users {
+body.monetization-not-initialized:not(.coil-no-gating) figure.coil-show-monetize-users img,
+body.monetization-not-initialized:not(.coil-no-gating) figure.coil-show-monetize-users div.wp-block-embed__wrapper,
+body.monetization-not-initialized:not(.coil-no-gating) img.coil-show-monetize-users {
   -webkit-filter: blur(10px) grayscale(1);
   /* Google Chrome, Safari 6+ & Opera 15+ */
   -moz-filter: blur(10px) greyscale(1);
@@ -15,22 +12,19 @@ body.monetization-not-initialized img.coil-show-monetize-users {
   filter: blur(10px) grayscale(1);
   /* Microsoft Edge and Firefox 35+ */ }
 
-body.monetization-not-initialized *.coil-show-monetize-users,
-body.monetization-not-initialized .hidden-content {
+body.monetization-not-initialized:not(.coil-no-gating) *.coil-show-monetize-users {
   position: relative;
   display: block; }
-  body.monetization-not-initialized *.coil-show-monetize-users::before,
-  body.monetization-not-initialized .hidden-content::before {
-    content: "";
+  body.monetization-not-initialized:not(.coil-no-gating) *.coil-show-monetize-users::before {
+    content: " ";
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     z-index: 1; }
-  body.monetization-not-initialized *.coil-show-monetize-users::after,
-  body.monetization-not-initialized .hidden-content::after {
-    content: "Content is hidden";
+  body.monetization-not-initialized:not(.coil-no-gating) *.coil-show-monetize-users::after {
+    content: " ";
     position: absolute;
     width: inherit;
     height: inherit;
@@ -53,23 +47,11 @@ body.monetization-not-initialized .hidden-content {
     -ms-flex-pack: center;
         justify-content: center; }
 
-body.monetization-initialized *.coil-hide-monetize-users,
-body.monetization-initialized .hidden-content {
+body.monetization-initialized:not(.coil-no-gating) *.coil-hide-monetize-users {
   display: none; }
 
-body.coil-extension-not-found .site-content .content-area .entry-content,
-body.coil-missing-id .site-content .content-area .entry-content {
-  display: inherit; }
-
-body.coil-extension-not-found *.coil-hide-monetize-users,
-body.coil-extension-not-found *.coil-show-monetize-users,
-body.coil-missing-id *.coil-hide-monetize-users,
-body.coil-missing-id *.coil-show-monetize-users {
+body.coil-extension-not-found:not(.coil-no-gating) *.coil-hide-monetize-users,
+body.coil-extension-not-found:not(.coil-no-gating) *.coil-show-monetize-users,
+body.coil-missing-id:not(.coil-no-gating) *.coil-hide-monetize-users,
+body.coil-missing-id:not(.coil-no-gating) *.coil-show-monetize-users {
   display: none; }
-
-body.coil-show-admin-notice .monetize-msg {
-  background-color: #fa8072;
-  padding: 0.5em 0; }
-
-.monetize-msg {
-  text-align: center; }
