@@ -19,7 +19,7 @@
 		var is_valid = true;
 
 		// If post is set for monetization then we run some magic.
-		if ( $('body').hasClass('monetization-not-initialized') ) {
+		if ( $( 'body' ).hasClass( 'monetization-not-initialized' ) ) {
 			// Hide content entry area if not default selector.
 			if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content !== '.content-area .entry-content' ) {
 				$( content ).hide();
@@ -35,11 +35,13 @@
 				if ( document.monetization.state === 'pending' ) {
 
 					// If the site is missing it's payment pointer ID.
-					if ( $('body').hasClass('coil-missing-id') ) {
+					if ( $( 'body' ).hasClass( 'coil-missing-id' ) ) {
 
-						if ( $('body').hasClass('coil-show-admin-notice') ) {
+						if ( $( 'body' ).hasClass( 'coil-show-admin-notice' ) ) {
 							// Show message to site owner/administrators only.
 							$( content ).before('<p class="monetize-msg">' + admin_missing_id_notice + '</p>');
+						} else {
+							$( 'body' ).removeClass( 'coil-missing-id' );
 						}
 
 						// This ensures content written in Gutenberg is displayed according to 
@@ -59,15 +61,18 @@
 						if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) ) {
 							$( content ).before( '<p class="monetize-msg">' + verifying_browser_extension + '</p>' );
 
-						// Update message if browser extension is still verifying user.
-						setTimeout( function() {
-							$('p.monetize-msg').html( verifying_coil_account );
-						}, 2000 );
+							// Update message if browser extension is still verifying user.
+							setTimeout( function() {
+								$( 'p.monetize-msg' ).html( verifying_coil_account );
+							}, 2000 );
+						}
 					}
 				}
 				// User account verified, loading content.
 				else if ( document.monetization.state === 'started' ) {
-					$('p.monetize-msg').html( loading_content );
+					console.log( 'Monetization started!' );
+
+					$( content ).before('<p class="monetize-msg">' + loading_content + '</p>' );
 				}
 
 				// Monetization has started.
@@ -94,7 +99,23 @@
 							$( content ).css( 'display', '' ); // Show content area if not default selector.
 						}
 
-	
+						$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'monetization-initialized' ); // Update body class to show content.
+						$( 'p.monetize-msg' ).remove(); // Remove status message.
+
+						// Show embedded content.
+						document.querySelectorAll( 'iframe, object, video' ).forEach( function( embed ) {
+							// Skip embeds we want to ignore
+							if ( embed.classList.contains( 'intrinsic-ignore' ) || embed.parentNode.classList.contains( 'intrinsic-ignore' ) ) {
+								return true;
+							}
+
+							if ( ! embed.dataset.origwidth ) {
+								// Get the embed element proportions
+								embed.setAttribute( 'data-origwidth', embed.width );
+								embed.setAttribute( 'data-origheight', embed.height );
+							}
+						} );
+
 						// Trigger an event.
 						$( 'body' ).trigger( 'coil-monetization-initialized', [ event ] );
 					//}
@@ -126,7 +147,7 @@
 					//}
 				});
 			} else {
-				$('body').addClass('coil-extension-not-found'); // Update body class to show free content.
+				$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'coil-extension-not-found' ); // Update body class to show free content.
 
 				$( content ).before('<p class="monetize-msg">' + browser_extension_missing + '</p>' );
 
