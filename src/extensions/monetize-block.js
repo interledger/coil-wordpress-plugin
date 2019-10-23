@@ -19,6 +19,7 @@ const { createHigherOrderComponent } = wp.compose;
 const { PanelBody, RadioControl } = wp.components;
 const { registerPlugin } = wp.plugins;
 const { PluginDocumentSettingPanel } = wp.editPost;
+const { DotTip } = wp.nux;
 
 // Allow only specific blocks to use the extension attribute.
 const allowedBlocks = [
@@ -185,6 +186,9 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 							initialOpen={ false }
 							className="coil-panel"
 						>
+							<DotTip tipId="coil/editor.panel_monetize_block">
+								{ __( 'As you have set the article to monetize by split content, you have the option to show this block for all or show/hide for subscribers only.' ) }
+							</DotTip>
 							<RadioControl
 								selected={ monetizeBlockDisplay }
 								options={
@@ -339,20 +343,20 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 					value: 'no'
 				},
 				{
-					label: __( 'Monetize with No Gating', 'coil-for-wp' ),
+					label: __( 'Monetized and Public', 'coil-for-wp' ),
 					value: 'no-gating'
 				},
 				{
-					label: __( 'Monetize all Content', 'coil-for-wp' ),
+					label: __( 'Subscribers Only', 'coil-for-wp' ),
 					value: 'gate-all'
 				},
 				{
-					label: __( 'Monetize Tagged Blocks', 'coil-for-wp' ),
+					label: __( 'Split Content', 'coil-for-wp' ),
 					value: 'gate-tagged-blocks'
 				}
 			]
 		}
-		help={ __( 'Set the type of monetization for the post.' ) }
+		help={ __( 'Set the type of monetization for the article.' ) }
 		onChange={ ( value ) => props.updateMetaValue( value ) }
 />
 ) ) );
@@ -368,6 +372,9 @@ registerPlugin( 'coil-document-setting-panel', {
 					className="coil-document-panel"
 					>
 						<PostMonetizationFields metaFieldName="_coil_monetize_post_status" />
+						<DotTip tipId="coil/editor.panel_monetize_post_status">
+							{ __( 'When creating an article, you can decide whether to monetize it or not. There are three options you can monetize your content for. "Monetized and Public", "Subscribers Only" or by "Split Content", which allows you to control which blocks can be seen to the public or subscribers.' ) }
+						</DotTip>
 				</PluginDocumentSettingPanel>
 		)
 	},
