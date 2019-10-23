@@ -21,9 +21,9 @@
 		// If post is set for monetization then we run some magic.
 		if ( $('body').hasClass('monetization-not-initialized') ) {
 			// Hide content entry area if not default selector.
-			if ( content !== '.content-area .entry-content' ) {
+			if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content !== '.content-area .entry-content' ) {
 				$( content ).hide();
-				console.log( 'Hidden content via JS' );
+				console.log( 'Hidden content until verification with Coil.' );
 			}
 
 			console.log( 'Content Container is: "' + content + '"' );
@@ -44,8 +44,8 @@
 
 						// This ensures content written in Gutenberg is displayed according to 
 						// the block settings should the theme use different theme selectors.
-						if ( content !== '.content-area .entry-content' ) {
-							$( content ).css( 'display', 'initial' );
+						if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content !== '.content-area .entry-content' ) {
+							$( content ).css( 'display', '' );
 							$( content + '*.coil-hide-monetize-users' ).css( 'display', 'none' );
 							$( content + '*.coil-show-monetize-users' ).css( 'display', 'none' );
 						}
@@ -55,7 +55,9 @@
 
 						console.log( 'Payment pointer ID is missing.' );
 					} else {
-						$( content ).before('<p class="monetize-msg">' + verifying_browser_extension + '</p>');
+						// Verify monetization only if we are gating or partially gating content.
+						if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) ) {
+							$( content ).before( '<p class="monetize-msg">' + verifying_browser_extension + '</p>' );
 
 						// Update message if browser extension is still verifying user.
 						setTimeout( function() {
@@ -88,9 +90,10 @@
 
 						console.log( 'Monetization has started. Yeah!' );
 
-						if ( content !== '.content-area' ) { $( content ).show(); } // Show content area if not default selector.
-						$('body').removeClass('monetization-not-initialized').addClass('monetization-initialized'); // Update body class to show content.
-						$('p.monetize-msg').remove(); // Remove status message.
+						if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content !== '.content-area .entry-content' ) {
+							$( content ).css( 'display', '' ); // Show content area if not default selector.
+						}
+
 	
 						// Trigger an event.
 						$( 'body' ).trigger( 'coil-monetization-initialized', [ event ] );
@@ -129,8 +132,8 @@
 
 				// This ensures content written in Gutenberg is displayed according to 
 				// the block settings should the theme use different theme selectors.
-				if ( content !== '.content-area .entry-content' ) {
-					$( content ).css( 'display', 'initial' );
+				if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content !== '.content-area .entry-content' ) {
+					$( content ).css( 'display', '' );
 					$( content + '*.coil-hide-monetize-users' ).css( 'display', 'none' );
 					$( content + '*.coil-show-monetize-users' ).css( 'display', 'none' );
 				}
