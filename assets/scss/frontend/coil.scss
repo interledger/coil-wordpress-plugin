@@ -1,6 +1,6 @@
 // Monetization not initialized or...
 // Content is all gated.
-body.monetization-not-initialized:not(.coil-no-gating),
+body.monetization-not-initialized:not( .coil-no-gating ),
 body.coil-extension-not-found.coil-gate-all {
 
 	#main #content .entry-content,
@@ -18,8 +18,8 @@ body.coil-extension-not-found.coil-gate-all {
 // Coil Browser Extension not found or...
 // Coil Payment Pointer ID not found.
 // Only content that is set to show for all will show.
-body.coil-extension-not-found:not(.coil-gate-all),
-body.coil-missing-id:not(.coil-gate-all) {
+body.coil-extension-not-found:not( .coil-gate-all ),
+body.coil-missing-id:not( .coil-gate-all ) {
 
 	#main #content .entry-content,
 	.site-content #content .entry-content,

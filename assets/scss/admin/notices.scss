@@ -65,9 +65,9 @@
 	}
 }
 
-body.coil .notice:not(.coil-notice),
-body.coil .updated:not(.coil-notice),
-body.coil .error:not(.coil-notice) {
+body.coil .notice:not( .coil-notice ),
+body.coil .updated:not( .coil-notice ),
+body.coil .error:not( .coil-notice ) {
 	display: none;
 }
 
