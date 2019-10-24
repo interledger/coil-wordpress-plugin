@@ -5,7 +5,8 @@
 		browser_extension_missing   = coil_params.browser_extension_missing,
 		verifying_coil_account      = coil_params.verifying_coil_account,
 		loading_content             = coil_params.loading_content,
-		admin_missing_id_notice     = coil_params.admin_missing_id_notice;
+		admin_missing_id_notice     = coil_params.admin_missing_id_notice,
+		post_excerpt                = coil_params.post_excerpt;
 
 	// Ensure "coil_params" exists to continue.
 	if ( typeof coil_params === 'undefined' ) {
@@ -24,6 +25,11 @@
 			if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content !== '.content-area .entry-content' ) {
 				$( content ).hide();
 				console.log( 'Hidden content until verification with Coil.' );
+			}
+
+			// Display post excerpt for gated posts.
+			if ( $( 'body' ).hasClass( 'coil-gate-all' ) ) {
+				$( content ).before( '<p class="post-gated-excerpt">' + post_excerpt + '</p>' );
 			}
 
 			console.log( 'Content Container is: "' + content + '"' );
@@ -59,7 +65,12 @@
 					} else {
 						// Verify monetization only if we are gating or partially gating content.
 						if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) ) {
-							$( content ).before( '<p class="monetize-msg">' + verifying_browser_extension + '</p>' );
+							// If post is gated then show verification message after excerpt.
+							if ( $( 'body' ).hasClass( 'coil-gate-all' ) ) {
+								$( 'p.post-gated-excerpt' ).after( '<p class="monetize-msg">' + verifying_browser_extension + '</p>' );
+							} else {
+								$( content ).before( '<p class="monetize-msg">' + verifying_browser_extension + '</p>' );
+							}
 
 							// Update message if browser extension is still verifying user.
 							setTimeout( function() {
@@ -101,6 +112,7 @@
 
 						$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'monetization-initialized' ); // Update body class to show content.
 						$( 'p.monetize-msg' ).remove(); // Remove status message.
+						$( 'p.post-gated-excerpt' ).remove(); // Remove post excerpt.
 
 						// Show embedded content.
 						document.querySelectorAll( 'iframe, object, video' ).forEach( function( embed ) {
