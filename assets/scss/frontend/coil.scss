@@ -3,13 +3,13 @@
 body.monetization-not-initialized:not( .coil-no-gating ),
 body.coil-extension-not-found.coil-gate-all {
 
-	#main #content .entry-content,
-	.site-content #content .entry-content,
-	.site-content .entry-content,
-	.site-main #content .entry-content,
-	.site-main .entry-content,
-	.site-content #primary .site-main .entry-content,
-	#site-content .post-inner .entry-content {
+	#main #content .entry-content:not( .coil-post-excerpt ),
+	.site-content #content .entry-content:not( .coil-post-excerpt ),
+	.site-content .entry-content:not( .coil-post-excerpt ),
+	.site-main #content .entry-content:not( .coil-post-excerpt ),
+	.site-main .entry-content:not( .coil-post-excerpt ),
+	.site-content #primary .site-main .entry-content:not( .coil-post-excerpt ),
+	#site-content .post-inner .entry-content:not( .coil-post-excerpt ) {
 		display: none;
 	}
 

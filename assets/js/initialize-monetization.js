@@ -21,18 +21,18 @@
 
 		// If post is set for monetization then we run some magic.
 		if ( $( 'body' ).hasClass( 'monetization-not-initialized' ) ) {
-			// Hide content entry area if not default selector.
-			if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content !== '.content-area .entry-content' ) {
-				$( content ).hide();
-				console.log( 'Hidden content until verification with Coil.' );
-			}
+			console.log( 'Content Container is: "' + content + '"' );
 
 			// Display post excerpt for gated posts.
 			if ( $( 'body' ).hasClass( 'coil-gate-all' ) ) {
-				$( content ).before( '<p class="post-gated-excerpt">' + post_excerpt + '</p>' );
+				$( content ).before( '<div class="entry-content coil-post-excerpt"><p>' + post_excerpt + '</p></div>' );
 			}
 
-			console.log( 'Content Container is: "' + content + '"' );
+			// Hide content entry area if not default selector.
+			if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content !== '.content-area .entry-content' ) {
+				$( content ).not( '.coil-post-excerpt' ).hide();
+				console.log( 'Hidden content until verification with Coil.' );
+			}
 
 			// Check if browser extension exists.
 			if ( document.monetization ) {
@@ -67,7 +67,7 @@
 						if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) ) {
 							// If post is gated then show verification message after excerpt.
 							if ( $( 'body' ).hasClass( 'coil-gate-all' ) ) {
-								$( 'p.post-gated-excerpt' ).after( '<p class="monetize-msg">' + verifying_browser_extension + '</p>' );
+								$( 'div.coil-post-excerpt' ).after( '<p class="monetize-msg">' + verifying_browser_extension + '</p>' );
 							} else {
 								$( content ).before( '<p class="monetize-msg">' + verifying_browser_extension + '</p>' );
 							}
@@ -112,7 +112,7 @@
 
 						$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'monetization-initialized' ); // Update body class to show content.
 						$( 'p.monetize-msg' ).remove(); // Remove status message.
-						$( 'p.post-gated-excerpt' ).remove(); // Remove post excerpt.
+						$( 'div.coil-post-excerpt' ).remove(); // Remove post excerpt.
 
 						// Show embedded content.
 						document.querySelectorAll( 'iframe, object, video' ).forEach( function( embed ) {
