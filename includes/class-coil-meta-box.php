@@ -107,7 +107,12 @@ class Coil_Meta_Box {
 		}
 		?>
 		<fieldset>
-			<legend><?php esc_html_e( 'Set the type of monetization for the article.', 'coil-for-wp' ); ?></legend>
+			<legend><?php
+			esc_html_e( 'Set the type of monetization for the article.', 'coil-for-wp' );
+			if ( Coil_Compatibility::is_post_using_gutenberg( $post ) ) {
+				echo ' ' . esc_html__( 'Note: If "Split Content" selected, you will need to save the article and reload the editor to view the options at block level.', 'coil-for-wp' );
+			}
+			?></legend>
 			<?php foreach( $monet_options as $option => $name ) { ?>
 			<input type="radio" name="coil_monetize_post_status" id="<?php echo $option; ?>" value="<?php echo $option; ?>"<?php if( empty( $monet_status ) && $option == 'no' ) { echo 'checked="checked"'; } else { checked( $monet_status, $option ); } ?> /><label for="track"><?php echo $name; ?></label><br />
 			<?php } ?>

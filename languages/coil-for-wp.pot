@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Coil for WordPress package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Coil for WordPress 1.0.0-beta.1\n"
+"Project-Id-Version: Coil for WordPress 1.0.0-beta.2\n"
 "Report-Msgid-Bugs-To: https://bitbucket.org/pragmaticweb/coil-for-wp/issues\n"
-"POT-Creation-Date: 2019-10-23 17:43:42+00:00\n"
+"POT-Creation-Date: 2019-10-24 23:10:07+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -32,25 +32,25 @@ msgstr ""
 msgid "Unserializing instances of this class is forbidden."
 msgstr ""
 
-#: coil-for-wp.php:333
+#: coil-for-wp.php:334
 msgid "This post is monetized. Please wait while we verify you are a subscriber..."
 msgstr ""
 
-#: coil-for-wp.php:334
+#: coil-for-wp.php:335
 msgid ""
 "You need to %1$sinstall the Coil browser extension%2$s in order to view "
 "this posts content."
 msgstr ""
 
-#: coil-for-wp.php:335
+#: coil-for-wp.php:336
 msgid "Verifying your Coil account. Please wait..."
 msgstr ""
 
-#: coil-for-wp.php:336
+#: coil-for-wp.php:337
 msgid "Loading content. Please wait..."
 msgstr ""
 
-#: coil-for-wp.php:337
+#: coil-for-wp.php:338
 msgid ""
 "%1$s, this post is monetized but you have not set your payment pointer ID "
 "in the %2$sCoil settings page%3$s. Only content set to show for all "
@@ -102,61 +102,61 @@ msgstr ""
 msgid "Sorry but you do not have permission for this action."
 msgstr ""
 
-#: includes/admin/class-coil-admin.php:169
+#: includes/admin/class-coil-admin.php:173
 msgid "Your settings have been saved."
 msgstr ""
 
-#: includes/admin/class-coil-admin.php:204
+#: includes/admin/class-coil-admin.php:208
 #. translators: Number of years
 msgid "%s years"
 msgstr ""
 
-#: includes/admin/class-coil-admin.php:206
+#: includes/admin/class-coil-admin.php:210
 msgid "a year"
 msgstr ""
 
-#: includes/admin/class-coil-admin.php:213
+#: includes/admin/class-coil-admin.php:217
 #. translators: Number of weeks
 msgid "%s weeks"
 msgstr ""
 
-#: includes/admin/class-coil-admin.php:215
+#: includes/admin/class-coil-admin.php:219
 msgid "a week"
 msgstr ""
 
-#: includes/admin/class-coil-admin.php:222
+#: includes/admin/class-coil-admin.php:226
 #. translators: Number of days
 msgid "%s days"
 msgstr ""
 
-#: includes/admin/class-coil-admin.php:224
+#: includes/admin/class-coil-admin.php:228
 msgid "a day"
 msgstr ""
 
-#: includes/admin/class-coil-admin.php:231
+#: includes/admin/class-coil-admin.php:235
 #. translators: Number of hours
 msgid "%s hours"
 msgstr ""
 
-#: includes/admin/class-coil-admin.php:233
+#: includes/admin/class-coil-admin.php:237
 msgid "an hour"
 msgstr ""
 
-#: includes/admin/class-coil-admin.php:240
+#: includes/admin/class-coil-admin.php:244
 #. translators: Number of minutes
 msgid "%s minutes"
 msgstr ""
 
-#: includes/admin/class-coil-admin.php:242
+#: includes/admin/class-coil-admin.php:246
 msgid "a minute"
 msgstr ""
 
-#: includes/admin/class-coil-admin.php:249
+#: includes/admin/class-coil-admin.php:253
 #. translators: Number of seconds
 msgid "%s seconds"
 msgstr ""
 
-#: includes/admin/class-coil-admin.php:251
+#: includes/admin/class-coil-admin.php:255
 msgid "a second"
 msgstr ""
 
@@ -200,22 +200,32 @@ msgstr ""
 msgid "Coil"
 msgstr ""
 
-#: includes/class-coil-meta-box.php:60
+#: includes/class-coil-meta-box.php:73
 msgid "Web Monetization - %s"
 msgstr ""
 
-#: includes/class-coil-meta-box.php:85
-msgid "No (Default)"
+#: includes/class-coil-meta-box.php:99
+msgid "No Monetization"
 msgstr ""
 
-#: includes/class-coil-meta-box.php:86
-msgid "Monetize with No Gating"
+#: includes/class-coil-meta-box.php:100
+msgid "Monetized and Public"
 msgstr ""
 
-#: includes/class-coil-meta-box.php:87
-msgid "Monetize all Content"
+#: includes/class-coil-meta-box.php:101
+msgid "Subscribers Only"
 msgstr ""
 
-#: includes/class-coil-meta-box.php:91
-msgid "Select the monetization status of this content."
+#: includes/class-coil-meta-box.php:106
+msgid "Split Content"
+msgstr ""
+
+#: includes/class-coil-meta-box.php:111
+msgid "Set the type of monetization for the article."
+msgstr ""
+
+#: includes/class-coil-meta-box.php:113
+msgid ""
+"Note: If \"Split Content\" selected, you will need to save the article and "
+"reload the editor to view the options at block level."
 msgstr ""
