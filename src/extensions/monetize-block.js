@@ -335,7 +335,7 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 	};
 } )( ( props ) => (
 	<RadioControl
-		selected={ props[ props.metaFieldName ] }
+		selected={ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : 'no' }
 		options={
 			[
 				{
