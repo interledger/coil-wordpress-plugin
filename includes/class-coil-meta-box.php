@@ -2,7 +2,9 @@
 /**
  * Coil for WordPress - Meta Box.
  *
- * Adds a custom meta box for the Classic Editor.
+ * Adds a custom meta box for the Classic Editor and 
+ * Gutenberg if WordPress is lesser than version 5.3 
+ * or does not have the Gutenberg plugin installed.
  *
  * @author   Sébastien Dumont
  * @category Classes
@@ -46,23 +48,35 @@ class Coil_Meta_Box {
 	 * Adds a metabox to the right side of the screen above the “Publish” box.
 	 *
 	 * @access public
+	 * @global object $post
 	 */
 	public function add_metabox() {
 		global $post;
 
-		// If user loaded with the Gutenberg editor (plugin version) then don't register the meta box.
-		if ( function_exists( 'use_block_editor_for_post' ) && use_block_editor_for_post( $post ) ) {
-			return;
+		$showMetaBox = false;
+
+		// Only show the meta box if the Gutenberg version of the plugin is not installed.
+		// Will show the meta box for both the Classic Editor and Gutenberg Editor.
+		if ( Coil_Compatibility::is_wp_version_lte_5_2() && ! Coil_Compatibility::is_gutenberg_installed() ) {
+			$showMetaBox = true;
 		}
 
-		add_meta_box(
-			'coil', // Meta box ID (used in the 'id' attribute for the meta box).
-			sprintf( __( 'Web Monetization - %s', 'coil-for-wp' ), 'Coil' ), // Meta Box Title
-			array( $this, 'coil_metabox_callback' ), // Function that fills the box with the desired content.
-			array( 'post', 'page' ), // The screen or screens on which to show the box (such as a post type)
-			'side', // The context within the screen where the boxes should display. 
-			'high' // The priority within the context where the boxes should show. Default: default
-		);
+		// Only show the meta box if WordPress is version 5.3 and NOT using the Gutenberg editor.
+		if ( Coil_Compatibility::is_wp_version_gte_5_3() && ! Coil_Compatibility::is_post_using_gutenberg( $post ) ) {
+			$showMetaBox = true;
+		}
+
+		// Add the meta box if we are allowed to show it.
+		if ( $showMetaBox ) {
+			add_meta_box(
+				'coil', // Meta box ID (used in the 'id' attribute for the meta box).
+				sprintf( __( 'Web Monetization - %s', 'coil-for-wp' ), 'Coil' ), // Meta Box Title
+				array( $this, 'coil_metabox_callback' ), // Function that fills the box with the desired content.
+				array( 'post', 'page' ), // The screen or screens on which to show the box (such as a post type)
+				'side', // The context within the screen where the boxes should display. 
+				'high' // The priority within the context where the boxes should show. Default: default
+			);
+		} // END if
 	} // END add_metabox()
 
 	/**
@@ -78,17 +92,22 @@ class Coil_Meta_Box {
 		$monet_status = get_post_meta( $post->ID, '_coil_monetize_post_status', true );
 
 		// Get post payout pointer ID if set.
-		$post_payout_pointer_id = get_post_meta( $post->ID, '_coil_payout_pointer_id', true );
+		//$post_payout_pointer_id = get_post_meta( $post->ID, '_coil_payout_pointer_id', true );
 
 		// Output the fields.
 		$monet_options = array(
-			'no'                 => esc_html__( 'No (Default)', 'coil-for-wp' ),
-			'no-gating'          => esc_html__( 'Monetize with No Gating', 'coil-for-wp' ),
-			'gate-all'           => esc_html__( 'Monetize all Content', 'coil-for-wp' )
+			'no'        => esc_html__( 'No Monetization', 'coil-for-wp' ),
+			'no-gating' => esc_html__( 'Monetized and Public', 'coil-for-wp' ),
+			'gate-all'  => esc_html__( 'Subscribers Only', 'coil-for-wp' )
 		);
+
+		// If user loaded with the Gutenberg editor then add an additional option.
+		if ( Coil_Compatibility::is_post_using_gutenberg( $post ) ) {
+			$monet_options[ 'gate-tagged-blocks' ] = esc_html__( 'Split Content', 'coil-for-wp' );
+		}
 		?>
 		<fieldset>
-			<legend><?php esc_html_e( 'Select the monetization status of this content.', 'coil-for-wp' ); ?></legend>
+			<legend><?php esc_html_e( 'Set the type of monetization for the article.', 'coil-for-wp' ); ?></legend>
 			<?php foreach( $monet_options as $option => $name ) { ?>
 			<input type="radio" name="coil_monetize_post_status" id="<?php echo $option; ?>" value="<?php echo $option; ?>"<?php if( empty( $monet_status ) && $option == 'no' ) { echo 'checked="checked"'; } else { checked( $monet_status, $option ); } ?> /><label for="track"><?php echo $name; ?></label><br />
 			<?php } ?>

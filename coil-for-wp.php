@@ -148,6 +148,7 @@ if ( ! class_exists( 'Coil' ) ) {
 		public function includes() {
 			require_once( COIL_FILE_PATH . '/includes/class-coil-autoloader.php' );
 			require_once( COIL_FILE_PATH . '/includes/class-coil-block-assets.php' );
+			require_once( COIL_FILE_PATH . '/includes/class-coil-compatibility.php' );
 			require_once( COIL_FILE_PATH . '/includes/class-coil-register-blocks.php' );
 			require_once( COIL_FILE_PATH . '/includes/class-coil-meta-box.php' );
 			require_once( COIL_FILE_PATH . '/includes/class-coil-post-meta.php' );
