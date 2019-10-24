@@ -148,23 +148,27 @@ if ( ! class_exists( 'Coil_Admin' ) ) {
 				// Content Container
 				$content_container  = ! empty( $_POST['coil_content_container'] ) ? sanitize_text_field( $_POST['coil_content_container'] ) : '';
 
-				// Save the payment pointer ID if one is set...
-				if ( ! empty( $payment_pointer_id ) ) {
-					update_option( 'coil_payout_pointer_id', $payment_pointer_id );
-				}
-				// ... otherwise delete the option.
-				else {
-					delete_option( 'coil_payout_pointer_id' );
-				}
+				// Compile the options together.
+				$coil_options = array(
+					'coil_payout_pointer_id' => esc_textarea( $payment_pointer_id ),
+					'coil_content_container' => esc_textarea( $content_container ),
+				);
 
-				// Save the content container if one is set...
-				if ( ! empty( $content_container ) ) {
-					update_option( 'coil_content_container', $content_container );
-				}
-				// ... otherwise delete the option.
-				else {
-					delete_option( 'coil_content_container' );
-				}
+				// Now for each option we add, update or delete.
+				foreach( $coil_options as $key => $value ) {
+					if ( get_option( $key ) ) {
+						// If the option already has a value, update it.
+						update_option( $key, $value );
+					} else {
+						// If the option doesn't have a value, add it.
+						add_option( $key, $value );
+					}
+		
+					if ( ! $value ) {
+						// Delete the option if there's no value
+						delete_option( $key );
+					}
+				} // END foreach
 
 				self::add_message( __( 'Your settings have been saved.', 'coil-for-wp' ) );
 			}
