@@ -361,22 +361,24 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 />
 ) ) );
 
-// Register the panel.
-registerPlugin( 'coil-document-setting-panel', {
-	render: () => {
-		return (
-				<PluginDocumentSettingPanel
-					name="coil-meta"
-					title={ __( 'Web Monetization - Coil', 'coil-for-wp' ) }
-					initialOpen={ false }
-					className="coil-document-panel"
-					>
-						<PostMonetizationFields metaFieldName="_coil_monetize_post_status" />
-						<DotTip tipId="coil/editor.panel_monetize_post_status">
-							{ __( 'When creating an article, you can decide whether to monetize it or not. There are three options you can monetize your content for. "Monetized and Public", "Subscribers Only" or by "Split Content", which allows you to control which blocks can be seen to the public or subscribers.' ) }
-						</DotTip>
-				</PluginDocumentSettingPanel>
-		)
-	},
-	icon: '' // Can if you want place an SVG version of the Coil logo here.
-} );
+// Register the panel, if the component exists.
+if ( PluginDocumentSettingPanel ) {
+	registerPlugin( 'coil-document-setting-panel', {
+		render: () => {
+			return (
+					<PluginDocumentSettingPanel
+						name="coil-meta"
+						title={ __( 'Web Monetization - Coil', 'coil-for-wp' ) }
+						initialOpen={ false }
+						className="coil-document-panel"
+						>
+							<PostMonetizationFields metaFieldName="_coil_monetize_post_status" />
+							<DotTip tipId="coil/editor.panel_monetize_post_status">
+								{ __( 'When creating an article, you can decide whether to monetize it or not. There are three options you can monetize your content for. "Monetized and Public", "Subscribers Only" or by "Split Content", which allows you to control which blocks can be seen to the public or subscribers.' ) }
+							</DotTip>
+					</PluginDocumentSettingPanel>
+			)
+		},
+		icon: '' // Can if you want place an SVG version of the Coil logo here.
+	} );
+}
