@@ -4,6 +4,8 @@
 		verifying_browser_extension = coil_params.verifying_browser_extension,
 		browser_extension_missing   = coil_params.browser_extension_missing,
 		verifying_coil_account      = coil_params.verifying_coil_account,
+		unable_to_verify            = coil_params.unable_to_verify,
+		unable_to_verify_hidden     = coil_params.unable_to_verify_hidden,
 		loading_content             = coil_params.loading_content,
 		admin_missing_id_notice     = coil_params.admin_missing_id_notice,
 		post_excerpt                = coil_params.post_excerpt;
@@ -72,10 +74,32 @@
 								$( content ).before( '<p class="monetize-msg">' + verifying_browser_extension + '</p>' );
 							}
 
-							// Update message if browser extension is still verifying user.
+							var message = $( 'p.monetize-msg' );
+
+							// Update message if browser extension is verifying user.
 							setTimeout( function() {
 								$( 'p.monetize-msg' ).html( verifying_coil_account );
+								console.log( 'Verifying subscribers Coil account.' );
 							}, 2000 );
+
+							// Update message if browser extension is unable to verify user.
+							setTimeout( function() {
+								if ( $( 'p.monetize-msg' ).length > 0 ) {
+									$( 'p.monetize-msg' ).remove();
+
+									if ( $( 'body' ).hasClass( 'coil-gate-all' ) ) {
+										$( 'div.coil-post-excerpt' ).after( '<p class="monetize-failed">' + unable_to_verify + '</p>' );
+									} else {
+										if ( $( 'body').hasClass( 'coil-gate-tagged-blocks' ) ) {
+											$( content ).before( '<p class="monetize-failed">' + unable_to_verify_hidden + '</p>' );
+										} else {
+											$( content ).before( '<p class="monetize-failed">' + unable_to_verify + '</p>' );
+										}
+									}
+
+									console.log( 'Unable to verify Coil account.' );
+								}
+							}, 5000 );
 						}
 					}
 				}
@@ -161,7 +185,11 @@
 			} else {
 				$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'coil-extension-not-found' ); // Update body class to show free content.
 
-				$( content ).before('<p class="monetize-msg">' + browser_extension_missing + '</p>' );
+				if ( $( 'body' ).hasClass( 'coil-gate-all' ) ) {
+					$( 'div.coil-post-excerpt' ).after( '<p class="monetize-msg">' + browser_extension_missing + '</p>' );
+				} else {
+					$( content ).before( '<p class="monetize-msg">' + browser_extension_missing + '</p>' );
+				}
 
 				// This ensures content written in Gutenberg is displayed according to 
 				// the block settings should the theme use different theme selectors.

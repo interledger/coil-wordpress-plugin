@@ -56,12 +56,18 @@ class Coil_Gate_Content {
 		if ( ! is_singular() && ! empty( $monetize_status ) ) {
 			switch( $monetize_status ) {
 				case 'gate-all': // Monetize all content.
-					return '🔒 ' . esc_html__( 'This content is gated.', 'coil-for-wp' );
+					return '<p>🔒 ' . esc_html__( 'The contents of this article is for subscribers only!', 'coil-for-wp' ) . '</p>';
+				break;
+
+				case 'gate-tagged-blocks': // Monetized Specific Content
+					$public_content = '<p>🔓 '. esc_html__( 'This article is monetized and some content is for subscribers only.', 'coil-for-wp' ) . '</p>';
+					$public_content .= $content;
+
+					return $public_content;
 				break;
 
 				case 'no': // Not monetized.
 				case 'no-gate': // Just Monetized
-				case 'gate-tagged-blocks': // Monetized Specific Content
 				default:
 					return $content;
 				break;
@@ -69,7 +75,8 @@ class Coil_Gate_Content {
 		}
 
 		// If content is not modified then return as normal.
-		return $content;
+		// Can be filtered.
+		return apply_filters( 'coil_returned_content', $content, $post, $monetize_status );
 	} // END is_gated_content()
 
 } // END class

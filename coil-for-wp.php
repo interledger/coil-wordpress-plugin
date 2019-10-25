@@ -5,7 +5,7 @@
  * Description: Enables support for Coil in WordPress.
  * Author: Sébastien Dumont
  * Author URI: https://sebastiendumont.com
- * Version: 1.0.0-beta.2
+ * Version: 1.0.0-beta.3
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  *
@@ -26,7 +26,7 @@ if ( ! class_exists( 'Coil' ) ) {
 		 * @access public
 		 * @static
 		 */
-		public static $version = '1.0.0-beta.2';
+		public static $version = '1.0.0-beta.3';
 
 		/**
 		 * @var Coil - the single instance of the class.
@@ -297,6 +297,14 @@ if ( ! class_exists( 'Coil' ) ) {
 				return;
 			}
 
+			// Styles.
+			wp_enqueue_style(
+				'coil',
+				COIL_URL_PATH . '/assets/css/frontend/coil' . COIL_ASSET_SUFFIX . '.css',
+				array(),
+				COIL_VERSION
+			);
+
 			// Prevent enqueue scripts if on the homepage, frontpage, feed or a preview of a post.
 			if ( is_home() || is_front_page() || is_feed() || is_preview() ) {
 				return;
@@ -309,14 +317,6 @@ if ( ! class_exists( 'Coil' ) ) {
 			if ( is_singular() && ! empty( $monetize_status ) && $monetize_status == 'no' ) {
 				return;
 			}
-
-			// Styles.
-			wp_enqueue_style(
-				'coil',
-				COIL_URL_PATH . '/assets/css/frontend/coil' . COIL_ASSET_SUFFIX . '.css',
-				array(),
-				COIL_VERSION
-			);
 
 			// JavaScript
 			wp_enqueue_script(
@@ -334,6 +334,8 @@ if ( ! class_exists( 'Coil' ) ) {
 				'verifying_browser_extension' => __( 'This post is monetized. Please wait while we verify you are a subscriber...', 'coil-for-wp' ),
 				'browser_extension_missing'   => sprintf( __( 'You need to %1$sinstall the Coil browser extension%2$s in order to view this posts content.', 'coil-for-wp' ), '<a target="_blank" href="https://help.coil.com/en/articles/2701494-supported-browsers">', '</a>' ),
 				'verifying_coil_account'      => __( 'Verifying your Coil account. Please wait...', 'coil-for-wp' ),
+				'unable_to_verify'            => sprintf( __( 'Unable to verify your Coil account. Please %1$scheck that you are logged in%2$s to view content.', 'coil-for-wp' ), '<a href="' . esc_url( 'https://coil.com/login' ) . '" target="_blank">', '</a>' ),
+				'unable_to_verify_hidden'     => sprintf( __( 'Unable to verify your Coil account. Please %1$scheck that you are logged in%2$s to view hidden content.', 'coil-for-wp' ), '<a href="' . esc_url( 'https://coil.com/login' ) . '" target="_blank">', '</a>' ),
 				'loading_content'             => __( 'Loading content. Please wait...', 'coil-for-wp' ),
 				'admin_missing_id_notice'     => sprintf( __( '%1$s, this post is monetized but you have not set your payment pointer ID in the %2$sCoil settings page%3$s. Only content set to show for all visitors will show.', 'coil-for-wp' ), $current_user->display_name, '<a href="' . admin_url( 'admin.php?page=coil' ) . '">', '</a>' ),
 				'post_excerpt'                => get_the_excerpt( $post->ID )

@@ -15,6 +15,14 @@ body.coil-extension-not-found.coil-gate-all {
 
 }
 
+
+// If the reader is not viewing a single post/page then hide monetized content.
+body:not( .single ):not( .page ) {
+	.coil-show-monetize-users {
+		display: none;
+	}
+}
+
 // Coil Browser Extension not found or...
 // Coil Payment Pointer ID not found.
 // Only content that is set to show for all will show.
