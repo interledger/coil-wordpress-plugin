@@ -26,7 +26,7 @@
 			console.log( 'Content Container is: "' + content + '"' );
 
 			// Display post excerpt for gated posts.
-			if ( $( 'body' ).hasClass( 'coil-gate-all' ) ) {
+			if ( $( 'body' ).hasClass( 'coil-gate-all' ) && typeof post_excerpt !== 'undefined' ) {
 				$( content ).before( '<div class="entry-content coil-post-excerpt"><p>' + post_excerpt + '</p></div>' );
 			}
 
@@ -69,7 +69,11 @@
 						if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) ) {
 							// If post is gated then show verification message after excerpt.
 							if ( $( 'body' ).hasClass( 'coil-gate-all' ) ) {
-								$( 'div.coil-post-excerpt' ).after( '<p class="monetize-msg">' + verifying_browser_extension + '</p>' );
+								if ( post_excerpt !== 'undefined' ) {
+									$( content ).before( '<p class="monetize-msg">' + verifying_browser_extension + '</p>' );
+								} else {
+									$( 'div.coil-post-excerpt' ).after( '<p class="monetize-msg">' + verifying_browser_extension + '</p>' );
+								}
 							} else {
 								$( content ).before( '<p class="monetize-msg">' + verifying_browser_extension + '</p>' );
 							}
@@ -91,7 +95,11 @@
 										$( 'div.coil-post-excerpt' ).after( '<p class="monetize-failed">' + unable_to_verify + '</p>' );
 									} else {
 										if ( $( 'body').hasClass( 'coil-gate-tagged-blocks' ) ) {
+											$( 'body').addClass( 'coil-split' ); // Only show content that is free if we can't verify.
+											$( content ).css( 'display', '' );
 											$( content ).before( '<p class="monetize-failed">' + unable_to_verify_hidden + '</p>' );
+
+											console.log( 'Only free content is shown if article is split.' );
 										} else {
 											$( content ).before( '<p class="monetize-failed">' + unable_to_verify + '</p>' );
 										}

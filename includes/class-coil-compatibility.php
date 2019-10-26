@@ -21,6 +21,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Coil_Compatibility {
 
 	/**
+	 * The Constructor.
+	 */
+	public function __construct() {
+		add_filter( 'initialize-monetization-js', array( $this, 'pass_post_excerpt_js' ), 10, 2 );
+	}
+
+	/**
 	 * Checks if the Gutenberg plugin is installed.
 	 *
 	 * @access public
@@ -81,6 +88,25 @@ class Coil_Compatibility {
 
 		return false;
 	} // END is_wp_version_lte_5_2()
+
+	/**
+	 * This adds the post excerpt if WordPress is higher than version 4.9.
+	 *
+	 * @access public
+	 * @param  array  $params - The JavaScript parameters before filtering.
+	 * @param  int    $post_ID - The post ID number.
+	 * @global string $wp_version - The version of WordPress.
+	 * @return array  $params - The JavaScript parameters after filtering.
+	 */
+	public function pass_post_excerpt_js( $params, $post_ID ) {
+		global $wp_version;
+
+		if ( version_compare( $wp_version, '4.9', '>' ) ) {
+			$params[ 'post_excerpt' ] = get_the_excerpt( $post_ID );
+		}
+
+		return $params;
+	} // END pass_post_excerpt_js()
 
 } // END class.
 

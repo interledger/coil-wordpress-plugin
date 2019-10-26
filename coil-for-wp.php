@@ -175,14 +175,15 @@ if ( ! class_exists( 'Coil' ) ) {
 		 * 2. If the post does not specify a pointer then the global tag will be used if set.
 		 *
 		 * @access public
-		 * @global object $post
+		 * @global WP_Query $wp_query
 		 * @return void
 		 */
 		public function meta_tag() {
-			global $post;
+			global $wp_query;
 
-			//$post_payout_pointer_id = get_post_meta( $post->ID, '_coil_payout_pointer_id', true );
-			$monetize_status        = get_post_meta( $post->ID, '_coil_monetize_post_status', true );
+			$post_ID               = $wp_query->get_queried_object_id();
+			//$post_payout_pointer_id = get_post_meta( $post_ID, '_coil_payout_pointer_id', true );
+			$monetize_status       = get_post_meta( $post_ID, '_coil_monetize_post_status', true );
 
 			//if ( ! empty( $post_payout_pointer_id ) ) {
 				//$payout_pointer_id = $post_payout_pointer_id;
@@ -201,11 +202,11 @@ if ( ! class_exists( 'Coil' ) ) {
 		} // END meta_tag()
 
 		/**
-		 * If debug is on, serve unminified source assets.
+		 * If debug is on, serve un-minified source assets.
 		 *
 		 * @access public
-		 * @param string|string $type The type of resource.
-		 * @param string|string $directory Any extra directories needed.
+		 * @param  string|string $type The type of resource.
+		 * @param  string|string $directory Any extra directories needed.
 		 */
 		public function asset_source( $type = 'js', $directory = null ) {
 			if ( 'js' === $type ) {
@@ -252,30 +253,34 @@ if ( ! class_exists( 'Coil' ) ) {
 		 * Sets a body class if the singular post has enabled monetization.
 		 *
 		 * @access public
-		 * @global object WP_Post - The post object.
+		 * @global WP_Query $wp_query
 		 * @param  array $classes - List of body classes already applied.
 		 * @return array $classes - List of new body classes.
 		 */
 		public function body_classes( $classes ) {
-			global $post;
+			global $wp_query;
 
 			$payout_pointer_id = get_option( "coil_payout_pointer_id" );
-			$monetize_status   = get_post_meta( $post->ID, '_coil_monetize_post_status', true );
 
-			if ( is_singular() && ! empty( $monetize_status ) && $monetize_status != 'no' ) {
-				// JavaScript trigger class.
-				$classes[] = 'monetization-not-initialized';
+			if ( is_singular() ) {
+				$post_ID         = $wp_query->get_queried_object_id();
+				$monetize_status = get_post_meta( $post_ID, '_coil_monetize_post_status', true );
+	
+				if ( ! empty( $monetize_status ) && $monetize_status != 'no' ) {
+					// JavaScript trigger class.
+					$classes[] = 'monetization-not-initialized';
 
-				if ( ! empty( $payout_pointer_id ) ) {
-					// Monetize post status class
-					$classes[] = 'coil-' . $monetize_status;
-				} else {
-					// Payment pointer ID is missing.
-					$classes[] = 'coil-missing-id';
+					if ( ! empty( $payout_pointer_id ) ) {
+						// Monetize post status class
+						$classes[] = 'coil-' . $monetize_status;
+					} else {
+						// Payment pointer ID is missing.
+						$classes[] = 'coil-missing-id';
 
-					// If the user logged in is admin then add a special class.
-					if ( is_user_logged_in() && current_user_can( 'manage_options' ) ) {
-						$classes[] = 'coil-show-admin-notice';
+						// If the user logged in is admin then add a special class.
+						if ( is_user_logged_in() && current_user_can( 'manage_options' ) ) {
+							$classes[] = 'coil-show-admin-notice';
+						}
 					}
 				}
 			}
@@ -287,10 +292,10 @@ if ( ! class_exists( 'Coil' ) ) {
 		 * Enqueue front-end asset to initialize monetization.
 		 *
 		 * @access public
-		 * @global object WP_Post - The post object.
+		 * @global WP_Query $wp_query
 		 */
 		public function frontend_scripts() {
-			global $post;
+			global $wp_query;
 
 			// Custom scripts are not allowed in AMP, so short-circuit.
 			if ( self::is_amp() ) {
@@ -306,15 +311,16 @@ if ( ! class_exists( 'Coil' ) ) {
 			);
 
 			// Prevent enqueue scripts if on the homepage, frontpage, feed or a preview of a post.
-			if ( is_home() || is_front_page() || is_feed() || is_preview() ) {
+			if ( is_home() || is_front_page() || ! is_singular() || is_feed() || is_preview() ) {
 				return;
 			}
 
+			$post_ID         = $wp_query->get_queried_object_id();
 			$current_user    = wp_get_current_user();
-			$monetize_status = get_post_meta( $post->ID, '_coil_monetize_post_status', true );
+			$monetize_status = get_post_meta( $post_ID, '_coil_monetize_post_status', true );
 
 			// If the post is not monetizing then don't load asset.
-			if ( is_singular() && ! empty( $monetize_status ) && $monetize_status == 'no' ) {
+			if ( ! empty( $monetize_status ) && $monetize_status == 'no' ) {
 				return;
 			}
 
