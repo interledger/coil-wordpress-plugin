@@ -117,7 +117,7 @@ class Coil_Block_Assets {
 		$vendors_dir = Coil()->asset_source( 'js', 'vendors' );
 
 		// Split Content block.
-		if ( has_block( $this->_slug . '/split-content' ) ) {
+		/*if ( function_exists( 'has_block' ) && has_block( $this->_slug . '/split-content' ) ) {
 			wp_enqueue_script(
 				$this->_slug . '-split-content',
 				$dir . $this->_slug . '-split-content' . COIL_ASSET_SUFFIX . '.js',
@@ -125,7 +125,7 @@ class Coil_Block_Assets {
 				COIL_VERSION,
 				true
 			);
-		}
+		}*/
 	} // END frontend_scripts()
 
 	/**

@@ -1,12 +1,12 @@
 /**
  * WordPress dependencies
  */
-import {
+/*import {
 	registerBlockType,
-} from '@wordpress/blocks';
+} from '@wordpress/blocks';*/
 
 // Register block category
-import './utils/block-category';
+//import './utils/block-category';
 
 // Editor and Frontend Styles
 //import './styles/editor.scss';
@@ -25,7 +25,7 @@ import './extensions/monetize-block';
  * @param {Object} block The block to be registered.
  *
  */
-const registerBlock = ( block ) => {
+/*const registerBlock = ( block ) => {
 	if ( ! block ) {
 		return;
 	}
@@ -36,15 +36,15 @@ const registerBlock = ( block ) => {
 		category: category,
 		...settings,
 	} );
-};
+};*/
 
 /**
  * Function to register blocks provided by Coil.
  */
-export const registerBlocks = () => {
+/*export const registerBlocks = () => {
 	[
-		//splitContent,
+		splitContent,
 	].forEach( registerBlock );
 };
 
-registerBlocks();
+registerBlocks();*/
