@@ -57,7 +57,6 @@ if ( ! class_exists( 'Coil_Admin' ) ) {
 		public function includes() {
 			include( dirname( __FILE__ ) . '/class-coil-admin-action-links.php' ); // Action Links
 			include( dirname( __FILE__ ) . '/class-coil-admin-assets.php' );       // Admin Assets
-			include( dirname( __FILE__ ) . '/class-coil-admin-notices.php' );      // Plugin Notices
 		} // END includes()
 
 		/**
