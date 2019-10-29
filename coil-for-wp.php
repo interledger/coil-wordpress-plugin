@@ -164,7 +164,6 @@ if ( ! class_exists( 'Coil' ) ) {
 		public function admin_includes() {
 			if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 				require_once( dirname( __FILE__ ) . '/includes/admin/class-coil-admin.php' );
-				require_once( dirname( __FILE__ ) . '/includes/class-coil-install.php' ); // Install Coil.
 			}
 		} // END admin_includes()
 
