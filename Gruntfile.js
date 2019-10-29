@@ -214,7 +214,7 @@ module.exports = function(grunt) {
 								'Author of the plugin/theme',
 								'Author URI of the plugin/theme'
 							];
-	
+
 						for ( translation in pot.translations[''] ) {
 							if ( 'undefined' !== typeof pot.translations[''][ translation ].comments.extracted ) {
 								if ( excluded_meta.indexOf( pot.translations[''][ translation ].comments.extracted ) >= 0 ) {
@@ -223,7 +223,7 @@ module.exports = function(grunt) {
 								}
 							}
 						}
-	
+
 						return pot;
 					},
 					type: 'wp-plugin',                                        // Type of project.

@@ -182,7 +182,7 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 				{ isSelected && showInspector &&
 					<InspectorControls>
 						<PanelBody
-							title={ __( 'Web Monetization - Coil' ) } 
+							title={ __( 'Web Monetization - Coil' ) }
 							initialOpen={ false }
 							className="coil-panel"
 						>

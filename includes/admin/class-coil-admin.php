@@ -162,7 +162,7 @@ if ( ! class_exists( 'Coil_Admin' ) ) {
 						// If the option doesn't have a value, add it.
 						add_option( $key, $value );
 					}
-		
+
 					if ( ! $value ) {
 						// Delete the option if there's no value
 						delete_option( $key );
@@ -174,7 +174,7 @@ if ( ! class_exists( 'Coil_Admin' ) ) {
 		} // END save_settings()
 
 		/**
-		 * These are the only screens Coil will focus 
+		 * These are the only screens Coil will focus
 		 * on displaying notices or enqueue scripts/styles.
 		 *
 		 * @access public

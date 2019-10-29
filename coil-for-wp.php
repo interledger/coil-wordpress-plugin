@@ -264,7 +264,7 @@ if ( ! class_exists( 'Coil' ) ) {
 			if ( is_singular() ) {
 				$post_ID         = $wp_query->get_queried_object_id();
 				$monetize_status = get_post_meta( $post_ID, '_coil_monetize_post_status', true );
-	
+
 				if ( ! empty( $monetize_status ) && $monetize_status != 'no' ) {
 					// JavaScript trigger class.
 					$classes[] = 'monetization-not-initialized';

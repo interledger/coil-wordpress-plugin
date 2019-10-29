@@ -2,8 +2,8 @@
 /**
  * Coil for WordPress - Meta Box.
  *
- * Adds a custom meta box for the Classic Editor and 
- * Gutenberg if WordPress is lesser than version 5.3 
+ * Adds a custom meta box for the Classic Editor and
+ * Gutenberg if WordPress is lesser than version 5.3
  * or does not have the Gutenberg plugin installed.
  *
  * @author   Sébastien Dumont
@@ -73,7 +73,7 @@ class Coil_Meta_Box {
 				sprintf( __( 'Web Monetization - %s', 'coil-for-wp' ), 'Coil' ), // Meta Box Title
 				array( $this, 'coil_metabox_callback' ), // Function that fills the box with the desired content.
 				array( 'post', 'page' ), // The screen or screens on which to show the box (such as a post type)
-				'side', // The context within the screen where the boxes should display. 
+				'side', // The context within the screen where the boxes should display.
 				'high' // The priority within the context where the boxes should show. Default: default
 			);
 		} // END if
