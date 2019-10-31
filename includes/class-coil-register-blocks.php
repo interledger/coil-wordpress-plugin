@@ -46,7 +46,7 @@ class Coil_Register_Blocks {
 	public function __construct() {
 		$this->_slug = 'coil';
 
-		add_action( 'init', array( $this, 'register_blocks' ), 99 );
+		add_action( 'init', [ $this, 'register_blocks' ], 99 );
 	} // END __construct()
 
 	/**
@@ -73,11 +73,12 @@ class Coil_Register_Blocks {
 		 * @link https://wordpress.org/gutenberg/handbook/blocks/writing-your-first-block-type#enqueuing-block-scripts
 		 */
 		register_block_type(
-			$slug . '/split-content', array(
+			$slug . '/split-content',
+			[
 				'editor_script' => $slug . '-editor',
 				'editor_style'  => $slug . '-editor',
 				'style'         => $slug . '-frontend',
-			)
+			]
 		);
 	}
 

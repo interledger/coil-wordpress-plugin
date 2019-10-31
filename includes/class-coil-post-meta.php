@@ -23,19 +23,23 @@ class Coil_Post_Meta {
 	 * Constructor
 	 */
 	public function __construct() {
-		add_filter( 'rest_api_init', array( $this, 'register_meta' ) );
+		add_filter( 'rest_api_init', [ $this, 'register_meta' ] );
 	}
 
 	/**
 	 * Register meta.
 	 */
 	public function register_meta() {
-		register_meta( 'post', '_coil_monetize_post_status', array(
-			'show_in_rest'  => true,
-			'single'        => true,
-			'type'          => 'string',
-			'auth_callback' => array( $this, 'auth_callback' ),
-		) );
+		register_meta(
+			'post',
+			'_coil_monetize_post_status',
+			[
+				'show_in_rest'  => true,
+				'single'        => true,
+				'type'          => 'string',
+				'auth_callback' => [ $this, 'auth_callback' ],
+			]
+		);
 	} // END register_meta()
 
 	/**

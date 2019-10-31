@@ -37,7 +37,7 @@ class Coil_Gate_Content {
 	 * The Constructor.
 	 */
 	public function __construct() {
-		add_filter( 'the_content', array( $this, 'is_content_gated' ) );
+		add_filter( 'the_content', [ $this, 'is_content_gated' ] );
 	}
 
 	/**
@@ -48,19 +48,19 @@ class Coil_Gate_Content {
 	 * @global object WP_Post - The post object.
 	 * @return string $content
 	 */
-	public function is_content_gated ( $content ) {
+	public function is_content_gated( $content ) {
 		global $post;
 
 		$monetize_status = get_post_meta( $post->ID, '_coil_monetize_post_status', true );
 
 		if ( ! is_singular() && ! empty( $monetize_status ) ) {
-			switch( $monetize_status ) {
+			switch ( $monetize_status ) {
 				case 'gate-all': // Monetize all content.
 					return '<p>🔒 ' . esc_html__( 'The contents of this article is for subscribers only!', 'coil-monetize-content' ) . '</p>';
 				break;
 
 				case 'gate-tagged-blocks': // Monetized Specific Content
-					$public_content = '<p>🔓 '. esc_html__( 'This article is monetized and some content is for subscribers only.', 'coil-monetize-content' ) . '</p>';
+					$public_content  = '<p>🔓 ' . esc_html__( 'This article is monetized and some content is for subscribers only.', 'coil-monetize-content' ) . '</p>';
 					$public_content .= $content;
 
 					return $public_content;

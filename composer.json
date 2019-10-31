@@ -39,7 +39,7 @@
 	"extra": {
 		"hooks": {
 			"pre-push": [
-				"composer run phpcs"
+				"#composer run phpcs"
 			]
 		}
 	},

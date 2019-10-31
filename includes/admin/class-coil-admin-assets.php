@@ -23,10 +23,10 @@ if ( ! class_exists( 'Coil_Admin_Assets' ) ) {
 		 * @access  public
 		 */
 		public function __construct() {
-			add_action( 'admin_enqueue_scripts', array( $this, 'admin_styles' ), 10 );
+			add_action( 'admin_enqueue_scripts', [ $this, 'admin_styles' ], 10 );
 
 			// Adds admin body classes.
-			add_filter( 'admin_body_class', array( $this, 'admin_body_class' ) );
+			add_filter( 'admin_body_class', [ $this, 'admin_body_class' ] );
 		} // END __construct()
 
 		/**
@@ -37,9 +37,9 @@ if ( ! class_exists( 'Coil_Admin_Assets' ) ) {
 		public function admin_styles() {
 			$screen    = get_current_screen();
 			$screen_id = $screen ? $screen->id : '';
-			$suffix    = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
+			$suffix    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-			if ( in_array( $screen_id, Coil_Admin::coil_get_admin_screens() ) ) {
+			if ( in_array( $screen_id, Coil_Admin::coil_get_admin_screens(), true ) ) {
 				wp_register_style( COIL_SLUG . '_admin', COIL_URL_PATH . '/assets/css/admin/coil' . $suffix . '.css' );
 				wp_enqueue_style( COIL_SLUG . '_admin' );
 			}
@@ -56,7 +56,7 @@ if ( ! class_exists( 'Coil_Admin_Assets' ) ) {
 			$screen    = get_current_screen();
 			$screen_id = $screen ? $screen->id : '';
 
-			if ( $screen_id == 'toplevel_page_coil' ) {
+			if ( $screen_id === 'toplevel_page_coil' ) {
 				$classes = ' coil ';
 			}
 

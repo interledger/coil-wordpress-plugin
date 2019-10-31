@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			<?php self::show_messages(); ?>
 
-			<p><strong><?php printf( __( 'Thanks for choosing %s.', 'coil-monetize-content' ), 'Coil' ); ?></strong></p>
+			<p><strong><?php esc_html__( 'Thanks for choosing Coil.', 'coil-monetize-content' ); ?></strong></p>
 
 			<p><?php esc_html_e( 'Please submit your payout pointer below in order for your content to be tracked for monetization.', 'coil-monetize-content' ); ?></p>
 
@@ -38,7 +38,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<input class="wide-input" type="text" name="coil_content_container" id="coil_content_container" value="<?php echo get_option( 'coil_content_container' ); ?>" placeholder=".content-area .entry-content" />
 
 				<p class="submit" style="text-align: center;">
-					<?php submit_button( esc_attr__( 'Save', 'coil-monetize-content' ), 'button-primary button-hero', esc_attr__( 'Save', 'coil-monetize-content' ), false, array( 'id' => 'save' ) ); ?>
+					<?php submit_button( esc_attr__( 'Save', 'coil-monetize-content' ), 'button-primary button-hero', esc_attr__( 'Save', 'coil-monetize-content' ), false, [ 'id' => 'save' ] ); ?>
 					<?php wp_nonce_field( 'coil_for_wp_settings_action', 'coil_for_wp_settings_nonce' ); ?>
 				</p>
 			</form>

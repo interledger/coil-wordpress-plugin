@@ -46,10 +46,10 @@ class Coil_Block_Assets {
 	public function __construct() {
 		$this->_slug = 'coil';
 
-		add_action( 'enqueue_block_assets', array( $this, 'block_assets' ) );
-		add_action( 'init', array( $this, 'editor_assets' ), 9999 );
-		add_action( 'wp_enqueue_scripts', array( $this, 'frontend_scripts' ) );
-		add_action( 'the_post', array( $this, 'frontend_scripts' ) );
+		add_action( 'enqueue_block_assets', [ $this, 'block_assets' ] );
+		add_action( 'init', [ $this, 'editor_assets' ], 9999 );
+		add_action( 'wp_enqueue_scripts', [ $this, 'frontend_scripts' ] );
+		add_action( 'the_post', [ $this, 'frontend_scripts' ] );
 	} // END __construct()
 
 	/**
@@ -62,7 +62,7 @@ class Coil_Block_Assets {
 		wp_enqueue_style(
 			$this->_slug . '-frontend',
 			COIL_URL_PATH . '/dist/blocks.style.build' . COIL_ASSET_SUFFIX . '.css',
-			array(),
+			[],
 			COIL_VERSION
 		);
 	} // END block_assets()
@@ -85,7 +85,7 @@ class Coil_Block_Assets {
 		wp_register_style(
 			$this->_slug . '-editor',
 			COIL_URL_PATH . '/dist/blocks.editor.build' . COIL_ASSET_SUFFIX . '.css',
-			array(),
+			[],
 			COIL_VERSION
 		);
 
@@ -93,7 +93,7 @@ class Coil_Block_Assets {
 		wp_register_script(
 			$this->_slug . '-editor',
 			COIL_URL_PATH . '/dist/blocks.build.js',
-			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-plugins', 'wp-components', 'wp-edit-post', 'wp-api', 'wp-editor', 'wp-hooks', 'wp-data' ),
+			[ 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-plugins', 'wp-components', 'wp-edit-post', 'wp-api', 'wp-editor', 'wp-hooks', 'wp-data' ],
 			time(),
 			false
 		);
@@ -137,7 +137,7 @@ class Coil_Block_Assets {
 	public function is_edit_or_new_admin_page() {
 		global $pagenow;
 
- 		return ( is_admin() && ( $pagenow === 'post.php' || $pagenow === 'post-new.php' ) );
+		return ( is_admin() && ( $pagenow === 'post.php' || $pagenow === 'post-new.php' ) );
 	} // END is_edit_or_new_admin_page()
 
 } // END class

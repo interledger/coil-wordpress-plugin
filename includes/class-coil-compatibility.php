@@ -24,7 +24,7 @@ class Coil_Compatibility {
 	 * The Constructor.
 	 */
 	public function __construct() {
-		add_filter( 'initialize-monetization-js', array( $this, 'pass_post_excerpt_js' ), 10, 2 );
+		add_filter( 'initialize-monetization-js', [ $this, 'pass_post_excerpt_js' ], 10, 2 );
 	}
 
 	/**
@@ -65,7 +65,7 @@ class Coil_Compatibility {
 	public static function is_wp_version_gte_5_3() {
 		global $wp_version;
 
-		if ( version_compare( str_replace( '-', '.', preg_replace( "/[a-zA-Z\/]/", "", $wp_version ) ), '5.3.0', '>=' ) ) {
+		if ( version_compare( str_replace( '-', '.', preg_replace( '/[a-zA-Z\/]/', '', $wp_version ) ), '5.3.0', '>=' ) ) {
 			return true;
 		}
 
@@ -82,7 +82,7 @@ class Coil_Compatibility {
 	public static function is_wp_version_lte_5_2() {
 		global $wp_version;
 
-		if ( version_compare( preg_replace( "/[a-zA-Z\/]/", "", $wp_version ), '5.2.5', '<' ) ) {
+		if ( version_compare( preg_replace( '/[a-zA-Z\/]/', '', $wp_version ), '5.2.5', '<' ) ) {
 			return true;
 		}
 
@@ -102,7 +102,7 @@ class Coil_Compatibility {
 		global $wp_version;
 
 		if ( version_compare( $wp_version, '4.9', '>' ) ) {
-			$params[ 'post_excerpt' ] = get_the_excerpt( $post_ID );
+			$params['post_excerpt'] = get_the_excerpt( $post_ID );
 		}
 
 		return $params;
