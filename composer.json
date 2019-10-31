@@ -1,0 +1,29 @@
+{
+	"name": "coil/coil-monetize-content",
+	"description": "Coil offers an effortless way to share WordPress content online, and get paid for it.",
+	"homepage": "https://coil.com",
+	"keywords": [
+		"coil",
+		"content",
+		"monetization",
+		"payment",
+		"interledger"
+	],
+	"authors": [
+		{
+			"name": "Coil",
+			"homepage": "https://coil.com"
+		}
+	],
+	"support": {
+		"forum": "https://wordpress.org/support/plugin/coil-monetize-content"
+	},
+	"type": "wordpress-plugin",
+	"license": "GPL-3.0",
+	"config": {
+		"preferred-install": "dist",
+		"sort-packages": true,
+		"autoloader-suffix": "coil",
+		"process-timeout": 600
+	}
+}
