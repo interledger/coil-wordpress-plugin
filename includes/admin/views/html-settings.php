@@ -19,26 +19,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		<div class="content">
 			<div class="logo">
-				<img src="<?php echo COIL_URL_PATH . '/assets/images/coil-favicon-256.png'; ?>" alt="<?php echo esc_attr__( 'Coil for WordPress', 'coil-for-wp' ); ?>" />
+				<img src="<?php echo COIL_URL_PATH . '/assets/images/coil-favicon-256.png'; ?>" alt="<?php echo esc_attr__( 'Coil for WordPress', 'coil-monetize-content' ); ?>" />
 			</div>
 
 			<h1 class="screen-reader-text"><?php echo 'Coil'; ?></h1>
 
 			<?php self::show_messages(); ?>
 
-			<p><strong><?php printf( __( 'Thanks for choosing %s.', 'coil-for-wp' ), 'Coil' ); ?></strong></p>
+			<p><strong><?php printf( __( 'Thanks for choosing %s.', 'coil-monetize-content' ), 'Coil' ); ?></strong></p>
 
-			<p><?php esc_html_e( 'Please submit your payout pointer below in order for your content to be tracked for monetization.', 'coil-for-wp' ); ?></p>
+			<p><?php esc_html_e( 'Please submit your payout pointer below in order for your content to be tracked for monetization.', 'coil-monetize-content' ); ?></p>
 
 			<form method="POST" action="" id="mainform">
-				<label for="coil_payout_pointer_id"><?php _e( 'Payout Pointer', 'coil-for-wp' ); ?></label>
+				<label for="coil_payout_pointer_id"><?php _e( 'Payout Pointer', 'coil-monetize-content' ); ?></label>
 				<input class="wide-input" type="text" name="coil_payout_pointer_id" id="coil_payout_pointer_id" value="<?php echo get_option( 'coil_payout_pointer_id' ); ?>" placeholder="$pay.stronghold.co/1a1b4654bdgj06ab547228c43af27ac0f2411" />
 
-				<label for="coil_content_container"><?php _e( 'Content Container', 'coil-for-wp' ); ?></label>
+				<label for="coil_content_container"><?php _e( 'Content Container', 'coil-monetize-content' ); ?></label>
 				<input class="wide-input" type="text" name="coil_content_container" id="coil_content_container" value="<?php echo get_option( 'coil_content_container' ); ?>" placeholder=".content-area .entry-content" />
 
 				<p class="submit" style="text-align: center;">
-					<?php submit_button( esc_attr__( 'Save', 'coil-for-wp' ), 'button-primary button-hero', esc_attr__( 'Save', 'coil-for-wp' ), false, array( 'id' => 'save' ) ); ?>
+					<?php submit_button( esc_attr__( 'Save', 'coil-monetize-content' ), 'button-primary button-hero', esc_attr__( 'Save', 'coil-monetize-content' ), false, array( 'id' => 'save' ) ); ?>
 					<?php wp_nonce_field( 'coil_for_wp_settings_action', 'coil_for_wp_settings_nonce' ); ?>
 				</p>
 			</form>

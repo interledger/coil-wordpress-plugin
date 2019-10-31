@@ -2,8 +2,8 @@
 /**
  * Coil for WordPress - Meta Box.
  *
- * Adds a custom meta box for the Classic Editor and 
- * Gutenberg if WordPress is lesser than version 5.3 
+ * Adds a custom meta box for the Classic Editor and
+ * Gutenberg if WordPress is lesser than version 5.3
  * or does not have the Gutenberg plugin installed.
  *
  * @author   Sébastien Dumont
@@ -70,10 +70,10 @@ class Coil_Meta_Box {
 		if ( $showMetaBox ) {
 			add_meta_box(
 				'coil', // Meta box ID (used in the 'id' attribute for the meta box).
-				sprintf( __( 'Web Monetization - %s', 'coil-for-wp' ), 'Coil' ), // Meta Box Title
+				sprintf( __( 'Web Monetization - %s', 'coil-monetize-content' ), 'Coil' ), // Meta Box Title
 				array( $this, 'coil_metabox_callback' ), // Function that fills the box with the desired content.
 				array( 'post', 'page' ), // The screen or screens on which to show the box (such as a post type)
-				'side', // The context within the screen where the boxes should display. 
+				'side', // The context within the screen where the boxes should display.
 				'high' // The priority within the context where the boxes should show. Default: default
 			);
 		} // END if
@@ -96,21 +96,21 @@ class Coil_Meta_Box {
 
 		// Output the fields.
 		$monet_options = array(
-			'no'        => esc_html__( 'No Monetization', 'coil-for-wp' ),
-			'no-gating' => esc_html__( 'Monetized and Public', 'coil-for-wp' ),
-			'gate-all'  => esc_html__( 'Subscribers Only', 'coil-for-wp' )
+			'no'        => esc_html__( 'No Monetization', 'coil-monetize-content' ),
+			'no-gating' => esc_html__( 'Monetized and Public', 'coil-monetize-content' ),
+			'gate-all'  => esc_html__( 'Subscribers Only', 'coil-monetize-content' )
 		);
 
 		// If user loaded with the Gutenberg editor then add an additional option.
 		if ( Coil_Compatibility::is_post_using_gutenberg( $post ) ) {
-			$monet_options[ 'gate-tagged-blocks' ] = esc_html__( 'Split Content', 'coil-for-wp' );
+			$monet_options[ 'gate-tagged-blocks' ] = esc_html__( 'Split Content', 'coil-monetize-content' );
 		}
 		?>
 		<fieldset>
 			<legend><?php
-			esc_html_e( 'Set the type of monetization for the article.', 'coil-for-wp' );
+			esc_html_e( 'Set the type of monetization for the article.', 'coil-monetize-content' );
 			if ( Coil_Compatibility::is_post_using_gutenberg( $post ) ) {
-				echo ' ' . esc_html__( 'Note: If "Split Content" selected, you will need to save the article and reload the editor to view the options at block level.', 'coil-for-wp' );
+				echo ' ' . esc_html__( 'Note: If "Split Content" selected, you will need to save the article and reload the editor to view the options at block level.', 'coil-monetize-content' );
 			}
 			?></legend>
 			<?php foreach( $monet_options as $option => $name ) { ?>
@@ -123,9 +123,9 @@ class Coil_Meta_Box {
 		/*if ( current_user_can( 'edit_post', $post->ID ) ) {
 		?>
 		<div class="coil-payout-pointer-override" style="display:none;">
-		<label for="coil_payout_pointer_id"><?php _e( 'Payout Pointer', 'coil-for-wp' ); ?></label>
+		<label for="coil_payout_pointer_id"><?php _e( 'Payout Pointer', 'coil-monetize-content' ); ?></label>
 		<input type="text" name="coil_payout_pointer_id" id="coil_payout_pointer_id" value="<?php echo esc_textarea( $post_payout_pointer_id ); ?>" class="widefat">
-		<span class="description"><?php _e( 'Will override global payout pointer if set.', 'coil-for-wp' ); ?></span>
+		<span class="description"><?php _e( 'Will override global payout pointer if set.', 'coil-monetize-content' ); ?></span>
 		</div>
 		<script type="text/javascript">
 		// Coil - Web Monetization Javascript

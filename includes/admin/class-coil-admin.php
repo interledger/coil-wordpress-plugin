@@ -57,7 +57,6 @@ if ( ! class_exists( 'Coil_Admin' ) ) {
 		public function includes() {
 			include( dirname( __FILE__ ) . '/class-coil-admin-action-links.php' ); // Action Links
 			include( dirname( __FILE__ ) . '/class-coil-admin-assets.php' );       // Admin Assets
-			include( dirname( __FILE__ ) . '/class-coil-admin-notices.php' );      // Plugin Notices
 		} // END includes()
 
 		/**
@@ -66,7 +65,7 @@ if ( ! class_exists( 'Coil_Admin' ) ) {
 		 * @access public
 		 */
 		public function admin_menu() {
-			$title = sprintf( esc_attr__( 'Settings for %s', 'coil-for-wp' ), 'Coil' );
+			$title = sprintf( esc_attr__( 'Settings for %s', 'coil-monetize-content' ), 'Coil' );
 
 			add_menu_page(
 				$title,
@@ -135,7 +134,7 @@ if ( ! class_exists( 'Coil_Admin' ) ) {
 		 */
 		public function save_settings() {
 			if ( ! current_user_can( 'manage_options' ) ) {
-				wp_die( __( 'Sorry but you do not have permission for this action.', 'coil-for-wp' ) );
+				wp_die( __( 'Sorry but you do not have permission for this action.', 'coil-monetize-content' ) );
 			}
 
 			// Add nonce for security and authentication.
@@ -163,19 +162,19 @@ if ( ! class_exists( 'Coil_Admin' ) ) {
 						// If the option doesn't have a value, add it.
 						add_option( $key, $value );
 					}
-		
+
 					if ( ! $value ) {
 						// Delete the option if there's no value
 						delete_option( $key );
 					}
 				} // END foreach
 
-				self::add_message( __( 'Your settings have been saved.', 'coil-for-wp' ) );
+				self::add_message( __( 'Your settings have been saved.', 'coil-monetize-content' ) );
 			}
 		} // END save_settings()
 
 		/**
-		 * These are the only screens Coil will focus 
+		 * These are the only screens Coil will focus
 		 * on displaying notices or enqueue scripts/styles.
 		 *
 		 * @access public
@@ -205,54 +204,54 @@ if ( ! class_exists( 'Coil_Admin' ) ) {
 			$years = ( intval( $seconds ) / YEAR_IN_SECONDS ) % 100;
 			if ( $years > 1 ) {
 				/* translators: Number of years */
-				return sprintf( __( '%s years', 'coil-for-wp' ), $years );
+				return sprintf( __( '%s years', 'coil-monetize-content' ), $years );
 			} elseif ( $years > 0 ) {
-				return __( 'a year', 'coil-for-wp' );
+				return __( 'a year', 'coil-monetize-content' );
 			}
 
 			// Get the weeks.
 			$weeks = ( intval( $seconds ) / WEEK_IN_SECONDS ) % 52;
 			if ( $weeks > 1 ) {
 				/* translators: Number of weeks */
-				return sprintf( __( '%s weeks', 'coil-for-wp' ), $weeks );
+				return sprintf( __( '%s weeks', 'coil-monetize-content' ), $weeks );
 			} elseif ( $weeks > 0 ) {
-				return __( 'a week', 'coil-for-wp' );
+				return __( 'a week', 'coil-monetize-content' );
 			}
 
 			// Get the days.
 			$days = ( intval( $seconds ) / DAY_IN_SECONDS ) % 7;
 			if ( $days > 1 ) {
 				/* translators: Number of days */
-				return sprintf( __( '%s days', 'coil-for-wp' ), $days );
+				return sprintf( __( '%s days', 'coil-monetize-content' ), $days );
 			} elseif ( $days > 0 ) {
-				return __( 'a day', 'coil-for-wp' );
+				return __( 'a day', 'coil-monetize-content' );
 			}
 
 			// Get the hours.
 			$hours = ( intval( $seconds ) / HOUR_IN_SECONDS ) % 24;
 			if ( $hours > 1 ) {
 				/* translators: Number of hours */
-				return sprintf( __( '%s hours', 'coil-for-wp' ), $hours );
+				return sprintf( __( '%s hours', 'coil-monetize-content' ), $hours );
 			} elseif ( $hours > 0 ) {
-				return __( 'an hour', 'coil-for-wp' );
+				return __( 'an hour', 'coil-monetize-content' );
 			}
 
 			// Get the minutes.
 			$minutes = ( intval( $seconds ) / MINUTE_IN_SECONDS ) % 60;
 			if ( $minutes > 1 ) {
 				/* translators: Number of minutes */
-				return sprintf( __( '%s minutes', 'coil-for-wp' ), $minutes );
+				return sprintf( __( '%s minutes', 'coil-monetize-content' ), $minutes );
 			} elseif ( $minutes > 0 ) {
-				return __( 'a minute', 'coil-for-wp' );
+				return __( 'a minute', 'coil-monetize-content' );
 			}
 
 			// Get the seconds.
 			$seconds = intval( $seconds ) % 60;
 			if ( $seconds > 1 ) {
 				/* translators: Number of seconds */
-				return sprintf( __( '%s seconds', 'coil-for-wp' ), $seconds );
+				return sprintf( __( '%s seconds', 'coil-monetize-content' ), $seconds );
 			} elseif ( $seconds > 0 ) {
-				return __( 'a second', 'coil-for-wp' );
+				return __( 'a second', 'coil-monetize-content' );
 			}
 		} // END coil_seconds_to_words()
 

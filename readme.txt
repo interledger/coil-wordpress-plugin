@@ -1,94 +1,63 @@
-=== Coil for WordPress ===
+=== Coil Monetize Content ===
 Author URI: https://coil.com
 Plugin URI: https://coil.com
-Contributors: coil, pragmatic, sebd86
-Tags: coil, payment, monetization, traffic
+Contributors: coil, pragmaticagency
+Tags: coil, content, monetization, payment, interledger
 Requires at least: 4.9
-Requires PHP: 5.6
+Requires PHP: 7.1
 Tested up to: 5.3
 Stable tag: 1.0.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Enables support for Coil in WordPress.
+Coil offers an effortless way to share content online and get paid for it.
 
 == Description ==
 
-We change the way you monetize content on the web!
+Awesome web content deserves awesome compensation.
 
-We think our idea is pretty rad, but it’s really not that radical. It comes from a belief that all people deserve effortless commerce.
+Coil exists because content monetization doesn't work for everyone, and we think it should. Our model offers an alternative to the status quo of paid advertisements and selling the public's attention to the highest bidders – a solution that will serve the people who aren't being served well today.
 
-Coil exists because content monetization doesn’t work for everyone, and we think it should. Our model offers an alternative to the status quo of paid advertisements and selling the public’s attention to the highest bidders – A solution that will serve the people who aren’t being served well today.
-
-Coil for WordPress allows you to set any post or page for monetization either for all readers, subscribers only or if you are using the Gutenberg editor, you can monetize at the block level.
-
-If you would like to know more about what Coil does. [Read about it in a nutshell](https://coil.com/learn-more/).
+Coil Monetize Content allows you to set any post or page for monetization either for all readers, subscribers only or if you are using the Gutenberg editor, you can monetize at the block level.
+If you would like to know more about Coil does, [visit our website](https://coil.com/learn-more/).
 
 = Features =
 
-* Adds the monetize meta tag in your header.
-* Supports monetization for both the Classic Editor and Gutenberg.
-* Gutenberg Editor provides an additional option to monetize at the block level.
-
-= Built with developers in mind =
-
-Extensible, adaptable, and open source — Coil for WordPress is created with theme and plugin developers in mind.
+* Supports monetization for both Classic Editor and Gutenberg content.
+* With Gutenberg, you can choose to monetize at the block level.
+* Built with theme and plugins developers in mind, we're extensible, adaptable, and open source.
 
 ### More information
 
 * [Visit the Coil website](https://coil.com/?utm_source=wordpressorg&utm_medium=wp.org&utm_campaign=readme).
-* [Follow on Twitter](https://twitter.com/coil)
-
-== Installation ==
-
-= Minimum Requirements =
-
-* WordPress version 4.9
-
-= Automatic installation =
-
-Automatic installation is the easiest option as WordPress handles the file transfers itself and you don’t need to leave your web browser. To do an automatic install of Coil for WordPress, log in to your WordPress dashboard, navigate to the Plugins menu and click Add New.
-
-In the search field type "Coil for WordPress" and click Search Plugins. Once you’ve found the plugin you can view details about it such as the point release, rating and description. Most importantly of course, you can install it by simply clicking "Install Now".
-
-= Manual installation =
-
-The manual installation method involves downloading the plugin and uploading it to your webserver via your favourite FTP application. The WordPress codex contains [instructions on how to do this here](https://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
-
-= Updating =
-
-Automatic updates should work like a charm; as always though, ensure you backup your site just in case.
+* [Follow on Twitter](https://twitter.com/coil).
 
 == Frequently Asked Questions ==
 
-= Is Coil for WordPress free? =
+= How do I start using Coil Monetize Content? =
 
-Yes! Coil for WordPress is absolutely free.
+Simply install the plugin and once activated you will be redirected to the settings page where you must enter your payment pointer ID. Touch "Save" and your ready to monetize your articles.
 
-= How do I start using Coil for WordPress? =
+= Who should use Coil Monetize Content? =
 
-Simply install the plugin and once activated you will be redirected to the settings page where you must enter your payment pointer ID. Press "Save" and your ready to monetize your articles.
+Coil is best for Writers, Gamers, Vloggers and Web Developers:
 
-= Who should use Coil for WordPress? =
-
-Coil is best for Writers, Gamers, Vloggers and Web Developers.
-
-Writers - Add subscriber-only content into your articles.
-Gamers - Get more donations while you stream on Twitch.
-Vloggers - Get additional revenue from Coil subscribers.
-Web Developers - Monetize online tools and interactive websites.
+* Writers - Add subscriber-only content into your articles.
+* Gamers - Get more donations while you stream on Twitch.
+* Vloggers - Get additional revenue from Coil subscribers.
+* Web Developers - Monetize online tools and interactive websites.
 
 = Where can I report bugs or contribute to the project? =
 
-Answer goes here.
+Reach out to us on the [Coil Monetize Content support forum](https://wordpress.org/support/plugin/coil-monetize-content/).
 
-= Is Coil for WordPress translatable? =
+= Is Coil Monetize Content translatable? =
 
-Yes! Coil for WordPress is deployed with full translation and localization support via the ‘coil-for-wordpress’ text-domain.
+Yes! Translations can be contributed at [translate.wordpress.org](https://translate.wordpress.org/).
 
 = Where can I ask for help? =
 
-If you get stuck, you can ask for help in the [Coil for WordPress support forum](https://wordpress.org/support/plugin/coil-for-wordpress/).
+If you get stuck, you can ask for help in the [Coil Monetize Content support forum](https://wordpress.org/support/plugin/coil-monetize-content/).
 
 == Screenshots ==
 

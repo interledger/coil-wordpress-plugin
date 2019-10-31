@@ -2,7 +2,7 @@
 /**
  * Coil for WordPress - Compatibility
  *
- * Provides functions to check the version of WordPress 
+ * Provides functions to check the version of WordPress
  * and if the Gutenberg plugin is installed.
  *
  * @author   Sébastien Dumont
@@ -43,7 +43,7 @@ class Coil_Compatibility {
 	 * Identifies if the post is being edited via Gutenberg.
 	 *
 	 * @access public
-	 * @param  
+	 * @param
 	 * @return bool true|false
 	 */
 	public static function is_post_using_gutenberg( $post ) {

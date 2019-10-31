@@ -52,7 +52,7 @@
 							$( 'body' ).removeClass( 'coil-missing-id' );
 						}
 
-						// This ensures content written in Gutenberg is displayed according to 
+						// This ensures content written in Gutenberg is displayed according to
 						// the block settings should the theme use different theme selectors.
 						if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content !== '.content-area .entry-content' ) {
 							$( content ).css( 'display', '' );
@@ -199,7 +199,7 @@
 					$( content ).before( '<p class="monetize-msg">' + browser_extension_missing + '</p>' );
 				}
 
-				// This ensures content written in Gutenberg is displayed according to 
+				// This ensures content written in Gutenberg is displayed according to
 				// the block settings should the theme use different theme selectors.
 				if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content !== '.content-area .entry-content' ) {
 					$( content ).css( 'display', '' );
