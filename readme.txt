@@ -1,10 +1,10 @@
 === Coil for WordPress ===
 Author URI: https://coil.com
 Plugin URI: https://coil.com
-Contributors: coil, pragmatic, sebd86
-Tags: coil, payment, monetization, traffic
+Contributors: coil, pragmaticagency
+Tags: coil, content, monetization, payment, interledger
 Requires at least: 4.9
-Requires PHP: 5.6
+Requires PHP: 7.1
 Tested up to: 5.3
 Stable tag: 1.0.0
 License: GPLv3
@@ -38,22 +38,6 @@ Extensible, adaptable, and open source — Coil for WordPress is created with th
 
 * [Visit the Coil website](https://coil.com/?utm_source=wordpressorg&utm_medium=wp.org&utm_campaign=readme).
 * [Follow on Twitter](https://twitter.com/coil)
-
-== Installation ==
-
-= Minimum Requirements =
-
-* WordPress version 4.9
-
-= Automatic installation =
-
-Automatic installation is the easiest option as WordPress handles the file transfers itself and you don’t need to leave your web browser. To do an automatic install of Coil for WordPress, log in to your WordPress dashboard, navigate to the Plugins menu and click Add New.
-
-In the search field type "Coil for WordPress" and click Search Plugins. Once you’ve found the plugin you can view details about it such as the point release, rating and description. Most importantly of course, you can install it by simply clicking "Install Now".
-
-= Manual installation =
-
-The manual installation method involves downloading the plugin and uploading it to your webserver via your favourite FTP application. The WordPress codex contains [instructions on how to do this here](https://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
 
 = Updating =
 
