@@ -25,5 +25,8 @@
 		"sort-packages": true,
 		"autoloader-suffix": "coil",
 		"process-timeout": 600
+	},
+	"require": {
+		"composer/installers": "^1.7"
 	}
 }
