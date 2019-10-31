@@ -39,7 +39,7 @@ if ( ! class_exists( 'Coil_Admin_Action_Links' ) ) {
 		public function plugin_action_links( $links ) {
 			if ( current_user_can( 'manage_options' ) ) {
 				$action_links = array(
-					'settings' => '<a href="' . add_query_arg( array( 'page' => 'coil' ), admin_url( 'admin.php' ) ) . '" aria-label="' . sprintf( esc_attr__( 'Settings for %s', 'coil-for-wp' ), 'Coil' ) . '">' . esc_attr__( 'Settings', 'coil-for-wp' ) . '</a>',
+					'settings' => '<a href="' . add_query_arg( array( 'page' => 'coil' ), admin_url( 'admin.php' ) ) . '" aria-label="' . sprintf( esc_attr__( 'Settings for %s', 'coil-monetize-content' ), 'Coil' ) . '">' . esc_attr__( 'Settings', 'coil-monetize-content' ) . '</a>',
 				);
 
 				return array_merge( $action_links, $links );
@@ -59,12 +59,12 @@ if ( ! class_exists( 'Coil_Admin_Action_Links' ) ) {
 		 */
 		public function plugin_row_meta( $metadata, $file, $data ) {
 			if ( $file == plugin_basename( COIL_PLUGIN_FILE ) ) {
-				$metadata[ 1 ] = sprintf( __( 'By %s', 'coil-for-wp' ), '<a href="' . esc_url( 'https://pragmatic.agency/' ) . '" aria-label="' . esc_attr__( 'View the agency site', 'coil-for-wp' ) . '">Pragmatic</a> ' );
-				$metadata[ 1 ] .= sprintf( __( 'and %s', 'coil-for-wp' ), '<a href="' . esc_url( 'https://coil.com/' ) . '" aria-label="' . esc_attr__( 'View the Coil site', 'coil-for-wp' ) . '">Coil</a>' );
+				$metadata[ 1 ] = sprintf( __( 'By %s', 'coil-monetize-content' ), '<a href="' . esc_url( 'https://pragmatic.agency/' ) . '" aria-label="' . esc_attr__( 'View the agency site', 'coil-monetize-content' ) . '">Pragmatic</a> ' );
+				$metadata[ 1 ] .= sprintf( __( 'and %s', 'coil-monetize-content' ), '<a href="' . esc_url( 'https://coil.com/' ) . '" aria-label="' . esc_attr__( 'View the Coil site', 'coil-monetize-content' ) . '">Coil</a>' );
 
 				$row_meta = array(
-					'docs' => '<a href="' . apply_filters( 'coil_docs_url', esc_url( COIL_DOCUMENTATION_URL ) ) . '" aria-label="' . sprintf( esc_attr__( 'View %s documentation', 'coil-for-wp' ), 'Coil' ) . '" target="_blank">' . esc_attr__( 'Documentation', 'coil-for-wp' ) . '</a>',
-					'community' => '<a href="' . esc_url( COIL_SUPPORT_URL ) . '" aria-label="' . esc_attr__( 'Get support from the community', 'coil-for-wp' ). '" target="_blank">' . esc_attr__( 'Community Support', 'coil-for-wp' ) . '</a>',
+					'docs' => '<a href="' . apply_filters( 'coil_docs_url', esc_url( COIL_DOCUMENTATION_URL ) ) . '" aria-label="' . sprintf( esc_attr__( 'View %s documentation', 'coil-monetize-content' ), 'Coil' ) . '" target="_blank">' . esc_attr__( 'Documentation', 'coil-monetize-content' ) . '</a>',
+					'community' => '<a href="' . esc_url( COIL_SUPPORT_URL ) . '" aria-label="' . esc_attr__( 'Get support from the community', 'coil-monetize-content' ). '" target="_blank">' . esc_attr__( 'Community Support', 'coil-monetize-content' ) . '</a>',
 				);
 
 				$metadata = array_merge( $metadata, $row_meta );

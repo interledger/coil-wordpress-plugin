@@ -56,11 +56,11 @@ class Coil_Gate_Content {
 		if ( ! is_singular() && ! empty( $monetize_status ) ) {
 			switch( $monetize_status ) {
 				case 'gate-all': // Monetize all content.
-					return '<p>🔒 ' . esc_html__( 'The contents of this article is for subscribers only!', 'coil-for-wp' ) . '</p>';
+					return '<p>🔒 ' . esc_html__( 'The contents of this article is for subscribers only!', 'coil-monetize-content' ) . '</p>';
 				break;
 
 				case 'gate-tagged-blocks': // Monetized Specific Content
-					$public_content = '<p>🔓 '. esc_html__( 'This article is monetized and some content is for subscribers only.', 'coil-for-wp' ) . '</p>';
+					$public_content = '<p>🔓 '. esc_html__( 'This article is monetized and some content is for subscribers only.', 'coil-monetize-content' ) . '</p>';
 					$public_content .= $content;
 
 					return $public_content;
