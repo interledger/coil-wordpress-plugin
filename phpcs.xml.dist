@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<ruleset name="Coil Monetize Content">
+
+	<config name="testVersion" value="7.1-"/>
+
+	<exclude-pattern>build/*</exclude-pattern>
+	<exclude-pattern>dist/*</exclude-pattern>
+	<exclude-pattern>node_modules/*</exclude-pattern>
+	<exclude-pattern>releases/*</exclude-pattern>
+	<exclude-pattern>tests/*</exclude-pattern>
+	<exclude-pattern>vendor/*</exclude-pattern>
+	<exclude-pattern>Gruntfile\.js</exclude-pattern>
+
+	<!-- TODO: remove this when assets relocated. -->
+	<exclude-pattern>*/assets/*</exclude-pattern>
+
+	<!-- Ban inline assignment in control structures. -->
+	<rule ref="PSR2R.ControlStructures.NoInlineAssignment" />
+	<rule ref="WordPress-Core">
+		<exclude name="WordPress.PHP.YodaConditions" />
+	</rule>
+
+	<!-- Prefer alignment over line length. -->
+	<rule ref="WordPress.Arrays.MultipleStatementAlignment">
+		<properties>
+			<property name="maxColumn" value="1000" />
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array" value="coil-monetize-content" />
+		</properties>
+	</rule>
+
+	<!-- Allow the use of filesystem functions since we require modern-ish PHP. -->
+	<rule ref="WordPress.WP.AlternativeFunctions">
+		<properties>
+			<property name="exclude" value="file_get_contents,file_system_read" />
+			<property name="exclude" value="json_encode,json_decode" />
+		</properties>
+	</rule>
+
+	<!-- Disallow long array syntax. -->
+	<rule ref="Generic.Arrays.DisallowLongArraySyntax" />
+
+	<!-- Single statement on same line. -->
+	<rule ref="Generic.Formatting.DisallowMultipleStatements" />
+
+	<!-- Namespacing required for classes. -->
+	<rule ref="PSR1.Classes.ClassDeclaration" />
+
+	<!-- Declare symbols or run code, but not both. -->
+	<rule ref="PSR1.Files.SideEffects" />
+
+	<!-- Namespacing required for functions. -->
+	<rule ref="PSR2.Namespaces.NamespaceDeclaration" />
+
+	<!-- Namespacing of `use` statements. -->
+	<rule ref="PSR2.Namespaces.UseDeclaration">
+		<exclude name="PSR2.Namespaces.UseDeclaration.MultipleDeclarations" />
+	</rule>
+	<rule ref="PSR2R.Namespaces.UnusedUseStatement" />
+	<rule ref="PSR2R.Namespaces.UseInAlphabeticalOrder" />
+
+	<rule ref="PHPCompatibilityWP" />
+
+</ruleset>
