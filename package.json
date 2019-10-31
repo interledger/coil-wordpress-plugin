@@ -1,20 +1,15 @@
 {
-	"title": "Coil for WordPress",
-	"name": "coil-for-wp",
-	"version": "1.0.0-beta.3",
-	"private": true,
-	"contributors": [
-		"sebd86"
-	],
-	"author": "Sébastien Dumont",
-	"author_uri": "https://sebastiendumont.com",
-	"homepage": "https://cocart.xyz/",
+	"title": "Coil Monetize Content for WordPress",
+	"name": "coil-monetize-content",
+	"version": "1.0.0",
+	"author": "Coil",
+	"author_uri": "https://coil.com/",
+	"homepage": "https://wordpress.org/plugins/coil-monetize-content",
 	"requires": "4.9",
-	"requires_php": "5.6",
+	"requires_php": "7.1",
 	"tested_up_to": "5.3",
 	"license": "GPL-3.0",
-	"copyright": "Copyright (c) 2019",
-	"description": "Enables support for Coil in WordPress.",
+	"description": "Coil offers an effortless way to share WordPress content online, and get paid for it.",
 	"scripts": {
 		"start": "cgb-scripts start",
 		"build": "cgb-scripts build",
