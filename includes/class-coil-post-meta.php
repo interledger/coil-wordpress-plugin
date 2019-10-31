@@ -30,12 +30,16 @@ class Coil_Post_Meta {
 	 * Register meta.
 	 */
 	public function register_meta() {
-		register_meta( 'post', '_coil_monetize_post_status', [
-			'show_in_rest'  => true,
-			'single'        => true,
-			'type'          => 'string',
-			'auth_callback' => [ $this, 'auth_callback' ],
-		] );
+		register_meta(
+			'post',
+			'_coil_monetize_post_status',
+			[
+				'show_in_rest'  => true,
+				'single'        => true,
+				'type'          => 'string',
+				'auth_callback' => [ $this, 'auth_callback' ],
+			]
+		);
 	} // END register_meta()
 
 	/**

@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			<?php self::show_messages(); ?>
 
-			<p><strong><?php printf( __( 'Thanks for choosing %s.', 'coil-monetize-content' ), 'Coil' ); ?></strong></p>
+			<p><strong><?php esc_html__( 'Thanks for choosing Coil.', 'coil-monetize-content' ); ?></strong></p>
 
 			<p><?php esc_html_e( 'Please submit your payout pointer below in order for your content to be tracked for monetization.', 'coil-monetize-content' ); ?></p>
 

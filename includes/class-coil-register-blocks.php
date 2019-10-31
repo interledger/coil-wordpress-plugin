@@ -73,7 +73,8 @@ class Coil_Register_Blocks {
 		 * @link https://wordpress.org/gutenberg/handbook/blocks/writing-your-first-block-type#enqueuing-block-scripts
 		 */
 		register_block_type(
-			$slug . '/split-content', [
+			$slug . '/split-content',
+			[
 				'editor_script' => $slug . '-editor',
 				'editor_style'  => $slug . '-editor',
 				'style'         => $slug . '-frontend',

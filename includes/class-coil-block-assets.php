@@ -137,7 +137,7 @@ class Coil_Block_Assets {
 	public function is_edit_or_new_admin_page() {
 		global $pagenow;
 
- 		return ( is_admin() && ( $pagenow === 'post.php' || $pagenow === 'post-new.php' ) );
+		return ( is_admin() && ( $pagenow === 'post.php' || $pagenow === 'post-new.php' ) );
 	} // END is_edit_or_new_admin_page()
 
 } // END class

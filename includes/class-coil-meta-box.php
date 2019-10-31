@@ -70,7 +70,7 @@ class Coil_Meta_Box {
 		if ( $showMetaBox ) {
 			add_meta_box(
 				'coil', // Meta box ID (used in the 'id' attribute for the meta box).
-				sprintf( __( 'Web Monetization - %s', 'coil-monetize-content' ), 'Coil' ), // Meta Box Title
+				__( 'Web Monetization - Coil', 'coil-monetize-content' ), // Meta Box Title
 				[ $this, 'coil_metabox_callback' ], // Function that fills the box with the desired content.
 				[ 'post', 'page' ], // The screen or screens on which to show the box (such as a post type)
 				'side', // The context within the screen where the boxes should display.
@@ -98,23 +98,25 @@ class Coil_Meta_Box {
 		$monet_options = [
 			'no'        => esc_html__( 'No Monetization', 'coil-monetize-content' ),
 			'no-gating' => esc_html__( 'Monetized and Public', 'coil-monetize-content' ),
-			'gate-all'  => esc_html__( 'Subscribers Only', 'coil-monetize-content' )
+			'gate-all'  => esc_html__( 'Subscribers Only', 'coil-monetize-content' ),
 		];
 
 		// If user loaded with the Gutenberg editor then add an additional option.
 		if ( Coil_Compatibility::is_post_using_gutenberg( $post ) ) {
-			$monet_options[ 'gate-tagged-blocks' ] = esc_html__( 'Split Content', 'coil-monetize-content' );
+			$monet_options['gate-tagged-blocks'] = esc_html__( 'Split Content', 'coil-monetize-content' );
 		}
 		?>
 		<fieldset>
-			<legend><?php
-			esc_html_e( 'Set the type of monetization for the article.', 'coil-monetize-content' );
-			if ( Coil_Compatibility::is_post_using_gutenberg( $post ) ) {
-				echo ' ' . esc_html__( 'Note: If "Split Content" selected, you will need to save the article and reload the editor to view the options at block level.', 'coil-monetize-content' );
-			}
-			?></legend>
-			<?php foreach( $monet_options as $option => $name ) { ?>
-			<input type="radio" name="coil_monetize_post_status" id="<?php echo $option; ?>" value="<?php echo $option; ?>"<?php if( empty( $monet_status ) && $option == 'no' ) { echo 'checked="checked"'; } else { checked( $monet_status, $option ); } ?> /><label for="track"><?php echo $name; ?></label><br />
+			<legend>
+				<?php
+				esc_html_e( 'Set the type of monetization for the article.', 'coil-monetize-content' );
+				if ( Coil_Compatibility::is_post_using_gutenberg( $post ) ) {
+					echo ' ' . esc_html__( 'Note: If "Split Content" selected, you will need to save the article and reload the editor to view the options at block level.', 'coil-monetize-content' );
+				}
+				?>
+			</legend>
+			<?php foreach ( $monet_options as $option => $name ) { ?>
+			<input type="radio" name="coil_monetize_post_status" id="<?php echo $option; ?>" value="<?php echo $option; ?>"<?php if( empty( $monet_status ) && $option === 'no' ) { echo 'checked="checked"'; } else { checked( $monet_status, $option ); } ?> /><label for="track"><?php echo $name; ?></label><br />
 			<?php } ?>
 		</fieldset>
 
@@ -210,7 +212,7 @@ class Coil_Meta_Box {
 			//'coil_payout_pointer_id' => esc_textarea( $_POST['coil_payout_pointer_id'] )
 		];
 
-		foreach( $coil_meta as $key => $value ) {
+		foreach ( $coil_meta as $key => $value ) {
 			if ( get_post_meta( $post_id, '_' . $key, false ) ) {
 				// If the custom field already has a value, update it.
 				update_post_meta( $post_id, '_' . $key, $value );
