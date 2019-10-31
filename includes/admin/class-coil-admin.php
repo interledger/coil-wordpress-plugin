@@ -24,7 +24,7 @@ if ( ! class_exists( 'Coil_Admin' ) ) {
 		 * @static
 		 * @var array
 		 */
-		private static $errors = array();
+		private static $errors = [];
 
 		/**
 		 * Update messages.
@@ -33,7 +33,7 @@ if ( ! class_exists( 'Coil_Admin' ) ) {
 		 * @static
 		 * @var array
 		 */
-		private static $messages = array();
+		private static $messages = [];
 
 		/**
 		 * Constructor
@@ -45,8 +45,8 @@ if ( ! class_exists( 'Coil_Admin' ) ) {
 			self::includes();
 
 			// Add admin page.
-			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-			add_action( 'admin_init', array( $this, 'save_settings' ) );
+			add_action( 'admin_menu', [ $this, 'admin_menu' ] );
+			add_action( 'admin_init', [ $this, 'save_settings' ] );
 		} // END __construct()
 
 		/**
@@ -72,7 +72,7 @@ if ( ! class_exists( 'Coil_Admin' ) ) {
 				'Coil',
 				apply_filters( 'coil_screen_capability', 'manage_options' ),
 				'coil',
-				array( $this, 'coil_page' ),
+				[ $this, 'coil_page' ],
 				COIL_URL_PATH . '/assets/images/coil-favicon-16.png'
 			);
 		} // END admin_menu()
@@ -148,10 +148,10 @@ if ( ! class_exists( 'Coil_Admin' ) ) {
 				$content_container  = ! empty( $_POST['coil_content_container'] ) ? sanitize_text_field( $_POST['coil_content_container'] ) : '';
 
 				// Compile the options together.
-				$coil_options = array(
+				$coil_options = [
 					'coil_payout_pointer_id' => esc_textarea( $payment_pointer_id ),
 					'coil_content_container' => esc_textarea( $content_container ),
-				);
+				];
 
 				// Now for each option we add, update or delete.
 				foreach( $coil_options as $key => $value ) {
@@ -182,11 +182,11 @@ if ( ! class_exists( 'Coil_Admin' ) ) {
 		 * @return array
 		 */
 		public static function coil_get_admin_screens() {
-			return array(
+			return [
 				'dashboard',
 				'plugins',
 				'toplevel_page_coil'
-			);
+			];
 		} // END coil_get_admin_screens()
 
 		/**

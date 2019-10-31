@@ -23,10 +23,10 @@ if ( ! class_exists( 'Coil_Admin_Assets' ) ) {
 		 * @access  public
 		 */
 		public function __construct() {
-			add_action( 'admin_enqueue_scripts', array( $this, 'admin_styles' ), 10 );
+			add_action( 'admin_enqueue_scripts', [ $this, 'admin_styles' ], 10 );
 
 			// Adds admin body classes.
-			add_filter( 'admin_body_class', array( $this, 'admin_body_class' ) );
+			add_filter( 'admin_body_class', [ $this, 'admin_body_class' ] );
 		} // END __construct()
 
 		/**

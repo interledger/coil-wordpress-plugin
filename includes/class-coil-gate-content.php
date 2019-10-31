@@ -37,7 +37,7 @@ class Coil_Gate_Content {
 	 * The Constructor.
 	 */
 	public function __construct() {
-		add_filter( 'the_content', array( $this, 'is_content_gated' ) );
+		add_filter( 'the_content', [ $this, 'is_content_gated' ] );
 	}
 
 	/**

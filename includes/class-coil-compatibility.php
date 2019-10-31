@@ -24,7 +24,7 @@ class Coil_Compatibility {
 	 * The Constructor.
 	 */
 	public function __construct() {
-		add_filter( 'initialize-monetization-js', array( $this, 'pass_post_excerpt_js' ), 10, 2 );
+		add_filter( 'initialize-monetization-js', [ $this, 'pass_post_excerpt_js' ], 10, 2 );
 	}
 
 	/**
