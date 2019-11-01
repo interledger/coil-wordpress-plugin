@@ -45,13 +45,7 @@ module.exports = function(grunt) {
 			options: {
 				//map: false,
 				processors: [
-					require('autoprefixer')({
-						overrideBrowserslist: [
-							'> 0.1%',
-							'ie 8',
-							'ie 9'
-						]
-					})
+					require('autoprefixer')()
 				]
 			},
 			dist: {
@@ -193,16 +187,19 @@ module.exports = function(grunt) {
 					domainPath: 'languages',                                  // Where to save the POT file.
 					exclude: [
 						'releases',
-						'node_modules'
+						'node_modules',
+						'vendor',
+						'tests',
+						'build',
+						'languages'
 					],
 					mainFile: '<%= pkg.name %>.php', // Main project file.
-					potComments: 'Copyright (c) {year} \nThis file is distributed under the same license as the Coil for WordPress package.', // The copyright at the beginning of the POT file.
 					potFilename: '<%= pkg.name %>.pot', // Name of the POT file.
 					potHeaders: {
 						'poedit': true,                                       // Includes common Poedit headers.
 						'x-poedit-keywordslist': true,                        // Include a list of all possible gettext functions.
-						'Report-Msgid-Bugs-To': 'https://bitbucket.org/pragmaticweb/coil-for-wp/issues',
-						'language-team': 'Sébastien Dumont <sebastien@pragmatic.agency>',
+						'Report-Msgid-Bugs-To': 'https://wordpress.org/support/plugin/coil-monetize-content/',
+						'language-team': 'Coil <info@coil.com>',
 						'language': 'en_US'
 					},
 					processPot: function( pot ) {
@@ -226,8 +223,8 @@ module.exports = function(grunt) {
 
 						return pot;
 					},
-					type: 'wp-plugin',                                        // Type of project.
-					updateTimestamp: true,                                    // Whether the POT-Creation-Date should be updated without other changes.
+					type: 'wp-plugin',      // Type of project.
+					updateTimestamp: false, // Whether the POT-Creation-Date should be updated without other changes.
 				}
 			}
 		},
@@ -256,8 +253,13 @@ module.exports = function(grunt) {
 			files: {
 				src:  [
 					'*.php',
-					'**/*.php', // Include all files
-					'!node_modules/**' // Exclude node_modules/
+					'**/*.php',
+					'!node_modules/**',
+					'!vendor/**',
+					'!languages/**',
+					'!tests/**',
+					'!build/**',
+					'!releases/**',
 				],
 				expand: true
 			},
@@ -338,12 +340,13 @@ module.exports = function(grunt) {
 							'!**/*.{gif,jpg,jpeg,json,log,md,sh,txt,xml,zip}',
 							'!.*/**',
 							'!.DS_Store',
-							'!.htaccess',
 							'!<%= pkg.name %>-git/**',
 							'!<%= pkg.name %>-svn/**',
-							'!github/**',
 							'!node_modules/**',
+							'!vendor/**',
+							'!build/**',
 							'!releases/**',
+							'!tests/**',
 							'readme.txt'
 						],
 						dest: 'build/',
@@ -384,13 +387,13 @@ module.exports = function(grunt) {
 	grunt.registerTask( 'check', [ 'devUpdate' ] );
 
 	// Checks for errors.
-	grunt.registerTask( 'test', [ 'jshint', 'stylelint', 'checktextdomain' ]);
+	grunt.registerTask( 'test', [ 'jshint', 'stylelint', 'checktextdomain' ] );
 
 	// Build CSS only.
 	grunt.registerTask( 'css', [ 'sass', 'postcss', 'cssmin' ] );
 
 	// Build CSS, minify CSS and runs i18n tasks.
-	grunt.registerTask( 'build', [ 'sass', 'postcss', 'cssmin', 'uglify', 'update-pot' ]);
+	grunt.registerTask( 'build', [ 'sass', 'postcss', 'cssmin', 'uglify', 'update-pot' ] );
 
 	// Update version of plugin.
 	grunt.registerTask( 'version', [ 'replace' ] );
@@ -401,11 +404,11 @@ module.exports = function(grunt) {
 	 * This includes extracting translatable strings, updating the master pot file.
 	 * If this is part of a deploy process, it should come before zipping everything up.
 	 */
-	grunt.registerTask( 'update-pot', [ 'checktextdomain', 'makepot' ]);
+	grunt.registerTask( 'update-pot', [ 'checktextdomain', 'makepot' ] );
 
 	/**
 	 * Creates a deployable plugin zipped up ready to upload
 	 * and install on a WordPress installation.
 	 */
-	grunt.registerTask( 'zip', [ 'copy:build', 'compress', 'clean:build' ]);
+	grunt.registerTask( 'zip', [ 'copy:build', 'compress', 'clean:build' ] );
 };
