@@ -16,14 +16,11 @@
 	}
 
 	$( document ).ready(function () {
-		console.log( 'Coil for WordPress version: ' + version );
-
 		var content  = ( typeof content_container !== 'undefined' && content_container !== '' ) ? content_container : '.content-area .entry-content'; // If not set, use default entry content container class.
 		var is_valid = true;
 
 		// If post is set for monetization then we run some magic.
 		if ( $( 'body' ).hasClass( 'monetization-not-initialized' ) ) {
-			console.log( 'Content Container is: "' + content + '"' );
 
 			// Display post excerpt for gated posts.
 			if ( $( 'body' ).hasClass( 'coil-gate-all' ) && typeof post_excerpt !== 'undefined' ) {
@@ -33,7 +30,6 @@
 			// Hide content entry area if not default selector.
 			if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content !== '.content-area .entry-content' ) {
 				$( content ).not( '.coil-post-excerpt' ).hide();
-				console.log( 'Hidden content until verification with Coil.' );
 			}
 
 			// Check if browser extension exists.
@@ -63,7 +59,6 @@
 						// Trigger an event.
 						$( 'body' ).trigger( 'coil-missing-id' );
 
-						console.log( 'Payment pointer ID is missing.' );
 					} else {
 						// Verify monetization only if we are gating or partially gating content.
 						if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) ) {
@@ -83,7 +78,6 @@
 							// Update message if browser extension is verifying user.
 							setTimeout( function() {
 								$( 'p.monetize-msg' ).html( verifying_coil_account );
-								console.log( 'Verifying subscribers Coil account.' );
 							}, 2000 );
 
 							// Update message if browser extension is unable to verify user.
@@ -99,13 +93,11 @@
 											$( content ).css( 'display', '' );
 											$( content ).before( '<p class="monetize-failed">' + unable_to_verify_hidden + '</p>' );
 
-											console.log( 'Only free content is shown if article is split.' );
 										} else {
 											$( content ).before( '<p class="monetize-failed">' + unable_to_verify + '</p>' );
 										}
 									}
 
-									console.log( 'Unable to verify Coil account.' );
 								}
 							}, 5000 );
 						}
@@ -113,7 +105,6 @@
 				}
 				// User account verified, loading content.
 				else if ( document.monetization.state === 'started' ) {
-					console.log( 'Monetization started!' );
 
 					$( content ).before('<p class="monetize-msg">' + loading_content + '</p>' );
 				}
@@ -124,19 +115,14 @@
 					var paymentPointer = event.detail.paymentPointer,
 						requestId      = event.detail.requestId;
 
-					console.log(event.detail); // All event details.
-
 					// @todo: Add validation condition here.
 					/*if ( ! isValidSession( paymentPointer, requestId ) ) {
 						is_valid = false;
-						console.error( 'Invalid requestId for monetization.' );
 
 						// Trigger an event.
 						$( 'body' ).trigger( 'coil-invalid-session', [ event, paymentPointer, requestId ] );
 					} else {*/
 						monetizationStartEventOccurred = true;
-
-						console.log( 'Monetization has started. Yeah!' );
 
 						if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content !== '.content-area .entry-content' ) {
 							$( content ).css( 'display', '' ); // Show content area if not default selector.
@@ -177,7 +163,6 @@
 					// @todo: Add validation condition here.
 					//if ( isValidPayment(paymentPointer, requestId, amount, assetCode, assetScale) ) {
 						// A payment has been received.
-						console.log('monetizationprogress', event);
 
 						// Trigger an event.
 						$( 'body' ).trigger( 'coil-monetization-progress', [
@@ -210,7 +195,6 @@
 				// Trigger an event.
 				$( 'body' ).trigger( 'coil-extension-not-found' );
 
-				console.log( 'Browser extension not found.' );
 			}
 		} // END if post is ready for monetization.
 
