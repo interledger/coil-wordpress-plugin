@@ -59,12 +59,8 @@ if ( ! class_exists( 'Coil_Admin_Action_Links' ) ) {
 		 */
 		public function plugin_row_meta( $metadata, $file, $data ) {
 			if ( $file === plugin_basename( COIL_PLUGIN_FILE ) ) {
-				$metadata[1]  = sprintf( __( 'By %s', 'coil-monetize-content' ), '<a href="' . esc_url( 'https://pragmatic.agency/' ) . '" aria-label="' . esc_attr__( 'View the agency site', 'coil-monetize-content' ) . '">Pragmatic</a> ' );
-				$metadata[1] .= sprintf( __( 'and %s', 'coil-monetize-content' ), '<a href="' . esc_url( 'https://coil.com/' ) . '" aria-label="' . esc_attr__( 'View the Coil site', 'coil-monetize-content' ) . '">Coil</a>' );
-
 				$row_meta = [
-					'docs'      => '<a href="' . apply_filters( 'coil_docs_url', esc_url( COIL_DOCUMENTATION_URL ) ) . '" aria-label="' . sprintf( esc_attr__( 'View %s documentation', 'coil-monetize-content' ), 'Coil' ) . '" target="_blank">' . esc_attr__( 'Documentation', 'coil-monetize-content' ) . '</a>',
-					'community' => '<a href="' . esc_url( COIL_SUPPORT_URL ) . '" aria-label="' . esc_attr__( 'Get support from the community', 'coil-monetize-content' ) . '" target="_blank">' . esc_attr__( 'Community Support', 'coil-monetize-content' ) . '</a>',
+					'community' => '<a href="' . esc_url( 'https://wordpress.org/support/plugin/coil-monetize-content/' ) . '">' . esc_html__( 'Support forum', 'coil-monetize-content' ) . '</a>',
 				];
 
 				$metadata = array_merge( $metadata, $row_meta );

@@ -1,13 +1,13 @@
 <?php
 /**
- * Plugin Name: Coil for WordPress
- * Plugin URI: https://github.com/seb86/coil-for-wp
- * Description: Enables support for Coil in WordPress.
- * Author: Sébastien Dumont
- * Author URI: https://sebastiendumont.com
- * Version: 1.0.0-beta.3
- * License: GPL2+
- * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
+ * Plugin Name: Coil Monetize Content
+ * Plugin URI: https://wordpress.org/plugins/coil-monetize-content/
+ * Description: Coil offers an effortless way to share content online and get paid for it.
+ * Author: Coil
+ * Author URI: https://coil.com
+ * Version: 1.0.0
+ * License: GPLv3
+ * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  *
  * @package CGB
  */
@@ -117,10 +117,6 @@ if ( ! class_exists( 'Coil' ) ) {
 			$this->define('COIL_PLUGIN_BASE', plugin_basename( __FILE__ ) );
 
 			$this->define('COIL_WP_VERSION_REQUIRE', '4.9');
-
-			$this->define('COIL_PLUGIN_URL', '#');
-			$this->define('COIL_SUPPORT_URL', '#');
-			$this->define('COIL_DOCUMENTATION_URL', '#');
 
 			$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 			$this->define('COIL_ASSET_SUFFIX', $suffix);
