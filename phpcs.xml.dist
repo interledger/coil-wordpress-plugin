@@ -10,9 +10,10 @@
 	<exclude-pattern>tests/*</exclude-pattern>
 	<exclude-pattern>vendor/*</exclude-pattern>
 	<exclude-pattern>Gruntfile\.js</exclude-pattern>
-
-	<!-- TODO: remove this when assets relocated. -->
 	<exclude-pattern>*/assets/*</exclude-pattern>
+
+	<arg name="parallel" value="8" />
+	<arg name="extensions" value="php,css,scss,css" />
 
 	<!-- Ban inline assignment in control structures. -->
 	<rule ref="PSR2R.ControlStructures.NoInlineAssignment" />
