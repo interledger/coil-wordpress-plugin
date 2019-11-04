@@ -159,13 +159,12 @@ module.exports = function(grunt) {
 				'-W020': true, // Read only - error when assigning EO_SCRIPT_DEBUG a value.
 			},
 			all: [
-				// Admin
-				'assets/js/admin/*.js',
-				'!assets/js/admin/*.min.js',
-
 				// Frontend
 				'assets/js/*.js',
-				'!assets/js/*.min.js'
+				'!assets/js/*.min.js',
+
+				// Admin
+				'src/**/*.js',
 			]
 		},
 

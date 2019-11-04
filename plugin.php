@@ -25,9 +25,6 @@ const PLUGIN_VERSION = '1.0.0';  // TODO: COIL_VERSION
 
 // COIL_URL_PATH    = untrailingslashit( plugin_dir_url( __FILE__ ) ) );
 // COIL_PLUGIN_FILE = __FILE__
-/*
- * COIL_ASSET_SUFFIX = $suffix;
- */
 
 /*require_once __DIR__ . '/includes/class-coil-block-assets.php';
 require_once __DIR__ . '/includes/class-coil-compatibility.php';
@@ -35,6 +32,9 @@ require_once __DIR__ . '/includes/class-coil-meta-box.php';
 require_once __DIR__ . '/includes/class-coil-post-meta.php';
 require_once __DIR__ . '/includes/class-coil-gate-content.php';
 require_once __DIR__ . '/includes/admin/class-coil-admin.php';*/
+require_once __DIR__ . '/includes/admin/functions.php';
+require_once __DIR__ . '/includes/admin/settings/functions.php';
+require_once __DIR__ . '/includes/gating/functions.php';
 require_once __DIR__ . '/includes/functions.php';
 
 add_action( 'plugins_loaded', __NAMESPACE__ . '\init_plugin' );

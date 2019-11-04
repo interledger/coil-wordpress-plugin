@@ -2,9 +2,9 @@
  * WordPress dependencies
  */
 const { withSelect, withDispatch } = wp.data;
-const { compose } = wp.compose;
-const { Component } = wp.element;
-const { withSpokenMessages } = wp.components;
+const { compose }                  = wp.compose;
+const { Component }                = wp.element;
+const { withSpokenMessages }       = wp.components;
 
 export class MonetizedMode extends Component {
 	componentDidMount() {

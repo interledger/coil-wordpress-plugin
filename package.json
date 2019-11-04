@@ -2,6 +2,7 @@
 	"title": "Coil Monetize Content for WordPress",
 	"name": "coil-monetize-content",
 	"version": "1.0.0",
+	"private": true,
 	"author": "Coil",
 	"author_uri": "https://coil.com/",
 	"homepage": "https://wordpress.org/plugins/coil-monetize-content",

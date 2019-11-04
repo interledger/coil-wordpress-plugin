@@ -10,16 +10,16 @@ import './styles/style.scss';
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
-const { addFilter } = wp.hooks;
-const { Fragment } = wp.element;
-const { InspectorControls } = wp.blockEditor;
-const { withSelect, withDispatch } = wp.data;
+const { __ }                         = wp.i18n;
+const { addFilter }                  = wp.hooks;
+const { Fragment }                   = wp.element;
+const { InspectorControls }          = wp.blockEditor;
+const { withSelect, withDispatch }   = wp.data;
 const { createHigherOrderComponent } = wp.compose;
-const { PanelBody, RadioControl } = wp.components;
-const { registerPlugin } = wp.plugins;
+const { PanelBody, RadioControl }    = wp.components;
+const { registerPlugin }             = wp.plugins;
 const { PluginDocumentSettingPanel } = wp.editPost;
-const { DotTip } = wp.nux;
+const { DotTip }                     = wp.nux;
 
 // Allow only specific blocks to use the extension attribute.
 const allowedBlocks = [
