@@ -162,9 +162,6 @@ module.exports = function(grunt) {
 				// Frontend
 				'assets/js/*.js',
 				'!assets/js/*.min.js',
-
-				// Admin
-				'src/**/*.js',
 			]
 		},
 
@@ -183,7 +180,7 @@ module.exports = function(grunt) {
 			target: {
 				options: {
 					cwd: '',
-					domainPath: 'languages',                                  // Where to save the POT file.
+					domainPath: '',
 					exclude: [
 						'releases',
 						'node_modules',

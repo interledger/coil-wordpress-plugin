@@ -1,0 +1,152 @@
+# Copyright (C) 2019
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: "
+"https://wordpress.org/support/plugin/coil-monetize-content/\n"
+"POT-Creation-Date: 2019-11-05 13:08:17+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2019-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Coil <info@coil.com>\n"
+"Language: en_US\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
+"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-Bookmarks: \n"
+"X-Textdomain-Support: yes\n"
+"X-Generator: grunt-wp-i18n 1.0.3\n"
+
+#: includes/admin/functions.php:39
+msgid "Web Monetization - Coil"
+msgstr ""
+
+#: includes/admin/functions.php:58
+msgid "No Monetization"
+msgstr ""
+
+#: includes/admin/functions.php:59
+msgid "Monetized and Public"
+msgstr ""
+
+#: includes/admin/functions.php:60
+msgid "Subscribers Only"
+msgstr ""
+
+#: includes/admin/functions.php:64
+msgid "Split Content"
+msgstr ""
+
+#: includes/admin/functions.php:74
+msgid ""
+"Set the type of monetization for the article. Note: If \"Split Content\" "
+"selected, you will need to save the article and reload the editor to view "
+"the options at block level."
+msgstr ""
+
+#: includes/admin/functions.php:76
+msgid "Set the type of monetization for the article."
+msgstr ""
+
+#: includes/admin/functions.php:155 includes/settings/functions.php:13
+msgid "Settings for Coil"
+msgstr ""
+
+#: includes/admin/functions.php:155
+msgid "Settings"
+msgstr ""
+
+#: includes/admin/functions.php:176
+msgid "Support forum"
+msgstr ""
+
+#: includes/functions.php:139
+msgid "This post is monetized. Please wait while we verify you are a subscriber..."
+msgstr ""
+
+#: includes/functions.php:140
+msgid "Verifying your Coil account. Please wait..."
+msgstr ""
+
+#: includes/functions.php:141
+msgid "Loading content. Please wait..."
+msgstr ""
+
+#: includes/functions.php:145
+#. translators: 1 + 2) HTML link tags (to the Coil website).
+msgid ""
+"You need to %1$sinstall the Coil browser extension%2$s in order to view "
+"this posts content."
+msgstr ""
+
+#: includes/functions.php:147
+#. translators: 1 + 2) HTML link tags (to the Coil website).
+msgid ""
+"Unable to verify your Coil account. Please %1$scheck that you are logged "
+"in%2$s to view content."
+msgstr ""
+
+#: includes/functions.php:149
+#. translators: 1 + 2) HTML link tags (to the Coil website).
+msgid ""
+"Unable to verify your Coil account. Please %1$scheck that you are logged "
+"in%2$s to view hidden content."
+msgstr ""
+
+#: includes/functions.php:153
+#. translators: 1) current user's name, 2 + 3) HTML link tags (to the Coil
+#. settings page).
+msgid ""
+"%1$s, this post is monetized but you have not set your payment pointer ID "
+"in the %2$sCoil settings page%3$s. Only content set to show for all "
+"visitors will show."
+msgstr ""
+
+#: includes/gating/functions.php:36
+msgid "The contents of this article is for subscribers only!"
+msgstr ""
+
+#: includes/gating/functions.php:41
+msgid "This article is monetized and some content is for subscribers only."
+msgstr ""
+
+#: includes/settings/temp-html-settings.php:18
+msgid "Thanks for choosing Coil."
+msgstr ""
+
+#: includes/settings/temp-html-settings.php:20
+msgid ""
+"Please submit your payout pointer below in order for your content to be "
+"tracked for monetization."
+msgstr ""
+
+#: includes/settings/temp-html-settings.php:23
+msgid "Payout Pointer"
+msgstr ""
+
+#: includes/settings/temp-html-settings.php:26
+msgid "Content Container"
+msgstr ""
+
+#: includes/settings/functions.php:14
+msgctxt "admin menu name"
+msgid "Coil"
+msgstr ""
+
+#: includes/settings/temp-html-settings.php:16
+msgctxt "header"
+msgid "Coil"
+msgstr ""
+
+#: includes/settings/temp-html-settings.php:32
+msgctxt "verb - save changes"
+msgid "Save"
+msgstr ""
