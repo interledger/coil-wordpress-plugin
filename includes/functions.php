@@ -1,5 +1,8 @@
 <?php
 declare(strict_types=1);
+/**
+ * Coil loader file.
+ */
 
 namespace Coil;
 
@@ -134,7 +137,6 @@ function load_assets() : void {
 	$strings = apply_filters(
 		'coil_js_ui_messages',
 		[
-			'coil_for_wp_version'         => PLUGIN_VERSION,
 			'content_container'           => get_option( 'coil_content_container' ),
 			'verifying_browser_extension' => esc_html__( 'This post is monetized. Please wait while we verify you are a subscriber...', 'coil-monetize-content' ),
 			'verifying_coil_account'      => esc_html__( 'Verifying your Coil account. Please wait...', 'coil-monetize-content' ),

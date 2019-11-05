@@ -1,5 +1,8 @@
 <?php
 declare(strict_types=1);
+/**
+ * Coil admin screens and options.
+ */
 
 namespace Coil\Admin;
 

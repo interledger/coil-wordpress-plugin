@@ -1,6 +1,5 @@
 (function($) {
-	var version                     = coil_params.coil_for_wp_version,
-		content_container           = coil_params.content_container,
+	var content_container         = coil_params.content_container,
 		verifying_browser_extension = coil_params.verifying_browser_extension,
 		browser_extension_missing   = coil_params.browser_extension_missing,
 		verifying_coil_account      = coil_params.verifying_coil_account,
@@ -50,13 +49,14 @@
 
 						// This ensures content written in Gutenberg is displayed according to
 						// the block settings should the theme use different theme selectors.
+						//
+						// TODO: Paul thinks this string can't be hardcoded.
 						if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content !== '.content-area .entry-content' ) {
 							$( content ).css( 'display', '' );
 							$( content + '*.coil-hide-monetize-users' ).css( 'display', 'none' );
 							$( content + '*.coil-show-monetize-users' ).css( 'display', 'none' );
 						}
 
-						// Trigger an event.
 						$( 'body' ).trigger( 'coil-missing-id' );
 
 					} else {
@@ -115,40 +115,31 @@
 					var paymentPointer = event.detail.paymentPointer,
 						requestId      = event.detail.requestId;
 
-					// @todo: Add validation condition here.
-					/*if ( ! isValidSession( paymentPointer, requestId ) ) {
-						is_valid = false;
+					monetizationStartEventOccurred = true;
 
-						// Trigger an event.
-						$( 'body' ).trigger( 'coil-invalid-session', [ event, paymentPointer, requestId ] );
-					} else {*/
-						monetizationStartEventOccurred = true;
+					if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content !== '.content-area .entry-content' ) {
+						$( content ).css( 'display', '' ); // Show content area if not default selector.
+					}
 
-						if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content !== '.content-area .entry-content' ) {
-							$( content ).css( 'display', '' ); // Show content area if not default selector.
+					$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'monetization-initialized' ); // Update body class to show content.
+					$( 'p.monetize-msg' ).remove(); // Remove status message.
+					$( 'div.coil-post-excerpt' ).remove(); // Remove post excerpt.
+
+					// Show embedded content.
+					document.querySelectorAll( 'iframe, object, video' ).forEach( function( embed ) {
+						// Skip embeds we want to ignore
+						if ( embed.classList.contains( 'intrinsic-ignore' ) || embed.parentNode.classList.contains( 'intrinsic-ignore' ) ) {
+							return true;
 						}
 
-						$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'monetization-initialized' ); // Update body class to show content.
-						$( 'p.monetize-msg' ).remove(); // Remove status message.
-						$( 'div.coil-post-excerpt' ).remove(); // Remove post excerpt.
+						if ( ! embed.dataset.origwidth ) {
+							// Get the embed element proportions
+							embed.setAttribute( 'data-origwidth', embed.width );
+							embed.setAttribute( 'data-origheight', embed.height );
+						}
+					} );
 
-						// Show embedded content.
-						document.querySelectorAll( 'iframe, object, video' ).forEach( function( embed ) {
-							// Skip embeds we want to ignore
-							if ( embed.classList.contains( 'intrinsic-ignore' ) || embed.parentNode.classList.contains( 'intrinsic-ignore' ) ) {
-								return true;
-							}
-
-							if ( ! embed.dataset.origwidth ) {
-								// Get the embed element proportions
-								embed.setAttribute( 'data-origwidth', embed.width );
-								embed.setAttribute( 'data-origheight', embed.height );
-							}
-						} );
-
-						// Trigger an event.
-						$( 'body' ).trigger( 'coil-monetization-initialized', [ event ] );
-					//}
+					$( 'body' ).trigger( 'coil-monetization-initialized', [ event ] );
 				});
 
 				// Monetization progress event.
@@ -160,20 +151,15 @@
 						assetCode      = event.detail.assetCode,
 						assetScale     = event.detail.assetScale;
 
-					// @todo: Add validation condition here.
-					//if ( isValidPayment(paymentPointer, requestId, amount, assetCode, assetScale) ) {
-						// A payment has been received.
-
-						// Trigger an event.
-						$( 'body' ).trigger( 'coil-monetization-progress', [
-							event,
-							paymentPointer,
-							requestId,
-							amount,
-							assetCode,
-							assetScale
-						] );
-					//}
+					// Trigger an event.
+					$( 'body' ).trigger( 'coil-monetization-progress', [
+						event,
+						paymentPointer,
+						requestId,
+						amount,
+						assetCode,
+						assetScale
+					] );
 				});
 			} else {
 				$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'coil-extension-not-found' ); // Update body class to show free content.
@@ -186,6 +172,8 @@
 
 				// This ensures content written in Gutenberg is displayed according to
 				// the block settings should the theme use different theme selectors.
+				//
+				// TODO: Paul thinks this string can't be hardcoded.
 				if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content !== '.content-area .entry-content' ) {
 					$( content ).css( 'display', '' );
 					$( content + '*.coil-hide-monetize-users' ).css( 'display', 'none' );
@@ -196,7 +184,7 @@
 				$( 'body' ).trigger( 'coil-extension-not-found' );
 
 			}
-		} // END if post is ready for monetization.
+		}
 
 	});
 })(jQuery);
