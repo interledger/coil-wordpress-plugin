@@ -150,9 +150,8 @@ function load_assets() : void {
 			/* translators: 1 + 2) HTML link tags (to the Coil website). */
 			'unable_to_verify_hidden'     => sprintf( __( 'Unable to verify your Coil account. Please %1$scheck that you are logged in%2$s to view hidden content.', 'coil-monetize-content' ), '<a href="' . esc_url( 'https://coil.com/login' ) . '">', '</a>' ),
 
-			// TODO: protect against if user not logged in.
-			/* translators: 1) current user's name, 2 + 3) HTML link tags (to the Coil settings page). */
-			'admin_missing_id_notice'     => sprintf( __( '%1$s, this post is monetized but you have not set your payment pointer ID in the %2$sCoil settings page%3$s. Only content set to show for all visitors will show.', 'coil-monetize-content' ), wp_get_current_user()->display_name, '<a href="' . admin_url( 'admin.php?page=coil' ) . '">', '</a>' ),
+			/* translators: 1 + 2) HTML link tags (to the Coil settings page). */
+			'admin_missing_id_notice'     => sprintf( __( 'This post is monetized but you have not set your payment pointer ID in the %1$sCoil settings page%2$s. Only content set to show for all visitors will show.', 'coil-monetize-content' ), '<a href="' . admin_url( 'admin.php?page=coil' ) . '">', '</a>' ),
 		],
 		get_queried_object_id()
 	);
