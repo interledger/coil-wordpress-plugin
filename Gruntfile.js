@@ -261,22 +261,6 @@ module.exports = function(grunt) {
 			},
 		},
 
-		potomo: {
-			dist: {
-				options: {
-					poDel: false
-				},
-				files: [{
-					expand: true,
-					cwd: 'languages',
-					src: ['*.po'],
-					dest: 'languages',
-					ext: '.mo',
-					nonull: false
-				}]
-			}
-		},
-
 		// Bump version numbers (replace with version in package.json)
 		replace: {
 			php: {
