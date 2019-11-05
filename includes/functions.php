@@ -15,21 +15,28 @@ function init_plugin() : void {
 	add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\load_block_editor_assets' );
 	add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\load_assets' );
 
+	// Admin-only CSS/JS.
+	add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\Admin\load_admin_assets' );
+	add_filter( 'admin_body_class', __NAMESPACE__ . '\Admin\add_admin_body_class' );
+
 	// Modify output.
 	add_filter( 'body_class', __NAMESPACE__ . '\add_body_class' );
 	add_filter( 'the_content', __NAMESPACE__ . '\Gating\maybe_restrict_content' );
 	add_action( 'wp_head', __NAMESPACE__ . '\print_meta_tag' );
 
 	// Admin screens and settings.
-	add_filter( 'plugin_action_links_coil-monetize-content/plugin.php', __NAMESPACE__ . '\admin\settings\add_plugin_action_links' );
-	add_filter( 'plugin_row_meta',  __NAMESPACE__ . '\Admin\Settings\add_plugin_meta_link', 10, 2 );
-	add_action( 'admin_menu', __NAMESPACE__ . '\Admin\Settings\register_admin_menu' );
+	add_filter( 'plugin_action_links_coil-monetize-content/plugin.php', __NAMESPACE__ . '\Admin\add_plugin_action_links' );
+	add_filter( 'plugin_row_meta', __NAMESPACE__ . '\Admin\add_plugin_meta_link', 10, 2 );
+	add_action( 'admin_menu', __NAMESPACE__ . '\Settings\register_admin_menu' );
+	add_action( 'admin_init', __NAMESPACE__ . '\Settings\maybe_save_coil_admin_settings' );
 
+	// Metaboxes.
+	add_action( 'load-post.php', __NAMESPACE__ . '\Admin\load_metaboxes' );
+	add_action( 'load-post-new.php', __NAMESPACE__ . '\Admin\load_metaboxes' );
+	add_action( 'save_post', __NAMESPACE__ . '\Admin\maybe_save_post_metabox' );
 
 	// Load order - important.
 	add_action( 'init', __NAMESPACE__ . '\Gating\register_content_meta' );
-	add_action( 'admin_init', __NAMESPACE__ . '\Admin\init_plugin_admin' );
-	add_action( 'admin_init', __NAMESPACE__ . '\Admin\settings\maybe_save_coil_admin_settings' );
 }
 
 /**

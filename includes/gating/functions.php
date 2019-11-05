@@ -34,19 +34,19 @@ function maybe_restrict_content( string $content ) : string {
 			case 'gate-all':
 				// Restrict all content.
 				$public_content = '<p>' . esc_html__( 'The contents of this article is for subscribers only!', 'coil-monetize-content' ) . '</p>';
-			break;
+				break;
 
 			case 'gate-tagged-blocks':
 				// Restrict some part of this content.
 				$public_content  = '<p>' . esc_html__( 'This article is monetized and some content is for subscribers only.', 'coil-monetize-content' ) . '</p>';
 				$public_content .= $content;
-			break;
+				break;
 
 			case 'no':
 			case 'no-gate':
 			default:
 				$public_content = $content;
-			break;
+				break;
 		}
 	}
 

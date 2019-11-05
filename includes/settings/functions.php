@@ -1,46 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Coil\Admin\Settings;
-
-/**
- * Add action links to the list on the plugins screen.
- *
- * @param array $links An array of action links.
- *
- * @return array $links Updated array of action links.
- */
-function add_plugin_action_links( array $links ) : array {
-	if ( ! current_user_can( 'manage_options' ) ) {
-		return $links;
-	}
-
-	$action_links = [
-		'settings' => '<a href="' . add_query_arg( [ 'page' => 'coil' ], admin_url( 'admin.php' ) ) . '" aria-label="' . esc_attr__( 'Settings for Coil', 'coil-monetize-content' ) . '">' . esc_attr__( 'Settings', 'coil-monetize-content' ) . '</a>',
-	];
-
-	return array_merge( $action_links, $links );
-}
-
-/**
- * Add extra information to the meta section on the list on the plugins screen.
- *
- * @param array  $metadata An array of the plugin meta.
- * @param string $file     Path to this plugin's main file. Used to identify which row we're in.
- *
- * @return array $metadata Updated array of plugin meta.
- */
-function add_plugin_meta_link( $metadata, $file ) : array {
-	if ( $file !== 'coil-monetize-content/plugin.php' ) {
-		return $metadata;
-	}
-
-	$row_meta = [
-		'community' => '<a href="' . esc_url( 'https://wordpress.org/support/plugin/coil-monetize-content/' ) . '">' . esc_html__( 'Support forum', 'coil-monetize-content' ) . '</a>',
-	];
-
-	return array_merge( $metadata, $row_meta );
-}
+namespace Coil\Settings;
 
 /**
  * Add Coil settings to the admin navigation menu.
@@ -63,7 +24,7 @@ function register_admin_menu() : void {
  * @return void
  */
 function render_coil_settings_screen() : void {
-	include_once( dirname( __FILE__ ) . '/html-settings.php' );
+	include_once( dirname( __FILE__ ) . '/temp-html-settings.php' );
 }
 
 /**
