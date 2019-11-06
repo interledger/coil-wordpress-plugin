@@ -6,6 +6,8 @@ declare(strict_types=1);
 
 namespace Coil;
 
+use \Coil\Gating;
+
 /**
  * Initialise and set up the plugin.
  *
@@ -112,8 +114,8 @@ function load_assets() : void {
 		return;
 	}
 
-	$coil_status = get_post_meta( get_queried_object_id(), '_coil_monetize_post_status', true );
-	if ( empty( $coil_status ) || $coil_status === 'no' ) {
+	$coil_status = Gating\get_post_gating( get_queried_object_id() );
+	if ( $coil_status === 'no' ) {
 		return;
 	}
 
@@ -177,9 +179,9 @@ function add_body_class( $classes ) : array {
 	}
 
 	$payout_pointer_id = get_option( 'coil_payout_pointer_id' );
-	$coil_status       = get_post_meta( get_queried_object_id(), '_coil_monetize_post_status', true );
+	$coil_status       = Gating\get_post_gating( get_queried_object_id() );
 
-	if ( ! empty( $coil_status ) && $coil_status !== 'no' ) {
+	if ( $coil_status !== 'no' ) {
 		$classes[] = 'monetization-not-initialized';
 
 		if ( ! empty( $payout_pointer_id ) ) {
@@ -206,11 +208,11 @@ function add_body_class( $classes ) : array {
  */
 function print_meta_tag() : void {
 
-	$coil_status       = get_post_meta( get_queried_object_id(), '_coil_monetize_post_status', true );
+	$coil_status       = Gating\get_post_gating( get_queried_object_id() );
 	$payout_pointer_id = get_option( 'coil_payout_pointer_id' );
 
 	// If the post is not set for monetising, bail out.
-	if ( empty( $coil_status ) || $coil_status === 'no' ) {
+	if ( $coil_status === 'no' ) {
 		return;
 	}
 

@@ -30,10 +30,10 @@ function register_content_meta() : void {
  */
 function maybe_restrict_content( string $content ) : string {
 
-	$coil_status    = get_post_meta( get_the_ID(), '_coil_monetize_post_status', true );
+	$coil_status    = get_post_gating( get_the_ID() );
 	$public_content = '';
 
-	if ( ! is_singular() && ! empty( $coil_status ) ) {
+	if ( ! is_singular() ) {
 		switch ( $coil_status ) {
 			case 'gate-all':
 				// Restrict all content.
@@ -55,4 +55,22 @@ function maybe_restrict_content( string $content ) : string {
 	}
 
 	return apply_filters( 'coil_maybe_restrict_content', $public_content, $content, $coil_status );
+}
+
+/**
+ * Get the gating type for the specified post.
+ *
+ * @param integer $post_id The post to check.
+ *
+ * @return string Either "no" (default), "no-gating", "gate-all", "gate-tagged-blocks".
+ */
+function get_post_gating( int $post_id ) : string {
+
+	$gating = get_post_meta( $post_id, '_coil_monetize_post_status', true );
+
+	if ( $gating === '' ) {
+		$gating = 'no';
+	}
+
+	return apply_filters( 'get_post_gating', $post_id );
 }
