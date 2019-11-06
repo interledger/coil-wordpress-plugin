@@ -215,14 +215,11 @@ function load_admin_assets() : void {
 		return;
 	}
 
-	// TODO: Why does this need to load on the dashboard + plugins screens?
-	$screens = [
-		'dashboard',
-		'plugins',
+	$load_on_screens = [
 		'toplevel_page_coil',
 	];
 
-	if ( ! in_array( $screen->id, $screens, true ) ) {
+	if ( ! in_array( $screen->id, $load_on_screens, true ) ) {
 		return;
 	}
 
