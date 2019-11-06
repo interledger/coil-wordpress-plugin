@@ -175,56 +175,6 @@ module.exports = function(grunt) {
 			]
 		},
 
-		// Generate .pot file
-		makepot: {
-			target: {
-				options: {
-					cwd: '',
-					domainPath: '',
-					exclude: [
-						'releases',
-						'node_modules',
-						'vendor',
-						'tests',
-						'build',
-						'languages'
-					],
-					mainFile: '<%= pkg.name %>.php', // Main project file.
-					potFilename: '<%= pkg.name %>.pot', // Name of the POT file.
-					potHeaders: {
-						'poedit': true,                                       // Includes common Poedit headers.
-						'x-poedit-keywordslist': true,                        // Include a list of all possible gettext functions.
-						'Report-Msgid-Bugs-To': 'https://wordpress.org/support/plugin/coil-monetize-content/',
-						'language-team': 'Coil <info@coil.com>',
-						'language': 'en_US'
-					},
-					processPot: function( pot ) {
-						var translation,
-							excluded_meta = [
-								'Plugin Name of the plugin/theme',
-								'Plugin URI of the plugin/theme',
-								'Description of the plugin/theme',
-								'Author of the plugin/theme',
-								'Author URI of the plugin/theme'
-							];
-
-						for ( translation in pot.translations[''] ) {
-							if ( 'undefined' !== typeof pot.translations[''][ translation ].comments.extracted ) {
-								if ( excluded_meta.indexOf( pot.translations[''][ translation ].comments.extracted ) >= 0 ) {
-									console.log( 'Excluded meta: ' + pot.translations[''][ translation ].comments.extracted );
-									delete pot.translations[''][ translation ];
-								}
-							}
-						}
-
-						return pot;
-					},
-					type: 'wp-plugin',      // Type of project.
-					updateTimestamp: false, // Whether the POT-Creation-Date should be updated without other changes.
-				}
-			}
-		},
-
 		// Check strings for localization issues
 		checktextdomain: {
 			options:{
@@ -373,18 +323,10 @@ module.exports = function(grunt) {
 	grunt.registerTask( 'css', [ 'sass', 'postcss', 'cssmin' ] );
 
 	// Build CSS, minify CSS and runs i18n tasks.
-	grunt.registerTask( 'build', [ 'sass', 'postcss', 'cssmin', 'uglify', 'update-pot' ] );
+	grunt.registerTask( 'build', [ 'sass', 'postcss', 'cssmin', 'uglify' ] );
 
 	// Update version of plugin.
 	grunt.registerTask( 'version', [ 'replace' ] );
-
-	/**
-	 * Run i18n related tasks.
-	 *
-	 * This includes extracting translatable strings, updating the master pot file.
-	 * If this is part of a deploy process, it should come before zipping everything up.
-	 */
-	grunt.registerTask( 'update-pot', [ 'checktextdomain', 'makepot' ] );
 
 	/**
 	 * Creates a deployable plugin zipped up ready to upload
