@@ -21,6 +21,7 @@
 		}
 	},
 	"globals": {
+		"jQuery": true,
 		"wp": true,
 		"wpApiSettings": true,
 		"window": true,
@@ -28,8 +29,10 @@
 	},
 	"plugins": ["react", "jsx-a11y", "jest"],
 	"settings": {
+		// Tell eslint-plugin-react which version of React is in use. Current as of WordPress 5.1.
 		"react": {
-			"pragma": "wp"
+			"pragma": "wp",
+			"version": "16.6.3"
 		}
 	},
 	"rules": {
@@ -170,10 +173,15 @@
 		"react/no-children-prop": "off",
 		"react/no-find-dom-node": "warn",
 		"react/prop-types": "off",
+		"react/react-in-jsx-scope": [ "off" ],
 		"semi": "error",
 		"semi-spacing": "error",
 		"space-before-blocks": ["error", "always"],
-		"space-before-function-paren": ["error", "never"],
+		"space-before-function-paren": [ "error", {
+			"anonymous": "never",
+			"named": "never",
+			"asyncArrow": "always"
+		} ],
 		"space-in-parens": ["error", "always"],
 		"space-infix-ops": ["error", { "int32Hint": false }],
 		"space-unary-ops": [

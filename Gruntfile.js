@@ -159,13 +159,9 @@ module.exports = function(grunt) {
 				'-W020': true, // Read only - error when assigning EO_SCRIPT_DEBUG a value.
 			},
 			all: [
-				// Admin
-				'assets/js/admin/*.js',
-				'!assets/js/admin/*.min.js',
-
 				// Frontend
 				'assets/js/*.js',
-				'!assets/js/*.min.js'
+				'!assets/js/*.min.js',
 			]
 		},
 
@@ -184,7 +180,7 @@ module.exports = function(grunt) {
 			target: {
 				options: {
 					cwd: '',
-					domainPath: 'languages',                                  // Where to save the POT file.
+					domainPath: '',
 					exclude: [
 						'releases',
 						'node_modules',
@@ -263,22 +259,6 @@ module.exports = function(grunt) {
 				],
 				expand: true
 			},
-		},
-
-		potomo: {
-			dist: {
-				options: {
-					poDel: false
-				},
-				files: [{
-					expand: true,
-					cwd: 'languages',
-					src: ['*.po'],
-					dest: 'languages',
-					ext: '.mo',
-					nonull: false
-				}]
-			}
 		},
 
 		// Bump version numbers (replace with version in package.json)

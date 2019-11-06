@@ -10,16 +10,16 @@ import './styles/style.scss';
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
-const { addFilter } = wp.hooks;
-const { Fragment } = wp.element;
-const { InspectorControls } = wp.blockEditor;
-const { withSelect, withDispatch } = wp.data;
+const { __ }                         = wp.i18n;
+const { addFilter }                  = wp.hooks;
+const { Fragment }                   = wp.element;
+const { InspectorControls }          = wp.blockEditor;
+const { withSelect, withDispatch }   = wp.data;
 const { createHigherOrderComponent } = wp.compose;
-const { PanelBody, RadioControl } = wp.components;
-const { registerPlugin } = wp.plugins;
+const { PanelBody, RadioControl }    = wp.components;
+const { registerPlugin }             = wp.plugins;
 const { PluginDocumentSettingPanel } = wp.editPost;
-const { DotTip } = wp.nux;
+const { DotTip }                     = wp.nux;
 
 // Allow only specific blocks to use the extension attribute.
 const allowedBlocks = [
@@ -95,7 +95,7 @@ const restrictedBlocks = [
  */
 function allowedBlockTypes( name ) {
 	return allowedBlocks.includes( name );
-} // END allowedBlockTypes()
+}
 
 /**
  * Is the block not allowed to support monetization.
@@ -104,7 +104,7 @@ function allowedBlockTypes( name ) {
  */
 function restrictedBlockTypes( name ) {
 	return restrictedBlocks.includes( name );
-} // END restrictedBlockTypes()
+}
 
 /**
 /**
@@ -249,9 +249,11 @@ function applyExtraClass( extraProps, blockType, attributes ) {
 	}
 
 	return extraProps;
-} // END applyExtraClass()
+}
 
-// Adds a wrapper class around the block in the editor to identify the monetization status.
+/**
+ * Adds a wrapper class around the block in the editor to identify the monetization status.
+ */
 const wrapperClass = createHigherOrderComponent( ( BlockListBlock ) => {
 	return ( props ) => {
 		let wrapperProps = props.wrapperProps;
@@ -381,6 +383,6 @@ if ( PluginDocumentSettingPanel ) {
 					</PluginDocumentSettingPanel>
 			)
 		},
-		icon: '' // Can if you want place an SVG version of the Coil logo here.
+		icon: ''
 	} );
 }
