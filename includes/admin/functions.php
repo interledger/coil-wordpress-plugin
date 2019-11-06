@@ -189,7 +189,7 @@ function add_plugin_meta_link( array $metadata, string $file ) : array {
  *
  * @return string $classes Updated CSS classes.
  */
-function admin_body_class( string $classes ) : string {
+function add_admin_body_class( string $classes ) : string {
 
 	$screen = get_current_screen();
 	if ( ! $screen ) {

@@ -23,7 +23,7 @@ defined( 'ABSPATH' ) || exit;
 const PLUGIN_VERSION = '1.0.0';
 
 require_once __DIR__ . '/includes/admin/functions.php';
-require_once __DIR__ . '/includes/admin/settings/functions.php';
+require_once __DIR__ . '/includes/settings/functions.php';
 require_once __DIR__ . '/includes/gating/functions.php';
 require_once __DIR__ . '/includes/functions.php';
 

@@ -30,7 +30,8 @@ function register_content_meta() : void {
  */
 function maybe_restrict_content( string $content ) : string {
 
-	$coil_status = get_post_meta( get_the_ID(), '_coil_monetize_post_status', true );
+	$coil_status    = get_post_meta( get_the_ID(), '_coil_monetize_post_status', true );
+	$public_content = '';
 
 	if ( ! is_singular() && ! empty( $coil_status ) ) {
 		switch ( $coil_status ) {

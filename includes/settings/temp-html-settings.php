@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		<div class="content">
 			<div class="logo">
-				<img src="<?php echo esc_url( plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'assets/images/coil-favicon-256.png' ); ?>" alt="" />
+				<img src="<?php echo esc_url( plugin_dir_url( dirname( __DIR__ ) ) . 'assets/images/coil-favicon-256.png' ); ?>" alt="" />
 			</div>
 
 			<h1 class="screen-reader-text"><?php echo esc_html( _x( 'Coil', 'header', 'coil-monetize-content' ) ); ?></h1>
