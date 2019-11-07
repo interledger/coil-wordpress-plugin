@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace Coil\Admin;
 
 use const \Coil\PLUGIN_VERSION;
+use \Coil\Gating;
 
 /**
  * Customise the environment where we want to show the Coil metabox.
@@ -55,7 +56,7 @@ function add_metabox() : void {
 function render_coil_metabox() : void {
 	global $post;
 
-	$coil_status   = get_post_meta( $post->ID, '_coil_monetize_post_status', true );
+	$coil_status   = Gating\get_post_gating( $post->ID );
 	$use_gutenberg = function_exists( '\use_block_editor_for_post' ) && use_block_editor_for_post( $post );
 	$settings      = [
 		'no'        => esc_html__( 'No Monetization', 'coil-monetize-content' ),
@@ -82,15 +83,8 @@ function render_coil_metabox() : void {
 		</legend>
 
 		<?php foreach ( $settings as $option => $name ) : ?>
-			<?php
-			if ( $option === 'no' && empty( $coil_status ) ) {
-				$is_selected = 'checked="checked"';
-			} else {
-				$is_selected = checked( $coil_status, $option, false );
-			}
-			?>
 			<label for="track">
-				<input type="radio" name="coil_monetize_post_status" id="<?php echo esc_attr( $option ); ?>" value="<?php echo esc_attr( $option ); ?>" <?php echo $is_selected; ?>/>
+				<input type="radio" name="coil_monetize_post_status" id="<?php echo esc_attr( $option ); ?>" value="<?php echo esc_attr( $option ); ?>" <?php checked( $coil_status, $option ); ?>/>
 				<?php echo esc_html( $name ); ?>
 				<br />
 			</label>
@@ -124,21 +118,12 @@ function maybe_save_post_metabox( int $post_id ) : void {
 		return;
 	}
 
-	$coil_meta = [
-		'_coil_monetize_post_status' => sanitize_text_field( $_POST['coil_monetize_post_status'] ),
-	];
+	$post_gating = sanitize_text_field( $_POST['coil_monetize_post_status'] ?? '' );
 
-	foreach ( $coil_meta as $key => $value ) {
-		if ( ! empty( $value ) ) {
-			// For coil_monetize_post_status.
-			if ( ! in_array( $value, [ 'gate-all', 'gate-tagged-blocks', 'no', 'no-gating' ], true ) ) {
-				continue;
-			}
-
-			update_post_meta( $post_id, $key, $value );
-		} else {
-			delete_post_meta( $post_id, $key );
-		}
+	if ( $post_gating ) {
+		Gating\set_post_gating( $post_id, $value );
+	} else {
+		delete_post_meta( $post_id, '_coil_monetize_post_status' );
 	}
 }
 
