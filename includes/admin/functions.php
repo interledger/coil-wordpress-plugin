@@ -118,10 +118,10 @@ function maybe_save_post_metabox( int $post_id ) : void {
 		return;
 	}
 
-	$post_gating = sanitize_text_field( $_POST['coil_monetize_post_status'] ?? '' );
+	$post_gating = sanitize_text_field( $_REQUEST['coil_monetize_post_status'] ?? '' );
 
 	if ( $post_gating ) {
-		Gating\set_post_gating( $post_id, $value );
+		Gating\set_post_gating( $post_id, $post_gating );
 	} else {
 		delete_post_meta( $post_id, '_coil_monetize_post_status' );
 	}

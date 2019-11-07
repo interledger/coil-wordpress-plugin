@@ -68,7 +68,7 @@ function get_post_gating( int $post_id ) : string {
 
 	$gating = get_post_meta( $post_id, '_coil_monetize_post_status', true );
 
-	if ( $gating === '' ) {
+	if ( empty( $gating ) ) {
 		$gating = 'no';
 	}
 
