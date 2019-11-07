@@ -72,5 +72,30 @@ function get_post_gating( int $post_id ) : string {
 		$gating = 'no';
 	}
 
-	return apply_filters( 'get_post_gating', $post_id );
+	return $gating;
+}
+
+
+/**
+ * Set the gating type for the specified post.
+ *
+ * @param integer $post_id    The post to set gating for.
+ * @param string $gating_type Either "no", "no-gating", "gate-all", "gate-tagged-blocks".
+ *
+ * @return void
+ */
+function set_post_gating( int $post_id, string $gating_type ) : void {
+
+	$valid_gating_types = [
+		'gate-all',
+		'gate-tagged-blocks',
+		'no',
+		'no-gating',
+	];
+
+	if ( ! in_array( $gating_type, $valid_gating_types, true ) ) {
+		return;
+	}
+
+	update_post_meta( $post_id, '_coil_monetize_post_status', $gating_type );
 }

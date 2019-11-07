@@ -118,21 +118,12 @@ function maybe_save_post_metabox( int $post_id ) : void {
 		return;
 	}
 
-	$coil_meta = [
-		'_coil_monetize_post_status' => sanitize_text_field( $_POST['coil_monetize_post_status'] ),
-	];
+	$post_gating = sanitize_text_field( $_POST['coil_monetize_post_status'] ?? '' );
 
-	foreach ( $coil_meta as $key => $value ) {
-		if ( ! empty( $value ) ) {
-			// For coil_monetize_post_status.
-			if ( ! in_array( $value, [ 'gate-all', 'gate-tagged-blocks', 'no', 'no-gating' ], true ) ) {
-				continue;
-			}
-
-			update_post_meta( $post_id, $key, $value );
-		} else {
-			delete_post_meta( $post_id, $key );
-		}
+	if ( $post_gating ) {
+		Gating\set_post_gating( $post_id, $value );
+	} else {
+		delete_post_meta( $post_id, '_coil_monetize_post_status' );
 	}
 }
 
