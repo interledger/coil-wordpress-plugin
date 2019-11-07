@@ -322,7 +322,7 @@ module.exports = function(grunt) {
 	// Build CSS only.
 	grunt.registerTask( 'css', [ 'sass', 'postcss', 'cssmin' ] );
 
-	// Build CSS, minify CSS and runs i18n tasks.
+	// Build and minify CSS/JS.
 	grunt.registerTask( 'build', [ 'sass', 'postcss', 'cssmin', 'uglify' ] );
 
 	// Update version of plugin.
