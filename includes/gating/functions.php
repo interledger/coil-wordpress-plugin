@@ -30,28 +30,30 @@ function register_content_meta() : void {
  */
 function maybe_restrict_content( string $content ) : string {
 
+	if ( is_singular() ) {
+		return $content;
+	}
+
 	$coil_status    = get_post_gating( get_the_ID() );
 	$public_content = '';
 
-	if ( ! is_singular() ) {
-		switch ( $coil_status ) {
-			case 'gate-all':
-				// Restrict all content.
-				$public_content = '<p>' . esc_html__( 'The contents of this article is for subscribers only!', 'coil-monetize-content' ) . '</p>';
-				break;
+	switch ( $coil_status ) {
+		case 'gate-all':
+			// Restrict all content.
+			$public_content = '<p>' . esc_html__( 'The contents of this article is for subscribers only!', 'coil-monetize-content' ) . '</p>';
+			break;
 
-			case 'gate-tagged-blocks':
-				// Restrict some part of this content.
-				$public_content  = '<p>' . esc_html__( 'This article is monetized and some content is for subscribers only.', 'coil-monetize-content' ) . '</p>';
-				$public_content .= $content;
-				break;
+		case 'gate-tagged-blocks':
+			// Restrict some part of this content.
+			$public_content  = '<p>' . esc_html__( 'This article is monetized and some content is for subscribers only.', 'coil-monetize-content' ) . '</p>';
+			$public_content .= $content;
+			break;
 
-			case 'no':
-			case 'no-gate':
-			default:
-				$public_content = $content;
-				break;
-		}
+		case 'no':
+		case 'no-gate':
+		default:
+			$public_content = $content;
+			break;
 	}
 
 	return apply_filters( 'coil_maybe_restrict_content', $public_content, $content, $coil_status );
@@ -68,7 +70,7 @@ function get_post_gating( int $post_id ) : string {
 
 	$gating = get_post_meta( $post_id, '_coil_monetize_post_status', true );
 
-	if ( $gating === '' ) {
+	if ( empty( $gating ) ) {
 		$gating = 'no';
 	}
 

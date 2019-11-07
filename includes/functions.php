@@ -159,7 +159,7 @@ function load_assets() : void {
 	);
 
 	wp_localize_script(
-		'coil-monetization',
+		'coil-monetization-js',
 		'coil_params',
 		$strings
 	);
