@@ -7,6 +7,8 @@ rm .gitignore
 mv .build/gitignore-wpengine .gitignore
 
 echo "* Resetting git"
+git config --global user.name "Bitbucket Pipelines Deploy"
+git config --global user.email "$EMAIL"
 rm -fr .git
 git init
 
@@ -15,8 +17,6 @@ git commit -m "Bitbucket Pipelines Deployment"
 git clean -f
 
 echo "* Adding git remote: $WPE_INSTALL"
-git config --global user.name "Bitbucket Pipelines Deploy"
-git config --global user.email "$EMAIL"
 git remote add wpe git@git.wpengine.com:production/$WPE_INSTALL.git
 
 
