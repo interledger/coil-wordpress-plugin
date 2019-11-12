@@ -1,0 +1,38 @@
+image: smartapps/bitbucket-pipelines-debian-9
+clone:
+  depth: 3
+definitions:
+  steps:
+    # BUILD PROJECT ASSETS
+    - step: &build-assets
+        name: Build assets
+        script:
+          - chmod +x ./.deploy/build-assets
+          - ./.deploy/build-assets
+        artifacts:
+          - wp-content/plugins/coil-monetize-content/
+    # DEPLOY TO WPE
+    - step: &deploy
+        name: Deploy to WPE
+        deployment: test
+        script:
+          - chmod +x ./.deploy/deploy
+          - ./.deploy/deploy
+pipelines:
+  custom:
+    staging:
+      - step: *build-assets
+      - step:
+          <<: *deploy
+          deployment: staging
+  branches:
+    develop:
+      - step: *build-assets
+      - step: *deploy
+    master:
+      - step: *build-assets
+      - step:
+          <<: *deploy
+          deployment: production
+          trigger: manual
+

@@ -1,0 +1,28 @@
+#!/bin/bash
+
+echo "** BUILD start"
+echo "* Creating logstamp"
+LOGSTAMP_DATE=`date "+%Y-%m-%d %H:%M:%S"`
+echo "* Contents: $LOGSTAMP_DATE $BITBUCKET_DEPLOYMENT_ENVIRONMENT $BITBUCKET_COMMIT"
+echo "$LOGSTAMP_DATE $BITBUCKET_DEPLOYMENT_ENVIRONMENT $BITBUCKET_COMMIT" > .logstamp
+
+# For 'normal' repos, we would call individual build scripts in a /builds/ subfolder.
+# However, for coil plugin, we are going to assume that a release has been prepped.
+#  So, to deploy, merge into the right branch and pipeline + BitBucket config will
+#  hadle the push to WPEngine.
+
+echo "* Zipping 'n' movin'"
+
+composer install
+npm install
+
+npx grunt build
+npx grunt zip
+
+mkdir -p wp-content/plugins
+mv releases/*.zip wp-content/plugins/
+cd wp-content/plugins/
+unzip *.zip
+rm *.zip
+
+echo "** BUILD end"
