@@ -11,6 +11,8 @@ echo "$LOGSTAMP_DATE $BITBUCKET_DEPLOYMENT_ENVIRONMENT $BITBUCKET_COMMIT" > .log
 #  So, to deploy, merge into the right branch and pipeline + BitBucket config will
 #  hadle the push to WPEngine.
 
+update-alternatives --set php /usr/bin/php7.1
+
 echo "* Zipping 'n' movin'"
 
 composer install
