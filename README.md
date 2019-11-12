@@ -4,10 +4,10 @@ This is the source code repository for the Coil WordPress plugin. Coil Monetize 
 
 ---
 
-* [Onboarding](#onboarding)
-* [Local Development Environment](#local-development-environment)
-* [Development Process](#development-process)
-* [Deployment](#deployment)
+* [Onboarding](#markdown-header-onboarding)
+* [Local Development Environment](#markdown-header-local-development-environment)
+* [Development Process](#markdown-header-development-process)
+* [Deployment](#markdown-header-deployment)
 
 ---
 
@@ -64,7 +64,7 @@ Install the development environment:
 
 There is no sample database to import.
 
-Flywhell will give you the URL of where you can access your environment, and you'll have supplied the initial user account's username and password during Flywheel set up.
+Flywheel will give you the URL of where you can access your environment, and you'll have supplied the initial user account's username and password during Flywheel set up.
 
 
 # Development Process
