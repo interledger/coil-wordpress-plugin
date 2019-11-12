@@ -4,7 +4,7 @@ echo "** Deployment: START"
 
 echo "* Preparing version control for deployment push"
 rm .gitignore
-mv .deploy/gitignore-wpengine .gitignore
+mv .build/gitignore-wpengine .gitignore
 
 echo "* Resetting git"
 rm -fr .git
