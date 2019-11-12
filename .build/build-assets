@@ -17,9 +17,12 @@ npm install
 npx grunt build
 npx grunt zip
 
+echo "* Making plugins folder"""
 mkdir -p wp-content/plugins
 mv releases/*.zip wp-content/plugins/
 cd wp-content/plugins/
+ls -la
+pwd
 unzip *.zip
 rm *.zip
 
