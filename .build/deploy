@@ -15,7 +15,7 @@ ls -laR wp-content/plugins/
 rm -fr .git
 git init
 
-git add .
+git add wp-content/
 git commit -m "Bitbucket Pipelines Deployment"
 git clean -f
 
