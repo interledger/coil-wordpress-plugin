@@ -58,7 +58,7 @@ Install the development environment:
 	- `cd app/public/wp-content/plugins/coil-monetize-content && composer install && npm install`
 1. To configure Flywheel for PHPUnit:
 	- Download the following script to the base of your`app/` folder:
-		- `curl -O https://gist.github.com/keesiemeijer/a888f3d9609478b310c2d952644891ba/raw/c402aa8cae7ae01e95353963b77ca0637f083fdd/setup-phpunit.sh`
+		- `curl -o setup-phpunit.sh https://gist.githubusercontent.com/keesiemeijer/a888f3d9609478b310c2d952644891ba/raw/`
 	- In Flywheel, right-click your "Coil" site and select "Open Site SSH". This will open a new terminal, and inside it, do: `bash /app/setup-phpunit.sh`
 	- The script wil take several minutes to install PHPUnit. Once it's done, you can close the terminal.
 
