@@ -113,11 +113,11 @@ Some of the tooling for this plugin came from the `create-guten-block` project, 
 - Runs once and reports back the gzip file sizes of the produced code.
 
 ### Other Assets (`assets/{js,scss}/`)
-#### `grunt watch`
+#### `npx grunt watch`
 - Use to compile and run the assets in development mode.
 - Watches for any changes and reports back any errors in your code.
 
-#### `grunt build`
+#### `npx grunt build`
 - Use to build production code for your assets inside the `assets/{css,js}` folders.
 
 ## Integration Tests
