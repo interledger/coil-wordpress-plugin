@@ -14,6 +14,7 @@ echo "* Zipping 'n' movin'"
 composer install
 npm install
 
+echo "* Making plugin distribution"
 npx grunt build
 npx grunt zip
 
@@ -21,9 +22,7 @@ echo "* Making plugins folder"
 mkdir -p wp-content/plugins
 mv releases/*.zip wp-content/plugins/
 cd wp-content/plugins/
-ls -la
-pwd
-unzip *.zip coil-monetize-content
+unzip coil-monetize-content.zip
 rm *.zip
 
 echo "** BUILD end"
