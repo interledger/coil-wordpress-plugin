@@ -6,11 +6,7 @@ LOGSTAMP_DATE=`date "+%Y-%m-%d %H:%M:%S"`
 echo "* Contents: $LOGSTAMP_DATE $BITBUCKET_DEPLOYMENT_ENVIRONMENT $BITBUCKET_COMMIT"
 echo "$LOGSTAMP_DATE $BITBUCKET_DEPLOYMENT_ENVIRONMENT $BITBUCKET_COMMIT" > .logstamp
 
-# For 'normal' repos, we would call individual build scripts in a /builds/ subfolder.
-# However, for coil plugin, we are going to assume that a release has been prepped.
-#  So, to deploy, merge into the right branch and pipeline + BitBucket config will
-#  hadle the push to WPEngine.
-
+# We need PHP 7.1.
 update-alternatives --set php /usr/bin/php7.1
 
 echo "* Zipping 'n' movin'"
