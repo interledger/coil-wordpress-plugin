@@ -64,10 +64,10 @@ function maybe_save_user_profile_payment_pointer_option( $user_id ) : void {
  * @param string $payment_pointer The currently defined payment pointer.
  * @return string The $payment_pointer from the global settings page or a user.
  */
-function maybe_output_user_payment_pointer_meta_tag( $payment_pointer ) : string {
+function maybe_output_user_payment_pointer( $payment_pointer ) : string {
 
-	$author_id            = get_post_field( 'post_author', $post_id );
-	$user_payment_pointer = sanitize_text_field( get_user_meta( $author_id, 'coil_user_payment_pointer_id', true ) );
+	$author_id            = get_post_field( 'post_author' );
+	$user_payment_pointer = get_user_meta( $author_id, 'coil_user_payment_pointer_id', true );
 
 	$payment_pointer = ( ! empty( $user_payment_pointer ) ) ? $user_payment_pointer : $payment_pointer;
 	return $payment_pointer;
