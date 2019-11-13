@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace Coil;
 
 use \Coil\Gating;
+use \Coil\Admin;
 
 /**
  * Initialise and set up the plugin.
@@ -34,6 +35,9 @@ function init_plugin() : void {
 	add_filter( 'plugin_row_meta', __NAMESPACE__ . '\Admin\add_plugin_meta_link', 10, 2 );
 	add_action( 'admin_menu', __NAMESPACE__ . '\Settings\register_admin_menu' );
 	add_action( 'admin_init', __NAMESPACE__ . '\Settings\maybe_save_coil_admin_settings' );
+
+	// Customizer messaging settings.
+	add_action( 'customize_register',  __NAMESPACE__ . '\Admin\coil_add_customizer_options' );
 
 	// Metaboxes.
 	add_action( 'load-post.php', __NAMESPACE__ . '\Admin\load_metaboxes' );
@@ -140,17 +144,13 @@ function load_assets() : void {
 		'coil_js_ui_messages',
 		[
 			'content_container'           => get_option( 'coil_content_container' ),
-			'verifying_browser_extension' => esc_html__( 'This post is monetized. Please wait while we verify you are a subscriber...', 'coil-monetize-content' ),
-			'verifying_coil_account'      => esc_html__( 'Verifying your Coil account. Please wait...', 'coil-monetize-content' ),
-			'loading_content'             => esc_html__( 'Loading content. Please wait...', 'coil-monetize-content' ),
+			'verifying_browser_extension' => Admin\get_customizer_messaging_text( 'coil_verifying_status_message' ),
+			'verifying_coil_account'      => Admin\get_customizer_messaging_text( 'coil_verifying_status_message' ),
+			'loading_content'             => Admin\get_customizer_messaging_text( 'coil_verifying_status_message' ),
 			'post_excerpt'                => get_the_excerpt(),
-
-			/* translators: 1 + 2) HTML link tags (to the Coil website). */
-			'browser_extension_missing'   => sprintf( __( 'You need to %1$sinstall the Coil browser extension%2$s in order to view this posts content.', 'coil-monetize-content' ), '<a href="https://help.coil.com/en/articles/2701494-supported-browsers">', '</a>' ),
-			/* translators: 1 + 2) HTML link tags (to the Coil website). */
-			'unable_to_verify'            => sprintf( __( 'Unable to verify your Coil account. Please %1$scheck that you are logged in%2$s to view content.', 'coil-monetize-content' ), '<a href="' . esc_url( 'https://coil.com/login' ) . '">', '</a>' ),
-			/* translators: 1 + 2) HTML link tags (to the Coil website). */
-			'unable_to_verify_hidden'     => sprintf( __( 'Unable to verify your Coil account. Please %1$scheck that you are logged in%2$s to view hidden content.', 'coil-monetize-content' ), '<a href="' . esc_url( 'https://coil.com/login' ) . '">', '</a>' ),
+			'browser_extension_missing'   => Admin\get_customizer_messaging_text( 'coil_unsupported_message' ),
+			'unable_to_verify'            => Admin\get_customizer_messaging_text( 'coil_unable_to_verify_message' ),
+			'unable_to_verify_hidden'     => Admin\get_customizer_messaging_text( 'coil_unable_to_verify_message' ),
 
 			/* translators: 1 + 2) HTML link tags (to the Coil settings page). */
 			'admin_missing_id_notice'     => sprintf( __( 'This post is monetized but you have not set your payment pointer ID in the %1$sCoil settings page%2$s. Only content set to show for all visitors will show.', 'coil-monetize-content' ), '<a href="' . admin_url( 'admin.php?page=coil' ) . '">', '</a>' ),

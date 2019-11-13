@@ -217,3 +217,184 @@ function load_admin_assets() : void {
 		PLUGIN_VERSION
 	);
 }
+
+/**
+ * Get a message saved in the customizer messages section. If no message is set,
+ * a default value is returned.
+ *
+ * @param string $message_id The id of the message control_setting defined in the customizer
+ * @param bool $get_default If true, will output the default message instead of getting the cutomizer setting.
+ * @return string
+ */
+function get_customizer_messaging_text( $message_id, $get_default = false ) : string {
+
+	// Set up message defaults.
+	$defaults = [
+		'coil_unsupported_message'        => __( 'Not using supported browser and extension, this is how to access / get COIL', 'coil-monetize-content' ),
+		'coil_unable_to_verify_message'   => __( 'You need a valid Coil account in order to see content, here\'s how..', 'coil-monetize-content' ),
+		'coil_voluntary_donation_message' => __( 'This site is monetized using Coil.  We ask for your help to pay for our time in creating this content for you.  Here\'s how...', 'coil-monetize-content' ),
+		'coil_verifying_status_message'   => __( 'Verifying Web Monetization status. Please wait...', 'coil-monetize-content' ),
+	];
+
+	// Get the message from the customizer.
+	$customizer_setting = get_theme_mod( $message_id );
+
+	/**
+	 * If an empty string is saved in the customizer,
+	 * get_theme_mod returns an empty string instead of the default
+	 * setting whcih is defined as an optional second parameter.
+	 * This is recognized as a bug (wontfix) in WordPress Core.
+	 *
+	 * @see https://core.trac.wordpress.org/ticket/28637
+	 */
+	if ( true === $get_default || empty( $customizer_setting ) || false === $customizer_setting ) {
+		$customizer_setting = isset( $defaults[$message_id] ) ? $defaults[$message_id] : '';
+	}
+	return $customizer_setting;
+}
+
+/**
+ * Add custom section to the customizer to allow Coil messaging
+ * to be set.
+ *
+ * @param \WP_Customize_Manager $wp_customize
+ * @link http://codex.wordpress.org/Theme_Customization_API
+ * @return void
+ */
+function coil_add_customizer_options( $wp_customize ) : void {
+
+	// Add a new panel section.
+	$coil_customizer_panel_id = 'coil_customizer_settings_panel';
+
+	$wp_customize->add_panel(
+		$coil_customizer_panel_id,
+		[
+			'title'      => __( 'Coil Settings', 'coil-monetize-content' ),
+			'capability' => apply_filters( 'coil_settings_capability', 'manage_options' ),
+		]
+	);
+
+	// Messaging section.
+	$messaging_section_id = 'coil_customizer_section_messaging';
+
+	$wp_customize->add_section(
+		$messaging_section_id,
+		[
+			'title' => __( 'Messaging', 'coil-monetize-content' ),
+			'panel' => $coil_customizer_panel_id,
+		]
+	);
+
+	/**
+	 * When content is gated, and user doesn't have either supported browser,
+	 * or doesn't have the extension installed correctly.
+	 */
+	$message_one_setting_id = 'coil_unsupported_message';
+
+	$wp_customize->add_setting(
+		$message_one_setting_id,
+		[
+			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'sanitize_callback' => 'wp_filter_nohtml_kses',
+		]
+	);
+
+	// Add controls to message one setting.
+	$wp_customize->add_control(
+		$message_one_setting_id,
+		[
+			'type'        => 'textarea',
+			'label'       => __( 'Message One', 'coil-monetize-content' ),
+			'section'     => $messaging_section_id,
+			'description' => __( 'When content is gated, and user doesn\'t have either supported browser, or doesn\'t have the extension installed correctly', 'coil-monetize-content' ),
+			'input_attrs' => [
+				'placeholder' => get_customizer_messaging_text( $message_one_setting_id, true ),
+			]
+		]
+	);
+
+	/**
+	 * When content is gated, user is using supported browser and has extension,
+	 * but some other problem, likely not connected to an active/valid Coil account.
+	 * or doesn't have the extension installed correctly.
+	 */
+	$message_two_setting_id = 'coil_unable_to_verify_message';
+
+	$wp_customize->add_setting(
+		$message_two_setting_id,
+		[
+			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'sanitize_callback' => 'wp_filter_nohtml_kses',
+		]
+	);
+
+	// Add controls to message two setting.
+	$wp_customize->add_control(
+		$message_two_setting_id,
+		[
+			'type'        => 'textarea',
+			'label'       => __( 'Message Two', 'coil-monetize-content' ),
+			'section'     => $messaging_section_id,
+			'description' => __( 'When content is gated, user is using supported browser and has extension, but some other problem, likely not connected to an active/valid Coil account.', 'coil-monetize-content' ),
+			'input_attrs' => [
+				'placeholder' => get_customizer_messaging_text( $message_two_setting_id, true ),
+			]
+		]
+	);
+
+	/**
+	 * When content isn't gated and is asking for voluntary donations only.
+	 * ( State = "Monetized and Public" and Visitor doesn't have WM enabled )
+	 */
+	$message_three_setting_id = 'coil_voluntary_donation_message';
+
+	$wp_customize->add_setting(
+		$message_three_setting_id,
+		[
+			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'sanitize_callback' => 'wp_filter_nohtml_kses',
+		]
+	);
+
+	// Add controls to message two setting.
+	$wp_customize->add_control(
+		$message_three_setting_id,
+		[
+			'type'        => 'textarea',
+			'label'       => __( 'Message Three', 'coil-monetize-content' ),
+			'section'     => $messaging_section_id,
+			'description' => __( 'When content isn\'t gated and is asking for voluntary donations only. ( State = "Monetized and Public" and Visitor doesn\'t have WM enabled ).', 'coil-monetize-content' ),
+			'input_attrs' => [
+				'placeholder' => get_customizer_messaging_text( $message_three_setting_id, true ),
+			]
+		]
+	);
+
+	/**
+	 * Any Pending state
+	 */
+	$message_four_setting_id = 'coil_verifying_status_message';
+
+	$wp_customize->add_setting(
+		$message_four_setting_id,
+		[
+			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'sanitize_callback' => 'wp_filter_nohtml_kses',
+		]
+	);
+
+	// Add controls to message two setting.
+	$wp_customize->add_control(
+		$message_four_setting_id,
+		[
+			'type'        => 'textarea',
+			'label'       => __( 'Message Four', 'coil-monetize-content' ),
+			'section'     => $messaging_section_id,
+			'description' => __( 'When any pending status is reached.', 'coil-monetize-content' ),
+			'input_attrs' => [
+				'placeholder' => get_customizer_messaging_text( $message_four_setting_id, true ),
+			]
+		]
+	);
+
+}
