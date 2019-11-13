@@ -13,8 +13,13 @@ git config --global user.email "$EMAIL"
 rm -fr .git
 git init
 
+ls -la
+echo "* Debug: git add"
 git add wp-content/
+
+echo "* Debug: git status"
 git status
+
 git commit -m "Bitbucket Pipelines Deployment"
 git clean -f
 
