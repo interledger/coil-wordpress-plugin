@@ -9,14 +9,17 @@ mv .build/gitignore-wpengine .gitignore
 echo "* Resetting git"
 git config --global user.name "Bitbucket Pipelines Deploy"
 git config --global user.email "$EMAIL"
-pwd
-ls -la
-ls -laR wp-content/plugins/
 
 rm -fr .git
 git init
 
+ls -laR wp-content
+echo "* Debug: git add"
 git add wp-content/
+
+echo "* Debug: git status"
+git status
+
 git commit -m "Bitbucket Pipelines Deployment"
 git clean -f
 
