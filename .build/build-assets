@@ -24,5 +24,6 @@ mv releases/*.zip wp-content/plugins/
 cd wp-content/plugins/
 unzip coil-monetize-content.zip
 rm *.zip
+ls -la
 
 echo "** BUILD end"

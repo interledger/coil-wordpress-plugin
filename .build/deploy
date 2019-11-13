@@ -12,6 +12,7 @@ git config --global user.email "$EMAIL"
 pwd
 ls -la
 ls -laR wp-content/plugins/
+
 rm -fr .git
 git init
 
