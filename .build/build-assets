@@ -10,7 +10,6 @@ echo "$LOGSTAMP_DATE $BITBUCKET_DEPLOYMENT_ENVIRONMENT $BITBUCKET_COMMIT" > .log
 update-alternatives --set php /usr/bin/php7.1
 
 echo "* Zipping 'n' movin'"
-
 composer install
 npm install
 
@@ -24,6 +23,5 @@ mv releases/*.zip wp-content/plugins/
 cd wp-content/plugins/
 unzip coil-monetize-content.zip
 rm *.zip
-ls -la
 
 echo "** BUILD end"
