@@ -44,6 +44,9 @@
 
 	<!-- Disallow long array syntax. -->
 	<rule ref="Generic.Arrays.DisallowLongArraySyntax" />
+	<rule ref="Generic.Arrays">
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax" />
+	</rule>
 
 	<!-- Single statement on same line. -->
 	<rule ref="Generic.Formatting.DisallowMultipleStatements" />

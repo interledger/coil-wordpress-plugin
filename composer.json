@@ -40,7 +40,7 @@
 		"hooks": {
 			"pre-push": [
 				"composer run phpcs",
-				"grunt test"
+				"npx grunt test"
 			]
 		}
 	},
