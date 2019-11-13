@@ -10,7 +10,7 @@ definitions:
           - chmod +x ./.build/build-assets
           - ./.build/build-assets
         artifacts:
-          - wp-content/plugins/coil-monetize-content/
+          - wp-content/
     # DEPLOY TO WPE
     - step: &deploy
         name: Deploy to WPE
