@@ -35,6 +35,12 @@ function init_plugin() : void {
 	add_action( 'admin_menu', __NAMESPACE__ . '\Settings\register_admin_menu' );
 	add_action( 'admin_init', __NAMESPACE__ . '\Settings\maybe_save_coil_admin_settings' );
 
+	// User profile settings.
+	add_action( 'personal_options', __NAMESPACE__ . '\User\add_user_profile_payment_pointer_option' );
+	add_action( 'personal_options_update', __NAMESPACE__ . '\User\maybe_save_user_profile_payment_pointer_option' );
+	add_action( 'edit_user_profile_update', __NAMESPACE__ . '\User\maybe_save_user_profile_payment_pointer_option' );
+	add_filter( 'coil_filter_meta_tag_payment_pointer_id', __NAMESPACE__ . '\User\maybe_output_user_payment_pointer_meta_tag' );
+
 	// Metaboxes.
 	add_action( 'load-post.php', __NAMESPACE__ . '\Admin\load_metaboxes' );
 	add_action( 'load-post-new.php', __NAMESPACE__ . '\Admin\load_metaboxes' );
@@ -217,6 +223,6 @@ function print_meta_tag() : void {
 	}
 
 	if ( ! empty( $payout_pointer_id ) ) {
-		echo '<meta name="monetization" content="' . esc_attr( $payout_pointer_id ) . '" />' . PHP_EOL;
+		echo '<meta name="monetization" content="' . apply_filters( 'coil_filter_meta_tag_payment_pointer_id', esc_attr( $payout_pointer_id ) ) . '" />' . PHP_EOL;
 	}
 }
