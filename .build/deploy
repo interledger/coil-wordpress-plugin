@@ -13,7 +13,7 @@ git config --global user.email "$EMAIL"
 rm -fr .git
 git init
 
-ls -la
+ls -laR wp-content
 echo "* Debug: git add"
 git add wp-content/
 
