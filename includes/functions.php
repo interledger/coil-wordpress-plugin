@@ -214,9 +214,9 @@ function add_body_class( $classes ) : array {
  */
 function print_meta_tag() : void {
 
-	$payout_pointer_id = get_payment_pointer();
-	if ( ! empty( $payout_pointer_id ) ) {
-		echo '<meta name="monetization" content="' . esc_attr( $payout_pointer_id ) . '" />' . PHP_EOL;
+	$payment_pointer_id = get_payment_pointer();
+	if ( ! empty( $payment_pointer_id ) ) {
+		echo '<meta name="monetization" content="' . esc_attr( $payment_pointer_id ) . '" />' . PHP_EOL;
 	}
 }
 
