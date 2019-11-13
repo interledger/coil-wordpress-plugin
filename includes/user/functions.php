@@ -9,7 +9,7 @@ namespace Coil\User;
 /**
  * Adds a text field on the user profile page to save a per-user payment pointer.
  *
- * @param WP_User $user	The WordPress user being displayed.
+ * @param WP_User $user The WordPress user being displayed.
  * @return void
  */
 function add_user_profile_payment_pointer_option( $user ) : void {
@@ -21,7 +21,7 @@ function add_user_profile_payment_pointer_option( $user ) : void {
 		return;
 	}
 
-	$userid = $user->ID;
+	$userid               = $user->ID;
 	$user_payment_pointer = get_user_meta( $userid, 'coil_user_payment_pointer_id', true );
 	?>
 	<tr>
@@ -39,7 +39,7 @@ function add_user_profile_payment_pointer_option( $user ) : void {
  * Saves the user payment pointer setting as user_meta if conditons
  * are met.
  *
- * @param WP_User $user	The WordPress user being displayed.
+ * @param WP_User $user The WordPress user being displayed.
  * @return void
  */
 function maybe_save_user_profile_payment_pointer_option( $user_id ) : void {
@@ -66,8 +66,9 @@ function maybe_save_user_profile_payment_pointer_option( $user_id ) : void {
  */
 function maybe_output_user_payment_pointer_meta_tag( $payment_pointer ) : string {
 
-	$author_id = get_post_field( 'post_author', $post_id );
+	$author_id            = get_post_field( 'post_author', $post_id );
 	$user_payment_pointer = sanitize_text_field( get_user_meta( $author_id, 'coil_user_payment_pointer_id', true ) );
 
-	return $payment_pointer = ( ! empty( $user_payment_pointer ) ) ? $user_payment_pointer : $payment_pointer;
+	$payment_pointer = ( ! empty( $user_payment_pointer ) ) ? $user_payment_pointer : $payment_pointer;
+	return $payment_pointer;
 }
