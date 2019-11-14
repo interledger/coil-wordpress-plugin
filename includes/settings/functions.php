@@ -211,7 +211,7 @@ function coil_content_settings_section_render_posts_options() {
 function coil_content_settings_post_types_validation( $post_content_settings ) : array {
 	return array_map(
 		function( $radio_value ) {
-			$valid_choices = array_keys( Gating\get_monetization_settings() );
+			$valid_choices = array_keys( Gating\get_monetization_setting_types() );
 			return ( in_array( $radio_value, $valid_choices ) ? sanitize_key( $radio_value ) : 'no' );
 		},
 		(array)$post_content_settings
