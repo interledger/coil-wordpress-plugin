@@ -84,10 +84,11 @@ function maybe_save_coil_admin_settings() : void {
 
 // Register and define the settings used on this page.
 function register_admin_content_settings() {
+
 	register_setting(
-		'coil_content_settings_post_types',
-		'coil_content_settings',
-		__NAMESPACE__ . '\coil_content_settings_validate_options'
+		'coil_content_settings_posts_group',
+		'coil_content_settings_posts_group',
+		__NAMESPACE__ . '\coil_content_settings_post_types_validation'
 	);
 
 	add_settings_section(
@@ -97,18 +98,11 @@ function register_admin_content_settings() {
 		'coil_content_settings'
 	);
 
-	add_settings_field(
-		'test_stinrg',
-		'enter text here',
-		'setting_input',
-		'coil_content_settingss',
-		'coil_content_settings'
-	);
 }
 
+// This function renders the output of the radio buttons
 function coil_content_settings_section_render_posts_options() {
 
-	echo 'This function renders the output of the radio buttons';
 	// get all the post types within this page.
 	$post_types = get_post_types(
 		[],
@@ -128,6 +122,7 @@ function coil_content_settings_section_render_posts_options() {
 	];
 	$exclude = apply_filters( 'coil_settings_content_type_exclude', $post_types_exclude );
 
+	// Store the post type options using the above exclusion options.
 	$post_type_options = [];
 	foreach( $post_types as $post_type ) {
 
@@ -137,49 +132,71 @@ function coil_content_settings_section_render_posts_options() {
 		$post_type_options[] = $post_type;
 	}
 
+	// Set default gating settings
+	// PRAGTODO - fetch these from main plugin
 	$form_gating_settings = [
 		'no_monetization' => 'No Monetization',
 		'monetized_public' => 'Monetized and Public',
 		'monetized_subscribers' => 'Monetized Subscribers Only',
 	];
 
+	// If there are post types available, output them:
 	if ( ! empty( $post_type_options ) ) {
+
+		// Get the options saved for this settings section.
+		$content_settings_posts_options = get_option('coil_content_settings_posts_group');
 		?>
-		<table class="form-table">
+
+		<table class="widefat">
+			<thead>
+				<th></th>
+				<?php foreach( $form_gating_settings as $setting_key => $setting_value ) : ?>
+					<th class="posts_table_header">
+						<?php echo esc_html( $setting_value ); ?>
+					</th>
+				<?php endforeach; ?>
+			</thead>
 			<tbody>
-				<?php
-				foreach( $post_type_options as $post_type ) {
-					?>
+				<?php foreach( $post_type_options as $post_type ) : ?>
 					<tr>
 						<th scope="row"><?php echo esc_html( $post_type->label ); ?></th>
-						<?php
-						foreach( $form_gating_settings as $setting_key => $setting_value ) {
+						<?php foreach( $form_gating_settings as $setting_key => $setting_value ) :
 							$input_id   = $post_type->name . '_' . $setting_key;
-							$input_name = $post_type->name . '_content_options';
+							$input_name = 'coil_content_settings_posts_group[' . $post_type->name . '_content_options]';
+
+							/**
+							 * Specify the default checked state on the input from
+							 * any settings stored in the database. If the individual
+							 * input status is not set, default to the first radio
+							 * option (No Monetization)
+							 */
+							$checked_input = false;
+							if( $setting_key === 'no_monetization' ) {
+								$checked_input = 'checked="true"';
+							} else {
+								$checked_input = checked( $setting_key, $content_settings_posts_options[$post_type->name . '_content_options'], false );
+							}
 							?>
 							<td>
-
-								<input type="radio" name="<?php echo esc_attr($input_name) ;?>" id="<?php echo esc_attr($input_id) ;?>"></input>
-								<label for="<?php echo esc_attr($input_id) ;?>"><?php echo $setting_value; ?></label>
+								<?php
+								printf( '<input type="radio" name="%s" id="%s" value="%s"%s></input>',
+									esc_attr( $input_name ),
+									esc_attr( $input_id ) ,
+									esc_attr( $setting_key ),
+									$checked_input
+								);
+								?>
 							</td>
-							<?php
-						}
-
-						?>
+						<?php endforeach; ?>
 					</tr>
-					<?php
-				}
-				?>
-			<tbody>
+				<?php endforeach; ?>
+			</tbody>
 		</table>
 		<?php
 	}
-
-
 }
 
 
-function coil_content_settings_validate_options( $input ) {
-	$valid = [];
-	return $valid;
+function coil_content_settings_post_types_validation( $input ) {
+	return array_map( 'wp_filter_nohtml_kses', (array)$input );
 }
