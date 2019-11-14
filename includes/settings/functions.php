@@ -138,7 +138,7 @@ function coil_content_settings_section_render_posts_options() {
 
 	// Store the post type options using the above exclusion options.
 	$post_type_options = [];
-	foreach( $post_types as $post_type ) {
+	foreach ( $post_types as $post_type ) {
 
 		if ( ! empty( $exclude ) && in_array( $post_type->name, $exclude, true ) ) {
 			continue;
@@ -150,22 +150,22 @@ function coil_content_settings_section_render_posts_options() {
 	if ( ! empty( $post_type_options ) ) {
 
 		$form_gating_settings = Gating\get_monetization_settings();
-		$content_settings_posts_options = get_option('coil_content_settings_posts_group');
+		$content_settings_posts_options = get_option( 'coil_content_settings_posts_group' );
 		?>
 		<table class="widefat">
 			<thead>
-				<th></th>
-				<?php foreach( $form_gating_settings as $setting_key => $setting_value ) : ?>
+				<th><?php _e( 'Post Type', 'coil-monetize-content' ); ?></th>
+				<?php foreach ( $form_gating_settings as $setting_key => $setting_value ) : ?>
 					<th class="posts_table_header">
 						<?php echo esc_html( $setting_value ); ?>
 					</th>
 				<?php endforeach; ?>
 			</thead>
 			<tbody>
-				<?php foreach( $post_type_options as $post_type ) : ?>
+				<?php foreach ( $post_type_options as $post_type ) : ?>
 					<tr>
 						<th scope="row"><?php echo esc_html( $post_type->label ); ?></th>
-						<?php foreach( $form_gating_settings as $setting_key => $setting_value ) :
+						<?php foreach ( $form_gating_settings as $setting_key => $setting_value ) :
 							$input_id   = $post_type->name . '_' . $setting_key;
 							$input_name = 'coil_content_settings_posts_group[' . $post_type->name . ']';
 
@@ -176,9 +176,9 @@ function coil_content_settings_section_render_posts_options() {
 							 * option (No Monetization)
 							 */
 							$checked_input = false;
-							if( $setting_key === 'no' ) {
+							if ( $setting_key === 'no' ) {
 								$checked_input = 'checked="true"';
-							} else {
+							} else if ( isset( $content_settings_posts_options[$post_type->name] ) ) {
 								$checked_input = checked( $setting_key, $content_settings_posts_options[$post_type->name], false );
 							}
 							?>
@@ -202,6 +202,12 @@ function coil_content_settings_section_render_posts_options() {
 }
 
 
-function coil_content_settings_post_types_validation( $input ) {
-	return array_map( 'wp_filter_nohtml_kses', (array)$input );
+function coil_content_settings_post_types_validation( $post_content_settings ) {
+	return array_map(
+		function( $radio_value ) {
+			$valid_choices = array_keys( Gating\get_monetization_settings() );
+			return ( in_array( $radio_value, $valid_choices ) ? $radio_value : 'no' );
+		},
+		(array)$post_content_settings
+	);
 }
