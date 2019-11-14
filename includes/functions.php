@@ -35,7 +35,8 @@ function init_plugin() : void {
 	add_action( 'admin_menu', __NAMESPACE__ . '\Settings\register_admin_menu' );
 	add_action( 'admin_init', __NAMESPACE__ . '\Settings\maybe_save_coil_admin_settings' );
 	add_action( 'admin_init', __NAMESPACE__ . '\Settings\register_admin_content_settings' );
-	// add_filter( 'coil_settings_get_post_types', __NAMESPACE__ . '\Settings\update_post_type_args' );
+	add_filter( 'pre_update_option_coil_content_settings_posts_group', __NAMESPACE__ . '\Settings\maybe_save_coil_content_settings', 10, 3 );
+
 	add_action( 'init', __NAMESPACE__ . '\wpdocs_codex_book_init' );
 	add_action( 'init', __NAMESPACE__ . '\wpdocs_codex_offices_init' );
 

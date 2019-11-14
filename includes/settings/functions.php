@@ -217,3 +217,47 @@ function coil_content_settings_post_types_validation( $post_content_settings ) :
 		(array)$post_content_settings
 	);
 }
+
+/**
+ * Set the content gating for the post types when the plugin setting is saved.
+ *
+ * @param string $option Name of the updated option.
+ * @param mixed $old_value The old option value(s).
+ * @param mixed $option_name The name of the option.
+ * @return void
+ */
+function maybe_save_coil_content_settings( $new_values, $option, $old_values ) {
+	// PRAGTODO - add nonce validation
+	if ( is_array( $new_values ) && ! empty( $new_values ) ) {
+
+		$post_type_values = array_values( $new_values );
+		$post_types = array_keys( $new_values );
+		$posts_to_update = get_posts(
+			[
+				'numberposts' => 9999, // PRAGTODO - work out how to limit big DB hits
+				'post_type'   => $post_types
+			]
+		);
+
+		foreach( $posts_to_update as $post ) {
+
+			if( in_array( $post->post_type, $post_types) ) {
+
+				$post_gating_option = $new_values[$post->post_type];
+
+				// PRAGTODO Check first if the gating is different
+					// get_post_gating on the post ID
+					// compare with what we will be setting
+					// if there is a change, set it
+
+				// Update the post with this option passing the post id and the option
+				Gating\set_post_gating( $post->ID, $post_gating_option );
+
+			}
+
+		}
+
+	}
+
+	return $new_values;
+}

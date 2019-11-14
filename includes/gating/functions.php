@@ -91,7 +91,6 @@ function get_post_gating( int $post_id ) : string {
 	return $gating;
 }
 
-
 /**
  * Set the gating type for the specified post.
  *
