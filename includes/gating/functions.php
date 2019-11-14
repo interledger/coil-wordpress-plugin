@@ -26,7 +26,7 @@ function register_content_meta() : void {
  *
  * @return array
  */
-function get_monetization_settings() : array {
+function get_monetization_setting_types() : array {
 	$settings      = [
 		'no'        => esc_html__( 'No Monetization', 'coil-monetize-content' ),
 		'no-gating' => esc_html__( 'Monetized and Public', 'coil-monetize-content' ),

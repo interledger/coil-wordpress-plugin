@@ -149,7 +149,7 @@ function coil_content_settings_section_render_posts_options() {
 	// If there are post types available, output them:
 	if ( ! empty( $post_type_options ) ) {
 
-		$form_gating_settings = Gating\get_monetization_settings();
+		$form_gating_settings = Gating\get_monetization_setting_types();
 		$content_settings_posts_options = get_option( 'coil_content_settings_posts_group' );
 		?>
 		<table class="widefat">
@@ -201,12 +201,18 @@ function coil_content_settings_section_render_posts_options() {
 	}
 }
 
-
-function coil_content_settings_post_types_validation( $post_content_settings ) {
+/**
+ * Allow the radio button options in the posts cotent section to
+ * be properly validated
+ *
+ * @param array $post_content_settings The posted radio options from the content settings section.
+ * @return array
+ */
+function coil_content_settings_post_types_validation( $post_content_settings ) : array {
 	return array_map(
 		function( $radio_value ) {
 			$valid_choices = array_keys( Gating\get_monetization_settings() );
-			return ( in_array( $radio_value, $valid_choices ) ? $radio_value : 'no' );
+			return ( in_array( $radio_value, $valid_choices ) ? sanitize_key( $radio_value ) : 'no' );
 		},
 		(array)$post_content_settings
 	);
