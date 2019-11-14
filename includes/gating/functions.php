@@ -22,6 +22,20 @@ function register_content_meta() : void {
 }
 
 /**
+ * Store the monetization options.
+ *
+ * @return array
+ */
+function get_monetization_settings() : array {
+	$settings      = [
+		'no'        => esc_html__( 'No Monetization', 'coil-monetize-content' ),
+		'no-gating' => esc_html__( 'Monetized and Public', 'coil-monetize-content' ),
+		'gate-all'  => esc_html__( 'Subscribers Only', 'coil-monetize-content' ),
+	];
+	return $settings;
+}
+
+/**
  * Maybe restrict (gate) visibility of the specified post content.
  *
  * @param string $content Post content to checl.

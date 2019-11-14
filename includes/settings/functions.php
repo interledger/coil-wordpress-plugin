@@ -6,6 +6,8 @@ declare(strict_types=1);
 
 namespace Coil\Settings;
 
+use Coil\Gating;
+
 /**
  * Add Coil settings to the admin navigation menu.
  *
@@ -45,7 +47,15 @@ function render_coil_settings_screen() : void {
  * @return void
  */
 function render_coil_submenu_settings_screen() : void {
-	include_once( dirname( __FILE__ ) . '/plugin-settings.php' );
+	?>
+	<div class="wrap coil plugin-settings">
+		<form action="options.php" method="post">
+			<?php settings_fields( 'coil_content_settings_posts_group' ); ?>
+			<?php do_settings_sections( 'coil_content_settings' ); ?>
+			<?php submit_button(); ?>
+		</form>
+	</div>
+	<?php
 }
 
 /**
@@ -100,16 +110,20 @@ function register_admin_content_settings() {
 
 }
 
-// This function renders the output of the radio buttons
+/**
+ * Renders the output of the radio buttons based on the post
+ * types available in WordPress.
+ *
+ * @return void
+ */
 function coil_content_settings_section_render_posts_options() {
 
-	// get all the post types within this page.
 	$post_types = get_post_types(
 		[],
 		'objects'
 	);
 
-	// Allow the exclude post types to be filtered.
+	// Set up options to exclude certain post types.
 	$post_types_exclude = [
 		'attachment',
 		'revision',
@@ -132,21 +146,12 @@ function coil_content_settings_section_render_posts_options() {
 		$post_type_options[] = $post_type;
 	}
 
-	// Set default gating settings
-	// PRAGTODO - fetch these from main plugin
-	$form_gating_settings = [
-		'no_monetization' => 'No Monetization',
-		'monetized_public' => 'Monetized and Public',
-		'monetized_subscribers' => 'Monetized Subscribers Only',
-	];
-
 	// If there are post types available, output them:
 	if ( ! empty( $post_type_options ) ) {
 
-		// Get the options saved for this settings section.
+		$form_gating_settings = Gating\get_monetization_settings();
 		$content_settings_posts_options = get_option('coil_content_settings_posts_group');
 		?>
-
 		<table class="widefat">
 			<thead>
 				<th></th>
@@ -162,7 +167,7 @@ function coil_content_settings_section_render_posts_options() {
 						<th scope="row"><?php echo esc_html( $post_type->label ); ?></th>
 						<?php foreach( $form_gating_settings as $setting_key => $setting_value ) :
 							$input_id   = $post_type->name . '_' . $setting_key;
-							$input_name = 'coil_content_settings_posts_group[' . $post_type->name . '_content_options]';
+							$input_name = 'coil_content_settings_posts_group[' . $post_type->name . ']';
 
 							/**
 							 * Specify the default checked state on the input from
@@ -171,10 +176,10 @@ function coil_content_settings_section_render_posts_options() {
 							 * option (No Monetization)
 							 */
 							$checked_input = false;
-							if( $setting_key === 'no_monetization' ) {
+							if( $setting_key === 'no' ) {
 								$checked_input = 'checked="true"';
 							} else {
-								$checked_input = checked( $setting_key, $content_settings_posts_options[$post_type->name . '_content_options'], false );
+								$checked_input = checked( $setting_key, $content_settings_posts_options[$post_type->name], false );
 							}
 							?>
 							<td>

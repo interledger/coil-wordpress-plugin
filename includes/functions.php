@@ -332,7 +332,7 @@ function wpdocs_codex_offices_init() {
         'supports'           => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' ),
     );
 
-    register_post_type( 'offices', $args );
+    register_post_type( 'offices-test-help_te', $args );
 }
 
 
