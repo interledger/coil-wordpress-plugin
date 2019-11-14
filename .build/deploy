@@ -4,7 +4,6 @@ echo "** Deployment: START"
 
 echo "* Preparing version control for deployment push"
 rm .gitignore
-mv .build/gitignore-wpengine .gitignore
 
 echo "* Resetting git"
 git config --global user.name "Bitbucket Pipelines Deploy"
@@ -13,11 +12,7 @@ git config --global user.email "$EMAIL"
 rm -fr .git
 git init
 
-ls -laR wp-content
-echo "* Debug: git add"
 git add wp-content/
-
-echo "* Debug: git status"
 git status
 
 git commit -m "Bitbucket Pipelines Deployment"
@@ -25,7 +20,6 @@ git clean -f
 
 echo "* Adding git remote: $WPE_INSTALL"
 git remote add wpe git@git.wpengine.com:production/$WPE_INSTALL.git
-
 
 echo "* Pushing $BITBUCKET_BRANCH to $WPE_INSTALL"
 git status
