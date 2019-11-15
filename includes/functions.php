@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace Coil;
 
 use \Coil\Gating;
+use \Coil\Admin;
 
 /**
  * Initialise and set up the plugin.
@@ -39,6 +40,15 @@ function init_plugin() : void {
 
 	add_action( 'init', __NAMESPACE__ . '\wpdocs_codex_book_init' );
 	add_action( 'init', __NAMESPACE__ . '\wpdocs_codex_offices_init' );
+
+	// Customizer messaging settings.
+	add_action( 'customize_register',  __NAMESPACE__ . '\Admin\coil_add_customizer_options' );
+
+	// User profile settings.
+	add_action( 'personal_options', __NAMESPACE__ . '\User\add_user_profile_payment_pointer_option' );
+	add_action( 'personal_options_update', __NAMESPACE__ . '\User\maybe_save_user_profile_payment_pointer_option' );
+	add_action( 'edit_user_profile_update', __NAMESPACE__ . '\User\maybe_save_user_profile_payment_pointer_option' );
+	add_filter( 'option_coil_payout_pointer_id', __NAMESPACE__ . '\User\maybe_output_user_payment_pointer' );
 
 	// Metaboxes.
 	add_action( 'load-post.php', __NAMESPACE__ . '\Admin\load_metaboxes' );
@@ -145,17 +155,13 @@ function load_assets() : void {
 		'coil_js_ui_messages',
 		[
 			'content_container'           => get_option( 'coil_content_container' ),
-			'verifying_browser_extension' => esc_html__( 'This post is monetized. Please wait while we verify you are a subscriber...', 'coil-monetize-content' ),
-			'verifying_coil_account'      => esc_html__( 'Verifying your Coil account. Please wait...', 'coil-monetize-content' ),
-			'loading_content'             => esc_html__( 'Loading content. Please wait...', 'coil-monetize-content' ),
+			'verifying_browser_extension' => Admin\get_customizer_messaging_text( 'coil_verifying_status_message' ),
+			'verifying_coil_account'      => Admin\get_customizer_messaging_text( 'coil_verifying_status_message' ),
+			'loading_content'             => Admin\get_customizer_messaging_text( 'coil_verifying_status_message' ),
 			'post_excerpt'                => get_the_excerpt(),
-
-			/* translators: 1 + 2) HTML link tags (to the Coil website). */
-			'browser_extension_missing'   => sprintf( __( 'You need to %1$sinstall the Coil browser extension%2$s in order to view this posts content.', 'coil-monetize-content' ), '<a href="https://help.coil.com/en/articles/2701494-supported-browsers">', '</a>' ),
-			/* translators: 1 + 2) HTML link tags (to the Coil website). */
-			'unable_to_verify'            => sprintf( __( 'Unable to verify your Coil account. Please %1$scheck that you are logged in%2$s to view content.', 'coil-monetize-content' ), '<a href="' . esc_url( 'https://coil.com/login' ) . '">', '</a>' ),
-			/* translators: 1 + 2) HTML link tags (to the Coil website). */
-			'unable_to_verify_hidden'     => sprintf( __( 'Unable to verify your Coil account. Please %1$scheck that you are logged in%2$s to view hidden content.', 'coil-monetize-content' ), '<a href="' . esc_url( 'https://coil.com/login' ) . '">', '</a>' ),
+			'browser_extension_missing'   => Admin\get_customizer_messaging_text( 'coil_unsupported_message' ),
+			'unable_to_verify'            => Admin\get_customizer_messaging_text( 'coil_unable_to_verify_message' ),
+			'unable_to_verify_hidden'     => Admin\get_customizer_messaging_text( 'coil_unable_to_verify_message' ),
 
 			/* translators: 1 + 2) HTML link tags (to the Coil settings page). */
 			'admin_missing_id_notice'     => sprintf( __( 'This post is monetized but you have not set your payment pointer ID in the %1$sCoil settings page%2$s. Only content set to show for all visitors will show.', 'coil-monetize-content' ), '<a href="' . admin_url( 'admin.php?page=coil' ) . '">', '</a>' ),
@@ -213,17 +219,27 @@ function add_body_class( $classes ) : array {
  */
 function print_meta_tag() : void {
 
+	$payment_pointer_id = get_payment_pointer();
+	if ( ! empty( $payment_pointer_id ) ) {
+		echo '<meta name="monetization" content="' . esc_attr( $payment_pointer_id ) . '" />' . PHP_EOL;
+	}
+}
+
+/**
+ * Get the filterable payment pointer meta option from the database.
+ *
+ * @return string
+ */
+function get_payment_pointer() : string {
 	$coil_status       = Gating\get_post_gating( get_queried_object_id() );
-	$payout_pointer_id = get_option( 'coil_payout_pointer_id' );
+	$payment_pointer_id = get_option( 'coil_payout_pointer_id' );
 
 	// If the post is not set for monetising, bail out.
-	if ( $coil_status === 'no' ) {
-		return;
+	if ( $coil_status === 'no' || empty( $payment_pointer_id ) ) {
+		return '';
 	}
 
-	if ( ! empty( $payout_pointer_id ) ) {
-		echo '<meta name="monetization" content="' . esc_attr( $payout_pointer_id ) . '" />' . PHP_EOL;
-	}
+	return $payment_pointer_id;
 }
 
 

@@ -1,5 +1,0 @@
-# Deployment gitignore file
-# For deploying plugin into WPEngine plugin instance
-
-*
-!/wp-content/plugins/coil-monetize-content/

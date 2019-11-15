@@ -25,6 +25,7 @@ const PLUGIN_VERSION = '1.0.0';
 require_once __DIR__ . '/includes/admin/functions.php';
 require_once __DIR__ . '/includes/settings/functions.php';
 require_once __DIR__ . '/includes/gating/functions.php';
+require_once __DIR__ . '/includes/user/functions.php';
 require_once __DIR__ . '/includes/functions.php';
 
 add_action( 'plugins_loaded', __NAMESPACE__ . '\init_plugin' );

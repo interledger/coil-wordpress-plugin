@@ -213,3 +213,169 @@ function load_admin_assets() : void {
 		PLUGIN_VERSION
 	);
 }
+
+/**
+ * Get a message saved in the customizer messages section. If no message is set,
+ * a default value is returned.
+ *
+ * @param string $message_id The id of the message control_setting defined in the customizer
+ * @param bool $get_default If true, will output the default message instead of getting the cutomizer setting.
+ * @return string
+ */
+function get_customizer_messaging_text( $message_id, $get_default = false ) : string {
+
+	// Set up message defaults.
+	$defaults = [
+		'coil_unsupported_message'        => __( 'Not using supported browser and extension, this is how to access / get COIL', 'coil-monetize-content' ),
+		'coil_unable_to_verify_message'   => __( 'You need a valid Coil account in order to see content, here\'s how..', 'coil-monetize-content' ),
+		'coil_voluntary_donation_message' => __( 'This site is monetized using Coil.  We ask for your help to pay for our time in creating this content for you.  Here\'s how...', 'coil-monetize-content' ),
+		'coil_verifying_status_message'   => __( 'Verifying Web Monetization status. Please wait...', 'coil-monetize-content' ),
+	];
+
+	// Get the message from the customizer.
+	$customizer_setting = get_theme_mod( $message_id );
+
+	/**
+	 * If an empty string is saved in the customizer,
+	 * get_theme_mod returns an empty string instead of the default
+	 * setting whcih is defined as an optional second parameter.
+	 * This is recognized as a bug (wontfix) in WordPress Core.
+	 *
+	 * @see https://core.trac.wordpress.org/ticket/28637
+	 */
+	if ( true === $get_default || empty( $customizer_setting ) || false === $customizer_setting ) {
+		$customizer_setting = isset( $defaults[$message_id] ) ? $defaults[$message_id] : '';
+	}
+	return $customizer_setting;
+}
+
+/**
+ * Add custom section to the customizer to allow Coil messaging
+ * to be set.
+ *
+ * @param \WP_Customize_Manager $wp_customize
+ * @link http://codex.wordpress.org/Theme_Customization_API
+ * @return void
+ */
+function coil_add_customizer_options( $wp_customize ) : void {
+
+	// Add a new panel section.
+	$coil_customizer_panel_id = 'coil_customizer_settings_panel';
+
+	$wp_customize->add_panel(
+		$coil_customizer_panel_id,
+		[
+			'title'      => __( 'Coil Settings', 'coil-monetize-content' ),
+			'capability' => apply_filters( 'coil_settings_capability', 'manage_options' ),
+		]
+	);
+
+	// Messaging section.
+	$messaging_section_id = 'coil_customizer_section_messaging';
+
+	$wp_customize->add_section(
+		$messaging_section_id,
+		[
+			'title' => __( 'Messaging', 'coil-monetize-content' ),
+			'panel' => $coil_customizer_panel_id,
+		]
+	);
+
+	$incorrect_browser_setup_message_id = 'coil_unsupported_message';
+
+	$wp_customize->add_setting(
+		$incorrect_browser_setup_message_id,
+		[
+			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'sanitize_callback' => 'wp_filter_nohtml_kses',
+		]
+	);
+
+	// Add controls to message one setting.
+	$wp_customize->add_control(
+		$incorrect_browser_setup_message_id,
+		[
+			'type'        => 'textarea',
+			'label'       => __( 'Incorrect browser setup message', 'coil-monetize-content' ),
+			'section'     => $messaging_section_id,
+			'description' => __( 'This message is shown when content is set to be subscriber-only, and visitor either isn\'t using a supported browser, or doesn\'t have the browser extension installed correctly.', 'coil-monetize-content' ),
+			'input_attrs' => [
+				'placeholder' => get_customizer_messaging_text( $incorrect_browser_setup_message_id, true ),
+			]
+		]
+	);
+
+	$invalid_web_monetization_message_id = 'coil_unable_to_verify_message';
+
+	$wp_customize->add_setting(
+		$invalid_web_monetization_message_id,
+		[
+			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'sanitize_callback' => 'wp_filter_nohtml_kses',
+		]
+	);
+
+	// Add controls to message two setting.
+	$wp_customize->add_control(
+		$invalid_web_monetization_message_id,
+		[
+			'type'        => 'textarea',
+			'label'       => __( 'Invalid Web Monetization message', 'coil-monetize-content' ),
+			'section'     => $messaging_section_id,
+			'description' => __( 'This message is shown when content is set to be subscriber-only, browser setup is correct, but Web Monetization doesn\'t start.  It might be due to several reasons, including not having an active Coil account.', 'coil-monetize-content' ),
+			'input_attrs' => [
+				'placeholder' => get_customizer_messaging_text( $invalid_web_monetization_message_id, true ),
+			]
+		]
+	);
+
+	$voluntary_donation_message_id = 'coil_voluntary_donation_message';
+
+	$wp_customize->add_setting(
+		$voluntary_donation_message_id,
+		[
+			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'sanitize_callback' => 'wp_filter_nohtml_kses',
+		]
+	);
+
+	// Add controls to message two setting.
+	$wp_customize->add_control(
+		$voluntary_donation_message_id,
+		[
+			'type'        => 'textarea',
+			'label'       => __( 'Voluntary donation message', 'coil-monetize-content' ),
+			'section'     => $messaging_section_id,
+			'description' => __( 'This message is shown when content is set to "Monetized and Public" and visitor does not have Web Monetization in place and active in their browser.', 'coil-monetize-content' ),
+			'input_attrs' => [
+				'placeholder' => get_customizer_messaging_text( $voluntary_donation_message_id, true ),
+			]
+		]
+	);
+
+
+	$pending_message_id = 'coil_verifying_status_message';
+
+	$wp_customize->add_setting(
+		$pending_message_id,
+		[
+			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'sanitize_callback' => 'wp_filter_nohtml_kses',
+		]
+	);
+
+	// Add controls to message two setting.
+	$wp_customize->add_control(
+		$pending_message_id,
+		[
+			'type'        => 'textarea',
+			'label'       => __( 'Pending message', 'coil-monetize-content' ),
+			'section'     => $messaging_section_id,
+			'description' => __( 'This message is shown for a short time time only while check is made on browser setup and that an active Web Monetization account is in place.', 'coil-monetize-content' ),
+			'input_attrs' => [
+				'placeholder' => get_customizer_messaging_text( $pending_message_id, true ),
+			]
+		]
+	);
+
+}
