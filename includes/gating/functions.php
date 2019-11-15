@@ -26,13 +26,28 @@ function register_content_meta() : void {
  *
  * @return array
  */
-function get_monetization_setting_types() : array {
-	$settings = [
-		'no'        => esc_html__( 'No Monetization', 'coil-monetize-content' ),
-		'no-gating' => esc_html__( 'Monetized and Public', 'coil-monetize-content' ),
-		'gate-all'  => esc_html__( 'Subscribers Only', 'coil-monetize-content' ),
-	];
+function get_monetization_setting_types( $post_id = false ) : array {
+
+	if ( ! empty( $post_id ) ) {
+		$settings['default'] = esc_html__( 'Use Default', 'coil-monetize-content' );
+	}
+
+	$settings['no']        = esc_html__( 'No Monetization', 'coil-monetize-content' );
+	$settings['no-gating'] = esc_html__( 'Monetized and Public', 'coil-monetize-content' );
+	$settings['gate-all']  = esc_html__( 'Subscribers Only', 'coil-monetize-content' );
+
 	return $settings;
+}
+
+function get_valid_gating_types() {
+	$valid = [
+		'gate-all',
+		'gate-tagged-blocks',
+		'no',
+		'no-gating',
+		'default',
+	];
+	return $valid;
 }
 
 /**
@@ -63,6 +78,7 @@ function maybe_restrict_content( string $content ) : string {
 			$public_content .= $content;
 			break;
 
+		case 'default':
 		case 'no':
 		case 'no-gate':
 		default:
@@ -85,7 +101,7 @@ function get_post_gating( int $post_id ) : string {
 	$gating = get_post_meta( $post_id, '_coil_monetize_post_status', true );
 
 	if ( empty( $gating ) ) {
-		$gating = 'no';
+		$gating = 'default';
 	}
 
 	return $gating;
@@ -93,8 +109,26 @@ function get_post_gating( int $post_id ) : string {
 
 function get_content_gating( int $post_id ) : string {
 
+	$post_gating = get_post_gating( $post_id );
+
+	if ( $post_gating === 'default' ) {
+
+		// Check Taxonomy
+		$tax_gating = get_taxonomy_gating();
+		if ( $tax_gating === 'default' ) {
+
+			// Check global plugin settings
+			$global_gating = get_global_posts_gating();
+			if ( $global_gating === 'no' ) {
+				// do nothing
+			} else {
+				// adhere to the gating option for this post
+			}
+		}
+	}
+
 	// return a source of truth for this post.
-	// 1 check post setting -
+	// 1 check post setting - from this ID get_post_gating()
 	// 2 check taxonomy setting - get_taxonomy_gating()
 	// 3. check global setting - get_global_posts_gating()
 
@@ -120,16 +154,6 @@ function get_global_posts_gating() {
 }
 
 
-function get_valid_gating_types() {
-	$valid = [
-		'gate-all',
-		'gate-tagged-blocks',
-		'no',
-		'no-gating',
-	];
-	return $valid;
-}
-
 /**
  * Set the gating type for the specified post.
  *
@@ -141,7 +165,6 @@ function get_valid_gating_types() {
 function set_post_gating( int $post_id, string $gating_type ) : void {
 
 	$valid_gating_types = get_valid_gating_types();
-
 	if ( ! in_array( $gating_type, $valid_gating_types, true ) ) {
 		return;
 	}

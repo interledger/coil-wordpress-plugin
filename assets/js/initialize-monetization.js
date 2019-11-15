@@ -22,7 +22,7 @@
 		if ( $( 'body' ).hasClass( 'monetization-not-initialized' ) ) {
 
 			// Display post excerpt for gated posts.
-			if ( $( 'body' ).hasClass( 'coil-gate-all' ) && typeof post_excerpt !== 'undefined' ) {
+			if ( $( 'body' ).hasClass( 'coil-gate-all' ) && typeof post_excerpt !== 'undefined' && document.monetization.state !== 'stopped' ) {
 				$( content ).before( '<div class="entry-content coil-post-excerpt"><p>' + post_excerpt + '</p></div>' );
 			}
 
