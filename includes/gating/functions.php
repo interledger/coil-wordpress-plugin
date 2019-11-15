@@ -27,7 +27,7 @@ function register_content_meta() : void {
  * @return array
  */
 function get_monetization_setting_types() : array {
-	$settings      = [
+	$settings = [
 		'no'        => esc_html__( 'No Monetization', 'coil-monetize-content' ),
 		'no-gating' => esc_html__( 'Monetized and Public', 'coil-monetize-content' ),
 		'gate-all'  => esc_html__( 'Subscribers Only', 'coil-monetize-content' ),
@@ -91,6 +91,45 @@ function get_post_gating( int $post_id ) : string {
 	return $gating;
 }
 
+function get_content_gating( int $post_id ) : string {
+
+	// return a source of truth for this post.
+	// 1 check post setting -
+	// 2 check taxonomy setting - get_taxonomy_gating()
+	// 3. check global setting - get_global_posts_gating()
+
+	// if return value of each function is default, move onto the next function
+	// if the value is non default, return immediately.
+}
+
+// $val = get_content_gating(11);
+// at this point val, doesn't need to know if the content gating is on the post or tax,
+// it just returns one of the strings.
+
+function get_taxonomy_gating() {
+	// abstract the tax loop to this function and use in get_content_gating().
+
+	// get all the taxonomies,
+	// get the meta
+	// check if set or not
+}
+
+// abstract the global loop to this function and use in get_content_gating().
+function get_global_posts_gating() {
+	return get_option( 'coil_content_settings_posts_group' );
+}
+
+
+function get_valid_gating_types() {
+	$valid = [
+		'gate-all',
+		'gate-tagged-blocks',
+		'no',
+		'no-gating',
+	];
+	return $valid;
+}
+
 /**
  * Set the gating type for the specified post.
  *
@@ -101,12 +140,7 @@ function get_post_gating( int $post_id ) : string {
  */
 function set_post_gating( int $post_id, string $gating_type ) : void {
 
-	$valid_gating_types = [
-		'gate-all',
-		'gate-tagged-blocks',
-		'no',
-		'no-gating',
-	];
+	$valid_gating_types = get_valid_gating_types();
 
 	if ( ! in_array( $gating_type, $valid_gating_types, true ) ) {
 		return;

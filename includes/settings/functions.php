@@ -8,6 +8,10 @@ namespace Coil\Settings;
 
 use Coil\Gating;
 
+/* ------------------------------------------------------------------------ *
+ * Menu Registration
+ * ------------------------------------------------------------------------ */
+
 /**
  * Add Coil settings to the admin navigation menu.
  *
@@ -32,31 +36,36 @@ function register_admin_menu() : void {
 	);
 }
 
-/**
- * Render the Coil setting screen.
- *
- * @return void
- */
-function render_coil_settings_screen() : void {
-	include_once( dirname( __FILE__ ) . '/temp-html-settings.php' );
-}
+/* ------------------------------------------------------------------------ *
+ * Setting Registration
+ * ------------------------------------------------------------------------ */
 
 /**
- * Render the Coil submenu setting screen.
+ * Initialize the theme options page by registering the Sections,
+ * Fields, and Settings.
  *
  * @return void
  */
-function render_coil_submenu_settings_screen() : void {
-	?>
-	<div class="wrap coil plugin-settings">
-		<form action="options.php" method="post">
-			<?php settings_fields( 'coil_content_settings_posts_group' ); ?>
-			<?php do_settings_sections( 'coil_content_settings' ); ?>
-			<?php submit_button(); ?>
-		</form>
-	</div>
-	<?php
+function register_admin_content_settings() {
+
+	register_setting(
+		'coil_content_settings_posts_group',
+		'coil_content_settings_posts_group',
+		__NAMESPACE__ . '\coil_content_settings_posts_validation'
+	);
+
+	add_settings_section(
+		'coil_content_settings_posts_section',
+		_x( 'Posts', 'content settings tab section title', 'coil-monetize-content' ),
+		__NAMESPACE__ . '\coil_content_settings_posts_render_callback',
+		'coil_content_settings_posts'
+	);
+
 }
+
+/* ------------------------------------------------------------------------ *
+ * Section Validation
+ * ------------------------------------------------------------------------ */
 
 /**
  * Maybe save the Coil admin settings.
@@ -92,22 +101,34 @@ function maybe_save_coil_admin_settings() : void {
 	}
 }
 
-// Register and define the settings used on this page.
-function register_admin_content_settings() {
-
-	register_setting(
-		'coil_content_settings_posts_group',
-		'coil_content_settings_posts_group',
-		__NAMESPACE__ . '\coil_content_settings_post_types_validation'
+/**
+ * Allow the radio button options in the posts content section to
+ * be properly validated
+ *
+ * @param array $post_content_settings The posted radio options from the content settings section.
+ * @return array
+ */
+function coil_content_settings_posts_validation( $post_content_settings ) : array {
+	return array_map(
+		function( $radio_value ) {
+			$valid_choices = array_keys( Gating\get_monetization_setting_types() );
+			return ( in_array( $radio_value, $valid_choices, true ) ? sanitize_key( $radio_value ) : 'no' );
+		},
+		(array) $post_content_settings
 	);
+}
 
-	add_settings_section(
-		'coil_content_settings_section',
-		_x( 'Content Settings', 'content settings tab section title', 'coil-monetize-content' ),
-		__NAMESPACE__ . '\coil_content_settings_section_render_posts_options',
-		'coil_content_settings'
-	);
+/* ------------------------------------------------------------------------ *
+ * Settings Rendering
+ * ------------------------------------------------------------------------ */
 
+/**
+ * Render the Coil setting screen.
+ *
+ * @return void
+ */
+function render_coil_settings_screen() : void {
+	include_once( dirname( __FILE__ ) . '/temp-html-settings.php' );
 }
 
 /**
@@ -116,7 +137,7 @@ function register_admin_content_settings() {
  *
  * @return void
  */
-function coil_content_settings_section_render_posts_options() {
+function coil_content_settings_posts_render_callback() {
 
 	$post_types = get_post_types(
 		[],
@@ -134,6 +155,7 @@ function coil_content_settings_section_render_posts_options() {
 		'user_request',
 		'wp_block',
 	];
+
 	$exclude = apply_filters( 'coil_settings_content_type_exclude', $post_types_exclude );
 
 	// Store the post type options using the above exclusion options.
@@ -149,8 +171,8 @@ function coil_content_settings_section_render_posts_options() {
 	// If there are post types available, output them:
 	if ( ! empty( $post_type_options ) ) {
 
-		$form_gating_settings = Gating\get_monetization_setting_types();
-		$content_settings_posts_options = get_option( 'coil_content_settings_posts_group' );
+		$form_gating_settings           = Gating\get_monetization_setting_types();
+		$content_settings_posts_options = Gating\get_global_posts_gating();
 		?>
 		<table class="widefat">
 			<thead>
@@ -165,7 +187,8 @@ function coil_content_settings_section_render_posts_options() {
 				<?php foreach ( $post_type_options as $post_type ) : ?>
 					<tr>
 						<th scope="row"><?php echo esc_html( $post_type->label ); ?></th>
-						<?php foreach ( $form_gating_settings as $setting_key => $setting_value ) :
+						<?php
+						foreach ( $form_gating_settings as $setting_key => $setting_value ) :
 							$input_id   = $post_type->name . '_' . $setting_key;
 							$input_name = 'coil_content_settings_posts_group[' . $post_type->name . ']';
 
@@ -178,21 +201,24 @@ function coil_content_settings_section_render_posts_options() {
 							$checked_input = false;
 							if ( $setting_key === 'no' ) {
 								$checked_input = 'checked="true"';
-							} else if ( isset( $content_settings_posts_options[$post_type->name] ) ) {
-								$checked_input = checked( $setting_key, $content_settings_posts_options[$post_type->name], false );
+							} elseif ( isset( $content_settings_posts_options[ $post_type->name ] ) ) {
+								$checked_input = checked( $setting_key, $content_settings_posts_options[ $post_type->name ], false );
 							}
 							?>
 							<td>
 								<?php
-								printf( '<input type="radio" name="%s" id="%s" value="%s"%s></input>',
+								printf(
+									'<input type="radio" name="%s" id="%s" value="%s"%s></input>',
 									esc_attr( $input_name ),
-									esc_attr( $input_id ) ,
+									esc_attr( $input_id ),
 									esc_attr( $setting_key ),
 									$checked_input
 								);
 								?>
 							</td>
-						<?php endforeach; ?>
+							<?php
+							endforeach;
+						?>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>
@@ -201,63 +227,45 @@ function coil_content_settings_section_render_posts_options() {
 	}
 }
 
-/**
- * Allow the radio button options in the posts cotent section to
- * be properly validated
- *
- * @param array $post_content_settings The posted radio options from the content settings section.
- * @return array
- */
-function coil_content_settings_post_types_validation( $post_content_settings ) : array {
-	return array_map(
-		function( $radio_value ) {
-			$valid_choices = array_keys( Gating\get_monetization_setting_types() );
-			return ( in_array( $radio_value, $valid_choices ) ? sanitize_key( $radio_value ) : 'no' );
-		},
-		(array)$post_content_settings
-	);
-}
+
 
 /**
- * Set the content gating for the post types when the plugin setting is saved.
+ * Render the Coil submenu setting screen to display options to gate posts
+ * and taxonomy content types.
  *
- * @param string $option Name of the updated option.
- * @param mixed $old_value The old option value(s).
- * @param mixed $option_name The name of the option.
  * @return void
  */
-function maybe_save_coil_content_settings( $new_values, $option, $old_values ) {
-	// PRAGTODO - add nonce validation
-	if ( is_array( $new_values ) && ! empty( $new_values ) ) {
+function render_coil_submenu_settings_screen() : void {
+	?>
+	<div class="wrap coil plugin-settings">
 
-		$post_type_values = array_values( $new_values );
-		$post_types = array_keys( $new_values );
-		$posts_to_update = get_posts(
-			[
-				'numberposts' => 9999, // PRAGTODO - work out how to limit big DB hits
-				'post_type'   => $post_types
-			]
-		);
+		<h1><?php echo _x( 'Content Settings', 'admin content setting title', 'coil-monetize-content' ); ?></h1>
 
-		foreach( $posts_to_update as $post ) {
+		<?php settings_errors(); ?>
 
-			if( in_array( $post->post_type, $post_types) ) {
+		<?php
+		$active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'posts_settings';
+		?>
 
-				$post_gating_option = $new_values[$post->post_type];
+		<h2 class="nav-tab-wrapper">
+			<a href="<?php echo esc_url( '?page=coil_content_settings&tab=posts_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'posts_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>">Posts</a>
+			<a href="<?php echo esc_url( '?page=coil_content_settings&tab=taxonomy_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'taxonomy_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>">Taxonomies</a>
+		</h2>
 
-				// PRAGTODO Check first if the gating is different
-					// get_post_gating on the post ID
-					// compare with what we will be setting
-					// if there is a change, set it
+		<form action="options.php" method="post">
 
-				// Update the post with this option passing the post id and the option
-				Gating\set_post_gating( $post->ID, $post_gating_option );
+			<?php
 
+			if ( 'posts_settings' === $active_tab ) {
+				settings_fields( 'coil_content_settings_posts_group' );
+				do_settings_sections( 'coil_content_settings_posts' );
+			} else {
+				// Render the taxonomy settings options
 			}
+			submit_button();
 
-		}
-
-	}
-
-	return $new_values;
+			?>
+		</form>
+	</div>
+	<?php
 }

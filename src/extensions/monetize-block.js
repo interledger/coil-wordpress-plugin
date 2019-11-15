@@ -170,10 +170,11 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 		}*/
 
 		// Only show inspector options if set for block level monetization.
-		if ( typeof meta._coil_monetize_post_status === 'undefined' || ( typeof meta._coil_monetize_post_status !== 'undefined' && meta._coil_monetize_post_status === 'gate-tagged-blocks' ) ) {
-			showInspector = true;
-		} else {
-			showInspector = false;
+		showInspector = false;
+		if ( typeof meta !== 'undefined' ) {
+			if ( typeof meta._coil_monetize_post_status === 'undefined' || ( typeof meta._coil_monetize_post_status !== 'undefined' && meta._coil_monetize_post_status === 'gate-tagged-blocks' ) ) {
+				showInspector = true;
+			}
 		}
 
 		return (
@@ -271,11 +272,11 @@ const wrapperClass = createHigherOrderComponent( ( BlockListBlock ) => {
 		// Fetch the post meta.
 		const meta = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' );
 
-		if ( typeof meta._coil_monetize_post_status === 'undefined' || ( typeof meta._coil_monetize_post_status !== 'undefined' && meta._coil_monetize_post_status === 'gate-tagged-blocks' ) ) {
-			allowBlockIdentity = true;
-		} else {
+		// if ( typeof meta._coil_monetize_post_status === 'undefined' || ( typeof meta._coil_monetize_post_status !== 'undefined' && meta._coil_monetize_post_status === 'gate-tagged-blocks' ) ) {
+		// 	allowBlockIdentity = true;
+		// } else {
 			allowBlockIdentity = false;
-		}
+		// }
 
 		customData = Object.assign( customData, {
 			'data-coil-is-monetized': 1,
@@ -333,7 +334,7 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 	};
 } )( withSelect( ( select, props ) => {
 	return {
-		[ props.metaFieldName ]: select( 'core/editor' ).getEditedPostAttribute( 'meta' )[ '_coil_monetize_post_status' ]
+		// [ props.metaFieldName ]: select( 'core/editor' ).getEditedPostAttribute( 'meta' )[ '_coil_monetize_post_status' ]
 	};
 } )( ( props ) => (
 	<RadioControl
