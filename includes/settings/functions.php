@@ -239,7 +239,7 @@ function render_coil_submenu_settings_screen() : void {
 	?>
 	<div class="wrap coil plugin-settings">
 
-		<h1><?php echo _x( 'Content Settings', 'admin content setting title', 'coil-monetize-content' ); ?></h1>
+		<h1><?php echo _x( 'Default Content Settings', 'admin content setting title', 'coil-monetize-content' ); ?></h1>
 
 		<?php settings_errors(); ?>
 

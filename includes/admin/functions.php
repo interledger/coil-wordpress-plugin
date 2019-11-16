@@ -60,6 +60,15 @@ function render_coil_metabox() : void {
 	$use_gutenberg = function_exists( '\use_block_editor_for_post' ) && use_block_editor_for_post( $post );
 	$settings      = Gating\get_monetization_setting_types( $post );
 
+	// Test to get content gating and output on the metabox.
+	// this line will be removed after testing as not needed
+	// on the meta box.
+	$content_gating = Gating\get_content_gating( $post->ID );
+
+	// echo '<pre>';
+	// print_r( $content_gating );
+	// echo '</pre>';
+
 	if ( $use_gutenberg ) {
 		$settings['gate-tagged-blocks'] = esc_html__( 'Split Content', 'coil-monetize-content' );
 	}

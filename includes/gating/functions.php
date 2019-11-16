@@ -107,33 +107,50 @@ function get_post_gating( int $post_id ) : string {
 	return $gating;
 }
 
-function get_content_gating( int $post_id ) : string {
-
-	$post_gating = get_post_gating( $post_id );
-
-	if ( $post_gating === 'default' ) {
-
-		// Check Taxonomy
-		$tax_gating = get_taxonomy_gating();
-		if ( $tax_gating === 'default' ) {
-
-			// Check global plugin settings
-			$global_gating = get_global_posts_gating();
-			if ( $global_gating === 'no' ) {
-				// do nothing
-			} else {
-				// adhere to the gating option for this post
-			}
-		}
-	}
-
-	// return a source of truth for this post.
+// return a source of truth for this post.
 	// 1 check post setting - from this ID get_post_gating()
 	// 2 check taxonomy setting - get_taxonomy_gating()
 	// 3. check global setting - get_global_posts_gating()
 
 	// if return value of each function is default, move onto the next function
 	// if the value is non default, return immediately.
+// removed the : string for now so I can test.
+function get_content_gating( int $post_id ) {
+
+	$post_gating = get_post_gating( $post_id );
+
+	$content_gating = 'no';
+
+	// Hierarchy 1 - Check what is set on the post.
+	if ( 'default' !== $post_gating ) {
+
+		$content_gating = $post_gating; // Honour what is set on the post.
+
+	} else {
+
+		// Hierarchy 2 - Check what is set on the taxonomy.
+		$taxonomy_gating = get_taxonomy_gating();
+		if ( 'default' !== $taxonomy_gating ) {
+
+			$content_gating = $taxonomy_gating; // Honour what is set on the taxonomy.
+
+		} else {
+
+			// Hierarchy 3 - Check what is set in the global default.
+			// Get the post type for this post to check against what is set for default
+			$post = get_post( $post_id );
+
+			// Get the post type from what is saved in global options
+			$global_gating_settings = get_global_posts_gating();
+
+			if ( isset( $global_gating_settings[ $post->post_type ] ) ) {
+				$content_gating = $global_gating_settings[ $post->post_type ];
+			}
+		}
+	}
+
+	return $content_gating;
+
 }
 
 // $val = get_content_gating(11);
@@ -141,6 +158,8 @@ function get_content_gating( int $post_id ) : string {
 // it just returns one of the strings.
 
 function get_taxonomy_gating() {
+	return 'default'; // set to this for now to setup the initial gating checks.
+
 	// abstract the tax loop to this function and use in get_content_gating().
 
 	// get all the taxonomies,
