@@ -188,3 +188,5 @@
 
 	});
 })(jQuery);
+
+// PRAGTODO - create some discreet functions to improve code readability.

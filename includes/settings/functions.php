@@ -84,12 +84,12 @@ function maybe_save_coil_admin_settings() : void {
 	// Check the nonce.
 	check_admin_referer( 'coil_for_wp_settings_action', 'coil_for_wp_settings_nonce' );
 
-	$payment_pointer_id = ! empty( $_POST['coil_payout_pointer_id'] ) ? $_POST['coil_payout_pointer_id'] : '';
+	$payment_pointer_id = ! empty( $_POST['coil_payment_pointer_id'] ) ? $_POST['coil_payment_pointer_id'] : '';
 	$content_container  = ! empty( $_POST['coil_content_container'] ) ? $_POST['coil_content_container'] : '';
 
 	$coil_options = [
-		'coil_payout_pointer_id' => sanitize_text_field( $payment_pointer_id ),
-		'coil_content_container' => sanitize_text_field( $content_container ),
+		'coil_payment_pointer_id' => sanitize_text_field( $payment_pointer_id ),
+		'coil_content_container'  => sanitize_text_field( $content_container ),
 	];
 
 	foreach ( $coil_options as $key => $value ) {

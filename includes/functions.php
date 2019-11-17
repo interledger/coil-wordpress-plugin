@@ -44,7 +44,7 @@ function init_plugin() : void {
 	add_action( 'personal_options', __NAMESPACE__ . '\User\add_user_profile_payment_pointer_option' );
 	add_action( 'personal_options_update', __NAMESPACE__ . '\User\maybe_save_user_profile_payment_pointer_option' );
 	add_action( 'edit_user_profile_update', __NAMESPACE__ . '\User\maybe_save_user_profile_payment_pointer_option' );
-	add_filter( 'option_coil_payout_pointer_id', __NAMESPACE__ . '\User\maybe_output_user_payment_pointer' );
+	add_filter( 'option_coil_payment_pointer_id', __NAMESPACE__ . '\User\maybe_output_user_payment_pointer' );
 
 	// Metaboxes.
 	add_action( 'load-post.php', __NAMESPACE__ . '\Admin\load_metaboxes' );
@@ -185,13 +185,14 @@ function add_body_class( $classes ) : array {
 		return $classes;
 	}
 
-	$payout_pointer_id = get_option( 'coil_payout_pointer_id' );
-	$coil_status       = Gating\get_post_gating( get_queried_object_id() );
+	$payment_pointer_id = get_option( 'coil_payment_pointer_id' );
+	$coil_status       = Gating\get_content_gating( get_queried_object_id() );
+	// $coil_status       = Gating\get_post_gating( get_queried_object_id() );
 
 	if ( $coil_status !== 'no' ) {
 		$classes[] = 'monetization-not-initialized';
 
-		if ( ! empty( $payout_pointer_id ) ) {
+		if ( ! empty( $payment_pointer_id ) ) {
 			// Monetise.
 			$classes[] = sanitize_html_class( 'coil-' . $coil_status );
 		} else {
@@ -227,8 +228,8 @@ function print_meta_tag() : void {
  * @return string
  */
 function get_payment_pointer() : string {
-	$coil_status        = Gating\get_post_gating( get_queried_object_id() );
-	$payment_pointer_id = get_option( 'coil_payout_pointer_id' );
+	$coil_status        = Gating\get_content_gating( get_queried_object_id() );
+	$payment_pointer_id = get_option( 'coil_payment_pointer_id' );
 
 	// If the post is not set for monetising, bail out.
 	if ( $coil_status === 'no' || empty( $payment_pointer_id ) ) {

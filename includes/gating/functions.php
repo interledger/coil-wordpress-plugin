@@ -41,11 +41,11 @@ function get_monetization_setting_types( $post_id = false ) : array {
 
 function get_valid_gating_types() {
 	$valid = [
-		'gate-all',
-		'gate-tagged-blocks',
-		'no',
-		'no-gating',
-		'default',
+		'gate-all', // subscribers only.
+		'gate-tagged-blocks', // split content.
+		'no', // no monetization.
+		'no-gating', // monetixed and public.
+		'default', // whatever is set on the post to revert back.
 	];
 	return $valid;
 }
@@ -63,22 +63,24 @@ function maybe_restrict_content( string $content ) : string {
 		return $content;
 	}
 
-	$coil_status    = get_post_gating( get_the_ID() );
+	// $coil_status    = get_post_gating( get_the_ID() );
+	$coil_status    = get_content_gating( get_the_ID() );
 	$public_content = '';
 
 	switch ( $coil_status ) {
 		case 'gate-all':
-			// Restrict all content.
+			// Restrict all content (subscribers only).
 			$public_content = '<p>' . esc_html__( 'The contents of this article is for subscribers only!', 'coil-monetize-content' ) . '</p>';
 			break;
 
 		case 'gate-tagged-blocks':
-			// Restrict some part of this content.
+			// Restrict some part of this content. (split content).
 			$public_content  = '<p>' . esc_html__( 'This article is monetized and some content is for subscribers only.', 'coil-monetize-content' ) . '</p>';
 			$public_content .= $content;
 			break;
 
-		case 'default':
+		// case 'default': // default shouldn't be returned as the last possible option is 'no',
+		// when filtering from a taxonomy and then to global defaults.
 		case 'no':
 		case 'no-gate':
 		default:
@@ -107,19 +109,22 @@ function get_post_gating( int $post_id ) : string {
 	return $gating;
 }
 
-// return a source of truth for this post.
-	// 1 check post setting - from this ID get_post_gating()
-	// 2 check taxonomy setting - get_taxonomy_gating()
-	// 3. check global setting - get_global_posts_gating()
-
-	// if return value of each function is default, move onto the next function
-	// if the value is non default, return immediately.
-// removed the : string for now so I can test.
+/**
+ * Return the single source of truth for post gating based on the fallback
+ * options if the post gating selection is 'default'. E.g.
+ * If return value of each function is default, move onto the next function,
+ * otherwise return immediately.
+ *
+ * PRAGTODO - I have removed the ': string' for now so I can test.
+ *
+ * @param integer $post_id
+ * @return void
+ */
 function get_content_gating( int $post_id ) {
 
 	$post_gating = get_post_gating( $post_id );
 
-	$content_gating = 'no';
+	$content_gating = 'no'; // Default value.
 
 	// Hierarchy 1 - Check what is set on the post.
 	if ( 'default' !== $post_gating ) {
@@ -137,39 +142,47 @@ function get_content_gating( int $post_id ) {
 		} else {
 
 			// Hierarchy 3 - Check what is set in the global default.
-			// Get the post type for this post to check against what is set for default
+			// Get the post type for this post to check against what is set for default.
 			$post = get_post( $post_id );
 
 			// Get the post type from what is saved in global options
 			$global_gating_settings = get_global_posts_gating();
 
-			if ( isset( $global_gating_settings[ $post->post_type ] ) ) {
+			if ( ! empty( $global_gating_settings ) && isset( $global_gating_settings[ $post->post_type ] ) ) {
 				$content_gating = $global_gating_settings[ $post->post_type ];
 			}
 		}
 	}
 
 	return $content_gating;
-
 }
 
-// $val = get_content_gating(11);
-// at this point val, doesn't need to know if the content gating is on the post or tax,
-// it just returns one of the strings.
-
+/**
+ * abstract the tax loop to this function and use in get_content_gating().
+ * 1) get all the taxonomies,
+ * 2) the meta
+ * 3) check if set or not
+ *
+ * @return string Gating type.
+ */
 function get_taxonomy_gating() {
-	return 'default'; // set to this for now to setup the initial gating checks.
-
-	// abstract the tax loop to this function and use in get_content_gating().
-
-	// get all the taxonomies,
-	// get the meta
-	// check if set or not
+	// Set to 'default' for now as this work is part of another ticket.
+	return 'default';
 }
 
-// abstract the global loop to this function and use in get_content_gating().
-function get_global_posts_gating() {
-	return get_option( 'coil_content_settings_posts_group' );
+/**
+ * Get whatever settings are stored in the plugin as the default
+ * content gating settings (post, page, cpt etc).
+ *
+ * @return array Setting stored in options, or blank array.
+ */
+function get_global_posts_gating() : array {
+	$global_settings = get_option( 'coil_content_settings_posts_group' );
+	if ( ! empty( $global_settings ) ) {
+		return $global_settings;
+	}
+
+	return [];
 }
 
 
@@ -177,7 +190,7 @@ function get_global_posts_gating() {
  * Set the gating type for the specified post.
  *
  * @param integer $post_id    The post to set gating for.
- * @param string $gating_type Either "no", "no-gating", "gate-all", "gate-tagged-blocks".
+ * @param string $gating_type Either "default", "no", "no-gating", "gate-all", "gate-tagged-blocks".
  *
  * @return void
  */

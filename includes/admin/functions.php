@@ -56,18 +56,12 @@ function add_metabox() : void {
 function render_coil_metabox() : void {
 	global $post;
 
-	$coil_status   = Gating\get_post_gating( $post->ID );
-	$use_gutenberg = function_exists( '\use_block_editor_for_post' ) && use_block_editor_for_post( $post );
-	$settings      = Gating\get_monetization_setting_types( $post );
-
-	// Test to get content gating and output on the metabox.
-	// this line will be removed after testing as not needed
-	// on the meta box.
-	$content_gating = Gating\get_content_gating( $post->ID );
-
-	// echo '<pre>';
-	// print_r( $content_gating );
-	// echo '</pre>';
+	// Explicitly use the post gating option to render whatever is saved on this post,
+	// instead of what is saved globally. This is used to output the correct meta box
+	// option.
+	$post_gating    = Gating\get_post_gating( $post->ID );
+	$use_gutenberg  = function_exists( '\use_block_editor_for_post' ) && use_block_editor_for_post( $post );
+	$settings       = Gating\get_monetization_setting_types( $post );
 
 	if ( $use_gutenberg ) {
 		$settings['gate-tagged-blocks'] = esc_html__( 'Split Content', 'coil-monetize-content' );
@@ -89,7 +83,7 @@ function render_coil_metabox() : void {
 
 		<?php foreach ( $settings as $option => $name ) : ?>
 			<label for="<?php echo esc_attr( $option ); ?>">
-				<input type="radio" name="coil_monetize_post_status" id="<?php echo esc_attr( $option ); ?>" value="<?php echo esc_attr( $option ); ?>" <?php checked( $coil_status, $option ); ?>/>
+				<input type="radio" name="coil_monetize_post_status" id="<?php echo esc_attr( $option ); ?>" value="<?php echo esc_attr( $option ); ?>" <?php checked( $post_gating, $option ); ?>/>
 				<?php echo esc_html( $name ); ?>
 				<br />
 			</label>

@@ -106,6 +106,10 @@ class Test_Payment_Pointer_Hierarchy extends WP_UnitTestCase {
 		return [
 			[
 				'basic',
+				'default',
+			],
+			[
+				'basic',
 				'no',
 			],
 			[
