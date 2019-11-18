@@ -117,12 +117,10 @@ function get_post_gating( int $post_id ) : string {
  * If return value of each function is default, move onto the next function,
  * otherwise return immediately.
  *
- * PRAGTODO - I have removed the ': string' for now so I can test.
- *
  * @param integer $post_id
  * @return void
  */
-function get_content_gating( int $post_id ) {
+function get_content_gating( int $post_id ) : string {
 
 	$post_gating = get_post_gating( $post_id );
 
@@ -211,7 +209,6 @@ function set_post_gating( int $post_id, string $gating_type ) : void {
  * New function to determine if the content is monetized
  * based on the outout of get_content_gating.
  *
- * PRAGTODO - update this where any manual === 'no' is set.
  * @param int $post_id
  * @return boolean
  */
