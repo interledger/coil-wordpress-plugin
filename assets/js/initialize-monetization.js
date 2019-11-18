@@ -27,9 +27,33 @@
 		return elem;
 	}
 
+	/**
+	 * Show the content container.
+	 */
+	function showContentContainer() {
+		console.info('Showing content container');
+
+		var elem = document.querySelector( content_container );
+		elem.style.display = 'block';
+	}
+
+	/**
+	 * Hide the content container. This function may still be needed,
+	 * as waiting on confirming of messages being hidden when verifying.
+	 */
+	function hideContentContainer() {
+		console.info('Hiding content container');
+
+		var elem = document.querySelector( content_container );
+		elem.style.display = 'none';
+	}
+
+	/**
+	 * Displays a message based on the body classes and verification outcome.
+	 */
 	function displayVerificationFailureMessage() {
 
-		console.log('displayVerificationFailureMessage called');
+		console.info('displayVerificationFailureMessage called');
 
 		if ( $('p.monetize-msg').length > 0 ) {
 
@@ -49,7 +73,7 @@
 				if ( $( 'body').hasClass( 'coil-gate-tagged-blocks' ) ) {
 
 					$( 'body').addClass( 'coil-split' ); // Only show content that is free if we can't verify.
-					$( content_container ).css( 'display', '' );
+					showContentContainer();
 					$( content_container ).before( displayMonetizationMessage( unable_to_verify_hidden, 'monetize-failed' ) );
 
 				} else {
@@ -108,7 +132,7 @@
 						//
 						// TODO: Paul thinks this string can't be hardcoded.
 						if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content_container !== '.content-area .entry-content' ) {
-							$( content_container ).css( 'display', '' );
+							showContentContainer();
 							$( content_container + '*.coil-hide-monetize-users' ).css( 'display', 'none' );
 							$( content_container + '*.coil-show-monetize-users' ).css( 'display', 'none' );
 						}
@@ -146,22 +170,20 @@
 				}
 				// User account verified, loading content.
 				else if ( document.monetization.state === 'started' ) {
-					// $( content_container ).before('<p class="monetize-msg">' + loading_content + '</p>' );
-					$( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
-
 					console.info('Monetization state: Started');
-
+					$( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
 				}
 				// Final check to see if the state is stopped
 				else if ( document.monetization.state === 'stopped' ) {
 
-					if ( $( 'body' ).hasClass( 'coil-no-gating' ) && content_container === '.content-area .entry-content' ) {
-						$( content_container ).css( 'display', 'none' );
-						$( content_container + '*.coil-hide-monetize-users' ).css( 'display', 'none' );
-						$( content_container + '*.coil-show-monetize-users' ).css( 'display', 'none' );
+					// Only display the loading message if the status is not "monetized and public".
+					if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) ) {
+						console.info( 'Status stopped and Monetized and Public');
+						$( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
+						// hideContentContainer();
+						// $( content_container + '*.coil-hide-monetize-users' ).css( 'display', 'none' );
+						// $( content_container + '*.coil-show-monetize-users' ).css( 'display', 'none' );
 					}
-
-					$( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
 
 					setTimeout( function() {
 
@@ -215,6 +237,7 @@
 					// Monetization is verified, remove any messages
 					if ( $( 'p.monetize-msg' ).length > 0 ) {
 						$( 'p.monetize-msg' ).remove();
+						showContentContainer();
 					}
 
 				});
@@ -254,9 +277,6 @@
 					} else if ( entryContentDiv.length ) {
 						entryContentDiv.before( displayMonetizationMessage( browser_extension_missing, '' ) );
 					}
-
-				} else {
-					// $( content_container ).before( '<p class="monetize-msg">' + browser_extension_missing + '</p>' );
 				}
 
 				// This ensures content written in Gutenberg is displayed according to
@@ -264,7 +284,7 @@
 				//
 				// TODO: Paul thinks this string can't be hardcoded.
 				if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content_container !== '.content-area .entry-content' ) {
-					$( content_container ).css( 'display', '' );
+					showContentContainer();
 					$( content_container + '*.coil-hide-monetize-users' ).css( 'display', 'none' );
 					$( content_container + '*.coil-show-monetize-users' ).css( 'display', 'none' );
 				}
