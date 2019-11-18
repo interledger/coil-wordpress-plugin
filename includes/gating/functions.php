@@ -186,6 +186,20 @@ function get_global_posts_gating() : array {
 	return [];
 }
 
+/**
+ * Get whatever settings are stored in the plugin as the default
+ * taxonomy gating settings (category, post_tag etc).
+ *
+ * @return array Setting stored in options, or blank array.
+ */
+function get_global_taxonomies_gating() : array {
+	$global_settings = get_option( 'coil_content_settings_taxonomies_group' );
+	if ( ! empty( $global_settings ) ) {
+		return $global_settings;
+	}
+
+	return [];
+}
 
 /**
  * Set the gating type for the specified post.
