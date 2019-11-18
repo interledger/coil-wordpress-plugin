@@ -334,7 +334,7 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 	};
 } )( withSelect( ( select, props ) => {
 	return {
-		// [ props.metaFieldName ]: select( 'core/editor' ).getEditedPostAttribute( 'meta' )[ '_coil_monetize_post_status' ]
+		[ props.metaFieldName ]: select( 'core/editor' ).getEditedPostAttribute( 'meta' )[ '_coil_monetize_post_status' ]
 	};
 } )( ( props ) => (
 	<RadioControl
