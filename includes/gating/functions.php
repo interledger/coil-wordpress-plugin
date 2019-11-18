@@ -63,7 +63,6 @@ function maybe_restrict_content( string $content ) : string {
 		return $content;
 	}
 
-	// $coil_status    = get_post_gating( get_the_ID() );
 	$coil_status    = get_content_gating( get_the_ID() );
 	$public_content = '';
 
@@ -79,8 +78,11 @@ function maybe_restrict_content( string $content ) : string {
 			$public_content .= $content;
 			break;
 
-		// case 'default': // default shouldn't be returned as the last possible option is 'no',
-		// when filtering from a taxonomy and then to global defaults.
+		/**
+		 * case 'default': doesn't exist in this context because the last possible
+		 * saved option will be 'no', after a post has fallen back to the taxonomy
+		 * and then the default post options.
+		 */
 		case 'no':
 		case 'no-gate':
 		default:
@@ -124,7 +126,8 @@ function get_content_gating( int $post_id ) {
 
 	$post_gating = get_post_gating( $post_id );
 
-	$content_gating = 'no'; // Default value.
+	// Set a default monetization value.
+	$content_gating = 'no';
 
 	// Hierarchy 1 - Check what is set on the post.
 	if ( 'default' !== $post_gating ) {
@@ -202,4 +205,17 @@ function set_post_gating( int $post_id, string $gating_type ) : void {
 	}
 
 	update_post_meta( $post_id, '_coil_monetize_post_status', $gating_type );
+}
+
+/**
+ * New function to determine if the content is monetized
+ * based on the outout of get_content_gating.
+ *
+ * PRAGTODO - update this where any manual === 'no' is set.
+ * @param int $post_id
+ * @return boolean
+ */
+function is_content_monetized( $post_id ) : bool {
+	$coil_status = get_content_gating( $post_id );
+	return ( $coil_status === 'no' ) ? false : true;
 }

@@ -85,7 +85,7 @@ function maybe_save_coil_admin_settings() : void {
 	check_admin_referer( 'coil_for_wp_settings_action', 'coil_for_wp_settings_nonce' );
 
 	$payment_pointer_id = ! empty( $_POST['coil_payment_pointer_id'] ) ? $_POST['coil_payment_pointer_id'] : '';
-	$content_container  = ! empty( $_POST['coil_content_container'] ) ? $_POST['coil_content_container'] : '';
+	$content_container  = ! empty( $_POST['coil_content_container'] ) ? $_POST['coil_content_container'] : '.content-area .entry-content'; // PRAGTODO - apply filters to default value
 
 	$coil_options = [
 		'coil_payment_pointer_id' => sanitize_text_field( $payment_pointer_id ),

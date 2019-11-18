@@ -125,8 +125,7 @@ function load_assets() : void {
 		return;
 	}
 
-	$coil_status = Gating\get_post_gating( get_queried_object_id() );
-	if ( $coil_status === 'no' ) {
+	if ( ! Gating\is_content_monetized( get_queried_object_id() ) ) {
 		return;
 	}
 
@@ -186,15 +185,14 @@ function add_body_class( $classes ) : array {
 	}
 
 	$payment_pointer_id = get_option( 'coil_payment_pointer_id' );
-	$coil_status       = Gating\get_content_gating( get_queried_object_id() );
-	// $coil_status       = Gating\get_post_gating( get_queried_object_id() );
 
-	if ( $coil_status !== 'no' ) {
+	if ( Gating\is_content_monetized( get_queried_object_id() ) ) {
 		$classes[] = 'monetization-not-initialized';
 
 		if ( ! empty( $payment_pointer_id ) ) {
 			// Monetise.
-			$classes[] = sanitize_html_class( 'coil-' . $coil_status );
+			$coil_status = Gating\get_content_gating( get_queried_object_id() );
+			$classes[]   = sanitize_html_class( 'coil-' . $coil_status );
 		} else {
 			// Error: payment pointer ID is missing.
 			$classes[] = 'coil-missing-id';
@@ -228,11 +226,11 @@ function print_meta_tag() : void {
  * @return string
  */
 function get_payment_pointer() : string {
-	$coil_status        = Gating\get_content_gating( get_queried_object_id() );
+
 	$payment_pointer_id = get_option( 'coil_payment_pointer_id' );
 
 	// If the post is not set for monetising, bail out.
-	if ( $coil_status === 'no' || empty( $payment_pointer_id ) ) {
+	if ( ! Gating\is_content_monetized( get_queried_object_id() ) || empty( $payment_pointer_id ) ) {
 		return '';
 	}
 

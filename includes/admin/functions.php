@@ -59,9 +59,9 @@ function render_coil_metabox() : void {
 	// Explicitly use the post gating option to render whatever is saved on this post,
 	// instead of what is saved globally. This is used to output the correct meta box
 	// option.
-	$post_gating    = Gating\get_post_gating( $post->ID );
-	$use_gutenberg  = function_exists( '\use_block_editor_for_post' ) && use_block_editor_for_post( $post );
-	$settings       = Gating\get_monetization_setting_types( $post );
+	$post_gating   = Gating\get_post_gating( $post->ID );
+	$use_gutenberg = function_exists( '\use_block_editor_for_post' ) && use_block_editor_for_post( $post );
+	$settings      = Gating\get_monetization_setting_types( $post );
 
 	if ( $use_gutenberg ) {
 		$settings['gate-tagged-blocks'] = esc_html__( 'Split Content', 'coil-monetize-content' );
