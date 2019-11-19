@@ -129,6 +129,36 @@ function get_post_gating( int $post_id ) : string {
 }
 
 /**
+ * Get the gating type for the specified term.
+ *
+ * @param integer $term_id The term_id to check.
+ *
+ * @return string Either "default" (default), "no", "no-gating", "gate-all".
+ */
+function get_term_gating( $term_id ) {
+
+	$term_gating = get_term_meta( $term_id, '_coil_monetize_term_status', true );
+
+	if ( empty( $term_gating ) ) {
+		$term_gating = 'default';
+	}
+	return $term_gating;
+}
+
+/**
+ * abstract the tax loop to this function and use in get_content_gating().
+ * 1) get all the taxonomies,
+ * 2) the meta
+ * 3) check if set or not
+ *
+ * @return string Gating type.
+ */
+function get_taxonomy_gating() {
+	// Set to 'default' for now as this work is part of another ticket.
+	return 'default';
+}
+
+/**
  * Return the single source of truth for post gating based on the fallback
  * options if the post gating selection is 'default'. E.g.
  * If return value of each function is default, move onto the next function,
@@ -175,18 +205,6 @@ function get_content_gating( int $post_id ) : string {
 	return $content_gating;
 }
 
-/**
- * abstract the tax loop to this function and use in get_content_gating().
- * 1) get all the taxonomies,
- * 2) the meta
- * 3) check if set or not
- *
- * @return string Gating type.
- */
-function get_taxonomy_gating() {
-	// Set to 'default' for now as this work is part of another ticket.
-	return 'default';
-}
 
 /**
  * Get whatever settings are stored in the plugin as the default

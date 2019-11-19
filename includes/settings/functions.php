@@ -401,28 +401,23 @@ function render_coil_submenu_settings_screen() : void {
 	<?php
 }
 
-
-//  TERMS STUFF
-// Get meta
-function get_term_gating( $term_id ) {
-
-	$term_gating = get_term_meta( $term_id, '_coil_monetize_term_status', true );
-
-	// PRAGTODO - sanitize this input before returning.
-	return $term_gating;
-}
-
-// Add field to the category term page
+/**
+ * Add a set of gating controls to the "Add Term" screen i.e.
+ * when creating a brand new term.
+ *
+ * @param WP_Term_Object $term
+ * @return void
+ */
 function coil_add_term_custom_meta( $term ) {
 
-	// Get gating options
+	// Get gating options.
 	$gating_options = Gating\get_monetization_setting_types( true );
 	if ( empty( $gating_options ) ) {
 		return;
 	}
 
-	// Get value saved on the term
-	$gating = get_term_gating( $term->term_id );
+	// Retrieve the gating saved on the term.
+	$gating = Gating\get_term_gating( $term->term_id );
 
 	?>
 	<tr class="form-field">
@@ -445,14 +440,15 @@ function coil_add_term_custom_meta( $term ) {
 				<label for="<?php echo esc_attr( $setting_key ); ?>">
 				<?php
 				printf(
-					'<input type="radio" name="%s" id="%s" value="%s"%s />',
+					'<input type="radio" name="%s" id="%s" value="%s"%s />%s',
 					esc_attr( 'coil_monetize_term_status' ),
 					esc_attr( $setting_key ),
 					esc_attr( $setting_key ),
-					$checked_input
+					$checked_input,
+					esc_attr( $setting_value )
 				);
 				?>
-				<?php echo esc_attr( $setting_value ); ?></label><br>
+				</label><br>
 				<?php
 			}
 			?>
@@ -464,22 +460,20 @@ function coil_add_term_custom_meta( $term ) {
 	wp_nonce_field( 'coil_term_gating_nonce_action', 'term_gating_nonce' );
 }
 
-
-// Edit the term meta
+/**
+ * Add a set of gating controls to the "Edit Term" screen, i.e.
+ * when editing an existing term.
+ *
+ * @param WP_Term_Object $term
+ * @return void
+ */
 function coil_edit_term_custom_meta( $term ) {
 
-	$value = get_term_gating( $term->term_id );
-
-	if ( ! $value ) {
-		$value = '';
-	}
-
-	// Get gating options
+	// Get gating options.
 	$gating_options = Gating\get_monetization_setting_types( true );
 	if ( empty( $gating_options ) ) {
 		return;
 	}
-
 	?>
 	<div class="form-field">
 		<h2><?php echo esc_attr( __( 'Web Monetization - Coil', 'coil-monetize-content' ) ); ?></h2>
@@ -488,8 +482,16 @@ function coil_edit_term_custom_meta( $term ) {
 		foreach ( $gating_options as $setting_key => $setting_value ) {
 			?>
 			<label for="<?php echo esc_attr( $setting_key ); ?>">
-			<input type="radio" name="coil_monetize_term_status" id="<?php echo esc_attr( $setting_key ); ?>" value="<?php echo esc_attr( $setting_key ); ?>" />
-			<?php echo esc_attr( $setting_value ); ?></label>
+			<?php
+			printf(
+				'<input type="radio" name="%s" id="%s" value="%s" />%s',
+				esc_attr( 'coil_monetize_term_status' ),
+				esc_attr( $setting_key ),
+				esc_attr( $setting_key ),
+				esc_attr( $setting_value )
+			);
+			?>
+			</label>
 			<?php
 		}
 		?>
