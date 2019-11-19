@@ -26,9 +26,9 @@ function register_content_meta() : void {
  *
  * @return array
  */
-function get_monetization_setting_types( $post_id = false ) : array {
+function get_monetization_setting_types( $show_default = false ) : array {
 
-	if ( ! empty( $post_id ) ) {
+	if ( true === $show_default ) {
 		$settings['default'] = esc_html__( 'Use Default', 'coil-monetize-content' );
 	}
 

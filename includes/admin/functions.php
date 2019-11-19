@@ -61,7 +61,7 @@ function render_coil_metabox() : void {
 	// option.
 	$post_gating   = Gating\get_post_gating( $post->ID );
 	$use_gutenberg = function_exists( '\use_block_editor_for_post' ) && use_block_editor_for_post( $post );
-	$settings      = Gating\get_monetization_setting_types( $post );
+	$settings      = Gating\get_monetization_setting_types( true );
 
 	if ( $use_gutenberg ) {
 		$settings['gate-tagged-blocks'] = esc_html__( 'Split Content', 'coil-monetize-content' );
