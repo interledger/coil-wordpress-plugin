@@ -62,20 +62,6 @@ function register_admin_content_settings() {
 		'coil_content_settings_posts'
 	);
 
-	// Taxonomies.
-	register_setting(
-		'coil_content_settings_taxonomies_group',
-		'coil_content_settings_taxonomies_group',
-		__NAMESPACE__ . '\coil_content_settings_taxonomies_validation'
-	);
-
-	add_settings_section(
-		'coil_content_settings_taxonomies_section',
-		_x( 'Taxonomies', 'content settings tab section title', 'coil-monetize-content' ),
-		__NAMESPACE__ . '\coil_content_settings_taxonomies_render_callback',
-		'coil_content_settings_taxonomies'
-	);
-
 }
 
 /* ------------------------------------------------------------------------ *
@@ -260,106 +246,6 @@ function coil_content_settings_posts_render_callback() {
 }
 
 /**
- * Renders the output of the radio buttons based on the
- * taxonomies available in WordPress.
- *
- * @return void
- */
-function coil_content_settings_taxonomies_render_callback() {
-
-	$taxonomies = get_taxonomies(
-		[],
-		'objects'
-	);
-
-	// Set up options to exclude certain post types.
-	$taxonomy_exclude = [
-		'nav_menu',
-		'link_category',
-		'post_format',
-	];
-
-	$exclude = apply_filters( 'coil_settings_taxonomy_exclude', $taxonomy_exclude );
-
-	// Store the taxonomy options using the above exclusion options.
-	$taxonomy_options = [];
-	foreach ( $taxonomies as $taxonomy ) {
-
-		if ( ! empty( $exclude ) && in_array( $taxonomy->name, $exclude, true ) ) {
-			continue;
-		}
-		$taxonomy_options[] = $taxonomy;
-	}
-
-	// If there are taxonomies available, output them:
-	if ( ! empty( $taxonomy_options ) ) {
-
-		$form_gating_settings              = Gating\get_monetization_setting_types();
-		$content_settings_taxonomy_options = Gating\get_global_taxonomies_gating();
-		?>
-		<table class="widefat">
-			<thead>
-				<th><?php _e( 'Taxonomy', 'coil-monetize-content' ); ?></th>
-				<?php foreach ( $form_gating_settings as $setting_key => $setting_value ) : ?>
-					<th class="posts_table_header">
-						<?php echo esc_html( $setting_value ); ?>
-					</th>
-				<?php endforeach; ?>
-			</thead>
-			<tbody>
-				<?php foreach ( $taxonomy_options as $taxonomy ) : ?>
-					<tr>
-						<th scope="row"><?php echo esc_html( $taxonomy->label ); ?>
-							<?php
-							printf(
-								'<span class="edit"> | <a href="%s" aria-label="Edit %s">%s</a>',
-								esc_url( admin_url() . 'edit-tags.php?taxonomy=' . esc_attr( $taxonomy->name ) ),
-								esc_attr( '&ldquo;' . $taxonomy->label . '&rdquo;' ),
-								'Edit'
-							);
-							?>
-						</th>
-						<?php
-						foreach ( $form_gating_settings as $setting_key => $setting_value ) :
-							$input_id   = $taxonomy->name . '_' . $setting_key;
-							$input_name = 'coil_content_settings_taxonomies_group[' . $taxonomy->name . ']';
-
-							/**
-							 * Specify the default checked state on the input from
-							 * any settings stored in the database. If the individual
-							 * input status is not set, default to the first radio
-							 * option (No Monetization)
-							 */
-							$checked_input = false;
-							if ( $setting_key === 'no' ) {
-								$checked_input = 'checked="true"';
-							} elseif ( isset( $content_settings_taxonomy_options[ $taxonomy->name ] ) ) {
-								$checked_input = checked( $setting_key, $content_settings_taxonomy_options[ $taxonomy->name ], false );
-							}
-							?>
-							<td>
-								<?php
-								printf(
-									'<input type="radio" name="%s" id="%s" value="%s"%s></input>',
-									esc_attr( $input_name ),
-									esc_attr( $input_id ),
-									esc_attr( $setting_key ),
-									$checked_input
-								);
-								?>
-							</td>
-							<?php
-							endforeach;
-						?>
-					</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
-		<?php
-	}
-}
-
-/**
  * Render the Coil submenu setting screen to display options to gate posts
  * and taxonomy content types.
  *
@@ -369,32 +255,16 @@ function render_coil_submenu_settings_screen() : void {
 	?>
 	<div class="wrap coil plugin-settings">
 
-		<h1><?php echo _x( 'Default Content Settings', 'admin content setting title', 'coil-monetize-content' ); ?></h1>
+		<h1><?php echo esc_attr( _x( 'Default Content Settings', 'admin content setting title', 'coil-monetize-content' ) ); ?></h1>
 
 		<?php settings_errors(); ?>
-
-		<?php
-		$active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'posts_settings';
-		?>
-
-		<h2 class="nav-tab-wrapper">
-			<a href="<?php echo esc_url( '?page=coil_content_settings&tab=posts_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'posts_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>">Posts</a>
-			<a href="<?php echo esc_url( '?page=coil_content_settings&tab=taxonomy_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'taxonomy_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>">Taxonomies</a>
-		</h2>
 
 		<form action="options.php" method="post">
 
 			<?php
-
-			if ( 'posts_settings' === $active_tab ) {
-				settings_fields( 'coil_content_settings_posts_group' );
-				do_settings_sections( 'coil_content_settings_posts' );
-			} else {
-				settings_fields( 'coil_content_settings_taxonomies_group' );
-				do_settings_sections( 'coil_content_settings_taxonomies' );
-			}
+			settings_fields( 'coil_content_settings_posts_group' );
+			do_settings_sections( 'coil_content_settings_posts' );
 			submit_button();
-
 			?>
 		</form>
 	</div>
