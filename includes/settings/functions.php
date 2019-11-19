@@ -57,7 +57,7 @@ function register_admin_content_settings() {
 
 	add_settings_section(
 		'coil_content_settings_posts_section',
-		_x( 'Posts', 'content settings tab section title', 'coil-monetize-content' ),
+		false,
 		__NAMESPACE__ . '\coil_content_settings_posts_render_callback',
 		'coil_content_settings_posts'
 	);
@@ -256,11 +256,11 @@ function render_coil_submenu_settings_screen() : void {
 	<div class="wrap coil plugin-settings">
 
 		<h1><?php echo esc_attr( _x( 'Default Content Settings', 'admin content setting title', 'coil-monetize-content' ) ); ?></h1>
+		<br>
 
 		<?php settings_errors(); ?>
 
 		<form action="options.php" method="post">
-
 			<?php
 			settings_fields( 'coil_content_settings_posts_group' );
 			do_settings_sections( 'coil_content_settings_posts' );
