@@ -124,7 +124,7 @@ function get_post_gating( int $post_id ) : string {
  * otherwise return immediately.
  *
  * @param integer $post_id
- * @return void
+ * @return string $content_gating Gating slug type.
  */
 function get_content_gating( int $post_id ) : string {
 
