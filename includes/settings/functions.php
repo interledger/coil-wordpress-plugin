@@ -305,7 +305,6 @@ function coil_add_term_custom_meta( $term ) {
 				} elseif ( ! empty( $gating ) ) {
 					$checked_input = checked( $setting_key, $gating, false );
 				}
-
 				?>
 				<label for="<?php echo esc_attr( $setting_key ); ?>">
 				<?php
@@ -334,10 +333,9 @@ function coil_add_term_custom_meta( $term ) {
  * Add a set of gating controls to the "Edit Term" screen, i.e.
  * when editing an existing term.
  *
- * @param WP_Term_Object $term
  * @return void
  */
-function coil_edit_term_custom_meta( $term ) {
+function coil_edit_term_custom_meta() {
 
 	// Get gating options.
 	$gating_options = Gating\get_monetization_setting_types( true );
@@ -350,14 +348,19 @@ function coil_edit_term_custom_meta( $term ) {
 		<fieldset>
 		<?php
 		foreach ( $gating_options as $setting_key => $setting_value ) {
+			$checked_input = false;
+			if ( $setting_key === 'default' ) {
+				$checked_input = 'checked="true"';
+			}
 			?>
 			<label for="<?php echo esc_attr( $setting_key ); ?>">
 			<?php
 			printf(
-				'<input type="radio" name="%s" id="%s" value="%s" />%s',
+				'<input type="radio" name="%s" id="%s" value="%s"%s />%s',
 				esc_attr( 'coil_monetize_term_status' ),
 				esc_attr( $setting_key ),
 				esc_attr( $setting_key ),
+				$checked_input,
 				esc_attr( $setting_value )
 			);
 			?>

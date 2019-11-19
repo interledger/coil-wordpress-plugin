@@ -244,19 +244,28 @@ function get_payment_pointer() : string {
 	return $payment_pointer_id;
 }
 
-// Generate actions per taxonomy term so that custom meta
-// fields can be added to the term editing form.
+/**
+ * Generate actions for every taxonomy to handle the output
+ * of the gating options for the term add/edit forms.
+ *
+ * @return array $actions Array of WordPress actions.
+ */
 function add_term_edit_save_form_meta_actions() {
+
 	$valid_taxonomies = [
 		'category',
 		'post_tag',
 	];
 
+	$valid_taxonomies = apply_filters( 'coil_settings_taxonomy_exclude', $valid_taxonomies );
+
 	$actions = [];
-	foreach ( $valid_taxonomies as $taxonomy ) {
-		if ( taxonomy_exists( $taxonomy ) ) {
-			$actions[] = add_action( esc_attr( $taxonomy ) . '_edit_form_fields', __NAMESPACE__ . '\Settings\coil_add_term_custom_meta', 10, 2 );
-			$actions[] = add_action( esc_attr( $taxonomy ) . '_add_form_fields', __NAMESPACE__ . '\Settings\coil_edit_term_custom_meta', 10, 2 );
+	if ( is_array( $valid_taxonomies ) && ! empty( $valid_taxonomies ) ) {
+		foreach ( $valid_taxonomies as $taxonomy ) {
+			if ( taxonomy_exists( $taxonomy ) ) {
+				$actions[] = add_action( esc_attr( $taxonomy ) . '_edit_form_fields', __NAMESPACE__ . '\Settings\coil_add_term_custom_meta', 10, 2 );
+				$actions[] = add_action( esc_attr( $taxonomy ) . '_add_form_fields', __NAMESPACE__ . '\Settings\coil_edit_term_custom_meta', 10, 2 );
+			}
 		}
 	}
 	return $actions;

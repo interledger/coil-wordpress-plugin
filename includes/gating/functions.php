@@ -154,10 +154,14 @@ function get_term_gating( $term_id ) {
  *
  * @return string Gating type.
  */
-function get_taxonomy_gating( $post_id ) {
+function get_taxonomy_term_gating( $post_id ) {
 
-	$post_terms = wp_get_post_terms( $post_id );
+	// $post_terms = wp_get_post_terms(
+	// 	$post_id,
 
+
+
+	// );
 
 	// Set to 'default' for now as this work is part of another ticket.
 	return 'default';
@@ -187,7 +191,7 @@ function get_content_gating( int $post_id ) : string {
 	} else {
 
 		// Hierarchy 2 - Check what is set on the taxonomy.
-		$taxonomy_gating = get_taxonomy_gating( $post_id );
+		$taxonomy_gating = get_taxonomy_term_gating( $post_id );
 		if ( 'default' !== $taxonomy_gating ) {
 
 			$content_gating = $taxonomy_gating; // Honour what is set on the taxonomy.
