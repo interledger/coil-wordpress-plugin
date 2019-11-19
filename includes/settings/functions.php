@@ -412,7 +412,7 @@ function coil_add_term_custom_meta( $term ) {
 
 	// Get gating options.
 	$gating_options = Gating\get_monetization_setting_types( true );
-	if ( empty( $gating_options ) ) {
+	if ( empty( $gating_options ) || ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
 		return;
 	}
 
@@ -471,7 +471,7 @@ function coil_edit_term_custom_meta( $term ) {
 
 	// Get gating options.
 	$gating_options = Gating\get_monetization_setting_types( true );
-	if ( empty( $gating_options ) ) {
+	if ( empty( $gating_options ) || ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
 		return;
 	}
 	?>
