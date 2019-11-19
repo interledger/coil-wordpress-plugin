@@ -146,14 +146,19 @@ function get_term_gating( $term_id ) {
 }
 
 /**
- * abstract the tax loop to this function and use in get_content_gating().
- * 1) get all the taxonomies,
- * 2) the meta
- * 3) check if set or not
+ * This function does the following:
+ *
+ * 1) Get any terms assigned to the post
+ * 2) Do these terms have gating?
+ * 3) If yes, rank them by order (see confluence) and return highest rank
  *
  * @return string Gating type.
  */
-function get_taxonomy_gating() {
+function get_taxonomy_gating( $post_id ) {
+
+	$post_terms = wp_get_post_terms( $post_id );
+
+
 	// Set to 'default' for now as this work is part of another ticket.
 	return 'default';
 }
@@ -182,7 +187,7 @@ function get_content_gating( int $post_id ) : string {
 	} else {
 
 		// Hierarchy 2 - Check what is set on the taxonomy.
-		$taxonomy_gating = get_taxonomy_gating();
+		$taxonomy_gating = get_taxonomy_gating( $post_id );
 		if ( 'default' !== $taxonomy_gating ) {
 
 			$content_gating = $taxonomy_gating; // Honour what is set on the taxonomy.
