@@ -152,6 +152,19 @@ function maybe_save_term_meta( int $term_id ) : void {
 }
 
 /**
+ * Deletes any term meta when a term is deleted.
+ *
+ * @param int $term The term id.
+ * @return void
+ */
+function delete_term_monetization_meta( $term_id ) {
+	if ( empty( $term_id ) ) {
+		return;
+	}
+	delete_term_meta( $term_id, '_coil_monetize_term_status' );
+}
+
+/**
  * Add action links to the list on the plugins screen.
  *
  * @param array $links An array of action links.

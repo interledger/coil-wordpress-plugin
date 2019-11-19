@@ -430,7 +430,7 @@ function coil_add_term_custom_meta( $term ) {
 			foreach ( $gating_options as $setting_key => $setting_value ) {
 
 				$checked_input = false;
-				if ( $setting_key === 'no' ) {
+				if ( $setting_key === 'default' ) {
 					$checked_input = 'checked="true"';
 				} elseif ( ! empty( $gating ) ) {
 					$checked_input = checked( $setting_key, $gating, false );
