@@ -127,6 +127,31 @@ function maybe_save_post_metabox( int $post_id ) : void {
 }
 
 /**
+ * Fires after a term has been updated, but before the term cache has been cleaned.
+ *
+ * @param int $term_id Term ID.
+ * @return void
+ */
+function maybe_save_term_meta( int $term_id ) : void {
+
+	if ( ! current_user_can( 'manage_terms', $term_id ) || empty( $_REQUEST['term_gating_nonce'] ) ) {
+		return;
+	}
+
+	// Check the nonce.
+	check_admin_referer( 'coil_term_gating_nonce_action', 'term_gating_nonce' );
+
+	$term_gating = sanitize_text_field( $_REQUEST['coil_monetize_term_status'] ?? '' );
+
+	if ( $term_gating ) {
+		Gating\set_term_gating( $term_id, $term_gating );
+	} else {
+		delete_term_meta( $term_id, '_coil_monetize_term_status' );
+	}
+
+}
+
+/**
  * Add action links to the list on the plugins screen.
  *
  * @param array $links An array of action links.
@@ -382,27 +407,3 @@ function coil_add_customizer_options( $wp_customize ) : void {
 
 }
 
-// Add a new field to the end of the Edit Term form for all taxonomies.
-
-function display_tax_term_custom_meta( $tag, $taxonomy ) {
-
-	// PRAGTODO
-	// 1) ensure that the radio button is registered properly
-	// 2) ensure that the radio setting is saved on the term in term meta
-
-	?>
-
-	<tr class="form-field">
-		<th scope="row">
-			<label>
-				Custom Meta Here
-			</label>
-		</th>
-		<td>
-			<label for="<?php echo esc_attr( $tag->slug ); ?>"></label>
-			<input type="radio" name="term" id="<?php echo esc_attr( $tag->slug ); ?>" value="<?php echo esc_attr( $tag->slug ); ?>">Option 1</input><br>
-			<input type="radio" name="term" id="another" value="another">Option 2</input>
-		</td>
-	</tr>
-	<?php
-}

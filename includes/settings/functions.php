@@ -240,7 +240,7 @@ function coil_content_settings_posts_render_callback() {
 							<td>
 								<?php
 								printf(
-									'<input type="radio" name="%s" id="%s" value="%s"%s></input>',
+									'<input type="radio" name="%s" id="%s" value="%s"%s />',
 									esc_attr( $input_name ),
 									esc_attr( $input_id ),
 									esc_attr( $setting_key ),
@@ -399,4 +399,102 @@ function render_coil_submenu_settings_screen() : void {
 		</form>
 	</div>
 	<?php
+}
+
+
+//  TERMS STUFF
+// Get meta
+function get_term_gating( $term_id ) {
+
+	$term_gating = get_term_meta( $term_id, '_coil_monetize_term_status', true );
+
+	// PRAGTODO - sanitize this input before returning.
+	return $term_gating;
+}
+
+// Add field to the category term page
+function coil_add_term_custom_meta( $term ) {
+
+	// Get gating options
+	$gating_options = Gating\get_monetization_setting_types();
+	if ( empty( $gating_options ) ) {
+		return;
+	}
+
+	// Get value saved on the term
+	$gating = get_term_gating( $term->term_id );
+
+	?>
+	<tr class="form-field">
+		<th scope="row">
+			<label><?php echo esc_attr( __( 'Web Monetization - Coil', 'coil-monetize-content' ) ); ?></label>
+		</th>
+		<td>
+			<fieldset>
+			<?php
+			foreach ( $gating_options as $setting_key => $setting_value ) {
+
+				$checked_input = false;
+				if ( $setting_key === 'no' ) {
+					$checked_input = 'checked="true"';
+				} elseif ( ! empty( $gating ) ) {
+					$checked_input = checked( $setting_key, $gating, false );
+				}
+
+				?>
+				<label for="<?php echo esc_attr( $setting_key ); ?>">
+				<?php
+				printf(
+					'<input type="radio" name="%s" id="%s" value="%s"%s />',
+					esc_attr( 'coil_monetize_term_status' ),
+					esc_attr( $setting_key ),
+					esc_attr( $setting_key ),
+					$checked_input
+				);
+				?>
+				<?php echo esc_attr( $setting_value ); ?></label><br>
+				<?php
+			}
+			?>
+			</fieldset>
+		</td>
+	</tr>
+	<?php
+}
+
+
+// Edit the term meta
+function coil_edit_term_custom_meta( $term ) {
+
+	$value = get_term_gating( $term->term_id );
+
+	if ( ! $value ) {
+		$value = '';
+	}
+
+	// Get gating options
+	$gating_options = Gating\get_monetization_setting_types();
+	if ( empty( $gating_options ) ) {
+		return;
+	}
+
+	?>
+	<div class="form-field">
+		<h4><?php echo esc_attr( __( 'Web Monetization - Coil', 'coil-monetize-content' ) ); ?></h4>
+		<fieldset>
+		<?php
+		foreach ( $gating_options as $setting_key => $setting_value ) {
+			?>
+			<label for="<?php echo esc_attr( $setting_key ); ?>">
+			<input type="radio" name="coil_monetize_term_status" id="<?php echo esc_attr( $setting_key ); ?>" value="<?php echo esc_attr( $setting_key ); ?>" />
+			<?php echo esc_attr( $setting_value ); ?></label>
+			<?php
+		}
+		?>
+		<br>
+		</fieldset>
+	</div>
+
+	<?php
+	wp_nonce_field( 'coil_term_gating_nonce_action', 'term_gating_nonce' );
 }

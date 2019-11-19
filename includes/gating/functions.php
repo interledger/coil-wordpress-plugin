@@ -22,6 +22,22 @@ function register_content_meta() : void {
 }
 
 /**
+ * Register term meta.
+ *
+ * @return void
+ */
+function register_term_meta() {
+	register_meta(
+		'term',
+		'_coil_monetize_term_status',
+		[
+			'single' => true,
+			'type'   => 'string',
+		]
+	);
+}
+
+/**
  * Store the monetization options.
  *
  * @return array
@@ -217,6 +233,24 @@ function set_post_gating( int $post_id, string $gating_type ) : void {
 	}
 
 	update_post_meta( $post_id, '_coil_monetize_post_status', $gating_type );
+}
+
+/**
+ * Set the gating type for the specified term.
+ *
+ * @param integer $term_id    The term to set gating for.
+ * @param string $gating_type Either "default", "no", "no-gating", "gate-all", "gate-tagged-blocks".
+ *
+ * @return void
+ */
+function set_term_gating( int $term_id, string $gating_type ) : void {
+
+	$valid_gating_types = get_valid_gating_types();
+	if ( ! in_array( $gating_type, $valid_gating_types, true ) ) {
+		return;
+	}
+
+	update_term_meta( $term_id, '_coil_monetize_term_status', $gating_type );
 }
 
 /**
