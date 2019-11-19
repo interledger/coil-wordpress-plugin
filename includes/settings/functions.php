@@ -176,7 +176,7 @@ function coil_content_settings_posts_render_callback() {
 		?>
 		<table class="widefat">
 			<thead>
-				<th><?php _e( 'Post Type', 'coil-monetize-content' ); ?></th>
+				<th><?php esc_attr( _e( 'Post Type', 'coil-monetize-content' ) ); ?></th>
 				<?php foreach ( $form_gating_settings as $setting_key => $setting_value ) : ?>
 					<th class="posts_table_header">
 						<?php echo esc_html( $setting_value ); ?>
@@ -208,7 +208,7 @@ function coil_content_settings_posts_render_callback() {
 							<td>
 								<?php
 								printf(
-									'<input type="radio" name="%s" id="%s" value="%s"%s></input>',
+									'<input type="radio" name="%s" id="%s" value="%s"%s />',
 									esc_attr( $input_name ),
 									esc_attr( $input_id ),
 									esc_attr( $setting_key ),

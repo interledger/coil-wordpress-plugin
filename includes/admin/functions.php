@@ -244,7 +244,7 @@ function get_customizer_messaging_text( $message_id, $get_default = false ) : st
 	 * setting whcih is defined as an optional second parameter.
 	 * This is recognized as a bug (wontfix) in WordPress Core.
 	 *
-	 * @see https://core.trac`.wordpress.org/ticket/28637
+	 * @see https://core.trac.wordpress.org/ticket/28637
 	 */
 	if ( true === $get_default || empty( $customizer_setting ) || false === $customizer_setting ) {
 		$customizer_setting = isset( $defaults[ $message_id ] ) ? $defaults[ $message_id ] : '';
