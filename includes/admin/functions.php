@@ -381,3 +381,28 @@ function coil_add_customizer_options( $wp_customize ) : void {
 	);
 
 }
+
+// Add a new field to the end of the Edit Term form for all taxonomies.
+
+function display_tax_term_custom_meta( $tag, $taxonomy ) {
+
+	// PRAGTODO
+	// 1) ensure that the radio button is registered properly
+	// 2) ensure that the radio setting is saved on the term in term meta
+
+	?>
+
+	<tr class="form-field">
+		<th scope="row">
+			<label>
+				Custom Meta Here
+			</label>
+		</th>
+		<td>
+			<label for="<?php echo esc_attr( $tag->slug ); ?>"></label>
+			<input type="radio" name="term" id="<?php echo esc_attr( $tag->slug ); ?>" value="<?php echo esc_attr( $tag->slug ); ?>">Option 1</input><br>
+			<input type="radio" name="term" id="another" value="another">Option 2</input>
+		</td>
+	</tr>
+	<?php
+}

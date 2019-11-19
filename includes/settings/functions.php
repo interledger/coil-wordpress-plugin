@@ -313,8 +313,8 @@ function coil_content_settings_taxonomies_render_callback() {
 							<?php
 							printf(
 								'<span class="edit"> | <a href="%s" aria-label="Edit %s">%s</a>',
-								esc_url( 'edit-tags.php?taxonomy=' . esc_attr( $taxonomy->name ) ),
-								esc_attr( '"' . $taxonomy->label . '"' ),
+								esc_url( admin_url() . 'edit-tags.php?taxonomy=' . esc_attr( $taxonomy->name ) ),
+								esc_attr( '&ldquo;' . $taxonomy->label . '&rdquo;' ),
 								'Edit'
 							);
 							?>

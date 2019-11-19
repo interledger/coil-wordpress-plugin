@@ -37,6 +37,9 @@ function init_plugin() : void {
 	add_action( 'admin_init', __NAMESPACE__ . '\Settings\maybe_save_coil_admin_settings' );
 	add_action( 'admin_init', __NAMESPACE__ . '\Settings\register_admin_content_settings' );
 
+	// Add gating to terms.
+	output_actions_for_taxonomy_terms();
+
 	// Customizer messaging settings.
 	add_action( 'customize_register', __NAMESPACE__ . '\Admin\coil_add_customizer_options' );
 
@@ -235,4 +238,21 @@ function get_payment_pointer() : string {
 	}
 
 	return $payment_pointer_id;
+}
+
+// Generate actions per taxonomy term so that custom meta
+// fields can be added to the term editing form.
+function output_actions_for_taxonomy_terms() {
+	$valid_taxonomies = [
+		'category',
+		'post_tag',
+	];
+
+	$actions = [];
+	foreach ( $valid_taxonomies as $taxonomy ) {
+		if ( taxonomy_exists( $taxonomy ) ) {
+			$actions[] = add_action( esc_attr( $taxonomy ) . '_edit_form_fields', __NAMESPACE__ . '\Admin\display_tax_term_custom_meta', 10, 2 );
+		}
+	}
+	return $actions;
 }
