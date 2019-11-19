@@ -61,7 +61,7 @@ function render_coil_metabox() : void {
 	// option.
 	$post_gating   = Gating\get_post_gating( $post->ID );
 	$use_gutenberg = function_exists( '\use_block_editor_for_post' ) && use_block_editor_for_post( $post );
-	$settings      = Gating\get_monetization_setting_types( $post );
+	$settings      = Gating\get_monetization_setting_types( true );
 
 	if ( $use_gutenberg ) {
 		$settings['gate-tagged-blocks'] = esc_html__( 'Split Content', 'coil-monetize-content' );
@@ -134,7 +134,7 @@ function maybe_save_post_metabox( int $post_id ) : void {
  */
 function maybe_save_term_meta( int $term_id ) : void {
 
-	if ( ! current_user_can( 'manage_terms', $term_id ) || empty( $_REQUEST['term_gating_nonce'] ) ) {
+	if ( ! current_user_can( 'edit_post', $term_id ) || empty( $_REQUEST['term_gating_nonce'] ) ) {
 		return;
 	}
 
@@ -269,7 +269,7 @@ function get_customizer_messaging_text( $message_id, $get_default = false ) : st
 	 * setting whcih is defined as an optional second parameter.
 	 * This is recognized as a bug (wontfix) in WordPress Core.
 	 *
-	 * @see https://core.trac`.wordpress.org/ticket/28637
+	 * @see https://core.trac.wordpress.org/ticket/28637
 	 */
 	if ( true === $get_default || empty( $customizer_setting ) || false === $customizer_setting ) {
 		$customizer_setting = isset( $defaults[ $message_id ] ) ? $defaults[ $message_id ] : '';
@@ -406,4 +406,3 @@ function coil_add_customizer_options( $wp_customize ) : void {
 	);
 
 }
-

@@ -416,7 +416,7 @@ function get_term_gating( $term_id ) {
 function coil_add_term_custom_meta( $term ) {
 
 	// Get gating options
-	$gating_options = Gating\get_monetization_setting_types();
+	$gating_options = Gating\get_monetization_setting_types( true );
 	if ( empty( $gating_options ) ) {
 		return;
 	}
@@ -459,7 +459,9 @@ function coil_add_term_custom_meta( $term ) {
 			</fieldset>
 		</td>
 	</tr>
+
 	<?php
+	wp_nonce_field( 'coil_term_gating_nonce_action', 'term_gating_nonce' );
 }
 
 
@@ -473,14 +475,14 @@ function coil_edit_term_custom_meta( $term ) {
 	}
 
 	// Get gating options
-	$gating_options = Gating\get_monetization_setting_types();
+	$gating_options = Gating\get_monetization_setting_types( true );
 	if ( empty( $gating_options ) ) {
 		return;
 	}
 
 	?>
 	<div class="form-field">
-		<h4><?php echo esc_attr( __( 'Web Monetization - Coil', 'coil-monetize-content' ) ); ?></h4>
+		<h2><?php echo esc_attr( __( 'Web Monetization - Coil', 'coil-monetize-content' ) ); ?></h2>
 		<fieldset>
 		<?php
 		foreach ( $gating_options as $setting_key => $setting_value ) {
