@@ -146,25 +146,63 @@ function get_term_gating( $term_id ) {
 }
 
 /**
- * This function does the following:
- *
- * 1) Get any terms assigned to the post
- * 2) Do these terms have gating?
- * 3) If yes, rank them by order (see confluence) and return highest rank
+ * Get any terms attached to the post and return their gating status,
+ * ranked by priority order.
  *
  * @return string Gating type.
  */
 function get_taxonomy_term_gating( $post_id ) {
 
-	// $post_terms = wp_get_post_terms(
-	// 	$post_id,
+	$term_default = 'default';
 
+	// 1) Get any terms assigned to the post.
+	$post_terms = wp_get_post_terms(
+		$post_id,
+		[
+			'category',
+			'post_tag',
+		],
+		[
+			'fields' => 'ids',
+		]
+	);
 
+	// 2) Do these terms have gating?
+	$term_gating_options = [];
+	if ( ! is_wp_error( $post_terms ) && ! empty( $post_terms ) ) {
 
-	// );
+		foreach ( $post_terms as $term_id ) {
 
-	// Set to 'default' for now as this work is part of another ticket.
-	return 'default';
+			$post_term_gating = get_term_gating( $term_id );
+			if ( ! in_array( $post_term_gating, $term_gating_options, true ) ) {
+				$term_gating_options[] = $post_term_gating;
+			}
+		}
+	}
+
+	if ( empty( $term_gating_options ) ) {
+		return $term_default;
+	}
+
+	// 3) If terms have gating, rank by priority.
+	if ( in_array( 'gate-all', $term_gating_options, true ) ) {
+
+		// Priority 1 - Monetized Subscriber Only.
+		return 'gate-all';
+
+	} elseif ( in_array( 'no-gating', $term_gating_options, true ) ) {
+
+		// Priority 2 - Monetized and Public.
+		return 'no-gating';
+
+	} elseif ( in_array( 'no', $term_gating_options, true ) ) {
+
+		// Priority 3 - No Monetization.
+		return 'no';
+
+	} else {
+		return $term_default;
+	}
 }
 
 /**
