@@ -275,6 +275,16 @@ function get_global_posts_gating() : array {
 	return [];
 }
 
+
+function get_global_excerpt_settings() {
+	$global_excerpt = get_option( 'coil_content_settings_excerpt_group' );
+	if ( ! empty( $global_excerpt ) ) {
+		return $global_excerpt;
+	}
+
+	return [];
+}
+
 /**
  * Set the gating type for the specified post.
  *

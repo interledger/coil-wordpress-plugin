@@ -62,6 +62,13 @@ function register_admin_content_settings() {
 		'coil_content_settings_posts'
 	);
 
+	// Excerpt settings.
+	register_setting(
+		'coil_content_settings_excerpt_group',
+		'coil_content_settings_excerpt_group',
+		__NAMESPACE__ . '\coil_content_settings_excerpt_validation'
+	);
+
 }
 
 /* ------------------------------------------------------------------------ *
@@ -118,6 +125,26 @@ function coil_content_settings_posts_validation( $post_content_settings ) : arra
 		(array) $post_content_settings
 	);
 }
+
+/**
+ * Allow each excerpt checkbox in the content setting table to be properly validated
+ *
+ * @param array $excerpt_content_settings The posted checkbox options from the content settings section.
+ * @return array
+ */
+function coil_content_settings_excerpt_validation( $excerpt_content_settings ) : array {
+	// PRAGTODO VALIDATE
+	return (array) $excerpt_content_settings;
+
+	// return array_map(
+	// 	function( $checkbox_value ) {
+	// 		$valid_choices = array_keys( Gating\get_monetization_setting_types() );
+	// 		return ( in_array( $checkbox_value, $valid_choices, true ) ? sanitize_key( $checkbox_value ) : 'no' );
+	// 	},
+	// 	(array) $excerpt_content_settings
+	// );
+}
+
 
 /**
  * Allow the radio button options in the taxonomies content section to
@@ -189,8 +216,10 @@ function coil_content_settings_posts_render_callback() {
 	// If there are post types available, output them:
 	if ( ! empty( $post_type_options ) ) {
 
-		$form_gating_settings           = Gating\get_monetization_setting_types();
-		$content_settings_posts_options = Gating\get_global_posts_gating();
+		$form_gating_settings             = Gating\get_monetization_setting_types();
+		$content_settings_posts_options   = Gating\get_global_posts_gating();
+		$content_settings_excerpt_options = Gating\get_global_excerpt_settings();
+
 		?>
 		<table class="widefat">
 			<thead>
@@ -200,6 +229,47 @@ function coil_content_settings_posts_render_callback() {
 						<?php echo esc_html( $setting_value ); ?>
 					</th>
 				<?php endforeach; ?>
+				<th><?php esc_html_e( 'Display Excerpt', 'coil-monetize-content' ); ?>
+					<span class="coil-tooltip-icon"><?php esc_html_e( '?', 'coil-monetize-content' ); ?>
+
+					<span class="coil-tooltip-message">
+					<?php
+					esc_html_e(
+						'If enabled, this causes a summary of your content to show on page that have full page gating in place. The summary will either show the specific Excerpt text you\'ve set, or will show through the first 300 characters of the content, depending on how your site/theme is set up',
+						'coil-monetize-content'
+					);
+					?>
+					</span>
+				</span>
+				<style media="screen">
+					.coil-tooltip-icon {
+						display: inline-block;
+						border: 1px solid grey;
+						padding: 0 6px;
+						cursor: help;
+						position: relative;
+						margin-left: 2px;
+						border-radius: 50%;
+					}
+
+					.coil-tooltip-message {
+						position: absolute;
+						width: 180px;
+						padding: 10px;
+						background-color: grey;
+						color: white;
+						top: 19px;
+						left: -90px;
+						opacity: 0;
+						display: none;
+						transition: opacity ease-in-out;
+					}
+					.coil-tooltip-icon:hover .coil-tooltip-message {
+						display: block !important;
+						opacity: 1;
+					}
+				</style>
+			</th>
 			</thead>
 			<tbody>
 				<?php foreach ( $post_type_options as $post_type ) : ?>
@@ -233,10 +303,36 @@ function coil_content_settings_posts_render_callback() {
 									$checked_input
 								);
 								?>
+
 							</td>
 							<?php
 							endforeach;
-						?>
+							//TODO - register new settings group for the post/page excerpt options
+							?>
+
+							<td>
+							<?php
+
+
+							$excerpt_name = 'coil_content_settings_excerpt_group[' . $post_type->name . ']';
+							$excerpt_id = $post_type->name . '_show_excerpt';
+							$checked_excerpt = false;
+							if ( $setting_key === 'no' ) {
+								$checked_excerpt = 'checked="true"';
+							} elseif ( isset( $content_settings_excerpt_options[ $post_type->name ] ) ) {
+								$checked_excerpt = checked( $setting_key, $content_settings_excerpt_options[ $post_type->name ], false );
+							}
+
+							printf(
+								'<input type="checkbox" name="%s" id="%s" value="%s"%s />',
+								esc_attr( $excerpt_name ),
+								esc_attr( $excerpt_id ),
+								true,
+								$checked_excerpt
+							);
+							?>
+
+							</td>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>
@@ -263,6 +359,7 @@ function render_coil_submenu_settings_screen() : void {
 		<form action="options.php" method="post">
 			<?php
 			settings_fields( 'coil_content_settings_posts_group' );
+			settings_fields( 'coil_content_settings_excerpt_group' );
 			do_settings_sections( 'coil_content_settings_posts' );
 			submit_button();
 			?>
