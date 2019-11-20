@@ -176,7 +176,7 @@ function coil_content_settings_posts_render_callback() {
 		?>
 		<table class="widefat">
 			<thead>
-				<th><?php esc_attr( _e( 'Post Type', 'coil-monetize-content' ) ); ?></th>
+				<th><?php esc_html_e( 'Post Type', 'coil-monetize-content' ); ?></th>
 				<?php foreach ( $form_gating_settings as $setting_key => $setting_value ) : ?>
 					<th class="posts_table_header">
 						<?php echo esc_html( $setting_value ); ?>
