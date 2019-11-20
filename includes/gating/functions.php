@@ -58,6 +58,12 @@ function get_monetization_setting_types( $show_default = false ) : array {
 	return $settings;
 }
 
+/**
+ * Declare all the valid gating slugs used as a reference
+ * before the particular option is saved in the database.
+ *
+ * @return array An array of valid gating slug types.
+ */
 function get_valid_gating_types() {
 	$valid = [
 		'gate-all', // subscribers only.
@@ -213,7 +219,7 @@ function get_taxonomy_term_gating( $post_id ) {
  * otherwise return immediately.
  *
  * @param integer $post_id
- * @return void
+ * @return string $content_gating Gating slug type.
  */
 function get_content_gating( int $post_id ) : string {
 
@@ -307,7 +313,7 @@ function set_term_gating( int $term_id, string $gating_type ) : void {
 
 /**
  * New function to determine if the content is monetized
- * based on the outout of get_content_gating.
+ * based on the output of get_content_gating.
  *
  * @param int $post_id
  * @return boolean

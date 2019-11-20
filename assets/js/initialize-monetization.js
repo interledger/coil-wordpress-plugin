@@ -180,9 +180,6 @@
 					if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) ) {
 						console.info( 'Status stopped and Monetized and Public');
 						$( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
-						// hideContentContainer();
-						// $( content_container + '*.coil-hide-monetize-users' ).css( 'display', 'none' );
-						// $( content_container + '*.coil-show-monetize-users' ).css( 'display', 'none' );
 					}
 
 					setTimeout( function() {
