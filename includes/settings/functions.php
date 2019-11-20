@@ -48,6 +48,7 @@ function register_admin_menu() : void {
  */
 function register_admin_content_settings() {
 
+	// Posts.
 	register_setting(
 		'coil_content_settings_posts_group',
 		'coil_content_settings_posts_group',
@@ -56,7 +57,7 @@ function register_admin_content_settings() {
 
 	add_settings_section(
 		'coil_content_settings_posts_section',
-		_x( 'Posts', 'content settings tab section title', 'coil-monetize-content' ),
+		false,
 		__NAMESPACE__ . '\coil_content_settings_posts_render_callback',
 		'coil_content_settings_posts'
 	);
@@ -115,6 +116,23 @@ function coil_content_settings_posts_validation( $post_content_settings ) : arra
 			return ( in_array( $radio_value, $valid_choices, true ) ? sanitize_key( $radio_value ) : 'no' );
 		},
 		(array) $post_content_settings
+	);
+}
+
+/**
+ * Allow the radio button options in the taxonomies content section to
+ * be properly validated
+ *
+ * @param array $taxonomy_content_settings The posted radio options from the content settings section.
+ * @return array
+ */
+function coil_content_settings_taxonomies_validation( $taxonomy_content_settings ) : array {
+	return array_map(
+		function( $radio_value ) {
+			$valid_choices = array_keys( Gating\get_monetization_setting_types() );
+			return ( in_array( $radio_value, $valid_choices, true ) ? sanitize_key( $radio_value ) : 'no' );
+		},
+		(array) $taxonomy_content_settings
 	);
 }
 
@@ -227,8 +245,6 @@ function coil_content_settings_posts_render_callback() {
 	}
 }
 
-
-
 /**
  * Render the Coil submenu setting screen to display options to gate posts
  * and taxonomy content types.
@@ -239,33 +255,123 @@ function render_coil_submenu_settings_screen() : void {
 	?>
 	<div class="wrap coil plugin-settings">
 
-		<h1><?php echo _x( 'Default Content Settings', 'admin content setting title', 'coil-monetize-content' ); ?></h1>
+		<h1><?php esc_html_e( 'Default Content Settings', 'coil-monetize-content' ); ?></h1>
+		<br>
 
 		<?php settings_errors(); ?>
 
-		<?php
-		$active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'posts_settings';
-		?>
-
-		<h2 class="nav-tab-wrapper">
-			<a href="<?php echo esc_url( '?page=coil_content_settings&tab=posts_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'posts_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>">Posts</a>
-			<a href="<?php echo esc_url( '?page=coil_content_settings&tab=taxonomy_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'taxonomy_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>">Taxonomies</a>
-		</h2>
-
 		<form action="options.php" method="post">
-
 			<?php
-
-			if ( 'posts_settings' === $active_tab ) {
-				settings_fields( 'coil_content_settings_posts_group' );
-				do_settings_sections( 'coil_content_settings_posts' );
-			} else {
-				// Render the taxonomy settings options
-			}
+			settings_fields( 'coil_content_settings_posts_group' );
+			do_settings_sections( 'coil_content_settings_posts' );
 			submit_button();
-
 			?>
 		</form>
 	</div>
 	<?php
+}
+
+/**
+ * Add a set of gating controls to the "Add Term" screen i.e.
+ * when creating a brand new term.
+ *
+ * @param WP_Term_Object $term
+ * @return void
+ */
+function coil_add_term_custom_meta( $term ) {
+
+	// Get gating options.
+	$gating_options = Gating\get_monetization_setting_types( true );
+	if ( empty( $gating_options ) || ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
+		return;
+	}
+
+	// Retrieve the gating saved on the term.
+	$gating = Gating\get_term_gating( $term->term_id );
+
+	?>
+	<tr class="form-field">
+		<th scope="row">
+			<label><?php esc_html_e( 'Web Monetization - Coil', 'coil-monetize-content' ); ?></label>
+		</th>
+		<td>
+			<fieldset>
+			<?php
+			foreach ( $gating_options as $setting_key => $setting_value ) {
+
+				$checked_input = false;
+				if ( $setting_key === 'default' ) {
+					$checked_input = 'checked="true"';
+				} elseif ( ! empty( $gating ) ) {
+					$checked_input = checked( $setting_key, $gating, false );
+				}
+				?>
+				<label for="<?php echo esc_attr( $setting_key ); ?>">
+				<?php
+				printf(
+					'<input type="radio" name="%s" id="%s" value="%s"%s />%s',
+					esc_attr( 'coil_monetize_term_status' ),
+					esc_attr( $setting_key ),
+					esc_attr( $setting_key ),
+					$checked_input,
+					esc_attr( $setting_value )
+				);
+				?>
+				</label><br>
+				<?php
+			}
+			?>
+			</fieldset>
+		</td>
+	</tr>
+
+	<?php
+	wp_nonce_field( 'coil_term_gating_nonce_action', 'term_gating_nonce' );
+}
+
+/**
+ * Add a set of gating controls to the "Edit Term" screen, i.e.
+ * when editing an existing term.
+ *
+ * @return void
+ */
+function coil_edit_term_custom_meta() {
+
+	// Get gating options.
+	$gating_options = Gating\get_monetization_setting_types( true );
+	if ( empty( $gating_options ) || ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
+		return;
+	}
+	?>
+	<div class="form-field">
+		<h2><?php esc_html_e( 'Web Monetization - Coil', 'coil-monetize-content' ); ?></h2>
+		<fieldset>
+		<?php
+		foreach ( $gating_options as $setting_key => $setting_value ) {
+			$checked_input = false;
+			if ( $setting_key === 'default' ) {
+				$checked_input = 'checked="true"';
+			}
+			?>
+			<label for="<?php echo esc_attr( $setting_key ); ?>">
+			<?php
+			printf(
+				'<input type="radio" name="%s" id="%s" value="%s"%s />%s',
+				esc_attr( 'coil_monetize_term_status' ),
+				esc_attr( $setting_key ),
+				esc_attr( $setting_key ),
+				$checked_input,
+				esc_attr( $setting_value )
+			);
+			?>
+			</label>
+			<?php
+		}
+		?>
+		<br>
+		</fieldset>
+	</div>
+
+	<?php
+	wp_nonce_field( 'coil_term_gating_nonce_action', 'term_gating_nonce' );
 }

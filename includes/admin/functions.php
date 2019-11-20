@@ -127,6 +127,44 @@ function maybe_save_post_metabox( int $post_id ) : void {
 }
 
 /**
+ * Fires after a term has been updated, but before the term cache has been cleaned.
+ *
+ * @param int $term_id Term ID.
+ * @return void
+ */
+function maybe_save_term_meta( int $term_id ) : void {
+
+	if ( ! current_user_can( 'edit_post', $term_id ) || empty( $_REQUEST['term_gating_nonce'] ) ) {
+		return;
+	}
+
+	// Check the nonce.
+	check_admin_referer( 'coil_term_gating_nonce_action', 'term_gating_nonce' );
+
+	$term_gating = sanitize_text_field( $_REQUEST['coil_monetize_term_status'] ?? '' );
+
+	if ( $term_gating ) {
+		Gating\set_term_gating( $term_id, $term_gating );
+	} else {
+		delete_term_monetization_meta( $term_id );
+	}
+
+}
+
+/**
+ * Deletes any term meta when a term is deleted.
+ *
+ * @param int $term The term id.
+ * @return void
+ */
+function delete_term_monetization_meta( $term_id ) {
+	if ( empty( $term_id ) ) {
+		return;
+	}
+	delete_term_meta( $term_id, '_coil_monetize_term_status' );
+}
+
+/**
  * Add action links to the list on the plugins screen.
  *
  * @param array $links An array of action links.
@@ -380,4 +418,40 @@ function coil_add_customizer_options( $wp_customize ) : void {
 		]
 	);
 
+}
+
+/**
+ * Gets the taxonomies and allows the output to be filtered.
+ *
+ * @return array Taxonomies or empty array
+ */
+function get_valid_taxonomies() : array {
+
+	$all_taxonomies = get_taxonomies(
+		[],
+		'objects'
+	);
+
+	// Set up options to exclude certain taxonomies.
+	$taxonomies_exclude = [
+		'nav_menu',
+		'link_category',
+		'post_format',
+	];
+
+	$taxonomies_exclude = apply_filters( 'coil_settings_taxonomy_exclude', $taxonomies_exclude );
+
+	// Store the available taxonomies using the above exclusion options.
+	$taxonomy_options = [];
+	foreach ( $all_taxonomies as $taxonomy ) {
+
+		if ( ! empty( $taxonomies_exclude ) && in_array( $taxonomy->name, $taxonomies_exclude, true ) ) {
+			continue;
+		}
+		if ( ! in_array( $taxonomy->name, $taxonomy_options, true ) ) {
+			$taxonomy_options[] = $taxonomy->name;
+		}
+	}
+
+	return $taxonomy_options;
 }

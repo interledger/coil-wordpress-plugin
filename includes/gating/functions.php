@@ -6,6 +6,8 @@ declare(strict_types=1);
 
 namespace Coil\Gating;
 
+use Coil\Admin;
+
 /**
  * Register post/user meta.
  */
@@ -22,8 +24,25 @@ function register_content_meta() : void {
 }
 
 /**
+ * Register term meta.
+ *
+ * @return void
+ */
+function register_term_meta() {
+	register_meta(
+		'term',
+		'_coil_monetize_term_status',
+		[
+			'single' => true,
+			'type'   => 'string',
+		]
+	);
+}
+
+/**
  * Store the monetization options.
  *
+ * @param bool $show_default Whether or not to show the default option.
  * @return array
  */
 function get_monetization_setting_types( $show_default = false ) : array {
@@ -118,6 +137,82 @@ function get_post_gating( int $post_id ) : string {
 }
 
 /**
+ * Get the gating type for the specified term.
+ *
+ * @param integer $term_id The term_id to check.
+ *
+ * @return string Either "default" (default), "no", "no-gating", "gate-all".
+ */
+function get_term_gating( $term_id ) {
+
+	$term_gating = get_term_meta( $term_id, '_coil_monetize_term_status', true );
+
+	if ( empty( $term_gating ) ) {
+		$term_gating = 'default';
+	}
+	return $term_gating;
+}
+
+/**
+ * Get any terms attached to the post and return their gating status,
+ * ranked by priority order.
+ *
+ * @return string Gating type.
+ */
+function get_taxonomy_term_gating( $post_id ) {
+
+	$term_default = 'default';
+
+	$valid_taxonomies = Admin\get_valid_taxonomies();
+
+	// 1) Get any terms assigned to the post.
+	$post_terms = wp_get_post_terms(
+		$post_id,
+		$valid_taxonomies,
+		[
+			'fields' => 'ids',
+		]
+	);
+
+	// 2) Do these terms have gating?
+	$term_gating_options = [];
+	if ( ! is_wp_error( $post_terms ) && ! empty( $post_terms ) ) {
+
+		foreach ( $post_terms as $term_id ) {
+
+			$post_term_gating = get_term_gating( $term_id );
+			if ( ! in_array( $post_term_gating, $term_gating_options, true ) ) {
+				$term_gating_options[] = $post_term_gating;
+			}
+		}
+	}
+
+	if ( empty( $term_gating_options ) ) {
+		return $term_default;
+	}
+
+	// 3) If terms have gating, rank by priority.
+	if ( in_array( 'gate-all', $term_gating_options, true ) ) {
+
+		// Priority 1 - Monetized Subscriber Only.
+		return 'gate-all';
+
+	} elseif ( in_array( 'no-gating', $term_gating_options, true ) ) {
+
+		// Priority 2 - Monetized and Public.
+		return 'no-gating';
+
+	} elseif ( in_array( 'no', $term_gating_options, true ) ) {
+
+		// Priority 3 - No Monetization.
+		return 'no';
+
+	} else {
+		return $term_default;
+	}
+}
+
+/**
  * Return the single source of truth for post gating based on the fallback
  * options if the post gating selection is 'default'. E.g.
  * If return value of each function is default, move onto the next function,
@@ -141,7 +236,7 @@ function get_content_gating( int $post_id ) : string {
 	} else {
 
 		// Hierarchy 2 - Check what is set on the taxonomy.
-		$taxonomy_gating = get_taxonomy_gating();
+		$taxonomy_gating = get_taxonomy_term_gating( $post_id );
 		if ( 'default' !== $taxonomy_gating ) {
 
 			$content_gating = $taxonomy_gating; // Honour what is set on the taxonomy.
@@ -164,18 +259,6 @@ function get_content_gating( int $post_id ) : string {
 	return $content_gating;
 }
 
-/**
- * abstract the tax loop to this function and use in get_content_gating().
- * 1) get all the taxonomies,
- * 2) the meta
- * 3) check if set or not
- *
- * @return string Gating type.
- */
-function get_taxonomy_gating() {
-	// Set to 'default' for now as this work is part of another ticket.
-	return 'default';
-}
 
 /**
  * Get whatever settings are stored in the plugin as the default
@@ -191,7 +274,6 @@ function get_global_posts_gating() : array {
 
 	return [];
 }
-
 
 /**
  * Set the gating type for the specified post.
@@ -209,6 +291,24 @@ function set_post_gating( int $post_id, string $gating_type ) : void {
 	}
 
 	update_post_meta( $post_id, '_coil_monetize_post_status', $gating_type );
+}
+
+/**
+ * Set the gating type for the specified term.
+ *
+ * @param integer $term_id    The term to set gating for.
+ * @param string $gating_type Either "default", "no", "no-gating", "gate-all", "gate-tagged-blocks".
+ *
+ * @return void
+ */
+function set_term_gating( int $term_id, string $gating_type ) : void {
+
+	$valid_gating_types = get_valid_gating_types();
+	if ( ! in_array( $gating_type, $valid_gating_types, true ) ) {
+		return;
+	}
+
+	update_term_meta( $term_id, '_coil_monetize_term_status', $gating_type );
 }
 
 /**
