@@ -9,30 +9,110 @@
 		admin_missing_id_notice     = coil_params.admin_missing_id_notice,
 		post_excerpt                = coil_params.post_excerpt;
 
+	var messageWrapper = $( 'p.monetize-msg' );
+
 	// Ensure "coil_params" exists to continue.
 	if ( typeof coil_params === 'undefined' ) {
 		return false;
 	}
 
-	$( document ).ready(function () {
-		var content  = ( typeof content_container !== 'undefined' && content_container !== '' ) ? content_container : '.content-area .entry-content'; // If not set, use default entry content container class.
-		var is_valid = true;
+	// Function to output monetization message.
+	function displayMonetizationMessage( message, customClass ) {
+		var elem = document.createElement( 'p' );
+		elem.classList.add('monetize-msg');
+		if ( customClass ) {
+			elem.classList.add(customClass);
+		}
+		elem.innerHTML = message;
+		return elem;
+	}
 
-		// If post is set for monetization then we run some magic.
-		if ( $( 'body' ).hasClass( 'monetization-not-initialized' ) ) {
+	/**
+	 * Show the content container.
+	 */
+	function showContentContainer() {
+		console.info('Showing content container');
+
+		var elem = document.querySelector( content_container );
+		elem.style.display = 'block';
+	}
+
+	/**
+	 * Hide the content container. This function may still be needed,
+	 * as waiting on confirming of messages being hidden when verifying.
+	 */
+	function hideContentContainer() {
+		console.info('Hiding content container');
+
+		var elem = document.querySelector( content_container );
+		elem.style.display = 'none';
+	}
+
+	/**
+	 * Displays a message based on the body classes and verification outcome.
+	 */
+	function displayVerificationFailureMessage() {
+
+		console.info('displayVerificationFailureMessage called');
+
+		if ( $( 'p.monetize-msg' ).length > 0 ) {
+
+			$( 'p.monetize-msg' ).remove();
+
+			if ( $( 'body' ).hasClass( 'coil-gate-all' ) ) {
+
+				// Does the content have an exerpt?
+				var contentExcerpt = $( 'div.coil-post-excerpt' );
+				if ( contentExcerpt.length > 0 ) {
+					contentExcerpt.after( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
+				} else {
+					$( content_container ).before( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
+				}
+
+			} else {
+				if ( $( 'body').hasClass( 'coil-gate-tagged-blocks' ) ) {
+
+					$( 'body').addClass( 'coil-split' ); // Only show content that is free if we can't verify.
+					showContentContainer();
+					$( content_container ).before( displayMonetizationMessage( unable_to_verify_hidden, 'monetize-failed' ) );
+
+				} else {
+
+					$( content_container ).before( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
+
+				}
+			}
+		}
+	}
+
+	/**
+	 * Detect class on the body if coil is not yet initialized
+	 *
+	 * @return bool
+	 */
+	function monetizationNotInitialized() {
+		return document.body.classList.contains('monetization-not-initialized');
+	}
+
+	/**
+	 * Init
+	 */
+	$( document ).ready(function () {
+
+		if ( monetizationNotInitialized() ) {
 
 			// Display post excerpt for gated posts.
-			if ( $( 'body' ).hasClass( 'coil-gate-all' ) && typeof post_excerpt !== 'undefined' ) {
-				$( content ).before( '<div class="entry-content coil-post-excerpt"><p>' + post_excerpt + '</p></div>' );
+			if ( $( 'body' ).hasClass( 'coil-gate-all' ) && typeof post_excerpt !== 'undefined' && typeof document.monetization !== 'undefined' && document.monetization.state !== 'stopped' ) {
+				$( content_container ).before( '<div class="entry-content coil-post-excerpt"><p>' + post_excerpt + '</p></div>' );
 			}
 
 			// Hide content entry area if not default selector.
-			if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content !== '.content-area .entry-content' ) {
-				$( content ).not( '.coil-post-excerpt' ).hide();
+			if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content_container !== '.content-area .entry-content' ) {
+				$( content_container ).not( '.coil-post-excerpt' ).hide();
 			}
 
 			// Check if browser extension exists.
-			if ( document.monetization ) {
+			if ( typeof document.monetization !== 'undefined' ) {
 
 				// User might be paying, hold on a second.
 				if ( document.monetization.state === 'pending' ) {
@@ -42,7 +122,7 @@
 
 						if ( $( 'body' ).hasClass( 'coil-show-admin-notice' ) ) {
 							// Show message to site owner/administrators only.
-							$( content ).before('<p class="monetize-msg">' + admin_missing_id_notice + '</p>');
+							$( content_container ).before('<p class="monetize-msg">' + admin_missing_id_notice + '</p>');
 						} else {
 							$( 'body' ).removeClass( 'coil-missing-id' );
 						}
@@ -51,10 +131,10 @@
 						// the block settings should the theme use different theme selectors.
 						//
 						// TODO: Paul thinks this string can't be hardcoded.
-						if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content !== '.content-area .entry-content' ) {
-							$( content ).css( 'display', '' );
-							$( content + '*.coil-hide-monetize-users' ).css( 'display', 'none' );
-							$( content + '*.coil-show-monetize-users' ).css( 'display', 'none' );
+						if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content_container !== '.content-area .entry-content' ) {
+							showContentContainer();
+							$( content_container + '*.coil-hide-monetize-users' ).css( 'display', 'none' );
+							$( content_container + '*.coil-show-monetize-users' ).css( 'display', 'none' );
 						}
 
 						$( 'body' ).trigger( 'coil-missing-id' );
@@ -65,48 +145,58 @@
 							// If post is gated then show verification message after excerpt.
 							if ( $( 'body' ).hasClass( 'coil-gate-all' ) ) {
 								if ( post_excerpt !== 'undefined' ) {
-									$( content ).before( '<p class="monetize-msg">' + verifying_browser_extension + '</p>' );
+									console.info( 'Subscriber gating and no post excerpt');
+
+									$( content_container ).before( displayMonetizationMessage( verifying_browser_extension, '' ) );
 								} else {
-									$( 'div.coil-post-excerpt' ).after( '<p class="monetize-msg">' + verifying_browser_extension + '</p>' );
+									console.info( 'Subscriber gating and has post excerpt');
+									$( 'div.coil-post-excerpt' ).after( displayMonetizationMessage( verifying_browser_extension, '' ) );
 								}
 							} else {
-								$( content ).before( '<p class="monetize-msg">' + verifying_browser_extension + '</p>' );
+								$( content_container ).before( displayMonetizationMessage( verifying_browser_extension, '' ) );
 							}
-
-							var message = $( 'p.monetize-msg' );
 
 							// Update message if browser extension is verifying user.
 							setTimeout( function() {
-								$( 'p.monetize-msg' ).html( verifying_coil_account );
+								messageWrapper.html( verifying_coil_account );
 							}, 2000 );
 
 							// Update message if browser extension is unable to verify user.
 							setTimeout( function() {
-								if ( $( 'p.monetize-msg' ).length > 0 ) {
-									$( 'p.monetize-msg' ).remove();
-
-									if ( $( 'body' ).hasClass( 'coil-gate-all' ) ) {
-										$( 'div.coil-post-excerpt' ).after( '<p class="monetize-failed">' + unable_to_verify + '</p>' );
-									} else {
-										if ( $( 'body').hasClass( 'coil-gate-tagged-blocks' ) ) {
-											$( 'body').addClass( 'coil-split' ); // Only show content that is free if we can't verify.
-											$( content ).css( 'display', '' );
-											$( content ).before( '<p class="monetize-failed">' + unable_to_verify_hidden + '</p>' );
-
-										} else {
-											$( content ).before( '<p class="monetize-failed">' + unable_to_verify + '</p>' );
-										}
-									}
-
-								}
+								displayVerificationFailureMessage();
 							}, 5000 );
 						}
 					}
 				}
 				// User account verified, loading content.
 				else if ( document.monetization.state === 'started' ) {
+					console.info('Monetization state: Started');
+					$( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
+				}
+				// Final check to see if the state is stopped
+				else if ( document.monetization.state === 'stopped' ) {
 
-					$( content ).before('<p class="monetize-msg">' + loading_content + '</p>' );
+					// Only display the loading message if the status is not "monetized and public".
+					if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) ) {
+						console.info( 'Status stopped and Monetized and Public');
+						$( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
+					}
+
+					setTimeout( function() {
+
+						// If the payment connection event listeners haven't yet been
+						// initialised, display failure message
+						if ( typeof monetizationStartEventOccurred === 'undefined' ) {
+
+							// Failure
+							console.info( 'Monetization not started and verification failed');
+
+							// Update message if browser extension is unable to verify user.
+							if ( $( 'p.monetize-msg' ).text() === loading_content ) {
+								displayVerificationFailureMessage();
+							}
+						}
+					}, 5000 );
 				}
 
 				// Monetization has started.
@@ -117,12 +207,12 @@
 
 					monetizationStartEventOccurred = true;
 
-					if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content !== '.content-area .entry-content' ) {
-						$( content ).css( 'display', '' ); // Show content area if not default selector.
+					if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content_container !== '.content-area .entry-content' ) {
+						$( content_container ).css( 'display', '' ); // Show content area if not default selector.
 					}
 
 					$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'monetization-initialized' ); // Update body class to show content.
-					$( 'p.monetize-msg' ).remove(); // Remove status message.
+					messageWrapper.remove(); // Remove status message.
 					$( 'div.coil-post-excerpt' ).remove(); // Remove post excerpt.
 
 					// Show embedded content.
@@ -140,6 +230,13 @@
 					} );
 
 					$( 'body' ).trigger( 'coil-monetization-initialized', [ event ] );
+
+					// Monetization is verified, remove any messages
+					if ( $( 'p.monetize-msg' ).length > 0 ) {
+						$( 'p.monetize-msg' ).remove();
+						showContentContainer();
+					}
+
 				});
 
 				// Monetization progress event.
@@ -161,23 +258,32 @@
 						assetScale
 					] );
 				});
+
 			} else {
+
+				/* Coil Extension not found or using unsupported browser */
 				$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'coil-extension-not-found' ); // Update body class to show free content.
 
-				if ( $( 'body' ).hasClass( 'coil-gate-all' ) ) {
-					$( 'div.coil-post-excerpt' ).after( '<p class="monetize-msg">' + browser_extension_missing + '</p>' );
-				} else {
-					$( content ).before( '<p class="monetize-msg">' + browser_extension_missing + '</p>' );
+				if ( $( 'body' ).hasClass( 'coil-gate-all' ) || ! $( 'body' ).hasClass( 'coil-no-gating') ) {
+
+					var postExcerptDiv =  $( 'div.coil-post-excerpt' );
+					var entryContentDiv =  $( 'div.entry-content' );
+
+					if ( postExcerptDiv.length ) {
+						postExcerptDiv.after( displayMonetizationMessage( browser_extension_missing, '' ) );
+					} else if ( entryContentDiv.length ) {
+						entryContentDiv.before( displayMonetizationMessage( browser_extension_missing, '' ) );
+					}
 				}
 
 				// This ensures content written in Gutenberg is displayed according to
 				// the block settings should the theme use different theme selectors.
 				//
 				// TODO: Paul thinks this string can't be hardcoded.
-				if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content !== '.content-area .entry-content' ) {
-					$( content ).css( 'display', '' );
-					$( content + '*.coil-hide-monetize-users' ).css( 'display', 'none' );
-					$( content + '*.coil-show-monetize-users' ).css( 'display', 'none' );
+				if ( ! $( 'body' ).hasClass( 'coil-no-gating' ) && content_container !== '.content-area .entry-content' ) {
+					showContentContainer();
+					$( content_container + '*.coil-hide-monetize-users' ).css( 'display', 'none' );
+					$( content_container + '*.coil-show-monetize-users' ).css( 'display', 'none' );
 				}
 
 				// Trigger an event.

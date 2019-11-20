@@ -17,11 +17,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			<p><strong><?php esc_html__( 'Thanks for choosing Coil.', 'coil-monetize-content' ); ?></strong></p>
 
-			<p><?php esc_html_e( 'Please submit your payout pointer below in order for your content to be tracked for monetization.', 'coil-monetize-content' ); ?></p>
+			<p><?php esc_html_e( 'Please submit your payment pointer below in order for your content to be tracked for monetization.', 'coil-monetize-content' ); ?></p>
 
 			<form method="POST" action="" id="mainform">
-				<label for="coil_payout_pointer_id"><?php esc_html_e( 'Payout Pointer', 'coil-monetize-content' ); ?></label>
-				<input class="wide-input" type="text" name="coil_payout_pointer_id" id="coil_payout_pointer_id" value="<?php echo esc_attr( get_option( 'coil_payout_pointer_id' ) ); ?>" placeholder="$pay.stronghold.co/0000000000000000000000000000000000000" />
+				<label for="coil_payment_pointer_id"><?php esc_html_e( 'Payment Pointer', 'coil-monetize-content' ); ?></label>
+				<input class="wide-input" type="text" name="coil_payment_pointer_id" id="coil_payment_pointer_id" value="<?php echo esc_attr( get_option( 'coil_payment_pointer_id' ) ); ?>" placeholder="$pay.stronghold.co/0000000000000000000000000000000000000" />
 
 				<label for="coil_content_container"><?php esc_html_e( 'Content Container', 'coil-monetize-content' ); ?></label>
 				<input class="wide-input" type="text" name="coil_content_container" id="coil_content_container" value="<?php echo esc_attr( get_option( 'coil_content_container' ) ); ?>" placeholder=".content-area .entry-content" />

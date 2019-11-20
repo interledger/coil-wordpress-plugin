@@ -170,10 +170,11 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 		}*/
 
 		// Only show inspector options if set for block level monetization.
-		if ( typeof meta._coil_monetize_post_status === 'undefined' || ( typeof meta._coil_monetize_post_status !== 'undefined' && meta._coil_monetize_post_status === 'gate-tagged-blocks' ) ) {
-			showInspector = true;
-		} else {
-			showInspector = false;
+		showInspector = false;
+		if ( typeof meta !== 'undefined' ) {
+			if ( typeof meta._coil_monetize_post_status === 'undefined' || ( typeof meta._coil_monetize_post_status !== 'undefined' && meta._coil_monetize_post_status === 'gate-tagged-blocks' ) ) {
+				showInspector = true;
+			}
 		}
 
 		return (

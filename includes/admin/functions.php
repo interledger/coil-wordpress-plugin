@@ -56,13 +56,12 @@ function add_metabox() : void {
 function render_coil_metabox() : void {
 	global $post;
 
-	$coil_status   = Gating\get_post_gating( $post->ID );
+	// Explicitly use the post gating option to render whatever is saved on this post,
+	// instead of what is saved globally. This is used to output the correct meta box
+	// option.
+	$post_gating   = Gating\get_post_gating( $post->ID );
 	$use_gutenberg = function_exists( '\use_block_editor_for_post' ) && use_block_editor_for_post( $post );
-	$settings      = [
-		'no'        => esc_html__( 'No Monetization', 'coil-monetize-content' ),
-		'no-gating' => esc_html__( 'Monetized and Public', 'coil-monetize-content' ),
-		'gate-all'  => esc_html__( 'Subscribers Only', 'coil-monetize-content' ),
-	];
+	$settings      = Gating\get_monetization_setting_types( true );
 
 	if ( $use_gutenberg ) {
 		$settings['gate-tagged-blocks'] = esc_html__( 'Split Content', 'coil-monetize-content' );
@@ -83,8 +82,8 @@ function render_coil_metabox() : void {
 		</legend>
 
 		<?php foreach ( $settings as $option => $name ) : ?>
-			<label for="track">
-				<input type="radio" name="coil_monetize_post_status" id="<?php echo esc_attr( $option ); ?>" value="<?php echo esc_attr( $option ); ?>" <?php checked( $coil_status, $option ); ?>/>
+			<label for="<?php echo esc_attr( $option ); ?>">
+				<input type="radio" name="coil_monetize_post_status" id="<?php echo esc_attr( $option ); ?>" value="<?php echo esc_attr( $option ); ?>" <?php checked( $post_gating, $option ); ?>/>
 				<?php echo esc_html( $name ); ?>
 				<br />
 			</label>
@@ -248,7 +247,7 @@ function get_customizer_messaging_text( $message_id, $get_default = false ) : st
 	 * @see https://core.trac.wordpress.org/ticket/28637
 	 */
 	if ( true === $get_default || empty( $customizer_setting ) || false === $customizer_setting ) {
-		$customizer_setting = isset( $defaults[$message_id] ) ? $defaults[$message_id] : '';
+		$customizer_setting = isset( $defaults[ $message_id ] ) ? $defaults[ $message_id ] : '';
 	}
 	return $customizer_setting;
 }
@@ -305,7 +304,7 @@ function coil_add_customizer_options( $wp_customize ) : void {
 			'description' => __( 'This message is shown when content is set to be subscriber-only, and visitor either isn\'t using a supported browser, or doesn\'t have the browser extension installed correctly.', 'coil-monetize-content' ),
 			'input_attrs' => [
 				'placeholder' => get_customizer_messaging_text( $incorrect_browser_setup_message_id, true ),
-			]
+			],
 		]
 	);
 
@@ -329,7 +328,7 @@ function coil_add_customizer_options( $wp_customize ) : void {
 			'description' => __( 'This message is shown when content is set to be subscriber-only, browser setup is correct, but Web Monetization doesn\'t start.  It might be due to several reasons, including not having an active Coil account.', 'coil-monetize-content' ),
 			'input_attrs' => [
 				'placeholder' => get_customizer_messaging_text( $invalid_web_monetization_message_id, true ),
-			]
+			],
 		]
 	);
 
@@ -353,10 +352,9 @@ function coil_add_customizer_options( $wp_customize ) : void {
 			'description' => __( 'This message is shown when content is set to "Monetized and Public" and visitor does not have Web Monetization in place and active in their browser.', 'coil-monetize-content' ),
 			'input_attrs' => [
 				'placeholder' => get_customizer_messaging_text( $voluntary_donation_message_id, true ),
-			]
+			],
 		]
 	);
-
 
 	$pending_message_id = 'coil_verifying_status_message';
 
@@ -378,7 +376,7 @@ function coil_add_customizer_options( $wp_customize ) : void {
 			'description' => __( 'This message is shown for a short time time only while check is made on browser setup and that an active Web Monetization account is in place.', 'coil-monetize-content' ),
 			'input_attrs' => [
 				'placeholder' => get_customizer_messaging_text( $pending_message_id, true ),
-			]
+			],
 		]
 	);
 

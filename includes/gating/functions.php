@@ -22,6 +22,41 @@ function register_content_meta() : void {
 }
 
 /**
+ * Store the monetization options.
+ *
+ * @return array
+ */
+function get_monetization_setting_types( $show_default = false ) : array {
+
+	if ( true === $show_default ) {
+		$settings['default'] = esc_html__( 'Use Default', 'coil-monetize-content' );
+	}
+
+	$settings['no']        = esc_html__( 'No Monetization', 'coil-monetize-content' );
+	$settings['no-gating'] = esc_html__( 'Monetized and Public', 'coil-monetize-content' );
+	$settings['gate-all']  = esc_html__( 'Subscribers Only', 'coil-monetize-content' );
+
+	return $settings;
+}
+
+/**
+ * Declare all the valid gating slugs used as a reference
+ * before the particular option is saved in the database.
+ *
+ * @return array An array of valid gating slug types.
+ */
+function get_valid_gating_types() {
+	$valid = [
+		'gate-all', // subscribers only.
+		'gate-tagged-blocks', // split content.
+		'no', // no monetization.
+		'no-gating', // monetixed and public.
+		'default', // whatever is set on the post to revert back.
+	];
+	return $valid;
+}
+
+/**
  * Maybe restrict (gate) visibility of the specified post content.
  *
  * @param string $content Post content to checl.
@@ -34,21 +69,26 @@ function maybe_restrict_content( string $content ) : string {
 		return $content;
 	}
 
-	$coil_status    = get_post_gating( get_the_ID() );
+	$coil_status    = get_content_gating( get_the_ID() );
 	$public_content = '';
 
 	switch ( $coil_status ) {
 		case 'gate-all':
-			// Restrict all content.
+			// Restrict all content (subscribers only).
 			$public_content = '<p>' . esc_html__( 'The contents of this article is for subscribers only!', 'coil-monetize-content' ) . '</p>';
 			break;
 
 		case 'gate-tagged-blocks':
-			// Restrict some part of this content.
+			// Restrict some part of this content. (split content).
 			$public_content  = '<p>' . esc_html__( 'This article is monetized and some content is for subscribers only.', 'coil-monetize-content' ) . '</p>';
 			$public_content .= $content;
 			break;
 
+		/**
+		 * case 'default': doesn't exist in this context because the last possible
+		 * saved option will be 'no', after a post has fallen back to the taxonomy
+		 * and then the default post options.
+		 */
 		case 'no':
 		case 'no-gate':
 		default:
@@ -71,10 +111,85 @@ function get_post_gating( int $post_id ) : string {
 	$gating = get_post_meta( $post_id, '_coil_monetize_post_status', true );
 
 	if ( empty( $gating ) ) {
-		$gating = 'no';
+		$gating = 'default';
 	}
 
 	return $gating;
+}
+
+/**
+ * Return the single source of truth for post gating based on the fallback
+ * options if the post gating selection is 'default'. E.g.
+ * If return value of each function is default, move onto the next function,
+ * otherwise return immediately.
+ *
+ * @param integer $post_id
+ * @return string $content_gating Gating slug type.
+ */
+function get_content_gating( int $post_id ) : string {
+
+	$post_gating = get_post_gating( $post_id );
+
+	// Set a default monetization value.
+	$content_gating = 'no';
+
+	// Hierarchy 1 - Check what is set on the post.
+	if ( 'default' !== $post_gating ) {
+
+		$content_gating = $post_gating; // Honour what is set on the post.
+
+	} else {
+
+		// Hierarchy 2 - Check what is set on the taxonomy.
+		$taxonomy_gating = get_taxonomy_gating();
+		if ( 'default' !== $taxonomy_gating ) {
+
+			$content_gating = $taxonomy_gating; // Honour what is set on the taxonomy.
+
+		} else {
+
+			// Hierarchy 3 - Check what is set in the global default.
+			// Get the post type for this post to check against what is set for default.
+			$post = get_post( $post_id );
+
+			// Get the post type from what is saved in global options
+			$global_gating_settings = get_global_posts_gating();
+
+			if ( ! empty( $global_gating_settings ) && isset( $global_gating_settings[ $post->post_type ] ) ) {
+				$content_gating = $global_gating_settings[ $post->post_type ];
+			}
+		}
+	}
+
+	return $content_gating;
+}
+
+/**
+ * abstract the tax loop to this function and use in get_content_gating().
+ * 1) get all the taxonomies,
+ * 2) the meta
+ * 3) check if set or not
+ *
+ * @return string Gating type.
+ */
+function get_taxonomy_gating() {
+	// Set to 'default' for now as this work is part of another ticket.
+	return 'default';
+}
+
+/**
+ * Get whatever settings are stored in the plugin as the default
+ * content gating settings (post, page, cpt etc).
+ *
+ * @return array Setting stored in options, or blank array.
+ */
+function get_global_posts_gating() : array {
+	$global_settings = get_option( 'coil_content_settings_posts_group' );
+	if ( ! empty( $global_settings ) ) {
+		return $global_settings;
+	}
+
+	return [];
 }
 
 
@@ -82,22 +197,28 @@ function get_post_gating( int $post_id ) : string {
  * Set the gating type for the specified post.
  *
  * @param integer $post_id    The post to set gating for.
- * @param string $gating_type Either "no", "no-gating", "gate-all", "gate-tagged-blocks".
+ * @param string $gating_type Either "default", "no", "no-gating", "gate-all", "gate-tagged-blocks".
  *
  * @return void
  */
 function set_post_gating( int $post_id, string $gating_type ) : void {
 
-	$valid_gating_types = [
-		'gate-all',
-		'gate-tagged-blocks',
-		'no',
-		'no-gating',
-	];
-
+	$valid_gating_types = get_valid_gating_types();
 	if ( ! in_array( $gating_type, $valid_gating_types, true ) ) {
 		return;
 	}
 
 	update_post_meta( $post_id, '_coil_monetize_post_status', $gating_type );
+}
+
+/**
+ * New function to determine if the content is monetized
+ * based on the output of get_content_gating.
+ *
+ * @param int $post_id
+ * @return boolean
+ */
+function is_content_monetized( $post_id ) : bool {
+	$coil_status = get_content_gating( $post_id );
+	return ( $coil_status === 'no' ) ? false : true;
 }
