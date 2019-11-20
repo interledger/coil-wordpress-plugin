@@ -194,7 +194,7 @@ function coil_content_settings_posts_render_callback() {
 		?>
 		<table class="widefat">
 			<thead>
-				<th><?php _e( 'Post Type', 'coil-monetize-content' ); ?></th>
+				<th><?php esc_html_e( 'Post Type', 'coil-monetize-content' ); ?></th>
 				<?php foreach ( $form_gating_settings as $setting_key => $setting_value ) : ?>
 					<th class="posts_table_header">
 						<?php echo esc_html( $setting_value ); ?>
@@ -255,7 +255,7 @@ function render_coil_submenu_settings_screen() : void {
 	?>
 	<div class="wrap coil plugin-settings">
 
-		<h1><?php echo esc_attr( _x( 'Default Content Settings', 'admin content setting title', 'coil-monetize-content' ) ); ?></h1>
+		<h1><?php esc_html_e( 'Default Content Settings', 'coil-monetize-content' ); ?></h1>
 		<br>
 
 		<?php settings_errors(); ?>
@@ -292,7 +292,7 @@ function coil_add_term_custom_meta( $term ) {
 	?>
 	<tr class="form-field">
 		<th scope="row">
-			<label><?php echo esc_attr( __( 'Web Monetization - Coil', 'coil-monetize-content' ) ); ?></label>
+			<label><?php esc_html_e( 'Web Monetization - Coil', 'coil-monetize-content' ); ?></label>
 		</th>
 		<td>
 			<fieldset>
@@ -344,7 +344,7 @@ function coil_edit_term_custom_meta() {
 	}
 	?>
 	<div class="form-field">
-		<h2><?php echo esc_attr( __( 'Web Monetization - Coil', 'coil-monetize-content' ) ); ?></h2>
+		<h2><?php esc_html_e( 'Web Monetization - Coil', 'coil-monetize-content' ); ?></h2>
 		<fieldset>
 		<?php
 		foreach ( $gating_options as $setting_key => $setting_value ) {

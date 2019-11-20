@@ -252,12 +252,7 @@ function get_payment_pointer() : string {
  */
 function add_term_edit_save_form_meta_actions() {
 
-	$valid_taxonomies = [
-		'category',
-		'post_tag',
-	];
-
-	$valid_taxonomies = apply_filters( 'coil_settings_taxonomy_exclude', $valid_taxonomies );
+	$valid_taxonomies = Admin\get_valid_taxonomies();
 
 	$actions = [];
 	if ( is_array( $valid_taxonomies ) && ! empty( $valid_taxonomies ) ) {

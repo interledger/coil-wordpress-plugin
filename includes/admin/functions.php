@@ -146,7 +146,7 @@ function maybe_save_term_meta( int $term_id ) : void {
 	if ( $term_gating ) {
 		Gating\set_term_gating( $term_id, $term_gating );
 	} else {
-		delete_term_meta( $term_id, '_coil_monetize_term_status' );
+		delete_term_monetization_meta( $term_id );
 	}
 
 }
@@ -418,4 +418,40 @@ function coil_add_customizer_options( $wp_customize ) : void {
 		]
 	);
 
+}
+
+/**
+ * Gets the taxonomies and allows the output to be filtered.
+ *
+ * @return array Taxonomies or empty array
+ */
+function get_valid_taxonomies() : array {
+
+	$all_taxonomies = get_taxonomies(
+		[],
+		'objects'
+	);
+
+	// Set up options to exclude certain taxonomies.
+	$taxonomies_exclude = [
+		'nav_menu',
+		'link_category',
+		'post_format',
+	];
+
+	$taxonomies_exclude = apply_filters( 'coil_settings_taxonomy_exclude', $taxonomies_exclude );
+
+	// Store the available taxonomies using the above exclusion options.
+	$taxonomy_options = [];
+	foreach ( $all_taxonomies as $taxonomy ) {
+
+		if ( ! empty( $taxonomies_exclude ) && in_array( $taxonomy->name, $taxonomies_exclude, true ) ) {
+			continue;
+		}
+		if ( ! in_array( $taxonomy->name, $taxonomy_options, true ) ) {
+			$taxonomy_options[] = $taxonomy->name;
+		}
+	}
+
+	return $taxonomy_options;
 }

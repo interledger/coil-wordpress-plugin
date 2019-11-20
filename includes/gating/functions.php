@@ -6,6 +6,8 @@ declare(strict_types=1);
 
 namespace Coil\Gating;
 
+use Coil\Admin;
+
 /**
  * Register post/user meta.
  */
@@ -155,13 +157,12 @@ function get_taxonomy_term_gating( $post_id ) {
 
 	$term_default = 'default';
 
+	$valid_taxonomies = Admin\get_valid_taxonomies();
+
 	// 1) Get any terms assigned to the post.
 	$post_terms = wp_get_post_terms(
 		$post_id,
-		[
-			'category',
-			'post_tag',
-		],
+		$valid_taxonomies,
 		[
 			'fields' => 'ids',
 		]

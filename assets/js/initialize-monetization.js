@@ -55,9 +55,9 @@
 
 		console.info('displayVerificationFailureMessage called');
 
-		if ( $('p.monetize-msg').length > 0 ) {
+		if ( $( 'p.monetize-msg' ).length > 0 ) {
 
-			$('p.monetize-msg').remove();
+			$( 'p.monetize-msg' ).remove();
 
 			if ( $( 'body' ).hasClass( 'coil-gate-all' ) ) {
 
