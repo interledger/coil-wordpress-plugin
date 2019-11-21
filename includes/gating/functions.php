@@ -137,6 +137,24 @@ function get_post_gating( int $post_id ) : string {
 }
 
 /**
+ * Get the value of the "Display Excerpt" setting for this post .
+ *
+ * @param integer $post_id The post to check.
+ * @return bool true show excerpt, false hide excerpt.
+ */
+function get_excerpt_gating( int $post_id ) : bool {
+	$post_type = get_post_type( $post_id );
+
+	$display_excerpt  = false;
+	$excerpt_settings = get_global_excerpt_settings();
+	if ( ! empty( $excerpt_settings ) && isset( $excerpt_settings[ $post_type ] ) ) {
+		$display_excerpt = $excerpt_settings[ $post_type ];
+	}
+	return $display_excerpt;
+}
+
+
+/**
  * Get the gating type for the specified term.
  *
  * @param integer $term_id The term_id to check.
@@ -259,7 +277,6 @@ function get_content_gating( int $post_id ) : string {
 	return $content_gating;
 }
 
-
 /**
  * Get whatever settings are stored in the plugin as the default
  * content gating settings (post, page, cpt etc).
@@ -277,9 +294,9 @@ function get_global_posts_gating() : array {
 
 
 function get_global_excerpt_settings() {
-	$global_excerpt = get_option( 'coil_content_settings_excerpt_group' );
-	if ( ! empty( $global_excerpt ) ) {
-		return $global_excerpt;
+	$global_excerpt_settings = get_option( 'coil_content_settings_excerpt_group' );
+	if ( ! empty( $global_excerpt_settings ) ) {
+		return $global_excerpt_settings;
 	}
 
 	return [];
