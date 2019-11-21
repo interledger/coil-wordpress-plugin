@@ -160,7 +160,6 @@ function load_assets() : void {
 			'browser_extension_missing' => Admin\get_customizer_messaging_text( 'coil_unsupported_message' ),
 			'unable_to_verify'          => Admin\get_customizer_messaging_text( 'coil_unable_to_verify_message' ),
 			'voluntary_donation'        => Admin\get_customizer_messaging_text( 'coil_voluntary_donation_message' ),
-			'partial_block_gating'      => Admin\get_customizer_messaging_text( 'coil_partial_gating_message' ),
 			'loading_content'           => Admin\get_customizer_messaging_text( 'coil_verifying_status_message' ),
 			'post_excerpt'              => get_the_excerpt(),
 

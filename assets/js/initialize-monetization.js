@@ -3,7 +3,6 @@
 		browser_extension_missing = coil_params.browser_extension_missing,
 		unable_to_verify          = coil_params.unable_to_verify,
 		voluntary_donation        = coil_params.voluntary_donation,
-		partial_block_gating      = coil_params.partial_block_gating,
 		loading_content           = coil_params.loading_content,
 		post_excerpt              = coil_params.post_excerpt,
 		admin_missing_id_notice   = coil_params.admin_missing_id_notice;

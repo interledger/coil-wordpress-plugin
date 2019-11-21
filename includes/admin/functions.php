@@ -418,31 +418,6 @@ function coil_add_customizer_options( $wp_customize ) : void {
 			],
 		]
 	);
-
-	// Partial content gating message (textarea 5).
-	$partial_gating_message_id = 'coil_partial_gating_message';
-
-	$wp_customize->add_setting(
-		$partial_gating_message_id,
-		[
-			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
-			'sanitize_callback' => 'wp_filter_nohtml_kses',
-		]
-	);
-
-	$wp_customize->add_control(
-		$partial_gating_message_id,
-		[
-			'type'        => 'textarea',
-			'label'       => __( 'Partial content gating message', 'coil-monetize-content' ),
-			'section'     => $messaging_section_id,
-			'description' => __( 'This message is shown in footer bar on pages where only some of the content blocks have been set as Subscriber-Only.', 'coil-monetize-content' ),
-			'input_attrs' => [
-				'placeholder' => get_customizer_messaging_text( $partial_gating_message_id, true ),
-			],
-		]
-	);
-
 }
 
 /**
