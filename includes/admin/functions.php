@@ -271,6 +271,7 @@ function get_customizer_messaging_text( $message_id, $get_default = false ) : st
 		'coil_unable_to_verify_message'   => __( 'You need a valid Coil account in order to see content, here\'s how..', 'coil-monetize-content' ),
 		'coil_voluntary_donation_message' => __( 'This site is monetized using Coil.  We ask for your help to pay for our time in creating this content for you.  Here\'s how...', 'coil-monetize-content' ),
 		'coil_verifying_status_message'   => __( 'Verifying Web Monetization status. Please wait...', 'coil-monetize-content' ),
+		'coil_partial_gating_message'     => __( 'This content is for Coil subscribers only. To access, subscribe to Coil and install the browser extension.  [CTA button:  Find out more.  Link: http://www.coil.com ]', 'coil-monetize-content' ),
 	];
 
 	// Get the message from the customizer.
@@ -322,6 +323,7 @@ function coil_add_customizer_options( $wp_customize ) : void {
 		]
 	);
 
+	// Incorrect browser setup message (textarea 1).
 	$incorrect_browser_setup_message_id = 'coil_unsupported_message';
 
 	$wp_customize->add_setting(
@@ -332,7 +334,6 @@ function coil_add_customizer_options( $wp_customize ) : void {
 		]
 	);
 
-	// Add controls to message one setting.
 	$wp_customize->add_control(
 		$incorrect_browser_setup_message_id,
 		[
@@ -346,6 +347,7 @@ function coil_add_customizer_options( $wp_customize ) : void {
 		]
 	);
 
+	// Invalid Web Monetization message (textarea 2).
 	$invalid_web_monetization_message_id = 'coil_unable_to_verify_message';
 
 	$wp_customize->add_setting(
@@ -356,7 +358,6 @@ function coil_add_customizer_options( $wp_customize ) : void {
 		]
 	);
 
-	// Add controls to message two setting.
 	$wp_customize->add_control(
 		$invalid_web_monetization_message_id,
 		[
@@ -370,6 +371,7 @@ function coil_add_customizer_options( $wp_customize ) : void {
 		]
 	);
 
+	// Voluntary donation message (textarea 3).
 	$voluntary_donation_message_id = 'coil_voluntary_donation_message';
 
 	$wp_customize->add_setting(
@@ -380,7 +382,6 @@ function coil_add_customizer_options( $wp_customize ) : void {
 		]
 	);
 
-	// Add controls to message two setting.
 	$wp_customize->add_control(
 		$voluntary_donation_message_id,
 		[
@@ -394,6 +395,7 @@ function coil_add_customizer_options( $wp_customize ) : void {
 		]
 	);
 
+	// Pending message (textarea 4).
 	$pending_message_id = 'coil_verifying_status_message';
 
 	$wp_customize->add_setting(
@@ -404,7 +406,6 @@ function coil_add_customizer_options( $wp_customize ) : void {
 		]
 	);
 
-	// Add controls to message two setting.
 	$wp_customize->add_control(
 		$pending_message_id,
 		[
@@ -417,7 +418,6 @@ function coil_add_customizer_options( $wp_customize ) : void {
 			],
 		]
 	);
-
 }
 
 /**
