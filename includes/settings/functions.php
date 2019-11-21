@@ -127,24 +127,19 @@ function coil_content_settings_posts_validation( $post_content_settings ) : arra
 }
 
 /**
- * Allow each excerpt checkbox in the content setting table to be properly validated
+ * Allow each "Display Excerpt" checkbox in the content setting table to be properly validated
  *
  * @param array $excerpt_content_settings The posted checkbox options from the content settings section.
  * @return array
  */
 function coil_content_settings_excerpt_validation( $excerpt_content_settings ) : array {
-	// PRAGTODO VALIDATE
-	return (array) $excerpt_content_settings;
-
-	// return array_map(
-	// 	function( $checkbox_value ) {
-	// 		$valid_choices = array_keys( Gating\get_monetization_setting_types() );
-	// 		return ( in_array( $checkbox_value, $valid_choices, true ) ? sanitize_key( $checkbox_value ) : 'no' );
-	// 	},
-	// 	(array) $excerpt_content_settings
-	// );
+	return array_map(
+		function( $checkbox_value ) {
+			return ( isset( $checkbox_value ) ) ? true : false;
+		},
+		(array) $excerpt_content_settings
+	);
 }
-
 
 /**
  * Allow the radio button options in the taxonomies content section to
@@ -230,45 +225,6 @@ function coil_content_settings_posts_render_callback() {
 					</th>
 				<?php endforeach; ?>
 				<th><?php esc_html_e( 'Display Excerpt', 'coil-monetize-content' ); ?>
-					<span class="coil-tooltip-icon"><?php esc_html_e( '?', 'coil-monetize-content' ); ?>
-
-					<span class="coil-tooltip-message">
-					<?php
-					esc_html_e(
-						'If enabled, this causes a summary of your content to show on page that have full page gating in place. The summary will either show the specific Excerpt text you\'ve set, or will show through the first 300 characters of the content, depending on how your site/theme is set up',
-						'coil-monetize-content'
-					);
-					?>
-					</span>
-				</span>
-				<style media="screen">
-					.coil-tooltip-icon {
-						display: inline-block;
-						border: 1px solid grey;
-						padding: 0 6px;
-						cursor: help;
-						position: relative;
-						margin-left: 2px;
-						border-radius: 50%;
-					}
-
-					.coil-tooltip-message {
-						position: absolute;
-						width: 180px;
-						padding: 10px;
-						background-color: grey;
-						color: white;
-						top: 19px;
-						left: -90px;
-						opacity: 0;
-						display: none;
-						transition: opacity ease-in-out;
-					}
-					.coil-tooltip-icon:hover .coil-tooltip-message {
-						display: block !important;
-						opacity: 1;
-					}
-				</style>
 			</th>
 			</thead>
 			<tbody>
@@ -306,33 +262,26 @@ function coil_content_settings_posts_render_callback() {
 
 							</td>
 							<?php
-							endforeach;
-							//TODO - register new settings group for the post/page excerpt options
-							?>
+						endforeach;
+						?>
+						<td>
+						<?php
+						$excerpt_name = 'coil_content_settings_excerpt_group[' . $post_type->name . ']';
+						$excerpt_id   = $post_type->name . '_display_excerpt';
 
-							<td>
-							<?php
-
-
-							$excerpt_name = 'coil_content_settings_excerpt_group[' . $post_type->name . ']';
-							$excerpt_id = $post_type->name . '_show_excerpt';
-							$checked_excerpt = false;
-							if ( $setting_key === 'no' ) {
-								$checked_excerpt = 'checked="true"';
-							} elseif ( isset( $content_settings_excerpt_options[ $post_type->name ] ) ) {
-								$checked_excerpt = checked( $setting_key, $content_settings_excerpt_options[ $post_type->name ], false );
-							}
-
-							printf(
-								'<input type="checkbox" name="%s" id="%s" value="%s"%s />',
-								esc_attr( $excerpt_name ),
-								esc_attr( $excerpt_id ),
-								true,
-								$checked_excerpt
-							);
-							?>
-
-							</td>
+						$checked_excerpt = false;
+						if ( isset( $content_settings_excerpt_options[ $post_type->name ] ) ) {
+							$checked_excerpt = checked( 1, $content_settings_excerpt_options[ $post_type->name ], false );
+						}
+						printf(
+							'<input type="checkbox" name="%s" id="%s" value="%s"%s />',
+							esc_attr( $excerpt_name ),
+							esc_attr( $excerpt_id ),
+							true,
+							$checked_excerpt
+						);
+						?>
+						</td>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>
