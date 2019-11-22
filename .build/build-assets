@@ -14,6 +14,7 @@ composer install
 npm install
 
 echo "* Making plugin distribution"
+npm run build
 npx grunt build
 npx grunt zip
 
