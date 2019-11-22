@@ -78,7 +78,7 @@ function get_valid_gating_types() {
 /**
  * Maybe restrict (gate) visibility of the specified post content.
  *
- * @param string $content Post content to checl.
+ * @param string $content Post content to check.
  *
  * @return string $content Updated post content.
  */
