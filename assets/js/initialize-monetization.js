@@ -25,9 +25,9 @@
 	// Function to output monetization message.
 	function displayMonetizationMessage( message, customClass ) {
 		var elem = document.createElement( 'p' );
-		elem.classList.add('monetize-msg');
+		elem.classList.add( 'monetize-msg' );
 		if ( customClass ) {
-			elem.classList.add(customClass);
+			elem.classList.add( customClass );
 		}
 		elem.innerHTML = message;
 		return elem;
@@ -55,21 +55,21 @@
 	 * Helper function to determine if the content is "Monetized and Public"
 	 */
 	function isMonetizedAndPublic() {
-		return document.body.classList.contains('coil-no-gating');
+		return document.body.classList.contains( 'coil-no-gating' );
 	}
 
 	/**
 	 * Helper function to determine if the content is "Monetized and Public"
 	 */
 	function isSubscribersOnly() {
-		return document.body.classList.contains('coil-gate-all');
+		return document.body.classList.contains( 'coil-gate-all' );
 	}
 
 	/**
 	 * Helper function to determine if the content is "Split Content"
 	 */
 	function isSplitContent() {
-		return document.body.classList.contains('coil-gate-tagged-blocks');
+		return document.body.classList.contains( 'coil-gate-tagged-blocks' );
 	}
 
 	/**
@@ -103,7 +103,7 @@
 			} else {
 				if ( isSplitContent() ) {
 
-					$( 'body').addClass( 'coil-split' ); // Only show content that is free if we can't verify.
+					$( 'body' ).addClass( 'coil-split' ); // Only show content that is free if we can't verify.
 					showContentContainer();
 					$( content_container ).before( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
 
@@ -126,7 +126,7 @@
 	 * @return bool
 	 */
 	function monetizationNotInitialized() {
-		return document.body.classList.contains('monetization-not-initialized');
+		return document.body.classList.contains( 'monetization-not-initialized' );
 	}
 
 	/**
@@ -157,7 +157,7 @@
 
 						if ( $( 'body' ).hasClass( 'coil-show-admin-notice' ) ) {
 							// Show message to site owner/administrators only.
-							$( content_container ).before('<p class="monetize-msg">' + admin_missing_id_notice + '</p>');
+							$( content_container ).before( '<p class="monetize-msg">' + admin_missing_id_notice + '</p>' );
 						} else {
 							$( 'body' ).removeClass( 'coil-missing-id' );
 						}
