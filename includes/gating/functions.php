@@ -88,13 +88,19 @@ function maybe_restrict_content( string $content ) : string {
 		return $content;
 	}
 
-	$coil_status    = get_content_gating( get_the_ID() );
+	$coil_status     = get_content_gating( get_the_ID() );
+	$post_obj        = get_post( get_the_ID() );
+	$content_excerpt = $post_obj->post_excerpt;
+
 	$public_content = '';
 
 	switch ( $coil_status ) {
 		case 'gate-all':
 			// Restrict all content (subscribers only).
-			$public_content = '<p>' . esc_html__( 'The contents of this article is for subscribers only!', 'coil-monetize-content' ) . '</p>';
+			if ( get_excerpt_gating( get_queried_object_id() ) ) {
+				$public_content .= $content_excerpt;
+			}
+			$public_content .= '<p>' . esc_html__( 'The contents of this article is for subscribers only!', 'coil-monetize-content' ) . '</p>';
 			break;
 
 		case 'gate-tagged-blocks':

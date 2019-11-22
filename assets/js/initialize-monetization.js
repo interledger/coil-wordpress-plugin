@@ -42,6 +42,10 @@
 		elem.style.display = 'block';
 	}
 
+	function getContentExcerpt() {
+		return '<div class="entry-content coil-post-excerpt"><p>' + post_excerpt + '</p></div>';
+	}
+
 	/**
 	 * Hide the content container.
 	 */
@@ -59,7 +63,7 @@
 	}
 
 	/**
-	 * Helper function to determine if the content is "Monetized and Public"
+	 * Helper function to determine if the content is "Subscribers Only"
 	 */
 	function isSubscribersOnly() {
 		return document.body.classList.contains('coil-gate-all');
@@ -80,6 +84,13 @@
 	}
 
 	/**
+	 * Determine if the excerpt is set to show for this post.
+	 */
+	function isExcerptEnabled() {
+		return ( document.body.classList.contains('coil-show-excerpt') ) ? true : false;
+	}
+
+	/**
 	 * Displays a message based on the body classes and verification outcome.
 	 */
 	function displayVerificationFailureMessage() {
@@ -97,7 +108,7 @@
 				if ( contentExcerpt.length > 0 ) {
 					contentExcerpt.after( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
 				} else {
-					$( content_container ).before( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
+					document.querySelector( content_container ).before( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
 				}
 
 			} else {
@@ -105,14 +116,13 @@
 
 					$( 'body').addClass( 'coil-split' ); // Only show content that is free if we can't verify.
 					showContentContainer();
-					$( content_container ).before( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
+					document.querySelector( content_container ).before( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
 
 					displayDebugMessage( 'Unable to verify hidden content' );
 
 				} else {
 
-					$( content_container ).before( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
-
+					document.querySelector( content_container ).before( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
 					displayDebugMessage( 'No tagged blocks' );
 
 				}
@@ -138,12 +148,12 @@
 
 			// Display post excerpt for gated posts.
 			if ( isSubscribersOnly() && typeof post_excerpt !== 'undefined' && typeof document.monetization !== 'undefined' && document.monetization.state !== 'stopped' ) {
-				$( content_container ).before( '<div class="entry-content coil-post-excerpt"><p>' + post_excerpt + '</p></div>' );
+				document.querySelector( content_container ).before( getContentExcerpt() );
 			}
 
 			// Hide content entry area if not default selector.
 			if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
-				$( content_container ).not( '.coil-post-excerpt' ).hide();
+				document.querySelector( content_container ).not( '.coil-post-excerpt' ).hide();
 			}
 
 			// Check if browser extension exists.
@@ -157,7 +167,7 @@
 
 						if ( $( 'body' ).hasClass( 'coil-show-admin-notice' ) ) {
 							// Show message to site owner/administrators only.
-							$( content_container ).before('<p class="monetize-msg">' + admin_missing_id_notice + '</p>');
+							document.querySelector( content_container ).before('<p class="monetize-msg">' + admin_missing_id_notice + '</p>');
 						} else {
 							$( 'body' ).removeClass( 'coil-missing-id' );
 						}
@@ -179,13 +189,13 @@
 							if ( isSubscribersOnly() ) {
 								if ( post_excerpt !== 'undefined' ) {
 									displayDebugMessage( 'Subscriber gating and no post excerpt...Verifying extension' );
-									$( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
+									document.querySelector( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
 								} else {
 									displayDebugMessage( 'Subscriber gating and has post excerpt...Verifying extension' );
 									$( 'div.coil-post-excerpt' ).after( displayMonetizationMessage( loading_content, '' ) );
 								}
 							} else {
-								$( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
+								document.querySelector( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
 							}
 
 							// Update message if browser extension is verifying user.
@@ -204,7 +214,7 @@
 				// User account verified, loading content.
 				else if ( document.monetization.state === 'started' ) {
 					displayDebugMessage( 'Monetization state: Started' );
-					$( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
+					document.querySelector( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
 				}
 				// Final check to see if the state is stopped
 				else if ( document.monetization.state === 'stopped' ) {
@@ -212,7 +222,11 @@
 					// Only display the loading message if the status is not "monetized and public".
 					if ( ! isMonetizedAndPublic() ) {
 						displayDebugMessage( 'Status stopped and Monetized and Public' );
-						$( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
+
+						if ( isExcerptEnabled() ) {
+							document.querySelector( content_container ).insertAdjacentHTML( 'beforebegin', getContentExcerpt() );
+						}
+						document.querySelector( content_container ).insertAdjacentHTML( 'beforebegin', '<p class="monetize-msg">' + loading_content + '</p>' );
 					}
 
 					setTimeout( function() {
@@ -246,7 +260,11 @@
 
 					$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'monetization-initialized' ); // Update body class to show content.
 					messageWrapper.remove(); // Remove status message.
-					$( 'div.coil-post-excerpt' ).remove(); // Remove post excerpt.
+
+					if( ! isExcerptEnabled() ) {
+						$( 'div.coil-post-excerpt' ).remove(); // Remove post excerpt.
+					}
+
 
 					// Show embedded content.
 					document.querySelectorAll( 'iframe, object, video' ).forEach( function( embed ) {
@@ -302,13 +320,17 @@
 
 				if ( isSubscribersOnly() || ! isMonetizedAndPublic() ) {
 
-					var postExcerptDiv =  $( 'div.coil-post-excerpt' );
+					var postExcerptDiv =  $( 'div.coil-post-excerpt' ); // Todo set this in the admin.
 					var entryContentDiv =  $( 'div.entry-content' );
 
 					if ( postExcerptDiv.length ) {
 						postExcerptDiv.after( displayMonetizationMessage( browser_extension_missing, '' ) );
 					} else if ( entryContentDiv.length ) {
+						if( isExcerptEnabled() ) {
+							document.querySelector( content_container ).insertAdjacentHTML( 'beforebegin', getContentExcerpt() );
+						}
 						entryContentDiv.before( displayMonetizationMessage( browser_extension_missing, '' ) );
+
 					}
 				}
 
