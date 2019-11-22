@@ -59,7 +59,7 @@
 	}
 
 	/**
-	 * Helper function to determine if the content is "Monetized and Public"
+	 * Helper function to determine if the content is "Subscribers Only"
 	 */
 	function isSubscribersOnly() {
 		return document.body.classList.contains( 'coil-gate-all' );
