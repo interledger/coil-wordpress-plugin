@@ -8,7 +8,7 @@
 		admin_missing_id_notice   = coil_params.admin_missing_id_notice;
 
 	var messageWrapper = $( 'p.monetize-msg' );
-	var DEBUG_LOG = true;
+	var DEBUG_LOG = false;
 
 	// Ensure "coil_params" exists to continue.
 	if ( typeof coil_params === 'undefined' ) {
