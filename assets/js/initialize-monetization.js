@@ -48,7 +48,7 @@
 		if ( post_excerpt === "" ) {
 			return;
 		}
-		return jQuery('<p>').addClass('coil-post-excerpt').text( post_excerpt ).prop(' outerHTML' );
+		return jQuery('<p>').addClass('coil-post-excerpt').text( post_excerpt ).prop( 'outerHTML' );
 	}
 
 	/**
