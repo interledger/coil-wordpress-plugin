@@ -6,7 +6,7 @@ declare(strict_types=1);
  * Description: Coil offers an effortless way to share content online and get paid for it.
  * Author: Coil
  * Author URI: https://coil.com
- * Version: 1.0.0
+ * Version: 1.0.1
  * License: GPLv3
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: coil-monetize-content
