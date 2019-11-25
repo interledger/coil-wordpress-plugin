@@ -88,13 +88,19 @@ function maybe_restrict_content( string $content ) : string {
 		return $content;
 	}
 
-	$coil_status    = get_content_gating( get_the_ID() );
+	$coil_status     = get_content_gating( get_the_ID() );
+	$post_obj        = get_post( get_the_ID() );
+	$content_excerpt = $post_obj->post_excerpt;
+
 	$public_content = '';
 
 	switch ( $coil_status ) {
 		case 'gate-all':
 			// Restrict all content (subscribers only).
-			$public_content = '<p>' . esc_html__( 'The contents of this article is for subscribers only!', 'coil-monetize-content' ) . '</p>';
+			if ( get_excerpt_gating( get_queried_object_id() ) ) {
+				$public_content .= $content_excerpt;
+			}
+			$public_content .= '<p>' . esc_html__( 'The contents of this article is for subscribers only!', 'coil-monetize-content' ) . '</p>';
 			break;
 
 		case 'gate-tagged-blocks':
@@ -135,6 +141,24 @@ function get_post_gating( int $post_id ) : string {
 
 	return $gating;
 }
+
+/**
+ * Get the value of the "Display Excerpt" setting for this post .
+ *
+ * @param integer $post_id The post to check.
+ * @return bool true show excerpt, false hide excerpt.
+ */
+function get_excerpt_gating( int $post_id ) : bool {
+	$post_type = get_post_type( $post_id );
+
+	$display_excerpt  = false;
+	$excerpt_settings = get_global_excerpt_settings();
+	if ( ! empty( $excerpt_settings ) && isset( $excerpt_settings[ $post_type ] ) ) {
+		$display_excerpt = $excerpt_settings[ $post_type ];
+	}
+	return $display_excerpt;
+}
+
 
 /**
  * Get the gating type for the specified term.
@@ -259,7 +283,6 @@ function get_content_gating( int $post_id ) : string {
 	return $content_gating;
 }
 
-
 /**
  * Get whatever settings are stored in the plugin as the default
  * content gating settings (post, page, cpt etc).
@@ -270,6 +293,16 @@ function get_global_posts_gating() : array {
 	$global_settings = get_option( 'coil_content_settings_posts_group' );
 	if ( ! empty( $global_settings ) ) {
 		return $global_settings;
+	}
+
+	return [];
+}
+
+
+function get_global_excerpt_settings() {
+	$global_excerpt_settings = get_option( 'coil_content_settings_excerpt_group' );
+	if ( ! empty( $global_excerpt_settings ) ) {
+		return $global_excerpt_settings;
 	}
 
 	return [];

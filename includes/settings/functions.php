@@ -62,6 +62,20 @@ function register_admin_content_settings() {
 		'coil_content_settings_posts'
 	);
 
+	// Excerpt settings.
+	register_setting(
+		'coil_content_settings_excerpt_group',
+		'coil_content_settings_excerpt_group',
+		__NAMESPACE__ . '\coil_content_settings_excerpt_validation'
+	);
+
+	add_settings_section(
+		'coil_content_settings_excerpts_section',
+		false,
+		__NAMESPACE__ . '\coil_content_settings_excerpts_render_callback',
+		'coil_content_settings_excerpts'
+	);
+
 }
 
 /* ------------------------------------------------------------------------ *
@@ -116,6 +130,21 @@ function coil_content_settings_posts_validation( $post_content_settings ) : arra
 			return ( in_array( $radio_value, $valid_choices, true ) ? sanitize_key( $radio_value ) : 'no' );
 		},
 		(array) $post_content_settings
+	);
+}
+
+/**
+ * Allow each "Display Excerpt" checkbox in the content setting table to be properly validated
+ *
+ * @param array $excerpt_content_settings The posted checkbox options from the content settings section.
+ * @return array
+ */
+function coil_content_settings_excerpt_validation( $excerpt_content_settings ) : array {
+	return array_map(
+		function( $checkbox_value ) {
+			return ( isset( $checkbox_value ) ) ? true : false;
+		},
+		(array) $excerpt_content_settings
 	);
 }
 
@@ -191,6 +220,7 @@ function coil_content_settings_posts_render_callback() {
 
 		$form_gating_settings           = Gating\get_monetization_setting_types();
 		$content_settings_posts_options = Gating\get_global_posts_gating();
+
 		?>
 		<table class="widefat">
 			<thead>
@@ -233,10 +263,88 @@ function coil_content_settings_posts_render_callback() {
 									$checked_input
 								);
 								?>
+
 							</td>
 							<?php
-							endforeach;
+						endforeach;
 						?>
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+		<?php
+	}
+}
+
+/**
+ * Renders the output of the checkbox inputs based on the post
+ * types available in WordPress.
+ *
+ * @return void
+ */
+function coil_content_settings_excerpts_render_callback() {
+
+	$post_types = get_post_types(
+		[],
+		'objects'
+	);
+
+	// Set up options to exclude certain post types.
+	$post_types_exclude = [
+		'attachment',
+		'revision',
+		'nav_menu_item',
+		'custom_css',
+		'customize_changeset',
+		'oembed_cache',
+		'user_request',
+		'wp_block',
+	];
+
+	$exclude = apply_filters( 'coil_settings_content_type_exclude', $post_types_exclude );
+
+	// Store the post type options using the above exclusion options.
+	$post_type_options = [];
+	foreach ( $post_types as $post_type ) {
+
+		if ( ! empty( $exclude ) && in_array( $post_type->name, $exclude, true ) ) {
+			continue;
+		}
+		$post_type_options[] = $post_type;
+	}
+
+	// If there are post types available, output them:
+	if ( ! empty( $post_type_options ) ) {
+
+		$content_settings_excerpt_options = Gating\get_global_excerpt_settings();
+
+		?>
+		<table class="widefat">
+			<thead>
+				<th><?php esc_html_e( 'Post Type', 'coil-monetize-content' ); ?></th>
+				<th><?php esc_html_e( 'Display Excerpt', 'coil-monetize-content' ); ?></th>
+			</thead>
+			<tbody>
+				<?php foreach ( $post_type_options as $post_type ) : ?>
+					<tr>
+						<th scope="row"><?php echo esc_html( $post_type->label ); ?></th>
+						<td>
+						<?php
+						$excerpt_name = 'coil_content_settings_excerpt_group[' . $post_type->name . ']';
+						$excerpt_id   = $post_type->name . '_display_excerpt';
+
+						$checked_excerpt = false;
+						if ( isset( $content_settings_excerpt_options[ $post_type->name ] ) ) {
+							$checked_excerpt = checked( 1, $content_settings_excerpt_options[ $post_type->name ], false );
+						}
+						printf(
+							'<input type="checkbox" name="%s" id="%s" %s />',
+							esc_attr( $excerpt_name ),
+							esc_attr( $excerpt_id ),
+							$checked_excerpt
+						);
+						?>
+						</td>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>
@@ -260,10 +368,24 @@ function render_coil_submenu_settings_screen() : void {
 
 		<?php settings_errors(); ?>
 
+		<?php
+		$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'posts_settings';
+		?>
+
+		<h2 class="nav-tab-wrapper">
+			<a href="<?php echo esc_url( '?page=coil_content_settings&tab=posts_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'posts_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Posts', 'coil-monetize-content' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_content_settings&tab=excerpt_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'excerpt_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Excerpts', 'coil-monetize-content' ); ?></a>
+		</h2>
+
 		<form action="options.php" method="post">
 			<?php
-			settings_fields( 'coil_content_settings_posts_group' );
-			do_settings_sections( 'coil_content_settings_posts' );
+			if ( 'posts_settings' === $active_tab ) {
+				settings_fields( 'coil_content_settings_posts_group' );
+				do_settings_sections( 'coil_content_settings_posts' );
+			} else {
+				settings_fields( 'coil_content_settings_excerpt_group' );
+				do_settings_sections( 'coil_content_settings_excerpts' );
+			}
 			submit_button();
 			?>
 		</form>
