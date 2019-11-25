@@ -32,6 +32,58 @@
 		return elem;
 	}
 
+	function displayFWModal() {
+		var modalContainer = document.createElement( 'div' );
+		modalContainer.classList.add( 'fw-modal' );
+
+		var modalHeaderLogo = document.createElement( 'img' );
+		modalHeaderLogo.src = 'https://www.placehold.it/175x75';
+
+		var modalTitle = document.createElement( 'p' );
+		modalTitle.classList.add( 'fw-modal-title');
+		modalTitle.textContent = 'This content is for subscribers only';
+
+		var modalList = document.createElement( 'ul' );
+		modalList.classList.add( 'fw-modal-list' );
+		var listItems = [
+			'Get access to over 400 premium articles and videos.',
+			'Unlock exclusive member area with behind the scenes content.',
+			'Support my content creation to continue what I love.'
+		];
+		for( i = 0; i < listItems.length;i++ ){
+			var li = document.createElement( 'li' );
+			li.textContent = listItems[i];
+			modalList.appendChild(li);
+		}
+
+		var modalButton = document.createElement( 'a' );
+		modalButton.classList.add( 'fw-modal-button');
+		modalButton.href = 'https://coil.com/learn-more/';
+		modalButton.textContent = 'Get Coil to access';
+
+		var modalFooter = document.createElement( 'div' );
+		modalFooter.classList.add( 'fw-modal-footer');
+
+		var modalFooterLogo = document.createElement( 'img' );
+		modalFooterLogo.src = 'https://www.placehold.it/175x75';
+
+		var modalFooterContent = document.createElement( 'p' );
+		modalFooterContent.classList.add( 'fw-modal-footer-content');
+		modalFooterContent.textContent = 'This content is for Coil Web Monetization enabled visitors only.  To access, subscribe to the Coil service using the link above. Coil requires use of a browser extension which is available for Chrome and Firefox browsers.  Alternatively on mobile the Puma browser can be used.';
+
+		// Build
+		modalContainer.appendChild(modalHeaderLogo);
+		modalContainer.appendChild(modalTitle);
+		modalContainer.appendChild(modalList);
+		modalContainer.appendChild(modalButton);
+
+		modalFooter.appendChild(modalFooterLogo);
+		modalFooter.appendChild(modalFooterContent);
+		modalContainer.appendChild(modalFooter);
+
+		return modalContainer;
+	}
+
 	/**
 	 * Show the content container.
 	 */
@@ -331,7 +383,7 @@
 
 				if ( isSubscribersOnly() || ! isMonetizedAndPublic() ) {
 
-					var postExcerptDiv =  $( 'div.coil-post-excerpt' ); // Todo set this in the admin.
+					var postExcerptDiv =  $( 'div.coil-post-excerpt' );
 					var entryContentDiv =  $( 'div.entry-content' );
 
 					if ( postExcerptDiv.length ) {
@@ -340,8 +392,10 @@
 						if( isExcerptEnabled() ) {
 							document.querySelector( content_container ).insertAdjacentHTML( 'beforebegin', getContentExcerpt() );
 						}
-						entryContentDiv.before( displayMonetizationMessage( browser_extension_missing, '' ) );
 
+
+						document.querySelector( content_container ).before( displayMonetizationMessage( browser_extension_missing, '' ) );
+						document.querySelector( content_container ).before( displayFWModal() );
 					}
 				}
 
