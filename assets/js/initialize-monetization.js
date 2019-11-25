@@ -1,5 +1,9 @@
 (function($) {
-	var content_container         = coil_params.content_container,
+	if ( typeof coil_params === 'undefined' ) {
+		return false;
+	}
+
+	var content_container = coil_params.content_container,
 		browser_extension_missing = coil_params.browser_extension_missing,
 		unable_to_verify          = coil_params.unable_to_verify,
 		voluntary_donation        = coil_params.voluntary_donation,
@@ -9,11 +13,6 @@
 
 	var messageWrapper = $( 'p.monetize-msg' );
 	var DEBUG_LOG = false;
-
-	// Ensure "coil_params" exists to continue.
-	if ( typeof coil_params === 'undefined' ) {
-		return false;
-	}
 
 	function displayDebugMessage( debug_message ) {
 		if ( false === DEBUG_LOG ) {
@@ -323,7 +322,9 @@
 					}
 
 				} else {
+					// Voluntary donation.
 					displayDebugMessage( 'Content is monetized and public but no extension found' );
+					$( content_container ).before( displayMonetizationMessage( voluntary_donation, '' ) );
 				}
 
 				// Trigger an event.
