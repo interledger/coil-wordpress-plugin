@@ -12,7 +12,7 @@
 		admin_missing_id_notice   = coil_params.admin_missing_id_notice;
 
 	var messageWrapper = $( 'p.monetize-msg' );
-	var DEBUG_LOG = true;
+	var DEBUG_LOG = false;
 
 	function displayDebugMessage( debug_message ) {
 		if ( false === DEBUG_LOG ) {
@@ -42,7 +42,9 @@
 	}
 
 	function getContentExcerpt() {
-		return '<div class="coil-post-excerpt"><p>' + post_excerpt + '</p></div>';
+		if ( post_excerpt !== "" ) {
+			return jQuery('<p>').addClass('coil-post-excerpt').text( post_excerpt ).prop(' outerHTML' );
+		}
 	}
 
 	/**
@@ -86,7 +88,7 @@
 	 * Determine if the excerpt is set to show for this post.
 	 */
 	function isExcerptEnabled() {
-		return ( document.body.classList.contains('coil-show-excerpt') ) ? true : false;
+		return ( document.body.classList.contains( 'coil-show-excerpt' ) ) ? true : false;
 	}
 
 	/**
@@ -147,7 +149,9 @@
 
 			// Display post excerpt for gated posts.
 			if ( isSubscribersOnly() && typeof post_excerpt !== 'undefined' && typeof document.monetization !== 'undefined' && document.monetization.state !== 'stopped' ) {
-				document.querySelector( content_container ).before( getContentExcerpt() );
+				if ( post_excerpt !== '' ) {
+					document.querySelector( content_container ).before( getContentExcerpt() );
+				}
 			}
 
 			// Hide content entry area if not default selector.
@@ -186,7 +190,7 @@
 						if ( ! isMonetizedAndPublic() ) {
 							// If post is gated then show verification message after excerpt.
 							if ( isSubscribersOnly() ) {
-								if ( post_excerpt !== 'undefined' ) {
+								if ( post_excerpt !== '' ) {
 									displayDebugMessage( 'Subscriber gating and no post excerpt...Verifying extension' );
 									document.querySelector( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
 								} else {
@@ -223,7 +227,9 @@
 						displayDebugMessage( 'Status stopped and Monetized and Public' );
 
 						if ( isExcerptEnabled() ) {
-							document.querySelector( content_container ).insertAdjacentHTML( 'beforebegin', getContentExcerpt() );
+							if ( post_excerpt !== '' ) {
+								document.querySelector( content_container ).insertAdjacentHTML( 'beforebegin', getContentExcerpt() );
+							}
 						}
 						document.querySelector( content_container ).insertAdjacentHTML( 'beforebegin', '<p class="monetize-msg">' + loading_content + '</p>' );
 					}
@@ -260,10 +266,9 @@
 					$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'monetization-initialized' ); // Update body class to show content.
 					messageWrapper.remove(); // Remove status message.
 
-					if( ! isExcerptEnabled() ) {
+					if ( ! isExcerptEnabled() ) {
 						$( 'div.coil-post-excerpt' ).remove(); // Remove post excerpt.
 					}
-
 
 					// Show embedded content.
 					document.querySelectorAll( 'iframe, object, video' ).forEach( function( embed ) {

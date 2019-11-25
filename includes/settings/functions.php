@@ -338,10 +338,9 @@ function coil_content_settings_excerpts_render_callback() {
 							$checked_excerpt = checked( 1, $content_settings_excerpt_options[ $post_type->name ], false );
 						}
 						printf(
-							'<input type="checkbox" name="%s" id="%s" value="%s"%s />',
+							'<input type="checkbox" name="%s" id="%s" %s />',
 							esc_attr( $excerpt_name ),
 							esc_attr( $excerpt_id ),
-							true,
 							$checked_excerpt
 						);
 						?>
@@ -370,12 +369,12 @@ function render_coil_submenu_settings_screen() : void {
 		<?php settings_errors(); ?>
 
 		<?php
-		$active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'posts_settings';
+		$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'posts_settings';
 		?>
 
 		<h2 class="nav-tab-wrapper">
-			<a href="<?php echo esc_url( '?page=coil_content_settings&tab=posts_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'posts_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>">Posts</a>
-			<a href="<?php echo esc_url( '?page=coil_content_settings&tab=excerpt_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'excerpt_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>">Excerpts</a>
+			<a href="<?php echo esc_url( '?page=coil_content_settings&tab=posts_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'posts_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Posts', 'coil-monetize-content' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_content_settings&tab=excerpt_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'excerpt_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Excerpts', 'coil-monetize-content' ); ?></a>
 		</h2>
 
 		<form action="options.php" method="post">
