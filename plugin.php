@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * @var string Plugin version number.
  */
-const PLUGIN_VERSION = '1.0.0';
+const PLUGIN_VERSION = '1.0.1';
 
 require_once __DIR__ . '/includes/admin/functions.php';
 require_once __DIR__ . '/includes/settings/functions.php';

@@ -1,5 +1,9 @@
 (function($) {
-	var content_container         = coil_params.content_container,
+	if ( typeof coil_params === 'undefined' ) {
+		return false;
+	}
+
+	var content_container = coil_params.content_container,
 		browser_extension_missing = coil_params.browser_extension_missing,
 		unable_to_verify          = coil_params.unable_to_verify,
 		voluntary_donation        = coil_params.voluntary_donation,
@@ -9,11 +13,6 @@
 
 	var messageWrapper = $( 'p.monetize-msg' );
 	var DEBUG_LOG = true;
-
-	// Ensure "coil_params" exists to continue.
-	if ( typeof coil_params === 'undefined' ) {
-		return false;
-	}
 
 	function displayDebugMessage( debug_message ) {
 		if ( false === DEBUG_LOG ) {
@@ -25,9 +24,9 @@
 	// Function to output monetization message.
 	function displayMonetizationMessage( message, customClass ) {
 		var elem = document.createElement( 'p' );
-		elem.classList.add('monetize-msg');
+		elem.classList.add( 'monetize-msg' );
 		if ( customClass ) {
-			elem.classList.add(customClass);
+			elem.classList.add( customClass );
 		}
 		elem.innerHTML = message;
 		return elem;
@@ -43,7 +42,7 @@
 	}
 
 	function getContentExcerpt() {
-		return '<div class="entry-content coil-post-excerpt"><p>' + post_excerpt + '</p></div>';
+		return '<div class="coil-post-excerpt"><p>' + post_excerpt + '</p></div>';
 	}
 
 	/**
@@ -59,21 +58,21 @@
 	 * Helper function to determine if the content is "Monetized and Public"
 	 */
 	function isMonetizedAndPublic() {
-		return document.body.classList.contains('coil-no-gating');
+		return document.body.classList.contains( 'coil-no-gating' );
 	}
 
 	/**
 	 * Helper function to determine if the content is "Subscribers Only"
 	 */
 	function isSubscribersOnly() {
-		return document.body.classList.contains('coil-gate-all');
+		return document.body.classList.contains( 'coil-gate-all' );
 	}
 
 	/**
 	 * Helper function to determine if the content is "Split Content"
 	 */
 	function isSplitContent() {
-		return document.body.classList.contains('coil-gate-tagged-blocks');
+		return document.body.classList.contains( 'coil-gate-tagged-blocks' );
 	}
 
 	/**
@@ -114,7 +113,7 @@
 			} else {
 				if ( isSplitContent() ) {
 
-					$( 'body').addClass( 'coil-split' ); // Only show content that is free if we can't verify.
+					$( 'body' ).addClass( 'coil-split' ); // Only show content that is free if we can't verify.
 					showContentContainer();
 					document.querySelector( content_container ).before( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
 
@@ -136,7 +135,7 @@
 	 * @return bool
 	 */
 	function monetizationNotInitialized() {
-		return document.body.classList.contains('monetization-not-initialized');
+		return document.body.classList.contains( 'monetization-not-initialized' );
 	}
 
 	/**
@@ -167,7 +166,7 @@
 
 						if ( $( 'body' ).hasClass( 'coil-show-admin-notice' ) ) {
 							// Show message to site owner/administrators only.
-							document.querySelector( content_container ).before('<p class="monetize-msg">' + admin_missing_id_notice + '</p>');
+							$( content_container ).before( '<p class="monetize-msg">' + admin_missing_id_notice + '</p>' );
 						} else {
 							$( 'body' ).removeClass( 'coil-missing-id' );
 						}
@@ -345,7 +344,9 @@
 					}
 
 				} else {
+					// Voluntary donation.
 					displayDebugMessage( 'Content is monetized and public but no extension found' );
+					$( content_container ).before( displayMonetizationMessage( voluntary_donation, '' ) );
 				}
 
 				// Trigger an event.
