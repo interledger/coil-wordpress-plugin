@@ -25,7 +25,7 @@ If you would like to know more about Coil does, [visit our website](https://coil
 
 * Supports monetization for both Classic Editor and Gutenberg content.
 * With Gutenberg, you can choose to monetize at the block level.
-* Built with theme and plugins developers in mind, we're extensible, adaptable, and open source.
+* Built with theme and plugin developers in mind, we're extensible, adaptable, and open source.
 
 ### More information
 
@@ -36,7 +36,7 @@ If you would like to know more about Coil does, [visit our website](https://coil
 
 = How do I start using Coil Monetize Content? =
 
-Simply install the plugin and once activated you will be redirected to the settings page where you must enter your payment pointer ID. Touch "Save" and your ready to monetize your articles.
+Simply install the plugin and once activated you will be redirected to the settings page where you must enter your payment pointer ID. After saving the settings you're ready to monetize your articles.
 
 = Who should use Coil Monetize Content? =
 
