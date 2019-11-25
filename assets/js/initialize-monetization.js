@@ -220,12 +220,15 @@
 						// initialised, display failure message
 						if ( typeof monetizationStartEventOccurred === 'undefined' ) {
 
-							// Failure
-							displayDebugMessage( 'Monetization not started and verification failed' );
-
-							// Update message if browser extension is unable to verify user.
 							if ( $( 'p.monetize-msg' ).text() === loading_content ) {
+								// Update message if browser extension is unable to verify user.
+								displayDebugMessage( 'Monetization not started and verification failed' );
 								displayVerificationFailureMessage();
+
+							} else if ( isMonetizedAndPublic() ) {
+								// Voluntary donation.
+								displayDebugMessage( 'Content is monetized and public but extension is stopped' );
+								$( content_container ).before( displayMonetizationMessage( voluntary_donation, '' ) );
 							}
 						}
 					}, 5000 );
