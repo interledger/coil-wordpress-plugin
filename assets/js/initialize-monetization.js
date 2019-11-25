@@ -228,7 +228,7 @@
 							} else if ( isMonetizedAndPublic() ) {
 								// Voluntary donation.
 								displayDebugMessage( 'Content is monetized and public but extension is stopped' );
-								$( content_container ).before( displayMonetizationMessage( voluntary_donation, '' ) );
+								document.querySelector( content_container ).before( displayMonetizationMessage( voluntary_donation, '' ) );
 							}
 						}
 					}, 5000 );
