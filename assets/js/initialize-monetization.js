@@ -41,10 +41,14 @@
 		elem.style.display = 'block';
 	}
 
+	/**
+	 * Get the post excerpt, if available.
+	 */
 	function getContentExcerpt() {
-		if ( post_excerpt !== "" ) {
-			return jQuery('<p>').addClass('coil-post-excerpt').text( post_excerpt ).prop(' outerHTML' );
+		if ( post_excerpt === "" ) {
+			return;
 		}
+		return jQuery('<p>').addClass('coil-post-excerpt').text( post_excerpt ).prop(' outerHTML' );
 	}
 
 	/**
