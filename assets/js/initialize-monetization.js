@@ -11,6 +11,7 @@
 		post_excerpt              = coil_params.post_excerpt,
 		admin_missing_id_notice   = coil_params.admin_missing_id_notice;
 
+	var fullWidthMessage = wp.template( 'full-width-message' );
 	var messageWrapper = $( 'p.monetize-msg' );
 	var DEBUG_LOG = false;
 
@@ -32,55 +33,28 @@
 		return elem;
 	}
 
-	function displayFWModal() {
+	function displayFullWidthMessage( message ) {
 		var modalContainer = document.createElement( 'div' );
-		modalContainer.classList.add( 'fw-modal' );
+		modalContainer.classList.add( 'coil-message-container' );
 
-		var modalHeaderLogo = document.createElement( 'img' );
-		modalHeaderLogo.src = 'https://www.placehold.it/175x75';
+		var modalData = {
+			headerLogo: {
+				src: 'https://www.placehold.it/169x73/CDCDCD/000000?text=Site+logo&font=source-sans-pro',
+				alt: 'Alt text',
+			},
+			title: 'This content is for subscribers only',
+			content: message,
+			button: {
+				text: 'Get coil to access',
+				href: 'https://coil.com/learn-more/'
+			},
+			footerLogo: {
+				src: 'https://www.placehold.it/175x75',
+				alt: 'Alt text',
+			},
+		};
 
-		var modalTitle = document.createElement( 'p' );
-		modalTitle.classList.add( 'fw-modal-title');
-		modalTitle.textContent = 'This content is for subscribers only';
-
-		var modalList = document.createElement( 'ul' );
-		modalList.classList.add( 'fw-modal-list' );
-		var listItems = [
-			'Get access to over 400 premium articles and videos.',
-			'Unlock exclusive member area with behind the scenes content.',
-			'Support my content creation to continue what I love.'
-		];
-		for( i = 0; i < listItems.length;i++ ){
-			var li = document.createElement( 'li' );
-			li.textContent = listItems[i];
-			modalList.appendChild(li);
-		}
-
-		var modalButton = document.createElement( 'a' );
-		modalButton.classList.add( 'fw-modal-button');
-		modalButton.href = 'https://coil.com/learn-more/';
-		modalButton.textContent = 'Get Coil to access';
-
-		var modalFooter = document.createElement( 'div' );
-		modalFooter.classList.add( 'fw-modal-footer');
-
-		var modalFooterLogo = document.createElement( 'img' );
-		modalFooterLogo.src = 'https://www.placehold.it/175x75';
-
-		var modalFooterContent = document.createElement( 'p' );
-		modalFooterContent.classList.add( 'fw-modal-footer-content');
-		modalFooterContent.textContent = 'This content is for Coil Web Monetization enabled visitors only.  To access, subscribe to the Coil service using the link above. Coil requires use of a browser extension which is available for Chrome and Firefox browsers.  Alternatively on mobile the Puma browser can be used.';
-
-		// Build
-		modalContainer.appendChild(modalHeaderLogo);
-		modalContainer.appendChild(modalTitle);
-		modalContainer.appendChild(modalList);
-		modalContainer.appendChild(modalButton);
-
-		modalFooter.appendChild(modalFooterLogo);
-		modalFooter.appendChild(modalFooterContent);
-		modalContainer.appendChild(modalFooter);
-
+		$(modalContainer).append( fullWidthMessage( modalData ) );
 		return modalContainer;
 	}
 
@@ -393,9 +367,8 @@
 							document.querySelector( content_container ).insertAdjacentHTML( 'beforebegin', getContentExcerpt() );
 						}
 
-
-						document.querySelector( content_container ).before( displayMonetizationMessage( browser_extension_missing, '' ) );
-						document.querySelector( content_container ).before( displayFWModal() );
+						// document.querySelector( content_container ).before( displayMonetizationMessage( browser_extension_missing, '' ) );
+						document.querySelector( '.site-main' ).before( displayFullWidthMessage( browser_extension_missing ) );
 					}
 				}
 

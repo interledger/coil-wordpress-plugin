@@ -19,7 +19,8 @@ function init_plugin() : void {
 	// CSS/JS.
 	add_action( 'enqueue_block_assets', __NAMESPACE__ . '\load_block_frontend_assets' );
 	add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\load_block_editor_assets' );
-	add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\load_assets' );
+	add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\load_full_assets' );
+	add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\load_messaging_assets' );
 
 	// Admin-only CSS/JS.
 	add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\Admin\load_admin_assets' );
@@ -56,6 +57,9 @@ function init_plugin() : void {
 	add_action( 'load-post.php', __NAMESPACE__ . '\Admin\load_metaboxes' );
 	add_action( 'load-post-new.php', __NAMESPACE__ . '\Admin\load_metaboxes' );
 	add_action( 'save_post', __NAMESPACE__ . '\Admin\maybe_save_post_metabox' );
+
+	// Modal messaging
+	add_action( 'wp_footer', __NAMESPACE__ . '\load_plugin_templates' );
 
 	// Load order - important.
 	add_action( 'init', __NAMESPACE__ . '\Gating\register_content_meta' );
@@ -125,7 +129,7 @@ function load_block_editor_assets() : void {
  *
  * @return void
  */
-function load_assets() : void {
+function load_full_assets() : void {
 
 	// Only load Coil on actual content.
 	if ( is_admin() || is_home() || is_front_page() || ! is_singular() || is_feed() || is_preview() ) {
@@ -148,7 +152,7 @@ function load_assets() : void {
 	wp_enqueue_script(
 		'coil-monetization-js',
 		esc_url_raw( plugin_dir_url( __DIR__ ) . 'assets/js/initialize-monetization' . $suffix . '.js' ),
-		[ 'jquery' ],
+		[ 'jquery', 'wp-util' ],
 		PLUGIN_VERSION,
 		true
 	);
@@ -174,6 +178,38 @@ function load_assets() : void {
 		'coil_params',
 		$strings
 	);
+}
+
+/**
+ * Enqueue messaging CSS.
+ *
+ * @return void
+ */
+function load_messaging_assets() : void {
+
+	// Only load Coil on actual content.
+	if ( is_admin() || is_home() || is_front_page() || ! is_singular() || is_feed() || is_preview() ) {
+		return;
+	}
+
+	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+	wp_enqueue_style(
+		'coil-messaging',
+		esc_url_raw( plugin_dir_url( __DIR__ ) . 'assets/css/messages/coil' . $suffix . '.css' ),
+		[],
+		PLUGIN_VERSION
+	);
+}
+
+/**
+ * Load templates used by the plugin to render in javascript using
+ * WP Template.
+ *
+ * @return void
+ */
+function load_plugin_templates() : void {
+	require_once plugin_dir_path( __FILE__ ) . '../templates/messages/full-width-message.php';
 }
 
 /**
