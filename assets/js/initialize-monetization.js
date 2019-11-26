@@ -139,7 +139,8 @@
 				if ( contentExcerpt.length > 0 ) {
 					contentExcerpt.after( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
 				} else {
-					document.querySelector( content_container ).before( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
+					document.body.classList.add('show-fw-message');
+					document.querySelector( '.site-main' ).before( displayFullWidthMessage( unable_to_verify ) );
 				}
 
 			} else {
@@ -152,6 +153,7 @@
 					displayDebugMessage( 'Unable to verify hidden content' );
 
 				} else {
+
 
 					document.querySelector( content_container ).before( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
 					displayDebugMessage( 'No tagged blocks' );
@@ -367,7 +369,6 @@
 							document.querySelector( content_container ).insertAdjacentHTML( 'beforebegin', getContentExcerpt() );
 						}
 
-						// document.querySelector( content_container ).before( displayMonetizationMessage( browser_extension_missing, '' ) );
 						document.querySelector( '.site-main' ).before( displayFullWidthMessage( browser_extension_missing ) );
 					}
 				}

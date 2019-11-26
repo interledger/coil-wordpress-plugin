@@ -1,8 +1,8 @@
 // Messages
 @import '../variables';
+@import 'fonts';
 
 .coil-message-container {
-	@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap');
 	background: $message_background_colour;
 	text-align: center;
 	position: relative;
@@ -100,7 +100,8 @@
 	}
 }
 
-body.coil-gate-all.coil-extension-not-found {
+body.coil-gate-all.coil-extension-not-found,
+body.monetization-not-initialized.coil-gate-all.show-fw-message {
 	.content-area {
 		position: relative;
 		&:before {
