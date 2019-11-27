@@ -3,8 +3,10 @@
 @import 'fonts';
 
 body.coil-gate-all.coil-extension-not-found.show-fw-message,
+body.coil-missing-id.coil-extension-not-found.show-fw-message,
 body.monetization-not-initialized.coil-gate-all.show-fw-message,
-body.coil-gate-all.coil-extension-not-found.show-excerpt-message {
+body.coil-gate-all.coil-extension-not-found.show-excerpt-message,
+body.monetization-not-initialized.coil-missing-id.show-fw-message {
 
 	.coil-message-container {
 		display: block !important;
@@ -72,7 +74,13 @@ body.coil-gate-all.coil-extension-not-found.show-excerpt-message {
 				display: inline-block;
 				min-width: 232px;
 				font-weight: 600;
+				text-decoration: none;
 				margin-bottom: $message_spacing_baseline * 3;
+
+				&:hover {
+					background-color: $message_content_conceal_colour;
+				}
+
 				@media only screen and (min-width: $message_desktop_breakpoint) {
 					margin-bottom: 0;
 				}

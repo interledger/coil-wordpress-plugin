@@ -146,7 +146,7 @@
 				} else {
 
 					document.body.classList.add('show-fw-message');
-					document.querySelector( '.site-main' ).before( displayFullWidthMessage( unable_to_verify ) );
+					$(content_container).before( displayFullWidthMessage( unable_to_verify ) );
 				}
 
 			} else {
@@ -161,8 +161,8 @@
 
 				} else {
 
-
-					document.querySelector( content_container ).before( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
+					document.body.classList.add('show-fw-message');
+					document.querySelector( content_container ).before( displayFullWidthMessage( unable_to_verify ) );
 					displayDebugMessage( 'No tagged blocks' );
 
 				}
@@ -373,13 +373,7 @@
 				if ( isSubscribersOnly() || ! isMonetizedAndPublic() ) {
 
 
-
 					if ( ! usingDefaultContentContainer() ) {
-
-
-						var excerptHeight = $('.coil-post-excerpt').height();
-						console.log(excerptHeight);
-
 
 						$( content_container ).html(displayFullWidthMessage( browser_extension_missing ));
 					} else {
@@ -390,6 +384,8 @@
 					if ( isExcerptEnabled() ) {
 						document.body.classList.add('show-excerpt-message');
 						$( content_container ).prepend( getContentExcerpt() );
+					} else {
+						document.body.classList.add('show-fw-message');
 					}
 
 				}
