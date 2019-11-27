@@ -137,8 +137,11 @@
 				// Does the content have an excerpt?
 				var contentExcerpt = $( 'div.coil-post-excerpt' );
 				if ( contentExcerpt.length > 0 ) {
+
+
 					contentExcerpt.after( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
 				} else {
+
 					document.body.classList.add('show-fw-message');
 					document.querySelector( '.site-main' ).before( displayFullWidthMessage( unable_to_verify ) );
 				}
@@ -148,6 +151,7 @@
 
 					$( 'body' ).addClass( 'coil-split' ); // Only show content that is free if we can't verify.
 					showContentContainer();
+
 					document.querySelector( content_container ).before( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
 
 					displayDebugMessage( 'Unable to verify hidden content' );
@@ -188,7 +192,7 @@
 
 			// Hide content entry area if not default selector.
 			if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
-				document.querySelector( content_container ).not( '.coil-post-excerpt' ).hide();
+				$( content_container ).not( '.coil-post-excerpt' ).hide();
 			}
 
 			// Check if browser extension exists.
@@ -361,17 +365,20 @@
 
 					if ( isExcerptEnabled() ) {
 						document.body.classList.add('show-excerpt-message');
-
-
 						document.querySelector( content_container ).before( getContentExcerpt() );
 						document.querySelector( content_container ).before( displayFullWidthMessage( browser_extension_missing ) );
-						// document.querySelector( content_container ).insertAdjacentHTML( 'beforebegin',  );
 
-						// document.querySelector( content_container ).before( displayFullWidthMessage( browser_extension_missing ) );
-						// $(content_container ).prepend(displayFullWidthMessage( browser_extension_missing ));
-						//
 					} else {
-						document.querySelector( '.site-main' ).before( displayFullWidthMessage( browser_extension_missing ) );
+
+						document.body.classList.add('show-fw-message');
+
+						if ( ! usingDefaultContentContainer() ) {
+							$( content_container ).html(displayFullWidthMessage( browser_extension_missing ));
+						} else {
+
+							document.querySelector( content_container ).before( displayFullWidthMessage( browser_extension_missing ) );
+						}
+
 					}
 
 
