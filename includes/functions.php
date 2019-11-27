@@ -196,7 +196,7 @@ function load_messaging_assets() : void {
 
 	wp_enqueue_style(
 		'coil-messaging',
-		esc_url_raw( plugin_dir_url( __DIR__ ) . 'assets/css/messages/coil' . $suffix . '.css' ),
+		esc_url_raw( plugin_dir_url( __DIR__ ) . 'assets/css/messages/coil.css' ),
 		[],
 		PLUGIN_VERSION
 	);

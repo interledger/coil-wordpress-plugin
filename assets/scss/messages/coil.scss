@@ -2,6 +2,10 @@
 @import '../variables';
 @import 'fonts';
 
+.entry-content.coil-message-container {
+	display: block !important;
+}
+
 .coil-message-container {
 	background: $message_background_colour;
 	text-align: center;
@@ -12,8 +16,8 @@
 	padding: $message_spacing_baseline * 3 14px;
 	color: $message_font_colour;
 
-	@media only screen and (min-width: 800px)  {
-		max-width: 800px;
+	@media only screen and (min-width: 768px)  {
+		max-width: 768px;
 	}
 
 	@media only screen and (min-width: 1200px) {
@@ -45,7 +49,7 @@
 			font-size: 18px;
 			line-height: 28px;
 			font-weight: 700;
-			@media only screen and (min-width: 800px)  {
+			@media only screen and (min-width: 768px)  {
 				font-size: 36px;
 				line-height: 49px;
 			}
@@ -100,8 +104,8 @@
 	}
 }
 
-body.coil-gate-all.coil-extension-not-found,
-body.monetization-not-initialized.coil-gate-all.show-fw-message {
+body.coil-gate-all.coil-extension-not-found:not(&.coil-show-excerpt),
+body.monetization-not-initialized.coil-gate-all.show-fw-message:not(&.coil-show-excerpt) {
 	.content-area {
 		position: relative;
 		&:before {
@@ -117,12 +121,19 @@ body.monetization-not-initialized.coil-gate-all.show-fw-message {
 		}
 		padding: ($message_spacing_baseline * 4) ($message_spacing_baseline * 2);
 
-		@media only screen and (min-width: 800px) {
+		@media only screen and (min-width: 768px) {
 			padding: 150px 0;
 		}
 
 	}
 	.site-main {
 		display: none;
+	}
+}
+
+// Scenario 2
+body.coil-gate-all.coil-extension-not-found.show-excerpt-message {
+	.coil-message-container {
+
 	}
 }

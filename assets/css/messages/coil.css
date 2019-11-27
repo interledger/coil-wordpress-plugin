@@ -187,6 +187,9 @@
   src: local("Open Sans Bold"), local("OpenSans-Bold"), url(https://fonts.gstatic.com/s/opensans/v17/mem5YaGs126MiZpBA-UN7rgOUuhpKKSTjw.woff2) format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 
+.entry-content.coil-message-container {
+  display: block !important; }
+
 .coil-message-container {
   background: #e8e8e8;
   text-align: center;
@@ -196,9 +199,9 @@
   font-family: 'Open Sans';
   padding: 24px 14px;
   color: rgba(0, 0, 0, 0.7); }
-  @media only screen and (min-width: 800px) {
+  @media only screen and (min-width: 768px) {
     .coil-message-container {
-      max-width: 800px; } }
+      max-width: 768px; } }
   @media only screen and (min-width: 1200px) {
     .coil-message-container {
       max-width: 1168px;
@@ -221,7 +224,7 @@
     font-size: 18px;
     line-height: 28px;
     font-weight: 700; }
-    @media only screen and (min-width: 800px) {
+    @media only screen and (min-width: 768px) {
       .coil-message-container .coil-message-header .coil-message-title {
         font-size: 36px;
         line-height: 49px; } }
@@ -263,12 +266,10 @@
           font-size: 14px;
           line-height: 22px; } }
 
-body.coil-gate-all.coil-extension-not-found .content-area,
-body.monetization-not-initialized.coil-gate-all.show-fw-message .content-area {
+body.coil-gate-all.coil-extension-not-found:not(&.coil-show-excerpt) .content-area, body.monetization-not-initialized.coil-gate-all.show-fw-message:not(&.coil-show-excerpt) .content-area {
   position: relative;
   padding: 32px 16px; }
-  body.coil-gate-all.coil-extension-not-found .content-area:before,
-  body.monetization-not-initialized.coil-gate-all.show-fw-message .content-area:before {
+  body.coil-gate-all.coil-extension-not-found:not(&.coil-show-excerpt) .content-area:before, body.monetization-not-initialized.coil-gate-all.show-fw-message:not(&.coil-show-excerpt) .content-area:before {
     position: absolute;
     content: '';
     background-color: rgba(69, 69, 69, 0.9);
@@ -278,11 +279,9 @@ body.monetization-not-initialized.coil-gate-all.show-fw-message .content-area {
     top: 0;
     right: 0;
     bottom: 0; }
-  @media only screen and (min-width: 800px) {
-    body.coil-gate-all.coil-extension-not-found .content-area,
-    body.monetization-not-initialized.coil-gate-all.show-fw-message .content-area {
+  @media only screen and (min-width: 768px) {
+    body.coil-gate-all.coil-extension-not-found:not(&.coil-show-excerpt) .content-area, body.monetization-not-initialized.coil-gate-all.show-fw-message:not(&.coil-show-excerpt) .content-area {
       padding: 150px 0; } }
 
-body.coil-gate-all.coil-extension-not-found .site-main,
-body.monetization-not-initialized.coil-gate-all.show-fw-message .site-main {
+body.coil-gate-all.coil-extension-not-found:not(&.coil-show-excerpt) .site-main, body.monetization-not-initialized.coil-gate-all.show-fw-message:not(&.coil-show-excerpt) .site-main {
   display: none; }
