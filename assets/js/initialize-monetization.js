@@ -5,11 +5,12 @@
 
 	var content_container = coil_params.content_container,
 		browser_extension_missing = coil_params.browser_extension_missing,
-		unable_to_verify          = coil_params.unable_to_verify,
-		voluntary_donation        = coil_params.voluntary_donation,
-		loading_content           = coil_params.loading_content,
-		post_excerpt              = coil_params.post_excerpt,
-		admin_missing_id_notice   = coil_params.admin_missing_id_notice;
+		unable_to_verify = coil_params.unable_to_verify,
+		voluntary_donation = coil_params.voluntary_donation,
+		loading_content = coil_params.loading_content,
+		post_excerpt = coil_params.post_excerpt,
+		admin_missing_id_notice = coil_params.admin_missing_id_notice;
+		site_logo = coil_params.site_logo;
 
 	var fullWidthMessage = wp.template( 'full-width-message' );
 	var messageWrapper = $( 'p.monetize-msg' );
@@ -38,10 +39,7 @@
 		modalContainer.classList.add( 'entry-content','coil-message-container' );
 
 		var modalData = {
-			headerLogo: {
-				src: 'https://www.placehold.it/169x73/CDCDCD/000000?text=Site+logo&font=source-sans-pro',
-				alt: 'Alt text',
-			},
+			headerLogo: site_logo,
 			title: 'This content is for subscribers only',
 			content: message,
 			button: {
@@ -74,7 +72,14 @@
 		if ( post_excerpt === "" ) {
 			return;
 		}
-		return jQuery('<p>').addClass('coil-post-excerpt').text( post_excerpt ).prop( 'outerHTML' );
+		return jQuery('<p>').addClass( 'coil-post-excerpt' ).text( post_excerpt ).prop( 'outerHTML' );
+	}
+
+	/**
+	 * Hide the post excerpt.
+	 */
+	function hideContentExcerpt() {
+		return jQuery('p.coil-post-excerpt').hide();
 	}
 
 	/**
@@ -135,10 +140,8 @@
 			if ( isSubscribersOnly() ) {
 
 				// Does the content have an excerpt?
-				var contentExcerpt = $( 'div.coil-post-excerpt' );
+				var contentExcerpt = $( 'p.coil-post-excerpt' );
 				if ( contentExcerpt.length > 0 ) {
-
-
 					contentExcerpt.after( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
 				} else {
 
@@ -300,6 +303,11 @@
 
 					if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
 						showContentContainer();
+						document.body.classList.remove('show-fw-message');
+						if ( isExcerptEnabled() ) {
+							hideContentExcerpt();
+						}
+
 					}
 
 					$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'monetization-initialized' ); // Update body class to show content.
@@ -328,6 +336,7 @@
 					// Monetization is verified, remove any messages
 					if ( $( 'p.monetize-msg' ).length > 0 ) {
 						$( 'p.monetize-msg' ).remove();
+						hideContentExcerpt();
 						showContentContainer();
 					}
 
@@ -363,42 +372,26 @@
 
 				if ( isSubscribersOnly() || ! isMonetizedAndPublic() ) {
 
-					if ( isExcerptEnabled() ) {
-						document.body.classList.add('show-excerpt-message');
-						document.querySelector( content_container ).before( getContentExcerpt() );
-						document.querySelector( content_container ).before( displayFullWidthMessage( browser_extension_missing ) );
 
+
+					if ( ! usingDefaultContentContainer() ) {
+
+
+						var excerptHeight = $('.coil-post-excerpt').height();
+						console.log(excerptHeight);
+
+
+						$( content_container ).html(displayFullWidthMessage( browser_extension_missing ));
 					} else {
-
-						document.body.classList.add('show-fw-message');
-
-						if ( ! usingDefaultContentContainer() ) {
-							$( content_container ).html(displayFullWidthMessage( browser_extension_missing ));
-						} else {
-
-							document.querySelector( content_container ).before( displayFullWidthMessage( browser_extension_missing ) );
-						}
-
+						$( content_container ).before( displayFullWidthMessage( browser_extension_missing ) );
 					}
 
 
-					// var postExcerptDiv =  $( 'div.coil-post-excerpt' );
-					// var entryContentDiv =  $( 'div.entry-content' );
+					if ( isExcerptEnabled() ) {
+						document.body.classList.add('show-excerpt-message');
+						$( content_container ).prepend( getContentExcerpt() );
+					}
 
-					// console.log(postExcerptDiv);
-
-
-					// if ( postExcerptDiv.length ) {
-					// 	postExcerptDiv.after( displayMonetizationMessage( browser_extension_missing, '' ) );
-					// } else if ( entryContentDiv.length ) {
-					// 	if( isExcerptEnabled() ) {
-					// 		document.querySelector( content_container ).insertAdjacentHTML( 'beforebegin', getContentExcerpt() );
-					// 	} else {
-					// 		document.querySelector( '.site-main' ).before( displayFullWidthMessage( browser_extension_missing ) );
-					// 	}
-
-
-					// }
 				}
 
 				// This ensures content written in Gutenberg is displayed according to

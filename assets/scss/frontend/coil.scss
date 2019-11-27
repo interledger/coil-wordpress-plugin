@@ -1,7 +1,7 @@
 // Monetization not initialized or...
 // Content is all gated.
-body.monetization-not-initialized:not( .coil-no-gating ),
-body.coil-extension-not-found.coil-gate-all {
+body.monetization-not-initialized:not( .coil-no-gating ):not( .coil-hide-excerpt ),
+body.coil-extension-not-found.coil-gate-all:not( .coil-hide-excerpt ) {
 
 	#main #content .entry-content:not( .coil-post-excerpt ),
 	.site-content #content .entry-content:not( .coil-post-excerpt ),

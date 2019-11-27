@@ -1,8 +1,8 @@
 <script type="text/html" id="tmpl-full-width-message">
 	<div class="coil-message-inner">
 		<div class="coil-message-header">
-			<# if ( data.headerLogo.src ) { #>
-				<img src="{{data.headerLogo.src}}" alt="{{data.headerLogo.alt}}" class="coil-message-header-logo">
+			<# if ( data.headerLogo ) { #>
+				{{{data.headerLogo}}}
 			<# } #>
 
 			<# if ( data.title ) { #>

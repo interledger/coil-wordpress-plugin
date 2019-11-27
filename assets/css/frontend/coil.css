@@ -1,17 +1,17 @@
-body.monetization-not-initialized:not(.coil-no-gating) #main #content .entry-content:not(.coil-post-excerpt),
-body.monetization-not-initialized:not(.coil-no-gating) .site-content #content .entry-content:not(.coil-post-excerpt),
-body.monetization-not-initialized:not(.coil-no-gating) .site-content .entry-content:not(.coil-post-excerpt),
-body.monetization-not-initialized:not(.coil-no-gating) .site-main #content .entry-content:not(.coil-post-excerpt),
-body.monetization-not-initialized:not(.coil-no-gating) .site-main .entry-content:not(.coil-post-excerpt),
-body.monetization-not-initialized:not(.coil-no-gating) .site-content #primary .site-main .entry-content:not(.coil-post-excerpt),
-body.monetization-not-initialized:not(.coil-no-gating) #site-content .post-inner .entry-content:not(.coil-post-excerpt),
-body.coil-extension-not-found.coil-gate-all #main #content .entry-content:not(.coil-post-excerpt),
-body.coil-extension-not-found.coil-gate-all .site-content #content .entry-content:not(.coil-post-excerpt),
-body.coil-extension-not-found.coil-gate-all .site-content .entry-content:not(.coil-post-excerpt),
-body.coil-extension-not-found.coil-gate-all .site-main #content .entry-content:not(.coil-post-excerpt),
-body.coil-extension-not-found.coil-gate-all .site-main .entry-content:not(.coil-post-excerpt),
-body.coil-extension-not-found.coil-gate-all .site-content #primary .site-main .entry-content:not(.coil-post-excerpt),
-body.coil-extension-not-found.coil-gate-all #site-content .post-inner .entry-content:not(.coil-post-excerpt) {
+body.monetization-not-initialized:not(.coil-no-gating):not(.coil-hide-excerpt) #main #content .entry-content:not(.coil-post-excerpt),
+body.monetization-not-initialized:not(.coil-no-gating):not(.coil-hide-excerpt) .site-content #content .entry-content:not(.coil-post-excerpt),
+body.monetization-not-initialized:not(.coil-no-gating):not(.coil-hide-excerpt) .site-content .entry-content:not(.coil-post-excerpt),
+body.monetization-not-initialized:not(.coil-no-gating):not(.coil-hide-excerpt) .site-main #content .entry-content:not(.coil-post-excerpt),
+body.monetization-not-initialized:not(.coil-no-gating):not(.coil-hide-excerpt) .site-main .entry-content:not(.coil-post-excerpt),
+body.monetization-not-initialized:not(.coil-no-gating):not(.coil-hide-excerpt) .site-content #primary .site-main .entry-content:not(.coil-post-excerpt),
+body.monetization-not-initialized:not(.coil-no-gating):not(.coil-hide-excerpt) #site-content .post-inner .entry-content:not(.coil-post-excerpt),
+body.coil-extension-not-found.coil-gate-all:not(.coil-hide-excerpt) #main #content .entry-content:not(.coil-post-excerpt),
+body.coil-extension-not-found.coil-gate-all:not(.coil-hide-excerpt) .site-content #content .entry-content:not(.coil-post-excerpt),
+body.coil-extension-not-found.coil-gate-all:not(.coil-hide-excerpt) .site-content .entry-content:not(.coil-post-excerpt),
+body.coil-extension-not-found.coil-gate-all:not(.coil-hide-excerpt) .site-main #content .entry-content:not(.coil-post-excerpt),
+body.coil-extension-not-found.coil-gate-all:not(.coil-hide-excerpt) .site-main .entry-content:not(.coil-post-excerpt),
+body.coil-extension-not-found.coil-gate-all:not(.coil-hide-excerpt) .site-content #primary .site-main .entry-content:not(.coil-post-excerpt),
+body.coil-extension-not-found.coil-gate-all:not(.coil-hide-excerpt) #site-content .post-inner .entry-content:not(.coil-post-excerpt) {
   display: none; }
 
 body:not(.single):not(.page) .coil-show-monetize-users {

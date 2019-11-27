@@ -3,9 +3,10 @@
 @import 'fonts';
 
 body.coil-gate-all.coil-extension-not-found.show-fw-message,
-body.monetization-not-initialized.coil-gate-all.show-fw-message {
+body.monetization-not-initialized.coil-gate-all.show-fw-message,
+body.coil-gate-all.coil-extension-not-found.show-excerpt-message {
 
-	.entry-content.coil-message-container {
+	.coil-message-container {
 		display: block !important;
 	}
 
@@ -19,31 +20,24 @@ body.monetization-not-initialized.coil-gate-all.show-fw-message {
 			padding: $message_spacing_baseline * 3 14px;
 		}
 
-		// @media only screen and (min-width: 768px)  {
-		// 	max-width: 768px;
-		// }
-
-		// @media only screen and (min-width: 1200px) {
-		// 	max-width: 1168px;
-		// 	padding: 103px 40px 39px;
-		// }
+		a.custom-logo-link {
+			display: block;
+		}
 
 		img {
 			display: block;
 			margin: 0 auto $message_spacing_baseline * 2;
 			text-align: center;
-			max-height: 51px;
+			max-width: 91px;
 
-			@media only screen and (min-width: 1200px) {
+			@media only screen and (min-width: $message_mobile_breakpoint) {
 				margin-bottom: $message_spacing_baseline * 4;
-				max-height: 73px;
 			}
 		}
 
 		.coil-message-header {
 
-			@media only screen and (min-width: 1200px) {
-				// max-width: 720px;
+			@media only screen and (min-width: $message_desktop_breakpoint) {
 				margin: 0 0 109px;
 			}
 
@@ -63,7 +57,7 @@ body.monetization-not-initialized.coil-gate-all.show-fw-message {
 				font-size: $message_spacing_baseline * 2;
 				line-height: 27px;
 				margin-bottom: $message_spacing_baseline * 3;
-				@media only screen and (min-width: 1200px) {
+				@media only screen and (min-width: $message_desktop_breakpoint) {
 					margin-bottom: 40px;
 				}
 			}
@@ -79,7 +73,7 @@ body.monetization-not-initialized.coil-gate-all.show-fw-message {
 				min-width: 232px;
 				font-weight: 600;
 				margin-bottom: $message_spacing_baseline * 3;
-				@media only screen and (min-width: 1200px) {
+				@media only screen and (min-width: $message_desktop_breakpoint) {
 					margin-bottom: 0;
 				}
 			}
@@ -89,7 +83,7 @@ body.monetization-not-initialized.coil-gate-all.show-fw-message {
 			border-top: 1px solid $message_border_colour;
 			padding-top: $message_spacing_baseline * 2;
 
-			@media only screen and (min-width: 1200px) {
+			@media only screen and (min-width: $message_desktop_breakpoint) {
 				padding-top: $message_spacing_baseline * 4;
 			}
 
@@ -99,42 +93,33 @@ body.monetization-not-initialized.coil-gate-all.show-fw-message {
 				font-size: 12px;
 				line-height: 17px;
 
-				@media only screen and (min-width: 1200px) {
+				@media only screen and (min-width: $message_desktop_breakpoint) {
 					font-size: 14px;
 					line-height: 22px;
 				}
 			}
 		}
 	}
-
-	// .content-area {
-	// 	position: relative;
-	// 	&:before {
-	// 		position: absolute;
-	// 		content: '';
-	// 		background-color: $message_content_conceal_colour;
-	// 		width: 100%;
-	// 		height: 100%;
-	// 		left: 0;
-	// 		top: 0;
-	// 		right: 0;
-	// 		bottom: 0;
-	// 	}
-	// 	padding: ($message_spacing_baseline * 4) ($message_spacing_baseline * 2);
-
-	// 	@media only screen and (min-width: 768px) {
-	// 		padding: 150px 0;
-	// 	}
-
-	// }
-	// .site-main {
-	// 	display: none;
-	// }
 }
 
 // Scenario 2
 body.coil-gate-all.coil-extension-not-found.show-excerpt-message {
-	.coil-message-container {
 
+	.coil-message-container {
+		display: block !important;
+		.coil-message-inner {
+			position: relative;
+			margin-top: -20px;
+			&:before {
+				position: absolute;
+				content: '';
+				background: linear-gradient(to top, $message_background_colour 0%, transparent 100%);
+				height: 150px;
+				width: 100%;
+				top: -150px;
+				left: 0;
+			}
+		}
 	}
 }
+

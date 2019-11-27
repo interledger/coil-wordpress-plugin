@@ -157,6 +157,11 @@ function load_full_assets() : void {
 		true
 	);
 
+	$site_logo = false;
+	if ( function_exists( 'get_custom_logo' ) ) {
+		$site_logo = get_custom_logo();
+	}
+
 	$strings = apply_filters(
 		'coil_js_ui_messages',
 		[
@@ -166,6 +171,7 @@ function load_full_assets() : void {
 			'voluntary_donation'        => Admin\get_customizer_messaging_text( 'coil_voluntary_donation_message' ),
 			'loading_content'           => Admin\get_customizer_messaging_text( 'coil_verifying_status_message' ),
 			'post_excerpt'              => get_the_excerpt(),
+			'site_logo'                 => $site_logo,
 
 			/* translators: 1 + 2) HTML link tags (to the Coil settings page). */
 			'admin_missing_id_notice'   => sprintf( __( 'This post is monetized but you have not set your payment pointer ID in the %1$sCoil settings page%2$s. Only content set to show for all visitors will show.', 'coil-monetize-content' ), '<a href="' . admin_url( 'admin.php?page=coil' ) . '">', '</a>' ),
