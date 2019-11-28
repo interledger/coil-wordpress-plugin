@@ -63,7 +63,6 @@
 		return modalContainer;
 	}
 
-
 	/**
 	 * Overlay "Split Content" blocks with a message when set to
 	 * show for monetized users. This will display if the browser is
@@ -71,10 +70,7 @@
 	 * @param string Message from coil_params
 	 */
 	function displaySplitContentMessage( message ) {
-		var modalContainer = document.createElement( 'div' );
-		modalContainer.classList.add( 'coil-split-content-container' );
-		$( modalContainer ).append( splitContentMessage( message ) );
-		return modalContainer;
+		return splitContentMessage( message );
 	}
 
 	/**
@@ -415,7 +411,7 @@
 
 				} else if ( isSplitContent() ) {
 					displayDebugMessage( 'Split content with no extension found' );
-					$( '.coil-show-monetize-users' ).before( displaySplitContentMessage( 'This content is for Coil subscribers only! To access, visit coil.com and install the browser extension!' ) );
+					$( '.coil-show-monetize-users' ).prepend( displaySplitContentMessage( 'This content is for Coil subscribers only! To access, visit coil.com and install the browser extension!' ) );
 
 
 				} else if ( isMonetizedAndPublic() ) {

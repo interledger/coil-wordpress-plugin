@@ -349,23 +349,23 @@ body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-c
 body.coil-hide-excerpt.show-fw-message .entry-content {
   display: none; }
 
-.coil-split-content-message-inner {
-  background: #575756;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.coil-show-monetize-users p.coil-split-content-message {
   color: white;
-  padding: 24px 50px;
+  margin: 0;
   text-align: center;
-  font-family: 'Open Sans'; }
-  @media only screen and (min-width: 1168px) {
-    .coil-split-content-message-inner {
-      padding: 70px 50px; } }
-  .coil-split-content-message-inner p {
-    margin: 0;
-    font-size: 16px;
-    line-height: 22px; }
-    @media only screen and (min-width: 768px) {
-      .coil-split-content-message-inner p {
-        font-size: 18px;
-        line-height: 27px; } }
+  font-family: 'Open Sans';
+  font-size: 16px;
+  line-height: 22px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  z-index: 110; }
+  @media only screen and (min-width: 768px) {
+    .coil-show-monetize-users p.coil-split-content-message {
+      padding: 50px;
+      font-size: 18px;
+      line-height: 27px; } }

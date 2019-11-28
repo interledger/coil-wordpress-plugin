@@ -64,9 +64,34 @@ body.monetization-initialized:not(.coil-no-gating) {
 body.coil-extension-not-found:not(.coil-no-gating),
 body.coil-missing-id:not(.coil-no-gating) {
 
-	*.coil-hide-monetize-users,
-	*.coil-show-monetize-users {
+	*.coil-hide-monetize-users {
 		display: none;
+	}
+
+	*.coil-show-monetize-users {
+		position: relative;
+		&::after {
+			content: ' ';
+			position: absolute;
+			width: inherit;
+			height: inherit;
+			font-family: 'Open Sans';
+			font-size: 18px;
+			line-height: 27px;
+			color: white;
+			background: #575756;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			white-space: nowrap;
+			z-index: 100;
+			text-align: center;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			overflow: scroll;
+		}
 	}
 
 }
