@@ -206,6 +206,14 @@ function load_messaging_assets() : void {
 		[],
 		PLUGIN_VERSION
 	);
+
+	wp_enqueue_script(
+		'messaging-cookies',
+		esc_url_raw( plugin_dir_url( __DIR__ ) . 'assets/js/js-cookie.3.0.0.min.js' ),
+		[],
+		PLUGIN_VERSION,
+		true
+	);
 }
 
 /**
@@ -217,6 +225,7 @@ function load_messaging_assets() : void {
 function load_plugin_templates() : void {
 	require_once plugin_dir_path( __FILE__ ) . '../templates/messages/subscriber-only-message.php';
 	require_once plugin_dir_path( __FILE__ ) . '../templates/messages/split-content-message.php';
+	require_once plugin_dir_path( __FILE__ ) . '../templates/messages/banner-message.php';
 }
 
 /**

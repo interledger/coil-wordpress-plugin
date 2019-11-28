@@ -14,9 +14,16 @@
 
 	var subscriberOnlyMessage = wp.template( 'subscriber-only-message' );
 	var splitContentMessage = wp.template( 'split-content-message' );
+	var bannerMessage = wp.template( 'banner-message' );
 
 	var messageWrapper = $( 'p.monetize-msg' );
 	var DEBUG_LOG = true;
+
+
+
+
+
+
 
 	function displayDebugMessage( debug_message ) {
 		if ( false === DEBUG_LOG ) {
@@ -39,6 +46,7 @@
 	/**
 	 * Output the gated content message when content is
 	 * set to Subscriber Only
+	 *
 	 * @param string Message from coil_params
 	 */
 	function displaySubscriberOnlyMessage( message ) {
@@ -53,13 +61,30 @@
 				text: 'Get coil to access',
 				href: 'https://coil.com/learn-more/'
 			},
-			footerLogo: {
-				src: 'https://www.placehold.it/175x75',
-				alt: 'Alt text',
+		};
+
+		$( modalContainer ).append( subscriberOnlyMessage( modalData ) );
+		return modalContainer;
+	}
+
+	/**
+	 * Output a slim banner message
+	 *
+	 * @param string Message from coil_params
+	 */
+	function displayBannerMessage( message ) {
+		var modalContainer = document.createElement( 'div' );
+		modalContainer.classList.add( 'coil-banner-message-container' );
+
+		var modalData = {
+			content: message,
+			button: {
+				text: 'Get Coil to access',
+				href: 'https://coil.com/learn-more/'
 			},
 		};
 
-		$(modalContainer).append( subscriberOnlyMessage( modalData ) );
+		$( modalContainer ).append( bannerMessage( modalData ) );
 		return modalContainer;
 	}
 
@@ -97,15 +122,6 @@
 	 */
 	function hideContentExcerpt() {
 		return jQuery('p.coil-post-excerpt').hide();
-	}
-
-	/**
-	 * Hide the content container.
-	 */
-	function hideContentContainer() {
-		displayDebugMessage( 'Hiding content container' );
-		var elem = document.querySelector( content_container );
-		elem.style.display = 'none';
 	}
 
 	/**
@@ -172,7 +188,9 @@
 					$( 'body' ).addClass( 'coil-split' ); // Only show content that is free if we can't verify.
 					showContentContainer();
 
+					// document.querySelector( content_container ).before( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
 					document.querySelector( content_container ).before( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
+
 
 					displayDebugMessage( 'Unable to verify hidden content' );
 
@@ -194,6 +212,18 @@
 	 */
 	function monetizationNotInitialized() {
 		return document.body.classList.contains( 'monetization-not-initialized' );
+	}
+
+
+
+	function addBannerDismissClickHandler() {
+		$('#js-coil-banner-dismiss').on( 'click', function(event) {
+			if ( ! Cookies.get( 'ShowCoilPartialMsg' ) == 1 ) {
+				Cookies.set( 'ShowCoilPartialMsg', 1 );
+				$(this).parent().parent().remove();
+			}
+		});
+
 	}
 
 	/**
@@ -411,7 +441,13 @@
 
 				} else if ( isSplitContent() ) {
 					displayDebugMessage( 'Split content with no extension found' );
+
+					if ( ! Cookies.get( 'ShowCoilPartialMsg' ) == 1 ) {
+						$('body').append( displayBannerMessage( 'This content is for Coil subscribers only.  To access, subscribe to Coil and install the browser extension.' ) );
+					}
+
 					$( '.coil-show-monetize-users' ).prepend( displaySplitContentMessage( 'This content is for Coil subscribers only! To access, visit coil.com and install the browser extension!' ) );
+					addBannerDismissClickHandler();
 
 
 				} else if ( isMonetizedAndPublic() ) {
