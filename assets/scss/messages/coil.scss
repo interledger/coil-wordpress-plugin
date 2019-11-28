@@ -131,3 +131,33 @@ body.coil-gate-all.coil-extension-not-found.show-excerpt-message {
 	}
 }
 
+body.coil-hide-excerpt.show-fw-message .entry-content {
+	display: none;
+}
+
+// Split content
+.coil-split-content-message-inner {
+	background: #575756;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	padding: 24px 50px;
+	text-align: center;
+	font-family: 'Open Sans';
+
+	@media only screen and (min-width: $message_desktop_breakpoint) {
+		padding: 70px 50px;
+	}
+
+	p {
+		margin: 0;
+		font-size: 16px;
+		line-height: 22px;
+
+		@media only screen and (min-width: $message_mobile_breakpoint ) {
+			font-size: 18px;
+			line-height: 27px;
+		}
+	}
+}

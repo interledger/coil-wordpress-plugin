@@ -12,7 +12,9 @@
 		admin_missing_id_notice = coil_params.admin_missing_id_notice;
 		site_logo = coil_params.site_logo;
 
-	var fullWidthMessage = wp.template( 'full-width-message' );
+	var subscriberOnlyMessage = wp.template( 'subscriber-only-message' );
+	var splitContentMessage = wp.template( 'split-content-message' );
+
 	var messageWrapper = $( 'p.monetize-msg' );
 	var DEBUG_LOG = true;
 
@@ -34,9 +36,14 @@
 		return elem;
 	}
 
-	function displayFullWidthMessage( message ) {
+	/**
+	 * Output the gated content message when content is
+	 * set to Subscriber Only
+	 * @param string Message from coil_params
+	 */
+	function displaySubscriberOnlyMessage( message ) {
 		var modalContainer = document.createElement( 'div' );
-		modalContainer.classList.add( 'entry-content','coil-message-container' );
+		modalContainer.classList.add( 'entry-content', 'coil-message-container' );
 
 		var modalData = {
 			headerLogo: site_logo,
@@ -52,7 +59,21 @@
 			},
 		};
 
-		$(modalContainer).append( fullWidthMessage( modalData ) );
+		$(modalContainer).append( subscriberOnlyMessage( modalData ) );
+		return modalContainer;
+	}
+
+
+	/**
+	 * Overlay "Split Content" blocks with a message when set to
+	 * show for monetized users. This will display if the browser is
+	 * not compatible or verified.
+	 * @param string Message from coil_params
+	 */
+	function displaySplitContentMessage( message ) {
+		var modalContainer = document.createElement( 'div' );
+		modalContainer.classList.add( 'coil-split-content-container' );
+		$( modalContainer ).append( splitContentMessage( message ) );
 		return modalContainer;
 	}
 
@@ -146,7 +167,7 @@
 				} else {
 
 					document.body.classList.add('show-fw-message');
-					$(content_container).before( displayFullWidthMessage( unable_to_verify ) );
+					$( content_container ).before( displaySubscriberOnlyMessage( unable_to_verify ) );
 				}
 
 			} else {
@@ -162,7 +183,7 @@
 				} else {
 
 					document.body.classList.add('show-fw-message');
-					document.querySelector( content_container ).before( displayFullWidthMessage( unable_to_verify ) );
+					document.querySelector( content_container ).before( displaySubscriberOnlyMessage( unable_to_verify ) );
 					displayDebugMessage( 'No tagged blocks' );
 
 				}
@@ -261,9 +282,9 @@
 				// Final check to see if the state is stopped
 				else if ( document.monetization.state === 'stopped' ) {
 
-					// Only display the loading message if the status is not "monetized and public".
-					if ( ! isMonetizedAndPublic() ) {
-						displayDebugMessage( 'Status stopped and Monetized and Public' );
+					displayDebugMessage( 'Status stopped and Monetized and Public' );
+
+					if ( isSubscribersOnly() ) {
 
 						if ( isExcerptEnabled() ) {
 							if ( post_excerpt !== '' ) {
@@ -271,6 +292,11 @@
 							}
 						}
 						document.querySelector( content_container ).insertAdjacentHTML( 'beforebegin', '<p class="monetize-msg">' + loading_content + '</p>' );
+
+					} else if ( isSplitContent() ) {
+
+						document.querySelector( content_container ).insertAdjacentHTML( 'beforebegin', '<p class="monetize-msg">' + loading_content + '</p>' );
+
 					}
 
 					setTimeout( function() {
@@ -370,14 +396,13 @@
 				// Update body class to show free content.
 				$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'coil-extension-not-found' );
 
-				if ( isSubscribersOnly() || ! isMonetizedAndPublic() ) {
-
+				if ( isSubscribersOnly() ) {
 
 					if ( ! usingDefaultContentContainer() ) {
 
-						$( content_container ).html(displayFullWidthMessage( browser_extension_missing ));
+						$( content_container ).html( displaySubscriberOnlyMessage( browser_extension_missing ) );
 					} else {
-						$( content_container ).before( displayFullWidthMessage( browser_extension_missing ) );
+						$( content_container ).before( displaySubscriberOnlyMessage( browser_extension_missing ) );
 					}
 
 
@@ -388,19 +413,12 @@
 						document.body.classList.add('show-fw-message');
 					}
 
-				}
+				} else if ( isSplitContent() ) {
+					displayDebugMessage( 'Split content with no extension found' );
+					$( '.coil-show-monetize-users' ).before( displaySplitContentMessage( 'This content is for Coil subscribers only! To access, visit coil.com and install the browser extension!' ) );
 
-				// This ensures content written in Gutenberg is displayed according to
-				// the block settings should the theme use different theme selectors.
-				if ( ! isMonetizedAndPublic() ) {
 
-					if( ! usingDefaultContentContainer() ) {
-						showContentContainer();
-						$( content_container + '*.coil-hide-monetize-users' ).css( 'display', 'none' );
-						$( content_container + '*.coil-show-monetize-users' ).css( 'display', 'none' );
-					}
-
-				} else {
+				} else if ( isMonetizedAndPublic() ) {
 					// Voluntary donation.
 					displayDebugMessage( 'Content is monetized and public but no extension found' );
 					$( content_container ).before( displayMonetizationMessage( voluntary_donation, '' ) );

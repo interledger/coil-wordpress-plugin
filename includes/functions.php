@@ -215,7 +215,8 @@ function load_messaging_assets() : void {
  * @return void
  */
 function load_plugin_templates() : void {
-	require_once plugin_dir_path( __FILE__ ) . '../templates/messages/full-width-message.php';
+	require_once plugin_dir_path( __FILE__ ) . '../templates/messages/subscriber-only-message.php';
+	require_once plugin_dir_path( __FILE__ ) . '../templates/messages/split-content-message.php';
 }
 
 /**

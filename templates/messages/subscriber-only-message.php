@@ -1,4 +1,4 @@
-<script type="text/html" id="tmpl-full-width-message">
+<script type="text/html" id="tmpl-subscriber-only-message">
 	<div class="coil-message-inner">
 		<div class="coil-message-header">
 			<# if ( data.headerLogo ) { #>
