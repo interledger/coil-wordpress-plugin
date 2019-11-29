@@ -161,6 +161,7 @@ function load_assets() : void {
 			'unable_to_verify'          => Admin\get_customizer_messaging_text( 'coil_unable_to_verify_message' ),
 			'voluntary_donation'        => Admin\get_customizer_messaging_text( 'coil_voluntary_donation_message' ),
 			'loading_content'           => Admin\get_customizer_messaging_text( 'coil_verifying_status_message' ),
+			'partial_gating'            => Admin\get_customizer_messaging_text( 'coil_partial_gating_message' ),
 			'post_excerpt'              => get_the_excerpt(),
 
 			/* translators: 1 + 2) HTML link tags (to the Coil settings page). */
