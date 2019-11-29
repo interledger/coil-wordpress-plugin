@@ -8,6 +8,7 @@
 		unable_to_verify = coil_params.unable_to_verify,
 		voluntary_donation = coil_params.voluntary_donation,
 		loading_content = coil_params.loading_content,
+		partial_gating = coil_params.partial_gating,
 		post_excerpt = coil_params.post_excerpt,
 		admin_missing_id_notice = coil_params.admin_missing_id_notice;
 		site_logo = coil_params.site_logo;
@@ -452,10 +453,10 @@
 					displayDebugMessage( 'Split content with no extension found' );
 
 					if ( ! Cookies.get( 'ShowCoilPartialMsg' ) == 1 ) {
-						$('body').append( displayBannerMessage( 'This content is for Coil subscribers only.  To access, subscribe to Coil and install the browser extension.' ) );
+						$('body').append( displayBannerMessage( partial_gating ) );
 					}
 
-					$( '.coil-show-monetize-users' ).prepend( displaySplitContentMessage( 'This content is for Coil subscribers only! To access, visit coil.com and install the browser extension!' ) );
+					$( '.coil-show-monetize-users' ).prepend( displaySplitContentMessage( partial_gating ) );
 					addBannerDismissClickHandler( false );
 
 
