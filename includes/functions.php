@@ -19,7 +19,8 @@ function init_plugin() : void {
 	// CSS/JS.
 	add_action( 'enqueue_block_assets', __NAMESPACE__ . '\load_block_frontend_assets' );
 	add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\load_block_editor_assets' );
-	add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\load_assets' );
+	add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\load_full_assets' );
+	add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\load_messaging_assets' );
 
 	// Admin-only CSS/JS.
 	add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\Admin\load_admin_assets' );
@@ -56,6 +57,9 @@ function init_plugin() : void {
 	add_action( 'load-post.php', __NAMESPACE__ . '\Admin\load_metaboxes' );
 	add_action( 'load-post-new.php', __NAMESPACE__ . '\Admin\load_metaboxes' );
 	add_action( 'save_post', __NAMESPACE__ . '\Admin\maybe_save_post_metabox' );
+
+	// Modal messaging
+	add_action( 'wp_footer', __NAMESPACE__ . '\load_plugin_templates' );
 
 	// Load order - important.
 	add_action( 'init', __NAMESPACE__ . '\Gating\register_content_meta' );
@@ -125,7 +129,7 @@ function load_block_editor_assets() : void {
  *
  * @return void
  */
-function load_assets() : void {
+function load_full_assets() : void {
 
 	// Only load Coil on actual content.
 	if ( is_admin() || is_home() || is_front_page() || ! is_singular() || is_feed() || is_preview() ) {
@@ -148,10 +152,15 @@ function load_assets() : void {
 	wp_enqueue_script(
 		'coil-monetization-js',
 		esc_url_raw( plugin_dir_url( __DIR__ ) . 'assets/js/initialize-monetization' . $suffix . '.js' ),
-		[ 'jquery' ],
+		[ 'jquery', 'wp-util' ],
 		PLUGIN_VERSION,
 		true
 	);
+
+	$site_logo = false;
+	if ( function_exists( 'get_custom_logo' ) ) {
+		$site_logo = get_custom_logo();
+	}
 
 	$strings = apply_filters(
 		'coil_js_ui_messages',
@@ -163,6 +172,7 @@ function load_assets() : void {
 			'loading_content'           => Admin\get_customizer_messaging_text( 'coil_verifying_status_message' ),
 			'partial_gating'            => Admin\get_customizer_messaging_text( 'coil_partial_gating_message' ),
 			'post_excerpt'              => get_the_excerpt(),
+			'site_logo'                 => $site_logo,
 
 			/* translators: 1 + 2) HTML link tags (to the Coil settings page). */
 			'admin_missing_id_notice'   => sprintf( __( 'This post is monetized but you have not set your payment pointer ID in the %1$sCoil settings page%2$s. Only content set to show for all visitors will show.', 'coil-monetize-content' ), '<a href="' . admin_url( 'admin.php?page=coil' ) . '">', '</a>' ),
@@ -175,6 +185,48 @@ function load_assets() : void {
 		'coil_params',
 		$strings
 	);
+}
+
+/**
+ * Enqueue messaging CSS.
+ *
+ * @return void
+ */
+function load_messaging_assets() : void {
+
+	// Only load Coil on actual content.
+	if ( is_admin() || is_home() || is_front_page() || ! is_singular() || is_feed() || is_preview() ) {
+		return;
+	}
+
+	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+	wp_enqueue_style(
+		'coil-messaging',
+		esc_url_raw( plugin_dir_url( __DIR__ ) . 'assets/css/messages/coil' . $suffix . '.css' ),
+		[],
+		PLUGIN_VERSION
+	);
+
+	wp_enqueue_script(
+		'messaging-cookies',
+		esc_url_raw( plugin_dir_url( __DIR__ ) . 'assets/js/js-cookie.3.0.0.min.js' ),
+		[],
+		PLUGIN_VERSION,
+		true
+	);
+}
+
+/**
+ * Load templates used by the plugin to render in javascript using
+ * WP Template.
+ *
+ * @return void
+ */
+function load_plugin_templates() : void {
+	require_once plugin_dir_path( __FILE__ ) . '../templates/messages/subscriber-only-message.php';
+	require_once plugin_dir_path( __FILE__ ) . '../templates/messages/split-content-message.php';
+	require_once plugin_dir_path( __FILE__ ) . '../templates/messages/banner-message.php';
 }
 
 /**
@@ -195,11 +247,11 @@ function add_body_class( $classes ) : array {
 	if ( Gating\is_content_monetized( get_queried_object_id() ) ) {
 		$classes[] = 'monetization-not-initialized';
 
+		$coil_status = Gating\get_content_gating( get_queried_object_id() );
+		$classes[]   = sanitize_html_class( 'coil-' . $coil_status );
+
 		if ( ! empty( $payment_pointer_id ) ) {
-			// Monetise.
-			$coil_status = Gating\get_content_gating( get_queried_object_id() );
-			$classes[]   = sanitize_html_class( 'coil-' . $coil_status );
-			$classes[]   = ( Gating\get_excerpt_gating( get_queried_object_id() ) ) ? 'coil-show-excerpt' : 'coil-hide-excerpt';
+			$classes[] = ( Gating\get_excerpt_gating( get_queried_object_id() ) ) ? 'coil-show-excerpt' : 'coil-hide-excerpt';
 		} else {
 			// Error: payment pointer ID is missing.
 			$classes[] = 'coil-missing-id';

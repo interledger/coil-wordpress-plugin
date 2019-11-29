@@ -35,7 +35,8 @@ module.exports = function(grunt) {
 			dist: {
 				files: {
 					'assets/css/admin/coil.css' : 'assets/scss/admin.scss',
-					'assets/css/frontend/coil.css' : 'assets/scss/frontend/coil.scss'
+					'assets/css/frontend/coil.css' : 'assets/scss/frontend/coil.scss',
+					'assets/css/messages/coil.css' : 'assets/scss/messages/coil.scss'
 				}
 			}
 		},
@@ -53,7 +54,9 @@ module.exports = function(grunt) {
 					'!assets/css/admin/*.min.css',
 					'assets/css/admin/*.css',
 					'!assets/css/frontend/*.min.css',
-					'assets/css/frontend/*.css'
+					'assets/css/frontend/*.css',
+					'!assets/css/messages/*.min.css',
+					'assets/css/messages/*.css'
 				]
 			}
 		},
@@ -80,6 +83,7 @@ module.exports = function(grunt) {
 			style: {
 				files: {
 					'assets/css/frontend/coil.min.css': [ 'assets/css/frontend/coil.css' ],
+					'assets/css/messages/coil.min.css': [ 'assets/css/messages/coil.css' ],
 				}
 			},
 			blocks: {
@@ -125,6 +129,7 @@ module.exports = function(grunt) {
 					'assets/scss/*.scss',
 					'assets/scss/admin/*.scss',
 					'assets/scss/frontend/*.scss',
+					'assets/scss/messages/*.scss',
 				],
 				tasks: ['sass', 'postcss']
 			},
