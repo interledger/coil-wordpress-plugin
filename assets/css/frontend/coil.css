@@ -11,7 +11,14 @@ body.coil-extension-not-found.coil-gate-all .site-content .entry-content:not(.co
 body.coil-extension-not-found.coil-gate-all .site-main #content .entry-content:not(.coil-post-excerpt),
 body.coil-extension-not-found.coil-gate-all .site-main .entry-content:not(.coil-post-excerpt),
 body.coil-extension-not-found.coil-gate-all .site-content #primary .site-main .entry-content:not(.coil-post-excerpt),
-body.coil-extension-not-found.coil-gate-all #site-content .post-inner .entry-content:not(.coil-post-excerpt) {
+body.coil-extension-not-found.coil-gate-all #site-content .post-inner .entry-content:not(.coil-post-excerpt),
+body.monetization-not-initialized.coil-gate-all #main #content .entry-content:not(.coil-post-excerpt),
+body.monetization-not-initialized.coil-gate-all .site-content #content .entry-content:not(.coil-post-excerpt),
+body.monetization-not-initialized.coil-gate-all .site-content .entry-content:not(.coil-post-excerpt),
+body.monetization-not-initialized.coil-gate-all .site-main #content .entry-content:not(.coil-post-excerpt),
+body.monetization-not-initialized.coil-gate-all .site-main .entry-content:not(.coil-post-excerpt),
+body.monetization-not-initialized.coil-gate-all .site-content #primary .site-main .entry-content:not(.coil-post-excerpt),
+body.monetization-not-initialized.coil-gate-all #site-content .post-inner .entry-content:not(.coil-post-excerpt) {
   display: none; }
 
 body:not(.single):not(.page) .coil-show-monetize-users {

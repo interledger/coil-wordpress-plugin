@@ -19,12 +19,6 @@
 	var messageWrapper = $( 'p.monetize-msg' );
 	var DEBUG_LOG = true;
 
-
-
-
-
-
-
 	function displayDebugMessage( debug_message ) {
 		if ( false === DEBUG_LOG ) {
 			return;
@@ -215,11 +209,20 @@
 	}
 
 
-
-	function addBannerDismissClickHandler() {
+	/**
+	 * Add a function to remove the banner and set a Cookie
+	 *
+	 * @param int expiresInDays Define when the cookie will be removed.
+	 * @see https://github.com/js-cookie/js-cookie
+	 */
+	function addBannerDismissClickHandler( expiresInDays ) {
 		$('#js-coil-banner-dismiss').on( 'click', function(event) {
 			if ( ! Cookies.get( 'ShowCoilPartialMsg' ) == 1 ) {
-				Cookies.set( 'ShowCoilPartialMsg', 1 );
+				if ( false !== expiresInDays ) {
+					Cookies.set( 'ShowCoilPartialMsg', 1, { expires: expiresInDays } );
+				} else {
+					Cookies.set( 'ShowCoilPartialMsg', 1 );
+				}
 				$(this).parent().parent().remove();
 			}
 		});
@@ -312,6 +315,9 @@
 
 					if ( isSubscribersOnly() ) {
 
+						// Hide content
+
+
 						if ( isExcerptEnabled() ) {
 							if ( post_excerpt !== '' ) {
 								document.querySelector( content_container ).insertAdjacentHTML( 'beforebegin', getContentExcerpt() );
@@ -339,7 +345,10 @@
 							} else if ( isMonetizedAndPublic() ) {
 								// Voluntary donation.
 								displayDebugMessage( 'Content is monetized and public but extension is stopped' );
-								document.querySelector( content_container ).before( displayMonetizationMessage( voluntary_donation, '' ) );
+								if ( ! Cookies.get( 'ShowCoilPartialMsg' ) == 1 ) {
+									$('body').append( displayBannerMessage( voluntary_donation ) );
+								}
+								addBannerDismissClickHandler( 31 );
 							}
 						}
 					}, 5000 );
@@ -447,13 +456,17 @@
 					}
 
 					$( '.coil-show-monetize-users' ).prepend( displaySplitContentMessage( 'This content is for Coil subscribers only! To access, visit coil.com and install the browser extension!' ) );
-					addBannerDismissClickHandler();
+					addBannerDismissClickHandler( false );
 
 
 				} else if ( isMonetizedAndPublic() ) {
 					// Voluntary donation.
 					displayDebugMessage( 'Content is monetized and public but no extension found' );
-					$( content_container ).before( displayMonetizationMessage( voluntary_donation, '' ) );
+
+					if ( ! Cookies.get( 'ShowCoilPartialMsg' ) == 1 ) {
+						$('body').append( displayBannerMessage( voluntary_donation ) );
+					}
+					addBannerDismissClickHandler( 31 );
 				}
 
 				// Trigger an event.
