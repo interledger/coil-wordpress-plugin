@@ -170,7 +170,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 
 	.banner-message-inner {
 		background-color: $message_banner_background_colour;
-		padding: 12px 32px;
+		padding: 12px $message_spacing_baseline * 4;
 		display: flex;
 		justify-content: space-around;
 		border-radius: 41px;
@@ -188,7 +188,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 	}
 
 	.coil-banner-message-button {
-		padding: 8px 24px;
+		padding: $message_spacing_baseline $message_spacing_baseline * 3;
 		text-align: center;
 		background-color: $message_banner_button_colour;
 		color: white;
@@ -196,7 +196,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 		line-height: 24px;
 		font-weight: 600;
 		text-decoration: none;
-		margin: 0 32px 0 67px;
+		margin: 0 $message_spacing_baseline * 4 0 67px;
 
 		&:hover {
 			background-color: $message_banner_button_hover_colour;

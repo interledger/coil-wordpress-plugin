@@ -1,16 +1,6 @@
 // Monetization not initialized.
 body.monetization-not-initialized:not(.coil-no-gating) {
 
-	// figure.coil-show-monetize-users img,
-	// figure.coil-show-monetize-users div.wp-block-embed__wrapper,
-	// img.coil-show-monetize-users {
-	// 	-webkit-filter: blur(10px) grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
-	// 	-moz-filter: blur(10px) greyscale(1); /* Firefox */
-	// 	-o-filter: blur(10px) greyscale(1); /* Opera */
-	// 	-ms-filter: blur(10px) greyscale(1); /* MS */
-	// 	filter: blur(10px) grayscale(1); /* Microsoft Edge and Firefox 35+ */
-	// }
-
 	*.coil-show-monetize-users {
 		position: relative;
 		display: block;

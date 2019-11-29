@@ -60,7 +60,7 @@
 			button: {
 				text: 'Get coil to access',
 				href: 'https://coil.com/learn-more/'
-			},
+			}
 		};
 
 		$( modalContainer ).append( subscriberOnlyMessage( modalData ) );
@@ -228,15 +228,30 @@
 	 */
 	function addBannerDismissClickHandler( expiresInDays ) {
 		$( '#js-coil-banner-dismiss' ).on( 'click', function(event) {
-			if ( ! Cookies.get( 'ShowCoilPartialMsg' ) == 1 ) {
+			if ( ! hasBannerDismissCookie() ) {
 				if ( false !== expiresInDays ) {
 					Cookies.set( 'ShowCoilPartialMsg', 1, { expires: expiresInDays } );
 				} else {
 					Cookies.set( 'ShowCoilPartialMsg', 1 );
 				}
-				$(this).parent().parent().remove();
+				$( this ).parent().parent().remove();
 			}
 		});
+	}
+
+	/**
+	 * Checks if the footer banner message is dismissed.
+	 *
+	 * @param string cookieName Name of the cookie to check against.
+	 *
+	 * @return bool. True if set to '1', otherwise false.
+	 */
+	function hasBannerDismissCookie() {
+		var currentCookie = Cookies.get( 'ShowCoilPartialMsg' );
+		if ( ( typeof( currentCookie ) !== 'undefined' ) && currentCookie === '1' ) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -352,10 +367,10 @@
 								// Voluntary donation.
 								displayDebugMessage( 'Content is monetized and public but extension is stopped' );
 
-								if ( ! Cookies.get( 'ShowCoilPartialMsg' ) == 1 ) {
+								if ( ! hasBannerDismissCookie() ) {
 									$( 'body' ).append( displayBannerMessage( voluntary_donation ) );
+									addBannerDismissClickHandler( 31 );
 								}
-								addBannerDismissClickHandler( 31 );
 							}
 						}
 					}, 5000 );
@@ -456,21 +471,20 @@
 				} else if ( isSplitContent() ) {
 					displayDebugMessage( 'Split content with no extension found' );
 
-					if ( ! Cookies.get( 'ShowCoilPartialMsg' ) == 1 ) {
-						$( 'body' ).append( displayBannerMessage( partial_gating ) );
-					}
-
 					$( '.coil-show-monetize-users' ).prepend( displaySplitContentMessage( partial_gating ) );
-					addBannerDismissClickHandler( false );
+					if ( ! hasBannerDismissCookie() ) {
+						$( 'body' ).append( displayBannerMessage( partial_gating ) );
+						addBannerDismissClickHandler( false );
+					}
 
 				} else if ( isMonetizedAndPublic() ) {
 					// Voluntary donation.
 					displayDebugMessage( 'Content is monetized and public but no extension found' );
 
-					if ( ! Cookies.get( 'ShowCoilPartialMsg' ) == 1 ) {
+					if ( ! hasBannerDismissCookie() ) {
 						$( 'body' ).append( displayBannerMessage( voluntary_donation ) );
+						addBannerDismissClickHandler( 31 );
 					}
-					addBannerDismissClickHandler( 31 );
 				}
 
 				// Trigger an event.
