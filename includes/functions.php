@@ -34,7 +34,6 @@ function init_plugin() : void {
 	add_filter( 'plugin_action_links_coil-monetize-content/plugin.php', __NAMESPACE__ . '\Admin\add_plugin_action_links' );
 	add_filter( 'plugin_row_meta', __NAMESPACE__ . '\Admin\add_plugin_meta_link', 10, 2 );
 	add_action( 'admin_menu', __NAMESPACE__ . '\Settings\register_admin_menu' );
-	// add_action( 'admin_init', __NAMESPACE__ . '\Settings\maybe_save_coil_admin_settings' );
 	add_action( 'admin_init', __NAMESPACE__ . '\Settings\register_admin_content_settings' );
 
 	// Term meta.

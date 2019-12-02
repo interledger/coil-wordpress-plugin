@@ -70,9 +70,6 @@ function register_admin_content_settings() {
 		'coil_global_settings_top_section'
 	);
 
-
-
-
 	// ==== Advanced Config.
 	add_settings_section(
 		'coil_global_settings_bottom_section',
@@ -194,14 +191,19 @@ function coil_global_settings_group_validation( $global_settings ) : array {
 	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
 		return [];
 	}
+
+	if ( isset( $global_settings['coil_content_container'] ) && empty( $global_settings['coil_content_container'] ) ) {
+		$global_settings['coil_content_container'] = '.content-area .entry-content';
+	}
+
 	return array_map(
 		function( $global_settings_input ) {
+
 			return sanitize_text_field( $global_settings_input );
 		},
 		(array) $global_settings
 	);
 }
-
 
 /**
  * Allow each "Display Excerpt" checkbox in the content setting table to be properly validated
@@ -291,9 +293,22 @@ function coil_global_settings_payment_pointer_render_callback() {
 		esc_html( 'Find out more about payment pointers' )
 	);
 	echo '</p>';
+	printf(
+		'<br><a href="%s" target="%s" class="%s">%s</a>',
+		esc_url( '#' ),
+		esc_attr( '_blank' ),
+		esc_attr( 'button button-large' ),
+		esc_html( 'Create a payment pointer with Coil' )
+	);
+
 }
 
-// renders description before the content settings field.
+/**
+ * Render a short description before the output of the advanced
+ * config settings fields.
+ *
+ * @return void
+ */
 function coil_global_settings_advanced_config_description_callback() {
 	echo '<p class="' . esc_attr( 'description' ) . '">';
 	printf(
@@ -306,6 +321,11 @@ function coil_global_settings_advanced_config_description_callback() {
 	echo '</p>';
 }
 
+/**
+ * Render the advanced config settings fields.
+ *
+ * @return void
+ */
 function coil_global_settings_advanced_config_render_callback() {
 	// Get payment pointer from wp_ptions.
 	$coil_global_settings_group_options = get_option( 'coil_global_settings_group' );
@@ -319,7 +339,7 @@ function coil_global_settings_advanced_config_render_callback() {
 		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s" />',
 		esc_attr( 'wide-input' ),
 		esc_attr( 'text' ),
-		esc_attr( 'coil_content_container' ),
+		esc_attr( 'coil_global_settings_group[coil_content_container]' ),
 		esc_attr( 'coil_content_container' ),
 		esc_attr( $content_container_value ),
 		esc_attr( $placeholder ),
