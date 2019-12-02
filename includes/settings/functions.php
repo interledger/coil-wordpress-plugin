@@ -246,18 +246,23 @@ function coil_global_settings_payment_pointer_render_callback() {
 	);
 
 	echo '<p class="' . esc_attr( 'description' ) . '">';
-	printf(
-		'Don\'t have a payment pointer yet? <a href="%s">%s</a>. You can also click the button below to quickly set up a payment pointer with Coil.',
+	$payment_pointer_link = sprintf(
+		'<a href="%s" target="_blank">%s</a>',
 		esc_url( '#' ),
-		esc_html( 'Find out more about payment pointers' )
+		esc_html__( 'Find out more about payment pointers', 'coil-monetize-content' )
 	);
-	echo '</p>';
+
+	$payment_pointer_description  = esc_html__( 'Don\'t have a payment pointer yet? ', 'coil-monetize-content' );
+	$payment_pointer_description .= $payment_pointer_link;
+	$payment_pointer_description .= esc_html__( '. You can also click the button below to quickly set up a payment pointer with Coil.', 'coil-monetize-content' );
+	echo '</p>' . $payment_pointer_description . '</p>'; // phpcs:ignore. Output already escaped.
+
 	printf(
 		'<br><a href="%s" target="%s" class="%s">%s</a>',
 		esc_url( 'https://coil.com/signup' ),
 		esc_attr( '_blank' ),
 		esc_attr( 'button button-large' ),
-		esc_html( 'Create a payment pointer with Coil' )
+		esc_html__( 'Create a payment pointer with Coil', 'coil-monetize-content' )
 	);
 
 }
@@ -270,14 +275,27 @@ function coil_global_settings_payment_pointer_render_callback() {
  */
 function coil_global_settings_advanced_config_description_callback() {
 	echo '<p class="' . esc_attr( 'description' ) . '">';
-	printf(
-		'In most themes, you won’t need to use this field and can leave it blank. If the content gating is not working correctly though (<a href="%s">%s</a>) then you may need to find your post content container Id and enter it here (see the <a href="%s">%s</a> to see how to do this. )',
+
+	$link_one = sprintf(
+		'<a href="%s" target="_blank">%s</a>',
 		esc_url( '#' ),
-		esc_html( 'see the How To Guides' ),
-		esc_url( '#' ),
-		esc_html( 'Advanced config guide' )
+		esc_html__( 'see the How To Guides', 'coil-monetize-content' )
 	);
-	echo '</p>';
+
+	$link_two = sprintf(
+		'<a href="%s" target="_blank">%s</a>',
+		esc_url( '#' ),
+		esc_html__( 'Advanced config guide', 'coil-monetize-content' )
+	);
+
+	$advanced_config_description  = esc_html__( 'In most themes, you won’t need to use this field and can leave it blank. If the content gating is not working correctly though (', 'coil-monetize-content' );
+	$advanced_config_description .= $link_one;
+	$advanced_config_description .= esc_html__( ') then you may need to find your post content container Id and enter it here (see the ', 'coil-monetize-content' );
+	$advanced_config_description .= $link_two;
+	$advanced_config_description .= esc_html__( ' to see how to do this. )', 'coil-monetize-content' );
+
+	echo '</p>' . $advanced_config_description . '</p>'; // phpcs:ignore. Output already escaped.
+
 }
 
 /**
@@ -481,12 +499,30 @@ function coil_content_settings_excerpts_render_callback() {
  * @return void
  */
 function coil_message_settings_render_callback() {
+
+	$customizer_link = add_query_arg(
+		[
+			'autofocus[section]' => 'coil_customizer_section_messaging',
+			'return'             => add_query_arg(
+				[
+					'page' => 'coil_settings',
+				],
+				admin_url( 'admin.php' )
+			),
+		],
+		admin_url( 'customize.php' )
+	);
 	?>
 	<p><?php esc_html_e( 'The Coil plugin allows you to edit the different messages your site visitors are shown when trying to access content, depending on how you’ve configured monetization and gating on your pages and posts, and depending on whether they’re using a supported browser and the Coil browser extension.', 'coil-monetize-content' ); ?></p>
 	<p><?php esc_html_e( 'Read the How To guides and watch the video to better understand what your visitors need in order to be able to access your content and stream payment to your payment pointer.  Also in the guides is further information on what the different Message Settings are for.', 'coil-monetize-content' ); ?></p>
 	<p><?php esc_html_e( 'You can leave these as the default messages, or if you want to set your own messages -  click the button below to be taken to the WordPress Customizer.', 'coil-monetize-content' ); ?></p>
-	<a href="#" class="button button-primary button-large"><?php esc_html_e( 'Edit web monetization messages', 'coil-monetize-content' ); ?></a>
 	<?php
+	printf(
+		'<a href="%s" class="%s">%s</a>',
+		esc_url( $customizer_link ),
+		esc_attr( 'button button-primary button-large' ),
+		esc_html__( 'Edit web monetization messages', 'coil-monetize-content' )
+	);
 }
 
 /**

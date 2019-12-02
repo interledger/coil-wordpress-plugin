@@ -298,7 +298,12 @@ function get_global_posts_gating() : array {
 	return [];
 }
 
-
+/**
+ * Get whatever settings are stored in the plugin as the default
+ * excerpt settings for the various content types.
+ *
+ * @return void
+ */
 function get_global_excerpt_settings() {
 	$global_excerpt_settings = get_option( 'coil_content_settings_excerpt_group' );
 	if ( ! empty( $global_excerpt_settings ) ) {
