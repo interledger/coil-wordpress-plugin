@@ -6,6 +6,7 @@ declare(strict_types=1);
 
 namespace Coil\Settings;
 
+use Coil\Admin;
 use Coil\Gating;
 
 /* ------------------------------------------------------------------------ *
@@ -129,40 +130,6 @@ function register_admin_content_settings() {
  * ------------------------------------------------------------------------ */
 
 /**
- * Maybe save the Coil admin settings.
- *
- * @return void
- */
-function maybe_save_coil_admin_settings() : void {
-
-	if (
-		! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ||
-		empty( $_REQUEST['coil_for_wp_settings_nonce'] )
-	) {
-		return;
-	}
-
-	// Check the nonce.
-	check_admin_referer( 'coil_for_wp_settings_action', 'coil_for_wp_settings_nonce' );
-
-	$payment_pointer_id = ! empty( $_POST['coil_payment_pointer_id'] ) ? $_POST['coil_payment_pointer_id'] : '';
-	$content_container  = ! empty( $_POST['coil_content_container'] ) ? $_POST['coil_content_container'] : '.content-area .entry-content';
-
-	$coil_options = [
-		'coil_payment_pointer_id' => sanitize_text_field( $payment_pointer_id ),
-		'coil_content_container'  => sanitize_text_field( $content_container ),
-	];
-
-	foreach ( $coil_options as $key => $value ) {
-		if ( ! empty( $value ) ) {
-			update_option( $key, $value );
-		} else {
-			delete_option( $key );
-		}
-	}
-}
-
-/**
  * Allow the radio button options in the posts content section to
  * be properly validated
  *
@@ -267,21 +234,13 @@ function coil_getting_started_settings_render_callback() {
 
 // Render the text field for the payment point in global settings.
 function coil_global_settings_payment_pointer_render_callback() {
-	// Get payment pointer from wp_ptions.
-	$coil_global_settings_group_options = get_option( 'coil_global_settings_group' );
-
-	$payment_pointer_value = '';
-	if ( ! empty( $coil_global_settings_group_options ) && isset( $coil_global_settings_group_options['coil_payment_pointer_id'] ) ) {
-		$payment_pointer_value = $coil_global_settings_group_options['coil_payment_pointer_id'];
-	}
-
 	printf(
 		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s" />',
 		esc_attr( 'wide-input' ),
 		esc_attr( 'text' ),
 		esc_attr( 'coil_global_settings_group[coil_payment_pointer_id]' ),
 		esc_attr( 'coil_payment_pointer_id' ),
-		esc_attr( $payment_pointer_value ),
+		esc_attr( Admin\get_global_settings( 'coil_payment_pointer_id' ) ),
 		esc_attr( '$pay.stronghold.co/0000000000000000000000000000000000000' ),
 		esc_attr( 'min-width: 440px' )
 	);
@@ -295,7 +254,7 @@ function coil_global_settings_payment_pointer_render_callback() {
 	echo '</p>';
 	printf(
 		'<br><a href="%s" target="%s" class="%s">%s</a>',
-		esc_url( '#' ),
+		esc_url( 'https://coil.com/signup' ),
 		esc_attr( '_blank' ),
 		esc_attr( 'button button-large' ),
 		esc_html( 'Create a payment pointer with Coil' )
@@ -327,22 +286,14 @@ function coil_global_settings_advanced_config_description_callback() {
  * @return void
  */
 function coil_global_settings_advanced_config_render_callback() {
-	// Get payment pointer from wp_ptions.
-	$coil_global_settings_group_options = get_option( 'coil_global_settings_group' );
-
-	$placeholder             = '.content-area .entry-content';
-	$content_container_value = $placeholder;
-	if ( ! empty( $coil_global_settings_group_options ) && isset( $coil_global_settings_group_options['coil_content_container'] ) ) {
-		$content_container_value = $coil_global_settings_group_options['coil_content_container'];
-	}
 	printf(
 		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s" />',
 		esc_attr( 'wide-input' ),
 		esc_attr( 'text' ),
 		esc_attr( 'coil_global_settings_group[coil_content_container]' ),
 		esc_attr( 'coil_content_container' ),
-		esc_attr( $content_container_value ),
-		esc_attr( $placeholder ),
+		esc_attr( Admin\get_global_settings( 'coil_content_container' ) ),
+		esc_attr( '.content-area .entry-content' ),
 		esc_attr( 'min-width: 440px' )
 	);
 }
