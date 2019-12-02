@@ -7,8 +7,8 @@ Requires at least: 4.9
 Requires PHP: 7.1
 Tested up to: 5.3
 Stable tag: 1.0.1
-License: GPLv3
-License URI: http://www.gnu.org/licenses/gpl-3.0.html
+License: apache2
+License URI: http://www.apache.org/licenses/LICENSE-2.0.txt
 
 Coil offers an effortless way to share content online and get paid for it.
 
@@ -25,7 +25,7 @@ If you would like to know more about Coil does, [visit our website](https://coil
 
 * Supports monetization for both Classic Editor and Gutenberg content.
 * With Gutenberg, you can choose to monetize at the block level.
-* Built with theme and plugins developers in mind, we're extensible, adaptable, and open source.
+* Built with theme and plugin developers in mind, we're extensible, adaptable, and open source.
 
 ### More information
 
@@ -36,7 +36,7 @@ If you would like to know more about Coil does, [visit our website](https://coil
 
 = How do I start using Coil Monetize Content? =
 
-Simply install the plugin and once activated you will be redirected to the settings page where you must enter your payment pointer ID. Touch "Save" and your ready to monetize your articles.
+Simply install the plugin and once activated you will be redirected to the settings page where you must enter your payment pointer ID. After saving the settings you're ready to monetize your articles.
 
 = Who should use Coil Monetize Content? =
 
@@ -61,9 +61,10 @@ If you get stuck, you can ask for help in the [Coil Monetize Content support for
 
 == Screenshots ==
 
-1. Settings Page
-2. Classic Editor
-3. Gutenberg Editor
+1. Setup Page
+2. Default Content Settings
+3. Excerpt Settings
+4. Gutenberg Editor
 
 == Changelog ==
 
