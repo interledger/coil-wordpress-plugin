@@ -48,11 +48,45 @@ function register_admin_content_settings() {
 	);
 
 	// Tab 2 - Global Settings.
+	register_setting(
+		'coil_global_settings_group',
+		'coil_global_settings_group',
+		__NAMESPACE__ . '\coil_global_settings_group_validation'
+	);
+
+	// ==== Global Settings.
 	add_settings_section(
-		'coil_global_settings_section',
+		'coil_global_settings_top_section',
+		__( 'Global Settings', 'coil-monetize-content' ),
 		false,
-		__NAMESPACE__ . '\coil_global_settings_render_callback',
-		'coil_global_settings'
+		'coil_global_settings_global'
+	);
+
+	add_settings_field(
+		'coil_payment_pointer_id',
+		__( 'Payment Pointer', 'coil-monetize-content' ),
+		__NAMESPACE__ . '\coil_global_settings_payment_pointer_render_callback',
+		'coil_global_settings_global',
+		'coil_global_settings_top_section'
+	);
+
+
+
+
+	// ==== Advanced Config.
+	add_settings_section(
+		'coil_global_settings_bottom_section',
+		__( 'Advanced Config', 'coil-monetize-content' ),
+		__NAMESPACE__ . '\coil_global_settings_advanced_config_description_callback',
+		'coil_global_settings_advanced'
+	);
+
+	add_settings_field(
+		'coil_content_container',
+		__( 'Post Container ID', 'coil-monetize-content' ),
+		__NAMESPACE__ . '\coil_global_settings_advanced_config_render_callback',
+		'coil_global_settings_advanced',
+		'coil_global_settings_bottom_section'
 	);
 
 	// Tab 3 - Content Settings.
@@ -149,6 +183,27 @@ function coil_content_settings_posts_validation( $post_content_settings ) : arra
 }
 
 /**
+ * Allow the text inputs in the global settings section to
+ * be properly validated. These allow the payment pointer
+ * to be saved.
+ *
+ * @param array $global_settings The posted text input fields.
+ * @return array
+ */
+function coil_global_settings_group_validation( $global_settings ) : array {
+	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
+		return [];
+	}
+	return array_map(
+		function( $global_settings_input ) {
+			return sanitize_text_field( $global_settings_input );
+		},
+		(array) $global_settings
+	);
+}
+
+
+/**
  * Allow each "Display Excerpt" checkbox in the content setting table to be properly validated
  *
  * @param array $excerpt_content_settings The posted checkbox options from the content settings section.
@@ -208,58 +263,68 @@ function coil_getting_started_settings_render_callback() {
 	<?php
 }
 
-/**
- * Renders the output of the Global Settings tab.
- *
- * @return void
- */
-function coil_global_settings_render_callback() {
-	?>
+// Render the text field for the payment point in global settings.
+function coil_global_settings_payment_pointer_render_callback() {
+	// Get payment pointer from wp_ptions.
+	$coil_global_settings_group_options = get_option( 'coil_global_settings_group' );
 
-	<h2>Global Settings</h2>
-	<table class="form-table">
-		<tbody>
-			<tr>
-				<th scope="row">
-					<label for="coil_payment_pointer_id"><?php esc_html_e( 'Payment Pointer', 'coil-monetize-content' ); ?></label>
-				</th>
-				<td>
-					<input name="coil_payment_pointer_id" type="text" id="coil_payment_pointer_id" class="wide-input" value="<?php echo esc_attr( get_option( 'coil_payment_pointer_id' ) ); ?>" placeholder="$pay.stronghold.co/0000000000000000000000000000000000000" />
-					<fieldset>
-						<br>
-						<p class="description">
-							<?php
-							printf(
-								'Don\'t have a payment pointer yet? <a href="%s">%s</a>. You can also click the button below to quickly set up a payment pointer with Coil.',
-								esc_url( '#' ),
-								esc_html( 'Find out more about payment pointers' )
-							);
-							?>
-						</p>
-						<br>
-						<a href="<?php echo esc_url( 'https://coil.com/signup' ); ?>" class="button button-secondary" target="_blank">Create a payment pointer with Coil</a>
-					</fieldset>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+	$payment_pointer_value = '';
+	if ( ! empty( $coil_global_settings_group_options ) && isset( $coil_global_settings_group_options['coil_payment_pointer_id'] ) ) {
+		$payment_pointer_value = $coil_global_settings_group_options['coil_payment_pointer_id'];
+	}
 
-	<br>
+	printf(
+		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s" />',
+		esc_attr( 'wide-input' ),
+		esc_attr( 'text' ),
+		esc_attr( 'coil_global_settings_group[coil_payment_pointer_id]' ),
+		esc_attr( 'coil_payment_pointer_id' ),
+		esc_attr( $payment_pointer_value ),
+		esc_attr( '$pay.stronghold.co/0000000000000000000000000000000000000' ),
+		esc_attr( 'min-width: 440px' )
+	);
 
-	<h3>Advanced Config</h3>
-	<table class="form-table">
-		<tbody>
-			<tr>
-				<th scope="row">
-					<label for="coil_content_container"><?php esc_html_e( 'Post Container ID', 'coil-monetize-content' ); ?></label>
-				</th>
-				<td>
-					<input name="coil_content_container" type="text" id="coil_content_container" class="wide-input" value="<?php echo esc_attr( get_option( 'coil_content_container' ) ); ?>" placeholder=".content-area .entry-content" />
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	<?php
+	echo '<p class="' . esc_attr( 'description' ) . '">';
+	printf(
+		'Don\'t have a payment pointer yet? <a href="%s">%s</a>. You can also click the button below to quickly set up a payment pointer with Coil.',
+		esc_url( '#' ),
+		esc_html( 'Find out more about payment pointers' )
+	);
+	echo '</p>';
+}
+
+// renders description before the content settings field.
+function coil_global_settings_advanced_config_description_callback() {
+	echo '<p class="' . esc_attr( 'description' ) . '">';
+	printf(
+		'In most themes, you won’t need to use this field and can leave it blank. If the content gating is not working correctly though (<a href="%s">%s</a>) then you may need to find your post content container Id and enter it here (see the <a href="%s">%s</a> to see how to do this. )',
+		esc_url( '#' ),
+		esc_html( 'see the How To Guides' ),
+		esc_url( '#' ),
+		esc_html( 'Advanced config guide' )
+	);
+	echo '</p>';
+}
+
+function coil_global_settings_advanced_config_render_callback() {
+	// Get payment pointer from wp_ptions.
+	$coil_global_settings_group_options = get_option( 'coil_global_settings_group' );
+
+	$placeholder             = '.content-area .entry-content';
+	$content_container_value = $placeholder;
+	if ( ! empty( $coil_global_settings_group_options ) && isset( $coil_global_settings_group_options['coil_content_container'] ) ) {
+		$content_container_value = $coil_global_settings_group_options['coil_content_container'];
+	}
+	printf(
+		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s" />',
+		esc_attr( 'wide-input' ),
+		esc_attr( 'text' ),
+		esc_attr( 'coil_content_container' ),
+		esc_attr( 'coil_content_container' ),
+		esc_attr( $content_container_value ),
+		esc_attr( $placeholder ),
+		esc_attr( 'min-width: 440px' )
+	);
 }
 
 /**
@@ -350,7 +415,6 @@ function coil_content_settings_posts_render_callback() {
 									$checked_input
 								);
 								?>
-
 							</td>
 							<?php
 						endforeach;
@@ -489,7 +553,9 @@ function render_coil_settings_screen() : void {
 					do_settings_sections( 'coil_getting_started_settings' );
 					break;
 				case 'global_settings':
-					do_settings_sections( 'coil_global_settings' );
+					settings_fields( 'coil_global_settings_group' );
+					do_settings_sections( 'coil_global_settings_global' );
+					do_settings_sections( 'coil_global_settings_advanced' );
 					submit_button();
 					break;
 				case 'content_settings':
