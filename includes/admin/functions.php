@@ -479,3 +479,29 @@ function get_valid_taxonomies() : array {
 
 	return $taxonomy_options;
 }
+
+/**
+ * Retrieve the global content settings using a key from the global
+ * settings group (serialized).
+ *
+ * @param string $setting_id The named key in the wp_options serialized array.
+ * @return string
+ */
+function get_global_settings( $setting_id ) {
+	$coil_global_settings_group_options = get_option( 'coil_global_settings_group' );
+	if ( empty( $coil_global_settings_group_options ) ) {
+		return '';
+	}
+
+	switch ( $setting_id ) {
+		case 'coil_payment_pointer_id':
+			return ( isset( $coil_global_settings_group_options['coil_payment_pointer_id'] ) )
+			? $coil_global_settings_group_options['coil_payment_pointer_id']
+			: '';
+			break;
+		case 'coil_content_container':
+			return ( isset( $coil_global_settings_group_options['coil_content_container'] ) )
+			? $coil_global_settings_group_options['coil_content_container']
+			: '';
+	}
+}

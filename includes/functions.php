@@ -35,7 +35,6 @@ function init_plugin() : void {
 	add_filter( 'plugin_action_links_coil-monetize-content/plugin.php', __NAMESPACE__ . '\Admin\add_plugin_action_links' );
 	add_filter( 'plugin_row_meta', __NAMESPACE__ . '\Admin\add_plugin_meta_link', 10, 2 );
 	add_action( 'admin_menu', __NAMESPACE__ . '\Settings\register_admin_menu' );
-	add_action( 'admin_init', __NAMESPACE__ . '\Settings\maybe_save_coil_admin_settings' );
 	add_action( 'admin_init', __NAMESPACE__ . '\Settings\register_admin_content_settings' );
 
 	// Term meta.
@@ -165,7 +164,7 @@ function load_full_assets() : void {
 	$strings = apply_filters(
 		'coil_js_ui_messages',
 		[
-			'content_container'         => get_option( 'coil_content_container' ),
+			'content_container'         => Admin\get_global_settings( 'coil_content_container' ),
 			'browser_extension_missing' => Admin\get_customizer_messaging_text( 'coil_unsupported_message' ),
 			'unable_to_verify'          => Admin\get_customizer_messaging_text( 'coil_unable_to_verify_message' ),
 			'voluntary_donation'        => Admin\get_customizer_messaging_text( 'coil_voluntary_donation_message' ),
@@ -242,7 +241,7 @@ function add_body_class( $classes ) : array {
 		return $classes;
 	}
 
-	$payment_pointer_id = get_option( 'coil_payment_pointer_id' );
+	$payment_pointer_id = Admin\get_global_settings( 'coil_payment_pointer_id' );
 
 	if ( Gating\is_content_monetized( get_queried_object_id() ) ) {
 		$classes[] = 'monetization-not-initialized';
@@ -286,7 +285,7 @@ function print_meta_tag() : void {
  */
 function get_payment_pointer() : string {
 
-	$payment_pointer_id = get_option( 'coil_payment_pointer_id' );
+	$payment_pointer_id = Admin\get_global_settings( 'coil_payment_pointer_id' );
 
 	// If the post is not set for monetising, bail out.
 	if ( ! Gating\is_content_monetized( get_queried_object_id() ) || empty( $payment_pointer_id ) ) {
