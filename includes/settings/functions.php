@@ -115,12 +115,12 @@ function register_admin_content_settings() {
 		'coil_content_settings_excerpts'
 	);
 
-	// Tab 5 - Message settings.
+	// Tab 5 - Messaging settings.
 	add_settings_section(
-		'coil_message_settings_section',
+		'coil_messaging_settings_section',
 		false,
-		__NAMESPACE__ . '\coil_message_settings_render_callback',
-		'coil_message_settings'
+		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
+		'coil_messaging_settings'
 	);
 
 }
@@ -494,11 +494,11 @@ function coil_content_settings_excerpts_render_callback() {
 }
 
 /**
- * Renders the output of the message settings.
+ * Renders the output of the messaging settings.
  *
  * @return void
  */
-function coil_message_settings_render_callback() {
+function coil_messaging_settings_render_callback() {
 
 	$customizer_link = add_query_arg(
 		[
@@ -549,7 +549,7 @@ function render_coil_settings_screen() : void {
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=global_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'global_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Global Settings', 'coil-monetize-content' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=content_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'content_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Content Settings', 'coil-monetize-content' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=excerpt_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'excerpt_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Excerpt Settings', 'coil-monetize-content' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=message_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'message_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Message Settings', 'coil-monetize-content' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=messaging_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'messaging_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Messaging Settings', 'coil-monetize-content' ); ?></a>
 		</h2>
 		<br>
 
@@ -575,8 +575,8 @@ function render_coil_settings_screen() : void {
 					do_settings_sections( 'coil_content_settings_excerpts' );
 					submit_button();
 					break;
-				case 'message_settings':
-					do_settings_sections( 'coil_message_settings' );
+				case 'messaging_settings':
+					do_settings_sections( 'coil_messaging_settings' );
 					break;
 			}
 			?>
