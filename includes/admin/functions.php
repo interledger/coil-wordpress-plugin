@@ -49,6 +49,24 @@ function add_metabox() : void {
 }
 
 /**
+ * Determine if current view is gutenberg enabled, either via
+ * the plugin or natively from WordPress 5.0+
+ *
+ * @return boolean
+ */
+function is_gutenberg_page() {
+
+	if ( function_exists( '\is_gutenberg_page' ) && is_gutenberg_page() ) {
+		return true;
+	} elseif ( \use_block_editor_for_post( $GLOBALS['post'] ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+
+/**
  * Render the Coil metabox.
  *
  * @return void
