@@ -226,13 +226,13 @@
 	 * @param int expiresInDays Define when the cookie will be removed.
 	 * @see https://github.com/js-cookie/js-cookie
 	 */
-	function addBannerDismissClickHandler( expiresInDays ) {
-		$( '#js-coil-banner-dismiss' ).on( 'click', function(event) {
-			if ( ! hasBannerDismissCookie() ) {
-				if ( false !== expiresInDays ) {
-					Cookies.set( 'ShowCoilPartialMsg', 1, { expires: expiresInDays } );
-				} else {
-					Cookies.set( 'ShowCoilPartialMsg', 1 );
+	function addBannerDismissClickHandler( cookieName ) {
+		$( '#js-coil-banner-dismiss' ).on( 'click', function() {
+			if ( ! hasBannerDismissCookie( cookieName ) ) {
+				if ( cookieName === 'ShowCoilPublicMsg' ) {
+					Cookies.set( cookieName, 1, { expires: 31 } );
+				} else if ( cookieName === 'ShowCoilPartialMsg' ) {
+					Cookies.set( cookieName, 1 );
 				}
 				$( this ).parent().parent().remove();
 			}
@@ -246,10 +246,15 @@
 	 *
 	 * @return bool. True if set to '1', otherwise false.
 	 */
-	function hasBannerDismissCookie() {
-		var currentCookie = Cookies.get( 'ShowCoilPartialMsg' );
-		if ( ( typeof( currentCookie ) !== 'undefined' ) && currentCookie === '1' ) {
-			return true;
+	function hasBannerDismissCookie( cookieName ) {
+		var currentCookie = Cookies.get( cookieName );
+
+		if ( ( typeof( currentCookie ) !== 'undefined' ) ) {
+			if ( cookieName === 'ShowCoilPublicMsg' && currentCookie === '1' ) {
+				return true;
+			} else if ( cookieName === 'ShowCoilPartialMsg' && currentCookie === '1' ) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -367,9 +372,9 @@
 								// Voluntary donation.
 								displayDebugMessage( 'Content is monetized and public but extension is stopped' );
 
-								if ( ! hasBannerDismissCookie() ) {
+								if ( ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 									$( 'body' ).append( displayBannerMessage( voluntary_donation ) );
-									addBannerDismissClickHandler( 31 );
+									addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 								}
 							}
 						}
@@ -472,18 +477,18 @@
 					displayDebugMessage( 'Split content with no extension found' );
 
 					$( '.coil-show-monetize-users' ).prepend( displaySplitContentMessage( partial_gating ) );
-					if ( ! hasBannerDismissCookie() ) {
+					if ( ! hasBannerDismissCookie( 'ShowCoilPartialMsg' ) ) {
 						$( 'body' ).append( displayBannerMessage( partial_gating ) );
-						addBannerDismissClickHandler( false );
+						addBannerDismissClickHandler( 'ShowCoilPartialMsg' );
 					}
 
 				} else if ( isMonetizedAndPublic() ) {
 					// Voluntary donation.
 					displayDebugMessage( 'Content is monetized and public but no extension found' );
 
-					if ( ! hasBannerDismissCookie() ) {
+					if ( ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 						$( 'body' ).append( displayBannerMessage( voluntary_donation ) );
-						addBannerDismissClickHandler( 31 );
+						addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 					}
 				}
 
