@@ -259,6 +259,9 @@
 		return false;
 	}
 
+	// Switch statement to check the 5 states
+
+
 	/**
 	 * Init
 	 */
@@ -278,8 +281,12 @@
 				$( content_container ).not( '.coil-post-excerpt' ).hide();
 			}
 
+
+
 			// Check if browser extension exists.
 			if ( typeof document.monetization !== 'undefined' ) {
+
+				// alert( document.monetization.state );
 
 				// User might be paying, hold on a second.
 				if ( document.monetization.state === 'pending' ) {
@@ -303,6 +310,8 @@
 						}
 
 						$( 'body' ).trigger( 'coil-missing-id' );
+
+
 
 					} else {
 						// Verify monetization only if we are gating or partially gating content.
@@ -331,6 +340,16 @@
 								displayVerificationFailureMessage();
 							}, 5000 );
 						}
+					}
+
+					// HERE2
+					// Display Cookie Banner?
+					if ( isMonetizedAndPublic()
+					&& monetizationNotInitialized()
+					&& ! hasBannerDismissCookie( 'ShowCoilPublicMsg' )
+					) {
+						$( 'body' ).append( displayBannerMessage( voluntary_donation ) );
+						addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 					}
 				}
 				// User account verified, loading content.
@@ -421,6 +440,11 @@
 
 					$( 'body' ).trigger( 'coil-monetization-initialized', [ event ] );
 
+					// var bodyClassList = $('body').attr('class');
+					// $('.site-info').append(
+					// 	'<p>' + bodyClassList + '</p>'
+					// );
+
 					// Monetization is verified, remove any messages
 					if ( $( 'p.monetize-msg' ).length > 0 ) {
 						$( 'p.monetize-msg' ).remove();
@@ -451,6 +475,8 @@
 				});
 
 			} else {
+
+
 
 				/* Coil Extension not found or using unsupported browser */
 				displayDebugMessage( 'Coil Extension not found or using unsupported browser' );
@@ -495,7 +521,15 @@
 				// Trigger an event.
 				$( 'body' ).trigger( 'coil-extension-not-found' );
 
+
+
+
+
+
+
 			}
 		}
+
+
 	});
 })(jQuery);
