@@ -138,7 +138,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 }
 
 // Split content
-.coil-show-monetize-users p.coil-split-content-message {
+.coil-show-monetize-users span.coil-split-content-message {
 	color: white;
 	margin: 0;
 	text-align: center;
@@ -153,6 +153,10 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 	display: flex;
 	align-items: center;
 	z-index: 110;
+	justify-content: center;
+	width: 100%;
+	padding: 50px;
+
 	@media only screen and (min-width: $message_mobile_breakpoint ) {
 		padding: 50px;
 		font-size: 18px;

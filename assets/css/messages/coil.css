@@ -370,7 +370,7 @@ body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-c
 body.coil-hide-excerpt.show-fw-message .entry-content {
   display: none; }
 
-.coil-show-monetize-users p.coil-split-content-message {
+.coil-show-monetize-users span.coil-split-content-message {
   color: white;
   margin: 0;
   text-align: center;
@@ -384,9 +384,12 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
   left: 0;
   display: flex;
   align-items: center;
-  z-index: 110; }
+  z-index: 110;
+  justify-content: center;
+  width: 100%;
+  padding: 50px; }
   @media only screen and (min-width: 768px) {
-    .coil-show-monetize-users p.coil-split-content-message {
+    .coil-show-monetize-users span.coil-split-content-message {
       padding: 50px;
       font-size: 18px;
       line-height: 27px; } }

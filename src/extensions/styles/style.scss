@@ -58,6 +58,7 @@ body.coil-missing-id:not(.coil-no-gating) {
 
 	*.coil-show-monetize-users {
 		position: relative;
+		padding: 50px;
 		&::after {
 			content: ' ';
 			position: absolute;
