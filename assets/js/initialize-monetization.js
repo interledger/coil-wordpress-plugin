@@ -25,7 +25,7 @@
 	 * @param string message The message to display inside the tag.
 	 * @param string customClass Any extra custom classes to add to this tag.
 	 */
-	function displayMonetizationMessage( message, customClass ) {
+	function showMonetizationMessage( message, customClass ) {
 		var elem = document.createElement( 'p' );
 		elem.classList.add( 'monetize-msg' );
 		if ( customClass ) {
@@ -41,7 +41,7 @@
 	 *
 	 * @param string Message from coil_params.
 	 */
-	function displaySubscriberOnlyMessage( message ) {
+	function showSubscriberOnlyMessage( message ) {
 		var modalContainer = document.createElement( 'div' );
 		modalContainer.classList.add( 'entry-content', 'coil-message-container' );
 
@@ -64,7 +64,7 @@
 	 *
 	 * @param string Message from coil_params.
 	 */
-	function displayBannerMessage( message ) {
+	function showBannerMessage( message ) {
 		var modalContainer = document.createElement( 'div' );
 		modalContainer.classList.add( 'coil-banner-message-container' );
 
@@ -86,7 +86,7 @@
 	 * not compatible or verified.
 	 * @param string Message from coil_params.
 	 */
-	function displaySplitContentMessage( message ) {
+	function showSplitContentMessage( message ) {
 		return splitContentMessage( message );
 	}
 
@@ -106,14 +106,18 @@
 		if ( post_excerpt === "" ) {
 			return;
 		}
-		return jQuery( '<p>' ).addClass( 'coil-post-excerpt' ).text( post_excerpt ).prop( 'outerHTML' );
+
+		var excerptContainer = document.createElement( 'p' );
+		excerptContainer.classList.add( 'coil-post-excerpt' );
+		excerptContainer.innerHTML = post_excerpt;
+		return excerptContainer;
 	}
 
 	/**
 	 * Hide the post excerpt.
 	 */
 	function hideContentExcerpt() {
-		return jQuery( 'p.coil-post-excerpt' ).hide();
+		return jQuery( 'p.coil-post-excerpt' ).remove();
 	}
 
 	/**
@@ -183,9 +187,7 @@
 	/**
 	 * Displays a message based on the body classes and verification outcome.
 	 */
-	function displayVerificationFailureMessage() {
-
-		console.log('Verification Failure');
+	function showVerificationFailureMessage() {
 
 		if ( $( 'p.monetize-msg' ).length > 0 ) {
 
@@ -193,31 +195,31 @@
 
 			if ( isSubscribersOnly() ) {
 
-				// Does the content have an excerpt?
-				var contentExcerpt = $( 'p.coil-post-excerpt' );
-				if ( contentExcerpt.length > 0 ) {
-					contentExcerpt.after( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
+				if ( isExcerptEnabled() && getContentExcerpt() ) {
+
+					document.body.classList.add( 'show-excerpt-message' );
+					$( content_container ).before( showSubscriberOnlyMessage( unable_to_verify ) );
+					$( content_container ).prepend( getContentExcerpt() );
+
 				} else {
 
 					document.body.classList.add( 'show-fw-message' );
-					$( content_container ).before( displaySubscriberOnlyMessage( unable_to_verify ) );
+					$( content_container ).before( showSubscriberOnlyMessage( unable_to_verify ) );
 				}
 
 			} else {
 				if ( isSplitContent() ) {
-					console.log('Unable to verify hidden content');
 
-
-					$( 'body' ).addClass( 'coil-split' );
+					// Unable to verify hidden content.
+					document.body.classList.add( 'coil-split' );
 					showContentContainer();
-					document.querySelector( content_container ).before( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
+					document.querySelector( content_container ).before( showMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
 
 				} else {
-					console.log('No tagged blocks');
 
-
+					// No tagged blocks.
 					document.body.classList.add( 'show-fw-message' );
-					document.querySelector( content_container ).before( displaySubscriberOnlyMessage( unable_to_verify ) );
+					document.querySelector( content_container ).before( showSubscriberOnlyMessage( unable_to_verify ) );
 
 				}
 			}
@@ -277,19 +279,10 @@
 
 		if ( monetizationNotInitialized() ) {
 
-			// Display post excerpt for gated posts.
-			if ( isSubscribersOnly() && typeof post_excerpt !== 'undefined' && typeof document.monetization !== 'undefined' && document.monetization.state !== 'stopped' ) {
-				if ( post_excerpt !== '' ) {
-					document.querySelector( content_container ).before( getContentExcerpt() );
-				}
-			}
-
 			// Hide content entry area if not default selector.
 			if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
 				$( content_container ).not( '.coil-post-excerpt' ).hide();
 			}
-
-
 
 			// Check if browser extension exists.
 			if ( typeof document.monetization !== 'undefined' ) {
@@ -302,8 +295,10 @@
 						if ( isPaymentPointerMissing() ) {
 
 							if ( isViewingAdmin() ) {
+
 								// Show message to site owner/administrators only.
-								$( content_container ).before( '<p class="monetize-msg">' + admin_missing_id_notice + '</p>' );
+								$( content_container ).before( showMonetizationMessage( admin_missing_id_notice, 'admin-message' ) );
+
 							} else {
 								$( 'body' ).removeClass( 'coil-missing-id' );
 							}
@@ -322,66 +317,57 @@
 
 							// Verify monetization only if we are gating or partially gating content.
 							if ( ! isMonetizedAndPublic() ) {
+
 								// If post is gated then show verification message after excerpt.
 								if ( isSubscribersOnly() ) {
-									if ( post_excerpt !== '' ) {
 
-										console.log('Subscriber gating and no post excerpt...Verifying extension');
+									if ( isExcerptEnabled() ) {
 
-										document.querySelector( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
+										// Subscriber gating and no post excerpt...Verifying extension.
+										document.querySelector( content_container ).before( showMonetizationMessage( loading_content, '' ) );
+
 									} else {
 
+										// Subscriber gating and has post excerpt...Verifying extension.
+										$( 'p.coil-post-excerpt' ).after( showMonetizationMessage( loading_content, '' ) );
 
-										console.log( 'Subscriber gating and has post excerpt...Verifying extension' );
-										$( 'div.coil-post-excerpt' ).after( displayMonetizationMessage( loading_content, '' ) );
 									}
 								} else {
-									document.querySelector( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
+									document.querySelector( content_container ).before( showMonetizationMessage( loading_content, '' ) );
 								}
 
 								// Update message if browser extension is verifying user.
 								setTimeout( function() {
-									console.log( 'Verifying Coil account' );
+									hideContentExcerpt();
 									messageWrapper.html( loading_content );
 								}, 2000 );
 
 								// Update message if browser extension is unable to verify user.
 								setTimeout( function() {
-									displayVerificationFailureMessage();
+									showVerificationFailureMessage();
 								}, 5000 );
 
 							} else {
 
 								if ( monetizationNotInitialized() && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-
-									$( 'body' ).append( displayBannerMessage( voluntary_donation ) );
+									$( 'body' ).append( showBannerMessage( voluntary_donation ) );
 									addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 								}
 							}
 						}
-
 						break;
 
 				case 'started':
 
-					// User account verified, loading content.
-					console.log( 'Monetization state: Started' );
-					document.querySelector( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
+					// User account verified, loading content. Monetization state: Started
+					document.querySelector( content_container ).before( showMonetizationMessage( loading_content, '' ) );
 					break;
 
 				case 'stopped':
 
-					if ( isSubscribersOnly() ) {
-
-						if ( isExcerptEnabled() ) {
-							if ( post_excerpt !== '' ) {
-								document.querySelector( content_container ).insertAdjacentHTML( 'beforebegin', getContentExcerpt() );
-							}
-						}
-						document.querySelector( content_container ).insertAdjacentHTML( 'beforebegin', '<p class="monetize-msg">' + loading_content + '</p>' );
-
-					} else if ( isSplitContent() ) {
-						document.querySelector( content_container ).insertAdjacentHTML( 'beforebegin', '<p class="monetize-msg">' + loading_content + '</p>' );
+					if ( isSubscribersOnly() || isSplitContent() ) {
+						hideContentExcerpt();
+						document.querySelector( content_container ).before( showMonetizationMessage( loading_content, '' ) );
 					}
 
 					setTimeout( function() {
@@ -391,23 +377,20 @@
 						if ( typeof monetizationStartEventOccurred === 'undefined' ) {
 
 							if ( $( 'p.monetize-msg' ).text() === loading_content ) {
-								// Update message if browser extension is unable to verify user.
-								console.log( 'Monetization not started and verification failed' );
 
-								displayVerificationFailureMessage();
+								// Monetization not started and verification failed.
+								showVerificationFailureMessage();
 
 							} else if ( isMonetizedAndPublic() ) {
-								// Voluntary donation.
-								console.log( 'Content is monetized and public but extension is stopped' );
 
+								// Content is monetized and public but extension is stopped.
 								if ( ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-									$( 'body' ).append( displayBannerMessage( voluntary_donation ) );
+									$( 'body' ).append( showBannerMessage( voluntary_donation ) );
 									addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 								}
 							}
 						}
 					}, 5000 );
-
 					break;
 				}
 
@@ -481,10 +464,6 @@
 				});
 
 			} else {
-				// document.monetization === 'undefined'
-
-				/* Coil Extension not found or using unsupported browser */
-				console.log( 'Coil Extension not found or using unsupported browser' );
 
 				// Update body class to show free content.
 				$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'coil-extension-not-found' );
@@ -492,9 +471,9 @@
 				if ( isSubscribersOnly() ) {
 
 					if ( ! usingDefaultContentContainer() ) {
-						$( content_container ).html( displaySubscriberOnlyMessage( browser_extension_missing ) );
+						$( content_container ).html( showSubscriberOnlyMessage( browser_extension_missing ) );
 					} else {
-						$( content_container ).before( displaySubscriberOnlyMessage( browser_extension_missing ) );
+						$( content_container ).before( showSubscriberOnlyMessage( browser_extension_missing ) );
 					}
 
 					if ( isExcerptEnabled() ) {
@@ -505,20 +484,21 @@
 					}
 
 				} else if ( isSplitContent() ) {
-					console.log( 'Split content with no extension found' );
 
-					$( '.coil-show-monetize-users' ).prepend( displaySplitContentMessage( partial_gating ) );
+					// Split content with no extension found.
+
+					$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( partial_gating ) );
 					if ( ! hasBannerDismissCookie( 'ShowCoilPartialMsg' ) ) {
-						$( 'body' ).append( displayBannerMessage( partial_gating ) );
+						$( 'body' ).append( showBannerMessage( partial_gating ) );
 						addBannerDismissClickHandler( 'ShowCoilPartialMsg' );
 					}
 
 				} else if ( isMonetizedAndPublic() ) {
-					// Voluntary donation.
-					console.log( 'Content is monetized and public but no extension found' );
+
+					// Content is monetized and public but no extension found.
 
 					if ( ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-						$( 'body' ).append( displayBannerMessage( voluntary_donation ) );
+						$( 'body' ).append( showBannerMessage( voluntary_donation ) );
 						addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 					}
 				}

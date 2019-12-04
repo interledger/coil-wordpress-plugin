@@ -191,6 +191,7 @@ body.coil-gate-all.coil-extension-not-found.show-fw-message .coil-message-contai
 body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container,
 body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container,
 body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container,
+body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container,
 body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container {
   display: block !important; }
 
@@ -198,6 +199,7 @@ body.coil-gate-all.coil-extension-not-found.show-fw-message .coil-message-contai
 body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container,
 body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container,
 body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container,
+body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container,
 body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container {
   text-align: center;
   font-family: 'Open Sans';
@@ -206,6 +208,7 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-
   body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-inner,
   body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container .coil-message-inner,
   body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container .coil-message-inner,
+  body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container .coil-message-inner,
   body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container .coil-message-inner {
     background: #e8e8e8;
     padding: 24px 14px; }
@@ -213,12 +216,14 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-
   body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container a.custom-logo-link,
   body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container a.custom-logo-link,
   body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container a.custom-logo-link,
+  body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container a.custom-logo-link,
   body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container a.custom-logo-link {
     display: block; }
   body.coil-gate-all.coil-extension-not-found.show-fw-message .coil-message-container img,
   body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container img,
   body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container img,
   body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container img,
+  body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container img,
   body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container img {
     display: block;
     margin: 0 auto 16px;
@@ -229,6 +234,7 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-
       body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container img,
       body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container img,
       body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container img,
+      body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container img,
       body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container img {
         margin-bottom: 32px; } }
   @media only screen and (min-width: 1168px) {
@@ -236,12 +242,14 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-
     body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-header,
     body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container .coil-message-header,
     body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container .coil-message-header,
+    body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container .coil-message-header,
     body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container .coil-message-header {
       margin: 0 0 109px; } }
   body.coil-gate-all.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-header .coil-message-title,
   body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-header .coil-message-title,
   body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container .coil-message-header .coil-message-title,
   body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container .coil-message-header .coil-message-title,
+  body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container .coil-message-header .coil-message-title,
   body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container .coil-message-header .coil-message-title {
     margin: 0 0 24px;
     font-size: 18px;
@@ -252,6 +260,7 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-
       body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-header .coil-message-title,
       body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container .coil-message-header .coil-message-title,
       body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container .coil-message-header .coil-message-title,
+      body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container .coil-message-header .coil-message-title,
       body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container .coil-message-header .coil-message-title {
         font-size: 36px;
         line-height: 49px; } }
@@ -259,6 +268,7 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-
   body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-header .coil-message-content,
   body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container .coil-message-header .coil-message-content,
   body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container .coil-message-header .coil-message-content,
+  body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container .coil-message-header .coil-message-content,
   body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container .coil-message-header .coil-message-content {
     margin: 0;
     font-size: 16px;
@@ -269,12 +279,14 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-
       body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-header .coil-message-content,
       body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container .coil-message-header .coil-message-content,
       body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container .coil-message-header .coil-message-content,
+      body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container .coil-message-header .coil-message-content,
       body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container .coil-message-header .coil-message-content {
         margin-bottom: 40px; } }
   body.coil-gate-all.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-header a.coil-message-button,
   body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-header a.coil-message-button,
   body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container .coil-message-header a.coil-message-button,
   body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container .coil-message-header a.coil-message-button,
+  body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container .coil-message-header a.coil-message-button,
   body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container .coil-message-header a.coil-message-button {
     padding: 13px 16px;
     text-align: center;
@@ -291,6 +303,7 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-
     body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-header a.coil-message-button:hover,
     body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container .coil-message-header a.coil-message-button:hover,
     body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container .coil-message-header a.coil-message-button:hover,
+    body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container .coil-message-header a.coil-message-button:hover,
     body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container .coil-message-header a.coil-message-button:hover {
       background-color: rgba(69, 69, 69, 0.9); }
     @media only screen and (min-width: 1168px) {
@@ -298,12 +311,14 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-
       body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-header a.coil-message-button,
       body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container .coil-message-header a.coil-message-button,
       body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container .coil-message-header a.coil-message-button,
+      body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container .coil-message-header a.coil-message-button,
       body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container .coil-message-header a.coil-message-button {
         margin-bottom: 0; } }
   body.coil-gate-all.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-footer,
   body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-footer,
   body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container .coil-message-footer,
   body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container .coil-message-footer,
+  body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container .coil-message-footer,
   body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container .coil-message-footer {
     border-top: 1px solid #C4C4C4;
     padding-top: 16px; }
@@ -312,12 +327,14 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-
       body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-footer,
       body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container .coil-message-footer,
       body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container .coil-message-footer,
+      body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container .coil-message-footer,
       body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container .coil-message-footer {
         padding-top: 32px; } }
     body.coil-gate-all.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-footer .coil-footer-content,
     body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-footer .coil-footer-content,
     body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container .coil-message-footer .coil-footer-content,
     body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container .coil-message-footer .coil-footer-content,
+    body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container .coil-message-footer .coil-footer-content,
     body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container .coil-message-footer .coil-footer-content {
       margin: 0 auto;
       max-width: 720px;
@@ -328,15 +345,19 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-
         body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-footer .coil-footer-content,
         body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container .coil-message-footer .coil-footer-content,
         body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container .coil-message-footer .coil-footer-content,
+        body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container .coil-message-footer .coil-footer-content,
         body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container .coil-message-footer .coil-footer-content {
           font-size: 14px;
           line-height: 22px; } }
 
+body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container,
 body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container {
   display: block !important; }
+  body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container .coil-message-inner,
   body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container .coil-message-inner {
     position: relative;
     margin-top: -20px; }
+    body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container .coil-message-inner:before,
     body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container .coil-message-inner:before {
       position: absolute;
       content: '';
