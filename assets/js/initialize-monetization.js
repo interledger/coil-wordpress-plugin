@@ -18,14 +18,6 @@
 	var bannerMessage = wp.template( 'banner-message' );
 
 	var messageWrapper = $( 'p.monetize-msg' );
-	var DEBUG_LOG = false;
-
-	function displayDebugMessage( debug_message ) {
-		if ( false === DEBUG_LOG ) {
-			return;
-		}
-		console.info( debug_message );
-	}
 
 	/**
 	 * Output a monetization message when the state is changing.
@@ -102,7 +94,7 @@
 	 * Show the content container.
 	 */
 	function showContentContainer() {
-		displayDebugMessage( 'Showing content container' );
+
 		var elem = document.querySelector( content_container );
 		elem.style.display = 'block';
 	}
@@ -143,6 +135,25 @@
 	}
 
 	/**
+	 * Helper function to determine if the payment pointer is not
+	 * set on the body.
+	 *
+	 * @return bool
+	 */
+	function isPaymentPointerMissing() {
+		return document.body.classList.contains( 'coil-missing-id' );
+	}
+
+	/**
+	 * Helper function to determine if the user is logged in.
+	 *
+	 * @return bool
+	 */
+	function isViewingAdmin() {
+		return document.body.classList.contains( 'coil-show-admin-notice' );
+	}
+
+	/**
 	 * Helper function to determine if the content is "Split Content"
 	 *
 	 * @return bool
@@ -174,7 +185,7 @@
 	 */
 	function displayVerificationFailureMessage() {
 
-		displayDebugMessage( 'Verification Failure' );
+		console.log('Verification Failure');
 
 		if ( $( 'p.monetize-msg' ).length > 0 ) {
 
@@ -194,14 +205,16 @@
 
 			} else {
 				if ( isSplitContent() ) {
-					displayDebugMessage( 'Unable to verify hidden content' );
+					console.log('Unable to verify hidden content');
+
 
 					$( 'body' ).addClass( 'coil-split' );
 					showContentContainer();
 					document.querySelector( content_container ).before( displayMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
 
 				} else {
-					displayDebugMessage( 'No tagged blocks' );
+					console.log('No tagged blocks');
+
 
 					document.body.classList.add( 'show-fw-message' );
 					document.querySelector( content_container ).before( displaySubscriberOnlyMessage( unable_to_verify ) );
@@ -250,17 +263,12 @@
 		var currentCookie = Cookies.get( cookieName );
 
 		if ( ( typeof( currentCookie ) !== 'undefined' ) ) {
-			if ( cookieName === 'ShowCoilPublicMsg' && currentCookie === '1' ) {
-				return true;
-			} else if ( cookieName === 'ShowCoilPartialMsg' && currentCookie === '1' ) {
-				return true;
+			if ( cookieName === 'ShowCoilPublicMsg' || cookieName === 'ShowCoilPartialMsg' ) {
+				return ( currentCookie === '1' ) ? true : false
 			}
 		}
 		return false;
 	}
-
-	// Switch statement to check the 5 states
-
 
 	/**
 	 * Init
@@ -286,81 +294,82 @@
 			// Check if browser extension exists.
 			if ( typeof document.monetization !== 'undefined' ) {
 
-				// alert( document.monetization.state );
+				switch ( document.monetization.state ) {
 
-				// User might be paying, hold on a second.
-				if ( document.monetization.state === 'pending' ) {
+					case 'pending':
 
-					// If the site is missing it's payment pointer ID.
-					if ( $( 'body' ).hasClass( 'coil-missing-id' ) ) {
+						// If the site is missing it's payment pointer ID.
+						if ( isPaymentPointerMissing() ) {
 
-						if ( $( 'body' ).hasClass( 'coil-show-admin-notice' ) ) {
-							// Show message to site owner/administrators only.
-							$( content_container ).before( '<p class="monetize-msg">' + admin_missing_id_notice + '</p>' );
-						} else {
-							$( 'body' ).removeClass( 'coil-missing-id' );
-						}
-
-						// This ensures content written in Gutenberg is displayed according to
-						// the block settings should the theme use different theme selectors.
-						if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
-							showContentContainer();
-							$( content_container + '*.coil-hide-monetize-users' ).css( 'display', 'none' );
-							$( content_container + '*.coil-show-monetize-users' ).css( 'display', 'none' );
-						}
-
-						$( 'body' ).trigger( 'coil-missing-id' );
-
-
-
-					} else {
-						// Verify monetization only if we are gating or partially gating content.
-						if ( ! isMonetizedAndPublic() ) {
-							// If post is gated then show verification message after excerpt.
-							if ( isSubscribersOnly() ) {
-								if ( post_excerpt !== '' ) {
-									displayDebugMessage( 'Subscriber gating and no post excerpt...Verifying extension' );
-									document.querySelector( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
-								} else {
-									displayDebugMessage( 'Subscriber gating and has post excerpt...Verifying extension' );
-									$( 'div.coil-post-excerpt' ).after( displayMonetizationMessage( loading_content, '' ) );
-								}
+							if ( isViewingAdmin() ) {
+								// Show message to site owner/administrators only.
+								$( content_container ).before( '<p class="monetize-msg">' + admin_missing_id_notice + '</p>' );
 							} else {
-								document.querySelector( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
+								$( 'body' ).removeClass( 'coil-missing-id' );
 							}
 
-							// Update message if browser extension is verifying user.
-							setTimeout( function() {
-								displayDebugMessage( 'Verifying Coil account' );
-								messageWrapper.html( loading_content );
-							}, 2000 );
+							// This ensures content written in Gutenberg is displayed according to
+							// the block settings should the theme use different theme selectors.
+							if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
+								showContentContainer();
+								$( content_container + '*.coil-hide-monetize-users' ).css( 'display', 'none' );
+								$( content_container + '*.coil-show-monetize-users' ).css( 'display', 'none' );
+							}
 
-							// Update message if browser extension is unable to verify user.
-							setTimeout( function() {
-								displayVerificationFailureMessage();
-							}, 5000 );
+							$( 'body' ).trigger( 'coil-missing-id' );
+
+						} else {
+
+							// Verify monetization only if we are gating or partially gating content.
+							if ( ! isMonetizedAndPublic() ) {
+								// If post is gated then show verification message after excerpt.
+								if ( isSubscribersOnly() ) {
+									if ( post_excerpt !== '' ) {
+
+										console.log('Subscriber gating and no post excerpt...Verifying extension');
+
+										document.querySelector( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
+									} else {
+
+
+										console.log( 'Subscriber gating and has post excerpt...Verifying extension' );
+										$( 'div.coil-post-excerpt' ).after( displayMonetizationMessage( loading_content, '' ) );
+									}
+								} else {
+									document.querySelector( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
+								}
+
+								// Update message if browser extension is verifying user.
+								setTimeout( function() {
+									console.log( 'Verifying Coil account' );
+									messageWrapper.html( loading_content );
+								}, 2000 );
+
+								// Update message if browser extension is unable to verify user.
+								setTimeout( function() {
+									displayVerificationFailureMessage();
+								}, 5000 );
+
+							} else {
+
+								if ( monetizationNotInitialized() && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+
+									$( 'body' ).append( displayBannerMessage( voluntary_donation ) );
+									addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
+								}
+							}
 						}
-					}
 
-					// HERE2
-					// Display Cookie Banner?
-					if ( isMonetizedAndPublic()
-					&& monetizationNotInitialized()
-					&& ! hasBannerDismissCookie( 'ShowCoilPublicMsg' )
-					) {
-						$( 'body' ).append( displayBannerMessage( voluntary_donation ) );
-						addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
-					}
-				}
-				// User account verified, loading content.
-				else if ( document.monetization.state === 'started' ) {
-					displayDebugMessage( 'Monetization state: Started' );
+						break;
+
+				case 'started':
+
+					// User account verified, loading content.
+					console.log( 'Monetization state: Started' );
 					document.querySelector( content_container ).before( displayMonetizationMessage( loading_content, '' ) );
-				}
-				// Final check to see if the state is stopped
-				else if ( document.monetization.state === 'stopped' ) {
+					break;
 
-					displayDebugMessage( 'Status stopped and Monetized and Public' );
+				case 'stopped':
 
 					if ( isSubscribersOnly() ) {
 
@@ -383,13 +392,13 @@
 
 							if ( $( 'p.monetize-msg' ).text() === loading_content ) {
 								// Update message if browser extension is unable to verify user.
-								displayDebugMessage( 'Monetization not started and verification failed' );
+								console.log( 'Monetization not started and verification failed' );
 
 								displayVerificationFailureMessage();
 
 							} else if ( isMonetizedAndPublic() ) {
 								// Voluntary donation.
-								displayDebugMessage( 'Content is monetized and public but extension is stopped' );
+								console.log( 'Content is monetized and public but extension is stopped' );
 
 								if ( ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 									$( 'body' ).append( displayBannerMessage( voluntary_donation ) );
@@ -398,6 +407,8 @@
 							}
 						}
 					}, 5000 );
+
+					break;
 				}
 
 				// Monetization has started.
@@ -440,11 +451,6 @@
 
 					$( 'body' ).trigger( 'coil-monetization-initialized', [ event ] );
 
-					// var bodyClassList = $('body').attr('class');
-					// $('.site-info').append(
-					// 	'<p>' + bodyClassList + '</p>'
-					// );
-
 					// Monetization is verified, remove any messages
 					if ( $( 'p.monetize-msg' ).length > 0 ) {
 						$( 'p.monetize-msg' ).remove();
@@ -475,11 +481,10 @@
 				});
 
 			} else {
-
-
+				// document.monetization === 'undefined'
 
 				/* Coil Extension not found or using unsupported browser */
-				displayDebugMessage( 'Coil Extension not found or using unsupported browser' );
+				console.log( 'Coil Extension not found or using unsupported browser' );
 
 				// Update body class to show free content.
 				$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'coil-extension-not-found' );
@@ -500,7 +505,7 @@
 					}
 
 				} else if ( isSplitContent() ) {
-					displayDebugMessage( 'Split content with no extension found' );
+					console.log( 'Split content with no extension found' );
 
 					$( '.coil-show-monetize-users' ).prepend( displaySplitContentMessage( partial_gating ) );
 					if ( ! hasBannerDismissCookie( 'ShowCoilPartialMsg' ) ) {
@@ -510,7 +515,7 @@
 
 				} else if ( isMonetizedAndPublic() ) {
 					// Voluntary donation.
-					displayDebugMessage( 'Content is monetized and public but no extension found' );
+					console.log( 'Content is monetized and public but no extension found' );
 
 					if ( ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 						$( 'body' ).append( displayBannerMessage( voluntary_donation ) );
@@ -521,15 +526,7 @@
 				// Trigger an event.
 				$( 'body' ).trigger( 'coil-extension-not-found' );
 
-
-
-
-
-
-
 			}
 		}
-
-
 	});
 })(jQuery);

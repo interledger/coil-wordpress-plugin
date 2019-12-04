@@ -165,26 +165,42 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 	z-index: 200;
 	width: 100%;
 	color: rgba(0,0,0,0.7);
-	display: flex;
-	justify-content: center;
+	@media only screen and (min-width: $message_mobile_breakpoint ) {
+		display: flex;
+		justify-content: center;
+	}
 
 	.banner-message-inner {
-		background-color: $message_banner_background_colour;
-		padding: 12px $message_spacing_baseline * 4;
-		display: flex;
-		justify-content: space-around;
-		border-radius: 41px;
+		background-color: white;
+		padding: 23px $message_spacing_baseline * 2 $message_spacing_baseline * 2;
+
 		font-family: 'Open Sans';
 		position: relative;
 		border: 1px solid $message_banner_border_colour;
 		box-shadow: 0 6px 10px 0 $message_banner_shadow_colour;
+
+		@media only screen and (min-width: $message_mobile_breakpoint ) {
+			background-color: $message_banner_background_colour;
+			display: flex;
+			padding: 12px $message_spacing_baseline * 4;
+			justify-content: space-around;
+			border-radius: 41px;
+			align-items: center;
+		}
 	}
 
 	.coil-banner-message-content {
 		margin: 0;
-		font-size: 14px;
-		line-height: 20px;
-		max-width: 434px;
+		font-size: 12px;
+		line-height: 17px;
+		margin: 22px 0 5px;
+
+		@media only screen and (min-width: $message_mobile_breakpoint ) {
+			margin: 0;
+			font-size: 14px;
+			line-height: 20px;
+			max-width: 434px;
+		}
 	}
 
 	.coil-banner-message-button {
@@ -193,21 +209,34 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 		background-color: $message_banner_button_colour;
 		color: white;
 		font-size: 14px;
-		line-height: 24px;
+		line-height: 20px;
 		font-weight: 600;
 		text-decoration: none;
-		margin: 0 $message_spacing_baseline * 4 0 67px;
+		margin: 0;
 
 		&:hover {
 			background-color: $message_banner_button_hover_colour;
+		}
+
+		@media only screen and (min-width: $message_mobile_breakpoint ) {
+			margin: 0 $message_spacing_baseline * 4 0 67px;
 		}
 	}
 
 	.coil-banner-message-dismiss {
 		cursor: pointer;
-		font-size: 35px;
+		font-size: 26px;
 		line-height: 1.1;
 		font-weight: 700;
 		color: $message_banner_dismiss_colour;
+		position: absolute;
+		top: 10px;
+		right: 12px;
+		@media only screen and (min-width: $message_mobile_breakpoint ) {
+			top: auto;
+			right: auto;
+			position: relative;
+			font-size: 35px;
+		}
 	}
 }
