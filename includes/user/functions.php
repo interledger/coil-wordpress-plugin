@@ -66,6 +66,10 @@ function maybe_save_user_profile_payment_pointer_option( $user_id ) : void {
  */
 function maybe_output_user_payment_pointer( $payment_pointer ) : string {
 
+	if ( ! is_singular() ) {
+		return $payment_pointer;
+	}
+
 	$author_id            = get_post_field( 'post_author' );
 	$user_payment_pointer = get_user_meta( $author_id, 'coil_user_payment_pointer_id', true );
 
