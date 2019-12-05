@@ -177,7 +177,7 @@ function add_plugin_action_links( array $links ) : array {
 	}
 
 	$action_links = [
-		'settings' => '<a href="' . add_query_arg( [ 'page' => 'coil' ], admin_url( 'admin.php' ) ) . '" aria-label="' . esc_attr__( 'Settings for Coil', 'coil-monetize-content' ) . '">' . esc_attr__( 'Settings', 'coil-monetize-content' ) . '</a>',
+		'settings' => '<a href="' . add_query_arg( [ 'page' => 'coil_settings' ], admin_url( 'admin.php' ) ) . '" aria-label="' . esc_attr__( 'Settings for Coil', 'coil-monetize-content' ) . '">' . esc_attr__( 'Settings', 'coil-monetize-content' ) . '</a>',
 	];
 
 	return array_merge( $action_links, $links );
