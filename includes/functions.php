@@ -8,6 +8,7 @@ namespace Coil;
 
 use \Coil\Admin;
 use \Coil\Gating;
+use \Coil\User;
 
 /**
  * Initialise and set up the plugin.
@@ -285,7 +286,11 @@ function print_meta_tag() : void {
  */
 function get_payment_pointer() : string {
 
-	$payment_pointer_id = Admin\get_global_settings( 'coil_payment_pointer_id' );
+	// Fetch the global payment pointer
+	$global_payment_pointer_id = Admin\get_global_settings( 'coil_payment_pointer_id' );
+
+	// If payment pointer is set on the user, use that instead of the global payment pointer.
+	$payment_pointer_id = User\maybe_output_user_payment_pointer( $global_payment_pointer_id );
 
 	// If the post is not set for monetising, bail out.
 	if ( ! Gating\is_content_monetized( get_queried_object_id() ) || empty( $payment_pointer_id ) ) {
