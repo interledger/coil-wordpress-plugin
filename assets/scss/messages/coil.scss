@@ -6,6 +6,7 @@ body.coil-gate-all.coil-extension-not-found.show-fw-message,
 body.coil-missing-id.coil-extension-not-found.show-fw-message,
 body.monetization-not-initialized.coil-gate-all.show-fw-message,
 body.coil-gate-all.coil-extension-not-found.show-excerpt-message,
+body.monetization-not-initialized.coil-gate-all.show-excerpt-message,
 body.monetization-not-initialized.coil-missing-id.show-fw-message {
 
 	.coil-message-container {
@@ -111,6 +112,7 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 }
 
 // Scenario 2
+body.monetization-not-initialized.coil-gate-all.show-excerpt-message,
 body.coil-gate-all.coil-extension-not-found.show-excerpt-message {
 
 	.coil-message-container {
@@ -136,7 +138,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 }
 
 // Split content
-.coil-show-monetize-users p.coil-split-content-message {
+.coil-show-monetize-users span.coil-split-content-message {
 	color: white;
 	margin: 0;
 	text-align: center;
@@ -151,6 +153,10 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 	display: flex;
 	align-items: center;
 	z-index: 110;
+	justify-content: center;
+	width: 100%;
+	padding: 50px;
+
 	@media only screen and (min-width: $message_mobile_breakpoint ) {
 		padding: 50px;
 		font-size: 18px;
