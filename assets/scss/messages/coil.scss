@@ -140,6 +140,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 // Split content
 .coil-show-monetize-users span.coil-split-content-message {
 	color: white;
+	background: #575756;
 	margin: 0;
 	text-align: center;
 	font-family: 'Open Sans';
@@ -164,7 +165,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 	}
 }
 
-// Banner message
+// Scenario 3 - Banner message
 .coil-banner-message-container {
 	position: fixed;
 	bottom: 0;

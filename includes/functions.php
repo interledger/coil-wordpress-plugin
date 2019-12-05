@@ -30,7 +30,6 @@ function init_plugin() : void {
 	add_filter( 'body_class', __NAMESPACE__ . '\add_body_class' );
 	add_filter( 'the_content', __NAMESPACE__ . '\Gating\maybe_restrict_content' );
 	add_action( 'wp_head', __NAMESPACE__ . '\print_meta_tag' );
-	add_action( 'wp_footer', __NAMESPACE__ . '\puma_debug_testing' );
 
 	// Admin screens and settings.
 	add_filter( 'plugin_action_links_coil-monetize-content/plugin.php', __NAMESPACE__ . '\Admin\add_plugin_action_links' );
@@ -264,13 +263,6 @@ function add_body_class( $classes ) : array {
 	}
 
 	return $classes;
-}
-
-function puma_debug_testing() {
-	$classes = get_body_class();
-	// echo '<pre>';
-	// print_r( $classes );
-	// echo '</pre>';
 }
 
 /**
