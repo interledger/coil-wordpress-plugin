@@ -100,6 +100,15 @@
 	}
 
 	/**
+	 * Hide the content container.
+	 */
+	function hideContentContainer() {
+
+		var elem = document.querySelector( content_container );
+		elem.style.display = 'none';
+	}
+
+	/**
 	 * Get the post excerpt, if available.
 	 */
 	function getContentExcerpt() {
@@ -208,12 +217,16 @@
 				}
 
 			} else {
+
 				if ( isSplitContent() ) {
 
-					// Unable to verify hidden content.
-					document.body.classList.add( 'coil-split' );
+					// Split content and unable to verify hidden content.
+					$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( unable_to_verify ) );
 					showContentContainer();
-					document.querySelector( content_container ).before( showMonetizationMessage( unable_to_verify, 'monetize-failed' ) );
+					if ( ! hasBannerDismissCookie( 'ShowCoilPartialMsg' ) ) {
+						$( 'body' ).append( showBannerMessage( unable_to_verify ) );
+						addBannerDismissClickHandler( 'ShowCoilPartialMsg' );
+					}
 
 				} else {
 
@@ -358,7 +371,6 @@
 						break;
 
 				case 'started':
-
 					// User account verified, loading content. Monetization state: Started
 					document.querySelector( content_container ).before( showMonetizationMessage( loading_content, '' ) );
 					break;
@@ -367,6 +379,7 @@
 
 					if ( isSubscribersOnly() || isSplitContent() ) {
 						hideContentExcerpt();
+						hideContentContainer();
 						document.querySelector( content_container ).before( showMonetizationMessage( loading_content, '' ) );
 					}
 
@@ -486,7 +499,6 @@
 				} else if ( isSplitContent() ) {
 
 					// Split content with no extension found.
-
 					$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( partial_gating ) );
 					if ( ! hasBannerDismissCookie( 'ShowCoilPartialMsg' ) ) {
 						$( 'body' ).append( showBannerMessage( partial_gating ) );

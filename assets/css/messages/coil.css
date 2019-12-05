@@ -372,6 +372,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 
 .coil-show-monetize-users span.coil-split-content-message {
   color: white;
+  background: #575756;
   margin: 0;
   text-align: center;
   font-family: 'Open Sans';

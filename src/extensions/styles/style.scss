@@ -50,7 +50,8 @@ body.monetization-initialized:not(.coil-no-gating) {
 // Coil Payment Pointer ID not found.
 // Only content that is set to show for all will show.
 body.coil-extension-not-found:not(.coil-no-gating),
-body.coil-missing-id:not(.coil-no-gating) {
+body.coil-missing-id:not(.coil-no-gating),
+body.monetization-not-initialized.coil-gate-tagged-blocks:not(.coil-no-gating) {
 
 	*.coil-hide-monetize-users {
 		display: none;
