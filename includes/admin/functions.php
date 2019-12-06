@@ -40,7 +40,7 @@ function add_metabox() : void {
 
 	add_meta_box(
 		'coil',
-		__( 'Web Monetization - Coil', 'coil-monetize-content' ),
+		__( 'Web Monetization - Coil', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\render_coil_metabox',
 		[ 'page', 'post' ],
 		'side',
@@ -64,7 +64,7 @@ function render_coil_metabox() : void {
 	$settings      = Gating\get_monetization_setting_types( true );
 
 	if ( $use_gutenberg ) {
-		$settings['gate-tagged-blocks'] = esc_html__( 'Split Content', 'coil-monetize-content' );
+		$settings['gate-tagged-blocks'] = esc_html__( 'Split Content', 'coil-web-monetization' );
 	}
 
 	do_action( 'coil_before_render_metabox', $settings );
@@ -74,9 +74,9 @@ function render_coil_metabox() : void {
 		<legend>
 			<?php
 			if ( $use_gutenberg ) {
-				esc_html_e( 'Set the type of monetization for the article. Note: If "Split Content" selected, you will need to save the article and reload the editor to view the options at block level.', 'coil-monetize-content' );
+				esc_html_e( 'Set the type of monetization for the article. Note: If "Split Content" selected, you will need to save the article and reload the editor to view the options at block level.', 'coil-web-monetization' );
 			} else {
-				esc_html_e( 'Set the type of monetization for the article.', 'coil-monetize-content' );
+				esc_html_e( 'Set the type of monetization for the article.', 'coil-web-monetization' );
 			}
 			?>
 		</legend>
@@ -177,7 +177,7 @@ function add_plugin_action_links( array $links ) : array {
 	}
 
 	$action_links = [
-		'settings' => '<a href="' . add_query_arg( [ 'page' => 'coil_settings' ], admin_url( 'admin.php' ) ) . '" aria-label="' . esc_attr__( 'Settings for Coil', 'coil-monetize-content' ) . '">' . esc_attr__( 'Settings', 'coil-monetize-content' ) . '</a>',
+		'settings' => '<a href="' . add_query_arg( [ 'page' => 'coil_settings' ], admin_url( 'admin.php' ) ) . '" aria-label="' . esc_attr__( 'Settings for Coil', 'coil-web-monetization' ) . '">' . esc_attr__( 'Settings', 'coil-web-monetization' ) . '</a>',
 	];
 
 	return array_merge( $action_links, $links );
@@ -193,12 +193,12 @@ function add_plugin_action_links( array $links ) : array {
  */
 function add_plugin_meta_link( array $metadata, string $file ) : array {
 
-	if ( $file !== 'coil-monetize-content/plugin.php' ) {
+	if ( $file !== 'coil-web-monetization/plugin.php' ) {
 		return $metadata;
 	}
 
 	$row_meta = [
-		'community' => '<a href="' . esc_url( 'https://wordpress.org/support/plugin/coil-monetize-content/' ) . '">' . esc_html__( 'Support forum', 'coil-monetize-content' ) . '</a>',
+		'community' => '<a href="' . esc_url( 'https://wordpress.org/support/plugin/coil-web-monetization/' ) . '">' . esc_html__( 'Support forum', 'coil-web-monetization' ) . '</a>',
 	];
 
 	return array_merge( $metadata, $row_meta );
@@ -267,11 +267,11 @@ function get_customizer_messaging_text( $message_id, $get_default = false ) : st
 
 	// Set up message defaults.
 	$defaults = [
-		'coil_unsupported_message'        => __( 'Not using supported browser and extension, this is how to access / get COIL', 'coil-monetize-content' ),
-		'coil_unable_to_verify_message'   => __( 'You need a valid Coil account in order to see content, here\'s how..', 'coil-monetize-content' ),
-		'coil_voluntary_donation_message' => __( 'This site is monetized using Coil.  We ask for your help to pay for our time in creating this content for you.  Here\'s how...', 'coil-monetize-content' ),
-		'coil_verifying_status_message'   => __( 'Verifying Web Monetization status. Please wait...', 'coil-monetize-content' ),
-		'coil_partial_gating_message'     => __( 'This content is for Coil subscribers only. To access, subscribe to Coil and install the browser extension.', 'coil-monetize-content' ),
+		'coil_unsupported_message'        => __( 'Not using supported browser and extension, this is how to access / get COIL', 'coil-web-monetization' ),
+		'coil_unable_to_verify_message'   => __( 'You need a valid Coil account in order to see content, here\'s how..', 'coil-web-monetization' ),
+		'coil_voluntary_donation_message' => __( 'This site is monetized using Coil.  We ask for your help to pay for our time in creating this content for you.  Here\'s how...', 'coil-web-monetization' ),
+		'coil_verifying_status_message'   => __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' ),
+		'coil_partial_gating_message'     => __( 'This content is for Coil subscribers only. To access, subscribe to Coil and install the browser extension.', 'coil-web-monetization' ),
 	];
 
 	// Get the message from the customizer.
@@ -307,7 +307,7 @@ function coil_add_customizer_options( $wp_customize ) : void {
 	$wp_customize->add_panel(
 		$coil_customizer_panel_id,
 		[
-			'title'      => __( 'Coil Settings', 'coil-monetize-content' ),
+			'title'      => __( 'Coil Settings', 'coil-web-monetization' ),
 			'capability' => apply_filters( 'coil_settings_capability', 'manage_options' ),
 		]
 	);
@@ -318,7 +318,7 @@ function coil_add_customizer_options( $wp_customize ) : void {
 	$wp_customize->add_section(
 		$messaging_section_id,
 		[
-			'title' => __( 'Messaging', 'coil-monetize-content' ),
+			'title' => __( 'Messaging', 'coil-web-monetization' ),
 			'panel' => $coil_customizer_panel_id,
 		]
 	);
@@ -338,9 +338,9 @@ function coil_add_customizer_options( $wp_customize ) : void {
 		$incorrect_browser_setup_message_id,
 		[
 			'type'        => 'textarea',
-			'label'       => __( 'Incorrect browser setup message', 'coil-monetize-content' ),
+			'label'       => __( 'Incorrect browser setup message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
-			'description' => __( 'This message is shown when content is set to be subscriber-only, and visitor either isn\'t using a supported browser, or doesn\'t have the browser extension installed correctly.', 'coil-monetize-content' ),
+			'description' => __( 'This message is shown when content is set to be subscriber-only, and visitor either isn\'t using a supported browser, or doesn\'t have the browser extension installed correctly.', 'coil-web-monetization' ),
 			'input_attrs' => [
 				'placeholder' => get_customizer_messaging_text( $incorrect_browser_setup_message_id, true ),
 			],
@@ -362,9 +362,9 @@ function coil_add_customizer_options( $wp_customize ) : void {
 		$invalid_web_monetization_message_id,
 		[
 			'type'        => 'textarea',
-			'label'       => __( 'Invalid Web Monetization message', 'coil-monetize-content' ),
+			'label'       => __( 'Invalid Web Monetization message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
-			'description' => __( 'This message is shown when content is set to be subscriber-only, browser setup is correct, but Web Monetization doesn\'t start.  It might be due to several reasons, including not having an active Coil account.', 'coil-monetize-content' ),
+			'description' => __( 'This message is shown when content is set to be subscriber-only, browser setup is correct, but Web Monetization doesn\'t start.  It might be due to several reasons, including not having an active Coil account.', 'coil-web-monetization' ),
 			'input_attrs' => [
 				'placeholder' => get_customizer_messaging_text( $invalid_web_monetization_message_id, true ),
 			],
@@ -386,9 +386,9 @@ function coil_add_customizer_options( $wp_customize ) : void {
 		$voluntary_donation_message_id,
 		[
 			'type'        => 'textarea',
-			'label'       => __( 'Voluntary donation message', 'coil-monetize-content' ),
+			'label'       => __( 'Voluntary donation message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
-			'description' => __( 'This message is shown when content is set to "Monetized and Public" and visitor does not have Web Monetization in place and active in their browser.', 'coil-monetize-content' ),
+			'description' => __( 'This message is shown when content is set to "Monetized and Public" and visitor does not have Web Monetization in place and active in their browser.', 'coil-web-monetization' ),
 			'input_attrs' => [
 				'placeholder' => get_customizer_messaging_text( $voluntary_donation_message_id, true ),
 			],
@@ -410,9 +410,9 @@ function coil_add_customizer_options( $wp_customize ) : void {
 		$pending_message_id,
 		[
 			'type'        => 'textarea',
-			'label'       => __( 'Pending message', 'coil-monetize-content' ),
+			'label'       => __( 'Pending message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
-			'description' => __( 'This message is shown for a short time time only while check is made on browser setup and that an active Web Monetization account is in place.', 'coil-monetize-content' ),
+			'description' => __( 'This message is shown for a short time time only while check is made on browser setup and that an active Web Monetization account is in place.', 'coil-web-monetization' ),
 			'input_attrs' => [
 				'placeholder' => get_customizer_messaging_text( $pending_message_id, true ),
 			],
@@ -434,9 +434,9 @@ function coil_add_customizer_options( $wp_customize ) : void {
 		$partial_message_id,
 		[
 			'type'        => 'textarea',
-			'label'       => __( 'Partial content gating message', 'coil-monetize-content' ),
+			'label'       => __( 'Partial content gating message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
-			'description' => __( 'This message is shown in footer bar on pages where only some of the content blocks have been set as Subscriber-Only.', 'coil-monetize-content' ),
+			'description' => __( 'This message is shown in footer bar on pages where only some of the content blocks have been set as Subscriber-Only.', 'coil-web-monetization' ),
 			'input_attrs' => [
 				'placeholder' => get_customizer_messaging_text( $partial_message_id, true ),
 			],

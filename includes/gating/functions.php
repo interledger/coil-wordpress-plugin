@@ -48,12 +48,12 @@ function register_term_meta() {
 function get_monetization_setting_types( $show_default = false ) : array {
 
 	if ( true === $show_default ) {
-		$settings['default'] = esc_html__( 'Use Default', 'coil-monetize-content' );
+		$settings['default'] = esc_html__( 'Use Default', 'coil-web-monetization' );
 	}
 
-	$settings['no']        = esc_html__( 'No Monetization', 'coil-monetize-content' );
-	$settings['no-gating'] = esc_html__( 'Monetized and Public', 'coil-monetize-content' );
-	$settings['gate-all']  = esc_html__( 'Subscribers Only', 'coil-monetize-content' );
+	$settings['no']        = esc_html__( 'No Monetization', 'coil-web-monetization' );
+	$settings['no-gating'] = esc_html__( 'Monetized and Public', 'coil-web-monetization' );
+	$settings['gate-all']  = esc_html__( 'Subscribers Only', 'coil-web-monetization' );
 
 	return $settings;
 }
@@ -100,12 +100,12 @@ function maybe_restrict_content( string $content ) : string {
 			if ( get_excerpt_gating( get_queried_object_id() ) ) {
 				$public_content .= $content_excerpt;
 			}
-			$public_content .= '<p>' . esc_html__( 'The contents of this article is for subscribers only!', 'coil-monetize-content' ) . '</p>';
+			$public_content .= '<p>' . esc_html__( 'The contents of this article is for subscribers only!', 'coil-web-monetization' ) . '</p>';
 			break;
 
 		case 'gate-tagged-blocks':
 			// Restrict some part of this content. (split content).
-			$public_content  = '<p>' . esc_html__( 'This article is monetized and some content is for subscribers only.', 'coil-monetize-content' ) . '</p>';
+			$public_content  = '<p>' . esc_html__( 'This article is monetized and some content is for subscribers only.', 'coil-web-monetization' ) . '</p>';
 			$public_content .= $content;
 			break;
 

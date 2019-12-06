@@ -20,8 +20,8 @@ use Coil\Gating;
  */
 function register_admin_menu() : void {
 	add_menu_page(
-		esc_attr__( 'Coil Settings', 'coil-monetize-content' ),
-		_x( 'Coil Settings', 'admin menu name', 'coil-monetize-content' ),
+		esc_attr__( 'Coil Settings', 'coil-web-monetization' ),
+		_x( 'Coil Settings', 'admin menu name', 'coil-web-monetization' ),
 		apply_filters( 'coil_settings_capability', 'manage_options' ),
 		'coil_settings',
 		__NAMESPACE__ . '\render_coil_settings_screen'
@@ -58,14 +58,14 @@ function register_admin_content_settings() {
 	// ==== Global Settings.
 	add_settings_section(
 		'coil_global_settings_top_section',
-		__( 'Global Settings', 'coil-monetize-content' ),
+		__( 'Global Settings', 'coil-web-monetization' ),
 		false,
 		'coil_global_settings_global'
 	);
 
 	add_settings_field(
 		'coil_payment_pointer_id',
-		__( 'Payment Pointer', 'coil-monetize-content' ),
+		__( 'Payment Pointer', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_global_settings_payment_pointer_render_callback',
 		'coil_global_settings_global',
 		'coil_global_settings_top_section'
@@ -74,14 +74,14 @@ function register_admin_content_settings() {
 	// ==== Advanced Config.
 	add_settings_section(
 		'coil_global_settings_bottom_section',
-		__( 'Advanced Config', 'coil-monetize-content' ),
+		__( 'Advanced Config', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_global_settings_advanced_config_description_callback',
 		'coil_global_settings_advanced'
 	);
 
 	add_settings_field(
 		'coil_content_container',
-		__( 'Post Container ID', 'coil-monetize-content' ),
+		__( 'Post Container ID', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_global_settings_advanced_config_render_callback',
 		'coil_global_settings_advanced',
 		'coil_global_settings_bottom_section'
@@ -216,19 +216,19 @@ function coil_content_settings_taxonomies_validation( $taxonomy_content_settings
 function coil_getting_started_settings_render_callback() {
 	?>
 	<p>
-		<?php esc_html_e( 'Please watch the video below first to understand more about Web Monetization, Coil, and how to get the most out of this plugin on your site', 'coil-monetize-content' ); ?>
+		<?php esc_html_e( 'Please watch the video below first to understand more about Web Monetization, Coil, and how to get the most out of this plugin on your site', 'coil-web-monetization' ); ?>
 	</p>
 	<iframe width="560" height="315" src="https://www.youtube.com/embed/D-_L8qR78vU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-	<h3><?php esc_html_e( 'How to guides', 'coil-monetize-content' ); ?></h3>
+	<h3><?php esc_html_e( 'How to guides', 'coil-web-monetization' ); ?></h3>
 	<ol>
-		<li><?php esc_html_e( 'What is Web Monetization, and who are Coil?  [Find out more]', 'coil-monetize-content' ); ?></li>
-		<li><?php esc_html_e( 'Should I monetize my content?  [Read the best practices]', 'coil-monetize-content' ); ?></li>
-		<li><?php esc_html_e( 'How do I configure and use the Coil WordPress plugin [Find out more]', 'coil-monetize-content' ); ?></li>
-		<li><?php esc_html_e( 'Coil WordPress Plugin FAQ [Find out more]', 'coil-monetize-content' ); ?></li>
+		<li><?php esc_html_e( 'What is Web Monetization, and who are Coil?  [Find out more]', 'coil-web-monetization' ); ?></li>
+		<li><?php esc_html_e( 'Should I monetize my content?  [Read the best practices]', 'coil-web-monetization' ); ?></li>
+		<li><?php esc_html_e( 'How do I configure and use the Coil WordPress plugin [Find out more]', 'coil-web-monetization' ); ?></li>
+		<li><?php esc_html_e( 'Coil WordPress Plugin FAQ [Find out more]', 'coil-web-monetization' ); ?></li>
 	</ol>
 
-	<a href="<?php echo esc_url( '?page=coil_settings&tab=global_settings' ); ?>" class="button button-primary button-large"><?php esc_html_e( 'Start configuring the plugin', 'coil-monetize-content' ); ?></a>
+	<a href="<?php echo esc_url( '?page=coil_settings&tab=global_settings' ); ?>" class="button button-primary button-large"><?php esc_html_e( 'Start configuring the plugin', 'coil-web-monetization' ); ?></a>
 	<?php
 }
 
@@ -249,12 +249,12 @@ function coil_global_settings_payment_pointer_render_callback() {
 	$payment_pointer_link = sprintf(
 		'<a href="%s" target="_blank">%s</a>',
 		esc_url( '#' ),
-		esc_html__( 'Find out more about payment pointers', 'coil-monetize-content' )
+		esc_html__( 'Find out more about payment pointers', 'coil-web-monetization' )
 	);
 
-	$payment_pointer_description  = esc_html__( 'Don\'t have a payment pointer yet? ', 'coil-monetize-content' );
+	$payment_pointer_description  = esc_html__( 'Don\'t have a payment pointer yet? ', 'coil-web-monetization' );
 	$payment_pointer_description .= $payment_pointer_link;
-	$payment_pointer_description .= esc_html__( '. You can also click the button below to quickly set up a payment pointer with Coil.', 'coil-monetize-content' );
+	$payment_pointer_description .= esc_html__( '. You can also click the button below to quickly set up a payment pointer with Coil.', 'coil-web-monetization' );
 	echo '</p>' . $payment_pointer_description . '</p>'; // phpcs:ignore. Output already escaped.
 
 	printf(
@@ -262,7 +262,7 @@ function coil_global_settings_payment_pointer_render_callback() {
 		esc_url( 'https://coil.com/signup' ),
 		esc_attr( '_blank' ),
 		esc_attr( 'button button-large' ),
-		esc_html__( 'Create a payment pointer with Coil', 'coil-monetize-content' )
+		esc_html__( 'Create a payment pointer with Coil', 'coil-web-monetization' )
 	);
 
 }
@@ -279,20 +279,20 @@ function coil_global_settings_advanced_config_description_callback() {
 	$link_one = sprintf(
 		'<a href="%s" target="_blank">%s</a>',
 		esc_url( '#' ),
-		esc_html__( 'see the How To Guides', 'coil-monetize-content' )
+		esc_html__( 'see the How To Guides', 'coil-web-monetization' )
 	);
 
 	$link_two = sprintf(
 		'<a href="%s" target="_blank">%s</a>',
 		esc_url( '#' ),
-		esc_html__( 'Advanced config guide', 'coil-monetize-content' )
+		esc_html__( 'Advanced config guide', 'coil-web-monetization' )
 	);
 
-	$advanced_config_description  = esc_html__( 'In most themes, you won’t need to use this field and can leave it blank. If the content gating is not working correctly though (', 'coil-monetize-content' );
+	$advanced_config_description  = esc_html__( 'In most themes, you won’t need to use this field and can leave it blank. If the content gating is not working correctly though (', 'coil-web-monetization' );
 	$advanced_config_description .= $link_one;
-	$advanced_config_description .= esc_html__( ') then you may need to find your post content container Id and enter it here (see the ', 'coil-monetize-content' );
+	$advanced_config_description .= esc_html__( ') then you may need to find your post content container Id and enter it here (see the ', 'coil-web-monetization' );
 	$advanced_config_description .= $link_two;
-	$advanced_config_description .= esc_html__( ' to see how to do this. )', 'coil-monetize-content' );
+	$advanced_config_description .= esc_html__( ' to see how to do this. )', 'coil-web-monetization' );
 
 	echo '</p>' . $advanced_config_description . '</p>'; // phpcs:ignore. Output already escaped.
 
@@ -360,12 +360,12 @@ function coil_content_settings_posts_render_callback() {
 		$content_settings_posts_options = Gating\get_global_posts_gating();
 
 		?>
-		<p><?php esc_html_e( 'You can use the settings below to control how your content is monetized and gated across your whole site easily. These settings are your defaults, that you can then override by configuring monetization against your categories and taxonomies. You can also override the settings against individual pages and posts. Read all about how to configure monetization and gating in the', 'coil-monetize-content' ); ?>
-		<a href="#" target="_blank"><?php esc_html_e( 'How To guides', 'coil-monetize-content' ); ?></a>
+		<p><?php esc_html_e( 'You can use the settings below to control how your content is monetized and gated across your whole site easily. These settings are your defaults, that you can then override by configuring monetization against your categories and taxonomies. You can also override the settings against individual pages and posts. Read all about how to configure monetization and gating in the', 'coil-web-monetization' ); ?>
+		<a href="#" target="_blank"><?php esc_html_e( 'How To guides', 'coil-web-monetization' ); ?></a>
 		</p>
 		<table class="widefat">
 			<thead>
-				<th><?php esc_html_e( 'Post Type', 'coil-monetize-content' ); ?></th>
+				<th><?php esc_html_e( 'Post Type', 'coil-web-monetization' ); ?></th>
 				<?php foreach ( $form_gating_settings as $setting_key => $setting_value ) : ?>
 					<th class="posts_table_header">
 						<?php echo esc_html( $setting_value ); ?>
@@ -458,11 +458,11 @@ function coil_content_settings_excerpts_render_callback() {
 
 		$content_settings_excerpt_options = Gating\get_global_excerpt_settings();
 		?>
-		<p><?php esc_html_e( 'You can choose whether a short excerpt shows for any pages or posts you choose to gate access to. You can control this for each of your content types on your website using the options below. Support for displaying an excerpt may depend on your particular theme and setup of WordPress.', 'coil-monetize-content' ); ?></p>
+		<p><?php esc_html_e( 'You can choose whether a short excerpt shows for any pages or posts you choose to gate access to. You can control this for each of your content types on your website using the options below. Support for displaying an excerpt may depend on your particular theme and setup of WordPress.', 'coil-web-monetization' ); ?></p>
 		<table class="widefat">
 			<thead>
-				<th><?php esc_html_e( 'Post Type', 'coil-monetize-content' ); ?></th>
-				<th><?php esc_html_e( 'Display Excerpt', 'coil-monetize-content' ); ?></th>
+				<th><?php esc_html_e( 'Post Type', 'coil-web-monetization' ); ?></th>
+				<th><?php esc_html_e( 'Display Excerpt', 'coil-web-monetization' ); ?></th>
 			</thead>
 			<tbody>
 				<?php foreach ( $post_type_options as $post_type ) : ?>
@@ -513,15 +513,15 @@ function coil_messaging_settings_render_callback() {
 		admin_url( 'customize.php' )
 	);
 	?>
-	<p><?php esc_html_e( 'The Coil plugin allows you to edit the different messages your site visitors are shown when trying to access content, depending on how you’ve configured monetization and gating on your pages and posts, and depending on whether they’re using a supported browser and the Coil browser extension.', 'coil-monetize-content' ); ?></p>
-	<p><?php esc_html_e( 'Read the How To guides and watch the video to better understand what your visitors need in order to be able to access your content and stream payment to your payment pointer.  Also in the guides is further information on what the different Message Settings are for.', 'coil-monetize-content' ); ?></p>
-	<p><?php esc_html_e( 'You can leave these as the default messages, or if you want to set your own messages -  click the button below to be taken to the WordPress Customizer.', 'coil-monetize-content' ); ?></p>
+	<p><?php esc_html_e( 'The Coil plugin allows you to edit the different messages your site visitors are shown when trying to access content, depending on how you’ve configured monetization and gating on your pages and posts, and depending on whether they’re using a supported browser and the Coil browser extension.', 'coil-web-monetization' ); ?></p>
+	<p><?php esc_html_e( 'Read the How To guides and watch the video to better understand what your visitors need in order to be able to access your content and stream payment to your payment pointer.  Also in the guides is further information on what the different Message Settings are for.', 'coil-web-monetization' ); ?></p>
+	<p><?php esc_html_e( 'You can leave these as the default messages, or if you want to set your own messages -  click the button below to be taken to the WordPress Customizer.', 'coil-web-monetization' ); ?></p>
 	<?php
 	printf(
 		'<a href="%s" class="%s">%s</a>',
 		esc_url( $customizer_link ),
 		esc_attr( 'button button-primary button-large' ),
-		esc_html__( 'Edit web monetization messages', 'coil-monetize-content' )
+		esc_html__( 'Edit web monetization messages', 'coil-web-monetization' )
 	);
 }
 
@@ -535,7 +535,7 @@ function render_coil_settings_screen() : void {
 	?>
 	<div class="wrap coil plugin-settings">
 
-		<h1><?php esc_html_e( 'Welcome to the Coil Web Monetization Plugin', 'coil-monetize-content' ); ?></h1>
+		<h1><?php esc_html_e( 'Welcome to the Coil Web Monetization Plugin', 'coil-web-monetization' ); ?></h1>
 		<br>
 
 		<?php settings_errors(); ?>
@@ -545,11 +545,11 @@ function render_coil_settings_screen() : void {
 		?>
 
 		<h2 class="nav-tab-wrapper">
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=getting_started' ); ?>" class="nav-tab <?php echo $active_tab === 'getting_started' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Getting Started', 'coil-monetize-content' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=global_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'global_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Global Settings', 'coil-monetize-content' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=content_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'content_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Content Settings', 'coil-monetize-content' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=excerpt_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'excerpt_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Excerpt Settings', 'coil-monetize-content' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=messaging_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'messaging_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Messaging Settings', 'coil-monetize-content' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=getting_started' ); ?>" class="nav-tab <?php echo $active_tab === 'getting_started' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Getting Started', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=global_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'global_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Global Settings', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=content_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'content_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Content Settings', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=excerpt_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'excerpt_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Excerpt Settings', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=messaging_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'messaging_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Messaging Settings', 'coil-web-monetization' ); ?></a>
 		</h2>
 		<br>
 
@@ -606,7 +606,7 @@ function coil_add_term_custom_meta( $term ) {
 	?>
 	<tr class="form-field">
 		<th scope="row">
-			<label><?php esc_html_e( 'Web Monetization - Coil', 'coil-monetize-content' ); ?></label>
+			<label><?php esc_html_e( 'Web Monetization - Coil', 'coil-web-monetization' ); ?></label>
 		</th>
 		<td>
 			<fieldset>
@@ -658,7 +658,7 @@ function coil_edit_term_custom_meta() {
 	}
 	?>
 	<div class="form-field">
-		<h2><?php esc_html_e( 'Web Monetization - Coil', 'coil-monetize-content' ); ?></h2>
+		<h2><?php esc_html_e( 'Web Monetization - Coil', 'coil-web-monetization' ); ?></h2>
 		<fieldset>
 		<?php
 		foreach ( $gating_options as $setting_key => $setting_value ) {
