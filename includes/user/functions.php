@@ -25,10 +25,10 @@ function add_user_profile_payment_pointer_option( $user ) : void {
 	$user_payment_pointer = get_user_meta( $userid, 'coil_user_payment_pointer_id', true );
 	?>
 	<tr>
-		<th scope="row"><label for="coil_user_payment_pointer_id"><?php esc_html_e( 'User payment pointer', 'coil-monetize-content' ); ?></label></th>
+		<th scope="row"><label for="coil_user_payment_pointer_id"><?php esc_html_e( 'User payment pointer', 'coil-web-monetization' ); ?></label></th>
 		<td>
 			<input type="text" name="coil_user_payment_pointer_id" id="coil_user_payment_pointer_id" value="<?php echo esc_attr( $user_payment_pointer ); ?>" class="regular-text">
-			<p class="description"><?php esc_html_e( 'Set a payment pointer for this user.', 'coil-monetize-content' ); ?></p>
+			<p class="description"><?php esc_html_e( 'Set a payment pointer for this user.', 'coil-web-monetization' ); ?></p>
 		</td>
 	</tr>
 	<?php

@@ -342,19 +342,19 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 		options={
 			[
 				{
-					label: __( 'No Monetization', 'coil-monetize-content' ),
+					label: __( 'No Monetization', 'coil-web-monetization' ),
 					value: 'no'
 				},
 				{
-					label: __( 'Monetized and Public', 'coil-monetize-content' ),
+					label: __( 'Monetized and Public', 'coil-web-monetization' ),
 					value: 'no-gating'
 				},
 				{
-					label: __( 'Subscribers Only', 'coil-monetize-content' ),
+					label: __( 'Subscribers Only', 'coil-web-monetization' ),
 					value: 'gate-all'
 				},
 				{
-					label: __( 'Split Content', 'coil-monetize-content' ),
+					label: __( 'Split Content', 'coil-web-monetization' ),
 					value: 'gate-tagged-blocks'
 				}
 			]
@@ -371,7 +371,7 @@ if ( PluginDocumentSettingPanel ) {
 			return (
 					<PluginDocumentSettingPanel
 						name="coil-meta"
-						title={ __( 'Web Monetization - Coil', 'coil-monetize-content' ) }
+						title={ __( 'Web Monetization - Coil', 'coil-web-monetization' ) }
 						initialOpen={ false }
 						className="coil-document-panel"
 						>

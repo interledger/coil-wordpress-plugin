@@ -1,5 +1,5 @@
 {
-	"name": "coil/coil-monetize-content",
+	"name": "coil/coil-web-monetization",
 	"description": "Coil offers an effortless way to share WordPress content online, and get paid for it.",
 	"homepage": "https://coil.com",
 	"keywords": [
@@ -16,7 +16,7 @@
 		}
 	],
 	"support": {
-		"forum": "https://wordpress.org/support/plugin/coil-monetize-content"
+		"forum": "https://wordpress.org/support/plugin/coil-web-monetization"
 	},
 	"type": "wordpress-plugin",
 	"license": "GPL-3.0",

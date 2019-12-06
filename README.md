@@ -1,6 +1,6 @@
-# Coil Monetize Content
+# Coil Web Monetization
 
-This is the source code repository for the Coil WordPress plugin. Coil Monetize Content allows you to monetize content for all readers, subscribers only, or if you are using modern WordPress, at the block level.
+This is the source code repository for the Coil WordPress plugin. Coil Web Monetization allows you to monetize content for all readers, subscribers only, or if you are using modern WordPress, at the block level.
 
 ---
 
@@ -25,7 +25,7 @@ To be onboarded to the project you'll need the following:
 The below can be granted by contacting your team lead, or asking in #support-internal on Pragmatic Slack.
 
 * Join #int-coil on Pragmatic Slack.
-* Write access to the Git repository on [Bitbucket](https://bitbucket.org/pragmaticweb/coil-monetize-content/).
+* Write access to the Git repository on [Bitbucket](https://bitbucket.org/pragmaticweb/coil-web-monetization/).
 * WP Engine environment(s) access.
 
 
@@ -53,9 +53,9 @@ Install the development environment:
 	- Choose the latest PHP version available.
 	- This project does not require a specific Web Server or MySQL version; if in doubt, choose nginx and MySQL 5.6.
 1. After Flywheel has created the site, from inside the root of where you chose to create the site, clone this repository into the plugins folder:
-	- `git clone git@bitbucket.org:pragmaticweb/coil-monetize-content.git app/public/wp-content/plugins/coil-monetize-content`
+	- `git clone git@bitbucket.org:pragmaticweb/coil-web-monetization.git app/public/wp-content/plugins/coil-web-monetization`
 1. When the machine has finished provisioning, install the development dependencies:
-	- `cd app/public/wp-content/plugins/coil-monetize-content && composer install && npm install`
+	- `cd app/public/wp-content/plugins/coil-web-monetization && composer install && npm install`
 1. To configure Flywheel for PHPUnit:
 	- Download the following script to the base of your`app/` folder:
 		- `curl -o setup-phpunit.sh https://gist.githubusercontent.com/keesiemeijer/a888f3d9609478b310c2d952644891ba/raw/`
@@ -124,7 +124,7 @@ Some of the tooling for this plugin came from the `create-guten-block` project, 
 New tests should be written where it makes sense. With Flywheel, the PHPUnit tests have to be run inside the Flywheel environment. To do this:
 
 - In Flywheel, right-click your "Coil" site and select "Open Site SSH". This will open a new terminal.
-- Inside it, change into the plugin folder: `cd /app/public/wp-content/plugins/coil-monetize-content`.
+- Inside it, change into the plugin folder: `cd /app/public/wp-content/plugins/coil-web-monetization`.
 - To run all tests, simply do: `phpunit`.
 
 At this moment in time, the tests are not run automatically on a Bitbucket workflow.

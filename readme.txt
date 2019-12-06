@@ -1,4 +1,4 @@
-=== Coil Monetize Content ===
+=== Coil Web Monetization ===
 Author URI: https://coil.com
 Plugin URI: https://coil.com
 Contributors: coil, pragmaticagency
@@ -6,7 +6,7 @@ Tags: coil, content, monetization, payment, interledger
 Requires at least: 4.9
 Requires PHP: 7.1
 Tested up to: 5.3
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: apache2
 License URI: http://www.apache.org/licenses/LICENSE-2.0.txt
 
@@ -18,7 +18,7 @@ Awesome web content deserves awesome compensation.
 
 Coil exists because content monetization doesn't work for everyone, and we think it should. Our model offers an alternative to the status quo of paid advertisements and selling the public's attention to the highest bidders – a solution that will serve the people who aren't being served well today.
 
-Coil Monetize Content allows you to set any post or page for monetization either for all readers, subscribers only or if you are using the Gutenberg editor, you can monetize at the block level.
+Coil Web Monetization allows you to set any post or page for monetization either for all readers, subscribers only or if you are using the Gutenberg editor, you can monetize at the block level.
 If you would like to know more about Coil does, [visit our website](https://coil.com/learn-more/).
 
 = Features =
@@ -34,11 +34,11 @@ If you would like to know more about Coil does, [visit our website](https://coil
 
 == Frequently Asked Questions ==
 
-= How do I start using Coil Monetize Content? =
+= How do I start using Coil Web Monetization? =
 
 Simply install the plugin and once activated you will be redirected to the settings page where you must enter your payment pointer ID. After saving the settings you're ready to monetize your articles.
 
-= Who should use Coil Monetize Content? =
+= Who should use Coil Web Monetization? =
 
 Coil is best for Writers, Gamers, Vloggers and Web Developers:
 
@@ -49,15 +49,15 @@ Coil is best for Writers, Gamers, Vloggers and Web Developers:
 
 = Where can I report bugs or contribute to the project? =
 
-Reach out to us on the [Coil Monetize Content support forum](https://wordpress.org/support/plugin/coil-monetize-content/).
+Reach out to us on the [Coil Web Monetization support forum](https://wordpress.org/support/plugin/coil-web-monetization/).
 
-= Is Coil Monetize Content translatable? =
+= Is Coil Web Monetization translatable? =
 
 Yes! Translations can be contributed at [translate.wordpress.org](https://translate.wordpress.org/).
 
 = Where can I ask for help? =
 
-If you get stuck, you can ask for help in the [Coil Monetize Content support forum](https://wordpress.org/support/plugin/coil-monetize-content/).
+If you get stuck, you can ask for help in the [Coil Web Monetization support forum](https://wordpress.org/support/plugin/coil-web-monetization/).
 
 == Screenshots ==
 
@@ -68,4 +68,4 @@ If you get stuck, you can ask for help in the [Coil Monetize Content support for
 
 == Changelog ==
 
-= v1.0.1 - Launch Release =
+= v1.0.2 - Launch Release =

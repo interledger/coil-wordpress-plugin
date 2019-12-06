@@ -33,7 +33,7 @@ function init_plugin() : void {
 	add_action( 'wp_head', __NAMESPACE__ . '\print_meta_tag' );
 
 	// Admin screens and settings.
-	add_filter( 'plugin_action_links_coil-monetize-content/plugin.php', __NAMESPACE__ . '\Admin\add_plugin_action_links' );
+	add_filter( 'plugin_action_links_coil-web-monetization/plugin.php', __NAMESPACE__ . '\Admin\add_plugin_action_links' );
 	add_filter( 'plugin_row_meta', __NAMESPACE__ . '\Admin\add_plugin_meta_link', 10, 2 );
 	add_action( 'admin_menu', __NAMESPACE__ . '\Settings\register_admin_menu' );
 	add_action( 'admin_init', __NAMESPACE__ . '\Settings\register_admin_content_settings' );
@@ -121,7 +121,7 @@ function load_block_editor_assets() : void {
 		return;
 	}
 
-	wp_set_script_translations( 'coil-editor', 'coil-monetize-content' );
+	wp_set_script_translations( 'coil-editor', 'coil-web-monetization' );
 }
 
 /**
@@ -175,7 +175,7 @@ function load_full_assets() : void {
 			'site_logo'                 => $site_logo,
 
 			/* translators: 1 + 2) HTML link tags (to the Coil settings page). */
-			'admin_missing_id_notice'   => sprintf( __( 'This post is monetized but you have not set your payment pointer ID in the %1$sCoil settings page%2$s. Only content set to show for all visitors will show.', 'coil-monetize-content' ), '<a href="' . admin_url( 'admin.php?page=coil' ) . '">', '</a>' ),
+			'admin_missing_id_notice'   => sprintf( __( 'This post is monetized but you have not set your payment pointer ID in the %1$sCoil settings page%2$s. Only content set to show for all visitors will show.', 'coil-web-monetization' ), '<a href="' . admin_url( 'admin.php?page=coil' ) . '">', '</a>' ),
 		],
 		get_queried_object_id()
 	);

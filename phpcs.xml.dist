@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="Coil Monetize Content">
+<ruleset name="Coil Web Monetization">
 
 	<config name="testVersion" value="7.1-"/>
 
@@ -30,7 +30,7 @@
 
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array" value="coil-monetize-content" />
+			<property name="text_domain" type="array" value="coil-web-monetization" />
 		</properties>
 	</rule>
 
