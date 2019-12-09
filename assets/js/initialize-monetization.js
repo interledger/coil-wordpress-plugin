@@ -279,7 +279,7 @@
 
 		if ( ( typeof( currentCookie ) !== 'undefined' ) ) {
 			if ( cookieName === 'ShowCoilPublicMsg' || cookieName === 'ShowCoilPartialMsg' ) {
-				return ( currentCookie === '1' ) ? true : false
+				return ( currentCookie === '1' ) ? true : false;
 			}
 		}
 		return false;
