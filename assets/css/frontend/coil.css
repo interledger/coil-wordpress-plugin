@@ -47,6 +47,6 @@ body.coil-show-admin-notice .monetize-msg {
 .monetize-msg {
   max-width: 100vw;
   position: relative;
-  left: calc(50% - 50vw);
+  left: calc( 50% - 50vw);
   width: 100vw;
   text-align: center; }
