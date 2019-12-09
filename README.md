@@ -1,6 +1,6 @@
 # Coil Web Monetization
 
-This is the source code repository for the Coil WordPress plugin. Coil Web Monetization allows you to monetize content for all readers, subscribers only, or if you are using modern WordPress, at the block level.
+This is the source code repository for the Coil WordPress plugin. Coil Web Monetization allows you to monetize content for all readers, members only, or if you are using modern WordPress, at the block level.
 
 ---
 

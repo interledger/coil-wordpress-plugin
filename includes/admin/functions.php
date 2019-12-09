@@ -271,7 +271,7 @@ function get_customizer_messaging_text( $message_id, $get_default = false ) : st
 		'coil_unable_to_verify_message'   => __( 'You need a valid Coil account in order to see content, here\'s how..', 'coil-web-monetization' ),
 		'coil_voluntary_donation_message' => __( 'This site is monetized using Coil.  We ask for your help to pay for our time in creating this content for you.  Here\'s how...', 'coil-web-monetization' ),
 		'coil_verifying_status_message'   => __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' ),
-		'coil_partial_gating_message'     => __( 'This content is for Coil subscribers only. To access, subscribe to Coil and install the browser extension.', 'coil-web-monetization' ),
+		'coil_partial_gating_message'     => __( 'This content is for Coil members only. To access, join Coil and install the browser extension.', 'coil-web-monetization' ),
 	];
 
 	// Get the message from the customizer.
@@ -340,7 +340,7 @@ function coil_add_customizer_options( $wp_customize ) : void {
 			'type'        => 'textarea',
 			'label'       => __( 'Incorrect browser setup message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
-			'description' => __( 'This message is shown when content is set to be subscriber-only, and visitor either isn\'t using a supported browser, or doesn\'t have the browser extension installed correctly.', 'coil-web-monetization' ),
+			'description' => __( 'This message is shown when content is set to be members-only, and visitor either isn\'t using a supported browser, or doesn\'t have the browser extension installed correctly.', 'coil-web-monetization' ),
 			'input_attrs' => [
 				'placeholder' => get_customizer_messaging_text( $incorrect_browser_setup_message_id, true ),
 			],
@@ -364,7 +364,7 @@ function coil_add_customizer_options( $wp_customize ) : void {
 			'type'        => 'textarea',
 			'label'       => __( 'Invalid Web Monetization message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
-			'description' => __( 'This message is shown when content is set to be subscriber-only, browser setup is correct, but Web Monetization doesn\'t start.  It might be due to several reasons, including not having an active Coil account.', 'coil-web-monetization' ),
+			'description' => __( 'This message is shown when content is set to be members-only, browser setup is correct, but Web Monetization doesn\'t start.  It might be due to several reasons, including not having an active Coil account.', 'coil-web-monetization' ),
 			'input_attrs' => [
 				'placeholder' => get_customizer_messaging_text( $invalid_web_monetization_message_id, true ),
 			],
@@ -436,7 +436,7 @@ function coil_add_customizer_options( $wp_customize ) : void {
 			'type'        => 'textarea',
 			'label'       => __( 'Partial content gating message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
-			'description' => __( 'This message is shown in footer bar on pages where only some of the content blocks have been set as Subscriber-Only.', 'coil-web-monetization' ),
+			'description' => __( 'This message is shown in footer bar on pages where only some of the content blocks have been set as Members-Only.', 'coil-web-monetization' ),
 			'input_attrs' => [
 				'placeholder' => get_customizer_messaging_text( $partial_message_id, true ),
 			],
