@@ -26,8 +26,8 @@ function load_metaboxes() : void {
 function add_metabox() : void {
 	$show_metabox = false;
 
-	if ( ! function_exists( '\is_gutenberg_page' ) ) {
-		// Show meta box if Gutenberg not installed.
+	if ( ! function_exists( '\use_block_editor_for_post' ) ) {
+		// Show meta box if Gutenberg not active.
 		$show_metabox = true;
 	} elseif ( ! \use_block_editor_for_post( $GLOBALS['post'] ) ) {
 		// Show meta box if post is NOT using Gutenberg.
