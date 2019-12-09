@@ -37,7 +37,7 @@
 
 	/**
 	 * Output the gated content message when content is
-	 * set to Subscriber Only
+	 * set to Member Only
 	 *
 	 * @param string Message from coil_params.
 	 */
@@ -47,7 +47,7 @@
 
 		var modalData = {
 			headerLogo: site_logo,
-			title: 'This content is for subscribers only',
+			title: 'This content is for members only',
 			content: message,
 			button: {
 				text: 'Get coil to access',
@@ -139,7 +139,7 @@
 	}
 
 	/**
-	 * Helper function to determine if the content is "Subscribers Only"
+	 * Helper function to determine if the content is "Members Only"
 	 *
 	 * @return bool
 	 */

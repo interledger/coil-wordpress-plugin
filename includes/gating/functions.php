@@ -53,7 +53,7 @@ function get_monetization_setting_types( $show_default = false ) : array {
 
 	$settings['no']        = esc_html__( 'No Monetization', 'coil-web-monetization' );
 	$settings['no-gating'] = esc_html__( 'Monetized and Public', 'coil-web-monetization' );
-	$settings['gate-all']  = esc_html__( 'Subscribers Only', 'coil-web-monetization' );
+	$settings['gate-all']  = esc_html__( 'Members Only', 'coil-web-monetization' );
 
 	return $settings;
 }
@@ -66,7 +66,7 @@ function get_monetization_setting_types( $show_default = false ) : array {
  */
 function get_valid_gating_types() {
 	$valid = [
-		'gate-all', // subscribers only.
+		'gate-all', // members only.
 		'gate-tagged-blocks', // split content.
 		'no', // no monetization.
 		'no-gating', // monetixed and public.
@@ -96,16 +96,16 @@ function maybe_restrict_content( string $content ) : string {
 
 	switch ( $coil_status ) {
 		case 'gate-all':
-			// Restrict all content (subscribers only).
+			// Restrict all content (members only).
 			if ( get_excerpt_gating( get_queried_object_id() ) ) {
 				$public_content .= $content_excerpt;
 			}
-			$public_content .= '<p>' . esc_html__( 'The contents of this article is for subscribers only!', 'coil-web-monetization' ) . '</p>';
+			$public_content .= '<p>' . esc_html__( 'The contents of this article is for members only!', 'coil-web-monetization' ) . '</p>';
 			break;
 
 		case 'gate-tagged-blocks':
 			// Restrict some part of this content. (split content).
-			$public_content  = '<p>' . esc_html__( 'This article is monetized and some content is for subscribers only.', 'coil-web-monetization' ) . '</p>';
+			$public_content  = '<p>' . esc_html__( 'This article is monetized and some content is for members only.', 'coil-web-monetization' ) . '</p>';
 			$public_content .= $content;
 			break;
 
@@ -218,7 +218,7 @@ function get_taxonomy_term_gating( $post_id ) {
 	// 3) If terms have gating, rank by priority.
 	if ( in_array( 'gate-all', $term_gating_options, true ) ) {
 
-		// Priority 1 - Monetized Subscriber Only.
+		// Priority 1 - Monetized Member Only.
 		return 'gate-all';
 
 	} elseif ( in_array( 'no-gating', $term_gating_options, true ) ) {

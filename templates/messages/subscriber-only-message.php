@@ -15,7 +15,7 @@
 			<# } #>
 		</div>
 		<div class="coil-message-footer">
-			<p class="coil-footer-content"><?php esc_html_e( 'This content is for Coil subscribers only! To access, subscribe to coil.com. Coil requires use of a browser extension which your browser doesn\'t support. Please use Chrome or Firefox to access this content', 'coil-web-monetization' ); ?></p>
+			<p class="coil-footer-content"><?php esc_html_e( 'This content is for Coil members only! To access, please visit coil.com. Coil requires use of a browser extension which your browser doesn\'t support. Please use Chrome or Firefox to access this content', 'coil-web-monetization' ); ?></p>
 		</div>
 	</div>
 </script>

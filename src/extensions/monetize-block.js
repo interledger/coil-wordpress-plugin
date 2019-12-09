@@ -188,7 +188,7 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 							className="coil-panel"
 						>
 							{ DotTip && <DotTip tipId="coil/editor.panel_monetize_block">
-								{ __( 'As you have set the article to monetize by split content, you have the option to show this block for all or show/hide for subscribers only.' ) }
+								{ __( 'As you have set the article to monetize by split content, you have the option to show this block for all or show/hide for members only.' ) }
 							</DotTip> }
 							<RadioControl
 								selected={ monetizeBlockDisplay }
@@ -350,7 +350,7 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 					value: 'no-gating'
 				},
 				{
-					label: __( 'Subscribers Only', 'coil-web-monetization' ),
+					label: __( 'Members Only', 'coil-web-monetization' ),
 					value: 'gate-all'
 				},
 				{
@@ -378,7 +378,7 @@ if ( PluginDocumentSettingPanel ) {
 							<PostMonetizationFields metaFieldName="_coil_monetize_post_status" />
 							{ DotTip &&
 							<DotTip tipId="coil/editor.panel_monetize_post_status">
-								{ __( 'When creating an article, you can decide whether to monetize it or not. There are three options you can monetize your content for. "Monetized and Public", "Subscribers Only" or by "Split Content", which allows you to control which blocks can be seen to the public or subscribers.' ) }
+								{ __( 'When creating an article, you can decide whether to monetize it or not. There are three options you can monetize your content for. "Monetized and Public", "Members Only" or by "Split Content", which allows you to control which blocks can be seen to the public or members.' ) }
 							</DotTip>
 							}
 					</PluginDocumentSettingPanel>
