@@ -17,8 +17,10 @@ function register_content_meta() : void {
 		'post',
 		'_coil_monetize_post_status',
 		[
-			'single' => true,
-			'type'   => 'string',
+			'auth_callback' => function() { return current_user_can( 'edit_posts' ); },
+			'show_in_rest'  => true,
+			'single'        => true,
+			'type'          => 'string',
 		]
 	);
 }
@@ -33,8 +35,10 @@ function register_term_meta() {
 		'term',
 		'_coil_monetize_term_status',
 		[
-			'single' => true,
-			'type'   => 'string',
+			'auth_callback' => function() { return current_user_can( 'edit_posts' ); },
+			'show_in_rest'  => true,
+			'single'        => true,
+			'type'          => 'string',
 		]
 	);
 }
