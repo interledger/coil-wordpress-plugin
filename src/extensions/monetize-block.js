@@ -13,12 +13,12 @@ import './styles/style.scss';
 const { __ }                         = wp.i18n;
 const { addFilter }                  = wp.hooks;
 const { Fragment }                   = wp.element;
-const { InspectorControls }          = wp.blockEditor;
+const { InspectorControls }          = wp.blockEditor || wp.editor;  // wp.editor for WP < 5.2.
 const { withSelect, withDispatch }   = wp.data;
 const { createHigherOrderComponent } = wp.compose;
 const { PanelBody, RadioControl }    = wp.components;
 const { registerPlugin }             = wp.plugins;
-const { PluginDocumentSettingPanel } = wp.editPost;
+const { PluginDocumentSettingPanel } = wp.editPost;  // WP >= 5.3.
 const { DotTip }                     = wp.nux;
 
 // Allow only specific blocks to use the extension attribute.
@@ -364,7 +364,7 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 />
 ) ) );
 
-// Register the panel, if the component exists.
+// WP >= 5.3 only - register the panel.
 if ( PluginDocumentSettingPanel ) {
 	registerPlugin( 'coil-document-setting-panel', {
 		render: () => {
