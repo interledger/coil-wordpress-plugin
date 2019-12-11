@@ -32,7 +32,7 @@ function add_metabox() : void {
 	} elseif ( ! \use_block_editor_for_post( $GLOBALS['post'] ) ) {
 		// Show if post is NOT using Gutenberg.
 		$show_metabox = true;
-	} elseif ( version_compare( $GLOBALS['wp_version'], '5.2', '<' ) ) {
+	} elseif ( version_compare( $GLOBALS['wp_version'], '5.3', '<' ) ) {
 		// Show if using incompatible version of Gutenberg (`wp.editPost.PluginDocumentSettingPanel`).
 		$show_metabox = true;
 	}
@@ -67,7 +67,7 @@ function render_coil_metabox() : void {
 	$settings      = Gating\get_monetization_setting_types( true );
 
 	if ( $use_gutenberg ) {
-		// This is used if WP < 5.2 without the Gutenberg plugin.
+		// This is used if WP < 5.3 (in some cases, without the Gutenberg plugin).
 		$settings['gate-tagged-blocks'] = esc_html__( 'Split Content', 'coil-web-monetization' );
 	}
 
