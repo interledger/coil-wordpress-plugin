@@ -219,7 +219,7 @@ module.exports = function(grunt) {
 		// Bump version numbers (replace with version in package.json)
 		replace: {
 			php: {
-				src: [ '<%= pkg.name %>.php' ],
+				src: [ 'plugin.php' ],
 				overwrite: true,
 				replacements: [
 					{
@@ -231,8 +231,8 @@ module.exports = function(grunt) {
 						to: "Version: <%= pkg.version %>"
 					},
 					{
-						from: /public static \$version = \'.*.'/m,
-						to: "public static $version = '<%= pkg.version %>'"
+						from: /const PLUGIN_VERSION = \'.*.'/m,
+						to: "const PLUGIN_VERSION = '<%= pkg.version %>'"
 					}
 				]
 			},
@@ -332,7 +332,7 @@ module.exports = function(grunt) {
 	grunt.registerTask( 'build', [ 'sass', 'postcss', 'cssmin', 'uglify' ] );
 
 	// Update version of plugin.
-	grunt.registerTask( 'version', [ 'replace' ] );
+	grunt.registerTask( 'version', [ 'build', 'replace' ] );
 
 	/**
 	 * Creates a deployable plugin zipped up ready to upload
