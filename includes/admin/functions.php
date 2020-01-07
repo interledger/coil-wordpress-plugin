@@ -6,9 +6,9 @@ declare(strict_types=1);
 
 namespace Coil\Admin;
 
-use const Coil\PLUGIN_VERSION;
-use Coil\Gating;
 use Coil;
+use Coil\Gating;
+use const Coil\PLUGIN_VERSION;
 
 /**
  * Customise the environment where we want to show the Coil metabox.
