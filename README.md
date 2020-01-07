@@ -4,30 +4,11 @@ This is the source code repository for the Coil WordPress plugin. Coil Web Monet
 
 ---
 
-* [Onboarding](#markdown-header-onboarding)
 * [Local Development Environment](#markdown-header-local-development-environment)
 * [Development Process](#markdown-header-development-process)
 * [Deployment](#markdown-header-deployment)
 
 ---
-
-# Onboarding
-
-To be onboarded to the project you'll need the following:
-
-## From the Scrum Master
-
-* Access to [Jira](https://jira.pragmatic.agency/secure/RapidBoard.jspa?rapidView=871&projectKey=CWP).
-* Access to [Confluence](https://confluence.pragmatic.agency/display/COIL/Coil+Home).
-
-## From the Project Lead or Team Lead
-
-The below can be granted by contacting your team lead, or asking in #support-internal on Pragmatic Slack.
-
-* Join #int-coil on Pragmatic Slack.
-* Write access to the Git repository on [Bitbucket](https://bitbucket.org/pragmaticweb/coil-web-monetization/).
-* WP Engine environment(s) access.
-
 
 # Local Development Environment
 
@@ -44,7 +25,6 @@ Ensure you have the prerequisite software installed:
 * [Local By Flywheel](https://localbyflywheel.com/community/t/local-by-flywheel-3-3-0/13527) 3.3.0
 * [Node](https://nodejs.org/) 10.15+
 * An account on [Coil.com](https://coil.com/).
-	- Register with your Pragmatic email address, and sign up as a "Content Creator".
 
 Install the development environment:
 
@@ -53,7 +33,7 @@ Install the development environment:
 	- Choose the latest PHP version available.
 	- This project does not require a specific Web Server or MySQL version; if in doubt, choose nginx and MySQL 5.6.
 1. After Flywheel has created the site, from inside the root of where you chose to create the site, clone this repository into the plugins folder:
-	- `git clone git@bitbucket.org:pragmaticweb/coil-web-monetization.git app/public/wp-content/plugins/coil-web-monetization`
+	- `git clone git@github.com:coilhq/coil-wordpress-plugin.git app/public/wp-content/plugins/coil-web-monetization`
 1. When the machine has finished provisioning, install the development dependencies:
 	- `cd app/public/wp-content/plugins/coil-web-monetization && composer install && npm install`
 1. To configure Flywheel for PHPUnit:
@@ -69,11 +49,9 @@ Flywheel will give you the URL of where you can access your environment, and you
 
 # Development Process
 
-Before you begin committing code, [double check that you have the correct email address configured for this particular Git repo](https://help.github.com/articles/setting-your-email-in-git/#setting-your-email-address-for-a-single-repository). It's likely that this should be your **work** email address instead of a **personal** email address.
+The development process follows [Git Flow](http://jeffkreeftmeijer.com/2010/why-arent-you-using-git-flow/).
 
-The development process mostly follows Pragmatic's standard take on [Git Flow](http://jeffkreeftmeijer.com/2010/why-arent-you-using-git-flow/).
-
-Development happens in feature branches, which are merged into `develop`, and then eventually merged into `master` for deployment to production. When making changes, a feature branch should be created that branches from `develop` (and the corresponding merge request on BitBucket should use `develop` as the target branch).
+Development happens in feature branches, which are merged into `develop`, and then eventually merged into `master` for deployment to production. When making changes, a feature branch should be created that branches from `develop` (and the corresponding merge request on Github should use `develop` as the target branch).
 
 ## Plugin Structure
 
@@ -127,7 +105,7 @@ New tests should be written where it makes sense. With Flywheel, the PHPUnit tes
 - Inside it, change into the plugin folder: `cd /app/public/wp-content/plugins/coil-web-monetization`.
 - To run all tests, simply do: `phpunit`.
 
-At this moment in time, the tests are not run automatically on a Bitbucket workflow.
+At this moment in time, the tests are not run automatically on public CI services.
 
 
 # Deployment

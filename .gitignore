@@ -9,3 +9,5 @@ npm-debug.lo
 # Various file types to ignore when exporting.
 .DS_Store
 Thumbs.db
+cghooks.lock
+
