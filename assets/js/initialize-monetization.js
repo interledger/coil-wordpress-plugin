@@ -483,13 +483,9 @@
 
 				if ( isSubscribersOnly() ) {
 
-					if ( ! usingDefaultContentContainer() ) {
-						$( content_container ).html( showSubscriberOnlyMessage( browser_extension_missing ) );
-					} else {
-						$( content_container ).before( showSubscriberOnlyMessage( browser_extension_missing ) );
-					}
+					$( content_container ).before( showSubscriberOnlyMessage( browser_extension_missing ) );
 
-					if ( isExcerptEnabled() ) {
+					if ( isExcerptEnabled() && getContentExcerpt() ) {
 						document.body.classList.add( 'show-excerpt-message' );
 						$( content_container ).prepend( getContentExcerpt() );
 					} else {
@@ -500,6 +496,8 @@
 
 					// Split content with no extension found.
 					$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( partial_gating ) );
+					showContentContainer();
+
 					if ( ! hasBannerDismissCookie( 'ShowCoilPartialMsg' ) ) {
 						$( 'body' ).append( showBannerMessage( partial_gating ) );
 						addBannerDismissClickHandler( 'ShowCoilPartialMsg' );
