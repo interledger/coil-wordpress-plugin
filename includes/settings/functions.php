@@ -6,9 +6,9 @@ declare(strict_types=1);
 
 namespace Coil\Settings;
 
+use Coil;
 use Coil\Admin;
 use Coil\Gating;
-use Coil;
 
 /* ------------------------------------------------------------------------ *
  * Menu Registration
