@@ -6,8 +6,9 @@ declare(strict_types=1);
 
 namespace Coil\Admin;
 
-use const \Coil\PLUGIN_VERSION;
-use \Coil\Gating;
+use const Coil\PLUGIN_VERSION;
+use Coil\Gating;
+use Coil;
 
 /**
  * Customise the environment where we want to show the Coil metabox.
@@ -45,7 +46,7 @@ function add_metabox() : void {
 		'coil',
 		__( 'Web Monetization - Coil', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\render_coil_metabox',
-		[ 'page', 'post' ],
+		Coil\get_supported_post_types(),
 		'side',
 		'high'
 	);

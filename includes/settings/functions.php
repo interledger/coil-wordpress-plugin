@@ -8,6 +8,7 @@ namespace Coil\Settings;
 
 use Coil\Admin;
 use Coil\Gating;
+use Coil;
 
 /* ------------------------------------------------------------------------ *
  * Menu Registration
@@ -325,34 +326,7 @@ function coil_global_settings_advanced_config_render_callback() {
  */
 function coil_content_settings_posts_render_callback() {
 
-	$post_types = get_post_types(
-		[],
-		'objects'
-	);
-
-	// Set up options to exclude certain post types.
-	$post_types_exclude = [
-		'attachment',
-		'revision',
-		'nav_menu_item',
-		'custom_css',
-		'customize_changeset',
-		'oembed_cache',
-		'user_request',
-		'wp_block',
-	];
-
-	$exclude = apply_filters( 'coil_settings_content_type_exclude', $post_types_exclude );
-
-	// Store the post type options using the above exclusion options.
-	$post_type_options = [];
-	foreach ( $post_types as $post_type ) {
-
-		if ( ! empty( $exclude ) && in_array( $post_type->name, $exclude, true ) ) {
-			continue;
-		}
-		$post_type_options[] = $post_type;
-	}
+	$post_type_options = Coil\get_supported_post_types( 'objects' );
 
 	// If there are post types available, output them:
 	if ( ! empty( $post_type_options ) ) {
@@ -425,34 +399,7 @@ function coil_content_settings_posts_render_callback() {
  */
 function coil_content_settings_excerpts_render_callback() {
 
-	$post_types = get_post_types(
-		[],
-		'objects'
-	);
-
-	// Set up options to exclude certain post types.
-	$post_types_exclude = [
-		'attachment',
-		'revision',
-		'nav_menu_item',
-		'custom_css',
-		'customize_changeset',
-		'oembed_cache',
-		'user_request',
-		'wp_block',
-	];
-
-	$exclude = apply_filters( 'coil_settings_content_type_exclude', $post_types_exclude );
-
-	// Store the post type options using the above exclusion options.
-	$post_type_options = [];
-	foreach ( $post_types as $post_type ) {
-
-		if ( ! empty( $exclude ) && in_array( $post_type->name, $exclude, true ) ) {
-			continue;
-		}
-		$post_type_options[] = $post_type;
-	}
+	$post_type_options = Coil\get_supported_post_types( 'objects' );
 
 	// If there are post types available, output them:
 	if ( ! empty( $post_type_options ) ) {
