@@ -92,7 +92,8 @@ function get_valid_gating_types() {
  */
 function maybe_restrict_content( string $content ) : string {
 
-	if ( is_singular() ) {
+	// Plugins can call the `the_content` filter outside of the post loop.
+	if ( is_singular() || ! get_the_ID() ) {
 		return $content;
 	}
 
