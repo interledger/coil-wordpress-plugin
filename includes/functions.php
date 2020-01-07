@@ -322,3 +322,41 @@ function add_term_edit_save_form_meta_actions() {
 	return $actions;
 }
 
+/**
+ * Return post types to integrate with Coil.
+ *
+ * @param string $output Optional. The type of output to return. Either 'names' or 'objects'. Default 'names'.
+ *
+ * @return array Supported post types (if $output is 'names', then strings, otherwise WP_Post objects).
+ */
+function get_supported_post_types( $output = 'names' ) : array {
+
+	$output        = ( $output === 'names' ) ? 'names' : 'objects';
+	$content_types = get_post_types(
+		[ 'public' => true ],
+		$output
+	);
+
+	$excluded_types = [
+		'attachment',
+		'custom_css',
+		'customize_changeset',
+		'revision',
+		'nav_menu_item',
+		'oembed_cache',
+		'user_request',
+		'wp_block',
+	];
+
+	$supported_types = [];
+
+	foreach ( $content_types as $post_type ) {
+		$type_name = ( $output === 'names' ) ? $post_type : $post_type->name;
+
+		if ( ! in_array( $type_name, $excluded_types, true ) ) {
+			$supported_types[] = $post_type;
+		}
+	}
+
+	return apply_filters( 'coil_supported_post_types', $supported_types, $output );
+}
