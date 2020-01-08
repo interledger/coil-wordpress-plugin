@@ -11,6 +11,13 @@ use Coil\Gating;
 use const Coil\PLUGIN_VERSION;
 
 /**
+ * Coil Customizer panel ID.
+ *
+ * @var string
+ */
+const CUSTOMIZER_PANEL_ID = 'coil_customizer_settings_panel';
+
+/**
  * Customise the environment where we want to show the Coil metabox.
  *
  * @return void
@@ -297,22 +304,16 @@ function get_customizer_messaging_text( $message_id, $get_default = false ) : st
 }
 
 /**
- * Add custom section to the customizer to allow Coil messaging
- * to be set.
+ * Add Coil messaging panel to the Customizer.
  *
- * @param \WP_Customize_Manager $wp_customize
- * @link http://codex.wordpress.org/Theme_Customization_API
- * @return void
+ * @param \WP_Customize_Manager $wp_customize WordPress Customizer object.
  */
-function coil_add_customizer_options( $wp_customize ) : void {
-
-	// Add a new panel section.
-	$coil_customizer_panel_id = 'coil_customizer_settings_panel';
+function add_customizer_messaging_panel( $wp_customize ) : void {
 
 	$wp_customize->add_panel(
-		$coil_customizer_panel_id,
+		CUSTOMIZER_PANEL_ID,
 		[
-			'title'      => __( 'Coil Settings', 'coil-web-monetization' ),
+			'title'      => __( 'Coil Web Monetization', 'coil-web-monetization' ),
 			'capability' => apply_filters( 'coil_settings_capability', 'manage_options' ),
 		]
 	);
@@ -324,7 +325,7 @@ function coil_add_customizer_options( $wp_customize ) : void {
 		$messaging_section_id,
 		[
 			'title' => __( 'Messaging', 'coil-web-monetization' ),
-			'panel' => $coil_customizer_panel_id,
+			'panel' => CUSTOMIZER_PANEL_ID,
 		]
 	);
 
@@ -444,6 +445,49 @@ function coil_add_customizer_options( $wp_customize ) : void {
 			'description' => __( 'This message is shown in footer bar on pages where only some of the content blocks have been set as Members-Only.', 'coil-web-monetization' ),
 			'input_attrs' => [
 				'placeholder' => get_customizer_messaging_text( $partial_message_id, true ),
+			],
+		]
+	);
+}
+
+/**
+ * Add Coil options panel to the Customizer.
+ *
+ * @param \WP_Customize_Manager $wp_customize WordPress Customizer object.
+ */
+function add_customizer_options_panel( $wp_customize ) : void {
+
+	// Options section.
+	$options_section_id = 'coil_customizer_section_options';
+
+	$wp_customize->add_section(
+		$options_section_id,
+		[
+			'title' => _x( 'Options', 'page title', 'coil-web-monetization' ),
+			'panel' => CUSTOMIZER_PANEL_ID,
+		]
+	);
+
+	// Post title padlock.
+	$padlock_setting_id = 'coil_title_padlock';
+
+	$wp_customize->add_setting(
+		$padlock_setting_id,
+		[
+			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'sanitize_callback' => 'wp_filter_nohtml_kses',
+		]
+	);
+
+	$wp_customize->add_control(
+		$padlock_setting_id,
+		[
+			'type'        => 'textarea',
+			'label'       => __( 'options_section_id browser setup message', 'coil-web-monetization' ),
+			'section'     => $options_section_id,
+			'description' => __( 'foobar', 'coil-web-monetization' ),
+			'input_attrs' => [
+				'placeholder' => 'hello world'
 			],
 		]
 	);

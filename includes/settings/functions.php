@@ -444,8 +444,8 @@ function coil_messaging_settings_render_callback() {
 
 	$customizer_link = add_query_arg(
 		[
-			'autofocus[section]' => 'coil_customizer_section_messaging',
-			'return'             => add_query_arg(
+			'autofocus[panel]' => 'coil_customizer_settings_panel',
+			'return'           => add_query_arg(
 				[
 					'page' => 'coil_settings',
 				],
