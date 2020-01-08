@@ -474,21 +474,18 @@ function add_customizer_options_panel( $wp_customize ) : void {
 	$wp_customize->add_setting(
 		$padlock_setting_id,
 		[
-			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
-			'sanitize_callback' => 'wp_filter_nohtml_kses',
+			'capability' => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'default'    => true,
 		]
 	);
 
 	$wp_customize->add_control(
 		$padlock_setting_id,
 		[
-			'type'        => 'textarea',
+			'description' => __( 'foobar', 'coil-web-monetization' ),
 			'label'       => __( 'options_section_id browser setup message', 'coil-web-monetization' ),
 			'section'     => $options_section_id,
-			'description' => __( 'foobar', 'coil-web-monetization' ),
-			'input_attrs' => [
-				'placeholder' => 'hello world'
-			],
+			'type'        => 'checkbox',
 		]
 	);
 }

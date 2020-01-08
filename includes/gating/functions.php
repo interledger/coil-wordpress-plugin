@@ -84,6 +84,36 @@ function get_valid_gating_types() {
 }
 
 /**
+ * Maybe prefix a padlock emoji to the post title.
+ *
+ * Used on archive pages to represent if a post is gated.
+ *
+ * @param string $title The post title.
+ * @param int    $id    The post ID.
+ *
+ * @return string The updated post title.
+ */
+function maybe_add_padlock_to_title( string $title, int $id ) : string {
+
+	if ( ( ! is_archive() && ! is_home() && ! is_front_page() ) || ! get_theme_mod( 'coil_title_padlock' ) ) {
+		return $title;
+	}
+
+	$status = get_content_gating( $id );
+	if ( $status !== 'gate-all' && $status !== 'gate-tagged-blocks' ) {
+		return $title;
+	}
+
+	$post_title = sprintf(
+		/* translators: %s: Gated post title. */
+		__( '🔒 %s', 'coil-web-monetization' ),
+		$title
+	);
+
+	return apply_filters( 'coil_maybe_add_padlock_to_title', $post_title, $title, $id );
+}
+
+/**
  * Maybe restrict (gate) visibility of the specified post content.
  *
  * @param string $content Post content to check.
