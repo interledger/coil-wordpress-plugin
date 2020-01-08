@@ -7,8 +7,8 @@ declare(strict_types=1);
  * Author: Coil
  * Author URI: https://coil.com
  * Version: 1.0.7
- * License: GPLv3
- * License URI: http://www.gnu.org/licenses/gpl-3.0.html
+ * License: Apache-2.0
+ * License URI: http://www.apache.org/licenses/LICENSE-2.0.txt
  * Text Domain: coil-web-monetization
  */
 

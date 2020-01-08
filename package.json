@@ -9,7 +9,7 @@
 	"requires": "4.9",
 	"requires_php": "7.1",
 	"tested_up_to": "5.3",
-	"license": "GPL-3.0",
+	"license": "Apache-2.0",
 	"description": "Coil offers an effortless way to share WordPress content online, and get paid for it.",
 	"browserslist": [
 		"> 1%",

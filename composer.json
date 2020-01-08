@@ -19,7 +19,7 @@
 		"forum": "https://wordpress.org/support/plugin/coil-web-monetization"
 	},
 	"type": "wordpress-plugin",
-	"license": "GPL-3.0",
+	"license": "Apache-2.0",
 	"config": {
 		"preferred-install": "dist",
 		"sort-packages": true,
