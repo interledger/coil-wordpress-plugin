@@ -115,7 +115,7 @@ function maybe_restrict_content( string $content ) : string {
 
 		case 'gate-tagged-blocks':
 			// Restrict some part of this content. (split content).
-			$public_content  = '<p>' . esc_html__( 'This article is monetized and some content is for members only.', 'coil-web-monetization' ) . '</p>';
+			$public_content = '<p>' . esc_html__( 'This article is monetized and some content is for members only.', 'coil-web-monetization' ) . '</p>';
 
 			if ( ! is_feed() ) {
 				$public_content .= $content;
