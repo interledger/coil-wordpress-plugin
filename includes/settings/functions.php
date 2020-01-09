@@ -218,22 +218,26 @@ function coil_getting_started_settings_render_callback() {
 	?>
 	<h3><?php esc_html_e( 'How-to guides', 'coil-web-monetization' ); ?></h3>
 	<ul>
-		<li><?php esc_html_e( 'Configure and use the Coil Wordpress plugin (coming soon)', 'coil-web-monetization' ); ?></li>
-		<li><?php
+		<li><?php esc_html_e( 'Configure and use the Coil WordPress plugin (coming soon)', 'coil-web-monetization' ); ?></li>
+		<li>
+		<?php
 		printf(
 			'<li><a href="%1$s">%2$s</a></li>',
 			esc_url( 'https://help.coil.com/' ),
 			esc_html__( 'Learn more about Coil and Web Monetization', 'coil-web-monetization' )
 		);
-		?></li>
-		<li><?php
+		?>
+		</li>
+		<li>
+		<?php
 		printf(
 			'<li><a href="%1$s">%2$s</a></li>',
 			esc_url( 'https://help.coil.com/accounts/creator-accounts' ),
 			esc_html__( 'Get a free Coil creator account', 'coil-web-monetization' )
 		);
-		?></li>
-		<li><?php esc_html_e( 'Coil Wordpress plugin FAQ (coming soon)', 'coil-web-monetization' ); ?></li>
+		?>
+		</li>
+		<li><?php esc_html_e( 'Coil WordPress plugin FAQ (coming soon)', 'coil-web-monetization' ); ?></li>
 	</ul>
 
 	<a href="<?php echo esc_url( '?page=coil_settings&tab=global_settings' ); ?>" class="button button-primary button-large"><?php esc_html_e( 'Start configuring the plugin', 'coil-web-monetization' ); ?></a>
@@ -255,7 +259,7 @@ function coil_global_settings_payment_pointer_render_callback() {
 
 	echo '<p class="' . esc_attr( 'description' ) . '">';
 
-	$payment_pointer_description  = esc_html__( 'Enter the payment pointer assigned by your digital wallet provider. Don\'t have a digital wallet or know your payment pointer? Click the button below.', 'coil-web-monetization' );
+	$payment_pointer_description = esc_html__( 'Enter the payment pointer assigned by your digital wallet provider. Don\'t have a digital wallet or know your payment pointer? Click the button below.', 'coil-web-monetization' );
 	echo '</p>' . $payment_pointer_description . '</p>'; // phpcs:ignore. Output already escaped.
 
 	printf(
