@@ -76,7 +76,7 @@ function register_admin_content_settings() {
 	add_settings_section(
 		'coil_global_settings_bottom_section',
 		__( 'Advanced Config', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_global_settings_advanced_config_description_callback',
+		'\__return_empty_string',
 		'coil_global_settings_advanced'
 	);
 
@@ -260,7 +260,7 @@ function coil_global_settings_payment_pointer_render_callback() {
 	echo '<p class="' . esc_attr( 'description' ) . '">';
 
 	$payment_pointer_description = esc_html__( 'Enter the payment pointer assigned by your digital wallet provider. Don\'t have a digital wallet or know your payment pointer? Click the button below.', 'coil-web-monetization' );
-	echo '</p>' . $payment_pointer_description . '</p>'; // phpcs:ignore. Output already escaped.
+	echo $payment_pointer_description . '</p>'; // phpcs:ignore. Output already escaped.
 
 	printf(
 		'<br><a href="%s" target="%s" class="%s">%s</a>',
@@ -269,37 +269,6 @@ function coil_global_settings_payment_pointer_render_callback() {
 		esc_attr( 'button button-large' ),
 		esc_html__( 'Learn more about digital wallets and payment pointers', 'coil-web-monetization' )
 	);
-
-}
-
-/**
- * Render a short description before the output of the advanced
- * config settings fields.
- *
- * @return void
- */
-function coil_global_settings_advanced_config_description_callback() {
-	echo '<p class="' . esc_attr( 'description' ) . '">';
-
-	$link_one = sprintf(
-		'<a href="%s" target="_blank">%s</a>',
-		esc_url( '#' ),
-		esc_html__( 'see the how-to guides', 'coil-web-monetization' )
-	);
-
-	$link_two = sprintf(
-		'<a href="%s" target="_blank">%s</a>',
-		esc_url( '#' ),
-		esc_html__( 'Advanced config guide', 'coil-web-monetization' )
-	);
-
-	$advanced_config_description  = esc_html__( 'In most themes, you won’t need to use this field and can leave it blank. If the content gating is not working correctly though (', 'coil-web-monetization' );
-	$advanced_config_description .= $link_one;
-	$advanced_config_description .= esc_html__( ') then you may need to find your post content container Id and enter it here (see the ', 'coil-web-monetization' );
-	$advanced_config_description .= $link_two;
-	$advanced_config_description .= esc_html__( ' to see how to do this. )', 'coil-web-monetization' );
-
-	echo '</p>' . $advanced_config_description . '</p>'; // phpcs:ignore. Output already escaped.
 
 }
 
@@ -319,6 +288,20 @@ function coil_global_settings_advanced_config_render_callback() {
 		esc_attr( '.content-area .entry-content' ),
 		esc_attr( 'min-width: 440px' )
 	);
+
+	echo '<p class="description">';
+
+	printf(
+		/* translators: 1) HTML link open tag, 2) HTML link close tag, 3) HTML link open tag, 4) HTML link close tag. */
+		esc_html__( 'In most themes, you won’t need to use this field and can leave it blank. If the content gating is not working correctly though (%1$ssee the how-to guides%2$s), then you may need to find your post content container ID and enter it here (check the %3$sAdvanced config guide%4$s to see how to do this).', 'coil-web-monetization' ),
+		sprintf( '<a href="%s" target="_blank">', esc_url( '#' ) ),
+		'</a>',
+		sprintf( '<a href="%s" target="_blank">', esc_url( '#' ) ),
+		'</a>'
+	);
+
+	echo '</p>';
+
 }
 
 /**
