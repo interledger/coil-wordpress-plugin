@@ -324,7 +324,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 	$wp_customize->add_section(
 		$messaging_section_id,
 		[
-			'title' => __( 'Messaging', 'coil-web-monetization' ),
+			'title' => __( 'Messages', 'coil-web-monetization' ),
 			'panel' => CUSTOMIZER_PANEL_ID,
 		]
 	);
