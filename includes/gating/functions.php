@@ -92,7 +92,8 @@ function get_valid_gating_types() {
  */
 function maybe_restrict_content( string $content ) : string {
 
-	if ( is_singular() ) {
+	// Plugins can call the `the_content` filter outside of the post loop.
+	if ( is_singular() || ! get_the_ID() ) {
 		return $content;
 	}
 
@@ -108,13 +109,18 @@ function maybe_restrict_content( string $content ) : string {
 			if ( get_excerpt_gating( get_queried_object_id() ) ) {
 				$public_content .= $content_excerpt;
 			}
+
 			$public_content .= '<p>' . esc_html__( 'The contents of this article is for members only!', 'coil-web-monetization' ) . '</p>';
 			break;
 
 		case 'gate-tagged-blocks':
 			// Restrict some part of this content. (split content).
-			$public_content  = '<p>' . esc_html__( 'This article is monetized and some content is for members only.', 'coil-web-monetization' ) . '</p>';
-			$public_content .= $content;
+			$public_content = '<p>' . esc_html__( 'This article is monetized and some content is for members only.', 'coil-web-monetization' ) . '</p>';
+
+			if ( ! is_feed() ) {
+				$public_content .= $content;
+			}
+
 			break;
 
 		/**
