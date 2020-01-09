@@ -6,7 +6,7 @@ Tags: coil, content, monetization, payment, interledger
 Requires at least: 4.9
 Requires PHP: 7.1
 Tested up to: 5.3
-Stable tag: 1.0.7
+Stable tag: 1.0.9
 License: Apache-2.0
 License URI: http://www.apache.org/licenses/LICENSE-2.0.txt
 
