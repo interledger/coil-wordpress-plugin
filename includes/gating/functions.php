@@ -114,9 +114,9 @@ function maybe_add_padlock_to_title( string $title, int $id ) : string {
 }
 
 /**
- * Maybe restrict (gate) visibility of the specified post content.
+ * Maybe restrict (gate) visibility of the post content on archive pages, home pages, and feeds.
  *
- * @param string $content Post content to check.
+ * @param string $content Post content.
  *
  * @return string $content Updated post content.
  */
@@ -144,13 +144,8 @@ function maybe_restrict_content( string $content ) : string {
 			break;
 
 		case 'gate-tagged-blocks':
-			// Restrict some part of this content. (split content).
+			// Restrict some part of this content (split content).
 			$public_content = '<p>' . esc_html__( 'This article is monetized and some content is for members only.', 'coil-web-monetization' ) . '</p>';
-
-			if ( ! is_feed() ) {
-				$public_content .= $content;
-			}
-
 			break;
 
 		/**
