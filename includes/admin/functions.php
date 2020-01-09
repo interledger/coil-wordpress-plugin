@@ -482,10 +482,9 @@ function add_customizer_options_panel( $wp_customize ) : void {
 	$wp_customize->add_control(
 		$padlock_setting_id,
 		[
-			'description' => __( 'foobar', 'coil-web-monetization' ),
-			'label'       => __( 'options_section_id browser setup message', 'coil-web-monetization' ),
-			'section'     => $options_section_id,
-			'type'        => 'checkbox',
+			'label'   => __( 'Show padlock next to post title if the post is monetized and gated.', 'coil-web-monetization' ),
+			'section' => $options_section_id,
+			'type'    => 'checkbox',
 		]
 	);
 }
