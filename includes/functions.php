@@ -30,6 +30,7 @@ function init_plugin() : void {
 	// Modify output.
 	add_filter( 'body_class', __NAMESPACE__ . '\add_body_class' );
 	add_filter( 'the_content', __NAMESPACE__ . '\Gating\maybe_restrict_content' );
+	add_filter( 'the_title', __NAMESPACE__ . '\Gating\maybe_add_padlock_to_title', 10, 2 );
 	add_action( 'wp_head', __NAMESPACE__ . '\print_meta_tag' );
 
 	// Admin screens and settings.
@@ -44,8 +45,9 @@ function init_plugin() : void {
 	add_action( 'delete_term', __NAMESPACE__ . '\Admin\delete_term_monetization_meta' );
 	add_term_edit_save_form_meta_actions();
 
-	// Customizer messaging settings.
-	add_action( 'customize_register', __NAMESPACE__ . '\Admin\coil_add_customizer_options' );
+	// Customizer settings.
+	add_action( 'customize_register', __NAMESPACE__ . '\Admin\add_customizer_messaging_panel' );
+	add_action( 'customize_register', __NAMESPACE__ . '\Admin\add_customizer_options_panel' );
 
 	// User profile settings.
 	add_action( 'personal_options', __NAMESPACE__ . '\User\add_user_profile_payment_pointer_option' );
