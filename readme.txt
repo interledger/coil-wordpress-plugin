@@ -68,4 +68,7 @@ If you get stuck, you can ask for help in the [Coil Web Monetization support for
 
 == Changelog ==
 
-= v1.0.5 - Launch Release =
+= v1.1.0 =
+
+First release.
+
