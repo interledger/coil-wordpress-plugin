@@ -338,9 +338,13 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 	};
 } )( ( props ) => (
 	<RadioControl
-		selected={ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : 'no' }
+		selected={ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : 'default' }
 		options={
 			[
+				{
+					label: __( 'Use Default', 'coil-web-monetization' ),
+					value: 'default'
+				},
 				{
 					label: __( 'No Monetization', 'coil-web-monetization' ),
 					value: 'no'
