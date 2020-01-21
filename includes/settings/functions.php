@@ -83,7 +83,7 @@ function register_admin_content_settings() {
 
 	add_settings_field(
 		'coil_content_container',
-		__( 'Post Container ID', 'coil-web-monetization' ),
+		__( 'CSS Selectors', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_global_settings_advanced_config_render_callback',
 		'coil_global_settings_advanced',
 		'coil_global_settings_bottom_section'
@@ -290,9 +290,7 @@ function coil_global_settings_advanced_config_render_callback() {
 
 	printf(
 		/* translators: 1) HTML link open tag, 2) HTML link close tag, 3) HTML link open tag, 4) HTML link close tag. */
-		esc_html__( 'In most themes, you won’t need to use this field and can leave it blank. If the content gating is not working correctly though (%1$ssee the how-to guides%2$s), then you may need to find your post content container ID and enter it here (check the %3$sAdvanced config guide%4$s to see how to do this).', 'coil-web-monetization' ),
-		sprintf( '<a href="%s" target="_blank">', esc_url( '#' ) ),
-		'</a>',
+		esc_html__( 'Enter the CSS selectors used in your theme that could include gated content. Most themes use the pre-filled CSS selectors. (%1$sLearn more%2$s)', 'coil-web-monetization' ),
 		sprintf( '<a href="%s" target="_blank">', esc_url( '#' ) ),
 		'</a>'
 	);
