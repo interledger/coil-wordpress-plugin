@@ -279,11 +279,12 @@ function get_customizer_messaging_text( $message_id, $get_default = false ) : st
 
 	// Set up message defaults.
 	$defaults = [
-		'coil_unsupported_message'        => __( 'Not using supported browser and extension, this is how to access / get COIL', 'coil-web-monetization' ),
-		'coil_unable_to_verify_message'   => __( 'You need a valid Coil account in order to see content, here\'s how..', 'coil-web-monetization' ),
-		'coil_voluntary_donation_message' => __( 'This site is monetized using Coil.  We ask for your help to pay for our time in creating this content for you.  Here\'s how...', 'coil-web-monetization' ),
-		'coil_verifying_status_message'   => __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' ),
-		'coil_partial_gating_message'     => __( 'This content is for Coil members only. To access, join Coil and install the browser extension.', 'coil-web-monetization' ),
+		'coil_unsupported_message'         => __( 'Not using supported browser and extension, this is how to access / get COIL', 'coil-web-monetization' ),
+		'coil_unable_to_verify_message'    => __( 'You need a valid Coil account in order to see content, here\'s how..', 'coil-web-monetization' ),
+		'coil_voluntary_donation_message'  => __( 'This site is monetized using Coil.  We ask for your help to pay for our time in creating this content for you.  Here\'s how...', 'coil-web-monetization' ),
+		'coil_verifying_status_message'    => __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' ),
+		'coil_partial_gating_message'      => __( 'This content is for Coil members only. To access, join Coil and install the browser extension.', 'coil-web-monetization' ),
+		'coil_fully_gated_excerpt_message' => __( 'The content in this article is for members only!', 'coil-web-monetization' ),
 	];
 
 	// Get the message from the customizer.
@@ -443,6 +444,30 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			'label'       => __( 'Partial content gating message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
 			'description' => __( 'This message is shown in footer bar on pages where only some of the content blocks have been set as Members-Only.', 'coil-web-monetization' ),
+			'input_attrs' => [
+				'placeholder' => get_customizer_messaging_text( $partial_message_id, true ),
+			],
+		]
+	);
+
+	// Fully gated excerpt message (textarea 6).
+	$partial_message_id = 'coil_fully_gated_excerpt_message';
+
+	$wp_customize->add_setting(
+		$partial_message_id,
+		[
+			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'sanitize_callback' => 'wp_filter_nohtml_kses',
+		]
+	);
+
+	$wp_customize->add_control(
+		$partial_message_id,
+		[
+			'type'        => 'textarea',
+			'label'       => __( 'Fully gated excerpt message', 'coil-web-monetization' ),
+			'section'     => $messaging_section_id,
+			'description' => __( 'This message replaces the article except on archive pages and blog feeds where the whole article has been set as Members-Only.', 'coil-web-monetization' ),
 			'input_attrs' => [
 				'placeholder' => get_customizer_messaging_text( $partial_message_id, true ),
 			],
