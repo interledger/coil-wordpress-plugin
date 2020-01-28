@@ -468,7 +468,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			'type'        => 'textarea',
 			'label'       => __( 'Fully gated excerpt message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
-			'description' => __( 'This message replaces the article except on archive pages and blog feeds where the whole article has been set as Members-Only.', 'coil-web-monetization' ),
+			'description' => __( 'This message replaces the article excerpt on archive pages and blog feeds where the whole article has been set as Members-Only.', 'coil-web-monetization' ),
 			'input_attrs' => [
 				'placeholder' => get_customizer_messaging_text( $partial_message_id, true ),
 			],
@@ -492,7 +492,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			'type'        => 'textarea',
 			'label'       => __( 'Partially gated excerpt message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
-			'description' => __( 'This message replaces the article except on archive pages and blog feeds where parts of the article have been set as Members-Only.', 'coil-web-monetization' ),
+			'description' => __( 'This message replaces the article excerpt on archive pages and blog feeds where parts of the article have been set as Members-Only.', 'coil-web-monetization' ),
 			'input_attrs' => [
 				'placeholder' => get_customizer_messaging_text( $partial_message_id, true ),
 			],
