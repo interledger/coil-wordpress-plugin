@@ -147,7 +147,9 @@ function maybe_restrict_content( string $content ) : string {
 
 		case 'gate-tagged-blocks':
 			// Restrict some part of this content (split content).
-			$public_content = '<p>' . esc_html__( 'This article is monetized and some content is for members only.', 'coil-web-monetization' ) . '</p>';
+			$partially_gated_message = Admin\get_customizer_messaging_text( 'coil_partially_gated_excerpt_message' );
+
+			$public_content = '<p>' . esc_html( $partially_gated_message ) . '</p>';
 			break;
 
 		/**
