@@ -465,9 +465,9 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 		$partial_message_id,
 		[
 			'type'        => 'textarea',
-			'label'       => __( 'Full content gating message', 'coil-web-monetization' ),
+			'label'       => __( 'Fully gated excerpt message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
-			'description' => __( 'This message is shown on archive pages and blog feeds where the whole article has been set as Members-Only.', 'coil-web-monetization' ),
+			'description' => __( 'This message replaces the article except on archive pages and blog feeds where the whole article has been set as Members-Only.', 'coil-web-monetization' ),
 			'input_attrs' => [
 				'placeholder' => get_customizer_messaging_text( $partial_message_id, true ),
 			],
