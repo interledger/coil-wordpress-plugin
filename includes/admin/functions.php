@@ -537,6 +537,26 @@ function add_customizer_options_panel( $wp_customize ) : void {
 			'type'    => 'checkbox',
 		]
 	);
+
+	// Show donation bar.
+	$donation_bar_setting_id = 'coil_show_donation_bar';
+
+	$wp_customize->add_setting(
+		$donation_bar_setting_id,
+		[
+			'capability' => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'default'    => true,
+		]
+	);
+
+	$wp_customize->add_control(
+		$donation_bar_setting_id,
+		[
+			'label'   => __( 'Show a donation bar on posts that are monetized and public.', 'coil-web-monetization' ),
+			'section' => $options_section_id,
+			'type'    => 'checkbox',
+		]
+	);
 }
 
 /**

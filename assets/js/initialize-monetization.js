@@ -10,8 +10,9 @@
 		loading_content = coil_params.loading_content,
 		partial_gating = coil_params.partial_gating,
 		post_excerpt = coil_params.post_excerpt,
-		admin_missing_id_notice = coil_params.admin_missing_id_notice;
-		site_logo = coil_params.site_logo;
+		admin_missing_id_notice = coil_params.admin_missing_id_notice,
+		site_logo = coil_params.site_logo,
+		show_donation_bar = Boolean( coil_params.show_donation_bar ); // Cast to boolean - wp_localize_script forces string values.
 
 	var subscriberOnlyMessage = wp.template( 'subscriber-only-message' );
 	var splitContentMessage = wp.template( 'split-content-message' );
@@ -362,7 +363,7 @@
 
 							} else {
 
-								if ( monetizationNotInitialized() && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+								if ( show_donation_bar && monetizationNotInitialized() && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 									$( 'body' ).append( showBannerMessage( voluntary_donation ) );
 									addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 								}
@@ -397,7 +398,7 @@
 							} else if ( isMonetizedAndPublic() ) {
 
 								// Content is monetized and public but extension is stopped.
-								if ( ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+								if ( show_donation_bar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 									$( 'body' ).append( showBannerMessage( voluntary_donation ) );
 									addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 								}
@@ -507,7 +508,7 @@
 
 					// Content is monetized and public but no extension found.
 
-					if ( ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+					if ( show_donation_bar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 						$( 'body' ).append( showBannerMessage( voluntary_donation ) );
 						addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 					}
