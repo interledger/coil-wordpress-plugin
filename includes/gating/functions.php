@@ -140,7 +140,9 @@ function maybe_restrict_content( string $content ) : string {
 				$public_content .= $content_excerpt;
 			}
 
-			$public_content .= '<p>' . esc_html__( 'The contents of this article is for members only!', 'coil-web-monetization' ) . '</p>';
+			$full_gated_message = Admin\get_customizer_messaging_text( 'coil_fully_gated_excerpt_message' );
+
+			$public_content .= '<p>' . esc_html( $full_gated_message ) . '</p>';
 			break;
 
 		case 'gate-tagged-blocks':
