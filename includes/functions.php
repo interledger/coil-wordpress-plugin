@@ -173,6 +173,7 @@ function load_full_assets() : void {
 			'voluntary_donation'        => Admin\get_customizer_messaging_text( 'coil_voluntary_donation_message' ),
 			'loading_content'           => Admin\get_customizer_messaging_text( 'coil_verifying_status_message' ),
 			'partial_gating'            => Admin\get_customizer_messaging_text( 'coil_partial_gating_message' ),
+			'show_donation_bar'         => get_theme_mod( 'coil_show_donation_bar' ),
 			'post_excerpt'              => get_the_excerpt(),
 			'site_logo'                 => $site_logo,
 
