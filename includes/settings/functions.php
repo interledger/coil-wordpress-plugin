@@ -534,7 +534,7 @@ function coil_add_term_custom_meta( $term ) {
 	?>
 	<tr class="form-field">
 		<th scope="row">
-			<label><?php esc_html_e( 'Web Monetization - Coil', 'coil-web-monetization' ); ?></label>
+			<label><?php esc_html_e( 'Coil Web Monetization', 'coil-web-monetization' ); ?></label>
 		</th>
 		<td>
 			<fieldset>
@@ -586,7 +586,7 @@ function coil_edit_term_custom_meta() {
 	}
 	?>
 	<div class="form-field">
-		<h2><?php esc_html_e( 'Web Monetization - Coil', 'coil-web-monetization' ); ?></h2>
+		<h2><?php esc_html_e( 'Coil Web Monetization', 'coil-web-monetization' ); ?></h2>
 		<fieldset>
 		<?php
 		foreach ( $gating_options as $setting_key => $setting_value ) {
