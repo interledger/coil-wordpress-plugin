@@ -452,10 +452,10 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 	);
 
 	// Fully gated excerpt message (textarea 6).
-	$partial_message_id = 'coil_fully_gated_excerpt_message';
+	$fully_gated_excerpt_message_id = 'coil_fully_gated_excerpt_message';
 
 	$wp_customize->add_setting(
-		$partial_message_id,
+		$fully_gated_excerpt_message_id,
 		[
 			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
 			'sanitize_callback' => 'wp_filter_nohtml_kses',
@@ -463,23 +463,23 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 	);
 
 	$wp_customize->add_control(
-		$partial_message_id,
+		$fully_gated_excerpt_message_id,
 		[
 			'type'        => 'textarea',
 			'label'       => __( 'Fully gated excerpt message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
 			'description' => __( 'This message replaces the article excerpt on archive pages and blog feeds where the whole article has been set as Members-Only.', 'coil-web-monetization' ),
 			'input_attrs' => [
-				'placeholder' => get_customizer_messaging_text( $partial_message_id, true ),
+				'placeholder' => get_customizer_messaging_text( $fully_gated_excerpt_message_id, true ),
 			],
 		]
 	);
 
 	// Partially gated excerpt message (textarea 6).
-	$partial_message_id = 'coil_partially_gated_excerpt_message';
+	$partially_gated_excerpt_message_id = 'coil_partially_gated_excerpt_message';
 
 	$wp_customize->add_setting(
-		$partial_message_id,
+		$partially_gated_excerpt_message_id,
 		[
 			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
 			'sanitize_callback' => 'wp_filter_nohtml_kses',
@@ -487,14 +487,14 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 	);
 
 	$wp_customize->add_control(
-		$partial_message_id,
+		$partially_gated_excerpt_message_id,
 		[
 			'type'        => 'textarea',
 			'label'       => __( 'Partially gated excerpt message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
 			'description' => __( 'This message replaces the article excerpt on archive pages and blog feeds where parts of the article have been set as Members-Only.', 'coil-web-monetization' ),
 			'input_attrs' => [
-				'placeholder' => get_customizer_messaging_text( $partial_message_id, true ),
+				'placeholder' => get_customizer_messaging_text( $partially_gated_excerpt_message_id, true ),
 			],
 		]
 	);
