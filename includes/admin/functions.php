@@ -450,7 +450,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 		]
 	);
 
-	// Full gating message (textarea 6).
+	// Fully gated excerpt message (textarea 6).
 	$partial_message_id = 'coil_fully_gated_excerpt_message';
 
 	$wp_customize->add_setting(
