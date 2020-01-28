@@ -51,7 +51,7 @@ function add_metabox() : void {
 
 	add_meta_box(
 		'coil',
-		__( 'Web Monetization - Coil', 'coil-web-monetization' ),
+		__( 'Coil Web Monetization', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\render_coil_metabox',
 		Coil\get_supported_post_types(),
 		'side',
