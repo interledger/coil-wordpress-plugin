@@ -1,5 +1,5 @@
 (function($) {
-	if ( typeof coil_params === 'undefined' ) {
+	if ( typeof coil_params === 'undefined' || ! hasContentContainer() ) {
 		return false;
 	}
 
@@ -21,6 +21,27 @@
 	var bannerMessage = wp.template( 'banner-message' );
 
 	var messageWrapper = $( 'p.monetize-msg' );
+
+
+	/**
+	 * Check the content container element exists.
+	 *
+	 * Returns false if the container element doesn't exist OR an invalid CSS
+	 * selector was used to define it.
+	 *
+	 * @return bool
+	 */
+	function hasContentContainer() {
+		// Use a try-catch to make the script more robust.
+		try {
+			document.querySelector( coil_params.content_container );
+			return true;
+		} catch ( e ) {
+			console.log( 'An error occured when attempting to retrieve the page.' );
+		}
+
+		return false;
+	}
 
 	/**
 	 * Output a monetization message when the state is changing.
@@ -97,18 +118,22 @@
 	 * Show the content container.
 	 */
 	function showContentContainer() {
+		var container = document.querySelector( content_container );
 
-		var elem = document.querySelector( content_container );
-		elem.style.display = 'block';
+		if ( container ) {
+			container.style.display = 'block';
+		}
 	}
 
 	/**
 	 * Hide the content container.
 	 */
 	function hideContentContainer() {
+		var container = document.querySelector( content_container );
 
-		var elem = document.querySelector( content_container );
-		elem.style.display = 'none';
+		if ( container ) {
+			container.style.display = 'none';
+		}
 	}
 
 	/**
