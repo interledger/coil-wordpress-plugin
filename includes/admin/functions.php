@@ -269,10 +269,10 @@ function load_admin_assets() : void {
 
 /**
  * Get a text field saved in the customizer. If no text is set for the field,
- * a default value is returned from the provided default array (if it exists).
+ * a default value is returned.
  *
  * @param string $field_id The id of the control_setting text field defined in the customizer.
- * @param bool $get_default If true, will output the default value instead of getting the cutomizer setting.
+ * @param bool $get_default If true, will output the default value instead of getting the customizer setting.
  * @return string
  */
 function get_customizer_text_field( $field_id, $get_default = false ) : string {
