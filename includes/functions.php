@@ -174,6 +174,8 @@ function load_full_assets() : void {
 			'voluntary_donation'        => Admin\get_customizer_messaging_text( 'coil_voluntary_donation_message' ),
 			'loading_content'           => Admin\get_customizer_messaging_text( 'coil_verifying_status_message' ),
 			'partial_gating'            => Admin\get_customizer_messaging_text( 'coil_partial_gating_message' ),
+			'learn_more_button_text'    => Admin\get_customizer_learn_more_button_setting( 'coil_learn_more_button_text' ),
+			'learn_more_button_link'    => Admin\get_customizer_learn_more_button_setting( 'coil_learn_more_button_link' ),
 			'show_donation_bar'         => get_theme_mod( 'coil_show_donation_bar' ),
 			'post_excerpt'              => get_the_excerpt(),
 			'site_logo'                 => $site_logo,

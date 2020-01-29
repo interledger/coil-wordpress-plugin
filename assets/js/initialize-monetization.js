@@ -11,6 +11,8 @@
 		partial_gating = coil_params.partial_gating,
 		post_excerpt = coil_params.post_excerpt,
 		admin_missing_id_notice = coil_params.admin_missing_id_notice,
+		learn_more_button_text = coil_params.learn_more_button_text,
+		learn_more_button_link = coil_params.learn_more_button_link,
 		site_logo = coil_params.site_logo,
 		show_donation_bar = Boolean( coil_params.show_donation_bar ); // Cast to boolean - wp_localize_script forces string values.
 
@@ -51,8 +53,8 @@
 			title: 'This content is for members only',
 			content: message,
 			button: {
-				text: 'Get coil to access',
-				href: 'https://coil.com/learn-more/'
+				text: learn_more_button_text,
+				href: learn_more_button_link
 			}
 		};
 
@@ -72,8 +74,8 @@
 		var modalData = {
 			content: message,
 			button: {
-				text: 'Get Coil to access',
-				href: 'https://coil.com/learn-more/'
+				text: learn_more_button_text,
+				href: learn_more_button_link
 			},
 		};
 
