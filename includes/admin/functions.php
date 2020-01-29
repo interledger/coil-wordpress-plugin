@@ -268,11 +268,30 @@ function load_admin_assets() : void {
 }
 
 /**
+ * Get a "learn more" button setting saved in the customizer. If no setting is
+ * saved, a default value is returned.
+ *
+ * @param string $field_id The id of the control_setting text field defined in the customizer.
+ * @param bool $get_default If true, will output the default text instead of getting the customizer setting.
+ * @return string
+ */
+function get_customizer_learn_more_button_setting( $field_id, $get_default = false ) : string {
+
+	// Set up button defaults.
+	$defaults = [
+		'coil_learn_more_button_text' => __( 'Get Coil to access', 'coil-web-monetization' ),
+		'coil_learn_more_button_link' => 'https://coil.com/learn-more/',
+	];
+
+	return get_customizer_text_field( $field_id, $get_default, $defaults );
+}
+
+/**
  * Get a message saved in the customizer messages section. If no message is set,
  * a default value is returned.
  *
- * @param string $message_id The id of the message control_setting defined in the customizer
- * @param bool $get_default If true, will output the default message instead of getting the cutomizer setting.
+ * @param string $message_id The id of the message control_setting defined in the customizer.
+ * @param bool $get_default If true, will output the default message instead of getting the customizer setting.
  * @return string
  */
 function get_customizer_messaging_text( $message_id, $get_default = false ) : string {
@@ -288,8 +307,21 @@ function get_customizer_messaging_text( $message_id, $get_default = false ) : st
 		'coil_partially_gated_excerpt_message' => __( 'This article is monetized and some content is for members only.', 'coil-web-monetization' ),
 	];
 
-	// Get the message from the customizer.
-	$customizer_setting = get_theme_mod( $message_id );
+	return get_customizer_text_field( $message_id, $get_default, $defaults );
+}
+
+/**
+ * Get a text field saved in the customizer. If no text is set for the field,
+ * a default value is returned from the provided default array (if it exists).
+ *
+ * @param string $field_id The id of the message control_setting defined in the customizer.
+ * @param bool $get_default If true, will output the default message instead of getting the cutomizer setting.
+ * @param string $defaults An array of defaults.
+ * @return string
+ */
+function get_customizer_text_field( $field_id, $get_default = false, $defaults = [] ) : string {
+	// Get the field from the customizer.
+	$customizer_setting = get_theme_mod( $field_id );
 
 	/**
 	 * If an empty string is saved in the customizer,
@@ -300,8 +332,9 @@ function get_customizer_messaging_text( $message_id, $get_default = false ) : st
 	 * @see https://core.trac.wordpress.org/ticket/28637
 	 */
 	if ( true === $get_default || empty( $customizer_setting ) || false === $customizer_setting ) {
-		$customizer_setting = isset( $defaults[ $message_id ] ) ? $defaults[ $message_id ] : '';
+		$customizer_setting = isset( $defaults[ $field_id ] ) ? $defaults[ $field_id ] : '';
 	}
+
 	return $customizer_setting;
 }
 
@@ -584,17 +617,20 @@ function add_customizer_learn_more_button_settings_panel( $wp_customize ) : void
 	$wp_customize->add_setting(
 		$button_text_setting_id,
 		[
-			'capability' => apply_filters( 'coil_settings_capability', 'manage_options' ),
-			'default'    => __( 'Get Coil to access', 'coil-web-monetization' ),
+			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'sanitize_callback' => 'wp_filter_nohtml_kses',
 		]
 	);
 
 	$wp_customize->add_control(
 		$button_text_setting_id,
 		[
-			'label'   => __( 'Text used for the "Learn more" button, which is shown to non-members on members-only content.', 'coil-web-monetization' ),
-			'section' => $button_settings_section_id,
-			'type'    => 'text',
+			'label'       => __( 'Text used for the "Learn more" button, which is shown to non-members on members-only content.', 'coil-web-monetization' ),
+			'section'     => $button_settings_section_id,
+			'type'        => 'text',
+			'input_attrs' => [
+				'placeholder' => get_customizer_learn_more_button_setting( $button_text_setting_id, true ),
+			],
 		]
 	);
 
@@ -604,17 +640,20 @@ function add_customizer_learn_more_button_settings_panel( $wp_customize ) : void
 	$wp_customize->add_setting(
 		$button_link_setting_id,
 		[
-			'capability' => apply_filters( 'coil_settings_capability', 'manage_options' ),
-			'default'    => 'https://coil.com/learn-more/',
+			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'sanitize_callback' => 'esc_url_raw',
 		]
 	);
 
 	$wp_customize->add_control(
 		$button_link_setting_id,
 		[
-			'label'   => __( 'Link/URL used for the "Learn more" button, which is shown to non-members on members-only content.', 'coil-web-monetization' ),
-			'section' => $button_settings_section_id,
-			'type'    => 'url',
+			'label'       => __( 'Link/URL used for the "Learn more" button, which is shown to non-members on members-only content.', 'coil-web-monetization' ),
+			'section'     => $button_settings_section_id,
+			'type'        => 'url',
+			'input_attrs' => [
+				'placeholder' => get_customizer_learn_more_button_setting( $button_link_setting_id, true ),
+			],
 		]
 	);
 }
