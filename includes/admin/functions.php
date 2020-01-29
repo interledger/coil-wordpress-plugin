@@ -268,35 +268,15 @@ function load_admin_assets() : void {
 }
 
 /**
- * Get a "learn more" button setting saved in the customizer. If no setting is
- * saved, a default value is returned.
+ * Get a text field saved in the customizer. If no text is set for the field,
+ * a default value is returned from the provided default array (if it exists).
  *
  * @param string $field_id The id of the control_setting text field defined in the customizer.
- * @param bool $get_default If true, will output the default text instead of getting the customizer setting.
+ * @param bool $get_default If true, will output the default value instead of getting the cutomizer setting.
  * @return string
  */
-function get_customizer_learn_more_button_setting( $field_id, $get_default = false ) : string {
-
-	// Set up button defaults.
-	$defaults = [
-		'coil_learn_more_button_text' => __( 'Get Coil to access', 'coil-web-monetization' ),
-		'coil_learn_more_button_link' => 'https://coil.com/learn-more/',
-	];
-
-	return get_customizer_text_field( $field_id, $get_default, $defaults );
-}
-
-/**
- * Get a message saved in the customizer messages section. If no message is set,
- * a default value is returned.
- *
- * @param string $message_id The id of the message control_setting defined in the customizer.
- * @param bool $get_default If true, will output the default message instead of getting the customizer setting.
- * @return string
- */
-function get_customizer_messaging_text( $message_id, $get_default = false ) : string {
-
-	// Set up message defaults.
+function get_customizer_text_field( $field_id, $get_default = false ) : string {
+	// Set up defaults.
 	$defaults = [
 		'coil_unsupported_message'             => __( 'Not using supported browser and extension, this is how to access / get COIL', 'coil-web-monetization' ),
 		'coil_unable_to_verify_message'        => __( 'You need a valid Coil account in order to see content, here\'s how..', 'coil-web-monetization' ),
@@ -305,21 +285,10 @@ function get_customizer_messaging_text( $message_id, $get_default = false ) : st
 		'coil_partial_gating_message'          => __( 'This content is for Coil members only. To access, join Coil and install the browser extension.', 'coil-web-monetization' ),
 		'coil_fully_gated_excerpt_message'     => __( 'The content in this article is for members only!', 'coil-web-monetization' ),
 		'coil_partially_gated_excerpt_message' => __( 'This article is monetized and some content is for members only.', 'coil-web-monetization' ),
+		'coil_learn_more_button_text'          => __( 'Get Coil to access', 'coil-web-monetization' ),
+		'coil_learn_more_button_link'          => 'https://coil.com/learn-more/',
 	];
 
-	return get_customizer_text_field( $message_id, $get_default, $defaults );
-}
-
-/**
- * Get a text field saved in the customizer. If no text is set for the field,
- * a default value is returned from the provided default array (if it exists).
- *
- * @param string $field_id The id of the message control_setting defined in the customizer.
- * @param bool $get_default If true, will output the default message instead of getting the cutomizer setting.
- * @param string $defaults An array of defaults.
- * @return string
- */
-function get_customizer_text_field( $field_id, $get_default = false, $defaults = [] ) : string {
 	// Get the field from the customizer.
 	$customizer_setting = get_theme_mod( $field_id );
 
@@ -383,7 +352,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			'section'     => $messaging_section_id,
 			'description' => __( 'This message is shown when content is set to be members-only, and visitor either isn\'t using a supported browser, or doesn\'t have the browser extension installed correctly.', 'coil-web-monetization' ),
 			'input_attrs' => [
-				'placeholder' => get_customizer_messaging_text( $incorrect_browser_setup_message_id, true ),
+				'placeholder' => get_customizer_text_field( $incorrect_browser_setup_message_id, true ),
 			],
 		]
 	);
@@ -407,7 +376,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			'section'     => $messaging_section_id,
 			'description' => __( 'This message is shown when content is set to be members-only, browser setup is correct, but Web Monetization doesn\'t start.  It might be due to several reasons, including not having an active Coil account.', 'coil-web-monetization' ),
 			'input_attrs' => [
-				'placeholder' => get_customizer_messaging_text( $invalid_web_monetization_message_id, true ),
+				'placeholder' => get_customizer_text_field( $invalid_web_monetization_message_id, true ),
 			],
 		]
 	);
@@ -431,7 +400,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			'section'     => $messaging_section_id,
 			'description' => __( 'This message is shown when content is set to "Monetized and Public" and visitor does not have Web Monetization in place and active in their browser.', 'coil-web-monetization' ),
 			'input_attrs' => [
-				'placeholder' => get_customizer_messaging_text( $voluntary_donation_message_id, true ),
+				'placeholder' => get_customizer_text_field( $voluntary_donation_message_id, true ),
 			],
 		]
 	);
@@ -455,7 +424,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			'section'     => $messaging_section_id,
 			'description' => __( 'This message is shown for a short time time only while check is made on browser setup and that an active Web Monetization account is in place.', 'coil-web-monetization' ),
 			'input_attrs' => [
-				'placeholder' => get_customizer_messaging_text( $pending_message_id, true ),
+				'placeholder' => get_customizer_text_field( $pending_message_id, true ),
 			],
 		]
 	);
@@ -479,7 +448,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			'section'     => $messaging_section_id,
 			'description' => __( 'This message is shown in footer bar on pages where only some of the content blocks have been set as Members-Only.', 'coil-web-monetization' ),
 			'input_attrs' => [
-				'placeholder' => get_customizer_messaging_text( $partial_message_id, true ),
+				'placeholder' => get_customizer_text_field( $partial_message_id, true ),
 			],
 		]
 	);
@@ -503,7 +472,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			'section'     => $messaging_section_id,
 			'description' => __( 'This message replaces the article excerpt on archive pages and blog feeds where the whole article has been set as Members-Only.', 'coil-web-monetization' ),
 			'input_attrs' => [
-				'placeholder' => get_customizer_messaging_text( $fully_gated_excerpt_message_id, true ),
+				'placeholder' => get_customizer_text_field( $fully_gated_excerpt_message_id, true ),
 			],
 		]
 	);
@@ -527,7 +496,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			'section'     => $messaging_section_id,
 			'description' => __( 'This message replaces the article excerpt on archive pages and blog feeds where parts of the article have been set as Members-Only.', 'coil-web-monetization' ),
 			'input_attrs' => [
-				'placeholder' => get_customizer_messaging_text( $partially_gated_excerpt_message_id, true ),
+				'placeholder' => get_customizer_text_field( $partially_gated_excerpt_message_id, true ),
 			],
 		]
 	);
@@ -629,7 +598,7 @@ function add_customizer_learn_more_button_settings_panel( $wp_customize ) : void
 			'section'     => $button_settings_section_id,
 			'type'        => 'text',
 			'input_attrs' => [
-				'placeholder' => get_customizer_learn_more_button_setting( $button_text_setting_id, true ),
+				'placeholder' => get_customizer_text_field( $button_text_setting_id, true ),
 			],
 		]
 	);
@@ -652,7 +621,7 @@ function add_customizer_learn_more_button_settings_panel( $wp_customize ) : void
 			'section'     => $button_settings_section_id,
 			'type'        => 'url',
 			'input_attrs' => [
-				'placeholder' => get_customizer_learn_more_button_setting( $button_link_setting_id, true ),
+				'placeholder' => get_customizer_text_field( $button_link_setting_id, true ),
 			],
 		]
 	);
