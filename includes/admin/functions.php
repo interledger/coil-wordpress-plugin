@@ -559,6 +559,66 @@ function add_customizer_options_panel( $wp_customize ) : void {
 	);
 }
 
+
+/**
+ * Add "Learn More" button settings panel to the Customizer.
+ *
+ * @param \WP_Customize_Manager $wp_customize WordPress Customizer object.
+ */
+function add_customizer_learn_more_button_settings_panel( $wp_customize ) : void {
+
+	// Options section.
+	$button_settings_section_id = 'coil_customizer_section_button_settings';
+
+	$wp_customize->add_section(
+		$button_settings_section_id,
+		[
+			'title' => __( 'Learn more button', 'coil-web-monetization' ),
+			'panel' => CUSTOMIZER_PANEL_ID,
+		]
+	);
+
+	// Post title padlock.
+	$button_text_setting_id = 'coil_learn_more_button_text';
+
+	$wp_customize->add_setting(
+		$button_text_setting_id,
+		[
+			'capability' => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'default'    => __( 'Get Coil to access', 'coil-web-monetization' ),
+		]
+	);
+
+	$wp_customize->add_control(
+		$button_text_setting_id,
+		[
+			'label'   => __( 'Text used for the "Learn more" button, which is shown to non-members on members-only content.', 'coil-web-monetization' ),
+			'section' => $button_settings_section_id,
+			'type'    => 'text',
+		]
+	);
+
+	// Show donation bar.
+	$button_link_setting_id = 'coil_learn_more_button_link';
+
+	$wp_customize->add_setting(
+		$button_link_setting_id,
+		[
+			'capability' => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'default'    => 'https://coil.com/learn-more/',
+		]
+	);
+
+	$wp_customize->add_control(
+		$button_link_setting_id,
+		[
+			'label'   => __( 'Link/URL used for the "Learn more" button, which is shown to non-members on members-only content.', 'coil-web-monetization' ),
+			'section' => $button_settings_section_id,
+			'type'    => 'url',
+		]
+	);
+}
+
 /**
  * Gets the taxonomies and allows the output to be filtered.
  *
