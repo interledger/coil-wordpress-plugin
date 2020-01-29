@@ -140,14 +140,14 @@ function maybe_restrict_content( string $content ) : string {
 				$public_content .= $content_excerpt;
 			}
 
-			$full_gated_message = Admin\get_customizer_messaging_text( 'coil_fully_gated_excerpt_message' );
+			$full_gated_message = Admin\get_customizer_text_field( 'coil_fully_gated_excerpt_message' );
 
 			$public_content .= '<p>' . esc_html( $full_gated_message ) . '</p>';
 			break;
 
 		case 'gate-tagged-blocks':
 			// Restrict some part of this content (split content).
-			$partially_gated_message = Admin\get_customizer_messaging_text( 'coil_partially_gated_excerpt_message' );
+			$partially_gated_message = Admin\get_customizer_text_field( 'coil_partially_gated_excerpt_message' );
 
 			$public_content = '<p>' . esc_html( $partially_gated_message ) . '</p>';
 			break;
