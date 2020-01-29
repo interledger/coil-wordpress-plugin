@@ -95,7 +95,7 @@ function get_valid_gating_types() {
  */
 function maybe_add_padlock_to_title( string $title, int $id ) : string {
 
-	if ( ( ! is_archive() && ! is_home() && ! is_front_page() ) || ! get_theme_mod( 'coil_title_padlock' ) ) {
+	if ( ! get_theme_mod( 'coil_title_padlock' ) ) {
 		return $title;
 	}
 
