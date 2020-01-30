@@ -9,6 +9,7 @@ namespace Coil\Settings;
 use Coil;
 use Coil\Admin;
 use Coil\Gating;
+use const Coil\COIL__FILE__;
 
 /* ------------------------------------------------------------------------ *
  * Menu Registration
@@ -463,8 +464,9 @@ function render_coil_settings_screen() : void {
 	?>
 	<div class="wrap coil plugin-settings">
 
-		<h1><?php esc_html_e( 'Welcome to the Coil Web Monetization Plugin', 'coil-web-monetization' ); ?></h1>
-		<br>
+		<div class="plugin-branding">
+			<img width="60" height="25" class="coil-logo" src="<?php echo esc_url( plugins_url( 'assets/images/coil-logo.svg', COIL__FILE__ ) ); ?>" alt="<?php esc_attr_e( 'Coil', 'coil-web-monetization' ); ?>" />
+		</div>
 
 		<?php settings_errors(); ?>
 

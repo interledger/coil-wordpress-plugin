@@ -251,6 +251,7 @@ function load_admin_assets() : void {
 
 	$load_on_screens = [
 		'toplevel_page_coil',
+		'toplevel_page_coil_settings',
 	];
 
 	if ( ! in_array( $screen->id, $load_on_screens, true ) ) {

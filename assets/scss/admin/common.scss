@@ -58,4 +58,15 @@
 			}
 		}
 	}
+	.plugin-branding {
+		background-color:white;
+		border-bottom: 1px solid gray;
+		text-align: center;
+		font-size: 30px;
+		padding: 20px;
+		width: calc(100% + 40px);
+		margin-top: -10px;
+		margin-left: -20px;
+		margin-bottom: 20px;
+	}
 }
