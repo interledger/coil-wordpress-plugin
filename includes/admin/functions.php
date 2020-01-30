@@ -258,7 +258,13 @@ function load_admin_assets() : void {
 		return;
 	}
 
-	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+	$suffix       = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+	$admin_params = apply_filters(
+		'coil_admin_js_params',
+		[
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+		]
+	);
 
 	wp_enqueue_style(
 		'coil_admin',
@@ -266,6 +272,23 @@ function load_admin_assets() : void {
 		[],
 		PLUGIN_VERSION
 	);
+
+	wp_register_script(
+		'coil_admin_notices',
+		esc_url_raw( plugin_dir_url( dirname( __DIR__ ) ) . 'assets/js/admin/admin-notices' . $suffix . '.js' ),
+		[ 'jquery' ],
+		time(),
+		true
+	);
+
+	wp_localize_script(
+		'coil_admin_notices',
+		'coil_admin_params',
+		$admin_params
+	);
+
+	// Enqueue localized script.
+	wp_enqueue_script( 'coil_admin_notices' );
 }
 
 /**

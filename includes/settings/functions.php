@@ -464,6 +464,13 @@ function admin_welcome_notice() {
 		return;
 	}
 
+	$current_user     = wp_get_current_user();
+	$notice_dismissed = get_user_meta( $current_user->ID, 'coil-welcome-notice-dismissed', true );
+
+	if ( $notice_dismissed ) {
+		return;
+	}
+
 	$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'getting_started';
 
 	if ( $active_tab !== 'getting_started' ) {
@@ -653,4 +660,15 @@ function coil_edit_term_custom_meta() {
 
 	<?php
 	wp_nonce_field( 'coil_term_gating_nonce_action', 'term_gating_nonce' );
+}
+
+function dismiss_welcome_notice() {
+	$current_user = wp_get_current_user();
+
+	// Bail early - no user set (somehow).
+	if ( empty( $current_user ) ) {
+		return;
+	}
+
+	update_user_meta( $current_user->ID, 'coil-welcome-notice-dismissed', true );
 }
