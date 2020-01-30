@@ -38,6 +38,7 @@ function init_plugin() : void {
 	add_filter( 'plugin_row_meta', __NAMESPACE__ . '\Admin\add_plugin_meta_link', 10, 2 );
 	add_action( 'admin_menu', __NAMESPACE__ . '\Settings\register_admin_menu' );
 	add_action( 'admin_init', __NAMESPACE__ . '\Settings\register_admin_content_settings' );
+	add_action( 'admin_notices', __NAMESPACE__ . '\Settings\admin_welcome_notice' );
 
 	// Term meta.
 	add_action( 'edit_term', __NAMESPACE__ . '\Admin\maybe_save_term_meta' );

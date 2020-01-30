@@ -50,3 +50,25 @@
   width: calc(100% + 42px);
   margin-left: -22px;
   margin-top: -10px; }
+
+.coil .coil-welcome-notice {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-left-width: 1px;
+  padding: 20px; }
+
+.coil .coil-welcome-notice__icon {
+  flex: 0 0 auto;
+  margin-right: 20px; }
+
+.coil .coil-welcome-notice__content {
+  flex: 1 1 auto; }
+  .coil .coil-welcome-notice__content h3 {
+    margin-top: 0;
+    margin-bottom: 10px; }
+  .coil .coil-welcome-notice__content p {
+    margin-bottom: 0; }

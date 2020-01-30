@@ -72,4 +72,33 @@
 		margin-left: -22px; // Left offset for admin sidebar + .wrap margins.
 		margin-top: -10px; // Offset for .wrap margin-top.
 	}
+
+	.coil-welcome-notice {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		align-items: center;
+		margin-top: 20px;
+		margin-bottom: 20px;
+		border-left-width: 1px; // Core notice style override.
+		padding: 20px;
+	}
+
+	.coil-welcome-notice__icon {
+		flex: 0 0 auto;
+		margin-right: 20px;
+	}
+
+	.coil-welcome-notice__content {
+		flex: 1 1 auto;
+
+		h3 {
+			margin-top: 0;
+			margin-bottom: 10px;
+		}
+
+		p {
+			margin-bottom: 0;
+		}
+	}
 }
