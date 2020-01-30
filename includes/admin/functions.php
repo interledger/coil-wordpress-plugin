@@ -695,20 +695,13 @@ function get_valid_taxonomies() : array {
  * @return string
  */
 function get_global_settings( $setting_id ) {
-	$coil_global_settings_group_options = get_option( 'coil_global_settings_group' );
-	if ( empty( $coil_global_settings_group_options ) ) {
-		return '';
-	}
+	$options = get_option( 'coil_global_settings_group', [] );
 
 	switch ( $setting_id ) {
 		case 'coil_payment_pointer_id':
-			return ( isset( $coil_global_settings_group_options['coil_payment_pointer_id'] ) )
-			? $coil_global_settings_group_options['coil_payment_pointer_id']
-			: '';
+			return ( ! empty( $options['coil_payment_pointer_id'] ) ) ? $options['coil_payment_pointer_id'] : '';
 			break;
 		case 'coil_content_container':
-			return ( isset( $coil_global_settings_group_options['coil_content_container'] ) )
-			? $coil_global_settings_group_options['coil_content_container']
-			: '';
+			return ( ! empty( $options['coil_content_container'] ) ) ? $options['coil_content_container'] : '.content-area .entry-content';
 	}
 }
