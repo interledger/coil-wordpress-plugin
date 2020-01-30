@@ -9,6 +9,7 @@ namespace Coil\Settings;
 use Coil;
 use Coil\Admin;
 use Coil\Gating;
+use const Coil\COIL__FILE__;
 
 /* ------------------------------------------------------------------------ *
  * Menu Registration
@@ -453,6 +454,50 @@ function coil_messaging_settings_render_callback() {
 	);
 }
 
+function admin_welcome_notice() {
+	$screen = get_current_screen();
+	if ( ! $screen ) {
+		return;
+	}
+
+	if ( $screen->id !== 'toplevel_page_coil_settings' ) {
+		return;
+	}
+
+	$current_user       = wp_get_current_user();
+	$payment_pointer_id = Admin\get_global_settings( 'coil_payment_pointer_id' );
+	$notice_dismissed   = get_user_meta( $current_user->ID, 'coil-welcome-notice-dismissed', true );
+
+	if ( $payment_pointer_id || $notice_dismissed ) {
+		return;
+	}
+
+	$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'getting_started';
+
+	if ( $active_tab !== 'getting_started' ) {
+		return;
+	}
+	?>
+
+	<div class="notice is-dismissible coil-welcome-notice">
+		<img width="48" height="48" class="coil-welcome-notice__icon" src="<?php echo esc_url( plugins_url( 'assets/images/web-mon-icon.svg', COIL__FILE__ ) ); ?>" alt="<?php esc_attr_e( 'Coil', 'coil-web-monetization' ); ?>" />
+		<div class="coil-welcome-notice__content">
+			<h3><?php esc_html_e( 'Welcome to Coil Web Monetization for WordPress', 'coil-web-monetization' ); ?></h3>
+			<p>
+			<?php
+			printf(
+				/* translators: 1) HTML link open tag, 2) HTML link close tag */
+				esc_html__( 'To start using Web Monetization please set up your %1$spayment pointer%2$s.', 'coil-web-monetization' ),
+				sprintf( '<a href="%1$s">', esc_url( '?page=coil_settings&tab=global_settings' ) ),
+				'</a>'
+			);
+			?>
+			</p>
+		</div>
+	</div>
+	<?php
+}
+
 /**
  * Render the Coil submenu setting screen to display options to gate posts
  * and taxonomy content types.
@@ -463,8 +508,9 @@ function render_coil_settings_screen() : void {
 	?>
 	<div class="wrap coil plugin-settings">
 
-		<h1><?php esc_html_e( 'Welcome to the Coil Web Monetization Plugin', 'coil-web-monetization' ); ?></h1>
-		<br>
+		<div class="plugin-branding">
+			<img width="60" height="25" class="coil-logo" src="<?php echo esc_url( plugins_url( 'assets/images/coil-logo.svg', COIL__FILE__ ) ); ?>" alt="<?php esc_attr_e( 'Coil', 'coil-web-monetization' ); ?>" />
+		</div>
 
 		<?php settings_errors(); ?>
 
@@ -479,7 +525,6 @@ function render_coil_settings_screen() : void {
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=excerpt_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'excerpt_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Excerpt Settings', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=messaging_settings' ); ?>" class="nav-tab <?php echo $active_tab === 'messaging_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Messaging Settings', 'coil-web-monetization' ); ?></a>
 		</h2>
-		<br>
 
 		<form action="options.php" method="post">
 			<?php
@@ -616,4 +661,15 @@ function coil_edit_term_custom_meta() {
 
 	<?php
 	wp_nonce_field( 'coil_term_gating_nonce_action', 'term_gating_nonce' );
+}
+
+function dismiss_welcome_notice() {
+	$current_user = wp_get_current_user();
+
+	// Bail early - no user set (somehow).
+	if ( empty( $current_user ) ) {
+		return;
+	}
+
+	update_user_meta( $current_user->ID, 'coil-welcome-notice-dismissed', true );
 }

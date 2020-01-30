@@ -22,6 +22,11 @@ defined( 'ABSPATH' ) || exit;
  */
 const PLUGIN_VERSION = '1.1.0';
 
+/**
+ * @var string Plugin root file.
+ */
+const COIL__FILE__ = __FILE__;
+
 require_once __DIR__ . '/includes/admin/functions.php';
 require_once __DIR__ . '/includes/settings/functions.php';
 require_once __DIR__ . '/includes/gating/functions.php';
