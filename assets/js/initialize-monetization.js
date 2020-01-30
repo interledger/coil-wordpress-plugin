@@ -524,6 +524,11 @@
 
 					// Split content with no extension found.
 					$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( partial_gating ) );
+
+					// Show non-members-only content.
+					// Removing class means blocks revert to their *original* display values.
+					$( '.coil-hide-monetize-users' ).removeClass('coil-hide-monetize-users');
+
 					showContentContainer();
 
 					if ( ! hasBannerDismissCookie( 'ShowCoilPartialMsg' ) ) {
