@@ -464,10 +464,11 @@ function admin_welcome_notice() {
 		return;
 	}
 
-	$current_user     = wp_get_current_user();
-	$notice_dismissed = get_user_meta( $current_user->ID, 'coil-welcome-notice-dismissed', true );
+	$current_user       = wp_get_current_user();
+	$payment_pointer_id = Admin\get_global_settings( 'coil_payment_pointer_id' );
+	$notice_dismissed   = get_user_meta( $current_user->ID, 'coil-welcome-notice-dismissed', true );
 
-	if ( $notice_dismissed ) {
+	if ( $payment_pointer_id || $notice_dismissed ) {
 		return;
 	}
 
@@ -486,8 +487,8 @@ function admin_welcome_notice() {
 			<?php
 			printf(
 				/* translators: 1) HTML link open tag, 2) HTML link close tag */
-				esc_html__( 'To start using Web Monetization please set up your %1$spayment pointer%2$s', 'coil-web-monetization' ),
-				sprintf( '<a href="%1$s">', esc_url( '#' ) ),
+				esc_html__( 'To start using Web Monetization please set up your %1$spayment pointer%2$s.', 'coil-web-monetization' ),
+				sprintf( '<a href="%1$s">', esc_url( '?page=coil_settings&tab=global_settings' ) ),
 				'</a>'
 			);
 			?>
