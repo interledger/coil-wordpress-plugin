@@ -40,12 +40,13 @@
       font-size: 20px; }
 
 .coil .plugin-branding {
+  box-sizing: border-box;
   background-color: white;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid #ccc;
   text-align: center;
   font-size: 30px;
   padding: 20px;
-  width: calc(100% + 40px);
-  margin-top: -10px;
-  margin-left: -20px;
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+  width: calc(100% + 42px);
+  margin-left: -22px;
+  margin-top: -10px; }

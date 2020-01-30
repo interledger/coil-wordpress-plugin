@@ -59,14 +59,17 @@
 		}
 	}
 	.plugin-branding {
+		box-sizing: border-box;
 		background-color:white;
-		border-bottom: 1px solid gray;
+		border-bottom: 1px solid #ccc;
 		text-align: center;
 		font-size: 30px;
 		padding: 20px;
-		width: calc(100% + 40px);
-		margin-top: -10px;
-		margin-left: -20px;
 		margin-bottom: 20px;
+
+		// Style full-width banner.
+		width: calc(100% + 42px); // Full width + margins (admin sidebar & .wrap core class).
+		margin-left: -22px; // Left offset for admin sidebar + .wrap margins.
+		margin-top: -10px; // Offset for .wrap margin-top.
 	}
 }
