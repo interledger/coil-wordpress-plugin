@@ -32,9 +32,11 @@
 	 * @return bool
 	 */
 	function hasContentContainer() {
+		var element;
+
 		// Use try-catch to handle invalid CSS selectors.
 		try {
-			var element = document.querySelector( coil_params.content_container );
+			element = document.querySelector( coil_params.content_container );
 		} catch ( e ) {
 			console.log( 'An error occured when attempting to retrieve the page. Invalid container.' );
 			return false;
