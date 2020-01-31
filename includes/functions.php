@@ -38,6 +38,8 @@ function init_plugin() : void {
 	add_filter( 'plugin_row_meta', __NAMESPACE__ . '\Admin\add_plugin_meta_link', 10, 2 );
 	add_action( 'admin_menu', __NAMESPACE__ . '\Settings\register_admin_menu' );
 	add_action( 'admin_init', __NAMESPACE__ . '\Settings\register_admin_content_settings' );
+	add_action( 'admin_notices', __NAMESPACE__ . '\Settings\admin_welcome_notice' );
+	add_action( 'wp_ajax_dismiss_welcome_notice', __NAMESPACE__ . '\Settings\dismiss_welcome_notice' );
 
 	// Term meta.
 	add_action( 'edit_term', __NAMESPACE__ . '\Admin\maybe_save_term_meta' );
@@ -48,6 +50,7 @@ function init_plugin() : void {
 	// Customizer settings.
 	add_action( 'customize_register', __NAMESPACE__ . '\Admin\add_customizer_messaging_panel' );
 	add_action( 'customize_register', __NAMESPACE__ . '\Admin\add_customizer_options_panel' );
+	add_action( 'customize_register', __NAMESPACE__ . '\Admin\add_customizer_learn_more_button_settings_panel' );
 
 	// User profile settings.
 	add_action( 'personal_options', __NAMESPACE__ . '\User\add_user_profile_payment_pointer_option' );
@@ -168,11 +171,14 @@ function load_full_assets() : void {
 		'coil_js_ui_messages',
 		[
 			'content_container'         => Admin\get_global_settings( 'coil_content_container' ),
-			'browser_extension_missing' => Admin\get_customizer_messaging_text( 'coil_unsupported_message' ),
-			'unable_to_verify'          => Admin\get_customizer_messaging_text( 'coil_unable_to_verify_message' ),
-			'voluntary_donation'        => Admin\get_customizer_messaging_text( 'coil_voluntary_donation_message' ),
-			'loading_content'           => Admin\get_customizer_messaging_text( 'coil_verifying_status_message' ),
-			'partial_gating'            => Admin\get_customizer_messaging_text( 'coil_partial_gating_message' ),
+			'browser_extension_missing' => Admin\get_customizer_text_field( 'coil_unsupported_message' ),
+			'unable_to_verify'          => Admin\get_customizer_text_field( 'coil_unable_to_verify_message' ),
+			'voluntary_donation'        => Admin\get_customizer_text_field( 'coil_voluntary_donation_message' ),
+			'loading_content'           => Admin\get_customizer_text_field( 'coil_verifying_status_message' ),
+			'partial_gating'            => Admin\get_customizer_text_field( 'coil_partial_gating_message' ),
+			'learn_more_button_text'    => Admin\get_customizer_text_field( 'coil_learn_more_button_text' ),
+			'learn_more_button_link'    => Admin\get_customizer_text_field( 'coil_learn_more_button_link' ),
+			'show_donation_bar'         => get_theme_mod( 'coil_show_donation_bar' ),
 			'post_excerpt'              => get_the_excerpt(),
 			'site_logo'                 => $site_logo,
 

@@ -1,5 +1,5 @@
 (function($) {
-	if ( typeof coil_params === 'undefined' ) {
+	if ( typeof coil_params === 'undefined' || ! hasContentContainer() ) {
 		return false;
 	}
 
@@ -10,14 +10,47 @@
 		loading_content = coil_params.loading_content,
 		partial_gating = coil_params.partial_gating,
 		post_excerpt = coil_params.post_excerpt,
-		admin_missing_id_notice = coil_params.admin_missing_id_notice;
-		site_logo = coil_params.site_logo;
+		admin_missing_id_notice = coil_params.admin_missing_id_notice,
+		learn_more_button_text = coil_params.learn_more_button_text,
+		learn_more_button_link = coil_params.learn_more_button_link,
+		site_logo = coil_params.site_logo,
+		show_donation_bar = Boolean( coil_params.show_donation_bar ); // Cast to boolean - wp_localize_script forces string values.
 
 	var subscriberOnlyMessage = wp.template( 'subscriber-only-message' );
 	var splitContentMessage = wp.template( 'split-content-message' );
 	var bannerMessage = wp.template( 'banner-message' );
 
 	var messageWrapper = $( 'p.monetize-msg' );
+
+
+	/**
+	 * Check the content container element exists.
+	 *
+	 * Returns false if the container element doesn't exist OR an invalid CSS
+	 * selector was used to define it.
+	 *
+	 * @return bool
+	 */
+	function hasContentContainer() {
+		var element;
+
+		// Use try-catch to handle invalid CSS selectors.
+		try {
+			element = document.querySelector( coil_params.content_container );
+		} catch ( e ) {
+			console.log( 'An error occured when attempting to retrieve the page. Invalid container.' );
+			return false;
+		}
+
+		// Content container exists.
+		if ( element ) {
+			return true;
+		}
+
+		// Content container does not exist.
+		console.log( 'An error occured when attempting to retrieve the page. Container not found.' );
+		return false;
+	}
 
 	/**
 	 * Output a monetization message when the state is changing.
@@ -50,8 +83,8 @@
 			title: 'This content is for members only',
 			content: message,
 			button: {
-				text: 'Get coil to access',
-				href: 'https://coil.com/learn-more/'
+				text: learn_more_button_text,
+				href: learn_more_button_link
 			}
 		};
 
@@ -71,8 +104,8 @@
 		var modalData = {
 			content: message,
 			button: {
-				text: 'Get Coil to access',
-				href: 'https://coil.com/learn-more/'
+				text: learn_more_button_text,
+				href: learn_more_button_link
 			},
 		};
 
@@ -94,18 +127,22 @@
 	 * Show the content container.
 	 */
 	function showContentContainer() {
+		var container = document.querySelector( content_container );
 
-		var elem = document.querySelector( content_container );
-		elem.style.display = 'block';
+		if ( container ) {
+			container.style.display = 'block';
+		}
 	}
 
 	/**
 	 * Hide the content container.
 	 */
 	function hideContentContainer() {
+		var container = document.querySelector( content_container );
 
-		var elem = document.querySelector( content_container );
-		elem.style.display = 'none';
+		if ( container ) {
+			container.style.display = 'none';
+		}
 	}
 
 	/**
@@ -362,7 +399,7 @@
 
 							} else {
 
-								if ( monetizationNotInitialized() && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+								if ( show_donation_bar && monetizationNotInitialized() && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 									$( 'body' ).append( showBannerMessage( voluntary_donation ) );
 									addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 								}
@@ -397,7 +434,7 @@
 							} else if ( isMonetizedAndPublic() ) {
 
 								// Content is monetized and public but extension is stopped.
-								if ( ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+								if ( show_donation_bar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 									$( 'body' ).append( showBannerMessage( voluntary_donation ) );
 									addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 								}
@@ -496,6 +533,11 @@
 
 					// Split content with no extension found.
 					$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( partial_gating ) );
+
+					// Show non-members-only content.
+					// Removing class means blocks revert to their *original* display values.
+					$( '.coil-hide-monetize-users' ).removeClass('coil-hide-monetize-users');
+
 					showContentContainer();
 
 					if ( ! hasBannerDismissCookie( 'ShowCoilPartialMsg' ) ) {
@@ -507,7 +549,7 @@
 
 					// Content is monetized and public but no extension found.
 
-					if ( ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+					if ( show_donation_bar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 						$( 'body' ).append( showBannerMessage( voluntary_donation ) );
 						addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 					}

@@ -183,7 +183,7 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 				{ isSelected && showInspector &&
 					<InspectorControls>
 						<PanelBody
-							title={ __( 'Web Monetization - Coil' ) }
+							title={ __( 'Coil Web Monetization' ) }
 							initialOpen={ false }
 							className="coil-panel"
 						>
@@ -338,9 +338,13 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 	};
 } )( ( props ) => (
 	<RadioControl
-		selected={ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : 'no' }
+		selected={ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : 'default' }
 		options={
 			[
+				{
+					label: __( 'Use Default', 'coil-web-monetization' ),
+					value: 'default'
+				},
 				{
 					label: __( 'No Monetization', 'coil-web-monetization' ),
 					value: 'no'
@@ -371,7 +375,7 @@ if ( PluginDocumentSettingPanel ) {
 			return (
 					<PluginDocumentSettingPanel
 						name="coil-meta"
-						title={ __( 'Web Monetization - Coil', 'coil-web-monetization' ) }
+						title={ __( 'Coil Web Monetization', 'coil-web-monetization' ) }
 						initialOpen={ false }
 						className="coil-document-panel"
 						>

@@ -95,7 +95,7 @@ function get_valid_gating_types() {
  */
 function maybe_add_padlock_to_title( string $title, int $id ) : string {
 
-	if ( ( ! is_archive() && ! is_home() && ! is_front_page() ) || ! get_theme_mod( 'coil_title_padlock' ) ) {
+	if ( ! get_theme_mod( 'coil_title_padlock', true ) ) {
 		return $title;
 	}
 
@@ -140,12 +140,20 @@ function maybe_restrict_content( string $content ) : string {
 				$public_content .= $content_excerpt;
 			}
 
-			$public_content .= '<p>' . esc_html__( 'The contents of this article is for members only!', 'coil-web-monetization' ) . '</p>';
+			$full_gated_message = Admin\get_customizer_text_field( 'coil_fully_gated_excerpt_message' );
+
+			$public_content .= '<p>' . esc_html( $full_gated_message ) . '</p>';
 			break;
 
 		case 'gate-tagged-blocks':
 			// Restrict some part of this content (split content).
-			$public_content = '<p>' . esc_html__( 'This article is monetized and some content is for members only.', 'coil-web-monetization' ) . '</p>';
+			if ( get_excerpt_gating( get_queried_object_id() ) ) {
+				$public_content .= $content_excerpt;
+			}
+
+			$partially_gated_message = Admin\get_customizer_text_field( 'coil_partially_gated_excerpt_message' );
+
+			$public_content .= '<p>' . esc_html( $partially_gated_message ) . '</p>';
 			break;
 
 		/**

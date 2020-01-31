@@ -51,7 +51,7 @@ function add_metabox() : void {
 
 	add_meta_box(
 		'coil',
-		__( 'Web Monetization - Coil', 'coil-web-monetization' ),
+		__( 'Coil Web Monetization', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\render_coil_metabox',
 		Coil\get_supported_post_types(),
 		'side',
@@ -251,13 +251,20 @@ function load_admin_assets() : void {
 
 	$load_on_screens = [
 		'toplevel_page_coil',
+		'toplevel_page_coil_settings',
 	];
 
 	if ( ! in_array( $screen->id, $load_on_screens, true ) ) {
 		return;
 	}
 
-	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+	$suffix       = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+	$admin_params = apply_filters(
+		'coil_admin_js_params',
+		[
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+		]
+	);
 
 	wp_enqueue_style(
 		'coil_admin',
@@ -265,29 +272,49 @@ function load_admin_assets() : void {
 		[],
 		PLUGIN_VERSION
 	);
+
+	wp_register_script(
+		'coil_admin_notices',
+		esc_url_raw( plugin_dir_url( dirname( __DIR__ ) ) . 'assets/js/admin/admin-notices' . $suffix . '.js' ),
+		[ 'jquery' ],
+		time(),
+		true
+	);
+
+	wp_localize_script(
+		'coil_admin_notices',
+		'coil_admin_params',
+		$admin_params
+	);
+
+	// Enqueue localized script.
+	wp_enqueue_script( 'coil_admin_notices' );
 }
 
 /**
- * Get a message saved in the customizer messages section. If no message is set,
+ * Get a text field saved in the customizer. If no text is set for the field,
  * a default value is returned.
  *
- * @param string $message_id The id of the message control_setting defined in the customizer
- * @param bool $get_default If true, will output the default message instead of getting the cutomizer setting.
+ * @param string $field_id The id of the control_setting text field defined in the customizer.
+ * @param bool $get_default If true, will output the default value instead of getting the customizer setting.
  * @return string
  */
-function get_customizer_messaging_text( $message_id, $get_default = false ) : string {
-
-	// Set up message defaults.
+function get_customizer_text_field( $field_id, $get_default = false ) : string {
+	// Set up defaults.
 	$defaults = [
-		'coil_unsupported_message'        => __( 'Not using supported browser and extension, this is how to access / get COIL', 'coil-web-monetization' ),
-		'coil_unable_to_verify_message'   => __( 'You need a valid Coil account in order to see content, here\'s how..', 'coil-web-monetization' ),
-		'coil_voluntary_donation_message' => __( 'This site is monetized using Coil.  We ask for your help to pay for our time in creating this content for you.  Here\'s how...', 'coil-web-monetization' ),
-		'coil_verifying_status_message'   => __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' ),
-		'coil_partial_gating_message'     => __( 'This content is for Coil members only. To access, join Coil and install the browser extension.', 'coil-web-monetization' ),
+		'coil_unsupported_message'             => __( 'Not using supported browser and extension, this is how to access / get COIL', 'coil-web-monetization' ),
+		'coil_unable_to_verify_message'        => __( 'You need a valid Coil account in order to see content, here\'s how..', 'coil-web-monetization' ),
+		'coil_voluntary_donation_message'      => __( 'This site is monetized using Coil.  We ask for your help to pay for our time in creating this content for you.  Here\'s how...', 'coil-web-monetization' ),
+		'coil_verifying_status_message'        => __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' ),
+		'coil_partial_gating_message'          => __( 'This content is for Coil members only. To access, join Coil and install the browser extension.', 'coil-web-monetization' ),
+		'coil_fully_gated_excerpt_message'     => __( 'The content in this article is for members only!', 'coil-web-monetization' ),
+		'coil_partially_gated_excerpt_message' => __( 'This article is monetized and some content is for members only.', 'coil-web-monetization' ),
+		'coil_learn_more_button_text'          => __( 'Get Coil to access', 'coil-web-monetization' ),
+		'coil_learn_more_button_link'          => 'https://coil.com/learn-more/',
 	];
 
-	// Get the message from the customizer.
-	$customizer_setting = get_theme_mod( $message_id );
+	// Get the field from the customizer.
+	$customizer_setting = get_theme_mod( $field_id );
 
 	/**
 	 * If an empty string is saved in the customizer,
@@ -298,8 +325,9 @@ function get_customizer_messaging_text( $message_id, $get_default = false ) : st
 	 * @see https://core.trac.wordpress.org/ticket/28637
 	 */
 	if ( true === $get_default || empty( $customizer_setting ) || false === $customizer_setting ) {
-		$customizer_setting = isset( $defaults[ $message_id ] ) ? $defaults[ $message_id ] : '';
+		$customizer_setting = isset( $defaults[ $field_id ] ) ? $defaults[ $field_id ] : '';
 	}
+
 	return $customizer_setting;
 }
 
@@ -348,7 +376,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			'section'     => $messaging_section_id,
 			'description' => __( 'This message is shown when content is set to be members-only, and visitor either isn\'t using a supported browser, or doesn\'t have the browser extension installed correctly.', 'coil-web-monetization' ),
 			'input_attrs' => [
-				'placeholder' => get_customizer_messaging_text( $incorrect_browser_setup_message_id, true ),
+				'placeholder' => get_customizer_text_field( $incorrect_browser_setup_message_id, true ),
 			],
 		]
 	);
@@ -372,7 +400,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			'section'     => $messaging_section_id,
 			'description' => __( 'This message is shown when content is set to be members-only, browser setup is correct, but Web Monetization doesn\'t start.  It might be due to several reasons, including not having an active Coil account.', 'coil-web-monetization' ),
 			'input_attrs' => [
-				'placeholder' => get_customizer_messaging_text( $invalid_web_monetization_message_id, true ),
+				'placeholder' => get_customizer_text_field( $invalid_web_monetization_message_id, true ),
 			],
 		]
 	);
@@ -396,7 +424,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			'section'     => $messaging_section_id,
 			'description' => __( 'This message is shown when content is set to "Monetized and Public" and visitor does not have Web Monetization in place and active in their browser.', 'coil-web-monetization' ),
 			'input_attrs' => [
-				'placeholder' => get_customizer_messaging_text( $voluntary_donation_message_id, true ),
+				'placeholder' => get_customizer_text_field( $voluntary_donation_message_id, true ),
 			],
 		]
 	);
@@ -420,7 +448,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			'section'     => $messaging_section_id,
 			'description' => __( 'This message is shown for a short time time only while check is made on browser setup and that an active Web Monetization account is in place.', 'coil-web-monetization' ),
 			'input_attrs' => [
-				'placeholder' => get_customizer_messaging_text( $pending_message_id, true ),
+				'placeholder' => get_customizer_text_field( $pending_message_id, true ),
 			],
 		]
 	);
@@ -444,7 +472,55 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			'section'     => $messaging_section_id,
 			'description' => __( 'This message is shown in footer bar on pages where only some of the content blocks have been set as Members-Only.', 'coil-web-monetization' ),
 			'input_attrs' => [
-				'placeholder' => get_customizer_messaging_text( $partial_message_id, true ),
+				'placeholder' => get_customizer_text_field( $partial_message_id, true ),
+			],
+		]
+	);
+
+	// Fully gated excerpt message (textarea 6).
+	$fully_gated_excerpt_message_id = 'coil_fully_gated_excerpt_message';
+
+	$wp_customize->add_setting(
+		$fully_gated_excerpt_message_id,
+		[
+			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'sanitize_callback' => 'wp_filter_nohtml_kses',
+		]
+	);
+
+	$wp_customize->add_control(
+		$fully_gated_excerpt_message_id,
+		[
+			'type'        => 'textarea',
+			'label'       => __( 'Fully gated excerpt message', 'coil-web-monetization' ),
+			'section'     => $messaging_section_id,
+			'description' => __( 'This message replaces the article excerpt on archive pages and blog feeds where the whole article has been set as Members-Only.', 'coil-web-monetization' ),
+			'input_attrs' => [
+				'placeholder' => get_customizer_text_field( $fully_gated_excerpt_message_id, true ),
+			],
+		]
+	);
+
+	// Partially gated excerpt message (textarea 6).
+	$partially_gated_excerpt_message_id = 'coil_partially_gated_excerpt_message';
+
+	$wp_customize->add_setting(
+		$partially_gated_excerpt_message_id,
+		[
+			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'sanitize_callback' => 'wp_filter_nohtml_kses',
+		]
+	);
+
+	$wp_customize->add_control(
+		$partially_gated_excerpt_message_id,
+		[
+			'type'        => 'textarea',
+			'label'       => __( 'Partially gated excerpt message', 'coil-web-monetization' ),
+			'section'     => $messaging_section_id,
+			'description' => __( 'This message replaces the article excerpt on archive pages and blog feeds where parts of the article have been set as Members-Only.', 'coil-web-monetization' ),
+			'input_attrs' => [
+				'placeholder' => get_customizer_text_field( $partially_gated_excerpt_message_id, true ),
 			],
 		]
 	);
@@ -485,6 +561,92 @@ function add_customizer_options_panel( $wp_customize ) : void {
 			'label'   => __( 'Show padlock next to post title if the post is monetized and gated.', 'coil-web-monetization' ),
 			'section' => $options_section_id,
 			'type'    => 'checkbox',
+		]
+	);
+
+	// Show donation bar.
+	$donation_bar_setting_id = 'coil_show_donation_bar';
+
+	$wp_customize->add_setting(
+		$donation_bar_setting_id,
+		[
+			'capability' => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'default'    => true,
+		]
+	);
+
+	$wp_customize->add_control(
+		$donation_bar_setting_id,
+		[
+			'label'   => __( 'Show a donation bar on posts that are monetized and public.', 'coil-web-monetization' ),
+			'section' => $options_section_id,
+			'type'    => 'checkbox',
+		]
+	);
+}
+
+
+/**
+ * Add "Learn More" button settings panel to the Customizer.
+ *
+ * @param \WP_Customize_Manager $wp_customize WordPress Customizer object.
+ */
+function add_customizer_learn_more_button_settings_panel( $wp_customize ) : void {
+
+	// Options section.
+	$button_settings_section_id = 'coil_customizer_section_button_settings';
+
+	$wp_customize->add_section(
+		$button_settings_section_id,
+		[
+			'title' => __( 'Learn more button', 'coil-web-monetization' ),
+			'panel' => CUSTOMIZER_PANEL_ID,
+		]
+	);
+
+	// Post title padlock.
+	$button_text_setting_id = 'coil_learn_more_button_text';
+
+	$wp_customize->add_setting(
+		$button_text_setting_id,
+		[
+			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'sanitize_callback' => 'wp_filter_nohtml_kses',
+		]
+	);
+
+	$wp_customize->add_control(
+		$button_text_setting_id,
+		[
+			'label'       => __( 'Text used for the "Learn more" button, which is shown to non-members on members-only content.', 'coil-web-monetization' ),
+			'section'     => $button_settings_section_id,
+			'type'        => 'text',
+			'input_attrs' => [
+				'placeholder' => get_customizer_text_field( $button_text_setting_id, true ),
+			],
+		]
+	);
+
+	// Show donation bar.
+	$button_link_setting_id = 'coil_learn_more_button_link';
+
+	$wp_customize->add_setting(
+		$button_link_setting_id,
+		[
+			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'sanitize_callback' => 'esc_url_raw',
+		]
+	);
+
+	$wp_customize->add_control(
+		$button_link_setting_id,
+		[
+			'label'       => __( 'Link/URL used for the "Learn more" button, which is shown to non-members on members-only content.', 'coil-web-monetization' ),
+			'section'     => $button_settings_section_id,
+			'type'        => 'url',
+			'input_attrs' => [
+				'placeholder' => get_customizer_text_field( $button_link_setting_id, true ),
+			],
 		]
 	);
 }
@@ -533,20 +695,13 @@ function get_valid_taxonomies() : array {
  * @return string
  */
 function get_global_settings( $setting_id ) {
-	$coil_global_settings_group_options = get_option( 'coil_global_settings_group' );
-	if ( empty( $coil_global_settings_group_options ) ) {
-		return '';
-	}
+	$options = get_option( 'coil_global_settings_group', [] );
 
 	switch ( $setting_id ) {
 		case 'coil_payment_pointer_id':
-			return ( isset( $coil_global_settings_group_options['coil_payment_pointer_id'] ) )
-			? $coil_global_settings_group_options['coil_payment_pointer_id']
-			: '';
+			return ( ! empty( $options['coil_payment_pointer_id'] ) ) ? $options['coil_payment_pointer_id'] : '';
 			break;
 		case 'coil_content_container':
-			return ( isset( $coil_global_settings_group_options['coil_content_container'] ) )
-			? $coil_global_settings_group_options['coil_content_container']
-			: '';
+			return ( ! empty( $options['coil_content_container'] ) ) ? $options['coil_content_container'] : '.content-area .entry-content';
 	}
 }
