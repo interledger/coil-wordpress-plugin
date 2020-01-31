@@ -32,14 +32,21 @@
 	 * @return bool
 	 */
 	function hasContentContainer() {
-		// Use a try-catch to make the script more robust.
+		// Use try-catch to handle invalid CSS selectors.
 		try {
-			document.querySelector( coil_params.content_container );
-			return true;
+			var element = document.querySelector( coil_params.content_container );
 		} catch ( e ) {
-			console.log( 'An error occured when attempting to retrieve the page.' );
+			console.log( 'An error occured when attempting to retrieve the page. Invalid container.' );
+			return false;
 		}
 
+		// Content container exists.
+		if ( element ) {
+			return true;
+		}
+
+		// Content container does not exist.
+		console.log( 'An error occured when attempting to retrieve the page. Container not found.' );
 		return false;
 	}
 
