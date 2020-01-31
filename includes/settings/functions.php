@@ -468,7 +468,7 @@ function admin_welcome_notice() {
 	$payment_pointer_id = Admin\get_global_settings( 'coil_payment_pointer_id' );
 	$notice_dismissed   = get_user_meta( $current_user->ID, 'coil-welcome-notice-dismissed', true );
 
-	if ( $payment_pointer_id || $notice_dismissed ) {
+	if ( $payment_pointer_id || $notice_dismissed === 'true' ) {
 		return;
 	}
 
@@ -671,5 +671,6 @@ function dismiss_welcome_notice() {
 		return;
 	}
 
-	update_user_meta( $current_user->ID, 'coil-welcome-notice-dismissed', true );
+	// User meta stored as strings, so use 'true' to avoid data type issues.
+	update_user_meta( $current_user->ID, 'coil-welcome-notice-dismissed', 'true' );
 }
