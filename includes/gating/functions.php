@@ -147,9 +147,13 @@ function maybe_restrict_content( string $content ) : string {
 
 		case 'gate-tagged-blocks':
 			// Restrict some part of this content (split content).
+			if ( get_excerpt_gating( get_queried_object_id() ) ) {
+				$public_content .= $content_excerpt;
+			}
+
 			$partially_gated_message = Admin\get_customizer_text_field( 'coil_partially_gated_excerpt_message' );
 
-			$public_content = '<p>' . esc_html( $partially_gated_message ) . '</p>';
+			$public_content .= '<p>' . esc_html( $partially_gated_message ) . '</p>';
 			break;
 
 		/**
