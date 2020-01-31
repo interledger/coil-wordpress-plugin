@@ -251,13 +251,20 @@ function load_admin_assets() : void {
 
 	$load_on_screens = [
 		'toplevel_page_coil',
+		'toplevel_page_coil_settings',
 	];
 
 	if ( ! in_array( $screen->id, $load_on_screens, true ) ) {
 		return;
 	}
 
-	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+	$suffix       = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+	$admin_params = apply_filters(
+		'coil_admin_js_params',
+		[
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+		]
+	);
 
 	wp_enqueue_style(
 		'coil_admin',
@@ -265,6 +272,23 @@ function load_admin_assets() : void {
 		[],
 		PLUGIN_VERSION
 	);
+
+	wp_register_script(
+		'coil_admin_notices',
+		esc_url_raw( plugin_dir_url( dirname( __DIR__ ) ) . 'assets/js/admin/admin-notices' . $suffix . '.js' ),
+		[ 'jquery' ],
+		time(),
+		true
+	);
+
+	wp_localize_script(
+		'coil_admin_notices',
+		'coil_admin_params',
+		$admin_params
+	);
+
+	// Enqueue localized script.
+	wp_enqueue_script( 'coil_admin_notices' );
 }
 
 /**
@@ -671,20 +695,13 @@ function get_valid_taxonomies() : array {
  * @return string
  */
 function get_global_settings( $setting_id ) {
-	$coil_global_settings_group_options = get_option( 'coil_global_settings_group' );
-	if ( empty( $coil_global_settings_group_options ) ) {
-		return '';
-	}
+	$options = get_option( 'coil_global_settings_group', [] );
 
 	switch ( $setting_id ) {
 		case 'coil_payment_pointer_id':
-			return ( isset( $coil_global_settings_group_options['coil_payment_pointer_id'] ) )
-			? $coil_global_settings_group_options['coil_payment_pointer_id']
-			: '';
+			return ( ! empty( $options['coil_payment_pointer_id'] ) ) ? $options['coil_payment_pointer_id'] : '';
 			break;
 		case 'coil_content_container':
-			return ( isset( $coil_global_settings_group_options['coil_content_container'] ) )
-			? $coil_global_settings_group_options['coil_content_container']
-			: '';
+			return ( ! empty( $options['coil_content_container'] ) ) ? $options['coil_content_container'] : '.content-area .entry-content';
 	}
 }

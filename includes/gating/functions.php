@@ -95,7 +95,7 @@ function get_valid_gating_types() {
  */
 function maybe_add_padlock_to_title( string $title, int $id ) : string {
 
-	if ( ! get_theme_mod( 'coil_title_padlock' ) ) {
+	if ( ! get_theme_mod( 'coil_title_padlock', true ) ) {
 		return $title;
 	}
 
