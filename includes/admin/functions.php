@@ -304,7 +304,7 @@ function get_customizer_text_field( $field_id, $get_default = false ) : string {
 	$defaults = [
 		'coil_unsupported_message'             => __( 'Not using supported browser and extension, this is how to access / get COIL', 'coil-web-monetization' ),
 		'coil_unable_to_verify_message'        => __( 'You need a valid Coil account in order to see content, here\'s how..', 'coil-web-monetization' ),
-		'coil_voluntary_donation_message'      => __( 'This site is monetized using Coil.  We ask for your help to pay for our time in creating this content for you.  Here\'s how...', 'coil-web-monetization' ),
+		'coil_voluntary_donation_message'      => __( 'This site is monetized using Coil. We ask for your help to pay for our time in creating this content for you. Here\'s how...', 'coil-web-monetization' ),
 		'coil_verifying_status_message'        => __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' ),
 		'coil_partial_gating_message'          => __( 'This content is for Coil members only. To access, join Coil and install the browser extension.', 'coil-web-monetization' ),
 		'coil_fully_gated_excerpt_message'     => __( 'The content in this article is for members only!', 'coil-web-monetization' ),
@@ -357,11 +357,11 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 		]
 	);
 
-	// Incorrect browser setup message (textarea 1).
-	$incorrect_browser_setup_message_id = 'coil_unsupported_message';
+	// Partial gating message (textarea 1).
+	$partial_message_id = 'coil_partial_gating_message';
 
 	$wp_customize->add_setting(
-		$incorrect_browser_setup_message_id,
+		$partial_message_id,
 		[
 			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
 			'sanitize_callback' => 'wp_filter_nohtml_kses',
@@ -369,23 +369,23 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 	);
 
 	$wp_customize->add_control(
-		$incorrect_browser_setup_message_id,
+		$partial_message_id,
 		[
 			'type'        => 'textarea',
-			'label'       => __( 'Incorrect browser setup message', 'coil-web-monetization' ),
+			'label'       => __( 'Partial content gating message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
-			'description' => __( 'This message is shown when content is set to be members-only, and visitor either isn\'t using a supported browser, or doesn\'t have the browser extension installed correctly.', 'coil-web-monetization' ),
+			'description' => __( 'This message is shown in footer bar on pages where only some of the content blocks have been set as Members-Only.', 'coil-web-monetization' ),
 			'input_attrs' => [
-				'placeholder' => get_customizer_text_field( $incorrect_browser_setup_message_id, true ),
+				'placeholder' => get_customizer_text_field( $partial_message_id, true ),
 			],
 		]
 	);
 
-	// Invalid Web Monetization message (textarea 2).
-	$invalid_web_monetization_message_id = 'coil_unable_to_verify_message';
+	// Fully gated excerpt message (textarea 2).
+	$fully_gated_excerpt_message_id = 'coil_fully_gated_excerpt_message';
 
 	$wp_customize->add_setting(
-		$invalid_web_monetization_message_id,
+		$fully_gated_excerpt_message_id,
 		[
 			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
 			'sanitize_callback' => 'wp_filter_nohtml_kses',
@@ -393,23 +393,23 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 	);
 
 	$wp_customize->add_control(
-		$invalid_web_monetization_message_id,
+		$fully_gated_excerpt_message_id,
 		[
 			'type'        => 'textarea',
-			'label'       => __( 'Invalid Web Monetization message', 'coil-web-monetization' ),
+			'label'       => __( 'Fully gated excerpt message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
-			'description' => __( 'This message is shown when content is set to be members-only, browser setup is correct, but Web Monetization doesn\'t start.  It might be due to several reasons, including not having an active Coil account.', 'coil-web-monetization' ),
+			'description' => __( 'This message replaces the article excerpt on archive pages and blog feeds where the whole article has been set as Members-Only.', 'coil-web-monetization' ),
 			'input_attrs' => [
-				'placeholder' => get_customizer_text_field( $invalid_web_monetization_message_id, true ),
+				'placeholder' => get_customizer_text_field( $fully_gated_excerpt_message_id, true ),
 			],
 		]
 	);
 
-	// Voluntary donation message (textarea 3).
-	$voluntary_donation_message_id = 'coil_voluntary_donation_message';
+	// Partially gated excerpt message (textarea 3).
+	$partially_gated_excerpt_message_id = 'coil_partially_gated_excerpt_message';
 
 	$wp_customize->add_setting(
-		$voluntary_donation_message_id,
+		$partially_gated_excerpt_message_id,
 		[
 			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
 			'sanitize_callback' => 'wp_filter_nohtml_kses',
@@ -417,14 +417,14 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 	);
 
 	$wp_customize->add_control(
-		$voluntary_donation_message_id,
+		$partially_gated_excerpt_message_id,
 		[
 			'type'        => 'textarea',
-			'label'       => __( 'Voluntary donation message', 'coil-web-monetization' ),
+			'label'       => __( 'Partially gated excerpt message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
-			'description' => __( 'This message is shown when content is set to "Monetized and Public" and visitor does not have Web Monetization in place and active in their browser.', 'coil-web-monetization' ),
+			'description' => __( 'This message replaces the article excerpt on archive pages and blog feeds where parts of the article have been set as Members-Only.', 'coil-web-monetization' ),
 			'input_attrs' => [
-				'placeholder' => get_customizer_text_field( $voluntary_donation_message_id, true ),
+				'placeholder' => get_customizer_text_field( $partially_gated_excerpt_message_id, true ),
 			],
 		]
 	);
@@ -453,11 +453,11 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 		]
 	);
 
-	// Partial gating message (textarea 5).
-	$partial_message_id = 'coil_partial_gating_message';
+	// Invalid Web Monetization message (textarea 5).
+	$invalid_web_monetization_message_id = 'coil_unable_to_verify_message';
 
 	$wp_customize->add_setting(
-		$partial_message_id,
+		$invalid_web_monetization_message_id,
 		[
 			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
 			'sanitize_callback' => 'wp_filter_nohtml_kses',
@@ -465,23 +465,23 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 	);
 
 	$wp_customize->add_control(
-		$partial_message_id,
+		$invalid_web_monetization_message_id,
 		[
 			'type'        => 'textarea',
-			'label'       => __( 'Partial content gating message', 'coil-web-monetization' ),
+			'label'       => __( 'Invalid Web Monetization message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
-			'description' => __( 'This message is shown in footer bar on pages where only some of the content blocks have been set as Members-Only.', 'coil-web-monetization' ),
+			'description' => __( 'This message is shown when content is set to be members-only, browser setup is correct, but Web Monetization doesn\'t start.  It might be due to several reasons, including not having an active Coil account.', 'coil-web-monetization' ),
 			'input_attrs' => [
-				'placeholder' => get_customizer_text_field( $partial_message_id, true ),
+				'placeholder' => get_customizer_text_field( $invalid_web_monetization_message_id, true ),
 			],
 		]
 	);
 
-	// Fully gated excerpt message (textarea 6).
-	$fully_gated_excerpt_message_id = 'coil_fully_gated_excerpt_message';
+	// Voluntary donation message (textarea 6).
+	$voluntary_donation_message_id = 'coil_voluntary_donation_message';
 
 	$wp_customize->add_setting(
-		$fully_gated_excerpt_message_id,
+		$voluntary_donation_message_id,
 		[
 			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
 			'sanitize_callback' => 'wp_filter_nohtml_kses',
@@ -489,23 +489,23 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 	);
 
 	$wp_customize->add_control(
-		$fully_gated_excerpt_message_id,
+		$voluntary_donation_message_id,
 		[
 			'type'        => 'textarea',
-			'label'       => __( 'Fully gated excerpt message', 'coil-web-monetization' ),
+			'label'       => __( 'Voluntary donation message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
-			'description' => __( 'This message replaces the article excerpt on archive pages and blog feeds where the whole article has been set as Members-Only.', 'coil-web-monetization' ),
+			'description' => __( 'This message is shown when content is set to "Monetized and Public" and visitor does not have Web Monetization in place and active in their browser.', 'coil-web-monetization' ),
 			'input_attrs' => [
-				'placeholder' => get_customizer_text_field( $fully_gated_excerpt_message_id, true ),
+				'placeholder' => get_customizer_text_field( $voluntary_donation_message_id, true ),
 			],
 		]
 	);
 
-	// Partially gated excerpt message (textarea 6).
-	$partially_gated_excerpt_message_id = 'coil_partially_gated_excerpt_message';
+	// Incorrect browser setup message (textarea 7).
+	$incorrect_browser_setup_message_id = 'coil_unsupported_message';
 
 	$wp_customize->add_setting(
-		$partially_gated_excerpt_message_id,
+		$incorrect_browser_setup_message_id,
 		[
 			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
 			'sanitize_callback' => 'wp_filter_nohtml_kses',
@@ -513,14 +513,14 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 	);
 
 	$wp_customize->add_control(
-		$partially_gated_excerpt_message_id,
+		$incorrect_browser_setup_message_id,
 		[
 			'type'        => 'textarea',
-			'label'       => __( 'Partially gated excerpt message', 'coil-web-monetization' ),
+			'label'       => __( 'Incorrect browser setup message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
-			'description' => __( 'This message replaces the article excerpt on archive pages and blog feeds where parts of the article have been set as Members-Only.', 'coil-web-monetization' ),
+			'description' => __( 'This message is shown when content is set to be members-only, and visitor either isn\'t using a supported browser, or doesn\'t have the browser extension installed correctly.', 'coil-web-monetization' ),
 			'input_attrs' => [
-				'placeholder' => get_customizer_text_field( $partially_gated_excerpt_message_id, true ),
+				'placeholder' => get_customizer_text_field( $incorrect_browser_setup_message_id, true ),
 			],
 		]
 	);
