@@ -130,8 +130,12 @@ function maybe_restrict_content( string $content ) : string {
 	$coil_status     = get_content_gating( get_the_ID() );
 	$post_obj        = get_post( get_the_ID() );
 	$content_excerpt = $post_obj->post_excerpt;
-
-	$public_content = '';
+	$public_content  = '';
+	$cta_button_html = sprintf(
+		'<p><a href="%1$s" class="coil-serverside-message-button">%2$s</a></p>',
+		esc_url( Admin\get_customizer_text_field( 'coil_learn_more_button_link' ) ),
+		esc_html( Admin\get_customizer_text_field( 'coil_learn_more_button_text' ) )
+	);
 
 	switch ( $coil_status ) {
 		case 'gate-all':
@@ -143,6 +147,7 @@ function maybe_restrict_content( string $content ) : string {
 			$full_gated_message = Admin\get_customizer_text_field( 'coil_fully_gated_excerpt_message' );
 
 			$public_content .= '<p>' . esc_html( $full_gated_message ) . '</p>';
+			$public_content .= $cta_button_html;
 			break;
 
 		case 'gate-tagged-blocks':
@@ -154,6 +159,7 @@ function maybe_restrict_content( string $content ) : string {
 			$partially_gated_message = Admin\get_customizer_text_field( 'coil_partially_gated_excerpt_message' );
 
 			$public_content .= '<p>' . esc_html( $partially_gated_message ) . '</p>';
+			$public_content .= $cta_button_html;
 			break;
 
 		/**
