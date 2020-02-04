@@ -460,3 +460,23 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
         right: auto;
         position: relative;
         font-size: 35px; } }
+
+a.coil-serverside-message-button {
+  padding: 13px 16px;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-size: 16px;
+  line-height: 24px;
+  display: inline-block;
+  max-width: 232px;
+  font-weight: 600;
+  text-decoration: none;
+  margin-bottom: 24px;
+  text-align: center;
+  font-family: 'Open Sans'; }
+  a.coil-serverside-message-button:hover {
+    background-color: rgba(69, 69, 69, 0.9); }
+  @media only screen and (min-width: 1168px) {
+    a.coil-serverside-message-button {
+      margin-bottom: 0; } }
