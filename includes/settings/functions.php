@@ -219,8 +219,14 @@ function coil_content_settings_taxonomies_validation( $taxonomy_content_settings
 function coil_getting_started_settings_render_callback() {
 	?>
 	<h3><?php esc_html_e( 'How-to guides', 'coil-web-monetization' ); ?></h3>
-	<ul>
-		<li><?php esc_html_e( 'Configure and use the Coil WordPress plugin (coming soon)', 'coil-web-monetization' ); ?></li>
+<ul>
+		<?php
+		printf(
+			'<li><a href="%1$s">%2$s</a></li>',
+			esc_url( 'https://help.coil.com/for-creators/wordpress-plugin' ),
+			esc_html__( 'Configure and use the Coil WordPress plugin', 'coil-web-monetization' )
+		);
+		?>
 		<?php
 		printf(
 			'<li><a href="%1$s">%2$s</a></li>',
@@ -235,7 +241,6 @@ function coil_getting_started_settings_render_callback() {
 			esc_html__( 'Get a free Coil creator account', 'coil-web-monetization' )
 		);
 		?>
-		<li><?php esc_html_e( 'Coil WordPress plugin FAQ (coming soon)', 'coil-web-monetization' ); ?></li>
 	</ul>
 
 	<a href="<?php echo esc_url( '?page=coil_settings&tab=global_settings' ); ?>" class="button button-primary button-large"><?php esc_html_e( 'Configure the plugin', 'coil-web-monetization' ); ?></a>
