@@ -246,3 +246,27 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 		}
 	}
 }
+
+a.coil-serverside-message-button {
+	padding: 13px $message_spacing_baseline * 2;
+	text-align: center;
+	background-color: $message_font_colour;
+	color: white;
+	font-size: $message_spacing_baseline * 2;
+	line-height: $message_spacing_baseline * 3;
+	display: inline-block;
+	max-width: 232px;
+	font-weight: 600;
+	text-decoration: none;
+	margin-bottom: $message_spacing_baseline * 3;
+	text-align: center;
+	font-family: 'Open Sans';
+
+	&:hover {
+		background-color: $message_content_conceal_colour;
+	}
+
+	@media only screen and (min-width: $message_desktop_breakpoint) {
+		margin-bottom: 0;
+	}
+}

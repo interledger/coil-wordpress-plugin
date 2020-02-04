@@ -202,12 +202,9 @@ function load_full_assets() : void {
  */
 function load_messaging_assets() : void {
 
-	// Only load Coil on actual content.
-	if ( is_admin() || is_home() || is_front_page() || ! is_singular() || is_feed() || is_preview() ) {
+	if ( is_admin() ) {
 		return;
 	}
-
-	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 	wp_enqueue_style(
 		'coil-messaging',
@@ -215,6 +212,13 @@ function load_messaging_assets() : void {
 		[],
 		PLUGIN_VERSION
 	);
+
+	// Only load Coil cookie message styles on singular posts.
+	if ( is_home() || is_front_page() || ! is_singular() || is_feed() || is_preview() ) {
+		return;
+	}
+
+	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 	wp_enqueue_script(
 		'messaging-cookies',
