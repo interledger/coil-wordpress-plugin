@@ -206,6 +206,8 @@ function load_messaging_assets() : void {
 		return;
 	}
 
+	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
 	wp_enqueue_style(
 		'coil-messaging',
 		esc_url_raw( plugin_dir_url( __DIR__ ) . 'assets/css/messages/coil' . $suffix . '.css' ),
@@ -217,8 +219,6 @@ function load_messaging_assets() : void {
 	if ( is_home() || is_front_page() || ! is_singular() || is_feed() || is_preview() ) {
 		return;
 	}
-
-	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 	wp_enqueue_script(
 		'messaging-cookies',
