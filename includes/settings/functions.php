@@ -222,14 +222,14 @@ function coil_getting_started_settings_render_callback() {
 		<li><?php esc_html_e( 'Configure and use the Coil WordPress plugin (coming soon)', 'coil-web-monetization' ); ?></li>
 		<?php
 		printf(
-			'<li><a target="new" href="%1$s">%2$s</a></li>',
+			'<li><a target="_blank" href="%1$s">%2$s</a></li>',
 			esc_url( 'https://help.coil.com/' ),
 			esc_html__( 'Learn more about Coil and Web Monetization', 'coil-web-monetization' )
 		);
 		?>
 		<?php
 		printf(
-			'<li><a target="new" href="%1$s">%2$s</a></li>',
+			'<li><a target="_blank" href="%1$s">%2$s</a></li>',
 			esc_url( 'https://help.coil.com/accounts/creator-accounts' ),
 			esc_html__( 'Get a free Coil creator account', 'coil-web-monetization' )
 		);
