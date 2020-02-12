@@ -22,8 +22,8 @@ use const Coil\COIL__FILE__;
  */
 function register_admin_menu() : void {
 	add_menu_page(
-		esc_html__( 'Coil Settings', 'coil-web-monetization' ),
-		esc_html( _x( 'Coil Settings', 'admin menu name', 'coil-web-monetization' ) ),
+		esc_html__( 'Coil', 'coil-web-monetization' ),
+		esc_html( _x( 'Coil', 'admin menu name', 'coil-web-monetization' ) ),
 		apply_filters( 'coil_settings_capability', 'manage_options' ),
 		'coil_settings',
 		__NAMESPACE__ . '\render_coil_settings_screen',
