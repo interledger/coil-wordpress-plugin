@@ -6,7 +6,7 @@ declare(strict_types=1);
  * Description: Coil offers an effortless way to share WordPress content online, and get paid for it.
  * Author: Coil
  * Author URI: https://coil.com
- * Version: 1.4.0
+ * Version: 1.5.0
  * License: Apache-2.0
  * License URI: http://www.apache.org/licenses/LICENSE-2.0.txt
  * Text Domain: coil-web-monetization
@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * @var string Plugin version number.
  */
-const PLUGIN_VERSION = '1.4.0';
+const PLUGIN_VERSION = '1.5.0';
 
 /**
  * @var string Plugin root file.
