@@ -5,7 +5,7 @@
  * Description: Coil offers an effortless way to share WordPress content online, and get paid for it.
  * Author: Coil
  * Author URI: https://coil.com
- * Version: 1.5.0
+ * Version: 1.6.0
  * License: Apache-2.0
  * License URI: http://www.apache.org/licenses/LICENSE-2.0.txt
  * Text Domain: coil-web-monetization

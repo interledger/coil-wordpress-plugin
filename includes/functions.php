@@ -13,7 +13,7 @@ use \Coil\User;
 /**
  * @var string Plugin version number.
  */
-const PLUGIN_VERSION = '1.5.0';
+const PLUGIN_VERSION = '1.6.0';
 
 /**
  * @var string Plugin root folder.
