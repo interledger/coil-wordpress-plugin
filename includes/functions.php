@@ -11,6 +11,16 @@ use \Coil\Gating;
 use \Coil\User;
 
 /**
+ * @var string Plugin version number.
+ */
+const PLUGIN_VERSION = '1.6.0';
+
+/**
+ * @var string Plugin root folder.
+ */
+const COIL__FILE__ = __DIR__;
+
+/**
  * Initialise and set up the plugin.
  *
  * @return void
