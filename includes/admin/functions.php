@@ -374,7 +374,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			'type'        => 'textarea',
 			'label'       => __( 'Partial content gating message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
-			'description' => __( 'This message is shown in footer bar on pages where only some of the content blocks are set as Members-Only.', 'coil-web-monetization' ),
+			'description' => __( 'This message is shown in footer bar on pages where only some of the content blocks are set as Coil Members Only.', 'coil-web-monetization' ),
 			'input_attrs' => [
 				'placeholder' => get_customizer_text_field( $partial_message_id, true ),
 			],
@@ -398,7 +398,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			'type'        => 'textarea',
 			'label'       => __( 'Fully gated excerpt message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
-			'description' => __( 'This message replaces an article\'s excerpt on archive pages and blog feeds when the whole article is set as Members-Only.', 'coil-web-monetization' ),
+			'description' => __( 'This message replaces an article\'s excerpt on archive pages and blog feeds when the whole article is set as Coil Members Only.', 'coil-web-monetization' ),
 			'input_attrs' => [
 				'placeholder' => get_customizer_text_field( $fully_gated_excerpt_message_id, true ),
 			],
@@ -422,7 +422,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			'type'        => 'textarea',
 			'label'       => __( 'Partially gated excerpt message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
-			'description' => __( 'This message replaces an article\'s excerpt on archive pages and blog feeds when parts of the article are set as Members-Only.', 'coil-web-monetization' ),
+			'description' => __( 'This message replaces an article\'s excerpt on archive pages and blog feeds when parts of the article are set as Coil Members Only.', 'coil-web-monetization' ),
 			'input_attrs' => [
 				'placeholder' => get_customizer_text_field( $partially_gated_excerpt_message_id, true ),
 			],
@@ -470,7 +470,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			'type'        => 'textarea',
 			'label'       => __( 'Invalid Web Monetization message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
-			'description' => __( 'This message is shown when content is set to Members-Only and browser setup is correct, but Web Monetization doesn\'t start.  This message could appear for several reasons, including not having an active Coil account.', 'coil-web-monetization' ),
+			'description' => __( 'This message is shown when content is set to Coil Members Only and browser setup is correct, but Web Monetization doesn\'t start.  This message could appear for several reasons, including not having an active Coil account.', 'coil-web-monetization' ),
 			'input_attrs' => [
 				'placeholder' => get_customizer_text_field( $invalid_web_monetization_message_id, true ),
 			],
@@ -518,7 +518,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			'type'        => 'textarea',
 			'label'       => __( 'Incorrect browser setup message', 'coil-web-monetization' ),
 			'section'     => $messaging_section_id,
-			'description' => __( 'This message is shown when content is set to be Members-Only, and visitor either isn\'t using a supported browser, or doesn\'t have the browser extension installed correctly.', 'coil-web-monetization' ),
+			'description' => __( 'This message is shown when content is set to be Coil Members Only, and visitor either isn\'t using a supported browser, or doesn\'t have the browser extension installed correctly.', 'coil-web-monetization' ),
 			'input_attrs' => [
 				'placeholder' => get_customizer_text_field( $incorrect_browser_setup_message_id, true ),
 			],
@@ -618,7 +618,7 @@ function add_customizer_learn_more_button_settings_panel( $wp_customize ) : void
 	$wp_customize->add_control(
 		$button_text_setting_id,
 		[
-			'label'       => __( 'Text used for the "Learn more" button, which is shown to non-members on members-only and monetized and public content.', 'coil-web-monetization' ),
+			'label'       => __( 'Text used for the "Learn more" button, which is shown to non-members on Coil Members Only and "Monetized and Public" content.', 'coil-web-monetization' ),
 			'section'     => $button_settings_section_id,
 			'type'        => 'text',
 			'input_attrs' => [
@@ -641,7 +641,7 @@ function add_customizer_learn_more_button_settings_panel( $wp_customize ) : void
 	$wp_customize->add_control(
 		$button_link_setting_id,
 		[
-			'label'       => __( 'Link/URL used for the "Learn more" button, which is shown to non-members on members-only and monetized and public content.', 'coil-web-monetization' ),
+			'label'       => __( 'Link/URL used for the "Learn more" button, which is shown to non-members on Coil Members Only and "Monetized and Public" content.', 'coil-web-monetization' ),
 			'section'     => $button_settings_section_id,
 			'type'        => 'url',
 			'input_attrs' => [
