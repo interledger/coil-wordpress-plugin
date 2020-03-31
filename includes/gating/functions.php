@@ -61,7 +61,7 @@ function get_monetization_setting_types( $show_default = false ) : array {
 
 	$settings['no']        = esc_html__( 'No Monetization', 'coil-web-monetization' );
 	$settings['no-gating'] = esc_html__( 'Monetized and Public', 'coil-web-monetization' );
-	$settings['gate-all']  = esc_html__( 'Members Only', 'coil-web-monetization' );
+	$settings['gate-all']  = esc_html__( 'Coil Members Only', 'coil-web-monetization' );
 
 	return $settings;
 }
@@ -74,7 +74,7 @@ function get_monetization_setting_types( $show_default = false ) : array {
  */
 function get_valid_gating_types() {
 	$valid = [
-		'gate-all', // members only.
+		'gate-all', // Coil members only.
 		'gate-tagged-blocks', // split content.
 		'no', // no monetization.
 		'no-gating', // monetixed and public.
@@ -139,7 +139,7 @@ function maybe_restrict_content( string $content ) : string {
 
 	switch ( $coil_status ) {
 		case 'gate-all':
-			// Restrict all content (members only).
+			// Restrict all content (Coil members only).
 			if ( get_excerpt_gating( get_queried_object_id() ) ) {
 				$public_content .= $content_excerpt;
 			}
