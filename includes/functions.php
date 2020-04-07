@@ -311,7 +311,7 @@ function print_meta_tag() : void {
 
 	if ( ! empty( $payment_pointer_id ) ) {
 		echo '<meta name="monetization" content="' . esc_attr( $payment_pointer_id ) . '" />' . PHP_EOL;
-		echo '<link rel="monetization" content="' . esc_url( $payment_pointer_url ) . '" />' . PHP_EOL;
+		echo '<link rel="monetization" href="' . esc_url( $payment_pointer_url ) . '" />' . PHP_EOL;
 	}
 }
 
