@@ -32,7 +32,7 @@ Install the development environment:
 	- Name the new site `coil`.
 	- Choose the latest PHP version available.
 	- This project does not require a specific Web Server or MySQL version; if in doubt, choose nginx and MySQL 5.6.
-1. After Flywheel has created the site, from inside the root of where you chose to create the site, clone this repository into the plugins folder:
+1. After Flywheel has created the site, from inside the root of where you chose to create the site, clone this repository into the plugins folder (make sure to add SSH key to Github plugin repo):
 	- `git clone git@github.com:coilhq/coil-wordpress-plugin.git app/public/wp-content/plugins/coil-web-monetization`
 1. When the machine has finished provisioning, install the development dependencies:
 	- `cd app/public/wp-content/plugins/coil-web-monetization && composer install && npm install`
