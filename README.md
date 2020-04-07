@@ -107,6 +107,13 @@ New tests should be written where it makes sense. With Flywheel, the PHPUnit tes
 
 At this moment in time, the tests are not run automatically on public CI services.
 
+# Installing plugin
+
+- for testing, the Github repo can be zipped up and the zip used to install the Coil plugin on WordPress
+	- on Github, go to thefront page and click on "Clone or download"
+	- choose "Download ZIP"
+- for production, use command line `grunt zip` to create a zip in the `/resources/` folder. This removes development files such as composer.json and the tests folder.
+
 
 # Deployment
 
