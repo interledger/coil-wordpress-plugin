@@ -377,7 +377,7 @@ function get_supported_post_types( $output = 'names' ) : array {
 		$output
 	);
 
-	$excluded_types =[
+	$excluded_types = [
 		'attachment',
 		'custom_css',
 		'customize_changeset',
