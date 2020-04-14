@@ -93,7 +93,7 @@ function load_block_frontend_assets() : void {
 	wp_enqueue_style(
 		'coil-blocks',
 		esc_url_raw( plugin_dir_url( __DIR__ ) . 'dist/blocks.style.build' . $suffix . '.css' ),
-		array(),
+		[],
 		PLUGIN_VERSION
 	);
 }
@@ -118,7 +118,7 @@ function load_block_editor_assets() : void {
 	wp_enqueue_style(
 		'coil-editor-css',
 		esc_url_raw( plugin_dir_url( __DIR__ ) . 'dist/blocks.editor.build' . $suffix . '.css' ),
-		array(),
+		[],
 		PLUGIN_VERSION
 	);
 
@@ -126,7 +126,7 @@ function load_block_editor_assets() : void {
 	wp_enqueue_script(
 		'coil-editor',
 		esc_url_raw( plugin_dir_url( __DIR__ ) . 'dist/blocks.build.js' ),
-		array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-plugins', 'wp-components', 'wp-edit-post', 'wp-api', 'wp-editor', 'wp-hooks', 'wp-data' ),
+		[ 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-plugins', 'wp-components', 'wp-edit-post', 'wp-api', 'wp-editor', 'wp-hooks', 'wp-data' ],
 		PLUGIN_VERSION,
 		false
 	);
@@ -160,14 +160,14 @@ function load_full_assets() : void {
 	wp_enqueue_style(
 		'coil-monetize-css',
 		esc_url_raw( plugin_dir_url( __DIR__ ) . 'assets/css/frontend/coil' . $suffix . '.css' ),
-		array(),
+		[],
 		PLUGIN_VERSION
 	);
 
 	wp_enqueue_script(
 		'coil-monetization-js',
 		esc_url_raw( plugin_dir_url( __DIR__ ) . 'assets/js/initialize-monetization' . $suffix . '.js' ),
-		array( 'jquery', 'wp-util' ),
+		[ 'jquery', 'wp-util' ],
 		PLUGIN_VERSION,
 		true
 	);
@@ -179,7 +179,7 @@ function load_full_assets() : void {
 
 	$strings = apply_filters(
 		'coil_js_ui_messages',
-		array(
+		[
 			'content_container'         => Admin\get_global_settings( 'coil_content_container' ),
 			'browser_extension_missing' => Admin\get_customizer_text_field( 'coil_unsupported_message' ),
 			'unable_to_verify'          => Admin\get_customizer_text_field( 'coil_unable_to_verify_message' ),
@@ -194,7 +194,7 @@ function load_full_assets() : void {
 
 			/* translators: 1 + 2) HTML link tags (to the Coil settings page). */
 			'admin_missing_id_notice'   => sprintf( __( 'This post is monetized but you have not set your payment pointer ID in the %1$sCoil settings page%2$s. Only content set to show for all visitors will show.', 'coil-web-monetization' ), '<a href="' . admin_url( 'admin.php?page=coil' ) . '">', '</a>' ),
-		),
+		],
 		get_queried_object_id()
 	);
 
@@ -221,7 +221,7 @@ function load_messaging_assets() : void {
 	wp_enqueue_style(
 		'coil-messaging',
 		esc_url_raw( plugin_dir_url( __DIR__ ) . 'assets/css/messages/coil' . $suffix . '.css' ),
-		array(),
+		[],
 		PLUGIN_VERSION
 	);
 
@@ -233,7 +233,7 @@ function load_messaging_assets() : void {
 	wp_enqueue_script(
 		'messaging-cookies',
 		esc_url_raw( plugin_dir_url( __DIR__ ) . 'assets/js/js-cookie.3.0.0.min.js' ),
-		array(),
+		[],
 		PLUGIN_VERSION,
 		true
 	);
@@ -295,7 +295,7 @@ function add_body_class( $classes ) : array {
  */
 function print_meta_tag() : void {
 
-	$payment_pointer_id = get_payment_pointer();
+	$payment_pointer_id  = get_payment_pointer();
 	$payment_pointer_url = $payment_pointer_id;
 
 	// check if url starts with $
@@ -305,7 +305,7 @@ function print_meta_tag() : void {
 		// remove trailing slash
 		$payment_pointer_url = rtrim( $payment_pointer_url, '/' );
 		// check if url path exists
-		$parsed_url = parse_url( $payment_pointer_url, PHP_URL_PATH );
+		$parsed_url = wp_parse_url( $payment_pointer_url, PHP_URL_PATH );
 
 		// if no url path, append /.well-known/pay
 		if ( empty( $parsed_url ) ) {
@@ -350,7 +350,7 @@ function add_term_edit_save_form_meta_actions() {
 
 	$valid_taxonomies = Admin\get_valid_taxonomies();
 
-	$actions = array();
+	$actions = [];
 	if ( is_array( $valid_taxonomies ) && ! empty( $valid_taxonomies ) ) {
 		foreach ( $valid_taxonomies as $taxonomy ) {
 			if ( taxonomy_exists( $taxonomy ) ) {
@@ -373,11 +373,11 @@ function get_supported_post_types( $output = 'names' ) : array {
 
 	$output        = ( $output === 'names' ) ? 'names' : 'objects';
 	$content_types = get_post_types(
-		array( 'public' => true ),
+		[ 'public' => true ],
 		$output
 	);
 
-	$excluded_types = array(
+	$excluded_types =[
 		'attachment',
 		'custom_css',
 		'customize_changeset',
@@ -386,9 +386,9 @@ function get_supported_post_types( $output = 'names' ) : array {
 		'oembed_cache',
 		'user_request',
 		'wp_block',
-	);
+	];
 
-	$supported_types = array();
+	$supported_types = [];
 
 	foreach ( $content_types as $post_type ) {
 		$type_name = ( $output === 'names' ) ? $post_type : $post_type->name;
