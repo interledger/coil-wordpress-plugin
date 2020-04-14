@@ -296,17 +296,21 @@ function add_body_class( $classes ) : array {
 function print_meta_tag() : void {
 
 	$payment_pointer_id = get_payment_pointer();
+	$payment_pointer_url = $payment_pointer_id;
 
-	// replace $ with https://
-	$payment_pointer_url = str_replace( '$', 'https://', $payment_pointer_id );
-	// remove trailing slash
-	$payment_pointer_url = rtrim( $payment_pointer_url, '/' );
-	// check if url path exists
-	$parsed_url = parse_url( $payment_pointer_url, PHP_URL_PATH );
+	// check if url starts with $
+	if ( $payment_pointer_url[0] === '$' ) {
+		// replace $ with https://
+		$payment_pointer_url = str_replace( '$', 'https://', $payment_pointer_url );
+		// remove trailing slash
+		$payment_pointer_url = rtrim( $payment_pointer_url, '/' );
+		// check if url path exists
+		$parsed_url = parse_url( $payment_pointer_url, PHP_URL_PATH );
 
-	// if no url path, append /.well-known/pay
-	if( empty( $parsed_url ) ){
-		$payment_pointer_url = $payment_pointer_url . '/.well-known/pay';
+		// if no url path, append /.well-known/pay
+		if ( empty( $parsed_url ) ) {
+			$payment_pointer_url = $payment_pointer_url . '/.well-known/pay';
+		}
 	}
 
 	if ( ! empty( $payment_pointer_id ) ) {
