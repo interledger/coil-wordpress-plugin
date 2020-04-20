@@ -68,6 +68,6 @@ If you get stuck, you can ask for help in the [Coil Web Monetization support for
 
 == Changelog ==
 
-= v1.5.0 =
+= v1.6.0 =
 
 First release.
