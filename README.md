@@ -1,6 +1,6 @@
 # Coil Web Monetization
 
-This is the source code repository for the Coil WordPress plugin. Coil Web Monetization allows you to monetize content for all readers, members only, or if you are using modern WordPress, at the block level.
+This is the source code repository for the Coil WordPress plugin. Coil Web Monetization allows you to monetize content for all readers, Coil members only, or if you are using modern WordPress, at the block level.
 
 ---
 
@@ -32,7 +32,7 @@ Install the development environment:
 	- Name the new site `coil`.
 	- Choose the latest PHP version available.
 	- This project does not require a specific Web Server or MySQL version; if in doubt, choose nginx and MySQL 5.6.
-1. After Flywheel has created the site, from inside the root of where you chose to create the site, clone this repository into the plugins folder:
+1. After Flywheel has created the site, from inside the root of where you chose to create the site, clone this repository into the plugins folder (make sure to add SSH key to Github plugin repo):
 	- `git clone git@github.com:coilhq/coil-wordpress-plugin.git app/public/wp-content/plugins/coil-web-monetization`
 1. When the machine has finished provisioning, install the development dependencies:
 	- `cd app/public/wp-content/plugins/coil-web-monetization && composer install && npm install`
@@ -106,6 +106,13 @@ New tests should be written where it makes sense. With Flywheel, the PHPUnit tes
 - To run all tests, simply do: `phpunit`.
 
 At this moment in time, the tests are not run automatically on public CI services.
+
+# Installing plugin
+
+- for testing, the Github repo can be zipped up and the zip used to install the Coil plugin on WordPress
+	- on Github, go to thefront page and click on "Clone or download"
+	- choose "Download ZIP"
+- for production, use command line `grunt zip` to create a zip in the `/resources/` folder. This removes development files such as composer.json and the tests folder.
 
 
 # Deployment

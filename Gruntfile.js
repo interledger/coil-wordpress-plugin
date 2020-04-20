@@ -219,7 +219,10 @@ module.exports = function(grunt) {
 		// Bump version numbers (replace with version in package.json)
 		replace: {
 			php: {
-				src: [ 'plugin.php' ],
+				src: [
+					'includes/functions.php',
+					'plugin.php'
+				],
 				overwrite: true,
 				replacements: [
 					{

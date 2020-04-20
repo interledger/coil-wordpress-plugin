@@ -6,7 +6,7 @@ Tags: coil, content, monetization, payment, interledger
 Requires at least: 4.9
 Requires PHP: 7.1
 Tested up to: 5.3
-Stable tag: 1.4.0
+Stable tag: 1.6.0
 License: Apache-2.0
 License URI: http://www.apache.org/licenses/LICENSE-2.0.txt
 
@@ -18,7 +18,7 @@ Awesome web content deserves awesome compensation.
 
 Coil exists because content monetization doesn't work for everyone, and we think it should. Our model offers an alternative to the status quo of paid advertisements and selling the public's attention to the highest bidders – a solution that will serve the people who aren't being served well today.
 
-Coil Web Monetization allows you to set any post or page for monetization either for all readers, members only, or if you are using the Gutenberg editor, you can monetize at the block level.
+Coil Web Monetization allows you to set any post or page for monetization either for all readers, Coil members only, or if you are using the Gutenberg editor, you can monetize at the block level.
 If you would like to know more about Coil does, [visit our website](https://coil.com/learn-more/).
 
 = Features =
@@ -68,7 +68,6 @@ If you get stuck, you can ask for help in the [Coil Web Monetization support for
 
 == Changelog ==
 
-= v1.2.0 =
+= v1.5.0 =
 
 First release.
-
