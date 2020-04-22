@@ -84,6 +84,6 @@ If you get stuck, check out our [help center](https://help.coil.com/for-creators
 
 == Changelog ==
 
-= v1.5.0 =
+= v1.6.0 =
 
 First release.
