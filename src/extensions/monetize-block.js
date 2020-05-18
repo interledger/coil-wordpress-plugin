@@ -19,7 +19,7 @@ const { createHigherOrderComponent } = wp.compose;
 const { PanelBody, RadioControl }    = wp.components;
 const { registerPlugin }             = wp.plugins;
 const { PluginDocumentSettingPanel } = wp.editPost;  // WP >= 5.3.
-const { DotTip }                     = wp.nux;
+const { DotTip }                     = wp.components.Guide; // WP >= 5.4.
 
 // Allow only specific blocks to use the extension attribute.
 const allowedBlocks = [
