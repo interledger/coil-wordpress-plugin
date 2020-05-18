@@ -115,6 +115,11 @@ At this moment in time, the tests are not run automatically on public CI service
 - for production, use command line `grunt zip` to create a zip in the `/resources/` folder. This removes development files such as composer.json and the tests folder.
 
 
-# Deployment
-
-TBC.
+# Production Build
+ The zip and the tag are different builds -- the tag is obviously the source version, and the zip has some build files removed. So, to generate the versions you'll want to distribute:
+1. `composer install && npm install`
+1. `npm run build && npx grunt build`
+1. If you want to change the version number, update it in package.json and run npx grunt version
+1. (commit changes from above steps
+1. `npx grunt zip` -- it will make a zip and put it in the releases/ folder.
+1. Take that zip unzip the file and commit it to SVN that way and then get it onto WordPress.org Plugins SVN.
