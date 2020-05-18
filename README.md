@@ -82,6 +82,10 @@ This plugin also has some complex JavaScript frontends, so there is additional s
 Some of the tooling for this plugin came from the `create-guten-block` project, so we have two different ways to manage CSS and JS.
 
 ### Block Assets (`src/`)
+
+#### `composer install && npm install`
+- initial setup
+
 #### `npm start`
 - Use to compile and run the block in development mode.
 - Watches for any changes and reports back any errors in your code.

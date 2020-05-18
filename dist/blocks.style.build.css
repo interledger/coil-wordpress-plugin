@@ -1,1 +1,74 @@
-body.monetization-not-initialized:not(.coil-no-gating) *.coil-show-monetize-users{position:relative;display:block}body.monetization-not-initialized:not(.coil-no-gating) *.coil-show-monetize-users::before{content:" ";position:absolute;top:0;bottom:0;left:0;right:0;z-index:1}body.monetization-not-initialized:not(.coil-no-gating) *.coil-show-monetize-users::after{content:" ";position:absolute;width:inherit;height:inherit;color:#000;background:#fff;top:0;right:0;bottom:0;left:0;white-space:nowrap;text-transform:uppercase;cursor:pointer;z-index:100;opacity:0.8;text-align:center;display:-ms-flexbox;display:flex;-ms-flex-align:center;align-items:center;-ms-flex-pack:center;justify-content:center}body.monetization-initialized:not(.coil-no-gating) *.coil-hide-monetize-users{display:none}body.coil-extension-not-found:not(.coil-no-gating) *.coil-hide-monetize-users,body.coil-missing-id:not(.coil-no-gating) *.coil-hide-monetize-users,body.monetization-not-initialized.coil-gate-tagged-blocks:not(.coil-no-gating) *.coil-hide-monetize-users{display:none}body.coil-extension-not-found:not(.coil-no-gating) *.coil-show-monetize-users,body.coil-missing-id:not(.coil-no-gating) *.coil-show-monetize-users,body.monetization-not-initialized.coil-gate-tagged-blocks:not(.coil-no-gating) *.coil-show-monetize-users{position:relative;padding:50px}body.coil-extension-not-found:not(.coil-no-gating) *.coil-show-monetize-users::after,body.coil-missing-id:not(.coil-no-gating) *.coil-show-monetize-users::after,body.monetization-not-initialized.coil-gate-tagged-blocks:not(.coil-no-gating) *.coil-show-monetize-users::after{content:' ';position:absolute;width:inherit;height:inherit;font-family:'Open Sans';font-size:18px;line-height:27px;color:white;background:#575756;top:0;right:0;bottom:0;left:0;white-space:nowrap;z-index:100;text-align:center;display:-ms-flexbox;display:flex;-ms-flex-align:center;align-items:center;-ms-flex-pack:center;justify-content:center;overflow-y:auto}
+body.monetization-not-initialized:not(.coil-no-gating) *.coil-show-monetize-users {
+  position: relative;
+  display: block; }
+  body.monetization-not-initialized:not(.coil-no-gating) *.coil-show-monetize-users::before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1; }
+  body.monetization-not-initialized:not(.coil-no-gating) *.coil-show-monetize-users::after {
+    content: " ";
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    color: #000;
+    background: #fff;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    white-space: nowrap;
+    text-transform: uppercase;
+    cursor: pointer;
+    z-index: 100;
+    opacity: 0.8;
+    text-align: center;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+        align-items: center;
+    -ms-flex-pack: center;
+        justify-content: center; }
+
+body.monetization-initialized:not(.coil-no-gating) *.coil-hide-monetize-users {
+  display: none; }
+
+body.coil-extension-not-found:not(.coil-no-gating) *.coil-hide-monetize-users,
+body.coil-missing-id:not(.coil-no-gating) *.coil-hide-monetize-users,
+body.monetization-not-initialized.coil-gate-tagged-blocks:not(.coil-no-gating) *.coil-hide-monetize-users {
+  display: none; }
+
+body.coil-extension-not-found:not(.coil-no-gating) *.coil-show-monetize-users,
+body.coil-missing-id:not(.coil-no-gating) *.coil-show-monetize-users,
+body.monetization-not-initialized.coil-gate-tagged-blocks:not(.coil-no-gating) *.coil-show-monetize-users {
+  position: relative;
+  padding: 50px; }
+  body.coil-extension-not-found:not(.coil-no-gating) *.coil-show-monetize-users::after,
+  body.coil-missing-id:not(.coil-no-gating) *.coil-show-monetize-users::after,
+  body.monetization-not-initialized.coil-gate-tagged-blocks:not(.coil-no-gating) *.coil-show-monetize-users::after {
+    content: ' ';
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    font-family: 'Open Sans';
+    font-size: 18px;
+    line-height: 27px;
+    color: white;
+    background: #575756;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    white-space: nowrap;
+    z-index: 100;
+    text-align: center;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+        align-items: center;
+    -ms-flex-pack: center;
+        justify-content: center;
+    overflow-y: auto; }
