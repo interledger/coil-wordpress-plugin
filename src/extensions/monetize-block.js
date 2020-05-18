@@ -19,7 +19,6 @@ const { createHigherOrderComponent } = wp.compose;
 const { PanelBody, RadioControl }    = wp.components;
 const { registerPlugin }             = wp.plugins;
 const { PluginDocumentSettingPanel } = wp.editPost;  // WP >= 5.3.
-const { DotTip }                     = wp.components.Guide; // WP >= 5.4.
 
 // Allow only specific blocks to use the extension attribute.
 const allowedBlocks = [
@@ -187,9 +186,6 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 							initialOpen={ false }
 							className="coil-panel"
 						>
-							{ DotTip && <DotTip tipId="coil/editor.panel_monetize_block">
-								{ __( 'As you have set the article to monetize by split content, you have the option to show this block for all or show/hide for Coil members only.' ) }
-							</DotTip> }
 							<RadioControl
 								selected={ monetizeBlockDisplay }
 								options={
@@ -380,11 +376,6 @@ if ( PluginDocumentSettingPanel ) {
 						className="coil-document-panel"
 						>
 							<PostMonetizationFields metaFieldName="_coil_monetize_post_status" />
-							{ DotTip &&
-							<DotTip tipId="coil/editor.panel_monetize_post_status">
-								{ __( 'When creating an article, you can decide whether to monetize it or not. There are three options you can monetize your content for. "Monetized and Public", "Coil Members Only" or by "Split Content", which allows you to control which blocks can be seen to the public or members.' ) }
-							</DotTip>
-							}
 					</PluginDocumentSettingPanel>
 			)
 		},
