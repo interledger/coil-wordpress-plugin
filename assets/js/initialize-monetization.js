@@ -80,7 +80,7 @@
 
 		var modalData = {
 			headerLogo: site_logo,
-			title: 'This content is for members only',
+			title: 'This content is for Coil members only',
 			content: message,
 			button: {
 				text: learn_more_button_text,
@@ -176,7 +176,7 @@
 	}
 
 	/**
-	 * Helper function to determine if the content is "Members Only"
+	 * Helper function to determine if the content is "Coil Members Only"
 	 *
 	 * @return bool
 	 */
@@ -260,7 +260,7 @@
 					// Split content and unable to verify hidden content.
 					$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( unable_to_verify ) );
 
-					// Show non-members-only content.
+					// Show non-coil-members content.
 					// Removing class means blocks revert to their *original* display values.
 					$( '.coil-hide-monetize-users' ).removeClass('coil-hide-monetize-users');
 
@@ -367,7 +367,7 @@
 			// Split content with no extension found.
 			$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( partial_gating ) );
 
-			// Show non-members-only content.
+			// Show non-coil-members content.
 			// Removing class means blocks revert to their *original* display values.
 			$( '.coil-hide-monetize-users' ).removeClass('coil-hide-monetize-users');
 
