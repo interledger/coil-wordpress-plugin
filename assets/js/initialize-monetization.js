@@ -260,7 +260,7 @@
 					// Split content and unable to verify hidden content.
 					$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( unable_to_verify ) );
 
-					// Show non-coil-members content.
+					// Show non-Coil-members content.
 					// Removing class means blocks revert to their *original* display values.
 					$( '.coil-hide-monetize-users' ).removeClass('coil-hide-monetize-users');
 
