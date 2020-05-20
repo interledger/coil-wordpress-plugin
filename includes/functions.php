@@ -88,6 +88,10 @@ function init_plugin() : void {
  */
 function load_block_frontend_assets() : void {
 
+	if ( ! in_array( $GLOBALS['post']->post_type, get_supported_post_types(), true ) ) {
+		return;
+	}
+
 	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 	wp_enqueue_style(
@@ -105,7 +109,10 @@ function load_block_frontend_assets() : void {
  */
 function load_block_editor_assets() : void {
 
-	if ( ! is_admin() ) {
+	if (
+		! is_admin() ||
+		! in_array( get_current_screen()->post_type, get_supported_post_types(), true )
+	) {
 		return;
 	}
 
@@ -393,7 +400,10 @@ function get_supported_post_types( $output = 'names' ) : array {
 	foreach ( $content_types as $post_type ) {
 		$type_name = ( $output === 'names' ) ? $post_type : $post_type->name;
 
-		if ( ! in_array( $type_name, $excluded_types, true ) ) {
+		if (
+			! in_array( $type_name, $excluded_types, true ) &&
+			post_type_supports( $type_name, 'custom-fields' )
+		) {
 			$supported_types[] = $post_type;
 		}
 	}
