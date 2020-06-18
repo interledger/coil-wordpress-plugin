@@ -79,7 +79,7 @@ Flywheel will give you the URL of where you can access your environment, and you
 
 The development process follows [Git Flow](http://jeffkreeftmeijer.com/2010/why-arent-you-using-git-flow/).
 
-Development happens in feature branches, which are merged into `develop`, and then eventually merged into `master` for deployment to production. When making changes, a feature branch should be created that branches from `develop` (and the corresponding merge request on Github should use `develop` as the target branch).
+Development happens in feature branches, which are merged into `develop`, and then eventually merged into `main` for deployment to production. When making changes, a feature branch should be created that branches from `develop` (and the corresponding merge request on Github should use `develop` as the target branch).
 
 ## Plugin Structure
 

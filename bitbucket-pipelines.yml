@@ -29,7 +29,7 @@ pipelines:
     develop:
       - step: *build-assets
       - step: *deploy
-    master:
+    main:
       - step: *build-assets
       - step:
           <<: *deploy
