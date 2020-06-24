@@ -587,7 +587,7 @@ function coil_add_term_custom_meta( $term ) {
 			<label><?php esc_html_e( 'Coil Web Monetization', 'coil-web-monetization' ); ?></label>
 		</th>
 		<td>
-			<fieldset>
+			<fieldset id="coil-category-settings">
 			<?php
 			foreach ( $gating_options as $setting_key => $setting_value ) {
 
@@ -637,7 +637,7 @@ function coil_edit_term_custom_meta() {
 	?>
 	<div class="form-field">
 		<h2><?php esc_html_e( 'Coil Web Monetization', 'coil-web-monetization' ); ?></h2>
-		<fieldset>
+		<fieldset id="coil-category-settings">
 		<?php
 		foreach ( $gating_options as $setting_key => $setting_value ) {
 			$checked_input = false;
