@@ -285,7 +285,6 @@ module.exports = function(grunt) {
 							'!build/**',
 							'!releases/**',
 							'!tests/**',
-							'!bitbucket-pipelines.yml',
 							'readme.txt'
 						],
 						dest: 'build/',
