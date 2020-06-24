@@ -2,7 +2,7 @@
  * Site setting / option tests.
  */
 
-describe('Coil Settings', function () {
+describe('Plugin Settings', function () {
   beforeEach(() => {
     cy.logInToWordPress('admin', 'password');
     cy.visit('/wp-admin/');

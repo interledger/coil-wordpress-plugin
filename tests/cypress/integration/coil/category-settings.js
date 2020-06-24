@@ -2,7 +2,7 @@
  * Site setting / option tests.
  */
 
-describe('Coil Settings', function () {
+describe('Category Settings', function () {
   beforeEach(() => {
     cy.logInToWordPress('admin', 'password');
   })
@@ -42,6 +42,6 @@ describe('Coil Settings', function () {
 			$element[0].click();
 		});
 
-		cy.get('#coil-category-settings > label[for="gate-all"]').should('be.checked');
+		cy.get('#coil-category-settings > label[for="gate-all"] input').should('be.checked');
 	});
 });
