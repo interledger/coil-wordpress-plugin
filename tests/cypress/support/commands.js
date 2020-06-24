@@ -29,14 +29,14 @@ Cypress.Commands.add('logInToWordPress', (username, password) => {
 
 	// Verify by asserting an authentication cookie exists.
 	cy.getCookies().then((cookies) => {
-		let foundAuthCookie = false;
+		let authCookie = '';
 
 		cookies.forEach(theCookie => {
 			if (theCookie.name.startsWith('wordpress_logged_in_')) {
-				foundAuthCookie = true;
+				authCookie = theCookie.name;
 			}
 		});
 
-		expect(foundAuthCookie).to.be.true;
+		expect(authCookie).to.include('wordpress_logged_in_');
 	});
 });
