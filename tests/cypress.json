@@ -1,4 +1,5 @@
 {
+	"baseUrl": "http://coil-plugin.local/",
 	"projectId": "3ssud2",
 	"video": false,
 	"videoUploadOnPasses": false,

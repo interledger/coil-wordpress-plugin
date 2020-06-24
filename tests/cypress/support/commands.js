@@ -8,18 +8,35 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 //
-//
-// -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+/**
+ * Authenticate with WordPress.
+ *
+ * @param {string} username WordPress user name.
+ * @param {string} password WordPress password.
+ */
+Cypress.Commands.add('logInToWordPress', (username, password) => {
+
+  cy.request({
+    method: 'POST',
+    url: '/wp-login.php',
+    form: true,
+    body: {
+      "log": username,
+      "pwd": password,
+    },
+  });
+
+	// Verify by asserting an authentication cookie exists.
+	cy.getCookies().then((cookies) => {
+		let foundAuthCookie = false;
+
+		cookies.forEach(theCookie => {
+			if (theCookie.name.startsWith('wordpress_logged_in_')) {
+				foundAuthCookie = true;
+			}
+		});
+
+		expect(foundAuthCookie).to.be.true;
+	});
+});
