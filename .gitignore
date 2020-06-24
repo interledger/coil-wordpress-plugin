@@ -5,6 +5,8 @@
 npm-debug.lo
 /vendor
 /tests/phpunit/cache
+/tests/cypress/screenshots
+/tests/cypress/videos
 
 # Various file types to ignore when exporting.
 .DS_Store

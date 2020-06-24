@@ -26,9 +26,12 @@
 	"scripts": {
 		"start": "cgb-scripts start",
 		"build": "cgb-scripts build",
-		"eject": "cgb-scripts eject"
+		"eject": "cgb-scripts eject",
+		"cypress:open": "cypress open --project tests",
+		"cypress:run": "cypress run --project tests"
 	},
 	"devDependencies": {
+		"cypress": "^4.9.0",
 		"grunt": "^1.1.0",
 		"grunt-checktextdomain": "~1.0.1",
 		"grunt-contrib-clean": "~2.0.0",
