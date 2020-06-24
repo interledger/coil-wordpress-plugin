@@ -4,7 +4,7 @@
 /node_modules/
 npm-debug.lo
 /vendor
-/tests/cache
+/tests/phpunit/cache
 
 # Various file types to ignore when exporting.
 .DS_Store
