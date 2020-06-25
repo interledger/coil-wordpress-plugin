@@ -20,10 +20,22 @@ describe('Plugin Settings', function () {
 
 	it('check that the payment pointer is printed when viewing a single post', function() {
 		cy.visit('/');
+
 		cy.get('.hentry .entry-title a')
 			.contains('Monetized and Public')
 			.click();
 
 		cy.get('head meta[name="monetization"]').should('have.attr', 'content', paymentPointer);
+	} );
+
+	// This test assumes you have the test posts loaded.
+	it('check that I can view a monetised and public single post.', function() {
+		cy.visit('/');
+
+		cy.get('.hentry .entry-title a')
+			.contains('Monetized and Public')
+			.click();
+
+		cy.get('.entry-content').should('contain', 'ID: TESTPOST1');
 	} );
 });
