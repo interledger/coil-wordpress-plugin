@@ -25,7 +25,7 @@ describe('Plugin Settings', function () {
 
 		cy.get('#coil-global-settings').click();
 
-		const paymentPointer = Math.random().toString(36);
+		const paymentPointer = 'https://example.com/' + Math.random().toString(36) + '/.well-known/pay';
 		cy.get('#coil_payment_pointer_id').as('paymentPointerField');
 		cy.get('@paymentPointerField')
 			.click()
@@ -33,7 +33,13 @@ describe('Plugin Settings', function () {
 			.type(paymentPointer);
 		cy.get('#submit').click();
 
+		// Settings page is reloaded.
 		cy.get('@paymentPointerField').should('have.value', paymentPointer);
 		cy.get('.notice').should('have.class', 'notice-success');
+
+		// Check the payment pointer is output in a post's HTML.
+		cy.visit('/');
+		cy.get('article.hentry:first .entry-title a').click();
+		cy.get('head meta[name="monetization"]').should('have.attr', 'content', paymentPointer);
 	} );
 });
