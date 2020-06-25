@@ -3,6 +3,7 @@
  */
 const paymentPointer = 'https://example.com/' + Math.random().toString(36) + '/.well-known/pay';
 
+// Most of these tests assume you have the test posts loaded in your WordPress.
 describe('Plugin Settings', function () {
   beforeEach(() => {
     cy.logInToWordPress('admin', 'password');
@@ -28,8 +29,7 @@ describe('Plugin Settings', function () {
 		cy.get('head meta[name="monetization"]').should('have.attr', 'content', paymentPointer);
 	} );
 
-	// This test assumes you have the test posts loaded.
-	it('check that I can view a monetised and public single post.', function() {
+	it('check that I can view single post set with monetised and public.', function() {
 		cy.visit('/');
 
 		cy.get('.hentry .entry-title a')
@@ -37,5 +37,16 @@ describe('Plugin Settings', function () {
 			.click();
 
 		cy.get('.entry-content').should('contain', 'ID: TESTPOST1');
+	} );
+
+	it('check that I can view single post set with no monetization.', function() {
+		cy.visit('/');
+
+		cy.get('.hentry .entry-title a')
+			.contains('No Monetization')
+			.click();
+
+		cy.get('.entry-content').should('contain', 'ID: TESTPOST2');
+		cy.get('head meta[name="monetization"]', {timeout: 0}).should('not.exist');
 	} );
 });
