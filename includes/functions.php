@@ -52,8 +52,8 @@ function init_plugin() : void {
 	add_action( 'wp_ajax_dismiss_welcome_notice', __NAMESPACE__ . '\Settings\dismiss_welcome_notice' );
 
 	// Term meta.
-	add_action( 'edit_term', __NAMESPACE__ . '\Admin\maybe_save_term_meta' );
-	add_action( 'create_term', __NAMESPACE__ . '\Admin\maybe_save_term_meta' );
+	add_action( 'edit_term', __NAMESPACE__ . '\Admin\maybe_save_term_meta', 10, 3 );
+	add_action( 'create_term', __NAMESPACE__ . '\Admin\maybe_save_term_meta', 10, 3 );
 	add_action( 'delete_term', __NAMESPACE__ . '\Admin\delete_term_monetization_meta' );
 	add_term_edit_save_form_meta_actions();
 
@@ -195,7 +195,7 @@ function load_full_assets() : void {
 			'partial_gating'            => Admin\get_customizer_text_field( 'coil_partial_gating_message' ),
 			'learn_more_button_text'    => Admin\get_customizer_text_field( 'coil_learn_more_button_text' ),
 			'learn_more_button_link'    => Admin\get_customizer_text_field( 'coil_learn_more_button_link' ),
-			'show_donation_bar'         => get_theme_mod( 'coil_show_donation_bar' ),
+			'show_donation_bar'         => get_theme_mod( 'coil_show_donation_bar', true ),
 			'post_excerpt'              => get_the_excerpt(),
 			'site_logo'                 => $site_logo,
 

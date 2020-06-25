@@ -93,7 +93,6 @@ This plugin maintains a basic file structure:
 	* `images/` – Images.
 	* `js/` – JavaScript files.
 	* `scss/` – SCSS source files.
-* `tests/` – Test files.
 * `README.md` – Plugin developer readme.
 
 Within the `includes/` directory, files should be organised hierarchically based on namespaces. If a namespace only contains functions, the filename should be `functions.php`.
