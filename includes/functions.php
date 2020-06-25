@@ -195,7 +195,7 @@ function load_full_assets() : void {
 			'partial_gating'            => Admin\get_customizer_text_field( 'coil_partial_gating_message' ),
 			'learn_more_button_text'    => Admin\get_customizer_text_field( 'coil_learn_more_button_text' ),
 			'learn_more_button_link'    => Admin\get_customizer_text_field( 'coil_learn_more_button_link' ),
-			'show_donation_bar'         => get_theme_mod( 'coil_show_donation_bar' ),
+			'show_donation_bar'         => get_theme_mod( 'coil_show_donation_bar', true ),
 			'post_excerpt'              => get_the_excerpt(),
 			'site_logo'                 => $site_logo,
 
