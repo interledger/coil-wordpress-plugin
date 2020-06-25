@@ -24,7 +24,10 @@ describe('Single Posts', function () {
 
 		cy.get('.hentry .entry-title a')
 			.contains('Monetized and Public')
-			.click();
+			.then($link => {
+				$link[0].scrollIntoView();
+				$link[0].click();
+			})
 
 		cy.get('head meta[name="monetization"]').should('have.attr', 'content', paymentPointer);
 	});
@@ -34,7 +37,10 @@ describe('Single Posts', function () {
 
 		cy.get('.hentry .entry-title a')
 			.contains('Monetized and Public')
-			.click();
+			.then($link => {
+				$link[0].scrollIntoView();
+				$link[0].click();
+			})
 
 		cy.get('.entry-content').should('contain', 'ID: TESTPOST1');
 	});
