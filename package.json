@@ -29,7 +29,7 @@
 		"eject": "cgb-scripts eject"
 	},
 	"devDependencies": {
-		"grunt": "^1.0.4",
+		"grunt": "^1.1.0",
 		"grunt-checktextdomain": "~1.0.1",
 		"grunt-contrib-clean": "~2.0.0",
 		"grunt-contrib-compress": "^1.6.0",
@@ -47,7 +47,7 @@
 		"grunt-text-replace": "^0.4.0",
 		"jshint-stylish": "~2.2.1",
 		"load-grunt-tasks": "~4.0.0",
-		"node-sass": "^4.13.0",
+		"node-sass": "^4.14.1",
 		"prettier-stylelint": "^0.4.2",
 		"stylelint-config-prettier": "^3.1.0",
 		"stylelint-config-wordpress": "^13.1.0",
