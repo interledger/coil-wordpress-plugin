@@ -4,7 +4,7 @@
 const paymentPointer = 'https://example.com/' + Math.random().toString(36) + '/.well-known/pay';
 
 // Most of these tests assume you have the test posts loaded in your WordPress.
-describe('Plugin Settings', function () {
+describe('Single Posts', function () {
   beforeEach(() => {
     cy.logInToWordPress('admin', 'password');
 		cy.visit('/wp-admin/admin.php?page=coil_settings');
@@ -17,9 +17,9 @@ describe('Plugin Settings', function () {
 			.clear()
 			.type(paymentPointer);
 		cy.get('#submit').click();
-	})
+	});
 
-	it('check that the payment pointer is printed when viewing a single post', function() {
+	it('check that the payment pointer is printed when viewing a single post.', function() {
 		cy.visit('/');
 
 		cy.get('.hentry .entry-title a')
@@ -27,9 +27,9 @@ describe('Plugin Settings', function () {
 			.click();
 
 		cy.get('head meta[name="monetization"]').should('have.attr', 'content', paymentPointer);
-	} );
+	});
 
-	it('check that I can view single post set with monetised and public.', function() {
+	it('check that I can view single post set to monetised and public.', function() {
 		cy.visit('/');
 
 		cy.get('.hentry .entry-title a')
@@ -37,9 +37,9 @@ describe('Plugin Settings', function () {
 			.click();
 
 		cy.get('.entry-content').should('contain', 'ID: TESTPOST1');
-	} );
+	});
 
-	it('check that I can view single post set with no monetization.', function() {
+	it('check that I can view single post set to no monetization.', function() {
 		cy.visit('/');
 
 		cy.get('.hentry .entry-title a')
