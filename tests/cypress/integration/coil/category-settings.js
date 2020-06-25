@@ -7,15 +7,6 @@ describe('Category Settings', function () {
     cy.logInToWordPress('admin', 'password');
   })
 
-	it('checks that admin users can access the settings screen', function() {
-    cy.visit('/wp-admin/');
-
-		cy.get('#adminmenu').find('div.wp-menu-name').contains('Coil').as('coilSettings');
-		cy.get('@coilSettings').click();
-
-		cy.contains('Welcome to Coil Web Monetization for WordPress');
-  });
-
 	it('checks that Coil category settings can be updated', function() {
 		cy.visit('/wp-admin/edit-tags.php?taxonomy=category');
 
