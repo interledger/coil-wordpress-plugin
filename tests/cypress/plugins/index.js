@@ -16,6 +16,14 @@
  * @type {Cypress.PluginConfig}
  */
 module.exports = (on, config) => {
-  // `on` is used to hook into various events Cypress emits
-  // `config` is the resolved Cypress config
+	on('before:browser:launch', (browser, launchOptions) => {
+		if (! browser.isHeadless && process.env.COIL_EXTENSION === 'yes') {
+			// TODO: https://github.com/ejoubaud/cypress-browser-extension-plugin
+			// TODO: https://docs.cypress.io/api/plugins/browser-launch-api.html#Use-fake-video-for-webcam-testing
+
+			//launchOptions.extensions.push('/path/to/webextension')
+		}
+
+		return launchOptions;
+	});
 }
