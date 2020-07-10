@@ -5,8 +5,8 @@ const paymentPointer = 'https://example.com/' + Math.random().toString(36) + '/.
 
 // Most of these tests assume you have the test posts loaded in your WordPress.
 describe('Single Posts', function () {
-  beforeEach(() => {
-    cy.logInToWordPress('admin', 'password');
+	  beforeEach(() => {
+	    cy.logInToWordPress('madhavaji', 'WdX2aJ36iFyZbda9');
 		cy.visit('/wp-admin/admin.php?page=coil_settings');
 
 		// Make sure a payment pointer is set.
