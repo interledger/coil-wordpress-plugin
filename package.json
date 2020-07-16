@@ -59,6 +59,7 @@
 	"dependencies": {
 		"cgb-scripts": "1.21.0",
 		"classnames": "^2.2.6",
+		"gulp": "^4.0.2",
 		"stylelint": "~9.10.1"
 	},
 	"stylelint": {
