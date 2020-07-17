@@ -283,12 +283,25 @@
 	}
 
 	/**
-	 * Detect class on the body if coil is not yet initialized.
+	 * Determin if Coil is not yet initialized.
+	 *
+	 * Checks for class on <body>.
 	 *
 	 * @return bool
 	 */
 	function monetizationNotInitialized() {
 		return document.body.classList.contains( 'monetization-not-initialized' );
+	}
+
+	/**
+	 * Determin if Coil is initialized.
+	 *
+	 * Checks class is missing on <body>.
+	 *
+	 * @return bool
+	 */
+	function monetizationInitialized() {
+		return ! document.body.classList.contains( 'monetization-not-initialized' );
 	}
 
 	/**
@@ -328,243 +341,292 @@
 		return false;
 	}
 
+
 	/**
-	 * Init
+	 * Handles an undefined monetization object.
+	 *
+	 * @return void.
 	 */
-	$( document ).ready(function () {
+	function handleUndefinedMonetization() {
+		// Update body class to show free content.
+		$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'coil-extension-not-found' );
 
-		if ( monetizationNotInitialized() ) {
+		if ( isSubscribersOnly() ) {
 
-			// Hide content entry area if not default selector.
-			if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
-				$( content_container ).not( '.coil-post-excerpt' ).hide();
+			$( content_container ).before( showSubscriberOnlyMessage( browser_extension_missing ) );
+
+			if ( isExcerptEnabled() && getContentExcerpt() ) {
+				document.body.classList.add( 'show-excerpt-message' );
+				$( content_container ).prepend( getContentExcerpt() );
+			} else {
+				document.body.classList.add( 'show-fw-message' );
 			}
 
-			// Check if browser extension exists.
-			if ( typeof document.monetization !== 'undefined' ) {
+		} else if ( isSplitContent() ) {
 
-				switch ( document.monetization.state ) {
+			// Split content with no extension found.
+			$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( partial_gating ) );
 
-					case 'pending':
+			// Show non-coil-members content.
+			// Removing class means blocks revert to their *original* display values.
+			$( '.coil-hide-monetize-users' ).removeClass('coil-hide-monetize-users');
 
-						// If the site is missing it's payment pointer ID.
-						if ( isPaymentPointerMissing() ) {
+			showContentContainer();
 
-							if ( isViewingAdmin() ) {
+			if ( ! hasBannerDismissCookie( 'ShowCoilPartialMsg' ) ) {
+				$( 'body' ).append( showBannerMessage( partial_gating ) );
+				addBannerDismissClickHandler( 'ShowCoilPartialMsg' );
+			}
 
-								// Show message to site owner/administrators only.
-								$( content_container ).before( showMonetizationMessage( admin_missing_id_notice, 'admin-message' ) );
+		} else if ( isMonetizedAndPublic() ) {
 
-							} else {
-								$( 'body' ).removeClass( 'coil-missing-id' );
-							}
+			// Content is monetized and public but no extension found.
 
-							// This ensures content written in Gutenberg is displayed according to
-							// the block settings should the theme use different theme selectors.
-							if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
-								showContentContainer();
-								$( content_container + '*.coil-hide-monetize-users' ).css( 'display', 'none' );
-								$( content_container + '*.coil-show-monetize-users' ).css( 'display', 'none' );
-							}
+			if ( show_donation_bar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+				$( 'body' ).append( showBannerMessage( voluntary_donation ) );
+				addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
+			}
+		}
 
-							$( 'body' ).trigger( 'coil-missing-id' );
+		// Trigger an event.
+		$( 'body' ).trigger( 'coil-extension-not-found' );
 
-						} else {
+	}
 
-							// Verify monetization only if we are gating or partially gating content.
-							if ( ! isMonetizedAndPublic() ) {
+	/**
+	 * Handles the 'pending' monetization state.
+	 *
+	 * @return void.
+	 */
+	function handlePendingMonetization() {
+		// If the site is missing it's payment pointer ID.
+		if ( isPaymentPointerMissing() ) {
 
-								// If post is gated then show verification message after excerpt.
-								if ( isSubscribersOnly() ) {
+			if ( isViewingAdmin() ) {
 
-									if ( isExcerptEnabled() ) {
+				// Show message to site owner/administrators only.
+				$( content_container ).before( showMonetizationMessage( admin_missing_id_notice, 'admin-message' ) );
 
-										// Subscriber gating and no post excerpt...Verifying extension.
-										document.querySelector( content_container ).before( showMonetizationMessage( loading_content, '' ) );
+			} else {
+				$( 'body' ).removeClass( 'coil-missing-id' );
+			}
 
-									} else {
+			// This ensures content written in Gutenberg is displayed according to
+			// the block settings should the theme use different theme selectors.
+			if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
+				showContentContainer();
+				$( content_container + '*.coil-hide-monetize-users' ).css( 'display', 'none' );
+				$( content_container + '*.coil-show-monetize-users' ).css( 'display', 'none' );
+			}
 
-										// Subscriber gating and has post excerpt...Verifying extension.
-										$( 'p.coil-post-excerpt' ).after( showMonetizationMessage( loading_content, '' ) );
+			$( 'body' ).trigger( 'coil-missing-id' );
 
-									}
-								} else {
-									document.querySelector( content_container ).before( showMonetizationMessage( loading_content, '' ) );
-								}
+		} else {
 
-								// Update message if browser extension is verifying user.
-								setTimeout( function() {
-									hideContentExcerpt();
-									messageWrapper.html( loading_content );
-								}, 2000 );
+			// Verify monetization only if we are gating or partially gating content.
+			if ( ! isMonetizedAndPublic() ) {
 
-								// Update message if browser extension is unable to verify user.
-								setTimeout( function() {
-									showVerificationFailureMessage();
-								}, 5000 );
+				// If post is gated then show verification message after excerpt.
+				if ( isSubscribersOnly() ) {
 
-							} else {
+					if ( isExcerptEnabled() ) {
 
-								if ( show_donation_bar && monetizationNotInitialized() && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-									$( 'body' ).append( showBannerMessage( voluntary_donation ) );
-									addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
-								}
-							}
-						}
-						break;
-
-				case 'started':
-					// User account verified, loading content. Monetization state: Started
-					document.querySelector( content_container ).before( showMonetizationMessage( loading_content, '' ) );
-					break;
-
-				case 'stopped':
-
-					if ( isSubscribersOnly() || isSplitContent() ) {
-						hideContentExcerpt();
-						hideContentContainer();
+						// Subscriber gating and no post excerpt...Verifying extension.
 						document.querySelector( content_container ).before( showMonetizationMessage( loading_content, '' ) );
+
+					} else {
+
+						// Subscriber gating and has post excerpt...Verifying extension.
+						$( 'p.coil-post-excerpt' ).after( showMonetizationMessage( loading_content, '' ) );
+
 					}
-
-					setTimeout( function() {
-
-						// If the payment connection event listeners haven't yet been
-						// initialised, display failure message
-						if ( typeof monetizationStartEventOccurred === 'undefined' ) {
-
-							if ( $( 'p.monetize-msg' ).text() === loading_content ) {
-
-								// Monetization not started and verification failed.
-								showVerificationFailureMessage();
-
-							} else if ( isMonetizedAndPublic() ) {
-
-								// Content is monetized and public but extension is stopped.
-								if ( show_donation_bar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-									$( 'body' ).append( showBannerMessage( voluntary_donation ) );
-									addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
-								}
-							}
-						}
-					}, 5000 );
-					break;
+				} else {
+					document.querySelector( content_container ).before( showMonetizationMessage( loading_content, '' ) );
 				}
 
-				// Monetization has started.
-				document.monetization.addEventListener( 'monetizationstart', function(event) {
-					// Connect to backend to validate the session using the request id.
-					var paymentPointer = event.detail.paymentPointer,
-						requestId      = event.detail.requestId;
+				// Update message if browser extension is verifying user.
+				setTimeout( function() {
+					hideContentExcerpt();
+					messageWrapper.html( loading_content );
+				}, 2000 );
 
-					monetizationStartEventOccurred = true;
-
-					if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
-						showContentContainer();
-						document.body.classList.remove( 'show-fw-message' );
-						if ( isExcerptEnabled() ) {
-							hideContentExcerpt();
-						}
-
-					}
-
-					$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'monetization-initialized' ); // Update body class to show content.
-					messageWrapper.remove(); // Remove status message.
-
-					if ( ! isExcerptEnabled() ) {
-						$( 'div.coil-post-excerpt' ).remove(); // Remove post excerpt.
-					}
-
-					// Show embedded content.
-					document.querySelectorAll( 'iframe, object, video' ).forEach( function( embed ) {
-						// Skip embeds we want to ignore
-						if ( embed.classList.contains( 'intrinsic-ignore' ) || embed.parentNode.classList.contains( 'intrinsic-ignore' ) ) {
-							return true;
-						}
-
-						if ( ! embed.dataset.origwidth ) {
-							// Get the embed element proportions
-							embed.setAttribute( 'data-origwidth', embed.width );
-							embed.setAttribute( 'data-origheight', embed.height );
-						}
-					} );
-
-					$( 'body' ).trigger( 'coil-monetization-initialized', [ event ] );
-
-					// Monetization is verified, remove any messages
-					if ( $( 'p.monetize-msg' ).length > 0 ) {
-						$( 'p.monetize-msg' ).remove();
-						hideContentExcerpt();
-						showContentContainer();
-					}
-
-				});
-
-				// Monetization progress event.
-				document.monetization.addEventListener( 'monetizationprogress', function(event) {
-					// Connect to backend to validate the payment.
-					var paymentPointer = event.detail.paymentPointer,
-						requestId      = event.detail.requestId,
-						amount         = event.detail.amount,
-						assetCode      = event.detail.assetCode,
-						assetScale     = event.detail.assetScale;
-
-					// Trigger an event.
-					$( 'body' ).trigger( 'coil-monetization-progress', [
-						event,
-						paymentPointer,
-						requestId,
-						amount,
-						assetCode,
-						assetScale
-					] );
-				});
+				// Update message if browser extension is unable to verify user.
+				setTimeout( function() {
+					showVerificationFailureMessage();
+				}, 5000 );
 
 			} else {
 
-				// Update body class to show free content.
-				$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'coil-extension-not-found' );
+				if ( show_donation_bar && monetizationNotInitialized() && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+					$( 'body' ).append( showBannerMessage( voluntary_donation ) );
+					addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
+				}
+			}
+		}
+	}
 
-				if ( isSubscribersOnly() ) {
+	/**
+	 * Handles the 'started' monetization state.
+	 *
+	 * @return void.
+	 */
+	function handleStartedMonetization() {
+		// User account verified, loading content. Monetization state: Started
+		document.querySelector( content_container ).before( showMonetizationMessage( loading_content, '' ) );
+	}
 
-					$( content_container ).before( showSubscriberOnlyMessage( browser_extension_missing ) );
+	/**
+	 * Handles the 'stopped' monetization state.
+	 *
+	 * @return void.
+	 */
+	function handleStoppedMonetization() {
+		if ( isSubscribersOnly() || isSplitContent() ) {
+			hideContentExcerpt();
+			hideContentContainer();
+			document.querySelector( content_container ).before( showMonetizationMessage( loading_content, '' ) );
+		}
 
-					if ( isExcerptEnabled() && getContentExcerpt() ) {
-						document.body.classList.add( 'show-excerpt-message' );
-						$( content_container ).prepend( getContentExcerpt() );
-					} else {
-						document.body.classList.add( 'show-fw-message' );
-					}
+		setTimeout( function() {
 
-				} else if ( isSplitContent() ) {
+			// If the payment connection event listeners haven't yet been
+			// initialised, display failure message
+			if ( typeof monetizationStartEventOccurred === 'undefined' ) {
 
-					// Split content with no extension found.
-					$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( partial_gating ) );
+				if ( $( 'p.monetize-msg' ).text() === loading_content ) {
 
-					// Show non-Coil-members content.
-					// Removing class means blocks revert to their *original* display values.
-					$( '.coil-hide-monetize-users' ).removeClass('coil-hide-monetize-users');
-
-					showContentContainer();
-
-					if ( ! hasBannerDismissCookie( 'ShowCoilPartialMsg' ) ) {
-						$( 'body' ).append( showBannerMessage( partial_gating ) );
-						addBannerDismissClickHandler( 'ShowCoilPartialMsg' );
-					}
+					// Monetization not started and verification failed.
+					showVerificationFailureMessage();
 
 				} else if ( isMonetizedAndPublic() ) {
 
-					// Content is monetized and public but no extension found.
-
+					// Content is monetized and public but extension is stopped.
 					if ( show_donation_bar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 						$( 'body' ).append( showBannerMessage( voluntary_donation ) );
 						addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 					}
 				}
-
-				// Trigger an event.
-				$( 'body' ).trigger( 'coil-extension-not-found' );
-
 			}
+		}, 5000 );
+	}
+
+	/**
+	 * The listener callback for monetization starting.
+	 *
+	 * @return void.
+	 */
+	function monetizationStartListener(event) {
+		// Connect to backend to validate the session using the request id.
+		var paymentPointer = event.detail.paymentPointer,
+			requestId      = event.detail.requestId;
+
+		monetizationStartEventOccurred = true;
+
+		if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
+			showContentContainer();
+			document.body.classList.remove( 'show-fw-message' );
+			if ( isExcerptEnabled() ) {
+				hideContentExcerpt();
+			}
+
 		}
+
+		$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'monetization-initialized' ); // Update body class to show content.
+		messageWrapper.remove(); // Remove status message.
+
+		if ( ! isExcerptEnabled() ) {
+			$( 'div.coil-post-excerpt' ).remove(); // Remove post excerpt.
+		}
+
+		// Show embedded content.
+		document.querySelectorAll( 'iframe, object, video' ).forEach( function( embed ) {
+			// Skip embeds we want to ignore
+			if ( embed.classList.contains( 'intrinsic-ignore' ) || embed.parentNode.classList.contains( 'intrinsic-ignore' ) ) {
+				return true;
+			}
+
+			if ( ! embed.dataset.origwidth ) {
+				// Get the embed element proportions
+				embed.setAttribute( 'data-origwidth', embed.width );
+				embed.setAttribute( 'data-origheight', embed.height );
+			}
+		} );
+
+		$( 'body' ).trigger( 'coil-monetization-initialized', [ event ] );
+
+		// Monetization is verified, remove any messages
+		if ( $( 'p.monetize-msg' ).length > 0 ) {
+			$( 'p.monetize-msg' ).remove();
+			hideContentExcerpt();
+			showContentContainer();
+		}
+	}
+
+	/**
+	 * The listener callback for monetization progress.
+	 *
+	 * @return void.
+	 */
+	function monetizationProgressListener(event) {
+		// Connect to backend to validate the payment.
+		var paymentPointer = event.detail.paymentPointer,
+			requestId      = event.detail.requestId,
+			amount         = event.detail.amount,
+			assetCode      = event.detail.assetCode,
+			assetScale     = event.detail.assetScale;
+
+		// Trigger an event.
+		$( 'body' ).trigger( 'coil-monetization-progress', [
+			event,
+			paymentPointer,
+			requestId,
+			amount,
+			assetCode,
+			assetScale
+		] );
+	}
+
+	/**
+	 * Init
+	 */
+	$( document ).ready(function () {
+
+		// Bail early - monetization initialised successfully.
+		if ( monetizationInitialized() ) {
+			return;
+		}
+
+		// Hide content entry area if not default selector.
+		if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
+			$( content_container ).not( '.coil-post-excerpt' ).hide();
+		}
+
+		// Check if browser extension exists.
+		if ( typeof document.monetization === 'undefined' ) {
+			handleUndefinedMonetization();
+			return;
+		}
+
+		switch ( document.monetization.state ) {
+
+			case 'pending':
+				handlePendingMonetization();
+				break;
+
+			case 'started':
+				handleStartedMonetization();
+				break;
+
+			case 'stopped':
+				handleStoppedMonetization();
+				break;
+		}
+
+		// Monetization has started.
+		document.monetization.addEventListener( 'monetizationstart', monetizationStartListener );
+
+		// Monetization progress event.
+		document.monetization.addEventListener( 'monetizationprogress', monetizationProgressListener );
+
 	});
 })(jQuery);

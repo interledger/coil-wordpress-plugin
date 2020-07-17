@@ -52,8 +52,8 @@ function init_plugin() : void {
 	add_action( 'wp_ajax_dismiss_welcome_notice', __NAMESPACE__ . '\Settings\dismiss_welcome_notice' );
 
 	// Term meta.
-	add_action( 'edit_term', __NAMESPACE__ . '\Admin\maybe_save_term_meta' );
-	add_action( 'create_term', __NAMESPACE__ . '\Admin\maybe_save_term_meta' );
+	add_action( 'edit_term', __NAMESPACE__ . '\Admin\maybe_save_term_meta', 10, 3 );
+	add_action( 'create_term', __NAMESPACE__ . '\Admin\maybe_save_term_meta', 10, 3 );
 	add_action( 'delete_term', __NAMESPACE__ . '\Admin\delete_term_monetization_meta' );
 	add_term_edit_save_form_meta_actions();
 
@@ -88,6 +88,10 @@ function init_plugin() : void {
  */
 function load_block_frontend_assets() : void {
 
+	if ( ! in_array( $GLOBALS['post']->post_type, get_supported_post_types(), true ) ) {
+		return;
+	}
+
 	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 	wp_enqueue_style(
@@ -105,7 +109,10 @@ function load_block_frontend_assets() : void {
  */
 function load_block_editor_assets() : void {
 
-	if ( ! is_admin() ) {
+	if (
+		! is_admin() ||
+		! in_array( get_current_screen()->post_type, get_supported_post_types(), true )
+	) {
 		return;
 	}
 
@@ -188,7 +195,7 @@ function load_full_assets() : void {
 			'partial_gating'            => Admin\get_customizer_text_field( 'coil_partial_gating_message' ),
 			'learn_more_button_text'    => Admin\get_customizer_text_field( 'coil_learn_more_button_text' ),
 			'learn_more_button_link'    => Admin\get_customizer_text_field( 'coil_learn_more_button_link' ),
-			'show_donation_bar'         => get_theme_mod( 'coil_show_donation_bar' ),
+			'show_donation_bar'         => get_theme_mod( 'coil_show_donation_bar', true ),
 			'post_excerpt'              => get_the_excerpt(),
 			'site_logo'                 => $site_logo,
 
@@ -393,7 +400,10 @@ function get_supported_post_types( $output = 'names' ) : array {
 	foreach ( $content_types as $post_type ) {
 		$type_name = ( $output === 'names' ) ? $post_type : $post_type->name;
 
-		if ( ! in_array( $type_name, $excluded_types, true ) ) {
+		if (
+			! in_array( $type_name, $excluded_types, true ) &&
+			post_type_supports( $type_name, 'custom-fields' )
+		) {
 			$supported_types[] = $post_type;
 		}
 	}

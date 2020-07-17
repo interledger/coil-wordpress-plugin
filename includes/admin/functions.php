@@ -141,12 +141,16 @@ function maybe_save_post_metabox( int $post_id ) : void {
 /**
  * Fires after a term has been updated, but before the term cache has been cleaned.
  *
- * @param int $term_id Term ID.
+ * @param int    $term_id  Term ID.
+ * @param int    $tt_id    Term taxonomy ID.
+ * @param string $taxonomy Taxonomy slug.
+ *
  * @return void
  */
-function maybe_save_term_meta( int $term_id ) : void {
+function maybe_save_term_meta( int $term_id, int $tt_id, $taxonomy ) : void {
 
-	if ( ! current_user_can( 'edit_post', $term_id ) || empty( $_REQUEST['term_gating_nonce'] ) ) {
+	$tax_obj = get_taxonomy( $taxonomy );
+	if ( ! current_user_can( $tax_obj->cap->manage_terms ) || empty( $_REQUEST['term_gating_nonce'] ) ) {
 		return;
 	}
 

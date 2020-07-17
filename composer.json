@@ -33,7 +33,7 @@
 		"post-update-cmd": "cghooks update",
 
 		"phpcs": [
-			"vendor/bin/phpcs -ps --colors --report-width=80 --cache=tests/cache/phpcs.json ."
+			"vendor/bin/phpcs -ps --colors --report-width=80 --cache=tests/phpunit/cache/phpcs.json ."
 		]
 	},
 	"extra": {

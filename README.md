@@ -4,11 +4,39 @@ This is the source code repository for the Coil WordPress plugin. Coil Web Monet
 
 ---
 
+* [ZenHub Coil Wordpress Plugin Workspace Workflow](#markdown-header-zenhub-coil-wordPress-plugin-workspace-workflow
+)
 * [Local Development Environment](#markdown-header-local-development-environment)
 * [Development Process](#markdown-header-development-process)
 * [Deployment](#markdown-header-deployment)
 
 ---
+## ZenHub Coil Wordpress Plugin Workspace Workflow
+
+Coil uses ZenHub to manage our Wordpress Plugin workflow. To use please install the 
+[ZenHub extension](https://zenhub.com/extension) and then login to it with 
+GitHub OAuth. Then click request access so we can approve your license.  
+
+After that you will be taken to the workspaces board where you should search for
+the "Wordpress Plugin" workspace. 
+
+On the "Wordpress Plugin" workspace issues move from left to right on the board. 
+
+Intake Pipelines (New Issues|New Bugs) -> Queue -> Up Next -> In Progress -> Closed
+
+All new issues go into one of the following **Intake** pipelines: 
+
+| New Issues | Triage (Bugs)|
+| --- | --- |
+| Any issue which is not a bug or a feature | New Bugs reported. Label: "Type: Bug"
+
+The team reviews these issues. If they are valid bugs, a new feature we want to implement, or an issue we wish to work on we move it into the **Queue**. 
+
+The **Queue** is a prioritized list of issues the team plans to work on. 
+
+From the **Queue** issues are pulled into the **Up Next** pipeline by the Coil Team. Anyone works on these issues and they then move through the **In Progress** and then to the **Closed** pipeline once work is completed. 
+
+**NOTE** Issues with the label "Pragmatic" are planned to be worked on by the Pragmatic Team.
 
 # Local Development Environment
 
@@ -51,7 +79,7 @@ Flywheel will give you the URL of where you can access your environment, and you
 
 The development process follows [Git Flow](http://jeffkreeftmeijer.com/2010/why-arent-you-using-git-flow/).
 
-Development happens in feature branches, which are merged into `develop`, and then eventually merged into `master` for deployment to production. When making changes, a feature branch should be created that branches from `develop` (and the corresponding merge request on Github should use `develop` as the target branch).
+Development happens in feature branches, which are merged into `develop`, and then eventually merged into `main` for deployment to production. When making changes, a feature branch should be created that branches from `develop` (and the corresponding merge request on Github should use `develop` as the target branch).
 
 ## Plugin Structure
 
@@ -65,7 +93,6 @@ This plugin maintains a basic file structure:
 	* `images/` – Images.
 	* `js/` – JavaScript files.
 	* `scss/` – SCSS source files.
-* `tests/` – Test files.
 * `README.md` – Plugin developer readme.
 
 Within the `includes/` directory, files should be organised hierarchically based on namespaces. If a namespace only contains functions, the filename should be `functions.php`.

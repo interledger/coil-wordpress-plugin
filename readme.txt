@@ -77,10 +77,9 @@ If you get stuck, check out our [help center](https://help.coil.com/for-creators
 
 == Screenshots ==
 
-1. Global Settings
-2. Default Content Settings
-3. Excerpt Settings
-4. Gutenberg Editor
+1. Simple setup
+2. Great support 
+3. Exclusive content 
 
 == Changelog ==
 
