@@ -170,12 +170,15 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 
 		// Only show inspector options if set for block level monetization.
 		showInspector = false;
+		// console.log('meta', meta);
 		if ( typeof meta !== 'undefined' ) {
 			if ( typeof meta._coil_monetize_post_status === 'undefined' || ( typeof meta._coil_monetize_post_status !== 'undefined' && meta._coil_monetize_post_status === 'gate-tagged-blocks' ) ) {
 				showInspector = true;
 			}
 		}
 
+		// console.log('showInspector', showInspector);
+		// showInspector = true;
 		return (
 			<Fragment>
 				<BlockEdit { ...props } />
@@ -319,6 +322,7 @@ addFilter(
 
 // Post Monetization Fields
 const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
+
 	return {
 		updateMetaValue: ( value ) => {
 			dispatch( 'core/editor' ).editPost( {

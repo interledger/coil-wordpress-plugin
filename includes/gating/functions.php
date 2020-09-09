@@ -146,7 +146,7 @@ function maybe_restrict_content( string $content ) : string {
 
 			$full_gated_message = Admin\get_customizer_text_field( 'coil_fully_gated_excerpt_message' );
 
-			$public_content .= '<p>' . esc_html( $full_gated_message ) . '</p>';
+			$public_content .= '<p>' . sanitize_textarea_field( $full_gated_message ) . '</p>';
 			$public_content .= $cta_button_html;
 			break;
 
@@ -158,7 +158,7 @@ function maybe_restrict_content( string $content ) : string {
 
 			$partially_gated_message = Admin\get_customizer_text_field( 'coil_partially_gated_excerpt_message' );
 
-			$public_content .= '<p>' . esc_html( $partially_gated_message ) . '</p>';
+			$public_content .= '<p>' . sanitize_textarea_field( $partially_gated_message ) . '</p>';
 			$public_content .= $cta_button_html;
 			break;
 
