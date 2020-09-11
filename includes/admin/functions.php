@@ -361,7 +361,31 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 		]
 	);
 
-	// Partial gating message (textarea 1).
+	// Fully gated content message (textarea 1).
+	$fully_gated_content_message_id = 'coil_fully_gated_content';
+
+	$wp_customize->add_setting(
+		$fully_gated_content_message_id,
+		[
+			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'sanitize_callback' => 'esc_textarea',
+		]
+	);
+
+	$wp_customize->add_control(
+		$fully_gated_content_message_id,
+		[
+			'type'        => 'textarea',
+			'label'       => __( 'Fully gated content message', 'coil-web-monetization' ),
+			'section'     => $messaging_section_id,
+			'description' => __( 'This message is shown when content is set to be Coil Members Only, and the visitor is using an unsupported browser, has the extension installed incorrectly, is logged out of their Coil account, or doesn\'t have a Coil Membership.', 'coil-web-monetization' ),
+			'input_attrs' => [
+				'placeholder' => get_customizer_text_field( $fully_gated_content_message_id, true ),
+			],
+		]
+	);
+
+	// Partial gating message (textarea 2).
 	$partial_message_id = 'coil_partial_gating_message';
 
 	$wp_customize->add_setting(
@@ -385,7 +409,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 		]
 	);
 
-	// Fully gated excerpt message (textarea 2).
+	// Fully gated excerpt message (textarea 3).
 	$fully_gated_excerpt_message_id = 'coil_fully_gated_excerpt_message';
 
 	$wp_customize->add_setting(
@@ -409,7 +433,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 		]
 	);
 
-	// Partially gated excerpt message (textarea 3).
+	// Partially gated excerpt message (textarea 4).
 	$partially_gated_excerpt_message_id = 'coil_partially_gated_excerpt_message';
 
 	$wp_customize->add_setting(
@@ -433,7 +457,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 		]
 	);
 
-	// Pending message (textarea 4).
+	// Pending message (textarea 5).
 	$pending_message_id = 'coil_verifying_status_message';
 
 	$wp_customize->add_setting(
@@ -457,7 +481,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 		]
 	);
 
-	// Invalid Web Monetization message (textarea 5).
+	// Invalid Web Monetization message (textarea 6).
 	$invalid_web_monetization_message_id = 'coil_unable_to_verify_message';
 
 	$wp_customize->add_setting(
@@ -481,7 +505,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 		]
 	);
 
-	// Voluntary donation message (textarea 6).
+	// Voluntary donation message (textarea 7).
 	$voluntary_donation_message_id = 'coil_voluntary_donation_message';
 
 	$wp_customize->add_setting(
@@ -505,6 +529,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 		]
 	);
 
+	/*
 	// Incorrect browser setup message (textarea 7).
 	$incorrect_browser_setup_message_id = 'coil_unsupported_message';
 
@@ -528,6 +553,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			],
 		]
 	);
+	*/
 }
 
 /**
