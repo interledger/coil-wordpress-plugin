@@ -49,6 +49,7 @@ function init_plugin() : void {
 	add_action( 'admin_menu', __NAMESPACE__ . '\Settings\register_admin_menu' );
 	add_action( 'admin_init', __NAMESPACE__ . '\Settings\register_admin_content_settings' );
 	add_action( 'admin_notices', __NAMESPACE__ . '\Settings\admin_welcome_notice' );
+	add_action( 'admin_notices', __NAMESPACE__ . '\Settings\admin_no_payment_pointer_notice' );
 	add_action( 'wp_ajax_dismiss_welcome_notice', __NAMESPACE__ . '\Settings\dismiss_welcome_notice' );
 
 	// Term meta.

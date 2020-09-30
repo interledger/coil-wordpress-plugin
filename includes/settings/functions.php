@@ -503,6 +503,39 @@ function admin_welcome_notice() {
 	<?php
 }
 
+function admin_no_payment_pointer_notice() {
+	$screen = get_current_screen();
+	if ( ! $screen ) {
+		return;
+	}
+
+	if ( $screen->id !== 'toplevel_page_coil_settings' ) {
+		return;
+	}
+
+	$current_user       = wp_get_current_user();
+	$payment_pointer_id = Admin\get_global_settings( 'coil_payment_pointer_id' );
+
+	if ( $payment_pointer_id) {
+		return;
+	}
+
+	$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : '';
+
+	if ( $active_tab !== 'global_settings' ) {
+		return;
+	}
+	?>
+
+	<div style="display: none;" class="notice coil-no-payment-pointer-notice">
+		<img width="48" height="48" class="coil-no-payment-pointer-notice__icon" src="<?php echo esc_url( plugins_url( 'assets/images/web-mon-icon.svg', COIL__FILE__ ) ); ?>" alt="<?php esc_attr_e( 'Coil', 'coil-web-monetization' ); ?>" />
+		<div class="coil-no-payment-pointer-notice__content">
+			<h3><?php esc_html_e( 'Warning', 'coil-web-monetization' ); ?></h3>
+			<p>You haven't entered a payment pointer. A payment pointer is required to receive payments and for content gating to be recognized.</p>
+		</div>
+	</div>
+	<?php
+}
 /**
  * Render the Coil submenu setting screen to display options to gate posts
  * and taxonomy content types.
