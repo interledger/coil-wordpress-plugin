@@ -528,32 +528,6 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			],
 		]
 	);
-
-	/*
-	// Incorrect browser setup message (textarea 7).
-	$incorrect_browser_setup_message_id = 'coil_unsupported_message';
-
-	$wp_customize->add_setting(
-		$incorrect_browser_setup_message_id,
-		[
-			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
-			'sanitize_callback' => 'wp_filter_nohtml_kses',
-		]
-	);
-
-	$wp_customize->add_control(
-		$incorrect_browser_setup_message_id,
-		[
-			'type'        => 'textarea',
-			'label'       => __( 'Incorrect browser setup message', 'coil-web-monetization' ),
-			'section'     => $messaging_section_id,
-			'description' => __( 'This message is shown when content is set to be Coil Members Only, and visitor either isn\'t using a supported browser, or doesn\'t have the browser extension installed correctly.', 'coil-web-monetization' ),
-			'input_attrs' => [
-				'placeholder' => get_customizer_text_field( $incorrect_browser_setup_message_id, true ),
-			],
-		]
-	);
-	*/
 }
 
 /**
