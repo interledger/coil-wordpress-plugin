@@ -362,7 +362,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 	);
 
 	// Fully gated content message (textarea 1).
-	$fully_gated_content_message_id = 'coil_fully_gated_content';
+	$fully_gated_content_message_id = 'coil_unsupported_message';
 
 	$wp_customize->add_setting(
 		$fully_gated_content_message_id,
