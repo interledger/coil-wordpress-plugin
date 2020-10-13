@@ -21,6 +21,7 @@ describe('"Learn more button" panel', function () {
 			.contains('Learn more button')
 			.click();
 
+		// Test the backend.
 		var label = 'New Button Text ' + Date.now();
 		cy.get('#\_customize-input-coil_learn_more_button_text').clear().type(label);
 		cy.get('#save').click();
@@ -35,6 +36,11 @@ describe('"Learn more button" panel', function () {
 			.click();
 
 		cy.get('#\_customize-input-coil_learn_more_button_text').should('have.value', label);
+
+		// Test the front-end.
+		cy.visit('/coil-members-only/');
+		cy.get('.coil-message-button')
+			.contains(label);
 	});
 });
 
