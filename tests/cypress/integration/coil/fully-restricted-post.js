@@ -5,7 +5,7 @@ describe('Fully restricted posts', () => {
 	})
 
 	it('Checks that you can edit text that appears on fully restricted posts', () => {
-		cy.visit('/wp-admin/customize.php?autofocus[panel]=coil_customizer_settings_panel')
+		cy.visit('/wp-admin/customize.php')
 		cy
 			.contains('Coil Web Monetization')
 			.click();
@@ -24,7 +24,7 @@ describe('Fully restricted posts', () => {
 			.get('#save')
 			.click();
 
-		cy.visit('/coil-members-only//');
+		cy.visit('/coil-members-only/');
 		cy
 			.contains(lockedMessage)
 			.should('be.visible');
