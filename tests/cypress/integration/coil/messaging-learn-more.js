@@ -8,6 +8,9 @@ describe('"Learn more button" panel', function () {
 	})
 
 	it('checks that the "Get Coil to access" button text can be changed', function() {
+		cy.server()
+		cy.route({method: 'POST', url: '/wp-admin/admin-ajax.php'}).as('settingsSubmitted')
+
 		cy.logInToWordPress('admin', 'password');
 		cy.visit('/wp-admin/customize.php');
 
@@ -21,7 +24,7 @@ describe('"Learn more button" panel', function () {
 		var label = 'New Button Text ' + Date.now();
 		cy.get('#\_customize-input-coil_learn_more_button_text').clear().type(label);
 		cy.get('#save').click();
-
+		cy.wait('@settingsSubmitted')
 		cy.reload();
 
 		cy.get('h3.accordion-section-title')
