@@ -13,6 +13,7 @@ describe('Tests for visibility settings in editor', () => {
 
 		cy
 			.get('.components-radio-control__input')
+			// Selecting checked option
 			.then(options => {
 				if(options[0].checked) {
 					return options[0];
@@ -20,12 +21,14 @@ describe('Tests for visibility settings in editor', () => {
 					return options[1];
 				}
 			})
+			// Selecting the label text and saving it as an alias
 			.next()
 			.invoke('text')
 			.as('checkedOptionText')
 
 		cy
 			.get('.components-radio-control__input')
+			// Selecting unchecked option
 			.then(options => {
 				if(options[0].checked) {
 					return options[1];
@@ -44,6 +47,7 @@ describe('Tests for visibility settings in editor', () => {
 		cy
 			.get('@checkedOptionText')
 			.then((checkedOptionText) => {
+				// Checking that the original checkbox is not checked
 				cy
 					.contains(checkedOptionText)
 					.prev()
