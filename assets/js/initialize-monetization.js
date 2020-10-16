@@ -350,7 +350,7 @@
 	function handleUndefinedMonetization() {
 
 		// Skip if we're testing in Cypress; we can't easily reset the app state from the changes made here.
-		if ( window.Cypress ) {
+		if ( window.Cypress && window.Cypress.monetized ) {
 			return;
 		}
 
