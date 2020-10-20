@@ -41,8 +41,6 @@ describe('Single Posts', function () {
 				$link[0].scrollIntoView();
 				$link[0].click();
 			})
-
-		cy.get('.entry-content').should('contain', 'ID: TESTPOST1');
 	});
 
 	it('check that I can view single post set to no monetization.', function() {
@@ -55,7 +53,6 @@ describe('Single Posts', function () {
 				$link[0].click();
 			})
 
-		cy.get('.entry-content').should('contain', 'ID: TESTPOST2');
 		cy.get('head meta[name="monetization"]', {timeout: 0}).should('not.exist');
 	});
 

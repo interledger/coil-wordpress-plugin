@@ -7,41 +7,45 @@ describe('"Learn more button" panel', function () {
 		cy.logInToWordPress('admin', 'password');
 	})
 
-	it('checks that the "Get Coil to access" button text can be changed', function() {
-		cy.server()
-		cy.route({method: 'POST', url: '/wp-admin/admin-ajax.php'}).as('settingsSubmitted')
+	for (let i = 0; i < 20; i++) {
+		it('checks that the "Get Coil to access" button text can be changed', function() {
+			cy.server()
+			cy
+				.route({method: 'POST', url: '/wp-admin/admin-ajax.php'})
+				.as('settingsSubmitted')
 
-		cy.logInToWordPress('admin', 'password');
-		cy.visit('/wp-admin/customize.php');
+			cy.logInToWordPress('admin', 'password');
+			cy.visit('/wp-admin/customize.php');
 
-		cy.get('h3.accordion-section-title')
-			.contains('Coil Web Monetization')
-			.click()
-		cy.get('h3.accordion-section-title')
-			.contains('Learn more button')
-			.click();
+			cy.get('h3.accordion-section-title')
+				.contains('Coil Web Monetization')
+				.click()
+			cy.get('h3.accordion-section-title')
+				.contains('Learn more button')
+				.click();
 
-		// Test the backend.
-		var label = 'New Button Text ' + Date.now();
-		cy.get('#\_customize-input-coil_learn_more_button_text').clear().type(label);
-		cy.get('#save').click();
-		cy.wait('@settingsSubmitted')
-		cy.reload();
+			// Test the backend.
+			const label = 'New Button Text ' + Date.now();
+			cy.get('#\_customize-input-coil_learn_more_button_text').clear().type(label);
+			cy.get('#save').click();
+			cy.wait('@settingsSubmitted')
+			cy.reload();
 
-		cy.get('h3.accordion-section-title')
-			.contains('Coil Web Monetization')
-			.click()
-		cy.get('h3.accordion-section-title')
-			.contains('Learn more button')
-			.click();
+			cy.get('h3.accordion-section-title')
+				.contains('Coil Web Monetization')
+				.click()
+			cy.get('h3.accordion-section-title')
+				.contains('Learn more button')
+				.click();
 
-		cy.get('#\_customize-input-coil_learn_more_button_text').should('have.value', label);
+			cy.get('#\_customize-input-coil_learn_more_button_text').should('have.value', label);
 
-		// Test the front-end.
-		cy.visit('/coil-members-only/');
-		cy.get('.coil-message-button')
-			.contains(label);
-	});
+			// Test the front-end.
+			cy.visit('/coil-members-only/');
+			cy.get('.coil-message-button')
+				.contains(label);
+		});
+	}
 });
 
 
