@@ -9,18 +9,54 @@ describe('Coil options panel', function () {
 
 	it('checks that the donation bar be can be enabled/disabled', function() {
 		cy.server();
-		cy.route({method: 'POST', url: '/wp-admin/admin-ajax.php'}).as('settingsSubmitted');
+		cy
+			.route({method: 'POST', url: '/wp-admin/admin-ajax.php'})
+			.as('settingsSubmitted');
 
 		toggleDonationBar('uncheck');
 		cy.visit('/monetized-and-public/');
-		cy.get('.banner-message-inner')
+		cy
+			.get('.banner-message-inner')
 			.should('not.exist');
 
 		toggleDonationBar('check');
 		cy.visit('/monetized-and-public/');
-		cy.get('.banner-message-inner')
+		cy
+			.get('.banner-message-inner')
 			.should('be.visible');
 	});
+
+	it('Checks that you can dissmiss the donation bar as a WM enabled user', () => {
+		cy.visit('/monetized-and-public/');
+
+		cy.startWebMonetization();
+
+		cy
+			.get('.banner-message-inner')
+			.should('not.exist');
+
+		cy.stopWebMonetization();
+	})
+
+	it('Checks that you can dissmiss the donation bar as a WM disabled user', () => {
+		cy.visit('/monetized-and-public/');
+		cy
+			.get('.banner-message-inner')
+			.should('be.visible');
+		cy
+			.get('#js-coil-banner-dismiss')
+			.click();
+
+		cy
+			.get('.banner-message-inner')
+			.should('not.exist');
+
+		cy.reload();
+
+		cy
+			.get('.banner-message-inner')
+			.should('not.exist');
+	})
 });
 
 /**

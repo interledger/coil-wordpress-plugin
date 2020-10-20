@@ -28,6 +28,20 @@ describe('Fully restricted posts', () => {
 		cy
 			.contains(lockedMessage)
 			.should('be.visible');
+	})
 
+	it('Checks that a VM enabled user can view monetized content', () => {
+		cy.visit('/coil-members-only/');
+		cy
+			.contains('This is a test post for the Coil Members Only state.')
+			.should('not.be.visible');
+
+		cy.startWebMonetization();
+
+		cy
+			.contains('This is a test post for the Coil Members Only state.')
+			.should('be.visible');
+
+		cy.stopWebMonetization();
 	})
 })
