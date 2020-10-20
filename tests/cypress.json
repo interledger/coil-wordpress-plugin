@@ -5,6 +5,5 @@
 	"videoUploadOnPasses": false,
 	"viewportWidth": 1920,
 	"viewportHeight": 1080,
-  	"watchForFileChanges": false,
-  	"testFiles": ["**/coil/test.js", "**/coil/**"]
+  	"watchForFileChanges": false
 }

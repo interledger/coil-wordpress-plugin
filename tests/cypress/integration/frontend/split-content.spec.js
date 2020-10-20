@@ -1,36 +1,84 @@
-describe('Block visibility tests', () => {
+const hiddenContentMessage = 'This content is for Coil Members only. To access, join Coil and install the browser extension.';
+
+describe('Visibility of content blocks for non WM-enabled users', () => {
 	beforeEach(() => {
 		cy.visit('/block-visibility/')
 	})
 
-	it('Checks block visibility settings for blocks hidden to non WM-enabled users', () => {
+	it('Check visibility of content blocks hidden to non WM-enabled users', () => {
 		cy
-			.contains('This should be hidden for non WM-enabled users')
-			.should('have.class', 'coil-show-monetize-users')
+			.get('.wm-shown h3')
+			.invoke('text')
+			.should('contain', hiddenContentMessage)
 
 		cy
-			.contains('Lorem ipsum dolor sit amet')
-			.should('have.class', 'coil-show-monetize-users');
+			.get('.wm-shown p')
+			.invoke('text')
+			.should('contain', hiddenContentMessage)
 	})
 
-	it('Checks block visibility settings for blocks shown to non WM-enabled users', () => {
+	it('Check visibility of content blocks shown to non WM-enabled users', () => {
 		cy
-			.contains('This should be shown for non WM-enabled users')
-			.should('not.have.class', 'coil-show-monetize-users');
+			.get('.everyone-shown h3')
+			.invoke('text')
+			.should('not.contain', hiddenContentMessage)
 
 		cy
-			.get('.wp-block-image')
-			.should('not.have.class', 'coil-show-monetize-users');
+			.get('.everyone-shown img')
+			.invoke('text')
+			.should('not.contain', hiddenContentMessage)
 	})
 
-	it('Checks block visibility settings for blocks hidden from WM-enabled users', () => {
+	it('Check visibility of content blocks hidden from WM-enabled users', () => {
 		cy
-			.contains('This should be hidden for WM-enabled users')
-			.should('not.have.class', 'coil-show-monetize-users');
+			.get('.wm-hidden h3')
+			.invoke('text')
+			.should('not.contain', hiddenContentMessage)
 
 		cy
-			.get('.wp-block-buttons')
-			.should('not.have.class', 'coil-show-monetize-users');
+			.get('.wm-hidden ')
+			.should('be.visible');
+	})
+})
+
+describe('Check visibility of content blocks for WM-enabled users', () => {
+	beforeEach(() => {
+		cy.visit('/block-visibility/')
+		cy.startWebMonetization();
+	})
+
+	afterEach(() => {
+		cy.stopWebMonetization();
+	})
+
+	it('Check visibility of content blocks hidden to non WM-enabled users', () => {
+		cy
+			.get('.wm-shown h3')
+			.invoke('text')
+			.should('not.contain', hiddenContentMessage)
+
+		cy
+			.get('.wm-shown p')
+			.invoke('text')
+			.should('not.contain', hiddenContentMessage)
+	})
+
+	it('Check visibility of content blocks shown to non WM-enabled users', () => {
+		cy
+			.get('.everyone-shown h3')
+			.invoke('text')
+			.should('not.contain', hiddenContentMessage)
+
+		cy
+			.get('.everyone-shown img')
+			.invoke('text')
+			.should('not.contain', hiddenContentMessage)
+	})
+
+	it('Check visibility of content blocks hidden from WM-enabled users', () => {
+		cy
+			.get('.wm-hidden')
+			.should('not.be.visible')
 	})
 })
 
