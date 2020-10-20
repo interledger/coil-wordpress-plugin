@@ -2,7 +2,6 @@
 	$( document ).ready(function() {
 
 		activeTabID = $('.nav-tab-wrapper a.nav-tab-active').attr('id');
-		console.log(activeTabID);
 
 		// Welcome notice
 		if(activeTabID == 'coil-getting-started') {
@@ -41,7 +40,7 @@
 				settingsUpdated = $('#setting-error-settings_updated');
 				if( settingsUpdated.length > 0 ) {
 					noPaymentPointerNotice.show();
-				}				
+				}
 			}
 		}
 	});
