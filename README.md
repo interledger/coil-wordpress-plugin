@@ -137,7 +137,7 @@ At this moment in time, the tests are not run automatically on public CI service
 ## Cypress Tests
 To run the tests you will need to: 
 
-- load the included SQL database, found in `/tests/cypress/fixtures/test-database.sql`
+- Replace your existing WP database with this test snapshot, found in `/tests/cypress/fixtures/test-database.sql`
 - `npx cypress run`
 
 or if you want to use the tests with a GUI 
