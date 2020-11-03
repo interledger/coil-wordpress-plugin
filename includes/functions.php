@@ -411,3 +411,18 @@ function get_supported_post_types( $output = 'names' ) : array {
 
 	return apply_filters( 'coil_supported_post_types', $supported_types, $output );
 }
+
+
+/**
+ * Filter customiser settings
+ *
+ * See wp_filter_nohtml_kses
+ *
+ * @param string $message
+ *
+ * @return string $message
+ */
+function filter_customiser_settings( $message ) : string {
+	$message = wp_kses( stripslashes( $message ), 'strip' );
+	return $message;
+}

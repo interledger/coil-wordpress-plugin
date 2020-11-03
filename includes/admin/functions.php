@@ -392,7 +392,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 		$partial_message_id,
 		[
 			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
-			'sanitize_callback' => 'wp_filter_nohtml_kses',
+			'sanitize_callback' => 'Coil\filter_customiser_settings',
 		]
 	);
 
@@ -416,7 +416,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 		$fully_gated_excerpt_message_id,
 		[
 			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
-			'sanitize_callback' => 'wp_filter_nohtml_kses',
+			'sanitize_callback' => 'Coil\filter_customiser_settings',
 		]
 	);
 
@@ -440,7 +440,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 		$partially_gated_excerpt_message_id,
 		[
 			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
-			'sanitize_callback' => 'wp_filter_nohtml_kses',
+			'sanitize_callback' => 'Coil\filter_customiser_settings',
 		]
 	);
 
@@ -464,7 +464,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 		$pending_message_id,
 		[
 			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
-			'sanitize_callback' => 'wp_filter_nohtml_kses',
+			'sanitize_callback' => 'Coil\filter_customiser_settings',
 		]
 	);
 
@@ -488,7 +488,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 		$invalid_web_monetization_message_id,
 		[
 			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
-			'sanitize_callback' => 'wp_filter_nohtml_kses',
+			'sanitize_callback' => 'Coil\filter_customiser_settings',
 		]
 	);
 
@@ -512,7 +512,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 		$voluntary_donation_message_id,
 		[
 			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
-			'sanitize_callback' => 'wp_filter_nohtml_kses',
+			'sanitize_callback' => 'Coil\filter_customiser_settings',
 		]
 	);
 
@@ -615,7 +615,7 @@ function add_customizer_learn_more_button_settings_panel( $wp_customize ) : void
 		$button_text_setting_id,
 		[
 			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
-			'sanitize_callback' => 'wp_filter_nohtml_kses',
+			'sanitize_callback' => 'Coil\filter_customiser_settings',
 		]
 	);
 
