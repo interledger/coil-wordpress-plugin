@@ -459,6 +459,9 @@ function coil_messaging_settings_render_callback() {
 	);
 }
 
+/**
+ * Creates dismissable welcome notice on coil admin screen
+ */
 function admin_welcome_notice() {
 	$screen = get_current_screen();
 	if ( ! $screen ) {
@@ -469,7 +472,6 @@ function admin_welcome_notice() {
 		return;
 	}
 
-	$current_user       = wp_get_current_user();
 	$payment_pointer_id = Admin\get_global_settings( 'coil_payment_pointer_id' );
 	$notice_dismissed   = get_user_meta( $current_user->ID, 'coil-welcome-notice-dismissed', true );
 
@@ -498,6 +500,48 @@ function admin_welcome_notice() {
 			);
 			?>
 			</p>
+		</div>
+	</div>
+	<?php
+}
+
+/**
+ * Admin notice to ensure payment pointer has been set
+ */
+function admin_no_payment_pointer_notice() {
+
+	// Only nag admins that can manage coil settings
+	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
+		return;
+	}
+
+	$screen = get_current_screen();
+	if ( ! $screen ) {
+		return;
+	}
+
+	if ( $screen->id !== 'toplevel_page_coil_settings' ) {
+		return;
+	}
+
+	$payment_pointer_id = Admin\get_global_settings( 'coil_payment_pointer_id' );
+
+	if ( $payment_pointer_id) {
+		return;
+	}
+
+	$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : '';
+
+	if ( $active_tab !== 'global_settings' ) {
+		return;
+	}
+	?>
+
+	<div style="display: none;" class="notice coil-no-payment-pointer-notice">
+		<img width="48" height="48" class="coil-no-payment-pointer-notice__icon" src="<?php echo esc_url( plugins_url( 'assets/images/web-mon-icon.svg', COIL__FILE__ ) ); ?>" alt="<?php esc_attr_e( 'Coil', 'coil-web-monetization' ); ?>" />
+		<div class="coil-no-payment-pointer-notice__content">
+			<h3><?php esc_html_e( 'Warning', 'coil-web-monetization' ); ?></h3>
+			<p><?php esc_html_e( 'You haven\'t entered a payment pointer. A payment pointer is required to receive payments and for content gating to be recognized.', 'coil-web-monetization' ); ?></p>
 		</div>
 	</div>
 	<?php
