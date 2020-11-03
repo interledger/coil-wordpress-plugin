@@ -5,8 +5,8 @@ const paymentPointer = 'https://example.com/' + Math.random().toString(36) + '/.
 
 // Most of these tests assume you have the test posts loaded in your WordPress.
 describe('Single Posts', function () {
-  beforeEach(() => {
-    cy.logInToWordPress('admin', 'password');
+	beforeEach(() => {
+		cy.logInToWordPress('admin', 'password');
 		cy.visit('/wp-admin/admin.php?page=coil_settings');
 
 		// Make sure a payment pointer is set.
@@ -41,8 +41,6 @@ describe('Single Posts', function () {
 				$link[0].scrollIntoView();
 				$link[0].click();
 			})
-
-		cy.get('.entry-content').should('contain', 'ID: TESTPOST1');
 	});
 
 	it('check that I can view single post set to no monetization.', function() {
@@ -55,7 +53,6 @@ describe('Single Posts', function () {
 				$link[0].click();
 			})
 
-		cy.get('.entry-content').should('contain', 'ID: TESTPOST2');
 		cy.get('head meta[name="monetization"]', {timeout: 0}).should('not.exist');
 	});
 

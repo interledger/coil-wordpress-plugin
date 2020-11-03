@@ -31,8 +31,8 @@
 		"cypress:run": "cypress run --project tests"
 	},
 	"devDependencies": {
-		"cypress": "^4.12.1",
-		"grunt": "^1.3.0",
+		"cypress": "^5.4.0",
+		"grunt": "^1.1.0",
 		"grunt-checktextdomain": "~1.0.1",
 		"grunt-contrib-clean": "~2.0.0",
 		"grunt-contrib-compress": "^1.6.0",

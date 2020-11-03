@@ -4,5 +4,7 @@
 	"video": false,
 	"videoUploadOnPasses": false,
 	"viewportWidth": 1920,
-	"viewportHeight": 1080
+	"viewportHeight": 1080,
+  	"watchForFileChanges": false,
+  	"retries": 1
 }

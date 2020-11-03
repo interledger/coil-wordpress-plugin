@@ -134,6 +134,15 @@ New tests should be written where it makes sense. With Flywheel, the PHPUnit tes
 
 At this moment in time, the tests are not run automatically on public CI services.
 
+## Cypress Tests
+To run the tests you will need to: 
+
+- Make sure all steps under `Setting up the Development Environment in Flywheel` have been completed
+- Replace your existing WP database with this test snapshot, found in `/tests/cypress/fixtures/test-database.sql`
+- You can do this in you SQL gui of choice but to do it in adminer (found in the database tab of Flywheel) go to import, then select the `test-database.sql` file and click import
+- `npx cypress run` - to run the tests in the CI
+- `npx cypress open` - to run the tests with a gui
+
 # Installing plugin
 
 - for testing, the Github repo can be zipped up and the zip used to install the Coil plugin on WordPress

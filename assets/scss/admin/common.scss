@@ -73,7 +73,8 @@
 		margin-top: -10px; // Offset for .wrap margin-top.
 	}
 
-	.coil-welcome-notice {
+	.coil-welcome-notice,
+	.coil-no-payment-pointer-notice {
 		display: flex;
 		flex-direction: row;
 		flex-wrap: nowrap;
@@ -84,12 +85,14 @@
 		padding: 20px;
 	}
 
-	.coil-welcome-notice__icon {
+	.coil-welcome-notice__icon,
+	.coil-no-payment-pointer-notice__icon {
 		flex: 0 0 auto;
 		margin-right: 20px;
 	}
 
-	.coil-welcome-notice__content {
+	.coil-welcome-notice__content,
+	.coil-no-payment-pointer-notice__content {
 		flex: 1 1 auto;
 
 		h3 {

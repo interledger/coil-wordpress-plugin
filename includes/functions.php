@@ -49,6 +49,7 @@ function init_plugin() : void {
 	add_action( 'admin_menu', __NAMESPACE__ . '\Settings\register_admin_menu' );
 	add_action( 'admin_init', __NAMESPACE__ . '\Settings\register_admin_content_settings' );
 	add_action( 'admin_notices', __NAMESPACE__ . '\Settings\admin_welcome_notice' );
+	add_action( 'admin_notices', __NAMESPACE__ . '\Settings\admin_no_payment_pointer_notice' );
 	add_action( 'wp_ajax_dismiss_welcome_notice', __NAMESPACE__ . '\Settings\dismiss_welcome_notice' );
 
 	// Term meta.
@@ -409,4 +410,19 @@ function get_supported_post_types( $output = 'names' ) : array {
 	}
 
 	return apply_filters( 'coil_supported_post_types', $supported_types, $output );
+}
+
+
+/**
+ * Filter customiser settings
+ *
+ * See wp_filter_nohtml_kses
+ *
+ * @param string $message
+ *
+ * @return string $message
+ */
+function filter_customiser_settings( $message ) : string {
+	$message = wp_kses( stripslashes( $message ), 'strip' );
+	return $message;
 }

@@ -3,6 +3,7 @@
  * Plugin Name: Coil Web Monetization
  * Plugin URI: https://wordpress.org/plugins/coil-web-monetization/
  * Description: Coil offers an effortless way to share WordPress content online, and get paid for it.
+ * Requires PHP: 7.2
  * Author: Coil
  * Author URI: https://coil.com
  * Version: 1.7.0
@@ -14,12 +15,12 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-if ( version_compare( PHP_VERSION, '7.1', '<' ) ) {
+if ( version_compare( PHP_VERSION, '7.2', '<' ) ) {
 	/**
 	 * Show warning message to sites on old versions of PHP.
 	 */
 	function coil_show_php_warning() {
-		echo '<div class="error"><p>' . esc_html__( 'Coil Web Monetization requires PHP 7.1 or newer. Please contact your web host for information on updating PHP.', 'coil-web-monetization' ) . '</p></div>';
+		echo '<div class="error"><p>' . esc_html__( 'Coil Web Monetization requires PHP 7.2 or newer. Please contact your web host for information on updating PHP.', 'coil-web-monetization' ) . '</p></div>';
 		unset( $_GET['activate'] );
 	}
 
