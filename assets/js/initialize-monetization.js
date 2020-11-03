@@ -348,6 +348,12 @@
 	 * @return void.
 	 */
 	function handleUndefinedMonetization() {
+
+		// Skip if we're testing in Cypress; we can't easily reset the app state from the changes made here.
+		if ( window.Cypress && window.Cypress.monetized ) {
+			return;
+		}
+
 		// Update body class to show free content.
 		$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'coil-extension-not-found' );
 
@@ -516,10 +522,6 @@
 	 * @return void.
 	 */
 	function monetizationStartListener(event) {
-		// Connect to backend to validate the session using the request id.
-		var paymentPointer = event.detail.paymentPointer,
-			requestId      = event.detail.requestId;
-
 		monetizationStartEventOccurred = true;
 
 		if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
@@ -587,10 +589,9 @@
 	}
 
 	/**
-	 * Init
+	 * Init monetissation process.
 	 */
-	$( document ).ready(function () {
-
+	function bootstrapCoil() {
 		// Bail early - monetization initialised successfully.
 		if ( monetizationInitialized() ) {
 			return;
@@ -628,5 +629,13 @@
 		// Monetization progress event.
 		document.monetization.addEventListener( 'monetizationprogress', monetizationProgressListener );
 
-	});
+	}
+
+	/**
+	 * Init.
+	 */
+	$( document ).ready( function() {
+		document.addEventListener( 'coilstart', bootstrapCoil );  // For Cypress.
+		bootstrapCoil();
+	} );
 })(jQuery);
