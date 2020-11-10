@@ -314,7 +314,7 @@ function get_customizer_text_field( $field_id, $get_default = false ) : string {
 		'coil_fully_gated_excerpt_message'     => __( 'The content in this article is for Coil Members only!', 'coil-web-monetization' ),
 		'coil_partially_gated_excerpt_message' => __( 'This article is monetized and some content is for Coil Members only.', 'coil-web-monetization' ),
 		'coil_learn_more_button_text'          => __( 'Get Coil to access', 'coil-web-monetization' ),
-		'coil_learn_more_button_link'          => 'https://coil.com/learn-more/',
+		'coil_learn_more_button_link'          => 'https://coil.com/',
 	];
 
 	// Get the field from the customizer.
