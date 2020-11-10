@@ -155,7 +155,7 @@ function load_block_editor_assets() : void {
 function load_full_assets() : void {
 
 	// Only load Coil on actual content.
-	if ( is_admin() || is_home() || is_front_page() || ! is_singular() || is_feed() || is_preview() ) {
+	if ( is_admin() || ! is_singular() || is_feed() || is_preview() ) {
 		return;
 	}
 
