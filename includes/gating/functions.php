@@ -89,11 +89,21 @@ function get_valid_gating_types() {
  * Used on archive pages to represent if a post is gated.
  *
  * @param string $title The post title.
- * @param int    $id    The post ID.
+ * @param int    $id    The post ID. Optional.
  *
  * @return string The updated post title.
  */
-function maybe_add_padlock_to_title( string $title, int $id ) : string {
+function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
+
+	// If no explicit post ID passed, try to grab implicit one
+	if( empty( $id ) ){
+		$id = get_the_ID();
+
+		// No post ID found. Assume no padlock.
+		if( empty( $id ) ) {
+			return $title;
+		}
+	}
 
 	if ( ! get_theme_mod( 'coil_title_padlock', true ) ) {
 		return $title;
