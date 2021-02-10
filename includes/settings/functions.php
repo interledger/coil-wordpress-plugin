@@ -242,8 +242,7 @@ function coil_getting_started_settings_render_callback() {
 		);
 		?>
 	</ul>
-
-	<a href="<?php echo esc_url( '?page=coil_settings&tab=global_settings' ); ?>" class="button button-primary button-large"><?php esc_html_e( 'Configure the plugin', 'coil-web-monetization' ); ?></a>
+	
 	<?php
 }
 
@@ -526,7 +525,7 @@ function admin_no_payment_pointer_notice() {
 
 	$payment_pointer_id = Admin\get_global_settings( 'coil_payment_pointer_id' );
 
-	if ( $payment_pointer_id) {
+	if ( $payment_pointer_id ) {
 		return;
 	}
 

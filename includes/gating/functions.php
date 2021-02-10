@@ -96,11 +96,11 @@ function get_valid_gating_types() {
 function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 
 	// If no explicit post ID passed, try to grab implicit one
-	if( empty( $id ) ){
+	if ( empty( $id ) ) {
 		$id = get_the_ID();
 
 		// No post ID found. Assume no padlock.
-		if( empty( $id ) ) {
+		if ( empty( $id ) ) {
 			return $title;
 		}
 	}
