@@ -335,7 +335,7 @@ function get_content_gating( int $post_id ) : string {
 			// Get the post type from what is saved in global options
 			$global_gating_settings = get_global_posts_gating();
 
-			if ( ! empty( $global_gating_settings ) && isset( $global_gating_settings[ $post->post_type ] ) ) {
+			if ( ! empty( $global_gating_settings ) && ! empty( $post ) && isset( $global_gating_settings[ $post->post_type ] ) ) {
 				$content_gating = $global_gating_settings[ $post->post_type ];
 			}
 		}

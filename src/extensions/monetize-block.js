@@ -268,7 +268,7 @@ const wrapperClass = createHigherOrderComponent( ( BlockListBlock ) => {
 		// Fetch the post meta.
 		const meta = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' );
 
-		if ( typeof meta._coil_monetize_post_status === 'undefined' || ( typeof meta._coil_monetize_post_status !== 'undefined' && meta._coil_monetize_post_status === 'gate-tagged-blocks' ) ) {
+		if ( ! meta || typeof meta._coil_monetize_post_status === 'undefined' || ( typeof meta._coil_monetize_post_status !== 'undefined' && meta._coil_monetize_post_status === 'gate-tagged-blocks' ) ) {
 			allowBlockIdentity = true;
 		} else {
 			allowBlockIdentity = false;
@@ -329,8 +329,10 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 		}
 	};
 } )( withSelect( ( select, props ) => {
+	let meta = select( 'core/editor' ).getEditedPostAttribute( 'meta' );
+
 	return {
-		[ props.metaFieldName ]: select( 'core/editor' ).getEditedPostAttribute( 'meta' )[ '_coil_monetize_post_status' ]
+		[ props.metaFieldName ]: meta && meta[ '_coil_monetize_post_status' ]
 	};
 } )( ( props ) => (
 	<RadioControl

@@ -307,7 +307,7 @@ function print_meta_tag() : void {
 	$payment_pointer_url = $payment_pointer_id;
 
 	// check if url starts with $
-	if ( $payment_pointer_url[0] === '$' ) {
+	if ( '' !== $payment_pointer_url && $payment_pointer_url[0] === '$' ) {
 		// replace $ with https://
 		$payment_pointer_url = str_replace( '$', 'https://', $payment_pointer_url );
 		// remove trailing slash
@@ -341,7 +341,7 @@ function get_payment_pointer() : string {
 	$payment_pointer_id = User\maybe_output_user_payment_pointer( $global_payment_pointer_id );
 
 	// If the post is not set for monetising, bail out.
-	if ( ! Gating\is_content_monetized( get_queried_object_id() ) || empty( $payment_pointer_id ) ) {
+	if ( ! Gating\is_content_monetized( (int) get_queried_object_id() ) || empty( $payment_pointer_id ) ) {
 		return '';
 	}
 
