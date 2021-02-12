@@ -107,7 +107,7 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 		return $title;
 	}
 
-	$status = get_content_gating( (int) $id );
+	$status = get_content_gating( $id );
 	if ( $status !== 'gate-all' && $status !== 'gate-tagged-blocks' ) {
 		return $title;
 	}
@@ -135,7 +135,7 @@ function maybe_restrict_content( string $content ) : string {
 		return $content;
 	}
 
-	$coil_status     = get_content_gating( (int)get_the_ID() );
+	$coil_status     = get_content_gating( get_the_ID() );
 	$post_obj        = get_post( get_the_ID() );
 	$content_excerpt = $post_obj->post_excerpt;
 	$public_content  = '';
@@ -148,7 +148,7 @@ function maybe_restrict_content( string $content ) : string {
 	switch ( $coil_status ) {
 		case 'gate-all':
 			// Restrict all content (Coil members only).
-			if ( get_excerpt_gating( (int) get_queried_object_id() ) ) {
+			if ( get_excerpt_gating( get_queried_object_id() ) ) {
 				$public_content .= $content_excerpt;
 			}
 
@@ -160,7 +160,7 @@ function maybe_restrict_content( string $content ) : string {
 
 		case 'gate-tagged-blocks':
 			// Restrict some part of this content (split content).
-			if ( get_excerpt_gating( (int)get_queried_object_id() ) ) {
+			if ( get_excerpt_gating( get_queried_object_id() ) ) {
 				$public_content .= $content_excerpt;
 			}
 
@@ -209,7 +209,8 @@ function get_post_gating( int $post_id ) : string {
  * @param integer $post_id The post to check.
  * @return bool true show excerpt, false hide excerpt.
  */
-function get_excerpt_gating( int $post_id ) : bool {
+function get_excerpt_gating( $post_id ) : bool {
+	$post_id = (int)$post_id;
 	$post_type = get_post_type( $post_id );
 
 	$display_excerpt  = false;
@@ -306,8 +307,10 @@ function get_taxonomy_term_gating( $post_id ) {
  * @param integer $post_id
  * @return string $content_gating Gating slug type.
  */
-function get_content_gating( int $post_id ) : string {
+function get_content_gating( $post_id ) : string {
 
+	$post_id = (int)$post_id;
+	
 	$post_gating = get_post_gating( $post_id );
 
 	// Set a default monetization value.
@@ -418,6 +421,6 @@ function set_term_gating( int $term_id, string $gating_type ) : void {
  * @return boolean
  */
 function is_content_monetized( $post_id ) : bool {
-	$coil_status = get_content_gating( (int) $post_id );
+	$coil_status = get_content_gating( $post_id );
 	return ( $coil_status === 'no' ) ? false : true;
 }

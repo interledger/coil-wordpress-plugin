@@ -277,11 +277,11 @@ function add_body_class( $classes ) : array {
 	if ( Gating\is_content_monetized( get_queried_object_id() ) ) {
 		$classes[] = 'monetization-not-initialized';
 
-		$coil_status = Gating\get_content_gating( (int)get_queried_object_id() );
+		$coil_status = Gating\get_content_gating( get_queried_object_id() );
 		$classes[]   = sanitize_html_class( 'coil-' . $coil_status );
 
 		if ( ! empty( $payment_pointer_id ) ) {
-			$classes[] = ( Gating\get_excerpt_gating( (int)get_queried_object_id() ) ) ? 'coil-show-excerpt' : 'coil-hide-excerpt';
+			$classes[] = ( Gating\get_excerpt_gating( get_queried_object_id() ) ) ? 'coil-show-excerpt' : 'coil-hide-excerpt';
 		} else {
 			// Error: payment pointer ID is missing.
 			$classes[] = 'coil-missing-id';
