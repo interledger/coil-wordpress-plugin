@@ -192,8 +192,10 @@ function maybe_restrict_content( string $content ) : string {
  *
  * @return string Either "no" (default), "no-gating", "gate-all", "gate-tagged-blocks".
  */
-function get_post_gating( int $post_id ) : string {
+function get_post_gating( $post_id ) : string {
 
+	$post_id = (int)$post_id;
+	
 	$gating = get_post_meta( $post_id, '_coil_monetize_post_status', true );
 
 	if ( empty( $gating ) ) {
@@ -230,7 +232,9 @@ function get_excerpt_gating( $post_id ) : bool {
  * @return string Either "default" (default), "no", "no-gating", "gate-all".
  */
 function get_term_gating( $term_id ) {
-
+	
+	$term_id = (int)$term_id;
+	
 	$term_gating = get_term_meta( $term_id, '_coil_monetize_term_status', true );
 
 	if ( empty( $term_gating ) ) {
@@ -247,6 +251,8 @@ function get_term_gating( $term_id ) {
  */
 function get_taxonomy_term_gating( $post_id ) {
 
+	$post_id = (int)$post_id;
+	
 	$term_default = 'default';
 
 	$valid_taxonomies = Admin\get_valid_taxonomies();
@@ -385,8 +391,10 @@ function get_global_excerpt_settings() {
  *
  * @return void
  */
-function set_post_gating( int $post_id, string $gating_type ) : void {
+function set_post_gating( $post_id, string $gating_type ) : void {
 
+	$post_id = (int)$post_id;
+	
 	$valid_gating_types = get_valid_gating_types();
 	if ( ! in_array( $gating_type, $valid_gating_types, true ) ) {
 		return;
@@ -403,8 +411,10 @@ function set_post_gating( int $post_id, string $gating_type ) : void {
  *
  * @return void
  */
-function set_term_gating( int $term_id, string $gating_type ) : void {
+function set_term_gating( $term_id, string $gating_type ) : void {
 
+	$term_id = (int)$term_id;
+	
 	$valid_gating_types = get_valid_gating_types();
 	if ( ! in_array( $gating_type, $valid_gating_types, true ) ) {
 		return;
