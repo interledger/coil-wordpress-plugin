@@ -135,7 +135,7 @@ function maybe_restrict_content( string $content ) : string {
 		return $content;
 	}
 
-	$coil_status     = get_content_gating( get_the_ID() );
+	$coil_status     = get_content_gating( (int)get_the_ID() );
 	$post_obj        = get_post( get_the_ID() );
 	$content_excerpt = $post_obj->post_excerpt;
 	$public_content  = '';
@@ -160,7 +160,7 @@ function maybe_restrict_content( string $content ) : string {
 
 		case 'gate-tagged-blocks':
 			// Restrict some part of this content (split content).
-			if ( get_excerpt_gating( get_queried_object_id() ) ) {
+			if ( get_excerpt_gating( (int)get_queried_object_id() ) ) {
 				$public_content .= $content_excerpt;
 			}
 
