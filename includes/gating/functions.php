@@ -107,7 +107,7 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 		return $title;
 	}
 
-	$status = get_content_gating( $id );
+	$status = get_content_gating( (int) $id );
 	if ( $status !== 'gate-all' && $status !== 'gate-tagged-blocks' ) {
 		return $title;
 	}
@@ -148,7 +148,7 @@ function maybe_restrict_content( string $content ) : string {
 	switch ( $coil_status ) {
 		case 'gate-all':
 			// Restrict all content (Coil members only).
-			if ( get_excerpt_gating( get_queried_object_id() ) ) {
+			if ( get_excerpt_gating( (int) get_queried_object_id() ) ) {
 				$public_content .= $content_excerpt;
 			}
 
@@ -418,6 +418,6 @@ function set_term_gating( int $term_id, string $gating_type ) : void {
  * @return boolean
  */
 function is_content_monetized( $post_id ) : bool {
-	$coil_status = get_content_gating( $post_id );
+	$coil_status = get_content_gating( (int) $post_id );
 	return ( $coil_status === 'no' ) ? false : true;
 }
