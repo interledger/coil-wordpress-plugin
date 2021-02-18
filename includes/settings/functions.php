@@ -248,7 +248,7 @@ function coil_getting_started_settings_render_callback() {
 		);
 		?>
 	</ul>
-	
+
 	<?php
 }
 

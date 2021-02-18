@@ -253,8 +253,7 @@ function get_term_gating( $term_id ) {
  */
 function get_taxonomy_term_gating( $post_id ) {
 
-	$post_id = (int) $post_id;
-
+	$post_id      = (int) $post_id;
 	$term_default = 'default';
 
 	$valid_taxonomies = Admin\get_valid_taxonomies();
