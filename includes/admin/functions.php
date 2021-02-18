@@ -23,6 +23,7 @@ const CUSTOMIZER_PANEL_ID = 'coil_customizer_settings_panel';
  * @return void
  */
 function load_metaboxes() : void {
+
 	add_action( 'add_meta_boxes', __NAMESPACE__ . '\add_metabox' );
 }
 
@@ -32,6 +33,7 @@ function load_metaboxes() : void {
  * @return void
  */
 function add_metabox() : void {
+
 	$show_metabox = false;
 
 	if ( ! function_exists( '\use_block_editor_for_post' ) ) {
@@ -65,6 +67,7 @@ function add_metabox() : void {
  * @return void
  */
 function render_coil_metabox() : void {
+
 	global $post;
 
 	// Explicitly use the post gating option to render whatever is saved on this post,
@@ -174,6 +177,7 @@ function maybe_save_term_meta( int $term_id, int $tt_id, $taxonomy ) : void {
  * @return void
  */
 function delete_term_monetization_meta( $term_id ) {
+
 	if ( empty( $term_id ) ) {
 		return;
 	}
@@ -188,6 +192,7 @@ function delete_term_monetization_meta( $term_id ) {
  * @return array $links Updated array of action links.
  */
 function add_plugin_action_links( array $links ) : array {
+
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return $links;
 	}
@@ -304,6 +309,7 @@ function load_admin_assets() : void {
  * @return string
  */
 function get_customizer_text_field( $field_id, $get_default = false ) : string {
+
 	// Set up defaults.
 	$defaults = [
 		'coil_unsupported_message'             => __( 'Check that you\'re using a supported browser, have the Coil extension installed, and are logged in to your Coil account. Need a Coil account?', 'coil-web-monetization' ),
@@ -699,6 +705,7 @@ function get_valid_taxonomies() : array {
  * @return string
  */
 function get_global_settings( $setting_id ) {
+
 	$options = get_option( 'coil_global_settings_group', [] );
 
 	switch ( $setting_id ) {

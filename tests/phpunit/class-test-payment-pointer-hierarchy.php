@@ -103,6 +103,7 @@ class Test_Payment_Pointer_Hierarchy extends WP_UnitTestCase {
 	 * @return array
 	 */
 	public function get_gating_data_provider() : array {
+
 		return [
 			[
 				'basic',

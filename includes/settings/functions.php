@@ -21,6 +21,7 @@ use const Coil\COIL__FILE__;
  * @return void
  */
 function register_admin_menu() : void {
+
 	add_menu_page(
 		esc_html__( 'Coil', 'coil-web-monetization' ),
 		esc_html( _x( 'Coil', 'admin menu name', 'coil-web-monetization' ) ),
@@ -140,6 +141,7 @@ function register_admin_content_settings() {
  * @return array
  */
 function coil_content_settings_posts_validation( $post_content_settings ) : array {
+
 	return array_map(
 		function( $radio_value ) {
 			$valid_choices = array_keys( Gating\get_monetization_setting_types() );
@@ -158,6 +160,7 @@ function coil_content_settings_posts_validation( $post_content_settings ) : arra
  * @return array
  */
 function coil_global_settings_group_validation( $global_settings ) : array {
+
 	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
 		return [];
 	}
@@ -182,6 +185,7 @@ function coil_global_settings_group_validation( $global_settings ) : array {
  * @return array
  */
 function coil_content_settings_excerpt_validation( $excerpt_content_settings ) : array {
+
 	return array_map(
 		function( $checkbox_value ) {
 			return ( isset( $checkbox_value ) ) ? true : false;
@@ -198,6 +202,7 @@ function coil_content_settings_excerpt_validation( $excerpt_content_settings ) :
  * @return array
  */
 function coil_content_settings_taxonomies_validation( $taxonomy_content_settings ) : array {
+
 	return array_map(
 		function( $radio_value ) {
 			$valid_choices = array_keys( Gating\get_monetization_setting_types() );
@@ -217,6 +222,7 @@ function coil_content_settings_taxonomies_validation( $taxonomy_content_settings
  * @return void
  */
 function coil_getting_started_settings_render_callback() {
+
 	?>
 	<h3><?php esc_html_e( 'How-to guides', 'coil-web-monetization' ); ?></h3>
 <ul>
@@ -242,12 +248,13 @@ function coil_getting_started_settings_render_callback() {
 		);
 		?>
 	</ul>
-	
+
 	<?php
 }
 
 // Render the text field for the payment point in global settings.
 function coil_global_settings_payment_pointer_render_callback() {
+
 	printf(
 		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s" />',
 		esc_attr( 'wide-input' ),
@@ -280,6 +287,7 @@ function coil_global_settings_payment_pointer_render_callback() {
  * @return void
  */
 function coil_global_settings_advanced_config_render_callback() {
+
 	printf(
 		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s" required="required"/>',
 		esc_attr( 'wide-input' ),
@@ -462,6 +470,7 @@ function coil_messaging_settings_render_callback() {
  * Creates dismissable welcome notice on coil admin screen
  */
 function admin_welcome_notice() {
+
 	$screen = get_current_screen();
 	if ( ! $screen ) {
 		return;
@@ -553,6 +562,7 @@ function admin_no_payment_pointer_notice() {
  * @return void
  */
 function render_coil_settings_screen() : void {
+
 	?>
 	<div class="wrap coil plugin-settings">
 
@@ -712,6 +722,7 @@ function coil_edit_term_custom_meta() {
 }
 
 function dismiss_welcome_notice() {
+
 	$current_user = wp_get_current_user();
 
 	// Bail early - no user set (somehow).

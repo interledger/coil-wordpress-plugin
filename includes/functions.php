@@ -254,6 +254,7 @@ function load_messaging_assets() : void {
  * @return void
  */
 function load_plugin_templates() : void {
+
 	require_once plugin_dir_path( __FILE__ ) . '../templates/messages/subscriber-only-message.php';
 	require_once plugin_dir_path( __FILE__ ) . '../templates/messages/split-content-message.php';
 	require_once plugin_dir_path( __FILE__ ) . '../templates/messages/banner-message.php';
@@ -307,7 +308,7 @@ function print_meta_tag() : void {
 	$payment_pointer_url = $payment_pointer_id;
 
 	// check if url starts with $
-	if ( $payment_pointer_url[0] === '$' ) {
+	if ( '' !== $payment_pointer_url && $payment_pointer_url[0] === '$' ) {
 		// replace $ with https://
 		$payment_pointer_url = str_replace( '$', 'https://', $payment_pointer_url );
 		// remove trailing slash
@@ -341,7 +342,7 @@ function get_payment_pointer() : string {
 	$payment_pointer_id = User\maybe_output_user_payment_pointer( $global_payment_pointer_id );
 
 	// If the post is not set for monetising, bail out.
-	if ( ! Gating\is_content_monetized( get_queried_object_id() ) || empty( $payment_pointer_id ) ) {
+	if ( ! Gating\is_content_monetized( (int) get_queried_object_id() ) || empty( $payment_pointer_id ) ) {
 		return '';
 	}
 
@@ -426,3 +427,21 @@ function filter_customiser_settings( $message ) : string {
 	$message = wp_kses( stripslashes( $message ), 'strip' );
 	return $message;
 }
+
+/**
+ * Show warning message to sites on old versions of PHP.
+ */
+function coil_show_php_warning() {
+
+	echo '<div class="error"><p>' . esc_html__( 'Coil Web Monetization requires PHP 7.2 or newer. Please contact your web host for information on updating PHP.', 'coil-web-monetization' ) . '</p></div>';
+	unset( $_GET['activate'] );
+}
+
+/**
+ * Deactivate the plugin.
+ */
+function coil_deactive_self() {
+
+		deactivate_plugins( plugin_basename( __FILE__ ) );
+}
+

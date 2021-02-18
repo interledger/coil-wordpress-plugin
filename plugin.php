@@ -16,20 +16,6 @@
 defined( 'ABSPATH' ) || exit;
 
 if ( version_compare( PHP_VERSION, '7.2', '<' ) ) {
-	/**
-	 * Show warning message to sites on old versions of PHP.
-	 */
-	function coil_show_php_warning() {
-		echo '<div class="error"><p>' . esc_html__( 'Coil Web Monetization requires PHP 7.2 or newer. Please contact your web host for information on updating PHP.', 'coil-web-monetization' ) . '</p></div>';
-		unset( $_GET['activate'] );
-	}
-
-	/**
-	 * Deactivate the plugin.
-	 */
-	function coil_deactive_self() {
-			deactivate_plugins( plugin_basename( __FILE__ ) );
-	}
 
 	add_action( 'admin_notices', 'coil_show_php_warning' );
 	add_action( 'admin_init', 'coil_deactive_self' );
