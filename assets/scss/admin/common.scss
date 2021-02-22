@@ -60,18 +60,24 @@
 	}
 	.plugin-branding {
 		box-sizing: border-box;
-		background-color:white;
-		border-bottom: 1px solid #ccc;
-		text-align: center;
 		font-size: 30px;
 		padding: 20px;
-		margin-bottom: 20px;
-
-		// Style full-width banner.
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		align-items: center;
+		align-content: center;
+		justify-content: flex-start;
+		
+		 // Style full-width banner.
 		width: calc(100% + 42px); // Full width + margins (admin sidebar & .wrap core class).
 		margin-left: -22px; // Left offset for admin sidebar + .wrap margins.
 		margin-top: -10px; // Offset for .wrap margin-top.
+		margin-bottom: -10px;
 	}
+	#coil-icn-32{
+		margin-right: 12px;
+	} 
 
 	.coil-welcome-notice,
 	.coil-no-payment-pointer-notice {

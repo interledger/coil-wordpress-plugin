@@ -41,15 +41,21 @@
 
 .coil .plugin-branding {
   box-sizing: border-box;
-  background-color: white;
-  border-bottom: 1px solid #ccc;
-  text-align: center;
   font-size: 30px;
   padding: 20px;
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  align-content: center;
+  justify-content: flex-start;
   width: calc(100% + 42px);
   margin-left: -22px;
-  margin-top: -10px; }
+  margin-top: -10px;
+  margin-bottom: -10px; }
+
+.coil #coil-icn-32 {
+  margin-right: 12px; }
 
 .coil .coil-welcome-notice,
 .coil .coil-no-payment-pointer-notice {
