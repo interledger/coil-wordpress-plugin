@@ -471,6 +471,8 @@ function coil_messaging_settings_render_callback() {
  */
 function admin_welcome_notice() {
 
+	global $current_user;
+
 	$screen = get_current_screen();
 	if ( ! $screen ) {
 		return;
@@ -480,7 +482,6 @@ function admin_welcome_notice() {
 		return;
 	}
 
-	global $current_user;
 	$payment_pointer_id = Admin\get_global_settings( 'coil_payment_pointer_id' );
 	$notice_dismissed   = get_user_meta( $current_user->ID, 'coil-welcome-notice-dismissed', true );
 
@@ -725,6 +726,11 @@ function coil_edit_term_custom_meta() {
 function dismiss_welcome_notice() {
 
 	global $current_user;
+
+	// Bail early - no user set (somehow).
+	if ( empty( $current_user ) ) {
+		return;
+	}
 
 	// User meta stored as strings, so use 'true' to avoid data type issues.
 	update_user_meta( $current_user->ID, 'coil-welcome-notice-dismissed', 'true' );
