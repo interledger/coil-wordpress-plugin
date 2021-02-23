@@ -471,6 +471,8 @@ function coil_messaging_settings_render_callback() {
  */
 function admin_welcome_notice() {
 
+	global $current_user;
+
 	$screen = get_current_screen();
 	if ( ! $screen ) {
 		return;
@@ -728,7 +730,7 @@ function coil_edit_term_custom_meta() {
 
 function dismiss_welcome_notice() {
 
-	$current_user = wp_get_current_user();
+	global $current_user;
 
 	// Bail early - no user set (somehow).
 	if ( empty( $current_user ) ) {
