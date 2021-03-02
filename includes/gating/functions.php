@@ -125,64 +125,6 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 }
 
 /**
- * Maybe restrict (gate) visibility of the post content on archive pages, home pages, and feeds.
- *
- * @param string $content Post content.
- *
- * @return string $content Updated post content.
- */
-function maybe_restrict_content( string $content ) : string {
-
-	echo '<p>Entered maybe_restrict_content</p>';
-
-	// Plugins can call the `the_content` filter outside of the post loop.
-	if ( is_singular() || ! get_the_ID() ) {
-		return $content;
-	}
-
-	$coil_status     = get_content_gating( get_the_ID() );
-	$post_obj        = get_post( get_the_ID() );
-	$content_excerpt = $post_obj->post_excerpt;
-	$public_content  = '';
-	$cta_button_html = sprintf(
-		'<p><a target="_blank" href="%1$s" class="coil-serverside-message-button">%2$s</a></p>',
-		esc_url( Admin\get_customizer_text_field( 'coil_learn_more_button_link' ) ),
-		esc_html( Admin\get_customizer_text_field( 'coil_learn_more_button_text' ) )
-	);
-
-	switch ( $coil_status ) {
-		case 'gate-all':
-			// Restrict all content (Coil members only).
-			// Only append $post_excerpt if the "Display Excerpt" boxes have been ticked in the Coil plugin settings.
-			if ( get_excerpt_gating( get_queried_object_id() ) ) {
-				$public_content .= $content_excerpt;
-			}
-			break;
-
-		case 'gate-tagged-blocks':
-			// Restrict some part of this content (split content).
-			// Only append $post_excerpt if the "Display Excerpt" boxes have been ticked in the Coil plugin settings.
-			if ( get_excerpt_gating( get_queried_object_id() ) ) {
-				$public_content .= $content_excerpt;
-			}
-			break;
-
-		/**
-		 * case 'default': doesn't exist in this context because the last possible
-		 * saved option will be 'no', after a post has fallen back to the taxonomy
-		 * and then the default post options.
-		 */
-		case 'no':
-		case 'no-gate':
-		default:
-			$public_content = $content;
-			break;
-	}
-
-	return apply_filters( 'coil_maybe_restrict_content', $public_content, $content, $coil_status );
-}
-
-/**
  * Get the gating type for the specified post.
  *
  * @param integer $post_id The post to check.
