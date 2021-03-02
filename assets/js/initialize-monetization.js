@@ -266,9 +266,9 @@
 
 					showContentContainer();
 
-					if ( ! hasBannerDismissCookie( 'ShowCoilPartialMsg' ) ) {
-						$( 'body' ).append( showBannerMessage( unable_to_verify ) );
-						addBannerDismissClickHandler( 'ShowCoilPartialMsg' );
+					if ( show_donation_bar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+						$( 'body' ).append( showBannerMessage( voluntary_donation ) );
+						addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 					}
 
 				} else {
@@ -283,7 +283,7 @@
 	}
 
 	/**
-	 * Determin if Coil is not yet initialized.
+	 * Determine if Coil is not yet initialized.
 	 *
 	 * Checks for class on <body>.
 	 *
@@ -294,7 +294,7 @@
 	}
 
 	/**
-	 * Determin if Coil is initialized.
+	 * Determine if Coil is initialized.
 	 *
 	 * Checks class is missing on <body>.
 	 *
@@ -379,9 +379,9 @@
 
 			showContentContainer();
 
-			if ( ! hasBannerDismissCookie( 'ShowCoilPartialMsg' ) ) {
-				$( 'body' ).append( showBannerMessage( partial_gating ) );
-				addBannerDismissClickHandler( 'ShowCoilPartialMsg' );
+			if ( show_donation_bar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+				$( 'body' ).append( showBannerMessage( voluntary_donation ) );
+				addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 			}
 
 		} else if ( isMonetizedAndPublic() ) {

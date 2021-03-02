@@ -111,7 +111,7 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 	}
 
 	$status = get_content_gating( $id );
-	if ( $status !== 'gate-all' && $status !== 'gate-tagged-blocks' ) {
+	if ( $status !== 'gate-all' ) {
 		return $title;
 	}
 
