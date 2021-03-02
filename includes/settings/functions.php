@@ -229,8 +229,8 @@ function coil_getting_started_settings_render_callback() {
 		<?php
 		printf(
 			'<li><a target=”_blank” href="%1$s">%2$s</a></li>',
-			esc_url( 'https://help.coil.com/for-creators/wordpress-plugin' ),
-			esc_html__( 'Configure and use the Coil WordPress plugin', 'coil-web-monetization' )
+			esc_url( 'https://help.coil.com/docs/monetize/content/wp-overview' ),
+			esc_html__( 'How to configure and use the Coil WordPress plugin', 'coil-web-monetization' )
 		);
 		?>
 		<?php
