@@ -133,6 +133,8 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
  */
 function maybe_restrict_content( string $content ) : string {
 
+	echo '<p>Entered maybe_restrict_content</p>';
+
 	// Plugins can call the `the_content` filter outside of the post loop.
 	if ( is_singular() || ! get_the_ID() ) {
 		return $content;
@@ -143,7 +145,7 @@ function maybe_restrict_content( string $content ) : string {
 	$content_excerpt = $post_obj->post_excerpt;
 	$public_content  = '';
 	$cta_button_html = sprintf(
-		'<p><a href="%1$s" class="coil-serverside-message-button">%2$s</a></p>',
+		'<p><a target="_blank" href="%1$s" class="coil-serverside-message-button">%2$s</a></p>',
 		esc_url( Admin\get_customizer_text_field( 'coil_learn_more_button_link' ) ),
 		esc_html( Admin\get_customizer_text_field( 'coil_learn_more_button_text' ) )
 	);
@@ -151,26 +153,18 @@ function maybe_restrict_content( string $content ) : string {
 	switch ( $coil_status ) {
 		case 'gate-all':
 			// Restrict all content (Coil members only).
+			// Only append $post_excerpt if the "Display Excerpt" boxes have been ticked in the Coil plugin settings.
 			if ( get_excerpt_gating( get_queried_object_id() ) ) {
 				$public_content .= $content_excerpt;
 			}
-
-			$full_gated_message = Admin\get_customizer_text_field( 'coil_fully_gated_excerpt_message' );
-
-			$public_content .= '<p>' . esc_html( $full_gated_message ) . '</p>';
-			$public_content .= $cta_button_html;
 			break;
 
 		case 'gate-tagged-blocks':
 			// Restrict some part of this content (split content).
+			// Only append $post_excerpt if the "Display Excerpt" boxes have been ticked in the Coil plugin settings.
 			if ( get_excerpt_gating( get_queried_object_id() ) ) {
 				$public_content .= $content_excerpt;
 			}
-
-			$partially_gated_message = Admin\get_customizer_text_field( 'coil_partially_gated_excerpt_message' );
-
-			$public_content .= '<p>' . esc_html( $partially_gated_message ) . '</p>';
-			$public_content .= $cta_button_html;
 			break;
 
 		/**
