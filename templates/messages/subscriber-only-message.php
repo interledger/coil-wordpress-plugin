@@ -11,7 +11,7 @@
 				<p class="coil-message-content">{{data.content}}</p>
 			<# } #>
 			<# if ( data.button.href ) { #>
-				<a target=”_blank” href="{{data.button.href}}" class="coil-message-button">{{data.button.text}}</a>
+				<a target="_blank" href="{{data.button.href}}" class="coil-message-button">{{data.button.text}}</a>
 			<# } #>
 		</div>
 		<div class="coil-message-footer">
