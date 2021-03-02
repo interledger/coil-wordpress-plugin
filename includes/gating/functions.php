@@ -143,7 +143,7 @@ function maybe_restrict_content( string $content ) : string {
 	$content_excerpt = $post_obj->post_excerpt;
 	$public_content  = '';
 	$cta_button_html = sprintf(
-		'<p><a href="%1$s" class="coil-serverside-message-button">%2$s</a></p>',
+		'<p><a target=”_blank” href="%1$s" class="coil-serverside-message-button">%2$s</a></p>',
 		esc_url( Admin\get_customizer_text_field( 'coil_learn_more_button_link' ) ),
 		esc_html( Admin\get_customizer_text_field( 'coil_learn_more_button_text' ) )
 	);
