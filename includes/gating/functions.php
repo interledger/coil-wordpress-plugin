@@ -125,6 +125,52 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 }
 
 /**
+ * Maybe restrict (gate) visibility of the post excerpt on archive pages, home pages, and feeds.
+ *
+ * @param string $content Post content.
+ *
+ * @return string $content Updated post content.
+ */
+function maybe_restrict_excerpt( string $excerpt ) : string {
+
+	// Plugins can call the `the_content` filter outside of the post loop.
+	if ( is_singular() || ! get_the_ID() ) {
+		return $excerpt;
+	}
+
+	$coil_status     = get_content_gating( get_the_ID() );
+	$post_obj        = get_post( get_the_ID() );
+	$content_excerpt = $excerpt;
+	$public_excerpt  = '';
+
+	switch ( $coil_status ) {
+		case 'gate-all':
+		case 'gate-tagged-blocks':
+			// Restrict all / some excerpt content based on gating settings.
+			if ( get_excerpt_gating( get_queried_object_id() ) ) {
+				$public_excerpt .= sprintf(
+					'<p>%s</p>',
+					$content_excerpt
+				);
+			}
+			break;
+
+		/**
+		 * case 'default': doesn't exist in this context because the last possible
+		 * saved option will be 'no', after a post has fallen back to the taxonomy
+		 * and then the default post options.
+		 */
+		case 'no':
+		case 'no-gate':
+		default:
+			$public_excerpt = $excerpt;
+			break;
+	}
+
+	return apply_filters( 'coil_maybe_restrict_except', $public_excerpt, $excerpt, $coil_status );
+}
+
+/**
  * Maybe restrict (gate) visibility of the post content on archive pages, home pages, and feeds.
  *
  * @param string $content Post content.
@@ -148,7 +194,10 @@ function maybe_restrict_content( string $content ) : string {
 		case 'gate-tagged-blocks':
 			// Restrict all / some excerpt content based on gating settings.
 			if ( get_excerpt_gating( get_queried_object_id() ) ) {
-				$public_content .= $content_excerpt;
+				$public_content .= sprintf(
+					'<p>%s</p>',
+					$content_excerpt
+				);
 			}
 			break;
 
