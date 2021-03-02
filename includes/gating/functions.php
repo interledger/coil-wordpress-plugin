@@ -148,7 +148,11 @@ function maybe_restrict_content( string $content ) : string {
 		case 'gate-tagged-blocks':
 			// Restrict all / some excerpt content based on gating settings.
 			if ( get_excerpt_gating( get_queried_object_id() ) ) {
-				$public_content .= $content_excerpt;
+				$public_content .= sprintf(
+					/* translators: %s: Gated post title. */
+					'<p>%s</p>',
+					$content_excerpt
+				);
 			}
 			break;
 
