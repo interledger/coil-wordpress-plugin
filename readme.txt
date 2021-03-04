@@ -86,3 +86,28 @@ If you get stuck, check out our [help center](https://help.coil.com/for-creators
 = v1.7.0 =
 
 First release.
+
+= v1.8.0 =
+
+= 08 Mar 2021 =
+
+* Fix
+    - Resolved issue that prevented users from adding content to custom pages.
+    - Solved the incompatibility issue with the Co-Authors Plus plugin and the CoverNews Pro theme.
+    - Fixed compatibility error with LearnDash when browser did not load.
+
+* Enhancement
+    - Updated handling of excerpts for monetized posts in the post archive. The default excerpt is now blank unless a custom excerpt has been written.
+    - A warning pop up has been added when a user saves their Global Settings and the payment pointer field is empty.
+    - The padlock icon next to monetized post and page titles is now optional.
+    - The padlock icon has also been completely removed from split content page / post titles and will only appear when entire pages / posts are for paid viewers only.
+
+* Tweak
+    - Minimum supported PHP version is now version 7.2.
+    - Updated Coil header on the settings panel.
+    - Removed the “Configure the plugin” button in the settings panel (simply took users to the Global Settings tab).
+    - Fixed associated CSS where section[class] was used. *DP*
+    - All buttons that point to external links now open in a new tab.
+
+* Security
+    - Added extra checks on the Theme Options partial loader logic.
