@@ -413,7 +413,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 		]
 	);
 
-	// Pending message (textarea 5).
+	// Pending message (textarea 3).
 	$pending_message_id = 'coil_verifying_status_message';
 
 	$wp_customize->add_setting(
@@ -437,7 +437,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 		]
 	);
 
-	// Invalid Web Monetization message (textarea 6).
+	// Invalid Web Monetization message (textarea 4).
 	$invalid_web_monetization_message_id = 'coil_unable_to_verify_message';
 
 	$wp_customize->add_setting(
@@ -461,7 +461,7 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 		]
 	);
 
-	// Voluntary donation message (textarea 7).
+	// Voluntary donation message (textarea 5).
 	$voluntary_donation_message_id = 'coil_voluntary_donation_message';
 
 	$wp_customize->add_setting(
