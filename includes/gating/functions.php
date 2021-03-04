@@ -127,19 +127,18 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 /**
  * Maybe restrict (gate) visibility of the post excerpt on archive pages, home pages, and feeds.
  *
- * @param string $content Post content.
+ * @param string $excerpt Post excerpt.
  *
- * @return string $content Updated post content.
+ * @return string $excerpt Updated post excerpt.
  */
 function maybe_restrict_excerpt( string $excerpt ) : string {
 
-	// Plugins can call the `the_content` filter outside of the post loop.
+	// Plugins can call the `the_excerpt` filter outside of the post loop.
 	if ( is_singular() || ! get_the_ID() ) {
 		return $excerpt;
 	}
 
 	$coil_status     = get_content_gating( get_the_ID() );
-	$post_obj        = get_post( get_the_ID() );
 	$content_excerpt = $excerpt;
 	$public_excerpt  = '';
 
