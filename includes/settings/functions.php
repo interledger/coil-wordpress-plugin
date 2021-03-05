@@ -243,7 +243,7 @@ function coil_getting_started_settings_render_callback() {
 		<?php
 		printf(
 			'<li><a target="_blank" href="%1$s">%2$s</a></li>',
-			esc_url( 'https://help.coil.com/docs/monetize/get-creator-account/' ),
+			esc_url( 'https://coil.com/creator/' ),
 			esc_html__( 'Get a free Coil creator account', 'coil-web-monetization' )
 		);
 		?>
