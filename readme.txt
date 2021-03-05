@@ -99,8 +99,7 @@ First release.
 * Enhancement
     - Updated handling of excerpts for monetized posts in the post archive. The default excerpt is now blank unless a custom excerpt has been written.
     - A warning pop up has been added when a user saves their Global Settings and the payment pointer field is empty.
-    - The padlock icon next to monetized post and page titles is now optional.
-    - The padlock icon has also been completely removed from split content page / post titles and will only appear when entire pages / posts are for paid viewers only.
+    - The padlock icon has been completely removed from split content page / post titles and will only appear when entire pages / posts are for paid viewers only.
 
 * Tweak
     - Minimum supported PHP version is now version 7.2.
