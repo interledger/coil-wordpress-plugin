@@ -103,6 +103,7 @@ First release.
 
 * Tweak
     - Minimum supported PHP version is now version 7.2.
+    - The gradient effect on the CTA boxes that block exclusive content for non-paying viewers has been replaced with a solid border instead so that the excerpt above it is now clearly legible.
     - Updated Coil header on the settings panel.
     - Removed the “Configure the plugin” button in the settings panel (simply took users to the Global Settings tab).
     - Fixed associated CSS where section[class] was used. *DP*
