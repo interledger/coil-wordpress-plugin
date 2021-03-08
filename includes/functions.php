@@ -39,7 +39,6 @@ function init_plugin() : void {
 
 	// Modify output.
 	add_filter( 'body_class', __NAMESPACE__ . '\add_body_class' );
-	add_filter( 'the_excerpt', __NAMESPACE__ . '\Gating\maybe_restrict_excerpt' );
 	add_filter( 'the_content', __NAMESPACE__ . '\Gating\maybe_restrict_content' );
 	add_filter( 'the_title', __NAMESPACE__ . '\Gating\maybe_add_padlock_to_title', 10, 2 );
 	add_action( 'wp_head', __NAMESPACE__ . '\print_meta_tag' );
