@@ -189,24 +189,6 @@ function register_admin_content_settings() {
  * ------------------------------------------------------------------------ */
 
 /**
- * Allow the radio button options in the posts content section to
- * be properly validated
- *
- * @param array $post_content_settings The posted radio options from the content settings section.
- * @return array
- */
-function coil_content_settings_posts_validation( $post_content_settings ) : array {
-
-	return array_map(
-		function( $radio_value ) {
-			$valid_choices = array_keys( Gating\get_monetization_setting_types() );
-			return ( in_array( $radio_value, $valid_choices, true ) ? sanitize_key( $radio_value ) : 'no' );
-		},
-		(array) $post_content_settings
-	);
-}
-
-/**
  * Allow the text inputs in the global settings section to
  * be properly validated. These allow the payment pointer
  * to be saved.
@@ -234,6 +216,24 @@ function coil_global_settings_group_validation( $global_settings ) : array {
 }
 
 /**
+ * Allow the radio button options in the posts content section to
+ * be properly validated
+ *
+ * @param array $post_content_settings The posted radio options from the content settings section.
+ * @return array
+ */
+function coil_content_settings_posts_validation( $post_content_settings ) : array {
+
+	return array_map(
+		function( $radio_value ) {
+			$valid_choices = array_keys( Gating\get_monetization_setting_types() );
+			return ( in_array( $radio_value, $valid_choices, true ) ? sanitize_key( $radio_value ) : 'no' );
+		},
+		(array) $post_content_settings
+	);
+}
+
+/**
  * Allow each "Display Excerpt" checkbox in the content setting table to be properly validated
  *
  * @param array $excerpt_content_settings The posted checkbox options from the content settings section.
@@ -248,6 +248,33 @@ function coil_content_settings_excerpt_validation( $excerpt_content_settings ) :
 		(array) $excerpt_content_settings
 	);
 }
+
+/**
+* Allow the text inputs in the messaging settings section to
+* be properly validated. These allow the customized messages
+* to be saved.
+*
+* @param array $messaging_settings The posted text input fields.
+* @return array
+*/
+
+/*
+function coil_messaging_settings_validation( $messaging_settings ) : array {
+
+	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
+		return [];
+	}
+
+	// fill in missing code
+
+	return array_map(
+		function( $messaging_settings_input ) {
+			return sanitize_text_field( $messaging_settings_input );
+		},
+		(array) $messaging_settings
+	);
+}
+*/
 
 /* ------------------------------------------------------------------------ *
  * Settings Rendering
