@@ -249,24 +249,6 @@ function coil_content_settings_excerpt_validation( $excerpt_content_settings ) :
 	);
 }
 
-/**
- * Allow the radio button options in the taxonomies content section to
- * be properly validated
- *
- * @param array $taxonomy_content_settings The posted radio options from the content settings section.
- * @return array
- */
-function coil_content_settings_taxonomies_validation( $taxonomy_content_settings ) : array {
-
-	return array_map(
-		function( $radio_value ) {
-			$valid_choices = array_keys( Gating\get_monetization_setting_types() );
-			return ( in_array( $radio_value, $valid_choices, true ) ? sanitize_key( $radio_value ) : 'no' );
-		},
-		(array) $taxonomy_content_settings
-	);
-}
-
 /* ------------------------------------------------------------------------ *
  * Settings Rendering
  * ------------------------------------------------------------------------ */
