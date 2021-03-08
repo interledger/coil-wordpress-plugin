@@ -120,11 +120,13 @@ function register_admin_content_settings() {
 	);
 
 	// Tab 5 - Messaging settings.
+	/*
 	register_setting(
 		'coil_messaging_settings_group',
 		'coil_messaging_settings_group',
 		__NAMESPACE__ . '\coil_messaging_settings_validation'
 	);
+	*/
 
 	// === Content message customization
 	add_settings_section(
@@ -134,6 +136,7 @@ function register_admin_content_settings() {
 		'coil_messaging_settings'
 	);
 
+	/*
 	// === Fully gated content message
 	add_settings_field(
 		'coil_fully_gated_content_id',
@@ -178,6 +181,7 @@ function register_admin_content_settings() {
 		'coil_messaging_settings',
 		'coil_message_customization_section'
 	);
+	*/
 }
 
 /* ------------------------------------------------------------------------ *
@@ -665,7 +669,10 @@ function render_coil_settings_screen() : void {
 					submit_button();
 					break;
 				case 'messaging_settings':
+					settings_fields( 'coil_messaging_settings_group' );
 					do_settings_sections( 'coil_messaging_settings' );
+
+					submit_button();
 					break;
 			}
 			?>
