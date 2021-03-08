@@ -272,7 +272,7 @@ function coil_global_settings_payment_pointer_render_callback() {
 	echo $payment_pointer_description . '</p>'; // phpcs:ignore. Output already escaped.
 
 	printf(
-		'<br><a target="_blank" href="%s" target="%s" class="%s">%s</a>',
+		'<br><a href="%s" target="%s" class="%s">%s</a>',
 		esc_url( 'https://webmonetization.org/docs/ilp-wallets' ),
 		esc_attr( '_blank' ),
 		esc_attr( 'button button-large' ),
