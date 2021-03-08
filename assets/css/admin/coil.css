@@ -40,16 +40,18 @@
       font-size: 20px; }
 
 .coil .plugin-branding {
-  box-sizing: border-box;
-  background-color: white;
-  border-bottom: 1px solid #ccc;
-  text-align: center;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
   font-size: 30px;
-  padding: 20px;
-  margin-bottom: 20px;
-  width: calc(100% + 42px);
-  margin-left: -22px;
-  margin-top: -10px; }
+  justify-content: flex-start;
+  margin-bottom: -10px;
+  margin-top: -10px;
+  padding: 20px 0;
+  width: calc(100% + 42px); }
+
+.coil #coil-icn-32 {
+  margin-right: 12px; }
 
 .coil .coil-welcome-notice,
 .coil .coil-no-payment-pointer-notice {
