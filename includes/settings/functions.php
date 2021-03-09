@@ -120,13 +120,11 @@ function register_admin_content_settings() {
 	);
 
 	// Tab 5 - Messaging settings.
-	/*
 	register_setting(
 		'coil_messaging_settings_group',
 		'coil_messaging_settings_group',
 		__NAMESPACE__ . '\coil_messaging_settings_validation'
 	);
-	*/
 
 	// === Content message customization
 	add_settings_section(
@@ -136,7 +134,6 @@ function register_admin_content_settings() {
 		'coil_messaging_settings'
 	);
 
-	/*
 	// === Fully gated content message
 	add_settings_field(
 		'coil_fully_gated_content_id',
@@ -181,7 +178,6 @@ function register_admin_content_settings() {
 		'coil_messaging_settings',
 		'coil_message_customization_section'
 	);
-	*/
 }
 
 /* ------------------------------------------------------------------------ *
@@ -350,7 +346,6 @@ function coil_global_settings_advanced_config_render_callback() {
 	printf(
 		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s" required="required"/>',
 		esc_attr( 'wide-input' ),
-		esc_attr( 'text' ),
 		esc_attr( 'coil_global_settings_group[coil_content_container]' ),
 		esc_attr( 'coil_content_container' ),
 		esc_attr( Admin\get_global_settings( 'coil_content_container' ) ),
@@ -493,35 +488,117 @@ function coil_content_settings_excerpts_render_callback() {
 }
 
 /**
- * Renders the output of the messaging settings.
+ * Renders the output of the fully gated content messaging customization.
  *
  * @return void
  */
-function coil_messaging_settings_render_callback() {
-
-	$customizer_link = add_query_arg(
-		[
-			'autofocus[panel]' => Admin\CUSTOMIZER_PANEL_ID,
-			'return'           => add_query_arg(
-				[
-					'page' => 'coil_settings',
-				],
-				admin_url( 'admin.php' )
-			),
-		],
-		admin_url( 'customize.php' )
-	);
+function coil_messaging_settings_fully_gated_content_render_callback() {
 	?>
 
-	<p><?php esc_html_e( 'The Coil plugin allows you to edit the messages your visitors might see when accessing your content. Messages can appear depending on how you’ve monetized and gated your content, whether your visitors are using a supported browser, and whether they have an active Coil account.', 'coil-web-monetization' ); ?></p>
-	<p><?php esc_html_e( 'Click the button below to access the message customizer. Each message includes a description of what causes the message to appear.', 'coil-web-monetization' ); ?></p>
+	<p><?php esc_html_e( 'This message is shown when content is set to be Coil Members Only, and the visitor is using an unsupported browser, has the extension installed incorrectly, is logged out of their Coil account, or doesn\'t have a Coil Membership.', 'coil-web-monetization' ); ?></p>
 
 	<?php
+	$fully_gated_content_message_id = 'coil_unsupported_message';
 	printf(
-		'<a href="%s" class="%s">%s</a>',
-		esc_url( $customizer_link ),
-		esc_attr( 'button button-primary button-large' ),
-		esc_html__( 'Edit messages', 'coil-web-monetization' )
+		'<textarea class="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s"></textarea>',
+		esc_attr( 'wide-input' ),
+		esc_attr( 'coil_messaging_settings_group[coil_fully_gated_content_id]' ),
+		esc_attr( 'coil_fully_gated_content_id' ),
+		esc_attr( Admin\get_global_settings( 'coil_fully_gated_content_id' ) ),
+		esc_attr( Admin\get_customizer_text_field( $fully_gated_content_message_id, true ) ),
+		esc_attr( 'min-width: 440px' )
+	);
+}
+
+/**
+ * Renders the output of the partially gated content messaging customization.
+ *
+ * @return void
+ */
+function coil_messaging_settings_partially_gated_content_render_callback() {
+	?>
+
+	<p><?php esc_html_e( 'This message is shown when content is set to be Coil Members Only, and the visitor is using an unsupported browser, has the extension installed incorrectly, is logged out of their Coil account, or doesn\'t have a Coil Membership.', 'coil-web-monetization' ); ?></p>
+
+	<?php
+	$partial_message_id = 'coil_partial_gating_message';
+	printf(
+		'<textarea class="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s"></textarea>',
+		esc_attr( 'wide-input' ),
+		esc_attr( 'coil_messaging_settings_group[coil_partially_gated_content_id]' ),
+		esc_attr( 'coil_partially_gated_content_id' ),
+		esc_attr( Admin\get_global_settings( 'coil_partially_gated_content_id' ) ),
+		esc_attr( Admin\get_customizer_text_field( $partial_message_id, true ) ),
+		esc_attr( 'min-width: 440px' )
+	);
+}
+
+/**
+ * Renders the output of the pending message customization.
+ *
+ * @return void
+ */
+function coil_messaging_settings_pending_message_render_callback() {
+	?>
+
+	<p><?php esc_html_e( 'This message is shown in footer bar on pages where only some of the content blocks are set as Coil Members Only.', 'coil-web-monetization' ); ?></p>
+
+	<?php
+	$pending_message_id = 'coil_verifying_status_message';
+	printf(
+		'<textarea class="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s"></textarea>',
+		esc_attr( 'wide-input' ),
+		esc_attr( 'coil_messaging_settings_group[coil_pending_message_id]' ),
+		esc_attr( 'coil_pending_message_id' ),
+		esc_attr( Admin\get_global_settings( 'coil_pending_message_id' ) ),
+		esc_attr( Admin\get_customizer_text_field( $pending_message_id, true ) ),
+		esc_attr( 'min-width: 440px' )
+	);
+}
+
+/**
+ * Renders the output of the invalid monetization message customization.
+ *
+ * @return void
+ */
+function coil_messaging_settings_invalid_monetization_message_render_callback() {
+	?>
+
+	<p><?php esc_html_e( 'This message is shown when content is set to be Coil Members Only, and the visitor is using an unsupported browser, has the extension installed incorrectly, is logged out of their Coil account, or doesn\'t have a Coil Membership.', 'coil-web-monetization' ); ?></p>
+
+	<?php
+	$invalid_web_monetization_message_id = 'coil_unable_to_verify_message';
+	printf(
+		'<textarea class="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s"></textarea>',
+		esc_attr( 'wide-input' ),
+		esc_attr( 'coil_messaging_settings_group[coil_invalid_monetization_message_id]' ),
+		esc_attr( 'coil_invalid_monetization_message_id' ),
+		esc_attr( Admin\get_global_settings( 'coil_invalid_monetization_message_id' ) ),
+		esc_attr( Admin\get_customizer_text_field( $invalid_web_monetization_message_id, true ) ),
+		esc_attr( 'min-width: 440px' )
+	);
+}
+
+/**
+ * Renders the output of the voluntary donation message customization.
+ *
+ * @return void
+ */
+function coil_messaging_settings_voluntary_donation_message_render_callback() {
+	?>
+
+	<p><?php esc_html_e( 'This message is shown when content is set to be Coil Members Only, and the visitor is using an unsupported browser, has the extension installed incorrectly, is logged out of their Coil account, or doesn\'t have a Coil Membership.', 'coil-web-monetization' ); ?></p>
+
+	<?php
+	$voluntary_donation_message_id = 'coil_voluntary_donation_message';
+	printf(
+		'<textarea class="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s"></textarea>',
+		esc_attr( 'wide-input' ),
+		esc_attr( 'coil_messaging_settings_group[coil_voluntary_donation_message_id]' ),
+		esc_attr( 'coil_voluntary_donation_message_id' ),
+		esc_attr( Admin\get_global_settings( 'coil_voluntary_donation_message_id' ) ),
+		esc_attr( Admin\get_customizer_text_field( $voluntary_donation_message_id, true ) ),
+		esc_attr( 'min-width: 440px' )
 	);
 }
 
