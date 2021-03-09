@@ -210,8 +210,10 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-
   body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container .coil-message-inner,
   body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container .coil-message-inner,
   body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container .coil-message-inner {
-    background: #e8e8e8;
-    padding: 24px 14px; }
+    background: #fff;
+    border: 1px solid #c4c4c4;
+    border-radius: 6px;
+    padding: 24px; }
   body.coil-gate-all.coil-extension-not-found.show-fw-message .coil-message-container a.custom-logo-link,
   body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container a.custom-logo-link,
   body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container a.custom-logo-link,
@@ -244,7 +246,7 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-
     body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container .coil-message-header,
     body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container .coil-message-header,
     body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container .coil-message-header {
-      margin: 0 0 109px; } }
+      margin: 0 0 16px; } }
   body.coil-gate-all.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-header .coil-message-title,
   body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-header .coil-message-title,
   body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container .coil-message-header .coil-message-title,
@@ -262,8 +264,8 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-
       body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container .coil-message-header .coil-message-title,
       body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container .coil-message-header .coil-message-title,
       body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container .coil-message-header .coil-message-title {
-        font-size: 36px;
-        line-height: 49px; } }
+        font-size: 28px;
+        line-height: 38px; } }
   body.coil-gate-all.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-header .coil-message-content,
   body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-header .coil-message-content,
   body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container .coil-message-header .coil-message-content,
