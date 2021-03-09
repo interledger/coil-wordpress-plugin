@@ -3,7 +3,7 @@ Author URI: https://coil.com
 Plugin URI: https://coil.com
 Contributors: coil, pragmaticagency
 Tags: coil, content, monetization, payment, interledger, ilp
-Requires at least: 4.9
+Requires at least: 5.0+
 Requires PHP: 7.1
 Tested up to: 5.3
 Stable tag: 1.7.0
@@ -86,3 +86,23 @@ If you get stuck, check out our [help center](https://help.coil.com/for-creators
 = v1.7.0 =
 
 First release.
+
+= v1.8.0 =
+
+= 08 Mar 2021 =
+
+* Fix - Resolved issue that prevented users from adding content to custom pages.
+* Fix - Solved the incompatibility issue with the Co-Authors Plus plugin and the CoverNews Pro theme.
+* Fix - Fixed compatibility error with LearnDash when browser did not load.
+
+* Enhancement - Updated handling of excerpts for monetized posts in the post archive. The default excerpt is now blank unless a custom excerpt has been written.
+* Enhancement - A warning pop up has been added when a user saves their Global Settings and the payment pointer field is empty.
+* Enhancement - The padlock icon has been completely removed from split content page / post titles and will only appear when entire pages / posts are for paid viewers only.
+
+* Tweak - Minimum supported PHP version is now version 7.2.
+* Tweak - The gradient effect on the CTA boxes that block exclusive content for non-paying viewers has been replaced with a solid border instead so that the excerpt above it is now clearly legible.
+* Tweak - Updated Coil header on the settings panel.
+* Tweak - Removed the “Configure the plugin” button in the settings panel (simply took users to the Global Settings tab).
+* Tweak - All buttons that point to external links now open in a new tab.
+
+* Security - Added extra checks on the Theme Options partial loader logic.
