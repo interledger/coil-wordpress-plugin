@@ -257,15 +257,11 @@ function coil_content_settings_excerpt_validation( $excerpt_content_settings ) :
 * @param array $messaging_settings The posted text input fields.
 * @return array
 */
-
-/*
 function coil_messaging_settings_validation( $messaging_settings ) : array {
 
 	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
 		return [];
 	}
-
-	// fill in missing code
 
 	return array_map(
 		function( $messaging_settings_input ) {
@@ -274,7 +270,6 @@ function coil_messaging_settings_validation( $messaging_settings ) : array {
 		(array) $messaging_settings
 	);
 }
-*/
 
 /* ------------------------------------------------------------------------ *
  * Settings Rendering
