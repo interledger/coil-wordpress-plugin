@@ -257,6 +257,16 @@ function coil_messaging_settings_validation( $messaging_settings ) : array {
 
 	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
 		return [];
+	} elseif ( isset( $messaging_settings['coil_fully_gated_content_id'] ) && empty( $messaging_settings['coil_fully_gated_content_id'] ) ) {
+		$messaging_settings['coil_fully_gated_content_id'] = __( 'Check that you\'re using a supported browser, have the Coil extension installed, and are logged in to your Coil account. Need a Coil account?', 'coil-web-monetization' );
+	} elseif ( isset( $messaging_settings['coil_partially_gated_content_id'] ) && empty( $messaging_settings['coil_partially_gated_content_id'] ) ) {
+		$messaging_settings['coil_partially_gated_content_id'] = __( 'This content is for Coil Members only. To access, join Coil and install the browser extension.', 'coil-web-monetization' );
+	} elseif ( isset( $messaging_settings['coil_pending_message_id'] ) && empty( $messaging_settings['coil_pending_message_id'] ) ) {
+		$messaging_settings['coil_pending_message_id'] = __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' );
+	} elseif ( isset( $messaging_settings['coil_invalid_monetization_message_id'] ) && empty( $messaging_settings['coil_invalid_monetization_message_id'] ) ) {
+		$messaging_settings['coil_invalid_monetization_message_id'] = __( 'You need a valid Coil account to see this content.', 'coil-web-monetization' );
+	} elseif ( isset( $messaging_settings['coil_voluntary_donation_message_id'] ) && empty( $messaging_settings['coil_voluntary_donation_message_id'] ) ) {
+		$messaging_settings['coil_voluntary_donation_message_id'] = __( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', 'coil-web-monetization' );
 	}
 
 	return array_map(
