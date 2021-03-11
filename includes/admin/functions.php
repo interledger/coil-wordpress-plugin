@@ -322,7 +322,7 @@ function get_customizer_text_field( $field_id, $get_default = false ) : string {
 	/**
 	 * If an empty string is saved in the customizer,
 	 * get_theme_mod returns an empty string instead of the default
-	 * setting whcih is defined as an optional second parameter.
+	 * setting which is defined as an optional second parameter.
 	 * This is recognized as a bug (wontfix) in WordPress Core.
 	 *
 	 * @see https://core.trac.wordpress.org/ticket/28637
@@ -604,34 +604,25 @@ function get_global_settings( $setting_id ) {
  * Retrieve the messaging settings using a key from the global
  * settings group (serialized).
  *
- * @param string $setting_id The named key in the wp_options serialized array.
+ * @param string $field_id The named key in the wp_options serialized array.
  * @return string
  */
-function get_messaging_settings( $setting_id ) {
+function get_messaging_settings( $field_id, $default = false ) {
 
-	$fully_gated_content_message_id      = __( 'Check that you\'re using a supported browser, have the Coil extension installed, and are logged in to your Coil account. Need a Coil account?', 'coil-web-monetization' );
-	$partial_message_id                  = __( 'This content is for Coil Members only. To access, join Coil and install the browser extension.', 'coil-web-monetization' );
-	$pending_message_id                  = __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' );
-	$invalid_web_monetization_message_id = __( 'You need a valid Coil account to see this content.', 'coil-web-monetization' );
-	$voluntary_donation_message_id       = __( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', 'coil-web-monetization' );
+	// Set up defaults.
+	$defaults = [
+		'coil_fully_gated_content_id'        => __( 'Check that you\'re using a supported browser, have the Coil extension installed, and are logged in to your Coil account. Need a Coil account?', 'coil-web-monetization' ),
+		'coil_partially_gated_content_id'    => __( 'This content is for Coil Members only. To access, join Coil and install the browser extension.', 'coil-web-monetization' ),
+		'coil_pending_message_id'            => __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' ),
+		'coil_unable_to_verify_message_id'   => __( 'You need a valid Coil account to see this content.', 'coil-web-monetization' ),
+		'coil_voluntary_donation_message_id' => __( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', 'coil-web-monetization' )
+	];
 
 	$options = get_option( 'coil_messaging_settings_group', [] );
-	switch ( $setting_id ) {
-		case 'coil_fully_gated_content_id':
-			return ( ! empty( $options['coil_fully_gated_content_id'] ) ) ? $options['coil_fully_gated_content_id'] : $fully_gated_content_message_id;
-			break;
-		case 'coil_partially_gated_content_id':
-			return ( ! empty( $options['coil_partially_gated_content_id'] ) ) ? $options['coil_partially_gated_content_id'] : $partial_message_id;
-			break;
-		case 'coil_pending_message_id':
-			return ( ! empty( $options['coil_pending_message_id'] ) ) ? $options['coil_pending_message_id'] : $pending_message_id;
-			break;
-		case 'coil_invalid_monetization_message_id':
-			return ( ! empty( $options['coil_invalid_monetization_message_id'] ) ) ? $options['coil_invalid_monetization_message_id'] : $invalid_web_monetization_message_id;
-			break;
-		case 'coil_voluntary_donation_message_id':
-			return ( ! empty( $options['coil_voluntary_donation_message_id'] ) ) ? $options['coil_voluntary_donation_message_id'] : $voluntary_donation_message_id;
-			return $message;
-			break;
+
+	if ( $default && empty( $options[ $field_id ] ) ) {
+		return $defaults[ $field_id ];
 	}
+
+	return ( ! empty( $options[ $field_id ] ) ) ? $options[ $field_id ] : '';
 }
