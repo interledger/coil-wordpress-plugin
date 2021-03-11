@@ -4,7 +4,7 @@
 	}
 
 	var content_container = coil_params.content_container,
-		browser_extension_missing = coil_params.browser_extension_missing,
+		fully_gated = coil_params.fully_gated,
 		unable_to_verify = coil_params.unable_to_verify,
 		voluntary_donation = coil_params.voluntary_donation,
 		loading_content = coil_params.loading_content,
@@ -359,7 +359,7 @@
 
 		if ( isSubscribersOnly() ) {
 
-			$( content_container ).before( showSubscriberOnlyMessage( browser_extension_missing ) );
+			$( content_container ).before( showSubscriberOnlyMessage( fully_gated ) );
 
 			if ( isExcerptEnabled() && getContentExcerpt() ) {
 				document.body.classList.add( 'show-excerpt-message' );

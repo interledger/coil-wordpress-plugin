@@ -312,13 +312,8 @@ function get_customizer_text_field( $field_id, $get_default = false ) : string {
 
 	// Set up defaults.
 	$defaults = [
-		'coil_unsupported_message'        => __( 'Check that you\'re using a supported browser, have the Coil extension installed, and are logged in to your Coil account. Need a Coil account?', 'coil-web-monetization' ),
-		'coil_unable_to_verify_message'   => __( 'You need a valid Coil account to see this content.', 'coil-web-monetization' ),
-		'coil_voluntary_donation_message' => __( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', 'coil-web-monetization' ),
-		'coil_verifying_status_message'   => __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' ),
-		'coil_partial_gating_message'     => __( 'This content is for Coil Members only. To access, join Coil and install the browser extension.', 'coil-web-monetization' ),
-		'coil_learn_more_button_text'     => __( 'Get Coil to access', 'coil-web-monetization' ),
-		'coil_learn_more_button_link'     => 'https://coil.com/',
+		'coil_learn_more_button_text' => __( 'Get Coil to access', 'coil-web-monetization' ),
+		'coil_learn_more_button_link' => 'https://coil.com/'
 	];
 
 	// Get the field from the customizer.
@@ -344,6 +339,7 @@ function get_customizer_text_field( $field_id, $get_default = false ) : string {
  *
  * @param \WP_Customize_Manager $wp_customize WordPress Customizer object.
  */
+/*
 function add_customizer_messaging_panel( $wp_customize ) : void {
 
 	$wp_customize->add_panel(
@@ -412,79 +408,8 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
 			],
 		]
 	);
-
-	// Pending message (textarea 3).
-	$pending_message_id = 'coil_verifying_status_message';
-
-	$wp_customize->add_setting(
-		$pending_message_id,
-		[
-			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
-			'sanitize_callback' => 'Coil\filter_customiser_settings',
-		]
-	);
-
-	$wp_customize->add_control(
-		$pending_message_id,
-		[
-			'type'        => 'textarea',
-			'label'       => __( 'Pending message', 'coil-web-monetization' ),
-			'section'     => $messaging_section_id,
-			'description' => __( 'This message is shown for a short time while the plugin checks that the visitor\'s browser is setup correctly and that an active Web Monetization account is in place.', 'coil-web-monetization' ),
-			'input_attrs' => [
-				'placeholder' => get_customizer_text_field( $pending_message_id, true ),
-			],
-		]
-	);
-
-	// Invalid Web Monetization message (textarea 4).
-	$invalid_web_monetization_message_id = 'coil_unable_to_verify_message';
-
-	$wp_customize->add_setting(
-		$invalid_web_monetization_message_id,
-		[
-			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
-			'sanitize_callback' => 'Coil\filter_customiser_settings',
-		]
-	);
-
-	$wp_customize->add_control(
-		$invalid_web_monetization_message_id,
-		[
-			'type'        => 'textarea',
-			'label'       => __( 'Invalid Web Monetization message', 'coil-web-monetization' ),
-			'section'     => $messaging_section_id,
-			'description' => __( 'This message is shown when content is set to Coil Members Only and browser setup is correct, but Web Monetization doesn\'t start.  This message could appear for several reasons, including not having an active Coil account.', 'coil-web-monetization' ),
-			'input_attrs' => [
-				'placeholder' => get_customizer_text_field( $invalid_web_monetization_message_id, true ),
-			],
-		]
-	);
-
-	// Voluntary donation message (textarea 5).
-	$voluntary_donation_message_id = 'coil_voluntary_donation_message';
-
-	$wp_customize->add_setting(
-		$voluntary_donation_message_id,
-		[
-			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
-			'sanitize_callback' => 'Coil\filter_customiser_settings',
-		]
-	);
-
-	$wp_customize->add_control(
-		$voluntary_donation_message_id,
-		[
-			'type'        => 'textarea',
-			'label'       => __( 'Voluntary donation message', 'coil-web-monetization' ),
-			'section'     => $messaging_section_id,
-			'description' => __( 'This message is shown when content is set to Monetized and Public and the visitor isn\'t web monetized.', 'coil-web-monetization' ),
-			'input_attrs' => [
-				'placeholder' => get_customizer_text_field( $voluntary_donation_message_id, true ),
-			],
-		]
-	);
 }
+*/
 
 /**
  * Add Coil options panel to the Customizer.
@@ -492,6 +417,14 @@ function add_customizer_messaging_panel( $wp_customize ) : void {
  * @param \WP_Customize_Manager $wp_customize WordPress Customizer object.
  */
 function add_customizer_options_panel( $wp_customize ) : void {
+
+	$wp_customize->add_panel(
+		CUSTOMIZER_PANEL_ID,
+		[
+			'title'      => __( 'Coil Web Monetization', 'coil-web-monetization' ),
+			'capability' => apply_filters( 'coil_settings_capability', 'manage_options' ),
+		]
+	);
 
 	// Options section.
 	$options_section_id = 'coil_customizer_section_options';
@@ -664,5 +597,41 @@ function get_global_settings( $setting_id ) {
 			break;
 		case 'coil_content_container':
 			return ( ! empty( $options['coil_content_container'] ) ) ? $options['coil_content_container'] : '.content-area .entry-content';
+	}
+}
+
+/**
+ * Retrieve the messaging settings using a key from the global
+ * settings group (serialized).
+ *
+ * @param string $setting_id The named key in the wp_options serialized array.
+ * @return string
+ */
+function get_messaging_settings( $setting_id ) {
+
+	$fully_gated_content_message_id      = __( 'Check that you\'re using a supported browser, have the Coil extension installed, and are logged in to your Coil account. Need a Coil account?', 'coil-web-monetization' );
+	$partial_message_id                  = __( 'This content is for Coil Members only. To access, join Coil and install the browser extension.', 'coil-web-monetization' );
+	$pending_message_id                  = __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' );
+	$invalid_web_monetization_message_id = __( 'You need a valid Coil account to see this content.', 'coil-web-monetization' );
+	$voluntary_donation_message_id       = __( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', 'coil-web-monetization' );
+
+	$options = get_option( 'coil_messaging_settings_group', [] );
+	switch ( $setting_id ) {
+		case 'coil_fully_gated_content_id':
+			return ( ! empty( $options['coil_fully_gated_content_id'] ) ) ? $options['coil_fully_gated_content_id'] : $fully_gated_content_message_id;
+			break;
+		case 'coil_partially_gated_content_id':
+			return ( ! empty( $options['coil_partially_gated_content_id'] ) ) ? $options['coil_partially_gated_content_id'] : $partial_message_id;
+			break;
+		case 'coil_pending_message_id':
+			return ( ! empty( $options['coil_pending_message_id'] ) ) ? $options['coil_pending_message_id'] : $pending_message_id;
+			break;
+		case 'coil_invalid_monetization_message_id':
+			return ( ! empty( $options['coil_invalid_monetization_message_id'] ) ) ? $options['coil_invalid_monetization_message_id'] : $invalid_web_monetization_message_id;
+			break;
+		case 'coil_voluntary_donation_message_id':
+			return ( ! empty( $options['coil_voluntary_donation_message_id'] ) ) ? $options['coil_voluntary_donation_message_id'] : $voluntary_donation_message_id;
+			return $message;
+			break;
 	}
 }

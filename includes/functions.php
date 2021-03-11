@@ -59,7 +59,6 @@ function init_plugin() : void {
 	add_term_edit_save_form_meta_actions();
 
 	// Customizer settings.
-	add_action( 'customize_register', __NAMESPACE__ . '\Admin\add_customizer_messaging_panel' );
 	add_action( 'customize_register', __NAMESPACE__ . '\Admin\add_customizer_options_panel' );
 	add_action( 'customize_register', __NAMESPACE__ . '\Admin\add_customizer_learn_more_button_settings_panel' );
 
@@ -188,20 +187,20 @@ function load_full_assets() : void {
 	$strings = apply_filters(
 		'coil_js_ui_messages',
 		[
-			'content_container'         => Admin\get_global_settings( 'coil_content_container' ),
-			'browser_extension_missing' => Admin\get_customizer_text_field( 'coil_unsupported_message' ),
-			'unable_to_verify'          => Admin\get_customizer_text_field( 'coil_unable_to_verify_message' ),
-			'voluntary_donation'        => Admin\get_customizer_text_field( 'coil_voluntary_donation_message' ),
-			'loading_content'           => Admin\get_customizer_text_field( 'coil_verifying_status_message' ),
-			'partial_gating'            => Admin\get_customizer_text_field( 'coil_partial_gating_message' ),
-			'learn_more_button_text'    => Admin\get_customizer_text_field( 'coil_learn_more_button_text' ),
-			'learn_more_button_link'    => Admin\get_customizer_text_field( 'coil_learn_more_button_link' ),
-			'show_donation_bar'         => get_theme_mod( 'coil_show_donation_bar', true ),
-			'post_excerpt'              => get_the_excerpt(),
-			'site_logo'                 => $site_logo,
+			'content_container'       => Admin\get_global_settings( 'coil_content_container' ),
+			'unable_to_verify'        => Admin\get_messaging_settings( 'coil_unable_to_verify_message' ),
+			'voluntary_donation'      => Admin\get_messaging_settings( 'coil_voluntary_donation_message' ),
+			'loading_content'         => Admin\get_messaging_settings( 'coil_pending_message_id' ),
+			'fully_gated'             => Admin\get_messaging_settings( 'coil_fully_gated_content_id' ),
+			'partial_gating'          => Admin\get_messaging_settings( 'coil_partially_gated_content_id' ),
+			'learn_more_button_text'  => Admin\get_customizer_text_field( 'coil_learn_more_button_text' ),
+			'learn_more_button_link'  => Admin\get_customizer_text_field( 'coil_learn_more_button_link' ),
+			'show_donation_bar'       => get_theme_mod( 'coil_show_donation_bar', true ),
+			'post_excerpt'            => get_the_excerpt(),
+			'site_logo'               => $site_logo,
 
 			/* translators: 1 + 2) HTML link tags (to the Coil settings page). */
-			'admin_missing_id_notice'   => sprintf( __( 'This post is monetized but you have not set your payment pointer ID in the %1$sCoil settings page%2$s. Only content set to show for all visitors will show.', 'coil-web-monetization' ), '<a href="' . admin_url( 'admin.php?page=coil' ) . '">', '</a>' ),
+			'admin_missing_id_notice' => sprintf( __( 'This post is monetized but you have not set your payment pointer ID in the %1$sCoil settings page%2$s. Only content set to show for all visitors will show.', 'coil-web-monetization' ), '<a href="' . admin_url( 'admin.php?page=coil' ) . '">', '</a>' ),
 		],
 		get_queried_object_id()
 	);

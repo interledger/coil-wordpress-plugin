@@ -327,7 +327,7 @@ function coil_global_settings_payment_pointer_render_callback() {
 	echo $payment_pointer_description . '</p>'; // phpcs:ignore. Output already escaped.
 
 	printf(
-		'<br><a target="_blank" href="%s" target="%s" class="%s">%s</a>',
+		'<br><a href="%s" target="%s" class="%s">%s</a>',
 		esc_url( 'https://webmonetization.org/docs/ilp-wallets' ),
 		esc_attr( '_blank' ),
 		esc_attr( 'button button-large' ),
@@ -346,6 +346,7 @@ function coil_global_settings_advanced_config_render_callback() {
 	printf(
 		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s" required="required"/>',
 		esc_attr( 'wide-input' ),
+		esc_attr( 'text' ),
 		esc_attr( 'coil_global_settings_group[coil_content_container]' ),
 		esc_attr( 'coil_content_container' ),
 		esc_attr( Admin\get_global_settings( 'coil_content_container' ) ),
@@ -498,14 +499,13 @@ function coil_messaging_settings_fully_gated_content_render_callback() {
 	<p><?php esc_html_e( 'This message is shown when content is set to be Coil Members Only, and the visitor is using an unsupported browser, has the extension installed incorrectly, is logged out of their Coil account, or doesn\'t have a Coil Membership.', 'coil-web-monetization' ); ?></p>
 
 	<?php
-	$fully_gated_content_message_id = 'coil_unsupported_message';
 	printf(
 		'<textarea class="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s"></textarea>',
 		esc_attr( 'wide-input' ),
 		esc_attr( 'coil_messaging_settings_group[coil_fully_gated_content_id]' ),
 		esc_attr( 'coil_fully_gated_content_id' ),
-		esc_attr( Admin\get_global_settings( 'coil_fully_gated_content_id' ) ),
-		esc_attr( Admin\get_customizer_text_field( $fully_gated_content_message_id, true ) ),
+		esc_attr( Admin\get_messaging_settings( 'coil_fully_gated_content_id' ) ),
+		esc_attr( Admin\get_messaging_settings( 'coil_fully_gated_content_id' ) ),
 		esc_attr( 'min-width: 440px' )
 	);
 }
@@ -518,17 +518,16 @@ function coil_messaging_settings_fully_gated_content_render_callback() {
 function coil_messaging_settings_partially_gated_content_render_callback() {
 	?>
 
-	<p><?php esc_html_e( 'This message is shown when content is set to be Coil Members Only, and the visitor is using an unsupported browser, has the extension installed incorrectly, is logged out of their Coil account, or doesn\'t have a Coil Membership.', 'coil-web-monetization' ); ?></p>
+	<p><?php esc_html_e( 'This message is shown when content is set to be Coil Members Only, the visitor is using an unsupported browser, has the extension installed incorrectly, is logged out of their Coil account, or doesn\'t have a Coil Membership.', 'coil-web-monetization' ); ?></p>
 
 	<?php
-	$partial_message_id = 'coil_partial_gating_message';
 	printf(
 		'<textarea class="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s"></textarea>',
 		esc_attr( 'wide-input' ),
 		esc_attr( 'coil_messaging_settings_group[coil_partially_gated_content_id]' ),
 		esc_attr( 'coil_partially_gated_content_id' ),
-		esc_attr( Admin\get_global_settings( 'coil_partially_gated_content_id' ) ),
-		esc_attr( Admin\get_customizer_text_field( $partial_message_id, true ) ),
+		esc_attr( Admin\get_messaging_settings( 'coil_partially_gated_content_id' ) ),
+		esc_attr( Admin\get_messaging_settings( 'coil_partially_gated_content_id' ) ),
 		esc_attr( 'min-width: 440px' )
 	);
 }
@@ -550,8 +549,8 @@ function coil_messaging_settings_pending_message_render_callback() {
 		esc_attr( 'wide-input' ),
 		esc_attr( 'coil_messaging_settings_group[coil_pending_message_id]' ),
 		esc_attr( 'coil_pending_message_id' ),
-		esc_attr( Admin\get_global_settings( 'coil_pending_message_id' ) ),
-		esc_attr( Admin\get_customizer_text_field( $pending_message_id, true ) ),
+		esc_attr( Admin\get_messaging_settings( 'coil_pending_message_id' ) ),
+		esc_attr( Admin\get_messaging_settings( 'coil_pending_message_id' ) ),
 		esc_attr( 'min-width: 440px' )
 	);
 }
@@ -567,14 +566,13 @@ function coil_messaging_settings_invalid_monetization_message_render_callback() 
 	<p><?php esc_html_e( 'This message is shown when content is set to be Coil Members Only, and the visitor is using an unsupported browser, has the extension installed incorrectly, is logged out of their Coil account, or doesn\'t have a Coil Membership.', 'coil-web-monetization' ); ?></p>
 
 	<?php
-	$invalid_web_monetization_message_id = 'coil_unable_to_verify_message';
 	printf(
 		'<textarea class="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s"></textarea>',
 		esc_attr( 'wide-input' ),
 		esc_attr( 'coil_messaging_settings_group[coil_invalid_monetization_message_id]' ),
 		esc_attr( 'coil_invalid_monetization_message_id' ),
-		esc_attr( Admin\get_global_settings( 'coil_invalid_monetization_message_id' ) ),
-		esc_attr( Admin\get_customizer_text_field( $invalid_web_monetization_message_id, true ) ),
+		esc_attr( Admin\get_messaging_settings( 'coil_invalid_monetization_message_id' ) ),
+		esc_attr( Admin\get_messaging_settings( 'coil_invalid_monetization_message_id' ) ),
 		esc_attr( 'min-width: 440px' )
 	);
 }
@@ -590,14 +588,13 @@ function coil_messaging_settings_voluntary_donation_message_render_callback() {
 	<p><?php esc_html_e( 'This message is shown when content is set to be Coil Members Only, and the visitor is using an unsupported browser, has the extension installed incorrectly, is logged out of their Coil account, or doesn\'t have a Coil Membership.', 'coil-web-monetization' ); ?></p>
 
 	<?php
-	$voluntary_donation_message_id = 'coil_voluntary_donation_message';
 	printf(
 		'<textarea class="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s"></textarea>',
 		esc_attr( 'wide-input' ),
 		esc_attr( 'coil_messaging_settings_group[coil_voluntary_donation_message_id]' ),
 		esc_attr( 'coil_voluntary_donation_message_id' ),
-		esc_attr( Admin\get_global_settings( 'coil_voluntary_donation_message_id' ) ),
-		esc_attr( Admin\get_customizer_text_field( $voluntary_donation_message_id, true ) ),
+		esc_attr( Admin\get_messaging_settings( 'coil_voluntary_donation_message_id' ) ),
+		esc_attr( Admin\get_messaging_settings( 'coil_voluntary_donation_message_id' ) ),
 		esc_attr( 'min-width: 440px' )
 	);
 }
