@@ -529,7 +529,7 @@ function coil_messaging_settings_partially_gated_content_render_callback() {
 
 	?>
 
-	<p><?php esc_html_e( 'This message is shown when content is set to be Coil Members Only, the visitor is using an unsupported browser, has the extension installed incorrectly, is logged out of their Coil account, or doesn\'t have a Coil Membership.', 'coil-web-monetization' ); ?></p>
+	<p><?php esc_html_e( 'This message is shown in footer bar on pages where only some of the content blocks are set as Coil Members Only.', 'coil-web-monetization' ); ?></p>
 
 	<?php
 }
@@ -554,7 +554,7 @@ function coil_messaging_settings_pending_message_render_callback() {
 
 	?>
 
-	<p><?php esc_html_e( 'This message is shown in footer bar on pages where only some of the content blocks are set as Coil Members Only.', 'coil-web-monetization' ); ?></p>
+	<p><?php esc_html_e( 'This message is shown for a short time while the plugin checks that the visitor\'s browser is setup correctly and that an active Web Monetization account is in place.', 'coil-web-monetization' ); ?></p>
 
 	<?php
 }
@@ -577,7 +577,7 @@ function coil_messaging_settings_unable_to_verify_message_render_callback() {
 
 	?>
 
-	<p><?php esc_html_e( 'This message is shown when content is set to be Coil Members Only, and the visitor is using an unsupported browser, has the extension installed incorrectly, is logged out of their Coil account, or doesn\'t have a Coil Membership.', 'coil-web-monetization' ); ?></p>
+	<p><?php esc_html_e( 'This message is shown when content is set to Coil Members Only and browser setup is correct, but Web Monetization doesn\'t start. This message could appear for several reasons, including not having an active Coil account.', 'coil-web-monetization' ); ?></p>
 
 	<?php
 }
@@ -600,7 +600,7 @@ function coil_messaging_settings_voluntary_donation_message_render_callback() {
 
 	?>
 
-	<p><?php esc_html_e( 'This message is shown when content is set to be Coil Members Only, and the visitor is using an unsupported browser, has the extension installed incorrectly, is logged out of their Coil account, or doesn\'t have a Coil Membership.', 'coil-web-monetization' ); ?></p>
+	<p><?php esc_html_e( 'This message is shown when content is set to Monetized and Public and the visitor isn\'t web monetized.', 'coil-web-monetization' ); ?></p>
 
 	<?php
 }
