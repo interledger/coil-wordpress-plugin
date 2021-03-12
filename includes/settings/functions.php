@@ -496,14 +496,13 @@ function coil_content_settings_excerpts_render_callback() {
 function coil_messaging_settings_fully_gated_content_render_callback() {
 
 	printf(
-		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s"/>',
+		'<textarea class="%s" name="%s" id="%s" placeholder="%s" style="%s">%s</textarea>',
 		esc_attr( 'wide-input' ),
-		esc_attr( 'text' ),
 		esc_attr( 'coil_messaging_settings_group[coil_fully_gated_content_id]' ),
 		esc_attr( 'coil_fully_gated_content_id' ),
-		esc_attr( Admin\get_messaging_settings( 'coil_fully_gated_content_id' ) ),
 		esc_attr( Admin\get_messaging_settings( 'coil_fully_gated_content_id', true ) ),
-		esc_attr( 'min-width: 440px' )
+		esc_attr( 'min-width: 440px' ),
+		esc_attr( Admin\get_messaging_settings( 'coil_fully_gated_content_id' ) )
 	);
 	?>
 
@@ -519,14 +518,13 @@ function coil_messaging_settings_fully_gated_content_render_callback() {
  */
 function coil_messaging_settings_partially_gated_content_render_callback() {
 	printf(
-		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s"/>',
+		'<textarea class="%s" name="%s" id="%s" placeholder="%s" style="%s">%s</textarea>',
 		esc_attr( 'wide-input' ),
-		esc_attr( 'text' ),
 		esc_attr( 'coil_messaging_settings_group[coil_partially_gated_content_id]' ),
 		esc_attr( 'coil_partially_gated_content_id' ),
-		esc_attr( Admin\get_messaging_settings( 'coil_partially_gated_content_id' ) ),
 		esc_attr( Admin\get_messaging_settings( 'coil_partially_gated_content_id', true ) ),
-		esc_attr( 'min-width: 440px' )
+		esc_attr( 'min-width: 440px' ),
+		esc_attr( Admin\get_messaging_settings( 'coil_partially_gated_content_id' ) )
 	);
 
 	?>
@@ -545,14 +543,13 @@ function coil_messaging_settings_pending_message_render_callback() {
 
 	$pending_message_id = 'coil_verifying_status_message';
 	printf(
-		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s"/>',
+		'<textarea class="%s" name="%s" id="%s" placeholder="%s" style="%s">%s</textarea>',
 		esc_attr( 'wide-input' ),
-		esc_attr( 'text' ),
 		esc_attr( 'coil_messaging_settings_group[coil_pending_message_id]' ),
 		esc_attr( 'coil_pending_message_id' ),
-		esc_attr( Admin\get_messaging_settings( 'coil_pending_message_id' ) ),
 		esc_attr( Admin\get_messaging_settings( 'coil_pending_message_id', true ) ),
-		esc_attr( 'min-width: 440px' )
+		esc_attr( 'min-width: 440px' ),
+		esc_attr( Admin\get_messaging_settings( 'coil_pending_message_id' ) )
 	);
 
 	?>
@@ -569,14 +566,13 @@ function coil_messaging_settings_pending_message_render_callback() {
  */
 function coil_messaging_settings_unable_to_verify_message_render_callback() {
 	printf(
-		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s"/>',
+		'<textarea class="%s" name="%s" id="%s" placeholder="%s" style="%s">%s</textarea>',
 		esc_attr( 'wide-input' ),
-		esc_attr( 'text' ),
 		esc_attr( 'coil_messaging_settings_group[coil_unable_to_verify_message_id]' ),
 		esc_attr( 'coil_unable_to_verify_message_id' ),
-		esc_attr( Admin\get_messaging_settings( 'coil_unable_to_verify_message_id' ) ),
 		esc_attr( Admin\get_messaging_settings( 'coil_unable_to_verify_message_id', true ) ),
-		esc_attr( 'min-width: 440px' )
+		esc_attr( 'min-width: 440px' ),
+		esc_attr( Admin\get_messaging_settings( 'coil_unable_to_verify_message_id' ) )
 	);
 
 	?>
@@ -593,14 +589,13 @@ function coil_messaging_settings_unable_to_verify_message_render_callback() {
  */
 function coil_messaging_settings_voluntary_donation_message_render_callback() {
 	printf(
-		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s"/>',
+		'<textarea class="%s" name="%s" id="%s" placeholder="%s" style="%s">%s</textarea>',
 		esc_attr( 'wide-input' ),
-		esc_attr( 'text' ),
 		esc_attr( 'coil_messaging_settings_group[coil_voluntary_donation_message_id]' ),
 		esc_attr( 'coil_voluntary_donation_message_id' ),
-		esc_attr( Admin\get_messaging_settings( 'coil_voluntary_donation_message_id' ) ),
 		esc_attr( Admin\get_messaging_settings( 'coil_voluntary_donation_message_id', true ) ),
-		esc_attr( 'min-width: 440px' )
+		esc_attr( 'min-width: 440px' ),
+		esc_attr( Admin\get_messaging_settings( 'coil_voluntary_donation_message_id' ) )
 	);
 
 	?>
