@@ -589,19 +589,19 @@ function get_valid_taxonomies() : array {
  */
 function get_global_settings( $setting_id ) {
 
+	// Set up defaults.
+	$defaults = [
+		'coil_payment_pointer_id' => '',
+		'coil_content_container'  => 'content-area .entry-content',
+	];
+
 	$options = get_option( 'coil_global_settings_group', [] );
 
-	switch ( $setting_id ) {
-		case 'coil_payment_pointer_id':
-			return ( ! empty( $options['coil_payment_pointer_id'] ) ) ? $options['coil_payment_pointer_id'] : '';
-			break;
-		case 'coil_content_container':
-			return ( ! empty( $options['coil_content_container'] ) ) ? $options['coil_content_container'] : '.content-area .entry-content';
-	}
+	return ( ! empty( $options[ $setting_id ] ) ) ? $options[ $setting_id ] : $default[ $setting_id ];
 }
 
 /**
- * Retrieve the messaging settings using a key from the global
+ * Retrieve the messaging settings using a key from the messaging
  * settings group (serialized).
  *
  * @param string $field_id The named key in the wp_options serialized array.
@@ -620,6 +620,7 @@ function get_messaging_settings( $field_id, $default = false ) {
 
 	$options = get_option( 'coil_messaging_settings_group', [] );
 
+	// The default is returned when the input field is empty either as a placeholder or a coil_js_ui_messages field
 	if ( $default && empty( $options[ $field_id ] ) ) {
 		return $defaults[ $field_id ];
 	}
