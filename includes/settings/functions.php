@@ -494,11 +494,7 @@ function coil_content_settings_excerpts_render_callback() {
  * @return void
  */
 function coil_messaging_settings_fully_gated_content_render_callback() {
-	?>
 
-	<p><?php esc_html_e( 'This message is shown when content is set to be Coil Members Only, and the visitor is using an unsupported browser, has the extension installed incorrectly, is logged out of their Coil account, or doesn\'t have a Coil Membership.', 'coil-web-monetization' ); ?></p>
-
-	<?php
 	printf(
 		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s"/>',
 		esc_attr( 'wide-input' ),
@@ -509,6 +505,11 @@ function coil_messaging_settings_fully_gated_content_render_callback() {
 		esc_attr( Admin\get_messaging_settings( 'coil_fully_gated_content_id', true ) ),
 		esc_attr( 'min-width: 440px' )
 	);
+	?>
+
+	<p><?php esc_html_e( 'This message is shown when content is set to be Coil Members Only, and the visitor is using an unsupported browser, has the extension installed incorrectly, is logged out of their Coil account, or doesn\'t have a Coil Membership.', 'coil-web-monetization' ); ?></p>
+
+	<?php
 }
 
 /**
@@ -517,11 +518,6 @@ function coil_messaging_settings_fully_gated_content_render_callback() {
  * @return void
  */
 function coil_messaging_settings_partially_gated_content_render_callback() {
-	?>
-
-	<p><?php esc_html_e( 'This message is shown when content is set to be Coil Members Only, the visitor is using an unsupported browser, has the extension installed incorrectly, is logged out of their Coil account, or doesn\'t have a Coil Membership.', 'coil-web-monetization' ); ?></p>
-
-	<?php
 	printf(
 		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s"/>',
 		esc_attr( 'wide-input' ),
@@ -532,6 +528,12 @@ function coil_messaging_settings_partially_gated_content_render_callback() {
 		esc_attr( Admin\get_messaging_settings( 'coil_partially_gated_content_id', true ) ),
 		esc_attr( 'min-width: 440px' )
 	);
+
+	?>
+
+	<p><?php esc_html_e( 'This message is shown when content is set to be Coil Members Only, the visitor is using an unsupported browser, has the extension installed incorrectly, is logged out of their Coil account, or doesn\'t have a Coil Membership.', 'coil-web-monetization' ); ?></p>
+
+	<?php
 }
 
 /**
@@ -540,11 +542,7 @@ function coil_messaging_settings_partially_gated_content_render_callback() {
  * @return void
  */
 function coil_messaging_settings_pending_message_render_callback() {
-	?>
 
-	<p><?php esc_html_e( 'This message is shown in footer bar on pages where only some of the content blocks are set as Coil Members Only.', 'coil-web-monetization' ); ?></p>
-
-	<?php
 	$pending_message_id = 'coil_verifying_status_message';
 	printf(
 		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s"/>',
@@ -556,6 +554,12 @@ function coil_messaging_settings_pending_message_render_callback() {
 		esc_attr( Admin\get_messaging_settings( 'coil_pending_message_id', true ) ),
 		esc_attr( 'min-width: 440px' )
 	);
+
+	?>
+
+	<p><?php esc_html_e( 'This message is shown in footer bar on pages where only some of the content blocks are set as Coil Members Only.', 'coil-web-monetization' ); ?></p>
+
+	<?php
 }
 
 /**
@@ -564,11 +568,6 @@ function coil_messaging_settings_pending_message_render_callback() {
  * @return void
  */
 function coil_messaging_settings_unable_to_verify_message_render_callback() {
-	?>
-
-	<p><?php esc_html_e( 'This message is shown when content is set to be Coil Members Only, and the visitor is using an unsupported browser, has the extension installed incorrectly, is logged out of their Coil account, or doesn\'t have a Coil Membership.', 'coil-web-monetization' ); ?></p>
-
-	<?php
 	printf(
 		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s"/>',
 		esc_attr( 'wide-input' ),
@@ -579,6 +578,12 @@ function coil_messaging_settings_unable_to_verify_message_render_callback() {
 		esc_attr( Admin\get_messaging_settings( 'coil_unable_to_verify_message_id', true ) ),
 		esc_attr( 'min-width: 440px' )
 	);
+
+	?>
+
+	<p><?php esc_html_e( 'This message is shown when content is set to be Coil Members Only, and the visitor is using an unsupported browser, has the extension installed incorrectly, is logged out of their Coil account, or doesn\'t have a Coil Membership.', 'coil-web-monetization' ); ?></p>
+
+	<?php
 }
 
 /**
@@ -587,11 +592,6 @@ function coil_messaging_settings_unable_to_verify_message_render_callback() {
  * @return void
  */
 function coil_messaging_settings_voluntary_donation_message_render_callback() {
-	?>
-
-	<p><?php esc_html_e( 'This message is shown when content is set to be Coil Members Only, and the visitor is using an unsupported browser, has the extension installed incorrectly, is logged out of their Coil account, or doesn\'t have a Coil Membership.', 'coil-web-monetization' ); ?></p>
-
-	<?php
 	printf(
 		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s"/>',
 		esc_attr( 'wide-input' ),
@@ -602,6 +602,12 @@ function coil_messaging_settings_voluntary_donation_message_render_callback() {
 		esc_attr( Admin\get_messaging_settings( 'coil_voluntary_donation_message_id', true ) ),
 		esc_attr( 'min-width: 440px' )
 	);
+
+	?>
+
+	<p><?php esc_html_e( 'This message is shown when content is set to be Coil Members Only, and the visitor is using an unsupported browser, has the extension installed incorrectly, is logged out of their Coil account, or doesn\'t have a Coil Membership.', 'coil-web-monetization' ); ?></p>
+
+	<?php
 }
 
 /**
