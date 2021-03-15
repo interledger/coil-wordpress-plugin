@@ -313,7 +313,7 @@ function get_customizer_text_field( $field_id, $get_default = false ) : string {
 	// Set up defaults.
 	$defaults = [
 		'coil_learn_more_button_text' => __( 'Get Coil to access', 'coil-web-monetization' ),
-		'coil_learn_more_button_link' => 'https://coil.com/'
+		'coil_learn_more_button_link' => 'https://coil.com/',
 	];
 
 	// Get the field from the customizer.
