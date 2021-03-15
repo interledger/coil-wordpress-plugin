@@ -335,11 +335,11 @@ function get_customizer_text_field( $field_id, $get_default = false ) : string {
 }
 
 /**
- * Add Coil options panel to the Customizer.
+ * Add "Learn More" button settings panel to the Customizer.
  *
  * @param \WP_Customize_Manager $wp_customize WordPress Customizer object.
  */
-function add_customizer_options_panel( $wp_customize ) : void {
+function add_customizer_learn_more_button_settings_panel( $wp_customize ) : void {
 
 	$wp_customize->add_panel(
 		CUSTOMIZER_PANEL_ID,
@@ -348,66 +348,6 @@ function add_customizer_options_panel( $wp_customize ) : void {
 			'capability' => apply_filters( 'coil_settings_capability', 'manage_options' ),
 		]
 	);
-
-	// Options section.
-	$options_section_id = 'coil_customizer_section_options';
-
-	$wp_customize->add_section(
-		$options_section_id,
-		[
-			'title' => _x( 'Options', 'page title', 'coil-web-monetization' ),
-			'panel' => CUSTOMIZER_PANEL_ID,
-		]
-	);
-
-	// Post title padlock.
-	$padlock_setting_id = 'coil_title_padlock';
-
-	$wp_customize->add_setting(
-		$padlock_setting_id,
-		[
-			'capability' => apply_filters( 'coil_settings_capability', 'manage_options' ),
-			'default'    => true,
-		]
-	);
-
-	$wp_customize->add_control(
-		$padlock_setting_id,
-		[
-			'label'   => __( 'Show padlock next to post title if the post is monetized and gated.', 'coil-web-monetization' ),
-			'section' => $options_section_id,
-			'type'    => 'checkbox',
-		]
-	);
-
-	// Show donation bar.
-	$donation_bar_setting_id = 'coil_show_donation_bar';
-
-	$wp_customize->add_setting(
-		$donation_bar_setting_id,
-		[
-			'capability' => apply_filters( 'coil_settings_capability', 'manage_options' ),
-			'default'    => true,
-		]
-	);
-
-	$wp_customize->add_control(
-		$donation_bar_setting_id,
-		[
-			'label'   => __( 'Show a donation bar on posts that are monetized and public.', 'coil-web-monetization' ),
-			'section' => $options_section_id,
-			'type'    => 'checkbox',
-		]
-	);
-}
-
-
-/**
- * Add "Learn More" button settings panel to the Customizer.
- *
- * @param \WP_Customize_Manager $wp_customize WordPress Customizer object.
- */
-function add_customizer_learn_more_button_settings_panel( $wp_customize ) : void {
 
 	// Options section.
 	$button_settings_section_id = 'coil_customizer_section_button_settings';

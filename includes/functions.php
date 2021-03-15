@@ -8,6 +8,7 @@ namespace Coil;
 
 use \Coil\Admin;
 use \Coil\Gating;
+use \Coil\Settings;
 use \Coil\User;
 
 /**
@@ -59,7 +60,6 @@ function init_plugin() : void {
 	add_term_edit_save_form_meta_actions();
 
 	// Customizer settings.
-	add_action( 'customize_register', __NAMESPACE__ . '\Admin\add_customizer_options_panel' );
 	add_action( 'customize_register', __NAMESPACE__ . '\Admin\add_customizer_learn_more_button_settings_panel' );
 
 	// User profile settings.
@@ -195,7 +195,7 @@ function load_full_assets() : void {
 			'partial_gating'          => empty( Admin\get_messaging_settings( 'coil_partially_gated_content_id' ) ) ? Admin\get_messaging_settings( 'coil_partially_gated_content_id', true ) : Admin\get_messaging_settings( 'coil_partially_gated_content_id' ),
 			'learn_more_button_text'  => Admin\get_customizer_text_field( 'coil_learn_more_button_text' ),
 			'learn_more_button_link'  => Admin\get_customizer_text_field( 'coil_learn_more_button_link' ),
-			'show_donation_bar'       => get_theme_mod( 'coil_show_donation_bar', true ),
+			'show_donation_bar'       => Settings\get_visual_settings( 'padlock' ),
 			'post_excerpt'            => get_the_excerpt(),
 			'site_logo'               => $site_logo,
 

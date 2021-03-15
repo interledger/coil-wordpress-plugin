@@ -656,26 +656,19 @@ function coil_messaging_settings_voluntary_donation_message_render_callback() {
 
 function coil_padlock_settings_render_callback() {
 
+	$options = get_option( 'coil_visual_settings_group', [] );
+
 	/**
 	 * Specify the default checked state on the input form
 	 * any settings stored in the database. If the
 	 * input status is not set, default to checked
 	 */
-	$checked_input = true;
-	// if ( $setting_key === 'no' ) {
-	// 	$checked_input = 'checked="true"';
-	// } elseif ( isset( $content_settings_posts_options[ $post_type->name ] ) ) {
-	// 	$checked_input = checked( $setting_key, $content_settings_posts_options[ $post_type->name ], false );
-	// }
-
-	// if ( isset( $content_settings_excerpt_options[ $post_type->name ] ) ) {
-	// 	$checked_input = checked( 1, $content_settings_excerpt_options[ $post_type->name ], false );
-	// }
+	$checked_input = (bool) get_visual_settings( 'padlock' );
 
 	printf(
-		'<input type="%s" name="%s" id="%s" %s />',
+		'<input type="%s" name="%s" id="%s" checked="%s"/>',
 		esc_attr( 'checkbox' ),
-		esc_attr( 'padlock' ),
+		esc_attr( 'coil_visual_settings_group[padlock]' ),
 		esc_attr( 'display_padlock_id' ),
 		$checked_input
 	);
@@ -689,22 +682,19 @@ function coil_padlock_settings_render_callback() {
 
 function coil_donation_bar_settings_render_callback() {
 
+	$options = get_option( 'coil_visual_settings_group', [] );
+
 	/**
 	 * Specify the default checked state on the input from
 	 * any settings stored in the database. If the
 	 * input status is not set, default to checked
 	 */
-	$checked_input = true;
-	// if ( $setting_key === 'no' ) {
-	// 	$checked_input = 'checked="true"';
-	// } elseif ( isset( $content_settings_posts_options[ $post_type->name ] ) ) {
-	// 	$checked_input = checked( $setting_key, $content_settings_posts_options[ $post_type->name ], false );
-	// }
+	$checked_input = (bool) get_visual_settings( 'donation_bar' );
 
 	printf(
-		'<input type="%s" name="%s" id="%s" "%s">',
+		'<input type="%s" name="%s" id="%s" checked="%s">',
 		esc_attr( 'checkbox' ),
-		esc_attr( 'donation_bar' ),
+		esc_attr( 'coil_visual_settings_group[donation_bar]' ),
 		esc_attr( 'display_donation_bar_id' ),
 		$checked_input
 	);
@@ -715,6 +705,25 @@ function coil_donation_bar_settings_render_callback() {
 		esc_html_e( 'Show a donation bar on posts that are monetized and public.', 'coil-web-monetization' )
 	);
 }
+
+/**
+ * Retrieve the visual settings using a key from the visual
+ * settings group (serialized).
+ *
+ * @param string $field_id The named key in the wp_options serialized array.
+ * @return string
+ */
+function get_visual_settings( $field_id ) {
+
+	$options = get_option( 'coil_visual_settings_group', [] );
+
+	/**
+	 * Default is checked
+	 */
+
+	return ( ! empty( $options[ $field_id ] ) ) ? checked( 1, $options[ $field_id ] ) : true;
+}
+
 
 /**
  * Creates dismissable welcome notice on coil admin screen

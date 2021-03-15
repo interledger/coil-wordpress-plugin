@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace Coil\Gating;
 
 use Coil\Admin;
+use Coil\Settings;
 
 /**
  * Register post/user meta.
@@ -106,7 +107,7 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 		return $title;
 	}
 
-	if ( ! get_theme_mod( 'coil_title_padlock', true ) ) {
+	if ( ! Settings\get_visual_settings( 'padlock' ) ) {
 		return $title;
 	}
 
