@@ -91,20 +91,34 @@ function register_admin_content_settings() {
 		'coil_global_settings_bottom_section'
 	);
 
-	// Tab 3 - Content Settings.
+	// Tab 3 - Monetization Settings.
 	register_setting(
-		'coil_content_settings_posts_group',
-		'coil_content_settings_posts_group',
-		__NAMESPACE__ . '\coil_content_settings_posts_validation'
+		'coil_monetization_settings_group',
+		'coil_monetization_settings_group',
+		__NAMESPACE__ . '\coil_monetization_settings_validation'
 	);
 
 	add_settings_section(
 		'coil_content_settings_posts_section',
-		false,
+		__( 'Content Settings', 'coil-web-monetization' ),
+		__NAMESPACE__ . '\coil_content_settings_posts_render_callback',
+		'coil_content_settings_posts'
+	);
+	/*
+	add_settings_section(
+		'coil_content_settings_posts_section',
+		__( 'Padlock Settings', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_content_settings_posts_render_callback',
 		'coil_content_settings_posts'
 	);
 
+	add_settings_section(
+		'coil_content_settings_posts_section',
+		__( 'Donation Bar Settings', 'coil-web-monetization' ),
+		__NAMESPACE__ . '\coil_content_settings_posts_render_callback',
+		'coil_content_settings_posts'
+	);
+	*/
 	// Tab 4 - Excerpt settings.
 	register_setting(
 		'coil_content_settings_excerpt_group',
@@ -218,7 +232,7 @@ function coil_global_settings_group_validation( $global_settings ) : array {
  * @param array $post_content_settings The posted radio options from the content settings section.
  * @return array
  */
-function coil_content_settings_posts_validation( $post_content_settings ) : array {
+function coil_monetization_settings_validation( $post_content_settings ) : array {
 
 	return array_map(
 		function( $radio_value ) {
@@ -401,7 +415,7 @@ function coil_content_settings_posts_render_callback() {
 						<?php
 						foreach ( $form_gating_settings as $setting_key => $setting_value ) :
 							$input_id   = $post_type->name . '_' . $setting_key;
-							$input_name = 'coil_content_settings_posts_group[' . $post_type->name . ']';
+							$input_name = 'coil_monetization_settings_group[' . $post_type->name . ']';
 
 							/**
 							 * Specify the default checked state on the input from
@@ -723,7 +737,7 @@ function render_coil_settings_screen() : void {
 		<h2 class="nav-tab-wrapper">
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=getting_started' ); ?>" id="coil-getting-started" class="nav-tab <?php echo $active_tab === 'getting_started' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Getting Started', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=global_settings' ); ?>" id="coil-global-settings" class="nav-tab <?php echo $active_tab === 'global_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Global Settings', 'coil-web-monetization' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=content_settings' ); ?>" id="coil-content-settings" class="nav-tab <?php echo $active_tab === 'content_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Content Settings', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=monetization_settings' ); ?>" id="coil-content-settings" class="nav-tab <?php echo $active_tab === 'monetization_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Monetization Settings', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=excerpt_settings' ); ?>" id="coil-excerpt-settings" class="nav-tab <?php echo $active_tab === 'excerpt_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Excerpt Settings', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=messaging_settings' ); ?>" id="coil-messaging-settings" class="nav-tab <?php echo $active_tab === 'messaging_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Messaging Settings', 'coil-web-monetization' ); ?></a>
 		</h2>
@@ -740,8 +754,8 @@ function render_coil_settings_screen() : void {
 					do_settings_sections( 'coil_global_settings_advanced' );
 					submit_button();
 					break;
-				case 'content_settings':
-					settings_fields( 'coil_content_settings_posts_group' );
+				case 'monetization_settings':
+					settings_fields( 'coil_monetization_settings_group' );
 					do_settings_sections( 'coil_content_settings_posts' );
 					submit_button();
 					break;

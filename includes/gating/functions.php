@@ -343,7 +343,7 @@ function get_content_gating( $post_id ) : string {
  */
 function get_global_posts_gating() : array {
 
-	$global_settings = get_option( 'coil_content_settings_posts_group' );
+	$global_settings = get_option( 'coil_monetization_settings_group' );
 	if ( ! empty( $global_settings ) ) {
 		return $global_settings;
 	}
