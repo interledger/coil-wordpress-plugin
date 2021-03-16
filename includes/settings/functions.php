@@ -257,7 +257,7 @@ function coil_global_settings_payment_pointer_render_callback() {
 		esc_attr( 'coil_payment_pointer_id' ),
 		esc_attr( Admin\get_global_settings( 'coil_payment_pointer_id' ) ),
 		esc_attr( '$wallet.example.com/alice' ),
-		esc_attr( 'min-width: 440px' )
+		esc_attr( '' )
 	);
 
 	echo '<p class="' . esc_attr( 'description' ) . '">';
