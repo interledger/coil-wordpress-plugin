@@ -663,13 +663,15 @@ function coil_padlock_settings_render_callback() {
 	 * any settings stored in the database. If the
 	 * input status is not set, default to checked
 	 */
-	$checked_input = (bool) get_visual_settings( 'padlock' );
+
+	$checked_input = get_visual_settings( 'coil_padlock_setting_id' ) ? 'checked' : null;
 
 	printf(
-		'<input type="%s" name="%s" id="%s" checked="%s"/>',
+		'<input type="%s" name="%s" id="%s" value="%s" checked="%s"/>',
 		esc_attr( 'checkbox' ),
-		esc_attr( 'coil_visual_settings_group[padlock]' ),
+		esc_attr( 'coil_visual_settings_group[coil_padlock_setting_id]' ),
 		esc_attr( 'display_padlock_id' ),
+		get_visual_settings( 'coil_padlock_setting_id' ),
 		$checked_input
 	);
 
@@ -689,13 +691,14 @@ function coil_donation_bar_settings_render_callback() {
 	 * any settings stored in the database. If the
 	 * input status is not set, default to checked
 	 */
-	$checked_input = (bool) get_visual_settings( 'donation_bar' );
+	$checked_input = get_visual_settings( 'coil_donation_bar_setting_id' ) ? 'checked' : null;
 
 	printf(
-		'<input type="%s" name="%s" id="%s" checked="%s">',
+		'<input type="%s" name="%s" id="%s" value="%s" checked="%s">',
 		esc_attr( 'checkbox' ),
-		esc_attr( 'coil_visual_settings_group[donation_bar]' ),
+		esc_attr( 'coil_visual_settings_group[coil_donation_bar_setting_id]' ),
 		esc_attr( 'display_donation_bar_id' ),
+		get_visual_settings( 'coil_donation_bar_setting_id' ),
 		$checked_input
 	);
 
@@ -713,15 +716,18 @@ function coil_donation_bar_settings_render_callback() {
  * @param string $field_id The named key in the wp_options serialized array.
  * @return string
  */
-function get_visual_settings( $field_id ) {
-
-	$options = get_option( 'coil_visual_settings_group', [] );
+function get_visual_settings( $field_id ) : bool {
 
 	/**
 	 * Default is checked
 	 */
+	$options = get_option( 'coil_visual_settings_group', [] );
 
-	return ( ! empty( $options[ $field_id ] ) ) ? checked( 1, $options[ $field_id ] ) : true;
+	if ( ! array_key_exists( $field_id, $options ) || ! isset( $options[ $field_id ] ) ) {
+		$options[ $field_id ] = true;
+		return true;
+	}
+	return checked( 1, $options[ $field_id ], false ) !== '' ? true : false;
 }
 
 
