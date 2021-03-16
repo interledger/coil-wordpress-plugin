@@ -152,57 +152,44 @@ function register_admin_content_settings() {
 		__NAMESPACE__ . '\coil_messaging_settings_validation'
 	);
 
-	// === Content message customization
-	add_settings_section(
-		'coil_message_customization_section',
-		__( 'Messages', 'coil-web-monetization' ),
-		false,
-		'coil_messaging_settings'
-	);
-
 	// === Fully gated content message
-	add_settings_field(
+	add_settings_section(
 		'coil_fully_gated_content_id',
 		__( 'Fully gated content message', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_fully_gated_content_render_callback',
-		'coil_messaging_settings',
-		'coil_message_customization_section'
+		'coil_messaging_settings'
 	);
 
 	// === Partially gated content message
-	add_settings_field(
+	add_settings_section(
 		'coil_partially_gated_content_id',
 		__( 'Partial content gating message', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_partially_gated_content_render_callback',
-		'coil_messaging_settings',
-		'coil_message_customization_section'
+		'coil_messaging_settings'
 	);
 
 	// === Monetization status pending message
-	add_settings_field(
+	add_settings_section(
 		'coil_pending_message_id',
 		__( 'Pending message', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_pending_message_render_callback',
-		'coil_messaging_settings',
-		'coil_message_customization_section'
+		'coil_messaging_settings'
 	);
 
 	// === Invalid monetization message
-	add_settings_field(
+	add_settings_section(
 		'coil_unable_to_verify_message_id',
 		__( 'Invalid Web Monetization message', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_unable_to_verify_message_render_callback',
-		'coil_messaging_settings',
-		'coil_message_customization_section'
+		'coil_messaging_settings'
 	);
 
 	// === Voluntry donation message
-	add_settings_field(
+	add_settings_section(
 		'coil_voluntary_donation_message_id',
 		__( 'Voluntary donation message', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_voluntary_donation_message_render_callback',
-		'coil_messaging_settings',
-		'coil_message_customization_section'
+		'coil_messaging_settings'
 	);
 }
 
