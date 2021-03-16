@@ -59,9 +59,6 @@ function init_plugin() : void {
 	add_action( 'delete_term', __NAMESPACE__ . '\Admin\delete_term_monetization_meta' );
 	add_term_edit_save_form_meta_actions();
 
-	// Customizer settings.
-	add_action( 'customize_register', __NAMESPACE__ . '\Admin\add_customizer_learn_more_button_settings_panel' );
-
 	// User profile settings.
 	add_action( 'personal_options', __NAMESPACE__ . '\User\add_user_profile_payment_pointer_option' );
 	add_action( 'personal_options_update', __NAMESPACE__ . '\User\maybe_save_user_profile_payment_pointer_option' );

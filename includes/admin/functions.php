@@ -11,13 +11,6 @@ use Coil\Gating;
 use const Coil\PLUGIN_VERSION;
 
 /**
- * Coil Customizer panel ID.
- *
- * @var string
- */
-const CUSTOMIZER_PANEL_ID = 'coil_customizer_settings_panel';
-
-/**
  * Customise the environment where we want to show the Coil metabox.
  *
  * @return void
@@ -383,4 +376,23 @@ function get_messaging_settings( $field_id, $default = false ) {
 	}
 
 	return ( ! empty( $options[ $field_id ] ) ) ? $options[ $field_id ] : '';
+}
+
+/**
+ * Retrieve the visual settings using a key from the monetization
+ * settings group (serialized).
+ *
+ * @param string $field_id The named key in the wp_options serialized array.
+ * @return string
+ */
+function get_visual_settings( $field_id ) {
+
+	/**
+	 * Default is not checked
+	 */
+	$options = get_option( 'coil_monetization_settings_group', [] );
+	if ( ! isset( $options[ $field_id ] ) ) {
+		$options[ $field_id ] = false;
+	}
+	return checked( 1, $options[ $field_id ], false );
 }

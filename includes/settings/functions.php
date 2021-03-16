@@ -666,15 +666,13 @@ function coil_messaging_settings_learn_more_button_render_callback() {
 
 function coil_padlock_settings_render_callback() {
 
-	$options = get_option( 'coil_monetization_settings_group', [] );
-
 	/**
 	 * Specify the default checked state on the input form
 	 * any settings stored in the database. If the
 	 * input status is not set, default to checked
 	 */
 
-	$checked_input = get_visual_settings( 'coil_padlock_setting_id' );
+	$checked_input = Admin\get_visual_settings( 'coil_padlock_setting_id' );
 
 	printf(
 		'<input type="%s" name="%s" id="%s" "%s"/>',
@@ -693,14 +691,12 @@ function coil_padlock_settings_render_callback() {
 
 function coil_donation_bar_settings_render_callback() {
 
-	$options = get_option( 'coil_monetization_settings_group', [] );
-
 	/**
 	 * Specify the default checked state on the input from
 	 * any settings stored in the database. If the
 	 * input status is not set, default to checked
 	 */
-	$checked_input = get_visual_settings( 'coil_donation_bar_setting_id' );
+	$checked_input = Admin\get_visual_settings( 'coil_donation_bar_setting_id' );
 
 	printf(
 		'<input type="%s" name="%s" id="%s" "%s">',
@@ -715,25 +711,6 @@ function coil_donation_bar_settings_render_callback() {
 		esc_attr( 'display_donation_bar_id' ),
 		esc_html_e( 'Show a donation bar on posts that are monetized and public.', 'coil-web-monetization' )
 	);
-}
-
-/**
- * Retrieve the visual settings using a key from the visual
- * settings group (serialized).
- *
- * @param string $field_id The named key in the wp_options serialized array.
- * @return string
- */
-function get_visual_settings( $field_id ) {
-
-	/**
-	 * Default is checked
-	 */
-	$options = get_option( 'coil_monetization_settings_group', [] );
-	if ( ! isset( $options[ $field_id ] ) ) {
-		$options[ $field_id ] = false;
-	}
-	return checked( 1, $options[ $field_id ], false );
 }
 
 
