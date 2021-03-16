@@ -106,6 +106,31 @@ function register_admin_content_settings() {
 		'coil_content_settings_posts'
 	);
 
+	add_settings_section(
+		'coil_visual_settings_section',
+		false,
+		false,
+		'coil_visual_settings'
+	);
+
+	// ==== Padlock Settings.
+	add_settings_field(
+		'coil_padlock_setting_id',
+		__( 'Padlock Settings', 'coil-web-monetization' ),
+		__NAMESPACE__ . '\coil_padlock_settings_render_callback',
+		'coil_visual_settings',
+		'coil_visual_settings_section'
+	);
+
+	// ==== Donation bar Settings.
+	add_settings_field(
+		'coil_donation_bar_setting_id',
+		__( 'Donation Bar Settings', 'coil-web-monetization' ),
+		__NAMESPACE__ . '\coil_donation_bar_settings_render_callback',
+		'coil_visual_settings',
+		'coil_visual_settings_section'
+	);
+
 	// Tab 4 - Excerpt settings.
 	register_setting(
 		'coil_content_settings_excerpt_group',
@@ -179,38 +204,6 @@ function register_admin_content_settings() {
 		'coil_messaging_settings',
 		'coil_message_customization_section'
 	);
-
-	// Tab 6 - Visual Settings.
-	register_setting(
-		'coil_visual_settings_group',
-		'coil_visual_settings_group',
-		__NAMESPACE__ . '\coil_visual_settings_validation'
-	);
-
-	add_settings_section(
-		'coil_visual_settings_section',
-		false,
-		false,
-		'coil_visual_settings'
-	);
-
-	// ==== Padlock Settings.
-	add_settings_field(
-		'coil_padlock_setting_id',
-		__( 'Padlock Settings', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_padlock_settings_render_callback',
-		'coil_visual_settings',
-		'coil_visual_settings_section'
-	);
-
-	// ==== Donation bar Settings.
-	add_settings_field(
-		'coil_donation_bar_setting_id',
-		__( 'Donation Bar Settings', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_donation_bar_settings_render_callback',
-		'coil_visual_settings',
-		'coil_visual_settings_section'
-	);
 }
 
 /* ------------------------------------------------------------------------ *
@@ -256,7 +249,11 @@ function coil_monetization_settings_validation( $monetization_settings ) : array
 	return array_map(
 		function( $radio_value ) {
 			$valid_choices = array_keys( Gating\get_monetization_setting_types() );
-			return ( in_array( $radio_value, $valid_choices, true ) ? sanitize_key( $radio_value ) : 'no' );
+			if ( in_array( $radio_value, $valid_choices, true ) ) {
+				return sanitize_key( $radio_value );
+			} else {
+				return ( isset( $radio_value ) ) ? true : false;
+			}
 		},
 		(array) $monetization_settings
 	);
@@ -656,7 +653,7 @@ function coil_messaging_settings_voluntary_donation_message_render_callback() {
 
 function coil_padlock_settings_render_callback() {
 
-	$options = get_option( 'coil_visual_settings_group', [] );
+	$options = get_option( 'coil_monetization_settings_group', [] );
 
 	/**
 	 * Specify the default checked state on the input form
@@ -667,11 +664,10 @@ function coil_padlock_settings_render_callback() {
 	$checked_input = get_visual_settings( 'coil_padlock_setting_id' );
 
 	printf(
-		'<input type="%s" name="%s" id="%s" value="%s" "%s"/>',
+		'<input type="%s" name="%s" id="%s" "%s"/>',
 		esc_attr( 'checkbox' ),
-		esc_attr( 'coil_visual_settings_group[coil_padlock_setting_id]' ),
+		esc_attr( 'coil_monetization_settings_group[coil_padlock_setting_id]' ),
 		esc_attr( 'display_padlock_id' ),
-		$checked_input,
 		$checked_input
 	);
 
@@ -684,7 +680,7 @@ function coil_padlock_settings_render_callback() {
 
 function coil_donation_bar_settings_render_callback() {
 
-	$options = get_option( 'coil_visual_settings_group', [] );
+	$options = get_option( 'coil_monetization_settings_group', [] );
 
 	/**
 	 * Specify the default checked state on the input from
@@ -694,11 +690,10 @@ function coil_donation_bar_settings_render_callback() {
 	$checked_input = get_visual_settings( 'coil_donation_bar_setting_id' );
 
 	printf(
-		'<input type="%s" name="%s" id="%s" value="%s" "%s">',
+		'<input type="%s" name="%s" id="%s" "%s">',
 		esc_attr( 'checkbox' ),
-		esc_attr( 'coil_visual_settings_group[coil_donation_bar_setting_id]' ),
+		esc_attr( 'coil_monetization_settings_group[coil_donation_bar_setting_id]' ),
 		esc_attr( 'display_donation_bar_id' ),
-		$checked_input,
 		$checked_input
 	);
 
@@ -721,7 +716,7 @@ function get_visual_settings( $field_id ) {
 	/**
 	 * Default is checked
 	 */
-	$options = get_option( 'coil_visual_settings_group', [] );
+	$options = get_option( 'coil_monetization_settings_group', [] );
 	if ( ! isset( $options[ $field_id ] ) ) {
 		$options[ $field_id ] = false;
 	}
@@ -850,7 +845,6 @@ function render_coil_settings_screen() : void {
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=monetization_settings' ); ?>" id="coil-monetization-settings" class="nav-tab <?php echo $active_tab === 'monetization_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Monetization Settings', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=excerpt_settings' ); ?>" id="coil-excerpt-settings" class="nav-tab <?php echo $active_tab === 'excerpt_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Excerpt Settings', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=messaging_settings' ); ?>" id="coil-messaging-settings" class="nav-tab <?php echo $active_tab === 'messaging_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Messaging Settings', 'coil-web-monetization' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=visual_settings' ); ?>" id="coil-visual-settings" class="nav-tab <?php echo $active_tab === 'visual_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Visual Settings', 'coil-web-monetization' ); ?></a>
 		</h2>
 
 		<form action="options.php" method="post">
@@ -868,6 +862,8 @@ function render_coil_settings_screen() : void {
 				case 'monetization_settings':
 					settings_fields( 'coil_monetization_settings_group' );
 					do_settings_sections( 'coil_content_settings_posts' );
+					settings_fields( 'coil_monetization_settings_group' );
+					do_settings_sections( 'coil_visual_settings' );
 					submit_button();
 					break;
 				case 'excerpt_settings':
@@ -880,10 +876,6 @@ function render_coil_settings_screen() : void {
 					do_settings_sections( 'coil_messaging_settings' );
 					submit_button();
 					break;
-				case 'visual_settings':
-					settings_fields( 'coil_visual_settings_group' );
-					do_settings_sections( 'coil_visual_settings' );
-					submit_button();
 			}
 			?>
 		</form>
