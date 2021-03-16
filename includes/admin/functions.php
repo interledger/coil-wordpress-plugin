@@ -360,7 +360,6 @@ function add_customizer_learn_more_button_settings_panel( $wp_customize ) : void
 		]
 	);
 
-	// Post title padlock.
 	$button_text_setting_id = 'coil_learn_more_button_text';
 
 	$wp_customize->add_setting(
@@ -383,7 +382,6 @@ function add_customizer_learn_more_button_settings_panel( $wp_customize ) : void
 		]
 	);
 
-	// Show donation bar.
 	$button_link_setting_id = 'coil_learn_more_button_link';
 
 	$wp_customize->add_setting(
