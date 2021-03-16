@@ -191,6 +191,14 @@ function register_admin_content_settings() {
 		__NAMESPACE__ . '\coil_messaging_settings_voluntary_donation_message_render_callback',
 		'coil_messaging_settings'
 	);
+
+	// === Learn more button
+	add_settings_section(
+		'coil_learn_more_button_text_id',
+		__( 'Learn more button', 'coil-web-monetization' ),
+		__NAMESPACE__ . '\coil_messaging_settings_learn_more_button_render_callback',
+		'coil_messaging_settings'
+	);
 }
 
 /* ------------------------------------------------------------------------ *
@@ -634,6 +642,24 @@ function coil_messaging_settings_voluntary_donation_message_render_callback() {
 	?>
 
 	<p><?php esc_html_e( 'This message is shown when content is set to Monetized and Public and the visitor isn\'t web monetized.', 'coil-web-monetization' ); ?></p>
+
+	<?php
+}
+
+function coil_messaging_settings_learn_more_button_render_callback() {
+	printf(
+		'<textarea class="%s" name="%s" id="%s" placeholder="%s" style="%s">%s</textarea>',
+		esc_attr( 'wide-input' ),
+		esc_attr( 'coil_messaging_settings_group[coil_learn_more_button_text_id]' ),
+		esc_attr( 'coil_learn_more_button_text_id' ),
+		esc_attr( Admin\get_messaging_settings( 'coil_learn_more_button_text_id', true ) ),
+		esc_attr( 'min-width: 440px' ),
+		esc_attr( Admin\get_messaging_settings( 'coil_learn_more_button_text_id' ) )
+	);
+
+	?>
+
+	<p><?php esc_html_e( 'Text used for the "Learn more" button, which is shown to non-members on Coil Members Only and "Monetized and Public" content.', 'coil-web-monetization' ); ?></p>
 
 	<?php
 }

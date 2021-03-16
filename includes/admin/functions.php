@@ -301,111 +301,6 @@ function load_admin_assets() : void {
 }
 
 /**
- * Get a text field saved in the customizer. If no text is set for the field,
- * a default value is returned.
- *
- * @param string $field_id The id of the control_setting text field defined in the customizer.
- * @param bool $get_default If true, will output the default value instead of getting the customizer setting.
- * @return string
- */
-function get_customizer_text_field( $field_id, $get_default = false ) : string {
-
-	// Set up defaults.
-	$defaults = [
-		'coil_learn_more_button_text' => __( 'Get Coil to access', 'coil-web-monetization' ),
-		'coil_learn_more_button_link' => 'https://coil.com/',
-	];
-
-	// Get the field from the customizer.
-	$customizer_setting = get_theme_mod( $field_id );
-
-	/**
-	 * If an empty string is saved in the customizer,
-	 * get_theme_mod returns an empty string instead of the default
-	 * setting which is defined as an optional second parameter.
-	 * This is recognized as a bug (wontfix) in WordPress Core.
-	 *
-	 * @see https://core.trac.wordpress.org/ticket/28637
-	 */
-	if ( true === $get_default || empty( $customizer_setting ) || false === $customizer_setting ) {
-		$customizer_setting = isset( $defaults[ $field_id ] ) ? $defaults[ $field_id ] : '';
-	}
-
-	return $customizer_setting;
-}
-
-/**
- * Add "Learn More" button settings panel to the Customizer.
- *
- * @param \WP_Customize_Manager $wp_customize WordPress Customizer object.
- */
-function add_customizer_learn_more_button_settings_panel( $wp_customize ) : void {
-
-	$wp_customize->add_panel(
-		CUSTOMIZER_PANEL_ID,
-		[
-			'title'      => __( 'Coil Web Monetization', 'coil-web-monetization' ),
-			'capability' => apply_filters( 'coil_settings_capability', 'manage_options' ),
-		]
-	);
-
-	// Options section.
-	$button_settings_section_id = 'coil_customizer_section_button_settings';
-
-	$wp_customize->add_section(
-		$button_settings_section_id,
-		[
-			'title' => __( 'Learn more button', 'coil-web-monetization' ),
-			'panel' => CUSTOMIZER_PANEL_ID,
-		]
-	);
-
-	$button_text_setting_id = 'coil_learn_more_button_text';
-
-	$wp_customize->add_setting(
-		$button_text_setting_id,
-		[
-			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
-			'sanitize_callback' => 'Coil\filter_customiser_settings',
-		]
-	);
-
-	$wp_customize->add_control(
-		$button_text_setting_id,
-		[
-			'label'       => __( 'Text used for the "Learn more" button, which is shown to non-members on Coil Members Only and "Monetized and Public" content.', 'coil-web-monetization' ),
-			'section'     => $button_settings_section_id,
-			'type'        => 'text',
-			'input_attrs' => [
-				'placeholder' => get_customizer_text_field( $button_text_setting_id, true ),
-			],
-		]
-	);
-
-	$button_link_setting_id = 'coil_learn_more_button_link';
-
-	$wp_customize->add_setting(
-		$button_link_setting_id,
-		[
-			'capability'        => apply_filters( 'coil_settings_capability', 'manage_options' ),
-			'sanitize_callback' => 'esc_url_raw',
-		]
-	);
-
-	$wp_customize->add_control(
-		$button_link_setting_id,
-		[
-			'label'       => __( 'Link/URL used for the "Learn more" button, which is shown to non-members on Coil Members Only and "Monetized and Public" content.', 'coil-web-monetization' ),
-			'section'     => $button_settings_section_id,
-			'type'        => 'url',
-			'input_attrs' => [
-				'placeholder' => get_customizer_text_field( $button_link_setting_id, true ),
-			],
-		]
-	);
-}
-
-/**
  * Gets the taxonomies and allows the output to be filtered.
  *
  * @return array Taxonomies or empty array
@@ -476,7 +371,8 @@ function get_messaging_settings( $field_id, $default = false ) {
 		'coil_partially_gated_content_id'    => __( 'This content is for Coil Members only. To access, join Coil and install the browser extension.', 'coil-web-monetization' ),
 		'coil_pending_message_id'            => __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' ),
 		'coil_unable_to_verify_message_id'   => __( 'You need a valid Coil account to see this content.', 'coil-web-monetization' ),
-		'coil_voluntary_donation_message_id' => __( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', 'coil-web-monetization' )
+		'coil_voluntary_donation_message_id' => __( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', 'coil-web-monetization' ),
+		'coil_learn_more_button_text_id'     => __( 'Get Coil to access', 'coil-web-monetization' ),
 	];
 
 	$options = get_option( 'coil_messaging_settings_group', [] );

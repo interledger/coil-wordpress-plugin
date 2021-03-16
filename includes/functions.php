@@ -179,6 +179,8 @@ function load_full_assets() : void {
 		true
 	);
 
+	$learn_more_button_link = 'https://coil.com/';
+
 	$site_logo = false;
 	if ( function_exists( 'get_custom_logo' ) ) {
 		$site_logo = get_custom_logo();
@@ -193,8 +195,8 @@ function load_full_assets() : void {
 			'loading_content'         => empty( Admin\get_messaging_settings( 'coil_pending_message_id' ) ) ? Admin\get_messaging_settings( 'coil_pending_message_id', true ) : Admin\get_messaging_settings( 'coil_pending_message_id' ),
 			'fully_gated'             => empty( Admin\get_messaging_settings( 'coil_fully_gated_content_id' ) ) ? Admin\get_messaging_settings( 'coil_fully_gated_content_id', true ) : Admin\get_messaging_settings( 'coil_fully_gated_content_id' ),
 			'partial_gating'          => empty( Admin\get_messaging_settings( 'coil_partially_gated_content_id' ) ) ? Admin\get_messaging_settings( 'coil_partially_gated_content_id', true ) : Admin\get_messaging_settings( 'coil_partially_gated_content_id' ),
-			'learn_more_button_text'  => Admin\get_customizer_text_field( 'coil_learn_more_button_text' ),
-			'learn_more_button_link'  => Admin\get_customizer_text_field( 'coil_learn_more_button_link' ),
+			'learn_more_button_text'  => empty( Admin\get_messaging_settings( 'coil_learn_more_button_text_id' ) ) ? Admin\get_messaging_settings( 'coil_learn_more_button_text_id', true ) : Admin\get_messaging_settings( 'coil_learn_more_button_text_id' ),
+			'learn_more_button_link'  => $learn_more_button_link,
 			'show_donation_bar'       => Settings\get_visual_settings( 'coil_donation_bar_setting_id' ),
 			'post_excerpt'            => get_the_excerpt(),
 			'site_logo'               => $site_logo,
