@@ -155,7 +155,7 @@ function register_admin_content_settings() {
 	// === Fully gated content message
 	add_settings_section(
 		'coil_fully_gated_content_id',
-		__( 'Fully gated content message', 'coil-web-monetization' ),
+		__( 'Message for hidden "Coil Members Only" content', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_fully_gated_content_render_callback',
 		'coil_messaging_settings'
 	);
@@ -163,7 +163,7 @@ function register_admin_content_settings() {
 	// === Partially gated content message
 	add_settings_section(
 		'coil_partially_gated_content_id',
-		__( 'Partial content gating message', 'coil-web-monetization' ),
+		__( 'Message for hidden "Split Content" sections', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_partially_gated_content_render_callback',
 		'coil_messaging_settings'
 	);
@@ -187,7 +187,7 @@ function register_admin_content_settings() {
 	// === Voluntry donation message
 	add_settings_section(
 		'coil_voluntary_donation_message_id',
-		__( 'Voluntary donation message', 'coil-web-monetization' ),
+		__( 'Support creator message', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_voluntary_donation_message_render_callback',
 		'coil_messaging_settings'
 	);
@@ -424,7 +424,7 @@ function coil_content_settings_posts_render_callback() {
 		$content_settings_posts_options = Gating\get_global_posts_gating();
 
 		?>
-		<p><?php esc_html_e( 'Use the settings below to control the defaults for how your content is monetized and gated across your whole site. You can override the defaults by configuring monetization against your categories and taxonomies. You can also override the defaults against individual pages and posts.', 'coil-web-monetization' ); ?>
+		<p><?php esc_html_e( 'Use the settings below to control the defaults for how your content is monetized and gated across your whole site. You can override the defaults by configuring monetization against your categories and taxonomies. You can also override the defaults against individual pages and posts or even specific blocks inside of them.', 'coil-web-monetization' ); ?>
 		</p>
 		<table class="widefat">
 			<thead>
@@ -547,7 +547,7 @@ function coil_messaging_settings_fully_gated_content_render_callback() {
 	);
 	?>
 
-	<p><?php esc_html_e( 'This message is shown when content is set to be Coil Members Only, and the visitor is using an unsupported browser, has the extension installed incorrectly, is logged out of their Coil account, or doesn\'t have a Coil Membership.', 'coil-web-monetization' ); ?></p>
+	<p><?php esc_html_e( 'This message is shown when a post / page is set to be "Coil Members Only", and the visitor doesn\'t have a Coil Membership, is logged out of their Coil account, is using an unsupported browser, or has the extension installed incorrectly.', 'coil-web-monetization' ); ?></p>
 
 	<?php
 }
@@ -570,7 +570,7 @@ function coil_messaging_settings_partially_gated_content_render_callback() {
 
 	?>
 
-	<p><?php esc_html_e( 'This message is shown in footer bar on pages where only some of the content blocks are set as Coil Members Only.', 'coil-web-monetization' ); ?></p>
+	<p><?php esc_html_e( 'This message is shown when a block on a "Split Content" post / page is set to only show for monetized users, and the visitor doesn\'t have a Coil Membership, is logged out of their Coil account, is using an unsupported browser, or has the extension installed incorrectly.', 'coil-web-monetization' ); ?></p>
 
 	<?php
 }
@@ -618,7 +618,7 @@ function coil_messaging_settings_unable_to_verify_message_render_callback() {
 
 	?>
 
-	<p><?php esc_html_e( 'This message is shown when content is set to Coil Members Only and browser setup is correct, but Web Monetization doesn\'t start. This message could appear for several reasons, including not having an active Coil account.', 'coil-web-monetization' ); ?></p>
+	<p><?php esc_html_e( 'This message is shown when content is set to "Coil Members Only" and browser setup is correct, but Web Monetization doesn\'t start. This message could appear for several reasons, including not having an active Coil account.', 'coil-web-monetization' ); ?></p>
 
 	<?php
 }
@@ -641,7 +641,7 @@ function coil_messaging_settings_voluntary_donation_message_render_callback() {
 
 	?>
 
-	<p><?php esc_html_e( 'This message is shown when content is set to Monetized and Public and the visitor isn\'t web monetized.', 'coil-web-monetization' ); ?></p>
+	<p><?php esc_html_e( 'This message is shown in a footer bar when content is set to "Monetized and Public" or "Split Content" and the visitor isn\'t web monetized.', 'coil-web-monetization' ); ?></p>
 
 	<?php
 }
@@ -659,7 +659,7 @@ function coil_messaging_settings_learn_more_button_render_callback() {
 
 	?>
 
-	<p><?php esc_html_e( 'Text used for the "Learn more" button, which is shown to non-members on Coil Members Only and "Monetized and Public" content.', 'coil-web-monetization' ); ?></p>
+	<p><?php esc_html_e( 'Text used for the "Learn more" button, which is shown to non-members on "Coil Members Only" and "Monetized and Public" content.', 'coil-web-monetization' ); ?></p>
 
 	<?php
 }
@@ -685,7 +685,7 @@ function coil_padlock_settings_render_callback() {
 	printf(
 		'<label for="%s">%s</label>',
 		esc_attr( 'display_padlock_id' ),
-		esc_html_e( 'Show padlock next to post title if the post is monetized and gated.', 'coil-web-monetization' )
+		esc_html_e( 'Show padlock next to post title if the post is for paying viewers only.', 'coil-web-monetization' )
 	);
 }
 
