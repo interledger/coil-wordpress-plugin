@@ -360,8 +360,8 @@ function get_messaging_settings( $field_id, $default = false ) {
 
 	// Set up defaults.
 	$defaults = [
-		'coil_fully_gated_content_id'        => __( 'Check that you\'re using a supported browser, have the Coil extension installed, and are logged in to your Coil account. Need a Coil account?', 'coil-web-monetization' ),
-		'coil_partially_gated_content_id'    => __( 'This content is for Coil Members only. To access, join Coil and install the browser extension.', 'coil-web-monetization' ),
+		'coil_fully_gated_content_id'        => __( 'Unlock exclusive content with Coil. Need a Coil account?', 'coil-web-monetization' ),
+		'coil_partially_gated_content_id'    => __( 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.', 'coil-web-monetization' ),
 		'coil_pending_message_id'            => __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' ),
 		'coil_unable_to_verify_message_id'   => __( 'You need a valid Coil account to see this content.', 'coil-web-monetization' ),
 		'coil_voluntary_donation_message_id' => __( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', 'coil-web-monetization' ),
