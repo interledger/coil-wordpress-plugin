@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace Coil\Gating;
 
 use Coil\Admin;
-use Coil\Settings;
 
 /**
  * Register post/user meta.
@@ -57,6 +56,8 @@ function register_term_meta() {
  * @return array
  */
 function get_monetization_setting_types( $show_default = false ) : array {
+
+	$settings = [];
 
 	if ( true === $show_default ) {
 		$settings['default'] = esc_html__( 'Use Default', 'coil-web-monetization' );

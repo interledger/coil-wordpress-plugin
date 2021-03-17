@@ -8,7 +8,6 @@ namespace Coil;
 
 use \Coil\Admin;
 use \Coil\Gating;
-use \Coil\Settings;
 use \Coil\User;
 
 /**

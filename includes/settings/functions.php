@@ -233,25 +233,25 @@ function coil_global_settings_group_validation( $global_settings ) : array {
 }
 
 /**
- * Allow the radio button options in the posts content section to
- * be properly validated
+ * Allow the radio button options in the posts content section
+ * and the padlock and donation bar display checkboxes
+ * to be properly validated
  *
- * @param array $monetization_settings The posted radio options from the content settings section.
+ * @param array $monetization_settings The posted radio options from the content settings section and the padlock
+ * and donation bar display checkboxes
  * @return array
  */
 function coil_monetization_settings_validation( $monetization_settings ) : array {
 
-	return array_map(
-		function( $radio_value ) {
+	foreach ( $monetization_settings as $key => $value ) {
+		if ( $key === 'coil_padlock_setting_id' || $key === 'coil_donation_bar_setting_id' ) {
+			$monetization_settings[ $key ] = ( isset( $value ) ) ? true : false;
+		} else {
 			$valid_choices = array_keys( Gating\get_monetization_setting_types() );
-			if ( in_array( $radio_value, $valid_choices, true ) ) {
-				return sanitize_key( $radio_value );
-			} else {
-				return ( isset( $radio_value ) ) ? true : false;
-			}
-		},
-		(array) $monetization_settings
-	);
+			$value         = in_array( $_value, $valid_choices, true ) ? sanitize_key( $radio_value ) : 'no';
+		}
+	}
+	return $monetization_settings;
 }
 
 /**
