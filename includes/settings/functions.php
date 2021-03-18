@@ -157,7 +157,7 @@ function register_admin_content_settings() {
 	add_settings_section(
 		'coil_fully_gated_content_id',
 		__( 'Message for hidden "Coil Members Only" content', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_messaging_settings_fully_gated_content_render_callback',
+		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
 
@@ -165,7 +165,7 @@ function register_admin_content_settings() {
 	add_settings_section(
 		'coil_partially_gated_content_id',
 		__( 'Message for hidden "Split Content" sections', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_messaging_settings_partially_gated_content_render_callback',
+		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
 
@@ -173,7 +173,7 @@ function register_admin_content_settings() {
 	add_settings_section(
 		'coil_pending_message_id',
 		__( 'Pending message', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_messaging_settings_pending_message_render_callback',
+		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
 
@@ -181,7 +181,7 @@ function register_admin_content_settings() {
 	add_settings_section(
 		'coil_unable_to_verify_message_id',
 		__( 'Invalid Web Monetization message', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_messaging_settings_unable_to_verify_message_render_callback',
+		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
 
@@ -189,7 +189,7 @@ function register_admin_content_settings() {
 	add_settings_section(
 		'coil_voluntary_donation_message_id',
 		__( 'Support creator message', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_messaging_settings_voluntary_donation_message_render_callback',
+		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
 
@@ -197,7 +197,7 @@ function register_admin_content_settings() {
 	add_settings_section(
 		'coil_learn_more_button_text_id',
 		__( 'Learn more button', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_messaging_settings_learn_more_button_render_callback',
+		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
 }
@@ -549,81 +549,33 @@ function coil_messaging_textbox_render_callback( $content_id ) {
 }
 
 /**
- * Renders the output of the fully gated content messaging customization.
+ * Renders the output of the content messaging customization.
  *
  * @return void
  */
-function coil_messaging_settings_fully_gated_content_render_callback() {
+function coil_messaging_settings_render_callback($args) {
+	coil_messaging_textbox_render_callback( $args['id'] );
 
-	coil_messaging_textbox_render_callback( 'coil_fully_gated_content_id' );
-	?>
-	<p><?php esc_html_e( 'This message is shown when a post / page is set to be "Coil Members Only", and the visitor doesn\'t have a Coil Membership, is logged out of their Coil account, is using an unsupported browser, or has the extension installed incorrectly.', 'coil-web-monetization' ); ?></p>
-	<?php
-}
+	switch( $args['id'] ) {
+		case 'coil_fully_gated_content_id' :
+			$helper_text = __( 'This message is shown when a post / page is set to be "Coil Members Only", and the visitor doesn\'t have a Coil Membership, is logged out of their Coil account, is using an unsupported browser, or has the extension installed incorrectly.', 'coil-web-monetization' );
+		case 'coil_partially_gated_content_id' :
+			$helper_text = __( 'This message is shown when a block on a "Split Content" post / page is set to only show for monetized users, and the visitor doesn\'t have a Coil Membership, is logged out of their Coil account, is using an unsupported browser, or has the extension installed incorrectly.', 'coil-web-monetization' );
+		case 'coil_pending_message_id' :
+			$helper_text = __( 'This message is shown for a short time while the plugin checks that the visitor\'s browser is setup correctly and that an active Web Monetization account is in place.', 'coil-web-monetization' );
+		case 'coil_unable_to_verify_message_id' :
+			$helper_text = __( 'This message is shown when content is set to "Coil Members Only" and browser setup is correct, but Web Monetization doesn\'t start. This message could appear for several reasons, including not having an active Coil account.', 'coil-web-monetization' );
+		case 'coil_voluntary_donation_message_id' :
+			$helper_text = __( 'This message is shown in a footer bar when content is set to "Monetized and Public" or "Split Content" and the visitor isn\'t web monetized.', 'coil-web-monetization' );
+		case 'coil_learn_more_button_text_id' :
+			$helper_text = __( 'Text used for the "Learn more" button, which is shown to non-members on "Coil Members Only" and "Monetized and Public" content.', 'coil-web-monetization' );
+		default :
+			$helper_text = '';
+	}
 
-/**
- * Renders the output of the partially gated content messaging customization.
- *
- * @return void
- */
-function coil_messaging_settings_partially_gated_content_render_callback() {
-
-	coil_messaging_textbox_render_callback( 'coil_partially_gated_content_id' );
-
-	?>
-	<p><?php esc_html_e( 'This message is shown when a block on a "Split Content" post / page is set to only show for monetized users, and the visitor doesn\'t have a Coil Membership, is logged out of their Coil account, is using an unsupported browser, or has the extension installed incorrectly.', 'coil-web-monetization' ); ?></p>
-	<?php
-}
-
-/**
- * Renders the output of the pending message customization.
- *
- * @return void
- */
-function coil_messaging_settings_pending_message_render_callback() {
-
-	coil_messaging_textbox_render_callback( 'coil_pending_message_id' );
-
-	?>
-	<p><?php esc_html_e( 'This message is shown for a short time while the plugin checks that the visitor\'s browser is setup correctly and that an active Web Monetization account is in place.', 'coil-web-monetization' ); ?></p>
-	<?php
-}
-
-/**
- * Renders the output of the invalid monetization message customization.
- *
- * @return void
- */
-function coil_messaging_settings_unable_to_verify_message_render_callback() {
-
-	coil_messaging_textbox_render_callback( 'coil_unable_to_verify_message_id' );
-
-	?>
-	<p><?php esc_html_e( 'This message is shown when content is set to "Coil Members Only" and browser setup is correct, but Web Monetization doesn\'t start. This message could appear for several reasons, including not having an active Coil account.', 'coil-web-monetization' ); ?></p>
-	<?php
-}
-
-/**
- * Renders the output of the voluntary donation message customization.
- *
- * @return void
- */
-function coil_messaging_settings_voluntary_donation_message_render_callback() {
-
-	coil_messaging_textbox_render_callback( 'coil_voluntary_donation_message_id' );
-
-	?>
-	<p><?php esc_html_e( 'This message is shown in a footer bar when content is set to "Monetized and Public" or "Split Content" and the visitor isn\'t web monetized.', 'coil-web-monetization' ); ?></p>
-	<?php
-}
-
-function coil_messaging_settings_learn_more_button_render_callback() {
-
-	coil_messaging_textbox_render_callback( 'coil_learn_more_button_text_id' );
-
-	?>
-	<p><?php esc_html_e( 'Text used for the "Learn more" button, which is shown to non-members on "Coil Members Only" and "Monetized and Public" content.', 'coil-web-monetization' ); ?></p>
-	<?php
+	if( '' !== $helper_text ) { ?>
+		<p><?php echo esc_html( $helper_text ); ?></p>
+	<?php }
 }
 
 function coil_padlock_settings_render_callback() {
