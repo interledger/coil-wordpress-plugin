@@ -227,7 +227,7 @@ function coil_getting_started_settings_render_callback() {
 				</g>
 			</svg>
 
-			<h3><?php esc_html_e( 'Help, links &amp; guides', 'coil-web-monetization' ); ?></h3>
+			<h3><?php esc_html_e( 'Useful links &amp; how to guides', 'coil-web-monetization' ); ?></h3>
 		</header>
 		<section>
 			<ul>
@@ -242,7 +242,7 @@ function coil_getting_started_settings_render_callback() {
 				printf(
 					'<li><a target="_blank" href="%1$s">%2$s</a></li>',
 					esc_url( 'https://help.coil.com/docs/monetize/content/wp-faq-troubleshooting' ),
-					esc_html__( 'FAQs &amp; Troubleshooting', 'coil-web-monetization' )
+					esc_html__( 'FAQs and Troubleshooting', 'coil-web-monetization' )
 				);
 				?>
 				<?php
