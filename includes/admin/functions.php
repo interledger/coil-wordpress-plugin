@@ -348,6 +348,25 @@ function get_global_settings( $setting_id ) {
 
 	return ( ! empty( $options[ $setting_id ] ) ) ? $options[ $setting_id ] : $default[ $setting_id ];
 }
+/**
+ * Retrieve the messaging settings using a key from the messaging
+ * or return a default value for the setting
+ *
+ * @param string $field_id The named key in the wp_options serialized array.
+ * @return string $setting_value The value of the setting after checking the default
+ */
+
+function get_messaging_setting_or_default( $setting_id ){
+
+	// Check if the setting exists, if not load the default
+	if ( empty( get_messaging_settings( $setting_id ) ) ) {
+		$setting_value = get_messaging_settings( $setting_id, true );
+	} else {
+		$setting_value = get_messaging_settings( $setting_id );
+	}
+
+	return $setting_value;
+}
 
 /**
  * Retrieve the messaging settings using a key from the messaging
