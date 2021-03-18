@@ -581,12 +581,13 @@ function coil_messaging_settings_render_callback ($args) {
 		default:
 			$helper_text = '';
 	}
-}
+
 	if( '' !== $helper_text ) {
 		?>
 		<p><?php echo esc_html( $helper_text ); ?></p>
 		<?php 
 	}
+}
 
 
 function coil_padlock_settings_render_callback() {
