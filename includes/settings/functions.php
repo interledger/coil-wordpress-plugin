@@ -552,32 +552,42 @@ function coil_messaging_textbox_render_callback( $content_id ) {
  * Renders the output of the content messaging customization setting
  * @return void
  */
-function coil_messaging_settings_render_callback($args) {
+function coil_messaging_settings_render_callback ($args) {
 
 	// Print <textarea> containing the setting value
 	coil_messaging_textbox_render_callback( $args['id'] );
 
+	$helper_text = '';
+
 	switch( $args['id'] ) {
-		case 'coil_fully_gated_content_id' :
+		case 'coil_fully_gated_content_id':
 			$helper_text = __( 'This message is shown when a post / page is set to be "Coil Members Only", and the visitor doesn\'t have a Coil Membership, is logged out of their Coil account, is using an unsupported browser, or has the extension installed incorrectly.', 'coil-web-monetization' );
-		case 'coil_partially_gated_content_id' :
+			break;
+		case 'coil_partially_gated_content_id':
 			$helper_text = __( 'This message is shown when a block on a "Split Content" post / page is set to only show for monetized users, and the visitor doesn\'t have a Coil Membership, is logged out of their Coil account, is using an unsupported browser, or has the extension installed incorrectly.', 'coil-web-monetization' );
-		case 'coil_pending_message_id' :
+			break;
+		case 'coil_pending_message_id':
 			$helper_text = __( 'This message is shown for a short time while the plugin checks that the visitor\'s browser is setup correctly and that an active Web Monetization account is in place.', 'coil-web-monetization' );
-		case 'coil_unable_to_verify_message_id' :
+			break;
+		case 'coil_unable_to_verify_message_id':
 			$helper_text = __( 'This message is shown when content is set to "Coil Members Only" and browser setup is correct, but Web Monetization doesn\'t start. This message could appear for several reasons, including not having an active Coil account.', 'coil-web-monetization' );
-		case 'coil_voluntary_donation_message_id' :
+			break;
+		case 'coil_voluntary_donation_message_id':
 			$helper_text = __( 'This message is shown in a footer bar when content is set to "Monetized and Public" or "Split Content" and the visitor isn\'t web monetized.', 'coil-web-monetization' );
-		case 'coil_learn_more_button_text_id' :
+			break;
+		case 'coil_learn_more_button_text_id':
 			$helper_text = __( 'Text used for the "Learn more" button, which is shown to non-members on "Coil Members Only" and "Monetized and Public" content.', 'coil-web-monetization' );
-		default :
+			break;
+		default:
 			$helper_text = '';
 	}
-
-	if( '' !== $helper_text ) { ?>
-		<p><?php echo esc_html( $helper_text ); ?></p>
-	<?php }
 }
+	if( '' !== $helper_text ) {
+		?>
+		<p><?php echo esc_html( $helper_text ); ?></p>
+		<?php 
+	}
+
 
 function coil_padlock_settings_render_callback() {
 

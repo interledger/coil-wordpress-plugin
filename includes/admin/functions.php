@@ -356,7 +356,7 @@ function get_global_settings( $setting_id ) {
  * @return string $setting_value The value of the setting after checking the default
  */
 
-function get_messaging_setting_or_default( $setting_id ){
+function get_messaging_setting_or_default( $setting_id ) {
 
 	// Check if the setting exists, if not load the default
 	if ( empty( get_messaging_settings( $setting_id ) ) ) {
