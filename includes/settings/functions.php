@@ -549,11 +549,12 @@ function coil_messaging_textbox_render_callback( $content_id ) {
 }
 
 /**
- * Renders the output of the content messaging customization.
- *
+ * Renders the output of the content messaging customization setting
  * @return void
  */
 function coil_messaging_settings_render_callback($args) {
+
+	// Print <textarea> containing the setting value
 	coil_messaging_textbox_render_callback( $args['id'] );
 
 	switch( $args['id'] ) {
@@ -626,7 +627,6 @@ function coil_donation_bar_settings_render_callback() {
 		esc_html_e( 'Show a donation bar on posts that are monetized and public.', 'coil-web-monetization' )
 	);
 }
-
 
 /**
  * Creates dismissable welcome notice on coil admin screen
