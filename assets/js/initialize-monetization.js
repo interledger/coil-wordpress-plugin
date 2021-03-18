@@ -235,6 +235,7 @@
 	 */
 	function showVerificationFailureMessage() {
 
+		// E.g. when content is loading then length > 0
 		if ( $( 'p.monetize-msg' ).length > 0 ) {
 
 			$( 'p.monetize-msg' ).remove();

@@ -146,8 +146,8 @@ function maybe_restrict_content( string $content ) : string {
 	switch ( $coil_status ) {
 		case 'gate-all':
 		case 'gate-tagged-blocks':
-			// Restrict all / some excerpt content based on gating settings.
-			if ( get_excerpt_gating( get_queried_object_id() ) ) {
+			// Restrict excerpt content to custom excerpts for gated posts / pages.
+			if ( ! empty( $content_excerpt ) ) {
 				$public_content .= sprintf(
 					'<p>%s</p>',
 					$content_excerpt
