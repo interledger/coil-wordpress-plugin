@@ -59,7 +59,7 @@ function init_plugin() : void {
 	add_term_edit_save_form_meta_actions();
 
 	// Customizer settings.
-	add_action( 'customize_register', __NAMESPACE__ . '\Admin\add_customizer_messaging_panel' );
+	add_action( 'customize_register', __NAMESPACE__ . '\Admin\add_redirect_customizer_section' );
 
 	// User profile settings.
 	add_action( 'personal_options', __NAMESPACE__ . '\User\add_user_profile_payment_pointer_option' );

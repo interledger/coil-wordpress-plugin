@@ -11,13 +11,6 @@ use Coil\Gating;
 use const Coil\PLUGIN_VERSION;
 
 /**
- * Coil Customizer panel ID.
- *
- * @var string
- */
-const CUSTOMIZER_PANEL_ID = 'coil_customizer_settings_panel';
-
-/**
  * Customise the environment where we want to show the Coil metabox.
  *
  * @return void
@@ -301,58 +294,51 @@ function load_admin_assets() : void {
 }
 
 /**
- * Add Coil messaging panel to the Customizer.
+ * Adds a Coil Web Monetization section to the Customizer that redirects users from the customizer
+ * (where these customization settings were found previously)
+ * to the Coil Settings panel.
  *
  * @param \WP_Customize_Manager $wp_customize WordPress Customizer object.
  */
-function add_customizer_messaging_panel( $wp_customize ) : void {
+function add_redirect_customizer_section( $wp_customize ) : void {
 
-	$wp_customize->add_panel(
-		CUSTOMIZER_PANEL_ID,
+	// Message and Monetization customization options relocation section.
+	$redirect_section = 'coil_customizer_section';
+
+	$wp_customize->add_section(
+		$redirect_section,
 		[
 			'title'      => __( 'Coil Web Monetization', 'coil-web-monetization' ),
 			'capability' => apply_filters( 'coil_settings_capability', 'manage_options' ),
 		]
 	);
 
-	// Options section.
-	$options_section_id = 'coil_customizer_section_options';
-
-	$wp_customize->add_section(
-		$options_section_id,
-		[
-			'title' => _x( 'Messages', 'page title', 'coil-web-monetization' ),
-			'panel' => CUSTOMIZER_PANEL_ID,
-		]
-	);
-
-	// Post title padlock.
-	$padlock_setting_id = 'coil_title_padlock';
+	$redirect_setting_id = 'customization-redirect-id';
 
 	$wp_customize->add_setting(
-		$padlock_setting_id,
+		$redirect_setting_id,
 		[
 			'capability' => apply_filters( 'coil_settings_capability', 'manage_options' ),
 			'default'    => true,
 		]
 	);
 
-	$description  = '<p>';
-		$description .= sprintf(
-			__( 'Message customization settings have moved to the <a href="%s">Messaging Settings tab.</a>', 'coil-web-monetization' ),
-			esc_url( __( 'https://coil.com', 'coil-web-monetization' ) )
-		) . '</p>';
-		$description .= '<p>' . sprintf(
-			__( 'Monetization options have been moved to the <a href="%s">Monetization Settings tab.</a>', 'coil-web-monetization' ),
-			esc_url( __( 'https://coil.com', 'coil-web-monetization' ) )
-		) . '</p>';
+	$description  = '<p>' . $description .= sprintf(
+		__( 'Message customization settings have moved to the <a href="%s">Messaging Settings tab.</a>', 'coil-web-monetization' ),
+		esc_url( __( '/wp-admin/admin.php?page=coil_settings&tab=messaging_settings', 'coil-web-monetization' ) )
+	) . '</p>';
+	$description .= '<p>' . sprintf(
+		__( 'Monetization options have been moved to the <a href="%s">Monetization Settings tab.</a>', 'coil-web-monetization' ),
+		esc_url( __( '/wp-admin/admin.php?page=coil_settings&tab=monetization_settings', 'coil-web-monetization' ) )
+	) . '</p>';
 
 	$wp_customize->add_control(
-		$padlock_setting_id,
+		$redirect_setting_id,
 		[
+			'type'        => 'hidden',
+			'section'     => $redirect_section,
 			'label'       => __( 'Customization options have all been moved to the Coil settings panel.', 'coil-web-monetization' ),
 			'description' => $description,
-			'section'     => $options_section_id,
 		]
 	);
 }
