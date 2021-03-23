@@ -11,6 +11,13 @@ use Coil\Gating;
 use const Coil\PLUGIN_VERSION;
 
 /**
+ * Coil Customizer panel ID.
+ *
+ * @var string
+ */
+const CUSTOMIZER_PANEL_ID = 'coil_customizer_settings_panel';
+
+/**
  * Customise the environment where we want to show the Coil metabox.
  *
  * @return void
@@ -291,6 +298,63 @@ function load_admin_assets() : void {
 
 	// Enqueue localized script.
 	wp_enqueue_script( 'coil_admin_notices' );
+}
+
+/**
+ * Add Coil messaging panel to the Customizer.
+ *
+ * @param \WP_Customize_Manager $wp_customize WordPress Customizer object.
+ */
+function add_customizer_messaging_panel( $wp_customize ) : void {
+
+	$wp_customize->add_panel(
+		CUSTOMIZER_PANEL_ID,
+		[
+			'title'      => __( 'Coil Web Monetization', 'coil-web-monetization' ),
+			'capability' => apply_filters( 'coil_settings_capability', 'manage_options' ),
+		]
+	);
+
+	// Options section.
+	$options_section_id = 'coil_customizer_section_options';
+
+	$wp_customize->add_section(
+		$options_section_id,
+		[
+			'title' => _x( 'Messages', 'page title', 'coil-web-monetization' ),
+			'panel' => CUSTOMIZER_PANEL_ID,
+		]
+	);
+
+	// Post title padlock.
+	$padlock_setting_id = 'coil_title_padlock';
+
+	$wp_customize->add_setting(
+		$padlock_setting_id,
+		[
+			'capability' => apply_filters( 'coil_settings_capability', 'manage_options' ),
+			'default'    => true,
+		]
+	);
+
+	$description  = '<p>';
+		$description .= sprintf(
+			__( 'Message customization settings have moved to the <a href="%s">Messaging Settings tab.</a>', 'coil-web-monetization' ),
+			esc_url( __( 'https://coil.com', 'coil-web-monetization' ) )
+		) . '</p>';
+		$description .= '<p>' . sprintf(
+			__( 'Monetization options have been moved to the <a href="%s">Monetization Settings tab.</a>', 'coil-web-monetization' ),
+			esc_url( __( 'https://coil.com', 'coil-web-monetization' ) )
+		) . '</p>';
+
+	$wp_customize->add_control(
+		$padlock_setting_id,
+		[
+			'label'       => __( 'Customization options have all been moved to the Coil settings panel.', 'coil-web-monetization' ),
+			'description' => $description,
+			'section'     => $options_section_id,
+		]
+	);
 }
 
 /**
