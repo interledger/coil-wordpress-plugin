@@ -48,6 +48,7 @@ function init_plugin() : void {
 	add_filter( 'plugin_row_meta', __NAMESPACE__ . '\Admin\add_plugin_meta_link', 10, 2 );
 	add_action( 'admin_menu', __NAMESPACE__ . '\Settings\register_admin_menu' );
 	add_action( 'admin_init', __NAMESPACE__ . '\Settings\register_admin_content_settings' );
+	add_action( 'pre_update_option_coil_monetization_settings_group', __NAMESPACE__ . '\Settings\sanitize_checkbox_values', 10, 2 );
 	add_action( 'admin_notices', __NAMESPACE__ . '\Settings\admin_welcome_notice' );
 	add_action( 'admin_notices', __NAMESPACE__ . '\Settings\admin_no_payment_pointer_notice' );
 	add_action( 'wp_ajax_dismiss_welcome_notice', __NAMESPACE__ . '\Settings\dismiss_welcome_notice' );
@@ -189,14 +190,14 @@ function load_full_assets() : void {
 		'coil_js_ui_messages',
 		[
 			'content_container'       => Admin\get_global_settings( 'coil_content_container' ),
-			'unable_to_verify'        => Admin\get_messaging_setting_or_default( 'coil_unable_to_verify_message_id' ),
-			'voluntary_donation'      => Admin\get_messaging_setting_or_default( 'coil_voluntary_donation_message_id' ),
-			'loading_content'         => Admin\get_messaging_setting_or_default( 'coil_pending_message_id' ),
-			'fully_gated'             => Admin\get_messaging_setting_or_default( 'coil_fully_gated_content_id' ),
-			'partial_gating'          => Admin\get_messaging_setting_or_default( 'coil_partially_gated_content_id' ),
-			'learn_more_button_text'  => Admin\get_messaging_setting_or_default( 'coil_learn_more_button_text_id' ),
+			'unable_to_verify'        => Admin\get_messaging_setting_or_default( 'coil_unable_to_verify_message' ),
+			'voluntary_donation'      => Admin\get_messaging_setting_or_default( 'coil_voluntary_donation_message' ),
+			'loading_content'         => Admin\get_messaging_setting_or_default( 'coil_verifying_status_message' ),
+			'fully_gated'             => Admin\get_messaging_setting_or_default( 'coil_fully_gated_content' ),
+			'partial_gating'          => Admin\get_messaging_setting_or_default( 'coil_partially_gated_content' ),
+			'learn_more_button_text'  => Admin\get_messaging_setting_or_default( 'coil_learn_more_button_text' ),
 			'learn_more_button_link'  => $learn_more_button_link,
-			'show_donation_bar'       => Admin\get_visual_settings( 'coil_donation_bar_setting_id' ),
+			'show_donation_bar'       => Admin\get_visual_settings( 'coil_show_donation_bar', true ),
 			'post_excerpt'            => get_the_excerpt(),
 			'site_logo'               => $site_logo,
 
