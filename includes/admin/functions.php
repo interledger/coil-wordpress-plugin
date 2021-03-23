@@ -380,12 +380,12 @@ function get_messaging_settings( $field_id, $default = false ) {
 
 	// Set up defaults.
 	$defaults = [
-		'coil_fully_gated_content_message'        => __( 'Unlock exclusive content with Coil. Need a Coil account?', 'coil-web-monetization' ),
-		'coil_partially_gated_content'    => __( 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.', 'coil-web-monetization' ),
-		'coil_pending_message'            => __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' ),
-		'coil_unable_to_verify_message'   => __( 'You need a valid Coil account to see this content.', 'coil-web-monetization' ),
-		'coil_voluntary_donation_message' => __( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', 'coil-web-monetization' ),
-		'coil_learn_more_button_text'     => __( 'Get Coil to access', 'coil-web-monetization' ),
+		'coil_fully_gated_content_message' => __( 'Unlock exclusive content with Coil. Need a Coil account?', 'coil-web-monetization' ),
+		'coil_partially_gated_content'     => __( 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.', 'coil-web-monetization' ),
+		'coil_pending_message'             => __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' ),
+		'coil_unable_to_verify_message'    => __( 'You need a valid Coil account to see this content.', 'coil-web-monetization' ),
+		'coil_voluntary_donation_message'  => __( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', 'coil-web-monetization' ),
+		'coil_learn_more_button_text'      => __( 'Get Coil to access', 'coil-web-monetization' ),
 	];
 
 	$options = get_option( 'coil_messaging_settings_group', [] );
