@@ -640,6 +640,23 @@ function coil_show_donation_bar_settings_render_callback() {
 }
 
 /**
+ * Handle checkboxes from the settings panel
+ */
+function sanitize_checkbox_values( $new_value, $old_value ) {
+
+	// Set the array keys to check for
+	$coil_checkbox_settings = [ 'coil_show_donation_bar', 'coil_title_padlock' ];
+
+	// Loop through the keys and check if they exist, if not set them to null
+	foreach ( $coil_checkbox_settings as $setting_id ) {
+		$new_value[ $setting_id ] = isset( $_POST['coil_monetization_settings_group'][ $setting_id ] );
+	}
+
+	// Return the new value decided on
+	return $new_value;
+}
+
+/**
  * Creates dismissable welcome notice on coil admin screen
  */
 function admin_welcome_notice() {
