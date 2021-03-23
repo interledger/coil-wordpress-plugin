@@ -427,7 +427,6 @@ function coil_content_settings_posts_render_callback() {
 		?>
 		<p><?php esc_html_e( 'Use the settings below to control the defaults for how your content is monetized and gated across your whole site. You can override the defaults by configuring monetization against your categories and taxonomies. You can also override the defaults against individual pages and posts or even specific blocks inside of them.', 'coil-web-monetization' ); ?>
 		</p>
-		<?php print_r( get_theme_mods() ); ?>
 		<table class="widefat">
 			<thead>
 				<th><?php esc_html_e( 'Post Type', 'coil-web-monetization' ); ?></th>
@@ -599,14 +598,14 @@ function coil_title_padlock_settings_render_callback() {
 	 * input status is not set, default to checked
 	 */
 
-	$checked_input = Admin\get_visual_settings( 'coil_title_padlock' );
+	$checked_input_value = Admin\get_visual_settings( 'coil_title_padlock', true );
 
 	printf(
 		'<input type="%s" name="%s" id="%s" "%s"/>',
 		esc_attr( 'checkbox' ),
 		esc_attr( 'coil_monetization_settings_group[coil_title_padlock]' ),
 		esc_attr( 'display_padlock_id' ),
-		$checked_input
+		checked( 1, $checked_input_value, false )
 	);
 
 	printf(
@@ -623,14 +622,14 @@ function coil_show_donation_bar_settings_render_callback() {
 	 * any settings stored in the database. If the
 	 * input status is not set, default to checked
 	 */
-	$checked_input = Admin\get_visual_settings( 'coil_show_donation_bar' );
+	$checked_input_value = Admin\get_visual_settings( 'coil_show_donation_bar', true );
 
 	printf(
 		'<input type="%s" name="%s" id="%s" "%s">',
 		esc_attr( 'checkbox' ),
 		esc_attr( 'coil_monetization_settings_group[coil_show_donation_bar]' ),
 		esc_attr( 'display_donation_bar' ),
-		$checked_input
+		checked( 1, $checked_input_value, false )
 	);
 
 	printf(
