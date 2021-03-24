@@ -396,7 +396,7 @@ function get_global_settings( $setting_id ) {
 
 	$options = get_option( 'coil_global_settings_group', [] );
 
-	return ( ! empty( $options[ $setting_id ] ) ) ? $options[ $setting_id ] : $default[ $setting_id ];
+	return ( ! empty( $options[ $setting_id ] ) ) ? $options[ $setting_id ] : $defaults[ $setting_id ];
 }
 /**
  * Retrieve the messaging settings using a key from the messaging
