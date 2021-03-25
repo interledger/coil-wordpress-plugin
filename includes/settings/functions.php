@@ -457,6 +457,8 @@ function coil_content_settings_posts_render_callback() {
 								$checked_input = 'checked="true"';
 							} elseif ( isset( $content_settings_posts_options[ $post_type->name ] ) ) {
 								$checked_input = checked( $setting_key, $content_settings_posts_options[ $post_type->name ], false );
+							} elseif ( 'no-gating' === $setting_key ) {
+								$checked_input = 'checked="true"';
 							}
 							?>
 							<td>
