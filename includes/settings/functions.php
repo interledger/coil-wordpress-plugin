@@ -960,15 +960,15 @@ function dismiss_welcome_notice() {
  *
  */
 
-function transfer_customizer_settings() {
+function transfer_customizer_message_settings() {
 
-	$options = get_option( 'coil_global_settings_group' );
+	$existing_options = get_option( 'coil_messaging_settings_group' );
 
-	if ( ! empty( $options ) ) {
+	if ( ! empty( $existing_options ) || ! get_theme_mod( 'coil_unsupported_message' ) ) {
 		return;
 	}
 
-	$new_options = [
+	$messaging_settings = [
 		'coil_fully_gated_content_message'     => get_theme_mod( 'coil_unsupported_message' ),
 		'coil_partially_gated_content_message' => get_theme_mod( 'coil_partial_gating_message' ),
 		'coil_verifying_status_message'        => get_theme_mod( 'coil_verifying_status_message' ),
@@ -979,6 +979,27 @@ function transfer_customizer_settings() {
 		'coil_show_donation_bar'               => get_theme_mod( 'coil_show_donation_bar', true ),
 	];
 
-	update_option( 'coil_global_settings_group', $new_options );
+	update_option( 'coil_messaging_settings_group', $messaging_settings );
 
+}
+
+function transfer_customizer_monetization_settings() {
+
+	$existing_options = get_option( 'coil_monetization_settings_group' );
+
+	// We've already saved or transferred this setting
+	if ( ! get_theme_mod( 'coil_title_padlock' ) || ( isset( $existing_options['coil_title_padlock'] ) || isset( $existing_options['coil_show_donation_bar'] ) ) ) {
+		return;
+	}
+
+	$new_monetization_settings = [
+		'coil_title_padlock'     => get_theme_mod( 'coil_title_padlock', true ),
+		'coil_show_donation_bar' => get_theme_mod( 'coil_show_donation_bar', true ),
+	];
+
+	if ( false !== $existing_options ) {
+		update_option( 'coil_monetization_settings_group', array_merge( $existing_options, $new_monetization_settings ) );
+	} else {
+		update_option( 'coil_monetization_settings_group', $new_monetization_settings );
+	}
 }
