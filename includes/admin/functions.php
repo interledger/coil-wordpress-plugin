@@ -440,7 +440,7 @@ function get_messaging_settings( $field_id, $default = false ) {
 	];
 
 	$options = get_option( 'coil_messaging_settings_group', [] );
-print_r($options);
+
 	// The default is returned as a placeholder or as a coil_js_ui_messages field when no custom input has been provided
 	if ( $default ) {
 		return $defaults[ $field_id ];
