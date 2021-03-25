@@ -964,7 +964,7 @@ function transfer_customizer_message_settings() {
 
 	$existing_options = get_option( 'coil_messaging_settings_group' );
 
-	if ( ! empty( $existing_options ) || ! get_theme_mod( 'coil_unsupported_message' ) ) {
+	if ( ! get_theme_mod( 'coil_unsupported_message' ) || ! empty( $existing_options ) ) {
 		return;
 	}
 
