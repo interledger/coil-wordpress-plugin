@@ -391,7 +391,7 @@ function get_global_settings( $setting_id ) {
 	// Set up defaults.
 	$defaults = [
 		'coil_payment_pointer_id' => '',
-		'coil_content_container'  => 'content-area .entry-content',
+		'coil_content_container'  => '.content-area .entry-content',
 	];
 
 	$options = get_option( 'coil_global_settings_group', [] );
