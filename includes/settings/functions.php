@@ -951,3 +951,34 @@ function dismiss_welcome_notice() {
 	// User meta stored as strings, so use 'true' to avoid data type issues.
 	update_user_meta( $current_user->ID, 'coil-welcome-notice-dismissed', 'true' );
 }
+
+
+/**
+ * Translate customizer settings
+ *
+ * If a user has settings which they saved in the customizer, switch them to settings saved in the wp_options table
+ *
+ */
+
+function transfer_customizer_settings() {
+
+	$options = get_option( 'coil_global_settings_group' );
+
+	if ( ! empty( $options ) ) {
+		return;
+	}
+
+	$new_options = [
+		'coil_fully_gated_content_message'     => get_theme_mod( 'coil_unsupported_message' ),
+		'coil_partially_gated_content_message' => get_theme_mod( 'coil_partial_gating_message' ),
+		'coil_verifying_status_message'        => get_theme_mod( 'coil_verifying_status_message' ),
+		'coil_unable_to_verify_message'        => get_theme_mod( 'coil_unable_to_verify_message' ),
+		'coil_voluntary_donation_message'      => get_theme_mod( 'coil_voluntary_donation_message' ),
+		'coil_learn_more_button_text'          => get_theme_mod( 'coil_learn_more_button_text' ),
+		'coil_title_padlock'                   => get_theme_mod( 'coil_title_padlock', true ),
+		'coil_show_donation_bar'               => get_theme_mod( 'coil_show_donation_bar', true ),
+	];
+
+	update_option( 'coil_global_settings_group', $new_options );
+
+}
