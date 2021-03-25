@@ -304,7 +304,7 @@ function get_content_gating( $post_id ) : string {
 	$post_gating = get_post_gating( $post_id );
 
 	// Set a default monetization value.
-	$content_gating = 'no';
+	$content_gating = 'no-gating';
 
 	// Hierarchy 1 - Check what is set on the post.
 	if ( 'default' !== $post_gating ) {

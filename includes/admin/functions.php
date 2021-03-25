@@ -398,6 +398,7 @@ function get_global_settings( $setting_id ) {
 
 	return ( ! empty( $options[ $setting_id ] ) ) ? $options[ $setting_id ] : $defaults[ $setting_id ];
 }
+
 /**
  * Retrieve the messaging settings using a key from the messaging
  * or return a default value for the setting
