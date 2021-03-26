@@ -242,7 +242,7 @@
 
 			if ( isSubscribersOnly() ) {
 
-				if ( isExcerptEnabled() && getContentExcerpt() ) {
+				if ( getContentExcerpt() ) {
 
 					document.body.classList.add( 'show-excerpt-message' );
 					$( content_container ).before( showSubscriberOnlyMessage( unable_to_verify ) );
