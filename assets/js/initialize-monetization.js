@@ -513,18 +513,12 @@
 		if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
 			showContentContainer();
 			document.body.classList.remove( 'show-fw-message' );
-			if ( isExcerptEnabled() ) {
-				hideContentExcerpt();
-			}
+			hideContentExcerpt();
 
 		}
 
 		$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'monetization-initialized' ); // Update body class to show content.
 		messageWrapper.remove(); // Remove status message.
-
-		if ( ! isExcerptEnabled() ) {
-			$( 'p.coil-post-excerpt' ).remove(); // Remove post excerpt.
-		}
 
 		// Show embedded content.
 		document.querySelectorAll( 'iframe, object, video' ).forEach( function( embed ) {
