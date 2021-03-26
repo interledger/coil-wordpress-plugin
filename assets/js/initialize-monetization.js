@@ -433,23 +433,8 @@
 			// Verify monetization only if we are gating or partially gating content.
 			if ( ! isMonetizedAndPublic() ) {
 
-				// If post is gated then show verification message after excerpt.
-				if ( isSubscribersOnly() ) {
-
-					if ( isExcerptEnabled() ) {
-
-						// Subscriber gating and no post excerpt...Verifying extension.
-						document.querySelector( content_container ).before( showMonetizationMessage( loading_content, '' ) );
-
-					} else {
-
-						// Subscriber gating and has post excerpt...Verifying extension.
-						$( 'p.coil-post-excerpt' ).after( showMonetizationMessage( loading_content, '' ) );
-
-					}
-				} else {
-					document.querySelector( content_container ).before( showMonetizationMessage( loading_content, '' ) );
-				}
+				// If post is gated then show verification message
+				document.querySelector( content_container ).before( showMonetizationMessage( loading_content, '' ) );
 
 				// Update message if browser extension is verifying user.
 				setTimeout( function() {
@@ -538,7 +523,7 @@
 		messageWrapper.remove(); // Remove status message.
 
 		if ( ! isExcerptEnabled() ) {
-			$( 'div.coil-post-excerpt' ).remove(); // Remove post excerpt.
+			$( 'p.coil-post-excerpt' ).remove(); // Remove post excerpt.
 		}
 
 		// Show embedded content.
