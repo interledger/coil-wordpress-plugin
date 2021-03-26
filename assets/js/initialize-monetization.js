@@ -355,14 +355,14 @@
 			return;
 		}
 
-		// Update body class to show free content.
+		// Update body class to show only free content.
 		$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'coil-extension-not-found' );
 
 		if ( isSubscribersOnly() ) {
 
 			$( content_container ).before( showSubscriberOnlyMessage( browser_extension_missing ) );
 
-			if ( isExcerptEnabled() && getContentExcerpt() ) {
+			if ( getContentExcerpt() ) {
 				document.body.classList.add( 'show-excerpt-message' );
 				$( content_container ).prepend( getContentExcerpt() );
 			} else {
