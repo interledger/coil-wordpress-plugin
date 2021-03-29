@@ -222,15 +222,6 @@
 	}
 
 	/**
-	 * Determine if the excerpt is set to show for this post.
-	 *
-	 * @return bool
-	 */
-	function isExcerptEnabled() {
-		return ( document.body.classList.contains( 'coil-show-excerpt' ) ) ? true : false;
-	}
-
-	/**
 	 * Displays a message based on the body classes and verification outcome.
 	 */
 	function showVerificationFailureMessage() {
@@ -363,7 +354,6 @@
 			$( content_container ).before( showSubscriberOnlyMessage( browser_extension_missing ) );
 
 			if ( getContentExcerpt() ) {
-				document.body.classList.add( 'show-excerpt-message' );
 				$( content_container ).prepend( getContentExcerpt() );
 			} else {
 				document.body.classList.add( 'show-fw-message' );
@@ -514,7 +504,6 @@
 			showContentContainer();
 			document.body.classList.remove( 'show-fw-message' );
 			hideContentExcerpt();
-
 		}
 
 		$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'monetization-initialized' ); // Update body class to show content.
