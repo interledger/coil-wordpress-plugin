@@ -354,6 +354,7 @@
 			$( content_container ).before( showSubscriberOnlyMessage( browser_extension_missing ) );
 
 			if ( getContentExcerpt() ) {
+				document.body.classList.add( 'show-excerpt-message' );
 				$( content_container ).prepend( getContentExcerpt() );
 			} else {
 				document.body.classList.add( 'show-fw-message' );
