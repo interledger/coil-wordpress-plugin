@@ -105,20 +105,6 @@ function register_admin_content_settings() {
 		'coil_content_settings_posts'
 	);
 
-	// Tab 4 - Excerpt settings.
-	register_setting(
-		'coil_content_settings_excerpt_group',
-		'coil_content_settings_excerpt_group',
-		__NAMESPACE__ . '\coil_content_settings_excerpt_validation'
-	);
-
-	add_settings_section(
-		'coil_content_settings_excerpts_section',
-		false,
-		__NAMESPACE__ . '\coil_content_settings_excerpts_render_callback',
-		'coil_content_settings_excerpts'
-	);
-
 	// Tab 5 - Messaging settings.
 	add_settings_section(
 		'coil_messaging_settings_section',
@@ -175,22 +161,6 @@ function coil_global_settings_group_validation( $global_settings ) : array {
 			return sanitize_text_field( $global_settings_input );
 		},
 		(array) $global_settings
-	);
-}
-
-/**
- * Allow each "Display Excerpt" checkbox in the content setting table to be properly validated
- *
- * @param array $excerpt_content_settings The posted checkbox options from the content settings section.
- * @return array
- */
-function coil_content_settings_excerpt_validation( $excerpt_content_settings ) : array {
-
-	return array_map(
-		function( $checkbox_value ) {
-			return ( isset( $checkbox_value ) ) ? true : false;
-		},
-		(array) $excerpt_content_settings
 	);
 }
 
@@ -384,56 +354,6 @@ function coil_content_settings_posts_render_callback() {
 }
 
 /**
- * Renders the output of the excerpt settings showing checkbox
- * inputs based on the post types available in WordPress.
- *
- * @return void
- */
-function coil_content_settings_excerpts_render_callback() {
-
-	$post_type_options = Coil\get_supported_post_types( 'objects' );
-
-	// If there are post types available, output them:
-	if ( ! empty( $post_type_options ) ) {
-
-		$content_settings_excerpt_options = Gating\get_global_excerpt_settings();
-		?>
-		<p><?php esc_html_e( 'Use the settings below to select whether to show a short excerpt for any pages, posts, or other content types you choose to gate access to. Support for displaying an excerpt may depend on your particular theme and setup of WordPress.', 'coil-web-monetization' ); ?></p>
-		<table class="widefat">
-			<thead>
-				<th><?php esc_html_e( 'Post Type', 'coil-web-monetization' ); ?></th>
-				<th><?php esc_html_e( 'Display Excerpt', 'coil-web-monetization' ); ?></th>
-			</thead>
-			<tbody>
-				<?php foreach ( $post_type_options as $post_type ) : ?>
-					<tr>
-						<th scope="row"><?php echo esc_html( $post_type->label ); ?></th>
-						<td>
-						<?php
-						$excerpt_name = 'coil_content_settings_excerpt_group[' . $post_type->name . ']';
-						$excerpt_id   = $post_type->name . '_display_excerpt';
-
-						$checked_excerpt = false;
-						if ( isset( $content_settings_excerpt_options[ $post_type->name ] ) ) {
-							$checked_excerpt = checked( 1, $content_settings_excerpt_options[ $post_type->name ], false );
-						}
-						printf(
-							'<input type="checkbox" name="%s" id="%s" %s />',
-							esc_attr( $excerpt_name ),
-							esc_attr( $excerpt_id ),
-							$checked_excerpt
-						);
-						?>
-						</td>
-					</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
-		<?php
-	}
-}
-
-/**
  * Renders the output of the messaging settings.
  *
  * @return void
@@ -587,7 +507,6 @@ function render_coil_settings_screen() : void {
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=getting_started' ); ?>" id="coil-getting-started" class="nav-tab <?php echo $active_tab === 'getting_started' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Getting Started', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=global_settings' ); ?>" id="coil-global-settings" class="nav-tab <?php echo $active_tab === 'global_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Global Settings', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=content_settings' ); ?>" id="coil-content-settings" class="nav-tab <?php echo $active_tab === 'content_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Content Settings', 'coil-web-monetization' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=excerpt_settings' ); ?>" id="coil-excerpt-settings" class="nav-tab <?php echo $active_tab === 'excerpt_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Excerpt Settings', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=messaging_settings' ); ?>" id="coil-messaging-settings" class="nav-tab <?php echo $active_tab === 'messaging_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Messaging Settings', 'coil-web-monetization' ); ?></a>
 		</h2>
 
@@ -606,11 +525,6 @@ function render_coil_settings_screen() : void {
 				case 'content_settings':
 					settings_fields( 'coil_content_settings_posts_group' );
 					do_settings_sections( 'coil_content_settings_posts' );
-					submit_button();
-					break;
-				case 'excerpt_settings':
-					settings_fields( 'coil_content_settings_excerpt_group' );
-					do_settings_sections( 'coil_content_settings_excerpts' );
 					submit_button();
 					break;
 				case 'messaging_settings':
