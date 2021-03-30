@@ -996,7 +996,7 @@ function transfer_customizer_monetization_settings() {
 	$existing_options = get_option( 'coil_monetization_settings_group' );
 
 	// We've already saved or transferred this setting
-	if ( ! get_theme_mod( 'coil_title_padlock' ) || ( isset( $existing_options['coil_title_padlock'] ) || isset( $existing_options['coil_show_donation_bar'] ) ) ) {
+	if ( ( ! empty( get_theme_mod( 'coil_title_padlock' ) ) && ! empty( get_theme_mod( 'coil_show_donation_bar' ) ) ) || ( isset( $existing_options['coil_title_padlock'] ) || isset( $existing_options['coil_show_donation_bar'] ) ) ) {
 		return;
 	}
 
