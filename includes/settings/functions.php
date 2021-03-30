@@ -299,7 +299,12 @@ function coil_messaging_settings_validation( $messaging_settings ) : array {
 		return [];
 	}
 
-	return $messaging_settings;
+	return array_map(
+		function( $message_value ) {
+			return ( isset( $message_value ) ) ? sanitize_text_field( $message_value ) : '';
+		},
+		(array) $messaging_settings
+	);
 }
 
 /**
