@@ -244,15 +244,28 @@ function coil_global_settings_group_validation( $global_settings ) : array {
  */
 function coil_monetization_settings_validation( $monetization_settings ) : array {
 
-	foreach ( $monetization_settings as $key => $value ) {
-		if ( $key === 'coil_title_padlock' || $key === 'coil_show_donation_bar' ) {
-			$monetization_settings[ $key ] = ( isset( $value ) ) ? true : false;
-		} else { // If it is not a value returned for the padlock and donation bar settings then it must relate to a post type.
+	foreach ( $monetization_settings as $key => $option_value ) {
+
+		if ( 'on' === $monetization_settings[ $key ] ) {
+			$monetization_settings[ $key ] = true;
+		} else {
+
+			// If it is not a value returned for the padlock and donation bar settings then it must relate to a post type.
 			$valid_choices = array_keys( Gating\get_monetization_setting_types() );
+
 			// The default value is no-gating (Monetized and Public)
-			$value = in_array( $_value, $valid_choices, true ) ? sanitize_key( $radio_value ) : 'no-gating';
+			$value = in_array( $option_value, $valid_choices, true ) ? sanitize_key( $option_value ) : 'no-gating';
 		}
 	}
+
+	// Set the array keys to include 'coil_show_donation_bar' and 'coil_title_padlock'
+	$coil_checkbox_settings = [ 'coil_show_donation_bar', 'coil_title_padlock' ];
+
+	// Loop through the keys and check if they exist, if not set them to false
+	foreach ( $coil_checkbox_settings as $setting_id ) {
+		$monetization_settings[ $setting_id ] = isset( $_POST['coil_monetization_settings_group'][ $setting_id ] );
+	}
+
 	return $monetization_settings;
 }
 
@@ -640,39 +653,6 @@ function coil_show_donation_bar_settings_render_callback() {
 		esc_attr( 'display_donation_bar' ),
 		esc_html_e( 'Show a donation bar on posts that are monetized and public.', 'coil-web-monetization' )
 	);
-}
-
-/**
- * Handle checkboxes from the settings panel
- */
-function sanitize_checkbox_values( $new_value, $old_value ) {
-
-	// Set the array keys to include 'coil_show_donation_bar' and 'coil_title_padlock'
-	$coil_checkbox_settings = [ 'coil_show_donation_bar', 'coil_title_padlock' ];
-
-	// Loop through the keys and check if they exist, if not set them to true / false
-	foreach ( $coil_checkbox_settings as $setting_id ) {
-		$new_value[ $setting_id ] = isset( $_POST['coil_monetization_settings_group'][ $setting_id ] ) ? true : false;
-	}
-
-	// Set the array keys to include each post type
-	$post_type_options = Coil\get_supported_post_types( 'objects' );
-	if ( ! empty( $post_type_options ) ) {
-			return $new_value;
-	}
-
-	$valid_choices = array_keys( Gating\get_monetization_setting_types() );
-	foreach ( $post_type_options as $post_type ) {
-		// The default value is no-gating (Monetized and Public)
-		if ( isset( [ 'coil_monetization_settings_group' ][ $post_type ] ) && in_array( [ 'coil_monetization_settings_group' ][ $post_type ], $valid_choices, true ) ) {
-				$new_value[ $post_type ] = sanitize_key( $radio_value );
-		} else {
-				$new_value[ $post_type ] = 'no-gating';
-		}
-	}
-
-	// Return the new value decided on
-	return $new_value;
 }
 
 /**
