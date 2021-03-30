@@ -411,7 +411,7 @@ function get_global_settings( $setting_id ) {
 function get_messaging_setting_or_default( $setting_id ) {
 
 	// Check if the setting exists, if not load the default
-	if ( false === get_messaging_setting( $setting_id ) ) {
+	if ( '' === get_messaging_setting( $setting_id ) ) {
 		$setting_value = get_messaging_setting( $setting_id, true );
 	} else {
 		$setting_value = get_messaging_setting( $setting_id );
@@ -426,7 +426,7 @@ function get_messaging_setting_or_default( $setting_id ) {
  * @return array Add the messaging settings and their default values
  */
 
-function get_messaging_settings() {
+function get_messaging_defaults() {
 
 	// Set up defaults.
 	return [
@@ -451,7 +451,7 @@ function get_messaging_settings() {
 
 function get_messaging_setting( $field_id, $default = false ) {
 
-	$defaults = get_messaging_settings();
+	$defaults = get_messaging_defaults();
 
 	$options = get_option( 'coil_messaging_settings_group', [] );
 
