@@ -7,8 +7,8 @@ declare(strict_types=1);
 namespace Coil\Admin;
 
 use Coil;
-use const Coil\COIL__FILE__;
 use Coil\Gating;
+use const Coil\COIL__FILE__;
 use const Coil\PLUGIN_VERSION;
 
 /**
@@ -325,11 +325,11 @@ function add_redirect_customizer_section( $wp_customize ) : void {
 	);
 
 	$description  = '<p>' . $description .= sprintf(
-		__( 'Message customization settings have moved to the <a href="%s">Messaging Settings tab.</a>', 'coil-web-monetization' ),
+		__( 'Message customization settings have moved to the ', 'coil-web-monetization' ) . '<a href="%s">' . __( 'Messaging Settings tab', 'coil-web-monetization' ) . '</a>',
 		esc_url( admin_url( 'admin.php?page=coil_settings&tab=messaging_settings', COIL__FILE__ ) )
 	) . '</p>';
 	$description .= '<p>' . sprintf(
-		__( 'Monetization options have been moved to the <a href="%s">Monetization Settings tab.</a>', 'coil-web-monetization' ),
+		__( 'Monetization options have been moved to the ', 'coil-web-monetization' ) . '<a href="%s">' . __( 'Monetization Settings tab.', 'coil-web-monetization' ) . '</a>',
 		esc_url( admin_url( 'admin.php?page=coil_settings&tab=monetization_settings', COIL__FILE__ ) )
 	) . '</p>';
 

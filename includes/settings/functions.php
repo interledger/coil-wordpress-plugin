@@ -958,32 +958,32 @@ function transfer_customizer_message_settings() {
 	$coil_learn_more_button_text     = 'coil_learn_more_button_text';
 	$coil_learn_more_button_link     = 'coil_learn_more_button_link';
 
-	if (  get_theme_mod( $coil_partial_gating_message ) ) {
-		$messaging_settings[ 'coil_partially_gated_content_message' ] = get_theme_mod( $coil_partial_gating_message );
+	if ( get_theme_mod( $coil_partial_gating_message ) ) {
+		$messaging_settings['coil_partially_gated_content_message'] = get_theme_mod( $coil_partial_gating_message );
 		remove_theme_mod( $coil_partial_gating_message );
 	}
-	if (  get_theme_mod( $coil_unsupported_message ) ) {
-		$messaging_settings[ 'coil_fully_gated_content_message' ] = get_theme_mod( $coil_unsupported_message );
+	if ( get_theme_mod( $coil_unsupported_message ) ) {
+		$messaging_settings['coil_fully_gated_content_message'] = get_theme_mod( $coil_unsupported_message );
 		remove_theme_mod( $coil_unsupported_message );
 	}
-	if (  get_theme_mod( $coil_verifying_status_message ) ) {
-		$messaging_settings[ 'coil_verifying_status_message' ] = get_theme_mod( $coil_verifying_status_message );
+	if ( get_theme_mod( $coil_verifying_status_message ) ) {
+		$messaging_settings['coil_verifying_status_message'] = get_theme_mod( $coil_verifying_status_message );
 		remove_theme_mod( $coil_verifying_status_message );
 	}
-	if (  get_theme_mod( $coil_unable_to_verify_message ) ) {
-		$messaging_settings[ 'coil_unable_to_verify_message' ] = get_theme_mod( $coil_unable_to_verify_message );
+	if ( get_theme_mod( $coil_unable_to_verify_message ) ) {
+		$messaging_settings['coil_unable_to_verify_message'] = get_theme_mod( $coil_unable_to_verify_message );
 		remove_theme_mod( $coil_unable_to_verify_message );
 	}
-	if (  get_theme_mod( $coil_voluntary_donation_message ) ) {
-		$messaging_settings[ 'coil_voluntary_donation_message' ] = get_theme_mod( $coil_voluntary_donation_message );
+	if ( get_theme_mod( $coil_voluntary_donation_message ) ) {
+		$messaging_settings['coil_voluntary_donation_message'] = get_theme_mod( $coil_voluntary_donation_message );
 		remove_theme_mod( $coil_voluntary_donation_message );
 	}
-	if (  get_theme_mod( $coil_learn_more_button_text ) ) {
-		$messaging_settings[ 'coil_learn_more_button_text' ] = get_theme_mod( $coil_learn_more_button_text );
+	if ( get_theme_mod( $coil_learn_more_button_text ) ) {
+		$messaging_settings['coil_learn_more_button_text'] = get_theme_mod( $coil_learn_more_button_text );
 		remove_theme_mod( $coil_learn_more_button_text );
 	}
 	// Customization of the Coil learn more button link is no longer supported
-	if (  get_theme_mod( $coil_learn_more_button_link ) ) {
+	if ( get_theme_mod( $coil_learn_more_button_link ) ) {
 		remove_theme_mod( $coil_learn_more_button_link );
 	}
 
