@@ -299,12 +299,7 @@ function coil_messaging_settings_validation( $messaging_settings ) : array {
 		return [];
 	}
 
-	return array_map(
-		function( $messaging_settings_input ) {
-			return sanitize_text_field( $messaging_settings_input );
-		},
-		(array) $messaging_settings
-	);
+	return $messaging_settings;
 }
 
 /**
@@ -558,9 +553,9 @@ function coil_messaging_textbox_render_callback( $content_id ) {
 		esc_attr( 'wide-input' ),
 		esc_attr( 'coil_messaging_settings_group[' . $content_id . ']' ),
 		esc_attr( $content_id ),
-		esc_attr( Admin\get_messaging_settings( $content_id, true ) ),
+		esc_attr( Admin\get_messaging_setting( $content_id, true ) ),
 		esc_attr( 'min-width: 440px' ),
-		esc_attr( Admin\get_messaging_settings( $content_id ) )
+		esc_attr( Admin\get_messaging_setting( $content_id ) )
 	);
 }
 
