@@ -964,20 +964,30 @@ function transfer_customizer_message_settings() {
 
 	$existing_options = get_option( 'coil_messaging_settings_group' );
 
-	if ( ! get_theme_mod( 'coil_unsupported_message' ) || ! empty( $existing_options ) ) {
+	if ( ! empty( $existing_options ) ) {
 		return;
 	}
 
-	$messaging_settings = [
-		'coil_fully_gated_content_message'     => get_theme_mod( 'coil_unsupported_message' ),
-		'coil_partially_gated_content_message' => get_theme_mod( 'coil_partial_gating_message' ),
-		'coil_verifying_status_message'        => get_theme_mod( 'coil_verifying_status_message' ),
-		'coil_unable_to_verify_message'        => get_theme_mod( 'coil_unable_to_verify_message' ),
-		'coil_voluntary_donation_message'      => get_theme_mod( 'coil_voluntary_donation_message' ),
-		'coil_learn_more_button_text'          => get_theme_mod( 'coil_learn_more_button_text' ),
-		'coil_title_padlock'                   => get_theme_mod( 'coil_title_padlock', true ),
-		'coil_show_donation_bar'               => get_theme_mod( 'coil_show_donation_bar', true ),
-	];
+	$messaging_settings = [];
+
+	if (  get_theme_mod( 'coil_partial_gating_message' ) ) {
+		$messaging_settings[ 'coil_partially_gated_content_message' ] = get_theme_mod( 'coil_partial_gating_message' );
+	}
+	if (  get_theme_mod( 'coil_unsupported_message' ) ) {
+		$messaging_settings[ 'coil_fully_gated_content_message' ] = get_theme_mod( 'coil_unsupported_message' );
+	}
+	if (  get_theme_mod( 'coil_verifying_status_message' ) ) {
+		$messaging_settings[ 'coil_verifying_status_message' ] = get_theme_mod( 'coil_verifying_status_message' );
+	}
+	if (  get_theme_mod( 'coil_unable_to_verify_message' ) ) {
+		$messaging_settings[ 'coil_unable_to_verify_message' ] = get_theme_mod( 'coil_unable_to_verify_message' );
+	}
+	if (  get_theme_mod( 'coil_voluntary_donation_message' ) ) {
+		$messaging_settings[ 'coil_voluntary_donation_message' ] = get_theme_mod( 'coil_voluntary_donation_message' );
+	}
+	if (  get_theme_mod( 'coil_learn_more_button_text' ) ) {
+		$messaging_settings[ 'coil_learn_more_button_text' ] = get_theme_mod( 'coil_learn_more_button_text' );
+	}
 
 	update_option( 'coil_messaging_settings_group', $messaging_settings );
 
