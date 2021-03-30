@@ -71,6 +71,7 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 				padding: 13px $message_spacing_baseline * 2;
 				text-align: center;
 				background-color: $message_font_colour;
+				border-radius: 6px;
 				color: white;
 				font-size: $message_spacing_baseline * 2;
 				line-height: $message_spacing_baseline * 3;
