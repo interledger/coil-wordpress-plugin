@@ -4,23 +4,23 @@ This is the source code repository for the Coil WordPress plugin. Coil Web Monet
 
 ---
 
-* [ZenHub Coil Wordpress Plugin Workspace Workflow](#markdown-header-zenhub-coil-wordPress-plugin-workspace-workflow
+* [ZenHub Coil WordPress Plugin Workspace Workflow](#markdown-header-zenhub-coil-wordPress-plugin-workspace-workflow
 )
 * [Local Development Environment](#markdown-header-local-development-environment)
 * [Development Process](#markdown-header-development-process)
 * [Deployment](#markdown-header-deployment)
 
 ---
-## ZenHub Coil Wordpress Plugin Workspace Workflow
+## ZenHub Coil WordPress Plugin Workspace Workflow
 
-Coil uses ZenHub to manage our Wordpress Plugin workflow. To use please install the 
+Coil uses ZenHub to manage our WordPress Plugin workflow. To use please install the 
 [ZenHub extension](https://zenhub.com/extension) and then login to it with 
 GitHub OAuth. Then click request access so we can approve your license.  
 
 After that you will be taken to the workspaces board where you should search for
-the "Wordpress Plugin" workspace. 
+the "WordPress Plugin" workspace. 
 
-On the "Wordpress Plugin" workspace issues move from left to right on the board. 
+On the "WordPress Plugin" workspace issues move from left to right on the board. 
 
 Intake Pipelines (New Issues|New Bugs) -> Queue -> Up Next -> In Progress -> Closed
 
