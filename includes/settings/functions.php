@@ -996,14 +996,20 @@ function transfer_customizer_monetization_settings() {
 	$existing_options = get_option( 'coil_monetization_settings_group' );
 
 	// We've already saved or transferred this setting
-	if ( ( ! empty( get_theme_mod( 'coil_title_padlock' ) ) && ! empty( get_theme_mod( 'coil_show_donation_bar' ) ) ) || ( isset( $existing_options['coil_title_padlock'] ) || isset( $existing_options['coil_show_donation_bar'] ) ) ) {
+	if ( ( ! get_theme_mod( 'coil_title_padlock' ) && ! get_theme_mod( 'coil_show_donation_bar' ) ) || ( isset( $existing_options['coil_title_padlock'] ) || isset( $existing_options['coil_show_donation_bar'] ) ) ) {
 		return;
 	}
 
+	$coil_title_padlock     = 'coil_title_padlock';
+	$coil_show_donation_bar = 'coil_show_donation_bar';
+
 	$new_monetization_settings = [
-		'coil_title_padlock'     => get_theme_mod( 'coil_title_padlock', true ),
-		'coil_show_donation_bar' => get_theme_mod( 'coil_show_donation_bar', true ),
+		'coil_title_padlock'     => get_theme_mod( $coil_title_padlock, true ),
+		'coil_show_donation_bar' => get_theme_mod( $coil_show_donation_bar, true ),
 	];
+
+	remove_theme_mod( $coil_title_padlock );
+	remove_theme_mod( $coil_show_donation_bar );
 
 	if ( false !== $existing_options ) {
 		update_option( 'coil_monetization_settings_group', array_merge( $existing_options, $new_monetization_settings ) );
