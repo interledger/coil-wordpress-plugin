@@ -562,6 +562,9 @@
 			hideContentExcerpt();
 			showContentContainer();
 		}
+
+		// Manually triggering resize to ensure elements get sized corretly after the verification proccess has been completed and they are no longer hidden. 
+		jQuery(window).trigger("resize");
 	}
 
 	/**
