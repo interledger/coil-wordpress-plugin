@@ -80,7 +80,7 @@
 
 		var modalData = {
 			headerLogo: site_logo,
-			title: 'This content is for Coil members only',
+			title: 'This content is for Paying Viewers Only',
 			content: message,
 			button: {
 				text: learn_more_button_text,
@@ -115,7 +115,7 @@
 
 	/**
 	 * Overlay "Split Content" blocks with a message when set to
-	 * show for monetized users. This will display if the browser is
+	 * Only Show Paying Viewers. This will display if the browser is
 	 * not compatible or verified.
 	 * @param string Message from coil_params.
 	 */

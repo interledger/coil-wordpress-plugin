@@ -156,7 +156,7 @@ function register_admin_content_settings() {
 	// === Fully gated content message
 	add_settings_section(
 		'coil_fully_gated_content_message',
-		__( 'Message for hidden "Coil Members Only" content', 'coil-web-monetization' ),
+		__( 'Paying Viewers Only message', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
@@ -164,7 +164,7 @@ function register_admin_content_settings() {
 	// === Partially gated content message
 	add_settings_section(
 		'coil_partially_gated_content_message',
-		__( 'Message for hidden "Split Content" sections', 'coil-web-monetization' ),
+		__( 'Split Content message', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
@@ -577,22 +577,22 @@ function coil_messaging_settings_render_callback( $args ) {
 
 	switch ( $args['id'] ) {
 		case 'coil_fully_gated_content_message':
-			$helper_text = __( 'This message is shown when a post / page is set to be "Coil Members Only", and the visitor doesn\'t have a Coil Membership, is logged out of their Coil account, is using an unsupported browser, or has the extension installed incorrectly.', 'coil-web-monetization' );
+			$helper_text = __( 'Appears for non-paying viewers over hidden Paying Viewers Only content.', 'coil-web-monetization' );
 			break;
 		case 'coil_partially_gated_content_message':
-			$helper_text = __( 'This message is shown when a block on a "Split Content" post / page is set to only show for monetized users, and the visitor doesn\'t have a Coil Membership, is logged out of their Coil account, is using an unsupported browser, or has the extension installed incorrectly.', 'coil-web-monetization' );
+			$helper_text = __( 'Appears for non-paying viewers over hidden blocks set to Only Show Paying Viewers on a Split Content post / page.', 'coil-web-monetization' );
 			break;
 		case 'coil_verifying_status_message':
-			$helper_text = __( 'This message is shown for a short time while the plugin checks that the visitor\'s browser is setup correctly and that an active Web Monetization account is in place.', 'coil-web-monetization' );
+			$helper_text = __( 'Appears while the plugin checks that an active Web Monetization account is in place.', 'coil-web-monetization' );
 			break;
 		case 'coil_unable_to_verify_message':
-			$helper_text = __( 'This message is shown when content is set to "Coil Members Only" and browser setup is correct, but Web Monetization doesn\'t start. This message could appear for several reasons, including not having an active Coil account.', 'coil-web-monetization' );
+			$helper_text = __( 'Appears when content is set to Paying Viewers Only and browser setup is correct, but Web Monetization doesn\'t start. This can happen when the user doesn\'t have an active Coil account.', 'coil-web-monetization' );
 			break;
 		case 'coil_voluntary_donation_message':
-			$helper_text = __( 'This message is shown in a footer bar when content is set to "Monetized and Public" or "Split Content" and the visitor isn\'t web monetized.', 'coil-web-monetization' );
+			$helper_text = __( 'Appears for non-paying viewers in a footer bar when content is set to Monetized and Public or Split Content.', 'coil-web-monetization' );
 			break;
 		case 'coil_learn_more_button_text':
-			$helper_text = __( 'Text used for the "Learn more" button, which is shown to non-members on "Coil Members Only" and "Monetized and Public" content.', 'coil-web-monetization' );
+			$helper_text = __( 'Text on the button which directs non-paying viewers to the Coil home page. Shown below the Paying Viewers Only message and in the support creator footer.', 'coil-web-monetization' );
 			break;
 		default:
 			$helper_text = '';
