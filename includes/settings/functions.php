@@ -355,7 +355,7 @@ function coil_getting_started_settings_render_callback() {
 		printf(
 			'<li><a target="_blank" href="%1$s">%2$s</a></li>',
 			esc_url( 'https://help.coil.com/docs/monetize/get-creator-account/' ),
-			esc_html__( 'Get a free Coil creator account', 'coil-web-monetization' )
+			esc_html__( 'Get a free Coil Creator account', 'coil-web-monetization' )
 		);
 		?>
 	</ul>
@@ -627,7 +627,7 @@ function coil_title_padlock_settings_render_callback() {
 	printf(
 		'<label for="%s">%s</label>',
 		esc_attr( 'display_padlock_id' ),
-		esc_html_e( 'Show padlock next to post title if the post is for paying viewers only.', 'coil-web-monetization' )
+		esc_html_e( 'Show padlock next to post title if the post is for Paying Viewers Only.', 'coil-web-monetization' )
 	);
 }
 
@@ -651,7 +651,7 @@ function coil_show_donation_bar_settings_render_callback() {
 	printf(
 		'<label for="%s">%s</label>',
 		esc_attr( 'display_donation_bar' ),
-		esc_html_e( 'Show a donation bar on posts that are monetized and public.', 'coil-web-monetization' )
+		esc_html_e( 'Show a donation bar on posts that are Monetized and Public.', 'coil-web-monetization' )
 	);
 }
 
