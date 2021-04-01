@@ -166,6 +166,10 @@
 		return jQuery( 'p.coil-post-excerpt' ).remove();
 	}
 
+	function removeDonationBar() {
+		return $( 'div' ).remove( '.coil-banner-message-container' );
+	}
+
 	/**
 	 * Helper function to determine if the content is "Monetized and Public"
 	 *
@@ -538,6 +542,10 @@
 
 		if ( ! isExcerptEnabled() ) {
 			$( 'div.coil-post-excerpt' ).remove(); // Remove post excerpt.
+		}
+
+		if( show_donation_bar ) {
+			removeDonationBar();
 		}
 
 		// Show embedded content.
