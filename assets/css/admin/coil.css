@@ -126,10 +126,11 @@
   width: 440px; }
 
 @media only screen and (max-width: 768px) {
+  .coil.plugin-header .nav-tab {
+    width: calc( 50% - 2.5em); }
   .coil.plugin-settings {
     display: flex;
     flex-direction: column-reverse; }
-  .coil form {
-    width: 100%; }
+  .coil form,
   .coil .settings-sidebar {
-    width: 90%; } }
+    width: 100%; } }
