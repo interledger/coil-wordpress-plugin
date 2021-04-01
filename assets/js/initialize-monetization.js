@@ -4,7 +4,7 @@
 	}
 
 	var content_container = coil_params.content_container,
-		browser_extension_missing = coil_params.browser_extension_missing,
+		fully_gated = coil_params.fully_gated,
 		unable_to_verify = coil_params.unable_to_verify,
 		voluntary_donation = coil_params.voluntary_donation,
 		loading_content = coil_params.loading_content,
@@ -80,7 +80,7 @@
 
 		var modalData = {
 			headerLogo: site_logo,
-			title: 'This content is for Coil members only',
+			title: 'This content is for Paying Viewers Only',
 			content: message,
 			button: {
 				text: learn_more_button_text,
@@ -115,7 +115,7 @@
 
 	/**
 	 * Overlay "Split Content" blocks with a message when set to
-	 * show for monetized users. This will display if the browser is
+	 * Only Show Paying Viewers. This will display if the browser is
 	 * not compatible or verified.
 	 * @param string Message from coil_params.
 	 */
@@ -359,7 +359,7 @@
 
 		if ( isSubscribersOnly() ) {
 
-			$( content_container ).before( showSubscriberOnlyMessage( browser_extension_missing ) );
+			$( content_container ).before( showSubscriberOnlyMessage( fully_gated ) );
 
 			if ( isExcerptEnabled() && getContentExcerpt() ) {
 				document.body.classList.add( 'show-excerpt-message' );

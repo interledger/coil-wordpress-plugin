@@ -57,13 +57,15 @@ function register_term_meta() {
  */
 function get_monetization_setting_types( $show_default = false ) : array {
 
+	$settings = [];
+
 	if ( true === $show_default ) {
 		$settings['default'] = esc_html__( 'Use Default', 'coil-web-monetization' );
 	}
 
 	$settings['no']        = esc_html__( 'No Monetization', 'coil-web-monetization' );
 	$settings['no-gating'] = esc_html__( 'Monetized and Public', 'coil-web-monetization' );
-	$settings['gate-all']  = esc_html__( 'Coil Members Only', 'coil-web-monetization' );
+	$settings['gate-all']  = esc_html__( 'Paying Viewers Only', 'coil-web-monetization' );
 
 	return $settings;
 }
@@ -77,7 +79,7 @@ function get_monetization_setting_types( $show_default = false ) : array {
 function get_valid_gating_types() {
 
 	$valid = [
-		'gate-all', // Coil members only.
+		'gate-all', // Paying Viewers Only.
 		'gate-tagged-blocks', // split content.
 		'no', // no monetization.
 		'no-gating', // monetixed and public.
@@ -106,7 +108,7 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 		return $title;
 	}
 
-	if ( ! get_theme_mod( 'coil_title_padlock', true ) ) {
+	if ( ! Admin\get_visual_settings( 'coil_title_padlock', true ) ) {
 		return $title;
 	}
 
@@ -302,7 +304,7 @@ function get_content_gating( $post_id ) : string {
 	$post_gating = get_post_gating( $post_id );
 
 	// Set a default monetization value.
-	$content_gating = 'no';
+	$content_gating = 'no-gating';
 
 	// Hierarchy 1 - Check what is set on the post.
 	if ( 'default' !== $post_gating ) {
@@ -343,7 +345,7 @@ function get_content_gating( $post_id ) : string {
  */
 function get_global_posts_gating() : array {
 
-	$global_settings = get_option( 'coil_content_settings_posts_group' );
+	$global_settings = get_option( 'coil_monetization_settings_group' );
 	if ( ! empty( $global_settings ) ) {
 		return $global_settings;
 	}

@@ -40,7 +40,7 @@ For user documentation, visit our [help center](https://help.coil.com/for-creato
 Our plugin lets you add monetization to all or some of your pages and posts.
 
 * Monetized and Public (default) - Allow all visitors to see the content, get paid when your visitor is a Coil Member
-* Coil Members Only - Only allow Coil Members to see the content
+* Paying Viewers Only - Only allow Coil Members to see the content
 * No Monetization - Allow all visitors to see the content, don't get paid when your visitor is a Coil Member
 
 The plugin is supported with the Classic and Block/Gutenberg editors. Monetization can be assigned globally to pages and posts, to individual pages and posts, and to tags and categories. If you're using the Gutenberg editor, you can choose to monetize at the block level.
