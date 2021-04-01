@@ -45,15 +45,7 @@ function register_admin_menu() : void {
  */
 function register_admin_content_settings() {
 
-	// Tab 1 - Getting Started.
-	add_settings_section(
-		'coil_getting_started_settings_section',
-		false,
-		__NAMESPACE__ . '\coil_getting_started_settings_render_callback',
-		'coil_getting_started_settings'
-	);
-
-	// Tab 2 - Global Settings.
+	// Tab 1 - Global Settings.
 	register_setting(
 		'coil_global_settings_group',
 		'coil_global_settings_group',
@@ -92,7 +84,7 @@ function register_admin_content_settings() {
 		'coil_global_settings_bottom_section'
 	);
 
-	// Tab 3 - Monetization Settings.
+	// Tab 2 - Content Settings.
 	register_setting(
 		'coil_monetization_settings_group',
 		'coil_monetization_settings_group',
@@ -132,7 +124,7 @@ function register_admin_content_settings() {
 		'coil_visual_settings_section'
 	);
 
-	// Tab 4 - Excerpt settings.
+	// Tab 3 - Excerpt settings.
 	register_setting(
 		'coil_content_settings_excerpt_group',
 		'coil_content_settings_excerpt_group',
@@ -146,14 +138,7 @@ function register_admin_content_settings() {
 		'coil_content_settings_excerpts'
 	);
 
-	// Tab 5 - Messaging settings.
-	register_setting(
-		'coil_messaging_settings_group',
-		'coil_messaging_settings_group',
-		__NAMESPACE__ . '\coil_messaging_settings_validation'
-	);
-
-	// === Fully gated content message
+	// Tab 4 - Messaging settings.
 	add_settings_section(
 		'coil_fully_gated_content_message',
 		__( 'Paying Viewers Only message', 'coil-web-monetization' ),
@@ -335,31 +320,58 @@ function coil_visual_settings_validation( $visual_settings ) : array {
 function coil_getting_started_settings_render_callback() {
 
 	?>
-	<h3><?php esc_html_e( 'How-to guides', 'coil-web-monetization' ); ?></h3>
-<ul>
-		<?php
-		printf(
-			'<li><a target="_blank" href="%1$s">%2$s</a></li>',
-			esc_url( 'https://help.coil.com/docs/monetize/content/wp-overview/' ),
-			esc_html__( 'How to configure and use the Coil WordPress plugin', 'coil-web-monetization' )
-		);
-		?>
-		<?php
-		printf(
-			'<li><a target="_blank" href="%1$s">%2$s</a></li>',
-			esc_url( 'https://help.coil.com/docs/general-info/intro-to-coil/' ),
-			esc_html__( 'Learn more about Coil and Web Monetization', 'coil-web-monetization' )
-		);
-		?>
-		<?php
-		printf(
-			'<li><a target="_blank" href="%1$s">%2$s</a></li>',
-			esc_url( 'https://help.coil.com/docs/monetize/get-creator-account/' ),
-			esc_html__( 'Get a free Coil Creator account', 'coil-web-monetization' )
-		);
-		?>
-	</ul>
+	<div class="coil settings-sidebar">
+		<header>
+			<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+				<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+					<g id="help-wheel" fill="#EE8249" fill-rule="nonzero">
+						<path d="M11,21.5 C9.073,21.5 7.186,20.97 5.545,19.969 C5.545,19.969 5.531,19.96 5.524,19.956 C4.112,19.09 2.908,17.885 2.042,16.473 C2.038,16.467 2.031,16.455 2.031,16.455 C1.03,14.813 0.5,12.927 0.5,11 C0.5,9.073 1.03,7.187 2.031,5.545 C2.031,5.545 2.042,5.528 2.047,5.52 C3.978,2.377 7.325,0.5 11,0.5 C14.677,0.5 18.024,2.378 19.955,5.523 C19.96,5.53 19.969,5.545 19.969,5.545 C20.97,7.186 21.5,9.073 21.5,11 C21.5,12.927 20.97,14.814 19.969,16.455 C19.969,16.455 19.962,16.466 19.959,16.471 C19.092,17.886 17.886,19.093 16.47,19.96 C16.465,19.963 16.455,19.97 16.455,19.97 C14.814,20.97 12.927,21.5 11,21.5 Z M7.123,19.12 C8.328,19.697 9.658,20 11,20 C12.342,20 13.672,19.697 14.877,19.12 L11.25,15.493 C11.164,15.498 11.081,15.5 11,15.5 C10.919,15.5 10.837,15.498 10.751,15.492 L7.123,19.12 Z M3.668,16.211 C4.254,17.034 4.966,17.746 5.789,18.333 L9.063,15.06 C8.136,14.616 7.385,13.865 6.941,12.938 L3.668,16.211 Z M16.211,18.332 C17.035,17.746 17.746,17.034 18.333,16.21 L15.059,12.937 C14.615,13.863 13.864,14.614 12.938,15.058 L16.211,18.332 Z M19.12,14.877 C19.697,13.672 20,12.342 20,11 C20,9.658 19.697,8.328 19.12,7.123 L15.493,10.75 C15.498,10.836 15.5,10.919 15.5,11 C15.5,11.082 15.498,11.165 15.492,11.251 L19.12,14.877 Z M2.88,7.123 C2.303,8.328 2,9.658 2,11 C2,12.342 2.303,13.672 2.88,14.877 L6.508,11.25 C6.503,11.164 6.5,11.081 6.5,11 C6.5,10.919 6.503,10.836 6.508,10.75 L2.88,7.123 Z M11,8 C9.346,8 8,9.346 8,11 C8,12.654 9.346,14 11,14 C12.654,14 14,12.654 14,11 C14,9.346 12.654,8 11,8 Z M6.941,9.063 C7.385,8.137 8.136,7.385 9.062,6.942 L5.789,3.668 C4.965,4.254 4.254,4.966 3.668,5.789 L6.941,9.063 Z M12.938,6.941 C13.864,7.385 14.615,8.136 15.059,9.062 L18.332,5.789 C17.746,4.966 17.034,4.254 16.211,3.668 L12.938,6.941 Z M10.75,6.508 C10.836,6.503 10.919,6.5 11,6.5 C11.081,6.5 11.164,6.503 11.25,6.508 L14.878,2.881 C13.672,2.303 12.342,2 11,2 C9.658,2 8.328,2.303 7.122,2.88 L10.75,6.508 Z" id="Shape"></path>
+					</g>
+				</g>
+			</svg>
 
+			<h3><?php esc_html_e( 'Useful links &amp; how to guides', 'coil-web-monetization' ); ?></h3>
+		</header>
+		<section>
+			<ul>
+				<?php
+				printf(
+					'<li><a target="_blank" href="%1$s">%2$s</a></li>',
+					esc_url( 'https://help.coil.com/docs/monetize/content/wp-overview/' ),
+					esc_html__( 'How to configure the Coil plugin', 'coil-web-monetization' )
+				);
+				?>
+				<?php
+				printf(
+					'<li><a target="_blank" href="%1$s">%2$s</a></li>',
+					esc_url( 'https://help.coil.com/docs/monetize/content/wp-faq-troubleshooting' ),
+					esc_html__( 'FAQs and Troubleshooting', 'coil-web-monetization' )
+				);
+				?>
+				<?php
+				printf(
+					'<li><a target="_blank" href="%1$s">%2$s</a></li>',
+					esc_url( 'https://help.coil.com/docs/general-info/intro-to-coil/' ),
+					esc_html__( 'About Coil and Web Monetization', 'coil-web-monetization' )
+				);
+				?>
+				<?php
+				printf(
+					'<li><a target="_blank" href="%1$s">%2$s</a></li>',
+					esc_url( 'https://webmonetization.org/docs/ilp-wallets' ),
+					esc_html__( 'Digital wallets and payment pointers', 'coil-web-monetization' )
+				);
+				?>
+				<?php
+				printf(
+					'<li><a target="_blank" href="%1$s">%2$s</a></li>',
+					esc_url( 'https://help.coil.com/docs/monetize/get-creator-account/' ),
+					esc_html__( 'Get a free Coil creator account', 'coil-web-monetization' )
+				);
+				?>
+			</ul>
+		</section>
+	</div>
 	<?php
 }
 
@@ -374,7 +386,7 @@ function coil_global_settings_payment_pointer_render_callback() {
 		esc_attr( 'coil_payment_pointer_id' ),
 		esc_attr( Admin\get_global_settings( 'coil_payment_pointer_id' ) ),
 		esc_attr( '$wallet.example.com/alice' ),
-		esc_attr( 'min-width: 440px' )
+		esc_attr( '' )
 	);
 
 	echo '<p class="' . esc_attr( 'description' ) . '">';
@@ -407,7 +419,7 @@ function coil_global_settings_advanced_config_render_callback() {
 		esc_attr( 'coil_content_container' ),
 		esc_attr( Admin\get_global_settings( 'coil_content_container' ) ),
 		esc_attr( '.content-area .entry-content' ),
-		esc_attr( 'min-width: 440px' )
+		esc_attr( '' )
 	);
 
 	echo '<p class="description">';
@@ -757,59 +769,61 @@ function render_coil_settings_screen() : void {
 	?>
 	<div class="wrap coil plugin-settings">
 
-	<div class="plugin-branding">
-		<svg id="coil-icn-32" float="left" width="40" height="40" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<path fill-rule="evenodd" clip-rule="evenodd" d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM22.2293 20.7672C21.8378 19.841 21.2786 19.623 20.8498 19.623C20.6964 19.623 20.5429 19.6534 20.4465 19.6725C20.4375 19.6743 20.429 19.676 20.421 19.6775C20.2663 19.7435 20.1103 19.8803 19.9176 20.0493C19.3674 20.5319 18.5178 21.277 16.5435 21.3846H16.2266C14.1759 21.3846 12.2744 20.3313 11.305 18.6423C10.8576 17.8433 10.6339 16.9534 10.6339 16.0635C10.6339 15.0283 10.9322 13.975 11.5474 13.067C12.0134 12.3587 12.9269 11.2145 14.5674 10.7242C15.3504 10.4881 16.0401 10.3973 16.6367 10.3973C18.5009 10.3973 19.3584 11.3598 19.3584 12.0681C19.3584 12.4495 19.1161 12.7582 18.65 12.8127C18.5941 12.8309 18.5568 12.8309 18.5009 12.8309C18.3331 12.8309 18.1467 12.7945 17.9976 12.7037C17.9416 12.6674 17.8671 12.6493 17.7925 12.6493C17.2146 12.6493 16.413 13.6299 16.413 14.4653C16.413 15.0828 16.8604 15.6276 18.184 15.6276C18.4049 15.6276 18.6392 15.6016 18.9094 15.5716C18.9584 15.5661 19.0086 15.5606 19.0602 15.555C20.5142 15.3552 21.7633 14.3382 22.1361 13.0125C22.192 12.849 22.248 12.5766 22.248 12.2134C22.248 11.378 21.9124 10.0886 20.2905 8.90811C19.1347 8.05455 17.8111 7.80029 16.618 7.80029C15.3877 7.80029 14.3064 8.07271 13.6912 8.27248C11.2677 9.05339 9.88822 10.4881 9.17981 11.5778C8.26635 12.9398 7.80029 14.5198 7.80029 16.0998C7.80029 17.4619 8.13585 18.8058 8.82561 20.0226C10.2983 22.6014 13.1506 24.1996 16.2266 24.1996C16.3011 24.1996 16.3804 24.195 16.4596 24.1905C16.5388 24.186 16.618 24.1814 16.6926 24.1814C18.7619 24.0725 22.3225 22.6922 22.3225 21.1667C22.3225 21.0396 22.2853 20.8943 22.2293 20.7672Z" fill="black"/>
-		</svg>
-		<h1 class="plugin-branding"><?php _e( 'Coil Web Monetization', 'coil-web-monetization' ); ?></h1>
-	</div>
+		<div class="wrap coil plugin-header">
+			<div class="plugin-branding">
+				<svg id="coil-icn-32" float="left" width="40" height="40" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM22.2293 20.7672C21.8378 19.841 21.2786 19.623 20.8498 19.623C20.6964 19.623 20.5429 19.6534 20.4465 19.6725C20.4375 19.6743 20.429 19.676 20.421 19.6775C20.2663 19.7435 20.1103 19.8803 19.9176 20.0493C19.3674 20.5319 18.5178 21.277 16.5435 21.3846H16.2266C14.1759 21.3846 12.2744 20.3313 11.305 18.6423C10.8576 17.8433 10.6339 16.9534 10.6339 16.0635C10.6339 15.0283 10.9322 13.975 11.5474 13.067C12.0134 12.3587 12.9269 11.2145 14.5674 10.7242C15.3504 10.4881 16.0401 10.3973 16.6367 10.3973C18.5009 10.3973 19.3584 11.3598 19.3584 12.0681C19.3584 12.4495 19.1161 12.7582 18.65 12.8127C18.5941 12.8309 18.5568 12.8309 18.5009 12.8309C18.3331 12.8309 18.1467 12.7945 17.9976 12.7037C17.9416 12.6674 17.8671 12.6493 17.7925 12.6493C17.2146 12.6493 16.413 13.6299 16.413 14.4653C16.413 15.0828 16.8604 15.6276 18.184 15.6276C18.4049 15.6276 18.6392 15.6016 18.9094 15.5716C18.9584 15.5661 19.0086 15.5606 19.0602 15.555C20.5142 15.3552 21.7633 14.3382 22.1361 13.0125C22.192 12.849 22.248 12.5766 22.248 12.2134C22.248 11.378 21.9124 10.0886 20.2905 8.90811C19.1347 8.05455 17.8111 7.80029 16.618 7.80029C15.3877 7.80029 14.3064 8.07271 13.6912 8.27248C11.2677 9.05339 9.88822 10.4881 9.17981 11.5778C8.26635 12.9398 7.80029 14.5198 7.80029 16.0998C7.80029 17.4619 8.13585 18.8058 8.82561 20.0226C10.2983 22.6014 13.1506 24.1996 16.2266 24.1996C16.3011 24.1996 16.3804 24.195 16.4596 24.1905C16.5388 24.186 16.618 24.1814 16.6926 24.1814C18.7619 24.0725 22.3225 22.6922 22.3225 21.1667C22.3225 21.0396 22.2853 20.8943 22.2293 20.7672Z" fill="black"/>
+				</svg>
+				<h3 class="plugin-branding"><?php _e( 'Coil Web Monetization', 'coil-web-monetization' ); ?></h3>
+			</div>
+			<?php $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'global_settings'; ?>
 
-		<?php settings_errors(); ?>
+			<h2 class="nav-tab-wrapper">
+				<a href="<?php echo esc_url( '?page=coil_settings&tab=global_settings' ); ?>" id="coil-global-settings" class="nav-tab <?php echo $active_tab === 'global_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Global Settings', 'coil-web-monetization' ); ?></a>
+				<a href="<?php echo esc_url( '?page=coil_settings&tab=monetization_settings' ); ?>" id="coil-monetization-settings" class="nav-tab <?php echo $active_tab === 'monetization_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Monetization Settings', 'coil-web-monetization' ); ?></a>
+				<a href="<?php echo esc_url( '?page=coil_settings&tab=excerpt_settings' ); ?>" id="coil-excerpt-settings" class="nav-tab <?php echo $active_tab === 'excerpt_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Excerpt Settings', 'coil-web-monetization' ); ?></a>
+				<a href="<?php echo esc_url( '?page=coil_settings&tab=messaging_settings' ); ?>" id="coil-messaging-settings" class="nav-tab <?php echo $active_tab === 'messaging_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Messaging Settings', 'coil-web-monetization' ); ?></a>
+			</h2>
+		</div>
+		<div class="wrap coil plugin-settings">
 
-		<?php
-		$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'getting_started';
-		?>
+			<?php coil_getting_started_settings_render_callback(); ?>
 
-		<h2 class="nav-tab-wrapper">
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=getting_started' ); ?>" id="coil-getting-started" class="nav-tab <?php echo $active_tab === 'getting_started' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Getting Started', 'coil-web-monetization' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=global_settings' ); ?>" id="coil-global-settings" class="nav-tab <?php echo $active_tab === 'global_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Global Settings', 'coil-web-monetization' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=monetization_settings' ); ?>" id="coil-monetization-settings" class="nav-tab <?php echo $active_tab === 'monetization_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Monetization Settings', 'coil-web-monetization' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=excerpt_settings' ); ?>" id="coil-excerpt-settings" class="nav-tab <?php echo $active_tab === 'excerpt_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Excerpt Settings', 'coil-web-monetization' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=messaging_settings' ); ?>" id="coil-messaging-settings" class="nav-tab <?php echo $active_tab === 'messaging_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Messaging Settings', 'coil-web-monetization' ); ?></a>
-		</h2>
+			<?php settings_errors(); ?>
 
-		<form action="options.php" method="post">
-			<?php
-			switch ( $active_tab ) {
-				case 'getting_started':
-					do_settings_sections( 'coil_getting_started_settings' );
-					break;
-				case 'global_settings':
-					settings_fields( 'coil_global_settings_group' );
-					do_settings_sections( 'coil_global_settings_global' );
-					do_settings_sections( 'coil_global_settings_advanced' );
-					submit_button();
-					break;
-				case 'monetization_settings':
-					settings_fields( 'coil_monetization_settings_group' );
-					do_settings_sections( 'coil_content_settings_posts' );
-					settings_fields( 'coil_monetization_settings_group' );
-					do_settings_sections( 'coil_visual_settings' );
-					submit_button();
-					break;
-				case 'excerpt_settings':
-					settings_fields( 'coil_content_settings_excerpt_group' );
-					do_settings_sections( 'coil_content_settings_excerpts' );
-					submit_button();
-					break;
-				case 'messaging_settings':
-					settings_fields( 'coil_messaging_settings_group' );
-					do_settings_sections( 'coil_messaging_settings' );
-					submit_button();
-					break;
-			}
-			?>
-		</form>
+			<form action="options.php" method="post">
+				<?php
+				switch ( $active_tab ) {
+					case 'getting_started':
+						do_settings_sections( 'coil_getting_started_settings' );
+						break;
+					case 'global_settings':
+						settings_fields( 'coil_global_settings_group' );
+						do_settings_sections( 'coil_global_settings_global' );
+						do_settings_sections( 'coil_global_settings_advanced' );
+						submit_button();
+						break;
+					case 'monetization_settings':
+						settings_fields( 'coil_monetization_settings_group' );
+						do_settings_sections( 'coil_content_settings_posts' );
+						settings_fields( 'coil_monetization_settings_group' );
+						do_settings_sections( 'coil_visual_settings' );
+						submit_button();
+						break;
+					case 'excerpt_settings':
+						settings_fields( 'coil_content_settings_excerpt_group' );
+						do_settings_sections( 'coil_content_settings_excerpts' );
+						submit_button();
+						break;
+					case 'messaging_settings':
+						settings_fields( 'coil_messaging_settings_group' );
+						do_settings_sections( 'coil_messaging_settings' );
+						submit_button();
+						break;
+				}
+				?>
+			</form>
+		</div>
 	</div>
 	<?php
 }
