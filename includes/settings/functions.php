@@ -391,7 +391,7 @@ function coil_global_settings_payment_pointer_render_callback() {
 
 	echo '<p class="' . esc_attr( 'description' ) . '">';
 
-	$payment_pointer_description = esc_html__( 'Enter the payment pointer assigned by your digital wallet provider. Don\'t have a digital wallet or know your payment pointer? Click the button below.', 'coil-web-monetization' );
+	$payment_pointer_description = esc_html__( 'Enter the payment pointer assigned by your digital wallet provider. Don\'t have a digital wallet or know your payment pointer?', 'coil-web-monetization' );
 	echo $payment_pointer_description . '</p>'; // phpcs:ignore. Output already escaped.
 
 	printf(
