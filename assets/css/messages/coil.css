@@ -203,7 +203,7 @@ body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-messa
 body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container {
   text-align: center;
   font-family: 'Open Sans';
-  color: rgba(0, 0, 0, 0.7); }
+  color: #2c333a; }
   body.coil-gate-all.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-inner,
   body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-inner,
   body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container .coil-message-inner,
@@ -292,7 +292,8 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-
   body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container .coil-message-header a.coil-message-button {
     padding: 13px 16px;
     text-align: center;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: #2c333a;
+    border-radius: 6px;
     color: white;
     font-size: 16px;
     line-height: 24px;
@@ -409,14 +410,15 @@ body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-c
     font-family: 'Open Sans';
     position: relative;
     border: 1px solid #e3e3e3;
-    box-shadow: 0 6px 10px 0 rgba(194, 194, 194, 0.2); }
+    box-shadow: 0 6px 10px 0 rgba(194, 194, 194, 0.1); }
     @media only screen and (min-width: 768px) {
       .coil-banner-message-container .banner-message-inner {
         background-color: rgba(255, 255, 255, 0.8);
         display: flex;
         padding: 12px 32px;
         justify-content: space-around;
-        border-radius: 41px;
+        border-radius: 6px;
+        margin-bottom: 20px;
         align-items: center; } }
   .coil-banner-message-container .coil-banner-message-content {
     font-size: 12px;
@@ -431,7 +433,8 @@ body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-c
   .coil-banner-message-container .coil-banner-message-button {
     padding: 8px 24px;
     text-align: center;
-    background-color: #575756;
+    background-color: #2c333a;
+    border-radius: 6px;
     color: white;
     font-size: 14px;
     line-height: 20px;
@@ -461,7 +464,8 @@ body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-c
 
 a.coil-serverside-message-button {
   padding: 13px 16px;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: #2c333a;
+  border-radius: 6px;
   color: white;
   font-size: 16px;
   line-height: 24px;

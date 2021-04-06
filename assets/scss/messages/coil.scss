@@ -71,6 +71,7 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 				padding: 13px $message_spacing_baseline * 2;
 				text-align: center;
 				background-color: $message_font_colour;
+				border-radius: 6px;
 				color: white;
 				font-size: $message_spacing_baseline * 2;
 				line-height: $message_spacing_baseline * 3;
@@ -188,7 +189,8 @@ body.coil-gate-all.coil-extension-not-found.show-excerpt-message {
 			display: flex;
 			padding: 12px $message_spacing_baseline * 4;
 			justify-content: space-around;
-			border-radius: 41px;
+			border-radius: 6px;
+			margin-bottom: 20px;
 			align-items: center;
 		}
 	}
@@ -210,6 +212,7 @@ body.coil-gate-all.coil-extension-not-found.show-excerpt-message {
 		padding: $message_spacing_baseline $message_spacing_baseline * 3;
 		text-align: center;
 		background-color: $message_banner_button_colour;
+		border-radius: 6px;
 		color: white;
 		font-size: 14px;
 		line-height: 20px;
@@ -247,6 +250,7 @@ body.coil-gate-all.coil-extension-not-found.show-excerpt-message {
 a.coil-serverside-message-button {
 	padding: 13px $message_spacing_baseline * 2;
 	background-color: $message_font_colour;
+	border-radius: 6px;
 	color: white;
 	font-size: $message_spacing_baseline * 2;
 	line-height: $message_spacing_baseline * 3;
