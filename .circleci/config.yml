@@ -8,6 +8,7 @@ jobs:
      - run: npm install
      - run: npm run build
      - run: npx grunt build
+     - run: npx eslint initialize-monetization.js
  php_linting:
    docker:
      - image: cimg/php:8.0.3
