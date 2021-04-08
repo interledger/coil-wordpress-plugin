@@ -4,7 +4,7 @@
 	}
 
 	const contentContainer = coilParams.content_container,
-		browserExtensionMissing = ccoilParams.browser_extension_missing,
+		browserExtensionMissing = coilParams.browser_extension_missing,
 		unableToVerify = coilParams.unable_to_verify,
 		voluntaryDonation = coilParams.voluntary_donation,
 		loadingContent = coilParams.loading_content,
