@@ -2,9 +2,9 @@
  * WordPress dependencies
  */
 const { withSelect, withDispatch } = wp.data;
-const { compose }                  = wp.compose;
-const { Component }                = wp.element;
-const { withSpokenMessages }       = wp.components;
+const { compose } = wp.compose;
+const { Component } = wp.element;
+const { withSpokenMessages } = wp.components;
 
 export class MonetizedMode extends Component {
 	componentDidMount() {
@@ -32,12 +32,12 @@ export class MonetizedMode extends Component {
 
 export default compose( [
 	withSelect( ( select ) => ( {
-		isActive: select( 'core/editor' ).getEditedPostAttribute( 'meta' )[ '_coil_monetize_post_status' ],
+		isActive: select( 'core/editor' ).getEditedPostAttribute( 'meta' )._coil_monetize_post_status,
 	} ) ),
 	withDispatch( ( dispatch ) => ( {
 		isActive: dispatch( 'core/editor' ).editPost( {
 			meta: {
-				[ '_coil_monetize_post_status' ]: isActive
+				_coil_monetize_post_status: isActive,
 			},
 		} ),
 	} ) ),
