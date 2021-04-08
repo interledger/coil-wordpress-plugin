@@ -4,7 +4,7 @@ Plugin URI: https://coil.com
 Contributors: coil, pragmaticagency
 Tags: coil, content, monetization, payment, interledger, ilp
 Requires at least: 5.0+
-Requires PHP: 7.1
+Requires PHP: 7.2
 Tested up to: 5.3
 Stable tag: 1.7.0
 License: Apache-2.0

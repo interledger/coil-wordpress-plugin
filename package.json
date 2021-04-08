@@ -7,7 +7,7 @@
 	"author_uri": "https://coil.com/",
 	"homepage": "https://wordpress.org/plugins/coil-web-monetization",
 	"requires": "4.9",
-	"requires_php": "7.1",
+	"requires_php": "7.2",
 	"tested_up_to": "5.3",
 	"license": "Apache-2.0",
 	"description": "Coil offers an effortless way to share WordPress content online, and get paid for it.",
