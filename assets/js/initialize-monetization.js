@@ -33,6 +33,7 @@
 		let element;
 
 		// Use try-catch to handle invalid CSS selectors.
+		// Accesses coil_params object because it is called before contentContainer has been defined.
 		try {
 			element = document.querySelector( coil_params.content_container );
 		} catch ( e ) {
@@ -270,7 +271,7 @@
 	/**
 	 * Add a function to remove the banner and set a Cookie.
 	 *
-	 * @param {int} expiresInDays Define when the cookie will be removed.
+	 * @param {String} cookieName Define when the cookie will be removed.
 	 * @see https://github.com/js-cookie/js-cookie
 	 */
 	function addBannerDismissClickHandler( cookieName ) {
@@ -451,11 +452,12 @@
 	/**
 	 * The listener callback for monetization starting.
 	 *
+	 * @param {object} event The monetizationstart event
+	 *
 	 * @return {void}
 	 */
 	function monetizationStartListener( event ) {
 		monetizationStartEventOccurred = true;
-
 		if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
 			showContentContainer();
 			document.body.classList.remove( 'show-fw-message' );
@@ -497,12 +499,13 @@
 
 	/**
 	 * The listener callback for monetization progress.
+	 * @param {object} event The monetizationprogress event
 	 *
 	 * @return {void}
 	 */
 	function monetizationProgressListener( event ) {
 		// Connect to backend to validate the payment.
-		let paymentPointer = event.detail.paymentPointer,
+		const paymentPointer = event.detail.paymentPointer,
 			requestId = event.detail.requestId,
 			amount = event.detail.amount,
 			assetCode = event.detail.assetCode,

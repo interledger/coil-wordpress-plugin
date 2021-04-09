@@ -20,90 +20,92 @@ const { PanelBody, RadioControl } = wp.components;
 const { registerPlugin } = wp.plugins;
 const { PluginDocumentSettingPanel } = wp.editPost; // WP >= 5.3.
 
-// Allow only specific blocks to use the extension attribute.
-const allowedBlocks = [
-	'core/paragraph',
-	'core/heading',
-	'core/image',
-	'core/gallery',
-	'core/verse',
-	'core/spacer',
-	'core/subhead',
-	'core/preformatted',
-	'core/code',
-	'core/cover',
-	'core/group',
-	'core/columns',
-	'core/media-text',
-	'core/pullquote',
-	'core/quote',
-	'core/button',
-	'core/list',
-	'core/separator',
-	'core/text-columns',
-	'core/video',
-	'core/audio',
-	'core-embed',
-	'core-embed/youtube',
-	'core-embed/twitter',
-	'core-embed/facebook',
-	'core-embed/instagram',
-	'core-embed/wordpress',
-	'core-embed/soundcloud',
-	'core-embed/spotify',
-	'core-embed/flickr',
-	'core-embed/vimeo',
-	'core-embed/animoto',
-	'core-embed/cloudup',
-	'core-embed/collegehumor',
-	'core-embed/crowdsignal',
-	'core-embed/dailymotion',
-	'core-embed/hulu',
-	'core-embed/imgur',
-	'core-embed/issuu',
-	'core-embed/kickstarter',
-	'core-embed/meetup-com',
-	'core-embed/mixcloud',
-	'core-embed/reddit',
-	'core-embed/reverbnation',
-	'core-embed/screencast',
-	'core-embed/scribd',
-	'core-embed/slideshare',
-	'core-embed/smugmug',
-	'core-embed/speaker-deck',
-	'core-embed/ted',
-	'core-embed/tumblr',
-	'core-embed/videopress',
-	'core-embed/wordpress-tv',
-	'core-embed/amazon-kindle',
-];
+// // Allow only specific blocks to use the extension attribute. - Disabled for now!
+// const allowedBlocks = [
+// 	'core/paragraph',
+// 	'core/heading',
+// 	'core/image',
+// 	'core/gallery',
+// 	'core/verse',
+// 	'core/spacer',
+// 	'core/subhead',
+// 	'core/preformatted',
+// 	'core/code',
+// 	'core/cover',
+// 	'core/group',
+// 	'core/columns',
+// 	'core/media-text',
+// 	'core/pullquote',
+// 	'core/quote',
+// 	'core/button',
+// 	'core/list',
+// 	'core/separator',
+// 	'core/text-columns',
+// 	'core/video',
+// 	'core/audio',
+// 	'core-embed',
+// 	'core-embed/youtube',
+// 	'core-embed/twitter',
+// 	'core-embed/facebook',
+// 	'core-embed/instagram',
+// 	'core-embed/wordpress',
+// 	'core-embed/soundcloud',
+// 	'core-embed/spotify',
+// 	'core-embed/flickr',
+// 	'core-embed/vimeo',
+// 	'core-embed/animoto',
+// 	'core-embed/cloudup',
+// 	'core-embed/collegehumor',
+// 	'core-embed/crowdsignal',
+// 	'core-embed/dailymotion',
+// 	'core-embed/hulu',
+// 	'core-embed/imgur',
+// 	'core-embed/issuu',
+// 	'core-embed/kickstarter',
+// 	'core-embed/meetup-com',
+// 	'core-embed/mixcloud',
+// 	'core-embed/reddit',
+// 	'core-embed/reverbnation',
+// 	'core-embed/screencast',
+// 	'core-embed/scribd',
+// 	'core-embed/slideshare',
+// 	'core-embed/smugmug',
+// 	'core-embed/speaker-deck',
+// 	'core-embed/ted',
+// 	'core-embed/tumblr',
+// 	'core-embed/videopress',
+// 	'core-embed/wordpress-tv',
+// 	'core-embed/amazon-kindle',
+// ];
 
-// Restrict the blocks the extension attribute can not be applied to.
-const restrictedBlocks = [
-	'core/block',
-	'core/freeform',
-	'core/shortcode',
-	'core/template',
-	'core/nextpage',
-];
+// // Restrict the blocks the extension attribute can not be applied to. - Disabled for now!
+// const restrictedBlocks = [
+// 	'core/block',
+// 	'core/freeform',
+// 	'core/shortcode',
+// 	'core/template',
+// 	'core/nextpage',
+// ];
 
-/**
- * Is the block allowed to support monetization.
- *
- * @param {string} name The name of the block.
- */
-function allowedBlockTypes( name ) {
-	return allowedBlocks.includes( name );
-}
+// - Disabled for now!
+// /**
+//  * Is the block allowed to support monetization.
+//  *
+//  * @param {string} name The name of the block.
+//  */
+// function allowedBlockTypes( name ) {
+// 	return allowedBlocks.includes( name );
+// }
 
-/**
- * Is the block not allowed to support monetization.
- *
- * @param {string} name The name of the block.
- */
-function restrictedBlockTypes( name ) {
-	return restrictedBlocks.includes( name );
-}
+// - Disabled for now!
+// /**
+//  * Is the block not allowed to support monetization.
+//  *
+//  * @param {string} name The name of the block.
+//  */
+// function restrictedBlockTypes( name ) {
+// 	return restrictedBlocks.includes( name );
+// }
 
 /**
 /**
@@ -135,7 +137,7 @@ function addAttributes( settings ) {
 	}
 
 	return settings;
-} // END addAttributes()
+}
 
 /**
  * Override the default edit UI to include a new block inspector control for
@@ -149,7 +151,7 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 		let showInspector = false;
 
 		const {
-			name,
+			//name, - Disabled for now!
 			attributes,
 			setAttributes,
 			isSelected,
