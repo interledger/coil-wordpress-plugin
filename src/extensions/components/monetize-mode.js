@@ -18,6 +18,7 @@ export class MonetizedMode extends Component {
 	sync() {
 		const { isActive } = this.props;
 
+		// Adds 'is-monetized' class to the html body if the content's gating is not undefined and is not set to No Monetization.
 		if ( typeof isActive !== 'undefined' && isActive !== 'no' ) {
 			document.body.classList.add( 'is-monetized' );
 		} else {
@@ -37,7 +38,7 @@ export default compose( [
 	withDispatch( ( dispatch ) => ( {
 		isActive: dispatch( 'core/editor' ).editPost( {
 			meta: {
-				_coil_monetize_post_status: isActive,
+				_coil_monetize_post_status: typeof isActive !== 'undefined' ? this.props.isActive : 'no',
 			},
 		} ),
 	} ) ),
