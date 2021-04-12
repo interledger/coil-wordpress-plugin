@@ -1,20 +1,23 @@
+/* global Cookies */
+/* global coilParams */
+
 ( function( $ ) {
-	if ( typeof coil_params === 'undefined' || ! hasContentContainer() ) {
+	if ( typeof coilParams === 'undefined' || ! hasContentContainer() ) {
 		return false;
 	}
 
-	const contentContainer = coil_params.content_container,
-		browserExtensionMissing = coil_params.browser_extension_missing,
-		unableToVerify = coil_params.unable_to_verify,
-		voluntaryDonation = coil_params.voluntary_donation,
-		loadingContent = coil_params.loading_content,
-		partialGating = coil_params.partial_gating,
-		postExcerpt = coil_params.post_excerpt,
-		adminMissingIdNotice = coil_params.admin_missing_id_notice,
-		learnMoreButtonText = coil_params.learn_more_button_text,
-		learnMoreButtonLink = coil_params.learn_more_button_link,
-		siteLogo = coil_params.site_logo,
-		showDonationBar = Boolean( coil_params.show_donation_bar ); // Cast to boolean - wp_localize_script forces string values.
+	const contentContainer = coilParams.content_container,
+		browserExtensionMissing = coilParams.browser_extension_missing,
+		unableToVerify = coilParams.unable_to_verify,
+		voluntaryDonation = coilParams.voluntary_donation,
+		loadingContent = coilParams.loading_content,
+		partialGating = coilParams.partial_gating,
+		postExcerpt = coilParams.post_excerpt,
+		adminMissingIdNotice = coilParams.admin_missing_id_notice,
+		learnMoreButtonText = coilParams.learn_more_button_text,
+		learnMoreButtonLink = coilParams.learn_more_button_link,
+		siteLogo = coilParams.site_logo,
+		showDonationBar = Boolean( coilParams.show_donation_bar ); // Cast to boolean - wp_localize_script forces string values.
 
 	const subscriberOnlyMessage = wp.template( 'subscriber-only-message' );
 	const splitContentMessage = wp.template( 'split-content-message' );
@@ -33,9 +36,9 @@
 		let element;
 
 		// Use try-catch to handle invalid CSS selectors.
-		// Accesses coil_params object because it is called before contentContainer has been defined.
+		// Accesses coilParams object because it is called before contentContainer has been defined.
 		try {
-			element = document.querySelector( coil_params.content_container );
+			element = document.querySelector( coilParams.content_container );
 		} catch ( e ) {
 			console.error( 'An error occured when attempting to retrieve the page. Invalid container.' );
 			return false;
@@ -67,7 +70,7 @@
 	}
 
 	/**
-	 * @param {String} message from coil_params.
+	 * @param {String} message from coilParams.
 	 * @return {object} Output the gated content message when content is
 	 * set to Member Only
 	 */
@@ -90,7 +93,7 @@
 	}
 
 	/**
-	 * @param {String} message from coil_params.
+	 * @param {String} message from coilParams.
 	 * @return {object} Output a slim banner message.
 	 */
 	function showBannerMessage( message ) {
@@ -110,7 +113,7 @@
 	}
 
 	/**
-	 * @param {String} message from coil_params.
+	 * @param {String} message from coilParams.
 	 * @return {object} Overlay "Split Content" blocks with a message when set to
 	 * show for monetized users. This will display if the browser is
 	 * not compatible or verified.

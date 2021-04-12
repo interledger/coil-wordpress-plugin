@@ -1,3 +1,5 @@
+/* global coilAdminParams */
+
 ( function( $ ) {
 	$( document ).ready( function() {
 		const activeTabID = $( '.nav-tab-wrapper a.nav-tab-active' ).attr( 'id' );
@@ -11,14 +13,14 @@
 				return;
 			}
 
-			if ( ! coil_admin_params || ! coil_admin_params.ajax_url ) {
+			if ( ! coilAdminParams || ! coilAdminParams.ajax_url ) {
 				return;
 			}
 
 			// Fire ajax request to dismiss notice permanently.
 			$welcomeNoticeDismissButton.on( 'click', function() {
 				$.ajax( {
-					url: coil_admin_params.ajax_url,
+					url: coilAdminParams.ajax_url,
 					type: 'POST',
 					data: {
 						action: 'dismiss_welcome_notice',

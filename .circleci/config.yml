@@ -7,6 +7,7 @@ jobs:
      - checkout # check out the code in the project directory
      - run: npm install
      - run: npx eslint src
+     - run: npx eslint assets/js
  php_linting:
    docker:
      - image: cimg/php:8.0.3
