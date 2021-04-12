@@ -1,14 +1,11 @@
 version: 2.0
 jobs:
- node_build:
+ js_linting:
    docker:
      - image: cimg/node:14.10.1 # the primary container, where your job's commands are run
    steps:
      - checkout # check out the code in the project directory
      - run: npm install
-     - run: npm run build
-     - run: npx grunt build
-     - run: npx eslint assets/js
      - run: npx eslint src
  php_linting:
    docker:
@@ -21,5 +18,5 @@ workflows:
  version: 2
  basic_build_and_linting:
    jobs:
-     - node_build
+     - js_linting
      - php_linting
