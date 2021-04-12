@@ -1,5 +1,6 @@
 /* global Cookies */
 /* global coilParams */
+/* global monetizationStartEventOccurred */
 
 ( function( $ ) {
 	if ( typeof coilParams === 'undefined' || ! hasContentContainer() ) {
