@@ -1,6 +1,5 @@
 /* global Cookies */
 /* global coilParams */
-/* global monetizationStartEventOccurred */
 
 ( function( $ ) {
 	if ( typeof coilParams === 'undefined' || ! hasContentContainer() ) {
@@ -25,6 +24,8 @@
 	const bannerMessage = wp.template( 'banner-message' );
 
 	const messageWrapper = $( 'p.monetize-msg' );
+
+	let monetizationStartEventOccurred = false;
 
 	/**
 	 *
@@ -438,7 +439,7 @@
 		setTimeout( function() {
 			// If the payment connection event listeners haven't yet been
 			// initialised, display failure message
-			if ( typeof monetizationStartEventOccurred === 'undefined' ) {
+			if ( monetizationStartEventOccurred === false ) {
 				if ( $( 'p.monetize-msg' ).text() === loadingContent ) {
 					// Monetization not started and verification failed.
 					showVerificationFailureMessage();
