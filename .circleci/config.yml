@@ -17,7 +17,7 @@ jobs:
      - run: composer phpcs
 workflows:
  version: 2
- basic_build_and_linting:
+ basic_linting_tests:
    jobs:
      - js_linting
      - php_linting
