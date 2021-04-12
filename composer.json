@@ -34,7 +34,7 @@
 		"post-update-cmd": "cghooks update",
 
 		"phpcs": [
-			"vendor/bin/phpcs -ps --colors --report-width=80 --cache=tests/phpunit/cache/phpcs.json --ignore=assets/,src/,templates/ ."
+			"vendor/bin/phpcs -ps --colors --report-width=80 --cache=tests/phpunit/cache/phpcs.json --ignore=assets/,src/,templates/,wp-cli.local.php ."
 		]
 	},
 	"extra": {
