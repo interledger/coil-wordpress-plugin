@@ -1,5 +1,5 @@
-.coil-hide-monetize-users:not(.has-warning),
-.coil-show-monetize-users:not(.has-warning) {
+.coil-hide-monetize-users:not( .has-warning ),
+.coil-show-monetize-users:not( .has-warning ) {
 	position: relative;
 
 	&::before {
@@ -15,7 +15,7 @@
 	}
 }
 
-.coil-hide-monetize-users:not(.has-warning) {
+.coil-hide-monetize-users:not( .has-warning ) {
 	&::before {
 		background-color: #ff0;
 		color: #000;
@@ -23,7 +23,7 @@
 	}
 }
 
-.coil-show-monetize-users:not(.has-warning) {
+.coil-show-monetize-users:not( .has-warning ) {
 	&::before {
 		background-color: #32ff00;
 		color: #000;
