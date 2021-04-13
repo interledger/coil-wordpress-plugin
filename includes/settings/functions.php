@@ -139,6 +139,12 @@ function register_admin_content_settings() {
 	);
 
 	// Tab 4 - Messaging settings.
+	register_setting(
+		'coil_messaging_settings_group',
+		'coil_messaging_settings_group',
+		__NAMESPACE__ . '\coil_messaging_settings_validation'
+	);
+
 	add_settings_section(
 		'coil_fully_gated_content_message',
 		__( 'Paying Viewers Only message', 'coil-web-monetization' ),
