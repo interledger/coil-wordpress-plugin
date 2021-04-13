@@ -15,7 +15,7 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 
 	.coil-message-container {
 		color: $message_font_colour;
-		font-family: 'Open Sans';
+		font-family: 'Open Sans', sans-serif;
 		text-align: center;
 
 		.coil-message-inner {
@@ -70,7 +70,7 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 			a.coil-message-button {
 				background-color: $message_font_colour;
 				border-radius: 6px;
-				color: white;
+				color: $white;
 				display: inline-block;
 				font-size: $message_spacing_baseline * 2;
 				font-weight: 600;
@@ -144,9 +144,9 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 	align-items: center;
 	background: #575756;
 	bottom: 0;
-	color: white;
+	color: $white;
 	display: flex;
-	font-family: 'Open Sans';
+	font-family: 'Open Sans', sans-serif;
 	font-size: 16px;
 	justify-content: center;
 	left: 0;
@@ -180,11 +180,11 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 	}
 
 	.banner-message-inner {
-		background-color: white;
+		background-color: $white;
 		border: 1px solid $message_banner_border_colour;
 		box-shadow: 0 6px 10px 0 $message_banner_shadow_colour;
 
-		font-family: 'Open Sans';
+		font-family: 'Open Sans', sans-serif;
 		padding: 23px $message_spacing_baseline * 2 $message_spacing_baseline * 2;
 		position: relative;
 
@@ -215,7 +215,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 	.coil-banner-message-button {
 		background-color: $message_banner_button_colour;
 		border-radius: 6px;
-		color: white;
+		color: $white;
 		font-size: 14px;
 		font-weight: 600;
 		line-height: 20px;
@@ -254,9 +254,9 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 a.coil-serverside-message-button {
 	background-color: $message_font_colour;
 	border-radius: 6px;
-	color: white;
+	color: $white;
 	display: inline-block;
-	font-family: 'Open Sans';
+	font-family: 'Open Sans', sans-serif;
 	font-size: $message_spacing_baseline * 2;
 	font-weight: 600;
 	line-height: $message_spacing_baseline * 3;

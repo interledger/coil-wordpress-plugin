@@ -3,7 +3,7 @@
 	position: relative;
 
 	&::before {
-		font-family: Arial;
+		font-family: Arial, sans-serif;
 		font-size: 12px;
 		height: 20px;
 		left: 0;
@@ -17,7 +17,7 @@
 
 .coil-hide-monetize-users:not(.has-warning) {
 	&::before {
-		background-color: yellow;
+		background-color: #ff0;
 		color: #000;
 		content: "Coil: This block will be hidden from monetized users.";
 	}
