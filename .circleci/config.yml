@@ -1,6 +1,6 @@
 version: 2.0
 jobs:
- js_linting:
+ js_scss_linting:
    docker:
      - image: cimg/node:14.10.1 # the primary container, where your job's commands are run
    steps:
@@ -21,5 +21,5 @@ workflows:
  version: 2
  basic_linting_tests:
    jobs:
-     - js_linting
+     - js_scss_linting
      - php_linting
