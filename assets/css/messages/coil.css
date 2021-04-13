@@ -373,8 +373,10 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
   display: none; }
 
 .coil-show-monetize-users span.coil-split-content-message {
-  color: white;
-  background: #575756;
+  color: #555d66;
+  background: white;
+  border: 1px solid #c4c4c4;
+  border-radius: 6px;
   margin: 0;
   text-align: center;
   font-family: 'Open Sans';
