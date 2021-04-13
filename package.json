@@ -71,7 +71,8 @@
 		"rules": {
 			"at-rule-empty-line-before": null,
 			"no-descending-specificity": null,
-			"order/properties-alphabetical-order": true
+			"order/properties-alphabetical-order": true,
+			"selector-pseudo-class-parentheses-space-inside": "always"
 		}
 	}
 }
