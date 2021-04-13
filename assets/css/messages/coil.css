@@ -193,15 +193,8 @@ body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-co
 body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container,
 body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container,
 body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container {
-  display: block !important; }
-
-body.coil-gate-all.coil-extension-not-found.show-fw-message .coil-message-container,
-body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container,
-body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container,
-body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container,
-body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container,
-body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container {
   color: #2c333a;
+  display: block !important;
   font-family: 'Open Sans', sans-serif;
   text-align: center; }
   body.coil-gate-all.coil-extension-not-found.show-fw-message .coil-message-container .coil-message-inner,

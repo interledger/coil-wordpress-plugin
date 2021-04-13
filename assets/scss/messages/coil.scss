@@ -10,11 +10,8 @@ body.monetization-not-initialized.coil-gate-all.show-excerpt-message,
 body.monetization-not-initialized.coil-missing-id.show-fw-message {
 
 	.coil-message-container {
-		display: block !important;
-	}
-
-	.coil-message-container {
 		color: $message_font_colour;
+		display: block !important;
 		font-family: 'Open Sans', sans-serif;
 		text-align: center;
 
