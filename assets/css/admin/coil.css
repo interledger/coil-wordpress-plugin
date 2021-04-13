@@ -55,13 +55,13 @@
 
 .coil .coil-welcome-notice,
 .coil .coil-no-payment-pointer-notice {
+  align-items: center;
+  border-left-width: 1px;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  align-items: center;
-  margin-top: 20px;
   margin-bottom: 20px;
-  border-left-width: 1px;
+  margin-top: 20px;
   padding: 20px; }
 
 .coil .coil-welcome-notice__icon,
@@ -74,8 +74,8 @@
   flex: 1 1 auto; }
   .coil .coil-welcome-notice__content h3,
   .coil .coil-no-payment-pointer-notice__content h3 {
-    margin-top: 0;
-    margin-bottom: 10px; }
+    margin-bottom: 10px;
+    margin-top: 0; }
   .coil .coil-welcome-notice__content p,
   .coil .coil-no-payment-pointer-notice__content p {
     margin-bottom: 0; }

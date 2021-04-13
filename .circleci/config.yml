@@ -8,6 +8,8 @@ jobs:
      - run: npm install
      - run: npx eslint src
      - run: npx eslint assets/js
+     - run: npx stylelint assets/scss
+     - run: npx stylelint src
  php_linting:
    docker:
      - image: cimg/php:8.0.3

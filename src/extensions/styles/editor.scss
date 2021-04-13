@@ -3,30 +3,30 @@
 	position: relative;
 
 	&::before {
+		font-family: Arial;
+		font-size: 12px;
+		height: 20px;
+		left: 0;
+		padding: 0 12px;
 		position: absolute;
 		top: -14px;
-		left: 0;
-		z-index: 10;
-		height: 20px;
 		width: max-content;
-		font-size: 12px;
-		font-family: Arial;
-		padding: 0 12px;
+		z-index: 10;
 	}
 }
 
 .coil-hide-monetize-users:not(.has-warning) {
 	&::before {
-		content: "Coil: This block will be hidden from monetized users.";
 		background-color: yellow;
 		color: #000;
+		content: "Coil: This block will be hidden from monetized users.";
 	}
 }
 
 .coil-show-monetize-users:not(.has-warning) {
 	&::before {
-		content: "Coil: This block will be shown to monetized users only.";
 		background-color: #32ff00;
 		color: #000;
+		content: "Coil: This block will be shown to monetized users only.";
 	}
 }

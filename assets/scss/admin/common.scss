@@ -77,13 +77,13 @@
 
 	.coil-welcome-notice,
 	.coil-no-payment-pointer-notice {
+		align-items: center;
+		border-left-width: 1px; // Core notice style override.
 		display: flex;
 		flex-direction: row;
 		flex-wrap: nowrap;
-		align-items: center;
-		margin-top: 20px;
 		margin-bottom: 20px;
-		border-left-width: 1px; // Core notice style override.
+		margin-top: 20px;
 		padding: 20px;
 	}
 
@@ -98,8 +98,8 @@
 		flex: 1 1 auto;
 
 		h3 {
-			margin-top: 0;
 			margin-bottom: 10px;
+			margin-top: 0;
 		}
 
 		p {
