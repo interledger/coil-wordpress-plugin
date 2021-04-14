@@ -138,24 +138,26 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 
 // Split content
 .coil-show-monetize-users span.coil-split-content-message {
-	align-items: center;
-	background: #575756;
-	bottom: 0;
-	color: $white;
-	display: flex;
+	color: $grey;
+	background: $white;
+	border: 1px solid $message_border_colour;
+	border-radius: $message_border_radius;
+	margin: 0;
+	text-align: center;
 	font-family: 'Open Sans', sans-serif;
 	font-size: 16px;
-	justify-content: center;
-	left: 0;
 	line-height: 22px;
-	margin: 0;
-	padding: 50px;
 	position: absolute;
-	right: 0;
-	text-align: center;
 	top: 0;
-	width: 100%;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
 	z-index: 110;
+	justify-content: center;
+	width: 100%;
+	padding: 50px;
 
 	@media only screen and (min-width: $message_mobile_breakpoint) {
 		font-size: 18px;

@@ -7,7 +7,7 @@
 	}
 
 	const contentContainer = coilParams.content_container,
-		browserExtensionMissing = coilParams.browser_extension_missing,
+		fullyGated = coilParams.fully_gated,
 		unableToVerify = coilParams.unable_to_verify,
 		voluntaryDonation = coilParams.voluntary_donation,
 		loadingContent = coilParams.loading_content,
@@ -82,7 +82,7 @@
 
 		const modalData = {
 			headerLogo: siteLogo,
-			title: 'This content is for Coil members only',
+			title: 'This content is for Paying Viewers Only',
 			content: message,
 			button: {
 				text: learnMoreButtonText,
@@ -117,7 +117,7 @@
 	/**
 	 * @param {String} message from coilParams.
 	 * @return {object} Overlay "Split Content" blocks with a message when set to
-	 * show for monetized users. This will display if the browser is
+	 * Only Show Paying Viewers. This will display if the browser is
 	 * not compatible or verified.
 	 */
 	function showSplitContentMessage( message ) {
@@ -165,6 +165,10 @@
 	 */
 	function hideContentExcerpt() {
 		return jQuery( 'p.coil-post-excerpt' ).remove();
+	}
+
+	function removeDonationBar() {
+		return $( 'div' ).remove( '.coil-banner-message-container' );
 	}
 
 	/**
@@ -302,7 +306,7 @@
 	function hasBannerDismissCookie( cookieName ) {
 		const currentCookie = Cookies.get( cookieName );
 
-		if ( ( typeof ( currentCookie ) !== 'undefined' ) ) {
+		if ( ( typeof currentCookie !== 'undefined' ) ) {
 			if ( cookieName === 'ShowCoilPublicMsg' || cookieName === 'ShowCoilPartialMsg' ) {
 				return ( currentCookie === '1' ) ? true : false;
 			}
@@ -325,7 +329,7 @@
 		$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'coil-extension-not-found' );
 
 		if ( isSubscribersOnly() ) {
-			$( contentContainer ).before( showSubscriberOnlyMessage( browserExtensionMissing ) );
+			$( contentContainer ).before( showSubscriberOnlyMessage( fullyGated ) );
 
 			if ( isExcerptEnabled() && getContentExcerpt() ) {
 				document.body.classList.add( 'show-excerpt-message' );
@@ -478,6 +482,10 @@
 			$( 'div.coil-post-excerpt' ).remove(); // Remove post excerpt.
 		}
 
+		if ( showDonationBar ) {
+			removeDonationBar();
+		}
+
 		// Show embedded content.
 		document.querySelectorAll( 'iframe, object, video' ).forEach( function( embed ) {
 			// Skip embeds we want to ignore
@@ -500,6 +508,9 @@
 			hideContentExcerpt();
 			showContentContainer();
 		}
+
+		// Manually triggering resize to ensure elements get sized corretly after the verification proccess has been completed and they are no longer hidden.
+		jQuery( window ).trigger( 'resize' );
 	}
 
 	/**
