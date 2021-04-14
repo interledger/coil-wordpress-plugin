@@ -139,6 +139,12 @@ function register_admin_content_settings() {
 	);
 
 	// Tab 4 - Messaging settings.
+	register_setting(
+		'coil_messaging_settings_group',
+		'coil_messaging_settings_group',
+		__NAMESPACE__ . '\coil_messaging_settings_validation'
+	);
+
 	add_settings_section(
 		'coil_fully_gated_content_message',
 		__( 'Paying Viewers Only message', 'coil-web-monetization' ),
@@ -427,7 +433,7 @@ function coil_global_settings_advanced_config_render_callback() {
 	printf(
 		/* translators: 1) HTML link open tag, 2) HTML link close tag, 3) HTML link open tag, 4) HTML link close tag. */
 		esc_html__( 'Enter the CSS selectors used in your theme that could include gated content. Most themes use the pre-filled CSS selectors. (%1$sLearn more%2$s)', 'coil-web-monetization' ),
-		sprintf( '<a href="%s" target="_blank">', esc_url( 'https://help.coil.com/for-creators/wordpress-plugin#everyone-no-one-can-see-my-monetized-content-why' ) ),
+		sprintf( '<a href="%s" target="_blank">', esc_url( 'https://help.coil.com/docs/monetize/content/wp-faq-troubleshooting#everyoneno-one-can-see-my-monetized-content-why' ) ),
 		'</a>'
 	);
 
