@@ -302,7 +302,7 @@
 	function hasBannerDismissCookie( cookieName ) {
 		const currentCookie = Cookies.get( cookieName );
 
-		if ( ( typeof( currentCookie ) !== 'undefined' ) ) {
+		if ( ( typeof ( currentCookie ) !== 'undefined' ) ) {
 			if ( cookieName === 'ShowCoilPublicMsg' || cookieName === 'ShowCoilPartialMsg' ) {
 				return ( currentCookie === '1' ) ? true : false;
 			}

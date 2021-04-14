@@ -149,6 +149,19 @@ module.exports = function( grunt ) {
 			},
 		},
 
+		// Check for JavaScript errors with "eslint"
+		eslint: {
+			options: {
+				configFile: '.eslintrc.json',
+			},
+			all: [
+				'assets/js/**/*.js',
+				'!assets/js/**/*.min.js',
+				'src/**/*.js',
+				'!src/**/*.min.js',
+			],
+		},
+
 		// Check for Sass errors with "stylelint"
 		stylelint: {
 			options: {
@@ -304,7 +317,7 @@ module.exports = function( grunt ) {
 	grunt.registerTask( 'check', [ 'devUpdate' ] );
 
 	// Checks for errors.
-	grunt.registerTask( 'test', [ 'stylelint', 'checktextdomain' ] );
+	grunt.registerTask( 'test', [ 'eslint', 'stylelint', 'checktextdomain' ] );
 
 	// Build CSS only.
 	grunt.registerTask( 'css', [ 'sass', 'postcss', 'cssmin' ] );
