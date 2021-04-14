@@ -311,7 +311,7 @@ module.exports = function( grunt ) {
 	} );
 
 	// Set the default grunt command to run test cases.
-	grunt.registerTask( 'default', [ 'test' ] );
+	grunt.registerTask( 'default', [ 'test', 'build' ] );
 
 	// Checks for developer dependence updates.
 	grunt.registerTask( 'check', [ 'devUpdate' ] );
