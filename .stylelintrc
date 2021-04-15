@@ -2,7 +2,10 @@
 	"rules": {
 		"indentation": "tab",
 		"color-hex-case": "lower",
+		"color-hex-length": "short",
 		"color-no-invalid-hex": true,
+
+		"font-family-no-missing-generic-family-keyword": true,
 
 		"function-calc-no-unspaced-operator": true,
 		"function-comma-space-after": "always-single-line",
