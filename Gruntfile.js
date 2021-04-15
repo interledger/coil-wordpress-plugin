@@ -165,7 +165,7 @@ module.exports = function( grunt ) {
 		// Check for Sass errors with "stylelint"
 		stylelint: {
 			options: {
-				configFile: '.stylelintrc',
+				configFile: '.stylelintrc.json',
 			},
 			all: [
 				'assets/scss/**/*.scss',

@@ -60,20 +60,5 @@
 		"cgb-scripts": "1.21.0",
 		"classnames": "^2.2.6",
 		"stylelint": "~9.10.1"
-	},
-	"stylelint": {
-		"extends": [
-			"stylelint-config-wordpress/scss",
-			"stylelint-config-prettier"
-		],
-		"plugins": [
-			"stylelint-order"
-		],
-		"rules": {
-			"at-rule-empty-line-before": null,
-			"no-descending-specificity": null,
-			"order/properties-alphabetical-order": true,
-			"selector-pseudo-class-parentheses-space-inside": "always"
-		}
 	}
 }

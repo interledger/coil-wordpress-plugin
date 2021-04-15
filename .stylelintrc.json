@@ -1,5 +1,16 @@
 {
+	"extends": [
+		"stylelint-config-wordpress/scss",
+		"stylelint-config-prettier"
+	],
+	"plugins": [
+		"stylelint-order"
+	],
 	"rules": {
+		"at-rule-empty-line-before": null,
+		"no-descending-specificity": null,
+		"order/properties-alphabetical-order": true,
+			
 		"indentation": "tab",
 		"color-hex-case": "lower",
 		"color-hex-length": "short",
