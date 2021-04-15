@@ -1,22 +1,17 @@
 version: 2.0
 jobs:
- js_scss_linting:
+ php_js_scss_linting:
    docker:
      - image: cimg/node:14.10.1 # the primary container, where your job's commands are run
+     - image: cimg/php:8.0.3
    steps:
      - checkout # check out the code in the project directory
      - run: npm install
      - run: npx grunt test
- php_linting:
-   docker:
-     - image: cimg/php:8.0.3
-   steps:
-     - checkout # check out the code in the project directory
      - run: composer install
      - run: composer phpcs
 workflows:
  version: 2
  basic_linting_tests:
    jobs:
-     - js_scss_linting
-     - php_linting
+     - php_js_scss_linting
