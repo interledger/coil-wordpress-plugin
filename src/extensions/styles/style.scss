@@ -7,7 +7,7 @@ body.monetization-not-initialized:not( .coil-no-gating ) {
 
 		&::before {
 			bottom: 0;
-			content: " ";
+			content: ' ';
 			left: 0;
 			position: absolute;
 			right: 0;
@@ -20,7 +20,7 @@ body.monetization-not-initialized:not( .coil-no-gating ) {
 			background: #fff;
 			bottom: 0;
 			color: #000;
-			content: " ";
+			content: ' ';
 			cursor: pointer;
 			display: flex;
 			height: inherit;
@@ -61,26 +61,26 @@ body.monetization-not-initialized.coil-gate-tagged-blocks:not( .coil-no-gating )
 		padding: 50px;
 		position: relative;
 		&::after {
-			content: ' ';
-			position: absolute;
-			width: inherit;
-			height: inherit;
-			font-family: 'Open Sans';
-			font-size: 18px;
-			line-height: 27px;
-			color: white;
-			background: none;
-			top: 0;
-			right: 0;
-			bottom: 0;
-			left: 0;
-			white-space: nowrap;
-			z-index: 100;
-			text-align: center;
-			display: flex;
 			align-items: center;
+			background: none;
+			bottom: 0;
+			color: #fff;
+			content: ' ';
+			display: flex;
+			font-family: 'Open Sans', sans-serif;
+			font-size: 18px;
+			height: inherit;
 			justify-content: center;
+			left: 0;
+			line-height: 27px;
 			overflow-y: auto;
+			position: absolute;
+			right: 0;
+			text-align: center;
+			top: 0;
+			white-space: nowrap;
+			width: inherit;
+			z-index: 100;
 		}
 	}
 }

@@ -19,7 +19,7 @@
 	&::before {
 		background-color: #ff0;
 		color: #000;
-		content: "Coil: This block will be hidden from monetized users.";
+		content: 'Coil: This block will be hidden from monetized users.';
 	}
 }
 
@@ -27,6 +27,6 @@
 	&::before {
 		background-color: #32ff00;
 		color: #000;
-		content: "Coil: This block will be shown to monetized users only.";
+		content: 'Coil: This block will be shown to monetized users only.';
 	}
 }

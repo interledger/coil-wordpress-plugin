@@ -169,6 +169,7 @@ module.exports = function( grunt ) {
 			},
 			all: [
 				'assets/scss/**/*.scss',
+				'src/**/*.scss',
 			],
 		},
 
