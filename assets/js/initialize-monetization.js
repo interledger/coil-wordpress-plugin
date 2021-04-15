@@ -1,10 +1,10 @@
-(function($) {
+( function( $ ) {
 	if ( typeof coil_params === 'undefined' || ! hasContentContainer() ) {
 		return false;
 	}
 
-	var content_container = coil_params.content_container,
-		browser_extension_missing = coil_params.browser_extension_missing,
+	let content_container = coil_params.content_container,
+		fully_gated = coil_params.fully_gated,
 		unable_to_verify = coil_params.unable_to_verify,
 		voluntary_donation = coil_params.voluntary_donation,
 		loading_content = coil_params.loading_content,
@@ -16,12 +16,11 @@
 		site_logo = coil_params.site_logo,
 		show_donation_bar = Boolean( coil_params.show_donation_bar ); // Cast to boolean - wp_localize_script forces string values.
 
-	var subscriberOnlyMessage = wp.template( 'subscriber-only-message' );
-	var splitContentMessage = wp.template( 'split-content-message' );
-	var bannerMessage = wp.template( 'banner-message' );
+	const subscriberOnlyMessage = wp.template( 'subscriber-only-message' );
+	const splitContentMessage = wp.template( 'split-content-message' );
+	const bannerMessage = wp.template( 'banner-message' );
 
-	var messageWrapper = $( 'p.monetize-msg' );
-
+	const messageWrapper = $( 'p.monetize-msg' );
 
 	/**
 	 * Check the content container element exists.
@@ -32,7 +31,7 @@
 	 * @return bool
 	 */
 	function hasContentContainer() {
-		var element;
+		let element;
 
 		// Use try-catch to handle invalid CSS selectors.
 		try {
@@ -59,7 +58,7 @@
 	 * @param string customClass Any extra custom classes to add to this tag.
 	 */
 	function showMonetizationMessage( message, customClass ) {
-		var elem = document.createElement( 'p' );
+		const elem = document.createElement( 'p' );
 		elem.classList.add( 'monetize-msg' );
 		if ( customClass ) {
 			elem.classList.add( customClass );
@@ -75,17 +74,17 @@
 	 * @param string Message from coil_params.
 	 */
 	function showSubscriberOnlyMessage( message ) {
-		var modalContainer = document.createElement( 'div' );
+		const modalContainer = document.createElement( 'div' );
 		modalContainer.classList.add( 'entry-content', 'coil-message-container' );
 
-		var modalData = {
+		const modalData = {
 			headerLogo: site_logo,
-			title: 'This content is for Coil members only',
+			title: 'This content is for Paying Viewers Only',
 			content: message,
 			button: {
 				text: learn_more_button_text,
-				href: learn_more_button_link
-			}
+				href: learn_more_button_link,
+			},
 		};
 
 		$( modalContainer ).append( subscriberOnlyMessage( modalData ) );
@@ -98,14 +97,14 @@
 	 * @param string Message from coil_params.
 	 */
 	function showBannerMessage( message ) {
-		var modalContainer = document.createElement( 'div' );
+		const modalContainer = document.createElement( 'div' );
 		modalContainer.classList.add( 'coil-banner-message-container' );
 
-		var modalData = {
+		const modalData = {
 			content: message,
 			button: {
 				text: learn_more_button_text,
-				href: learn_more_button_link
+				href: learn_more_button_link,
 			},
 		};
 
@@ -115,7 +114,7 @@
 
 	/**
 	 * Overlay "Split Content" blocks with a message when set to
-	 * show for monetized users. This will display if the browser is
+	 * Only Show Paying Viewers. This will display if the browser is
 	 * not compatible or verified.
 	 * @param string Message from coil_params.
 	 */
@@ -127,7 +126,7 @@
 	 * Show the content container.
 	 */
 	function showContentContainer() {
-		var container = document.querySelector( content_container );
+		const container = document.querySelector( content_container );
 
 		if ( container ) {
 			container.style.display = 'block';
@@ -138,7 +137,7 @@
 	 * Hide the content container.
 	 */
 	function hideContentContainer() {
-		var container = document.querySelector( content_container );
+		const container = document.querySelector( content_container );
 
 		if ( container ) {
 			container.style.display = 'none';
@@ -149,11 +148,11 @@
 	 * Get the post excerpt, if available.
 	 */
 	function getContentExcerpt() {
-		if ( post_excerpt === "" ) {
+		if ( post_excerpt === '' ) {
 			return;
 		}
 
-		var excerptContainer = document.createElement( 'p' );
+		const excerptContainer = document.createElement( 'p' );
 		excerptContainer.classList.add( 'coil-post-excerpt' );
 		excerptContainer.innerHTML = post_excerpt;
 		return excerptContainer;
@@ -164,6 +163,10 @@
 	 */
 	function hideContentExcerpt() {
 		return jQuery( 'p.coil-post-excerpt' ).remove();
+	}
+
+	function removeDonationBar() {
+		return $( 'div' ).remove( '.coil-banner-message-container' );
 	}
 
 	/**
@@ -225,51 +228,37 @@
 	 * Displays a message based on the body classes and verification outcome.
 	 */
 	function showVerificationFailureMessage() {
-
 		// E.g. when content is loading then length > 0
 		if ( $( 'p.monetize-msg' ).length > 0 ) {
-
 			$( 'p.monetize-msg' ).remove();
 
 			if ( isSubscribersOnly() ) {
-
 				if ( getContentExcerpt() ) {
-
 					document.body.classList.add( 'show-excerpt-message' );
 					$( content_container ).before( showSubscriberOnlyMessage( unable_to_verify ) );
 					$( content_container ).prepend( getContentExcerpt() );
-
 				} else {
-
 					document.body.classList.add( 'show-fw-message' );
 					$( content_container ).before( showSubscriberOnlyMessage( unable_to_verify ) );
 				}
+			} else if ( isSplitContent() ) {
+				// Split content and unable to verify hidden content.
+				$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( unable_to_verify ) );
 
-			} else {
+				// Show non-Coil-members content.
+				// Removing class means blocks revert to their *original* display values.
+				$( '.coil-hide-monetize-users' ).removeClass( 'coil-hide-monetize-users' );
 
-				if ( isSplitContent() ) {
+				showContentContainer();
 
-					// Split content and unable to verify hidden content.
-					$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( unable_to_verify ) );
-
-					// Show non-Coil-members content.
-					// Removing class means blocks revert to their *original* display values.
-					$( '.coil-hide-monetize-users' ).removeClass('coil-hide-monetize-users');
-
-					showContentContainer();
-
-					if ( show_donation_bar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-						$( 'body' ).append( showBannerMessage( voluntary_donation ) );
-						addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
-					}
-
-				} else {
-
-					// No tagged blocks.
-					document.body.classList.add( 'show-fw-message' );
-					document.querySelector( content_container ).before( showSubscriberOnlyMessage( unable_to_verify ) );
-
+				if ( show_donation_bar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+					$( 'body' ).append( showBannerMessage( voluntary_donation ) );
+					addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 				}
+			} else {
+				// No tagged blocks.
+				document.body.classList.add( 'show-fw-message' );
+				document.querySelector( content_container ).before( showSubscriberOnlyMessage( unable_to_verify ) );
 			}
 		}
 	}
@@ -312,7 +301,7 @@
 				}
 				$( this ).parent().parent().remove();
 			}
-		});
+		} );
 	}
 
 	/**
@@ -323,7 +312,7 @@
 	 * @return bool. True if set to '1', otherwise false.
 	 */
 	function hasBannerDismissCookie( cookieName ) {
-		var currentCookie = Cookies.get( cookieName );
+		const currentCookie = Cookies.get( cookieName );
 
 		if ( ( typeof( currentCookie ) !== 'undefined' ) ) {
 			if ( cookieName === 'ShowCoilPublicMsg' || cookieName === 'ShowCoilPartialMsg' ) {
@@ -333,14 +322,12 @@
 		return false;
 	}
 
-
 	/**
 	 * Handles an undefined monetization object.
 	 *
 	 * @return void.
 	 */
 	function handleUndefinedMonetization() {
-
 		// Skip if we're testing in Cypress; we can't easily reset the app state from the changes made here.
 		if ( window.Cypress && window.Cypress.monetized ) {
 			return;
@@ -350,8 +337,7 @@
 		$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'coil-extension-not-found' );
 
 		if ( isSubscribersOnly() ) {
-
-			$( content_container ).before( showSubscriberOnlyMessage( browser_extension_missing ) );
+			$( content_container ).before( showSubscriberOnlyMessage( fully_gated ) );
 
 			if ( getContentExcerpt() ) {
 				document.body.classList.add( 'show-excerpt-message' );
@@ -359,15 +345,13 @@
 			} else {
 				document.body.classList.add( 'show-fw-message' );
 			}
-
 		} else if ( isSplitContent() ) {
-
 			// Split content with no extension found.
 			$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( partial_gating ) );
 
 			// Show non-coil-members content.
 			// Removing class means blocks revert to their *original* display values.
-			$( '.coil-hide-monetize-users' ).removeClass('coil-hide-monetize-users');
+			$( '.coil-hide-monetize-users' ).removeClass( 'coil-hide-monetize-users' );
 
 			showContentContainer();
 
@@ -375,9 +359,7 @@
 				$( 'body' ).append( showBannerMessage( voluntary_donation ) );
 				addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 			}
-
 		} else if ( isMonetizedAndPublic() ) {
-
 			// Content is monetized and public but no extension found.
 
 			if ( show_donation_bar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
@@ -388,7 +370,6 @@
 
 		// Trigger an event.
 		$( 'body' ).trigger( 'coil-extension-not-found' );
-
 	}
 
 	/**
@@ -399,12 +380,9 @@
 	function handlePendingMonetization() {
 		// If the site is missing it's payment pointer ID.
 		if ( isPaymentPointerMissing() ) {
-
 			if ( isViewingAdmin() ) {
-
 				// Show message to site owner/administrators only.
 				$( content_container ).before( showMonetizationMessage( admin_missing_id_notice, 'admin-message' ) );
-
 			} else {
 				$( 'body' ).removeClass( 'coil-missing-id' );
 			}
@@ -418,12 +396,9 @@
 			}
 
 			$( 'body' ).trigger( 'coil-missing-id' );
-
 		} else {
-
 			// Verify monetization only if we are gating or partially gating content.
 			if ( ! isMonetizedAndPublic() ) {
-
 				// If post is gated then show verification message
 				document.querySelector( content_container ).before( showMonetizationMessage( loading_content, '' ) );
 
@@ -437,13 +412,9 @@
 				setTimeout( function() {
 					showVerificationFailureMessage();
 				}, 5000 );
-
-			} else {
-
-				if ( show_donation_bar && monetizationNotInitialized() && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-					$( 'body' ).append( showBannerMessage( voluntary_donation ) );
-					addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
-				}
+			} else if ( show_donation_bar && monetizationNotInitialized() && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+				$( 'body' ).append( showBannerMessage( voluntary_donation ) );
+				addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 			}
 		}
 	}
@@ -471,18 +442,13 @@
 		}
 
 		setTimeout( function() {
-
 			// If the payment connection event listeners haven't yet been
 			// initialised, display failure message
 			if ( typeof monetizationStartEventOccurred === 'undefined' ) {
-
 				if ( $( 'p.monetize-msg' ).text() === loading_content ) {
-
 					// Monetization not started and verification failed.
 					showVerificationFailureMessage();
-
 				} else if ( isMonetizedAndPublic() ) {
-
 					// Content is monetized and public but extension is stopped.
 					if ( show_donation_bar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 						$( 'body' ).append( showBannerMessage( voluntary_donation ) );
@@ -498,7 +464,7 @@
 	 *
 	 * @return void.
 	 */
-	function monetizationStartListener(event) {
+	function monetizationStartListener( event ) {
 		monetizationStartEventOccurred = true;
 
 		if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
@@ -509,6 +475,10 @@
 
 		$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'monetization-initialized' ); // Update body class to show content.
 		messageWrapper.remove(); // Remove status message.
+
+		if ( show_donation_bar ) {
+			removeDonationBar();
+		}
 
 		// Show embedded content.
 		document.querySelectorAll( 'iframe, object, video' ).forEach( function( embed ) {
@@ -532,6 +502,9 @@
 			hideContentExcerpt();
 			showContentContainer();
 		}
+
+		// Manually triggering resize to ensure elements get sized corretly after the verification proccess has been completed and they are no longer hidden.
+		jQuery( window ).trigger( 'resize' );
 	}
 
 	/**
@@ -539,13 +512,13 @@
 	 *
 	 * @return void.
 	 */
-	function monetizationProgressListener(event) {
+	function monetizationProgressListener( event ) {
 		// Connect to backend to validate the payment.
-		var paymentPointer = event.detail.paymentPointer,
-			requestId      = event.detail.requestId,
-			amount         = event.detail.amount,
-			assetCode      = event.detail.assetCode,
-			assetScale     = event.detail.assetScale;
+		let paymentPointer = event.detail.paymentPointer,
+			requestId = event.detail.requestId,
+			amount = event.detail.amount,
+			assetCode = event.detail.assetCode,
+			assetScale = event.detail.assetScale;
 
 		// Trigger an event.
 		$( 'body' ).trigger( 'coil-monetization-progress', [
@@ -554,7 +527,7 @@
 			requestId,
 			amount,
 			assetCode,
-			assetScale
+			assetScale,
 		] );
 	}
 
@@ -579,7 +552,6 @@
 		}
 
 		switch ( document.monetization.state ) {
-
 			case 'pending':
 				handlePendingMonetization();
 				break;
@@ -598,14 +570,13 @@
 
 		// Monetization progress event.
 		document.monetization.addEventListener( 'monetizationprogress', monetizationProgressListener );
-
 	}
 
 	/**
 	 * Init.
 	 */
 	$( document ).ready( function() {
-		document.addEventListener( 'coilstart', bootstrapCoil );  // For Cypress.
+		document.addEventListener( 'coilstart', bootstrapCoil ); // For Cypress.
 		bootstrapCoil();
 	} );
-})(jQuery);
+}( jQuery ) );

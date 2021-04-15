@@ -144,30 +144,9 @@ module.exports = function(grunt) {
 					'!assets/js/*.min.js',
 				],
 				tasks: [
-					'jshint',
 					'uglify'
 				]
 			}
-		},
-
-		// Check for Javascript errors with "grunt-contrib-jshint"
-		// Reports provided by "jshint-stylish"
-		jshint: {
-			options: {
-				reporter: require('jshint-stylish'),
-				globals: {
-					"EO_SCRIPT_DEBUG": false,
-				},
-				'-W099': true, // Mixed spaces and tabs
-				'-W083': true, // Fix functions within loop
-				'-W082': true, // Declarations should not be placed in blocks
-				'-W020': true, // Read only - error when assigning EO_SCRIPT_DEBUG a value.
-			},
-			all: [
-				// Frontend
-				'assets/js/*.js',
-				'!assets/js/*.min.js',
-			]
 		},
 
 		// Check for Sass errors with "stylelint"
@@ -325,7 +304,7 @@ module.exports = function(grunt) {
 	grunt.registerTask( 'check', [ 'devUpdate' ] );
 
 	// Checks for errors.
-	grunt.registerTask( 'test', [ 'jshint', 'stylelint', 'checktextdomain' ] );
+	grunt.registerTask( 'test', [ 'stylelint', 'checktextdomain' ] );
 
 	// Build CSS only.
 	grunt.registerTask( 'css', [ 'sass', 'postcss', 'cssmin' ] );
