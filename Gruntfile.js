@@ -131,7 +131,7 @@ module.exports = function( grunt ) {
 					'assets/scss/frontend/*.scss',
 					'assets/scss/messages/*.scss',
 				],
-				tasks: [ 'sass', 'postcss' ],
+				tasks: [ 'sass', 'postcss', 'cssmin' ],
 			},
 			js: {
 				files: [
@@ -144,6 +144,7 @@ module.exports = function( grunt ) {
 					'!assets/js/*.min.js',
 				],
 				tasks: [
+					'eslint',
 					'uglify',
 				],
 			},
