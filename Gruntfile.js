@@ -168,6 +168,7 @@ module.exports = function( grunt ) {
 		stylelint: {
 			options: {
 				configFile: '.stylelintrc.json',
+				fix: true,
 			},
 			all: [
 				'assets/scss/**/*.scss',
