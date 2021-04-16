@@ -480,6 +480,10 @@
 			removeDonationBar();
 		}
 
+		if( show_donation_bar ) {
+			removeDonationBar();
+		}
+
 		// Show embedded content.
 		document.querySelectorAll( 'iframe, object, video' ).forEach( function( embed ) {
 			// Skip embeds we want to ignore
