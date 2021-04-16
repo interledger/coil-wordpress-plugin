@@ -154,6 +154,7 @@ module.exports = function( grunt ) {
 		eslint: {
 			options: {
 				configFile: '.eslintrc.json',
+				fix: true,
 			},
 			all: [
 				'assets/js/**/*.js',
