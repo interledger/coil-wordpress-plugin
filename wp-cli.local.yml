@@ -1,3 +1,0 @@
-path: app/public
-require:
-  - wp-cli.local.php
