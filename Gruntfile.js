@@ -1,13 +1,13 @@
-module.exports = function(grunt) {
+module.exports = function( grunt ) {
 	'use strict';
 
-	var sass = require( 'node-sass' );
+	const sass = require( 'node-sass' );
 
-	require('load-grunt-tasks')(grunt);
+	require( 'load-grunt-tasks' )( grunt );
 
 	// Project configuration.
-	grunt.initConfig({
-		pkg: grunt.file.readJSON('package.json'),
+	grunt.initConfig( {
+		pkg: grunt.file.readJSON( 'package.json' ),
 
 		// Update developer dependencies
 		devUpdate: {
@@ -16,29 +16,29 @@ module.exports = function(grunt) {
 					packageJson: null,
 					packages: {
 						devDependencies: true,
-						dependencies: false
+						dependencies: false,
 					},
 					reportOnlyPkgs: [],
 					reportUpdated: false,
 					semver: true,
-					updateType: 'force'
-				}
-			}
+					updateType: 'force',
+				},
+			},
 		},
 
 		// SASS to CSS
 		sass: {
 			options: {
 				implementation: sass,
-				sourcemap: 'none'
+				sourcemap: 'none',
 			},
 			dist: {
 				files: {
-					'assets/css/admin/coil.css' : 'assets/scss/admin.scss',
-					'assets/css/frontend/coil.css' : 'assets/scss/frontend/coil.scss',
-					'assets/css/messages/coil.css' : 'assets/scss/messages/coil.scss'
-				}
-			}
+					'assets/css/admin/coil.css': 'assets/scss/admin.scss',
+					'assets/css/frontend/coil.css': 'assets/scss/frontend/coil.scss',
+					'assets/css/messages/coil.css': 'assets/scss/messages/coil.scss',
+				},
+			},
 		},
 
 		// Post CSS
@@ -46,8 +46,8 @@ module.exports = function(grunt) {
 			options: {
 				//map: false,
 				processors: [
-					require('autoprefixer')()
-				]
+					require( 'autoprefixer' )(),
+				],
 			},
 			dist: {
 				src: [
@@ -56,9 +56,9 @@ module.exports = function(grunt) {
 					'!assets/css/frontend/*.min.css',
 					'assets/css/frontend/*.css',
 					'!assets/css/messages/*.min.css',
-					'assets/css/messages/*.css'
-				]
-			}
+					'assets/css/messages/*.css',
+				],
+			},
 		},
 
 		// Minify CSS
@@ -66,32 +66,32 @@ module.exports = function(grunt) {
 			options: {
 				processImport: false,
 				roundingPrecision: -1,
-				shorthandCompacting: false
+				shorthandCompacting: false,
 			},
 			admin: {
-				files: [{
+				files: [ {
 					expand: true,
 					cwd: 'assets/css/admin',
 					src: [
 						'*.css',
-						'!*.min.css'
+						'!*.min.css',
 					],
 					dest: 'assets/css/admin',
-					ext: '.min.css'
-				}]
+					ext: '.min.css',
+				} ],
 			},
 			style: {
 				files: {
 					'assets/css/frontend/coil.min.css': [ 'assets/css/frontend/coil.css' ],
 					'assets/css/messages/coil.min.css': [ 'assets/css/messages/coil.css' ],
-				}
+				},
 			},
 			blocks: {
 				files: {
 					'dist/blocks.editor.build.min.css': [ 'dist/blocks.editor.build.css' ],
-					'dist/blocks.style.build.min.css': [ 'dist/blocks.style.build.css' ]
-				}
-			}
+					'dist/blocks.style.build.min.css': [ 'dist/blocks.style.build.css' ],
+				},
+			},
 		},
 
 		// Minify JavaScript
@@ -99,14 +99,14 @@ module.exports = function(grunt) {
 			options: {
 				compress: {
 					global_defs: {
-						"EO_SCRIPT_DEBUG": false
+						EO_SCRIPT_DEBUG: false,
 					},
-					dead_code: true
+					dead_code: true,
 				},
-				banner: '/*! <%= pkg.title %> v<%= pkg.version %> <%= grunt.template.today("dddd dS mmmm yyyy HH:MM:ss TT Z") %> */'
+				banner: '/*! <%= pkg.title %> v<%= pkg.version %> <%= grunt.template.today("dddd dS mmmm yyyy HH:MM:ss TT Z") %> */',
 			},
 			build: {
-				files: [{
+				files: [ {
 					expand: true, // Enable dynamic expansion.
 					src: [
 						// Admin
@@ -118,8 +118,8 @@ module.exports = function(grunt) {
 						'!assets/js/*.min.js',
 					],
 					ext: '.min.js', // Dest filepaths will have this extension.
-				}]
-			}
+				} ],
+			},
 		},
 
 		// Watch for changes made in SASS and JavaScript.
@@ -131,7 +131,7 @@ module.exports = function(grunt) {
 					'assets/scss/frontend/*.scss',
 					'assets/scss/messages/*.scss',
 				],
-				tasks: ['sass', 'postcss']
+				tasks: [ 'sass', 'postcss', 'cssmin' ],
 			},
 			js: {
 				files: [
@@ -145,9 +145,9 @@ module.exports = function(grunt) {
 				],
 				tasks: [
 					'eslint',
-					'uglify'
-				]
-			}
+					'uglify',
+				],
+			},
 		},
 
 		// Check for JavaScript errors with "eslint"
@@ -173,12 +173,12 @@ module.exports = function(grunt) {
 			all: [
 				'assets/scss/**/*.scss',
 				'src/**/*.scss',
-			]
+			],
 		},
 
 		// Check strings for localization issues
 		checktextdomain: {
-			options:{
+			options: {
 				text_domain: '<%= pkg.name %>', // Project text domain.
 				keywords: [
 					'__:1,2d',
@@ -194,11 +194,11 @@ module.exports = function(grunt) {
 					'_n:1,2,4d',
 					'_nx:1,2,4c,5d',
 					'_n_noop:1,2,3d',
-					'_nx_noop:1,2,3c,4d'
-				]
+					'_nx_noop:1,2,3c,4d',
+				],
 			},
 			files: {
-				src:  [
+				src: [
 					'*.php',
 					'**/*.php',
 					'!node_modules/**',
@@ -208,7 +208,7 @@ module.exports = function(grunt) {
 					'!build/**',
 					'!releases/**',
 				],
-				expand: true
+				expand: true,
 			},
 		},
 
@@ -217,49 +217,49 @@ module.exports = function(grunt) {
 			php: {
 				src: [
 					'includes/functions.php',
-					'plugin.php'
+					'plugin.php',
 				],
 				overwrite: true,
 				replacements: [
 					{
 						from: /Description:.*$/m,
-						to: "Description: <%= pkg.description %>"
+						to: 'Description: <%= pkg.description %>',
 					},
 					{
 						from: /Version:.*$/m,
-						to: "Version: <%= pkg.version %>"
+						to: 'Version: <%= pkg.version %>',
 					},
 					{
 						from: /const PLUGIN_VERSION = \'.*.'/m,
-						to: "const PLUGIN_VERSION = '<%= pkg.version %>'"
-					}
-				]
+						to: 'const PLUGIN_VERSION = \'<%= pkg.version %>\'',
+					},
+				],
 			},
 			readme: {
 				src: [
 					'readme.txt',
-					'README.md'
+					'README.md',
 				],
 				overwrite: true,
 				replacements: [
 					{
 						from: /Requires at least:(\*\*|)(\s*?)[0-9.-]+(\s*?)$/mi,
-						to: 'Requires at least:$1$2<%= pkg.requires %>$3'
+						to: 'Requires at least:$1$2<%= pkg.requires %>$3',
 					},
 					{
 						from: /Requires PHP:(\*\*|)(\s*?)[0-9.-]+(\s*?)$/mi,
-						to: 'Requires PHP:$1$2<%= pkg.requires_php %>$3'
+						to: 'Requires PHP:$1$2<%= pkg.requires_php %>$3',
 					},
 					{
 						from: /Stable tag:(\*\*|)(\s*?)[0-9.-]+(\s*?)$/mi,
-						to: 'Stable tag:$1$2<%= pkg.version %>$3'
+						to: 'Stable tag:$1$2<%= pkg.version %>$3',
 					},
 					{
 						from: /Tested up to:(\*\*|)(\s*?)[0-9.-]+(\s*?)$/mi,
-						to: 'Tested up to:$1$2<%= pkg.tested_up_to %>$3'
+						to: 'Tested up to:$1$2<%= pkg.tested_up_to %>$3',
 					},
-				]
-			}
+				],
+			},
 		},
 
 		// Copies the plugin to create deployable plugin.
@@ -281,13 +281,13 @@ module.exports = function(grunt) {
 							'!build/**',
 							'!releases/**',
 							'!tests/**',
-							'readme.txt'
+							'readme.txt',
 						],
 						dest: 'build/',
-						dot: true
-					}
-				]
-			}
+						dot: true,
+					},
+				],
+			},
 		},
 
 		// Compresses the deployable plugin folder.
@@ -295,24 +295,24 @@ module.exports = function(grunt) {
 			zip: {
 				options: {
 					archive: './releases/<%= pkg.name %>.zip',
-					mode: 'zip'
+					mode: 'zip',
 				},
 				files: [
 					{
 						expand: true,
 						cwd: './build/',
 						src: '**',
-						dest: '<%= pkg.name %>'
-					}
-				]
-			}
+						dest: '<%= pkg.name %>',
+					},
+				],
+			},
 		},
 
 		// Deletes the deployable plugin folder once zipped up.
 		clean: {
-			build: [ 'build/' ]
-		}
-	});
+			build: [ 'build/' ],
+		},
+	} );
 
 	// Set the default grunt command to run test cases.
 	grunt.registerTask( 'default', [ 'test' ] );
