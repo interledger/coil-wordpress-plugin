@@ -38,8 +38,8 @@ body.coil-show-admin-notice .monetize-msg {
   padding: 0.5em 0; }
 
 .monetize-msg {
+  left: calc( 50% - 50vw);
   max-width: 100vw;
   position: relative;
-  left: calc( 50% - 50vw);
-  width: 100vw;
-  text-align: center; }
+  text-align: center;
+  width: 100vw; }

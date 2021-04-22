@@ -10,100 +10,102 @@ import './styles/style.scss';
 /**
  * WordPress dependencies
  */
-const { __ }                         = wp.i18n;
-const { addFilter }                  = wp.hooks;
-const { Fragment }                   = wp.element;
-const { InspectorControls }          = wp.blockEditor || wp.editor;  // wp.editor for WP < 5.2.
-const { withSelect, withDispatch }   = wp.data;
+const { __ } = wp.i18n;
+const { addFilter } = wp.hooks;
+const { Fragment } = wp.element;
+const { InspectorControls } = wp.blockEditor || wp.editor; // wp.editor for WP < 5.2.
+const { withSelect, withDispatch } = wp.data;
 const { createHigherOrderComponent } = wp.compose;
-const { PanelBody, RadioControl }    = wp.components;
-const { registerPlugin }             = wp.plugins;
-const { PluginDocumentSettingPanel } = wp.editPost;  // WP >= 5.3.
+const { PanelBody, RadioControl } = wp.components;
+const { registerPlugin } = wp.plugins;
+const { PluginDocumentSettingPanel } = wp.editPost; // WP >= 5.3.
 
-// Allow only specific blocks to use the extension attribute.
-const allowedBlocks = [
-	'core/paragraph',
-	'core/heading',
-	'core/image',
-	'core/gallery',
-	'core/verse',
-	'core/spacer',
-	'core/subhead',
-	'core/preformatted',
-	'core/code',
-	'core/cover',
-	'core/group',
-	'core/columns',
-	'core/media-text',
-	'core/pullquote',
-	'core/quote',
-	'core/button',
-	'core/list',
-	'core/separator',
-	'core/text-columns',
-	'core/video',
-	'core/audio',
-	'core-embed',
-	'core-embed/youtube',
-	'core-embed/twitter',
-	'core-embed/facebook',
-	'core-embed/instagram',
-	'core-embed/wordpress',
-	'core-embed/soundcloud',
-	'core-embed/spotify',
-	'core-embed/flickr',
-	'core-embed/vimeo',
-	'core-embed/animoto',
-	'core-embed/cloudup',
-	'core-embed/collegehumor',
-	'core-embed/crowdsignal',
-	'core-embed/dailymotion',
-	'core-embed/hulu',
-	'core-embed/imgur',
-	'core-embed/issuu',
-	'core-embed/kickstarter',
-	'core-embed/meetup-com',
-	'core-embed/mixcloud',
-	'core-embed/reddit',
-	'core-embed/reverbnation',
-	'core-embed/screencast',
-	'core-embed/scribd',
-	'core-embed/slideshare',
-	'core-embed/smugmug',
-	'core-embed/speaker-deck',
-	'core-embed/ted',
-	'core-embed/tumblr',
-	'core-embed/videopress',
-	'core-embed/wordpress-tv',
-	'core-embed/amazon-kindle'
-];
+// // Allow only specific blocks to use the extension attribute. - Disabled for now!
+// const allowedBlocks = [
+// 	'core/paragraph',
+// 	'core/heading',
+// 	'core/image',
+// 	'core/gallery',
+// 	'core/verse',
+// 	'core/spacer',
+// 	'core/subhead',
+// 	'core/preformatted',
+// 	'core/code',
+// 	'core/cover',
+// 	'core/group',
+// 	'core/columns',
+// 	'core/media-text',
+// 	'core/pullquote',
+// 	'core/quote',
+// 	'core/button',
+// 	'core/list',
+// 	'core/separator',
+// 	'core/text-columns',
+// 	'core/video',
+// 	'core/audio',
+// 	'core-embed',
+// 	'core-embed/youtube',
+// 	'core-embed/twitter',
+// 	'core-embed/facebook',
+// 	'core-embed/instagram',
+// 	'core-embed/wordpress',
+// 	'core-embed/soundcloud',
+// 	'core-embed/spotify',
+// 	'core-embed/flickr',
+// 	'core-embed/vimeo',
+// 	'core-embed/animoto',
+// 	'core-embed/cloudup',
+// 	'core-embed/collegehumor',
+// 	'core-embed/crowdsignal',
+// 	'core-embed/dailymotion',
+// 	'core-embed/hulu',
+// 	'core-embed/imgur',
+// 	'core-embed/issuu',
+// 	'core-embed/kickstarter',
+// 	'core-embed/meetup-com',
+// 	'core-embed/mixcloud',
+// 	'core-embed/reddit',
+// 	'core-embed/reverbnation',
+// 	'core-embed/screencast',
+// 	'core-embed/scribd',
+// 	'core-embed/slideshare',
+// 	'core-embed/smugmug',
+// 	'core-embed/speaker-deck',
+// 	'core-embed/ted',
+// 	'core-embed/tumblr',
+// 	'core-embed/videopress',
+// 	'core-embed/wordpress-tv',
+// 	'core-embed/amazon-kindle',
+// ];
 
-// Restrict the blocks the extension attribute can not be applied to.
-const restrictedBlocks = [
-	'core/block',
-	'core/freeform',
-	'core/shortcode',
-	'core/template',
-	'core/nextpage'
-];
+// // Restrict the blocks the extension attribute can not be applied to. - Disabled for now!
+// const restrictedBlocks = [
+// 	'core/block',
+// 	'core/freeform',
+// 	'core/shortcode',
+// 	'core/template',
+// 	'core/nextpage',
+// ];
 
-/**
- * Is the block allowed to support monetization.
- *
- * @param {string} name The name of the block.
- */
-function allowedBlockTypes( name ) {
-	return allowedBlocks.includes( name );
-}
+// - Disabled for now!
+// /**
+//  * Is the block allowed to support monetization.
+//  *
+//  * @param {string} name The name of the block.
+//  */
+// function allowedBlockTypes( name ) {
+// 	return allowedBlocks.includes( name );
+// }
 
-/**
- * Is the block not allowed to support monetization.
- *
- * @param {string} name The name of the block.
- */
-function restrictedBlockTypes( name ) {
-	return restrictedBlocks.includes( name );
-}
+// - Disabled for now!
+// /**
+//  * Is the block not allowed to support monetization.
+//  *
+//  * @param {string} name The name of the block.
+//  */
+// function restrictedBlockTypes( name ) {
+// 	return restrictedBlocks.includes( name );
+// }
 
 /**
 /**
@@ -129,9 +131,9 @@ function addAttributes( settings ) {
 		settings.attributes = Object.assign( settings.attributes, {
 			monetizeBlockDisplay: {
 				type: 'string',
-				default: 'always-show'
-			}
-		});
+				default: 'always-show',
+			},
+		} );
 	}
 
 	return settings;
@@ -146,11 +148,10 @@ function addAttributes( settings ) {
  */
 const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 	return ( props ) => {
-
 		let showInspector = false;
 
 		const {
-			name,
+			// name, - Disabled for now!
 			attributes,
 			setAttributes,
 			isSelected,
@@ -192,15 +193,15 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 									[
 										{
 											label: __( 'Always Show' ),
-											value: 'always-show'
+											value: 'always-show',
 										},
 										{
 											label: __( 'Only Show Paying Viewers' ),
-											value: 'show-monetize-users'
+											value: 'show-monetize-users',
 										},
 										{
 											label: __( 'Hide For Paying Viewers' ),
-											value: 'hide-monetize-users'
+											value: 'hide-monetize-users',
 										},
 									]
 								}
@@ -214,7 +215,7 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 			</Fragment>
 		);
 	};
-}, 'monetizeBlockControls');
+}, 'monetizeBlockControls' );
 
 /**
  * Add custom element class in save element.
@@ -241,7 +242,7 @@ function applyExtraClass( extraProps, blockType, attributes ) {
 
 	// Check if object exists for old Gutenberg version compatibility.
 	// Add class only when monetizeBlockDisplay is set and is not always show.
-	if ( typeof monetizeBlockDisplay !== 'undefined' && monetizeBlockDisplay !== "always-show") {
+	if ( typeof monetizeBlockDisplay !== 'undefined' && monetizeBlockDisplay !== 'always-show' ) {
 		extraProps.className = classnames( extraProps.className, 'coil-' + monetizeBlockDisplay );
 	}
 
@@ -258,7 +259,7 @@ const wrapperClass = createHigherOrderComponent( ( BlockListBlock ) => {
 		let allowBlockIdentity = false; // Note: Boolean value is in reverse.
 
 		const {
-			attributes
+			attributes,
 		} = props;
 
 		const {
@@ -284,11 +285,10 @@ const wrapperClass = createHigherOrderComponent( ( BlockListBlock ) => {
 		};
 
 		// Apply custom block wrapper class if monetization is set at the document level and block level.
-		if ( typeof monetizeBlockDisplay !== 'undefined' && monetizeBlockDisplay !== "always-show" && allowBlockIdentity ) {
+		if ( typeof monetizeBlockDisplay !== 'undefined' && monetizeBlockDisplay !== 'always-show' && allowBlockIdentity ) {
 			return <BlockListBlock { ...props } className={ 'coil-' + monetizeBlockDisplay } wrapperProps={ wrapperProps } />;
-		} else {
-			return <BlockListBlock {...props} />
 		}
+		return <BlockListBlock { ...props } />;
 	};
 }, 'wrapperClass' );
 
@@ -323,16 +323,16 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 		updateMetaValue: ( value ) => {
 			dispatch( 'core/editor' ).editPost( {
 				meta: {
-					[ props.metaFieldName ]: value
+					[ props.metaFieldName ]: value,
 				},
 			} );
-		}
+		},
 	};
 } )( withSelect( ( select, props ) => {
-	let meta = select( 'core/editor' ).getEditedPostAttribute( 'meta' );
+	const meta = select( 'core/editor' ).getEditedPostAttribute( 'meta' );
 
 	return {
-		[ props.metaFieldName ]: meta && meta[ '_coil_monetize_post_status' ]
+		[ props.metaFieldName ]: meta && meta._coil_monetize_post_status,
 	};
 } )( ( props ) => (
 	<RadioControl
@@ -341,29 +341,29 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 			[
 				{
 					label: __( 'Use Default', 'coil-web-monetization' ),
-					value: 'default'
+					value: 'default',
 				},
 				{
 					label: __( 'No Monetization', 'coil-web-monetization' ),
-					value: 'no'
+					value: 'no',
 				},
 				{
 					label: __( 'Monetized and Public', 'coil-web-monetization' ),
-					value: 'no-gating'
+					value: 'no-gating',
 				},
 				{
 					label: __( 'Paying Viewers Only', 'coil-web-monetization' ),
-					value: 'gate-all'
+					value: 'gate-all',
 				},
 				{
 					label: __( 'Split Content', 'coil-web-monetization' ),
-					value: 'gate-tagged-blocks'
-				}
+					value: 'gate-tagged-blocks',
+				},
 			]
 		}
 		help={ __( 'Set the type of monetization for the article.' ) }
 		onChange={ ( value ) => props.updateMetaValue( value ) }
-/>
+	/>
 ) ) );
 
 // WP >= 5.3 only - register the panel.
@@ -371,16 +371,16 @@ if ( PluginDocumentSettingPanel ) {
 	registerPlugin( 'coil-document-setting-panel', {
 		render: () => {
 			return (
-					<PluginDocumentSettingPanel
-						name="coil-meta"
-						title={ __( 'Coil Web Monetization', 'coil-web-monetization' ) }
-						initialOpen={ false }
-						className="coil-document-panel"
-						>
-							<PostMonetizationFields metaFieldName="_coil_monetize_post_status" />
-					</PluginDocumentSettingPanel>
-			)
+				<PluginDocumentSettingPanel
+					name="coil-meta"
+					title={ __( 'Coil Web Monetization', 'coil-web-monetization' ) }
+					initialOpen={ false }
+					className="coil-document-panel"
+				>
+					<PostMonetizationFields metaFieldName="_coil_monetize_post_status" />
+				</PluginDocumentSettingPanel>
+			);
 		},
-		icon: ''
+		icon: '',
 	} );
 }
