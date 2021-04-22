@@ -10,13 +10,10 @@ body.monetization-not-initialized.coil-gate-all.show-excerpt-message,
 body.monetization-not-initialized.coil-missing-id.show-fw-message {
 
 	.coil-message-container {
-		display: block !important;
-	}
-
-	.coil-message-container {
-		text-align: center;
-		font-family: 'Open Sans';
 		color: $message_font_colour;
+		display: block !important;
+		font-family: 'Open Sans', sans-serif;
+		text-align: center;
 
 		.coil-message-inner {
 			background: $message_background_colour;
@@ -32,8 +29,8 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 		img {
 			display: block;
 			margin: 0 auto $message_spacing_baseline * 2;
-			text-align: center;
 			max-width: 91px;
+			text-align: center;
 
 			@media only screen and (min-width: $message_mobile_breakpoint) {
 				margin-bottom: $message_spacing_baseline * 4;
@@ -47,10 +44,10 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 			}
 
 			.coil-message-title {
-				margin: 0 0 $message_spacing_baseline * 3;
 				font-size: 18px;
-				line-height: 28px;
 				font-weight: 700;
+				line-height: 28px;
+				margin: 0 0 $message_spacing_baseline * 3;
 				@media only screen and (min-width: 768px) {
 					font-size: 28px;
 					line-height: 38px;
@@ -58,9 +55,9 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 			}
 
 			.coil-message-content {
-				margin: 0;
 				font-size: $message_spacing_baseline * 2;
 				line-height: 27px;
+				margin: 0;
 				margin-bottom: $message_spacing_baseline * 3;
 				@media only screen and (min-width: $message_desktop_breakpoint) {
 					margin-bottom: 40px;
@@ -68,18 +65,18 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 			}
 
 			a.coil-message-button {
-				padding: 13px $message_spacing_baseline * 2;
-				text-align: center;
 				background-color: $message_font_colour;
 				border-radius: 6px;
-				color: white;
-				font-size: $message_spacing_baseline * 2;
-				line-height: $message_spacing_baseline * 3;
+				color: $white;
 				display: inline-block;
-				max-width: 232px;
+				font-size: $message_spacing_baseline * 2;
 				font-weight: 600;
-				text-decoration: none;
+				line-height: $message_spacing_baseline * 3;
 				margin-bottom: $message_spacing_baseline * 3;
+				max-width: 232px;
+				padding: 13px $message_spacing_baseline * 2;
+				text-align: center;
+				text-decoration: none;
 
 				&:hover {
 					background-color: $message_content_conceal_colour;
@@ -100,10 +97,10 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 			}
 
 			.coil-footer-content {
-				margin: 0 auto;
-				max-width: 720px;
 				font-size: 12px;
 				line-height: 17px;
+				margin: 0 auto;
+				max-width: 720px;
 
 				@media only screen and (min-width: $message_desktop_breakpoint) {
 					font-size: 14px;
@@ -121,15 +118,15 @@ body.coil-gate-all.coil-extension-not-found.show-excerpt-message {
 	.coil-message-container {
 		display: block !important;
 		.coil-message-inner {
-			position: relative;
 			margin-top: -20px;
+			position: relative;
 			&::before {
-				position: absolute;
 				content: '';
 				height: 150px;
-				width: 100%;
-				top: -150px;
 				left: 0;
+				position: absolute;
+				top: -150px;
+				width: 100%;
 			}
 		}
 	}
@@ -141,63 +138,63 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 
 // Split content
 .coil-show-monetize-users span.coil-split-content-message {
-	color: $grey;
-	background: white;
+	align-items: center;
+	background: $white;
 	border: 1px solid $message_border_colour;
 	border-radius: $message_border_radius;
-	margin: 0;
-	text-align: center;
-	font-family: 'Open Sans';
-	font-size: 16px;
-	line-height: 22px;
-	position: absolute;
-	top: 0;
-	right: 0;
 	bottom: 0;
-	left: 0;
+	color: $grey;
 	display: flex;
-	align-items: center;
-	z-index: 110;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16px;
 	justify-content: center;
-	width: 100%;
+	left: 0;
+	line-height: 22px;
+	margin: 0;
 	padding: 50px;
+	position: absolute;
+	right: 0;
+	text-align: center;
+	top: 0;
+	width: 100%;
+	z-index: 110;
 
-	@media only screen and (min-width: $message_mobile_breakpoint ) {
-		padding: 50px;
+	@media only screen and (min-width: $message_mobile_breakpoint) {
 		font-size: 18px;
 		line-height: 27px;
+		padding: 50px;
 	}
 }
 
 // Scenario 3 - Banner message
 .coil-banner-message-container {
-	position: fixed;
 	bottom: 0;
-	z-index: 200;
-	width: 100%;
 	color: rgba(0, 0, 0, 0.7);
-	@media only screen and (min-width: $message_mobile_breakpoint ) {
+	position: fixed;
+	width: 100%;
+	z-index: 200;
+	@media only screen and (min-width: $message_mobile_breakpoint) {
 		display: flex;
 		justify-content: center;
 	}
 
 	.banner-message-inner {
-		background-color: white;
-		padding: 23px $message_spacing_baseline * 2 $message_spacing_baseline * 2;
-
-		font-family: 'Open Sans';
-		position: relative;
+		background-color: $white;
 		border: 1px solid $message_banner_border_colour;
 		box-shadow: 0 6px 10px 0 $message_banner_shadow_colour;
 
-		@media only screen and (min-width: $message_mobile_breakpoint ) {
-			background-color: $message_banner_background_colour;
-			display: flex;
-			padding: 12px $message_spacing_baseline * 4;
-			justify-content: space-around;
-			border-radius: 6px;
-			margin-bottom: 20px;
+		font-family: 'Open Sans', sans-serif;
+		padding: 23px $message_spacing_baseline * 2 $message_spacing_baseline * 2;
+		position: relative;
+
+		@media only screen and (min-width: $message_mobile_breakpoint) {
 			align-items: center;
+			background-color: $message_banner_background_colour;
+			border-radius: 6px;
+			display: flex;
+			justify-content: space-around;
+			margin-bottom: 20px;
+			padding: 12px $message_spacing_baseline * 4;
 		}
 	}
 
@@ -206,67 +203,67 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 		line-height: 17px;
 		margin: 22px 0 5px;
 
-		@media only screen and (min-width: $message_mobile_breakpoint ) {
-			margin: 0;
+		@media only screen and (min-width: $message_mobile_breakpoint) {
 			font-size: 14px;
 			line-height: 20px;
+			margin: 0;
 			max-width: 434px;
 		}
 	}
 
 	.coil-banner-message-button {
-		padding: $message_spacing_baseline $message_spacing_baseline * 3;
-		text-align: center;
 		background-color: $message_banner_button_colour;
 		border-radius: 6px;
-		color: white;
+		color: $white;
 		font-size: 14px;
-		line-height: 20px;
 		font-weight: 600;
-		text-decoration: none;
+		line-height: 20px;
 		margin: 0;
+		padding: $message_spacing_baseline $message_spacing_baseline * 3;
+		text-align: center;
+		text-decoration: none;
 
 		&:hover {
 			background-color: $message_banner_button_hover_colour;
 		}
 
-		@media only screen and (min-width: $message_mobile_breakpoint ) {
+		@media only screen and (min-width: $message_mobile_breakpoint) {
 			margin: 0 $message_spacing_baseline * 4 0 67px;
 		}
 	}
 
 	.coil-banner-message-dismiss {
+		color: $message_banner_dismiss_colour;
 		cursor: pointer;
 		font-size: 26px;
-		line-height: 1.1;
 		font-weight: 700;
-		color: $message_banner_dismiss_colour;
+		line-height: 1.1;
 		position: absolute;
-		top: 10px;
 		right: 12px;
-		@media only screen and (min-width: $message_mobile_breakpoint ) {
-			top: auto;
-			right: auto;
-			position: relative;
+		top: 10px;
+		@media only screen and (min-width: $message_mobile_breakpoint) {
 			font-size: 35px;
+			position: relative;
+			right: auto;
+			top: auto;
 		}
 	}
 }
 
 a.coil-serverside-message-button {
-	padding: 13px $message_spacing_baseline * 2;
 	background-color: $message_font_colour;
 	border-radius: 6px;
-	color: white;
-	font-size: $message_spacing_baseline * 2;
-	line-height: $message_spacing_baseline * 3;
+	color: $white;
 	display: inline-block;
-	max-width: 232px;
+	font-family: 'Open Sans', sans-serif;
+	font-size: $message_spacing_baseline * 2;
 	font-weight: 600;
-	text-decoration: none;
+	line-height: $message_spacing_baseline * 3;
 	margin-bottom: $message_spacing_baseline * 3;
+	max-width: 232px;
+	padding: 13px $message_spacing_baseline * 2;
 	text-align: center;
-	font-family: 'Open Sans';
+	text-decoration: none;
 
 	&:hover {
 		background-color: $message_content_conceal_colour;
