@@ -32,12 +32,12 @@ export class MonetizedMode extends Component {
 
 export default compose( [
 	withSelect( ( select ) => ( {
-		isActive: select( 'core/editor' ).getEditedPostAttribute( 'meta' )._coil_monetize_post_status,
+		isActive: select( 'core/editor' ).getEditedPostAttribute( 'meta' )[ '_coil_monetize_post_status' ],
 	} ) ),
 	withDispatch( ( dispatch ) => ( {
 		isActive: dispatch( 'core/editor' ).editPost( {
 			meta: {
-				[ '_coil_monetize_post_status' ]: isActive,  // eslint-disable-line
+				[ '_coil_monetize_post_status' ]: isActive // eslint-disable-line
 			},
 		} ),
 	} ) ),
