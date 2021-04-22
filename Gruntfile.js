@@ -144,39 +144,35 @@ module.exports = function(grunt) {
 					'!assets/js/*.min.js',
 				],
 				tasks: [
-					'jshint',
+					'eslint',
 					'uglify'
 				]
 			}
 		},
 
-		// Check for Javascript errors with "grunt-contrib-jshint"
-		// Reports provided by "jshint-stylish"
-		jshint: {
+		// Check for JavaScript errors with "eslint"
+		eslint: {
 			options: {
-				reporter: require('jshint-stylish'),
-				globals: {
-					"EO_SCRIPT_DEBUG": false,
-				},
-				'-W099': true, // Mixed spaces and tabs
-				'-W083': true, // Fix functions within loop
-				'-W082': true, // Declarations should not be placed in blocks
-				'-W020': true, // Read only - error when assigning EO_SCRIPT_DEBUG a value.
+				configFile: '.eslintrc.json',
+				fix: true,
 			},
 			all: [
-				// Frontend
-				'assets/js/*.js',
-				'!assets/js/*.min.js',
-			]
+				'assets/js/**/*.js',
+				'!assets/js/**/*.min.js',
+				'src/**/*.js',
+				'!src/**/*.min.js',
+			],
 		},
 
 		// Check for Sass errors with "stylelint"
 		stylelint: {
 			options: {
-				configFile: '.stylelintrc'
+				configFile: '.stylelintrc.json',
+				fix: true,
 			},
 			all: [
 				'assets/scss/**/*.scss',
+				'src/**/*.scss',
 			]
 		},
 
@@ -325,7 +321,7 @@ module.exports = function(grunt) {
 	grunt.registerTask( 'check', [ 'devUpdate' ] );
 
 	// Checks for errors.
-	grunt.registerTask( 'test', [ 'jshint', 'stylelint', 'checktextdomain' ] );
+	grunt.registerTask( 'test', [ 'eslint', 'stylelint', 'checktextdomain' ] );
 
 	// Build CSS only.
 	grunt.registerTask( 'css', [ 'sass', 'postcss', 'cssmin' ] );
