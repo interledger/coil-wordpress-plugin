@@ -286,7 +286,7 @@ function load_admin_assets() : void {
 
 	wp_localize_script(
 		'coil_admin_notices',
-		'coil_admin_params',
+		'coilAdminParams',
 		$admin_params
 	);
 

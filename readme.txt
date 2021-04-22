@@ -4,9 +4,9 @@ Plugin URI: https://coil.com
 Contributors: coil, pragmaticagency
 Tags: coil, content, monetization, payment, interledger, ilp
 Requires at least: 5.0+
-Requires PHP: 7.2
+Requires PHP: 7.1
 Tested up to: 5.3
-Stable tag: 1.7.0
+Stable tag: 1.9.0
 License: Apache-2.0
 License URI: http://www.apache.org/licenses/LICENSE-2.0.txt
 
@@ -57,11 +57,11 @@ The Interledger Protocol (ILP) is an open protocol that Coil uses to stream paym
 
 = What's a payment pointer? =
 
-A payment pointer is like an email address for your digital wallet. It's how we know where to stream your payments. Your payment pointer is assigned to you by your wallet provider. 
+A payment pointer is like an email address for your digital wallet. It's how we know where to stream your payments. Your payment pointer is assigned to you by your wallet provider.
 
 = Do I have to sign up for a Coil Membership? =
 
-Nope. You'll receive payments from Coil Members regardless of whether you have an account with us. 
+Nope. You'll receive payments from Coil Members regardless of whether you have an account with us.
 
 = Where can I report bugs or contribute to the project? =
 
@@ -78,8 +78,8 @@ If you get stuck, check out our [help center](https://help.coil.com/for-creators
 == Screenshots ==
 
 1. Simple setup
-2. Great support 
-3. Exclusive content 
+2. Great support
+3. Exclusive content
 
 == Changelog ==
 
