@@ -298,12 +298,15 @@ function coil_messaging_settings_validation( $messaging_settings ) : array {
 		return [];
 	}
 
-	return array_map(
-		function( $message_value ) {
-			return ( isset( $message_value ) ) ? sanitize_text_field( $message_value ) : '';
-		},
-		(array) $messaging_settings
-	);
+	foreach ( $messaging_settings as $key => $option_value ) {
+		if ( $key === 'coil_learn_more_button_link' ) {
+			$messaging_settings[ $key ] = esc_url_raw( $option_value );
+		} else {
+			$messaging_settings[ $key ] =  ( isset( $message_value ) ) ? sanitize_text_field( $message_value ) : '';
+		}
+	}
+
+	return $messaging_settings;
 }
 
 /**
