@@ -31,7 +31,7 @@ export class MonetizedMode extends Component {
 }
 
 export default compose( [
-	withSelect( ( select ) => ( {	
+	withSelect( ( select ) => ( {
 		isActive: select( 'core/editor' ).getEditedPostAttribute( 'meta' )._coil_monetize_post_status,
 	} ) ),
 	withDispatch( ( dispatch ) => ( {
