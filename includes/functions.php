@@ -13,7 +13,7 @@ use \Coil\User;
 /**
  * @var string Plugin version number.
  */
-const PLUGIN_VERSION = '1.7.0';
+const PLUGIN_VERSION = '1.8.0';
 
 /**
  * @var string Plugin root folder.
@@ -51,6 +51,8 @@ function init_plugin() : void {
 	add_action( 'admin_notices', __NAMESPACE__ . '\Settings\admin_welcome_notice' );
 	add_action( 'admin_notices', __NAMESPACE__ . '\Settings\admin_no_payment_pointer_notice' );
 	add_action( 'wp_ajax_dismiss_welcome_notice', __NAMESPACE__ . '\Settings\dismiss_welcome_notice' );
+	add_action( 'init', __NAMESPACE__ . '\Settings\transfer_customizer_message_settings' );
+	add_action( 'init', __NAMESPACE__ . '\Settings\transfer_customizer_monetization_settings' );
 
 	// Term meta.
 	add_action( 'edit_term', __NAMESPACE__ . '\Admin\maybe_save_term_meta', 10, 3 );
@@ -59,9 +61,7 @@ function init_plugin() : void {
 	add_term_edit_save_form_meta_actions();
 
 	// Customizer settings.
-	add_action( 'customize_register', __NAMESPACE__ . '\Admin\add_customizer_messaging_panel' );
-	add_action( 'customize_register', __NAMESPACE__ . '\Admin\add_customizer_options_panel' );
-	add_action( 'customize_register', __NAMESPACE__ . '\Admin\add_customizer_learn_more_button_settings_panel' );
+	add_action( 'customize_register', __NAMESPACE__ . '\Admin\add_redirect_customizer_section' );
 
 	// User profile settings.
 	add_action( 'personal_options', __NAMESPACE__ . '\User\add_user_profile_payment_pointer_option' );
@@ -180,6 +180,8 @@ function load_full_assets() : void {
 		true
 	);
 
+	$learn_more_button_link = 'https://coil.com/';
+
 	$site_logo = false;
 	if ( function_exists( 'get_custom_logo' ) ) {
 		$site_logo = get_custom_logo();
@@ -188,27 +190,27 @@ function load_full_assets() : void {
 	$strings = apply_filters(
 		'coil_js_ui_messages',
 		[
-			'content_container'         => Admin\get_global_settings( 'coil_content_container' ),
-			'browser_extension_missing' => Admin\get_customizer_text_field( 'coil_unsupported_message' ),
-			'unable_to_verify'          => Admin\get_customizer_text_field( 'coil_unable_to_verify_message' ),
-			'voluntary_donation'        => Admin\get_customizer_text_field( 'coil_voluntary_donation_message' ),
-			'loading_content'           => Admin\get_customizer_text_field( 'coil_verifying_status_message' ),
-			'partial_gating'            => Admin\get_customizer_text_field( 'coil_partial_gating_message' ),
-			'learn_more_button_text'    => Admin\get_customizer_text_field( 'coil_learn_more_button_text' ),
-			'learn_more_button_link'    => Admin\get_customizer_text_field( 'coil_learn_more_button_link' ),
-			'show_donation_bar'         => get_theme_mod( 'coil_show_donation_bar', true ),
-			'post_excerpt'              => get_the_excerpt(),
-			'site_logo'                 => $site_logo,
+			'content_container'       => Admin\get_global_settings( 'coil_content_container' ),
+			'unable_to_verify'        => Admin\get_messaging_setting_or_default( 'coil_unable_to_verify_message' ),
+			'voluntary_donation'      => Admin\get_messaging_setting_or_default( 'coil_voluntary_donation_message' ),
+			'loading_content'         => Admin\get_messaging_setting_or_default( 'coil_verifying_status_message' ),
+			'fully_gated'             => Admin\get_messaging_setting_or_default( 'coil_fully_gated_content_message' ),
+			'partial_gating'          => Admin\get_messaging_setting_or_default( 'coil_partially_gated_content_message' ),
+			'learn_more_button_text'  => Admin\get_messaging_setting_or_default( 'coil_learn_more_button_text' ),
+			'learn_more_button_link'  => $learn_more_button_link,
+			'show_donation_bar'       => Admin\get_visual_settings( 'coil_show_donation_bar', true ),
+			'post_excerpt'            => get_the_excerpt(),
+			'site_logo'               => $site_logo,
 
 			/* translators: 1 + 2) HTML link tags (to the Coil settings page). */
-			'admin_missing_id_notice'   => sprintf( __( 'This post is monetized but you have not set your payment pointer ID in the %1$sCoil settings page%2$s. Only content set to show for all visitors will show.', 'coil-web-monetization' ), '<a href="' . admin_url( 'admin.php?page=coil' ) . '">', '</a>' ),
+			'admin_missing_id_notice' => sprintf( __( 'This post is monetized but you have not set your payment pointer ID in the %1$sCoil settings page%2$s. Only content set to show for all visitors will show.', 'coil-web-monetization' ), '<a href="' . admin_url( 'admin.php?page=coil' ) . '">', '</a>' ),
 		],
 		get_queried_object_id()
 	);
 
 	wp_localize_script(
 		'coil-monetization-js',
-		'coil_params',
+		'coilParams',
 		$strings
 	);
 }
@@ -444,4 +446,3 @@ function coil_deactive_self() {
 
 		deactivate_plugins( plugin_basename( __FILE__ ) );
 }
-

@@ -1,6 +1,6 @@
 # Coil Web Monetization
 
-This is the source code repository for the Coil WordPress plugin. Coil Web Monetization allows you to monetize content for all readers, Coil members only, or if you are using modern WordPress, at the block level.
+This is the source code repository for the Coil WordPress plugin. Coil Web Monetization allows you to monetize content for all readers, Paying Viewers Only, or if you are using modern WordPress, at the block level.
 
 ---
 
@@ -36,8 +36,6 @@ The **Queue** is a prioritized list of issues the team plans to work on.
 
 From the **Queue** issues are pulled into the **Up Next** pipeline by the Coil Team. Anyone works on these issues and they then move through the **In Progress** and then to the **Closed** pipeline once work is completed. 
 
-**NOTE** Issues with the label "Pragmatic" are planned to be worked on by the Pragmatic Team.
-
 # Local Development Environment
 
 It's recommended that you use [Local by Flywheel](https://localbyflywheel.com/) for your local development environment.
@@ -48,7 +46,7 @@ The nature of this project (a plugin) means that it is environment-agnostic, so 
 
 Ensure you have the prerequisite software installed:
 
-* [PHP](https://php.net/) 7.1+
+* [PHP](https://php.net/) 7.2+
 * [Composer](https://getcomposer.org/) 1.8+, installed globally.
 * [Local By Flywheel](https://localbyflywheel.com/community/t/local-by-flywheel-3-3-0/13527) 3.3.0
 * [Node](https://nodejs.org/) 10.15+
@@ -146,7 +144,7 @@ To run the tests you will need to:
 # Installing plugin
 
 - for testing, the Github repo can be zipped up and the zip used to install the Coil plugin on WordPress
-	- on Github, go to thefront page and click on "Clone or download"
+	- on Github, go to the front page and click on "Clone or download"
 	- choose "Download ZIP"
 - for production, use command line `grunt zip` to create a zip in the `/resources/` folder. This removes development files such as composer.json and the tests folder.
 
