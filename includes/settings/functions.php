@@ -184,10 +184,18 @@ function register_admin_content_settings() {
 		'coil_messaging_settings'
 	);
 
-	// === Learn more button
+	// === Learn more button text
 	add_settings_section(
 		'coil_learn_more_button_text',
-		__( 'Learn more button', 'coil-web-monetization' ),
+		__( 'Learn more button text', 'coil-web-monetization' ),
+		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
+		'coil_messaging_settings'
+	);
+
+	// === Learn more button link
+	add_settings_section(
+		'coil_learn_more_button_link',
+		__( 'Learn more button link', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
@@ -610,7 +618,10 @@ function coil_messaging_settings_render_callback( $args ) {
 			$helper_text = __( 'Appears for non-paying viewers in a footer bar when content is set to Monetized and Public or Split Content.', 'coil-web-monetization' );
 			break;
 		case 'coil_learn_more_button_text':
-			$helper_text = __( 'Text on the button which directs non-paying viewers to the Coil home page. Shown below the Paying Viewers Only message and in the support creator footer.', 'coil-web-monetization' );
+			$helper_text = __( 'Text on the "Learn more" shown below the Paying Viewers Only message and in the support creator footer.', 'coil-web-monetization' );
+			break;
+		case 'coil_learn_more_button_link':
+			$helper_text = __( '"Learn more" button link/URL to direct non-paying viewers to Coil\'s website. Shown below the Paying Viewers Only message and in the support creator footer.', 'coil-web-monetization' );
 			break;
 		default:
 			$helper_text = '';
@@ -999,8 +1010,8 @@ function transfer_customizer_message_settings() {
 		$messaging_settings['coil_learn_more_button_text'] = get_theme_mod( $coil_learn_more_button_text );
 		remove_theme_mod( $coil_learn_more_button_text );
 	}
-	// Customization of the Coil learn more button link is no longer supported
 	if ( get_theme_mod( $coil_learn_more_button_link ) ) {
+		$messaging_settings['coil_learn_more_button_link'] = get_theme_mod( $coil_learn_more_button_link );
 		remove_theme_mod( $coil_learn_more_button_link );
 	}
 
