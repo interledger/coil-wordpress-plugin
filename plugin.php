@@ -6,7 +6,7 @@
  * Requires PHP: 7.2
  * Author: Coil
  * Author URI: https://coil.com
- * Version: 1.8.0
+ * Version: 1.9.0
  * License: Apache-2.0
  * License URI: http://www.apache.org/licenses/LICENSE-2.0.txt
  * Text Domain: coil-web-monetization
