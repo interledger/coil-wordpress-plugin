@@ -389,6 +389,7 @@
 
 			$( 'body' ).trigger( 'coil-missing-id' );
 		} else if ( ! isMonetizedAndPublic() ) {
+			// Verify monetization only if we are gating or partially gating content.
 			// If post is gated then show verification message after excerpt.
 			if ( isSubscribersOnly() ) {
 				if ( isExcerptEnabled() ) {
