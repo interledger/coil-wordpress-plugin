@@ -323,7 +323,7 @@ function coil_visual_settings_validation( $visual_settings ) : array {
  *
  * @return void
  */
-function coil_getting_started_settings_render_callback() {
+function coil_settings_sidebar_render_callback() {
 
 	?>
 	<div class="coil settings-sidebar">
@@ -696,9 +696,9 @@ function admin_welcome_notice() {
 		return;
 	}
 
-	$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'getting_started';
+	$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'global_settings';
 
-	if ( $active_tab !== 'getting_started' ) {
+	if ( $active_tab !== 'global_settings' ) {
 		return;
 	}
 	?>
@@ -791,16 +791,13 @@ function render_coil_settings_screen() : void {
 	</div>
 	<div class="wrap coil plugin-settings">
 
-		<?php coil_getting_started_settings_render_callback(); ?>
+		<?php coil_settings_sidebar_render_callback(); ?>
 
 		<?php settings_errors(); ?>
 
 		<form action="options.php" method="post">
 			<?php
 			switch ( $active_tab ) {
-				case 'getting_started':
-					do_settings_sections( 'coil_getting_started_settings' );
-					break;
 				case 'global_settings':
 					settings_fields( 'coil_global_settings_group' );
 					do_settings_sections( 'coil_global_settings_global' );
