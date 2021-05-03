@@ -38,6 +38,7 @@
 		let element;
 
 		// Use try-catch to handle invalid CSS selectors.
+		// Accesses coilParams object because it is called before contentContainer has been defined.
 		try {
 			element = document.querySelector( coilParams.content_container );
 		} catch ( e ) {
@@ -305,7 +306,7 @@
 	function hasBannerDismissCookie( cookieName ) {
 		const currentCookie = Cookies.get( cookieName );
 
-		if ( ( typeof ( currentCookie ) !== 'undefined' ) ) {
+		if ( ( typeof currentCookie !== 'undefined' ) ) {
 			if ( cookieName === 'ShowCoilPublicMsg' || cookieName === 'ShowCoilPartialMsg' ) {
 				return ( currentCookie === '1' ) ? true : false;
 			}
@@ -467,7 +468,6 @@
 	 */
 	function monetizationStartListener( event ) {
 		monetizationStartEventOccurred = true;
-
 		if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
 			showContentContainer();
 			document.body.classList.remove( 'show-fw-message' );

@@ -137,7 +137,7 @@ function addAttributes( settings ) {
 	}
 
 	return settings;
-} // END addAttributes()
+}
 
 /**
  * Override the default edit UI to include a new block inspector control for
