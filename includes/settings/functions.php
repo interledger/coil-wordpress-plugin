@@ -385,14 +385,13 @@ function coil_settings_sidebar_render_callback() {
 function coil_global_settings_payment_pointer_render_callback() {
 
 	printf(
-		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s" />',
+		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" />',
 		esc_attr( 'wide-input' ),
 		esc_attr( 'text' ),
 		esc_attr( 'coil_global_settings_group[coil_payment_pointer_id]' ),
 		esc_attr( 'coil_payment_pointer_id' ),
 		esc_attr( Admin\get_global_settings( 'coil_payment_pointer_id' ) ),
-		esc_attr( '$wallet.example.com/alice' ),
-		esc_attr( '' )
+		esc_attr( '$wallet.example.com/alice' )
 	);
 
 	echo '<p class="' . esc_attr( 'description' ) . '">';
@@ -418,14 +417,13 @@ function coil_global_settings_payment_pointer_render_callback() {
 function coil_global_settings_advanced_config_render_callback() {
 
 	printf(
-		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s" required="required"/>',
+		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" required="required"/>',
 		esc_attr( 'wide-input' ),
 		esc_attr( 'text' ),
 		esc_attr( 'coil_global_settings_group[coil_content_container]' ),
 		esc_attr( 'coil_content_container' ),
 		esc_attr( Admin\get_global_settings( 'coil_content_container' ) ),
-		esc_attr( '.content-area .entry-content' ),
-		esc_attr( '' )
+		esc_attr( '.content-area .entry-content' )
 	);
 
 	echo '<p class="description">';
