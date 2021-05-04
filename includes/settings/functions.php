@@ -992,22 +992,27 @@ function transfer_customizer_message_settings() {
 		$messaging_settings['coil_fully_gated_content_message'] = get_theme_mod( $coil_unsupported_message );
 		remove_theme_mod( $coil_unsupported_message );
 	}
+
 	if ( get_theme_mod( $coil_verifying_status_message ) ) {
 		$messaging_settings['coil_verifying_status_message'] = get_theme_mod( $coil_verifying_status_message );
 		remove_theme_mod( $coil_verifying_status_message );
 	}
+
 	if ( get_theme_mod( $coil_unable_to_verify_message ) ) {
 		$messaging_settings['coil_unable_to_verify_message'] = get_theme_mod( $coil_unable_to_verify_message );
 		remove_theme_mod( $coil_unable_to_verify_message );
 	}
+
 	if ( get_theme_mod( $coil_voluntary_donation_message ) ) {
 		$messaging_settings['coil_voluntary_donation_message'] = get_theme_mod( $coil_voluntary_donation_message );
 		remove_theme_mod( $coil_voluntary_donation_message );
 	}
+
 	if ( get_theme_mod( $coil_learn_more_button_text ) ) {
 		$messaging_settings['coil_learn_more_button_text'] = get_theme_mod( $coil_learn_more_button_text );
 		remove_theme_mod( $coil_learn_more_button_text );
 	}
+
 	if ( get_theme_mod( $coil_learn_more_button_link ) ) {
 		$messaging_settings['coil_learn_more_button_link'] = get_theme_mod( $coil_learn_more_button_link );
 		remove_theme_mod( $coil_learn_more_button_link );
@@ -1022,7 +1027,7 @@ function transfer_customizer_monetization_settings() {
 	$existing_options = get_option( 'coil_monetization_settings_group' );
 
 	// We've already saved or transferred this setting
-	if ( ( ! get_theme_mod( 'coil_title_padlock' ) && ! get_theme_mod( 'coil_show_donation_bar' ) ) || ( isset( $existing_options['coil_title_padlock'] ) || isset( $existing_options['coil_show_donation_bar'] ) ) ) {
+	if ( ( ! get_theme_mod( 'coil_title_padlock', true ) && ! get_theme_mod( 'coil_show_donation_bar', true ) ) || ( isset( $existing_options['coil_title_padlock'] ) || isset( $existing_options['coil_show_donation_bar'] ) ) ) {
 		return;
 	}
 
@@ -1033,8 +1038,6 @@ function transfer_customizer_monetization_settings() {
 		'coil_title_padlock'     => get_theme_mod( $coil_title_padlock, true ),
 		'coil_show_donation_bar' => get_theme_mod( $coil_show_donation_bar, true ),
 	];
-
-	var_dump( $new_monetization_settings );
 
 	remove_theme_mod( $coil_title_padlock );
 	remove_theme_mod( $coil_show_donation_bar );
