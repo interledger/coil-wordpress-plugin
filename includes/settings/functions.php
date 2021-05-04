@@ -1034,6 +1034,8 @@ function transfer_customizer_monetization_settings() {
 		'coil_show_donation_bar' => get_theme_mod( $coil_show_donation_bar, true ),
 	];
 
+	var_dump( $new_monetization_settings );
+
 	remove_theme_mod( $coil_title_padlock );
 	remove_theme_mod( $coil_show_donation_bar );
 
