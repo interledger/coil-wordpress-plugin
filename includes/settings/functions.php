@@ -170,10 +170,18 @@ function register_admin_content_settings() {
 		'coil_messaging_settings'
 	);
 
-	// === Learn more button
+	// === Learn more button text
 	add_settings_section(
 		'coil_learn_more_button_text',
-		__( 'Learn more button', 'coil-web-monetization' ),
+		__( 'Learn more button text', 'coil-web-monetization' ),
+		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
+		'coil_messaging_settings'
+	);
+
+	// === Learn more button link
+	add_settings_section(
+		'coil_learn_more_button_link',
+		__( 'Learn more button link', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
@@ -260,12 +268,15 @@ function coil_messaging_settings_validation( $messaging_settings ) : array {
 		return [];
 	}
 
-	return array_map(
-		function( $message_value ) {
-			return ( isset( $message_value ) ) ? sanitize_text_field( $message_value ) : '';
-		},
-		(array) $messaging_settings
-	);
+	foreach ( $messaging_settings as $key => $option_value ) {
+		if ( $key === 'coil_learn_more_button_link' ) {
+			$messaging_settings[ $key ] = esc_url_raw( $option_value );
+		} else {
+			$messaging_settings[ $key ] = ( isset( $message_value ) ) ? sanitize_text_field( $message_value ) : '';
+		}
+	}
+
+	return $messaging_settings;
 }
 
 /**
@@ -284,18 +295,84 @@ function coil_visual_settings_validation( $visual_settings ) : array {
 	);
 }
 
+/* ------------------------------------------------------------------------ *
+ * Settings Rendering
+ * ------------------------------------------------------------------------ */
+
+/**
+ * Renders the output of the Getting Started tab.
+ *
+ * @return void
+ */
+function coil_settings_sidebar_render_callback() {
+
+	?>
+	<div class="coil settings-sidebar">
+		<header>
+			<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+				<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+					<g id="help-wheel" fill="#EE8249" fill-rule="nonzero">
+						<path d="M11,21.5 C9.073,21.5 7.186,20.97 5.545,19.969 C5.545,19.969 5.531,19.96 5.524,19.956 C4.112,19.09 2.908,17.885 2.042,16.473 C2.038,16.467 2.031,16.455 2.031,16.455 C1.03,14.813 0.5,12.927 0.5,11 C0.5,9.073 1.03,7.187 2.031,5.545 C2.031,5.545 2.042,5.528 2.047,5.52 C3.978,2.377 7.325,0.5 11,0.5 C14.677,0.5 18.024,2.378 19.955,5.523 C19.96,5.53 19.969,5.545 19.969,5.545 C20.97,7.186 21.5,9.073 21.5,11 C21.5,12.927 20.97,14.814 19.969,16.455 C19.969,16.455 19.962,16.466 19.959,16.471 C19.092,17.886 17.886,19.093 16.47,19.96 C16.465,19.963 16.455,19.97 16.455,19.97 C14.814,20.97 12.927,21.5 11,21.5 Z M7.123,19.12 C8.328,19.697 9.658,20 11,20 C12.342,20 13.672,19.697 14.877,19.12 L11.25,15.493 C11.164,15.498 11.081,15.5 11,15.5 C10.919,15.5 10.837,15.498 10.751,15.492 L7.123,19.12 Z M3.668,16.211 C4.254,17.034 4.966,17.746 5.789,18.333 L9.063,15.06 C8.136,14.616 7.385,13.865 6.941,12.938 L3.668,16.211 Z M16.211,18.332 C17.035,17.746 17.746,17.034 18.333,16.21 L15.059,12.937 C14.615,13.863 13.864,14.614 12.938,15.058 L16.211,18.332 Z M19.12,14.877 C19.697,13.672 20,12.342 20,11 C20,9.658 19.697,8.328 19.12,7.123 L15.493,10.75 C15.498,10.836 15.5,10.919 15.5,11 C15.5,11.082 15.498,11.165 15.492,11.251 L19.12,14.877 Z M2.88,7.123 C2.303,8.328 2,9.658 2,11 C2,12.342 2.303,13.672 2.88,14.877 L6.508,11.25 C6.503,11.164 6.5,11.081 6.5,11 C6.5,10.919 6.503,10.836 6.508,10.75 L2.88,7.123 Z M11,8 C9.346,8 8,9.346 8,11 C8,12.654 9.346,14 11,14 C12.654,14 14,12.654 14,11 C14,9.346 12.654,8 11,8 Z M6.941,9.063 C7.385,8.137 8.136,7.385 9.062,6.942 L5.789,3.668 C4.965,4.254 4.254,4.966 3.668,5.789 L6.941,9.063 Z M12.938,6.941 C13.864,7.385 14.615,8.136 15.059,9.062 L18.332,5.789 C17.746,4.966 17.034,4.254 16.211,3.668 L12.938,6.941 Z M10.75,6.508 C10.836,6.503 10.919,6.5 11,6.5 C11.081,6.5 11.164,6.503 11.25,6.508 L14.878,2.881 C13.672,2.303 12.342,2 11,2 C9.658,2 8.328,2.303 7.122,2.88 L10.75,6.508 Z" id="Shape"></path>
+					</g>
+				</g>
+			</svg>
+
+			<h3><?php esc_html_e( 'Useful links &amp; how to guides', 'coil-web-monetization' ); ?></h3>
+		</header>
+		<section>
+			<ul>
+				<?php
+				printf(
+					'<li><a target="_blank" href="%1$s">%2$s</a></li>',
+					esc_url( 'https://help.coil.com/docs/monetize/content/wp-overview/' ),
+					esc_html__( 'How to configure the Coil plugin', 'coil-web-monetization' )
+				);
+				?>
+				<?php
+				printf(
+					'<li><a target="_blank" href="%1$s">%2$s</a></li>',
+					esc_url( 'https://help.coil.com/docs/monetize/content/wp-faq-troubleshooting' ),
+					esc_html__( 'FAQs and Troubleshooting', 'coil-web-monetization' )
+				);
+				?>
+				<?php
+				printf(
+					'<li><a target="_blank" href="%1$s">%2$s</a></li>',
+					esc_url( 'https://help.coil.com/docs/general-info/intro-to-coil/' ),
+					esc_html__( 'About Coil and Web Monetization', 'coil-web-monetization' )
+				);
+				?>
+				<?php
+				printf(
+					'<li><a target="_blank" href="%1$s">%2$s</a></li>',
+					esc_url( 'https://webmonetization.org/docs/ilp-wallets' ),
+					esc_html__( 'Digital wallets and payment pointers', 'coil-web-monetization' )
+				);
+				?>
+				<?php
+				printf(
+					'<li><a target="_blank" href="%1$s">%2$s</a></li>',
+					esc_url( 'https://help.coil.com/docs/monetize/get-creator-account/' ),
+					esc_html__( 'Get a free Coil creator account', 'coil-web-monetization' )
+				);
+				?>
+			</ul>
+		</section>
+	</div>
+	<?php
+}
+
 // Render the text field for the payment point in global settings.
 function coil_global_settings_payment_pointer_render_callback() {
 
 	printf(
-		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s" />',
+		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" />',
 		esc_attr( 'wide-input' ),
 		esc_attr( 'text' ),
 		esc_attr( 'coil_global_settings_group[coil_payment_pointer_id]' ),
 		esc_attr( 'coil_payment_pointer_id' ),
 		esc_attr( Admin\get_global_settings( 'coil_payment_pointer_id' ) ),
-		esc_attr( '$wallet.example.com/alice' ),
-		esc_attr( '' )
+		esc_attr( '$wallet.example.com/alice' )
 	);
 
 	echo '<p class="' . esc_attr( 'description' ) . '">';
@@ -321,14 +398,13 @@ function coil_global_settings_payment_pointer_render_callback() {
 function coil_global_settings_advanced_config_render_callback() {
 
 	printf(
-		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" style="%s" required="required"/>',
+		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" required="required"/>',
 		esc_attr( 'wide-input' ),
 		esc_attr( 'text' ),
 		esc_attr( 'coil_global_settings_group[coil_content_container]' ),
 		esc_attr( 'coil_content_container' ),
 		esc_attr( Admin\get_global_settings( 'coil_content_container' ) ),
-		esc_attr( '.content-area .entry-content' ),
-		esc_attr( '' )
+		esc_attr( '.content-area .entry-content' )
 	);
 
 	echo '<p class="description">';
@@ -463,7 +539,10 @@ function coil_messaging_settings_render_callback( $args ) {
 			$helper_text = __( 'Appears for non-paying viewers in a footer bar when content is set to Monetized and Public or Split Content.', 'coil-web-monetization' );
 			break;
 		case 'coil_learn_more_button_text':
-			$helper_text = __( 'Text on the button which directs non-paying viewers to the Coil home page. Shown below the Paying Viewers Only message and in the support creator footer.', 'coil-web-monetization' );
+			$helper_text = __( 'Text on the "Learn more" shown below the Paying Viewers Only message and in the support creator footer.', 'coil-web-monetization' );
+			break;
+		case 'coil_learn_more_button_link':
+			$helper_text = __( '"Learn more" button link/URL to direct non-paying viewers to Coil\'s website. Shown below the Paying Viewers Only message and in the support creator footer.', 'coil-web-monetization' );
 			break;
 		default:
 			$helper_text = '';
@@ -549,9 +628,9 @@ function admin_welcome_notice() {
 		return;
 	}
 
-	$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'getting_started';
+	$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'global_settings';
 
-	if ( $active_tab !== 'getting_started' ) {
+	if ( $active_tab !== 'global_settings' ) {
 		return;
 	}
 	?>
@@ -643,6 +722,11 @@ function render_coil_settings_screen() : void {
 	</div>
 	<div class="wrap coil plugin-settings">
 
+<<<<<<< HEAD
+=======
+		<?php coil_settings_sidebar_render_callback(); ?>
+
+>>>>>>> develop
 		<?php settings_errors(); ?>
 
 		<form action="options.php" method="post">
@@ -841,8 +925,8 @@ function transfer_customizer_message_settings() {
 		$messaging_settings['coil_learn_more_button_text'] = get_theme_mod( $coil_learn_more_button_text );
 		remove_theme_mod( $coil_learn_more_button_text );
 	}
-	// Customization of the Coil learn more button link is no longer supported
 	if ( get_theme_mod( $coil_learn_more_button_link ) ) {
+		$messaging_settings['coil_learn_more_button_link'] = get_theme_mod( $coil_learn_more_button_link );
 		remove_theme_mod( $coil_learn_more_button_link );
 	}
 

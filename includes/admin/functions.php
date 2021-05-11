@@ -436,6 +436,7 @@ function get_messaging_defaults() {
 		'coil_unable_to_verify_message'        => __( 'You need a valid Coil account to see this content.', 'coil-web-monetization' ),
 		'coil_voluntary_donation_message'      => __( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', 'coil-web-monetization' ),
 		'coil_learn_more_button_text'          => __( 'Get Coil to access', 'coil-web-monetization' ),
+		'coil_learn_more_button_link'          => 'https://coil.com/',
 	];
 
 }
