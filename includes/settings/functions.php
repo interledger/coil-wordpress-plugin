@@ -599,9 +599,6 @@ function coil_messaging_textbox_render_callback( $content_id ) {
 
 function coil_messaging_settings_render_callback( $args ) {
 
-	// Print <textarea> containing the setting value
-	coil_messaging_textbox_render_callback( $args['id'] );
-
 	switch ( $args['id'] ) {
 		case 'coil_fully_gated_content_message':
 			$helper_text = __( 'Appears for non-paying viewers over hidden Paying Viewers Only content.', 'coil-web-monetization' );
@@ -631,9 +628,12 @@ function coil_messaging_settings_render_callback( $args ) {
 
 	if ( '' !== $helper_text ) {
 		?>
-			<p><?php echo esc_html( $helper_text ); ?></p>
+		<p><?php echo esc_html( $helper_text ); ?></p>
 		<?php
 	}
+
+	// Print <textarea> containing the setting value
+	coil_messaging_textbox_render_callback( $args['id'] );
 }
 
 function coil_title_padlock_settings_render_callback() {
