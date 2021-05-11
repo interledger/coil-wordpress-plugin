@@ -1026,7 +1026,7 @@ function transfer_customizer_monetization_settings() {
 
 	$existing_options = get_option( 'coil_monetization_settings_group' );
 
-	// We've already saved or transferred this setting
+	// If the setting has already been saved or transferred then simply return
 	if ( ( ! get_theme_mod( 'coil_title_padlock', true ) && ! get_theme_mod( 'coil_show_donation_bar', true ) ) || ( isset( $existing_options['coil_title_padlock'] ) || isset( $existing_options['coil_show_donation_bar'] ) ) ) {
 		return;
 	}
