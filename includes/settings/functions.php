@@ -109,7 +109,7 @@ function register_admin_content_settings() {
 	// ==== Padlock Settings.
 	add_settings_field(
 		'coil_title_padlock',
-		__( 'Padlock Settings', 'coil-web-monetization' ),
+		__( 'Padlock settings', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_title_padlock_settings_render_callback',
 		'coil_visual_settings',
 		'coil_visual_settings_section'
@@ -118,7 +118,7 @@ function register_admin_content_settings() {
 	// ==== Donation bar Settings.
 	add_settings_field(
 		'coil_show_donation_bar',
-		__( 'Donation Bar Settings', 'coil-web-monetization' ),
+		__( 'Display support creator message', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_show_donation_bar_settings_render_callback',
 		'coil_visual_settings',
 		'coil_visual_settings_section'
@@ -681,7 +681,7 @@ function coil_show_donation_bar_settings_render_callback() {
 	printf(
 		'<label for="%s">%s</label>',
 		esc_attr( 'display_donation_bar' ),
-		esc_html_e( 'Show a donation bar on posts that are Monetized and Public.', 'coil-web-monetization' )
+		esc_html_e( 'Show the support creator message in a footer bar on posts that are Monetized and Public.', 'coil-web-monetization' )
 	);
 }
 
