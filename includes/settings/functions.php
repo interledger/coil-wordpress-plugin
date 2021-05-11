@@ -1026,8 +1026,10 @@ function transfer_customizer_monetization_settings() {
 
 	$existing_options = get_option( 'coil_monetization_settings_group' );
 
+	$previous_gating_options = get_option( 'coil_content_settings_posts_group' );
+
 	// If the setting has already been saved or transferred then simply return
-	if ( ( ! get_theme_mod( 'coil_title_padlock', true ) && ! get_theme_mod( 'coil_show_donation_bar', true ) ) || ( isset( $existing_options['coil_title_padlock'] ) || isset( $existing_options['coil_show_donation_bar'] ) ) ) {
+	if ( get_option( 'coil_monetization_settings_group' ) || ( ! get_option( 'coil_content_settings_posts_group' ) && ! get_theme_mod( 'coil_title_padlock' ) && ! get_theme_mod( 'coil_show_donation_bar' ) ) ) {
 		return;
 	}
 
@@ -1041,6 +1043,20 @@ function transfer_customizer_monetization_settings() {
 
 	remove_theme_mod( $coil_title_padlock );
 	remove_theme_mod( $coil_show_donation_bar );
+
+	// Before moving post gating settings across check that post types and gating types are valid.
+	$supported_post_types = Coil\get_supported_post_types( 'names' );
+	$supported_gating_options = array_keys( Gating\get_monetization_setting_types() );
+
+	if ( ! empty( $supported_post_types ) ) {
+		foreach ( $previous_gating_options as $key => $value ) {
+			if ( in_array( $key, $supported_post_types, true ) && in_array( $value, $supported_gating_options, true ) ) {
+				$new_monetization_settings[ $key ] = sanitize_key( $value );
+			}
+		}
+	}
+
+	// Delete old row
 
 	if ( false !== $existing_options ) {
 		update_option( 'coil_monetization_settings_group', array_merge( $existing_options, $new_monetization_settings ) );
