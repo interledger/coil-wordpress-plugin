@@ -156,7 +156,7 @@ function register_admin_content_settings() {
 	// === Fully gated content message
 	add_settings_section(
 		'coil_fully_gated_content_message',
-		__( 'Message for blocked "Paying Viewers Only" content', 'coil-web-monetization' ),
+		__( 'Message for blocked Paying Viewers Only content', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
@@ -164,7 +164,7 @@ function register_admin_content_settings() {
 	// === Partially gated content message
 	add_settings_section(
 		'coil_partially_gated_content_message',
-		__( 'Message for blocked "Split Content" sections', 'coil-web-monetization' ),
+		__( 'Message for blocked Split Content sections', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
