@@ -15,7 +15,7 @@ jobs:
      - run: npx grunt test
  php_linting:
    docker:
-     - image: cimg/php:8.0.3
+     - image: cimg/php:7.4.19
    steps:
      - checkout # check out the code in the project directory
      - restore_cache:
