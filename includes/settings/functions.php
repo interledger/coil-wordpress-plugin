@@ -1028,6 +1028,8 @@ function transfer_customizer_monetization_settings() {
 
 	$previous_gating_options = get_option( 'coil_content_settings_posts_group' );
 
+	error_log( 'existing options: ' . json_encode( $existing_options ) );
+
 	// If the setting has already been saved or transferred then simply return
 	if ( get_option( 'coil_monetization_settings_group' ) || ( ! get_option( 'coil_content_settings_posts_group' ) && ! get_theme_mod( 'coil_title_padlock' ) && ! get_theme_mod( 'coil_show_donation_bar' ) ) ) {
 		return;
@@ -1055,8 +1057,10 @@ function transfer_customizer_monetization_settings() {
 			}
 		}
 	}
+	error_log( '$new_monetization_settings: ' . json_encode( $new_monetization_settings ) );
 
 	// Delete old row
+	delete_option( 'coil_content_settings_posts_group' );
 
 	if ( false !== $existing_options ) {
 		update_option( 'coil_monetization_settings_group', array_merge( $existing_options, $new_monetization_settings ) );
