@@ -1049,14 +1049,13 @@ function transfer_customizer_monetization_settings() {
 	$supported_gating_options = array_keys( Gating\get_monetization_setting_types() );
 
 	if ( ! empty( $supported_post_types ) ) {
-		foreach ( $previous_gating_options as $key => $value ) {
-			if ( in_array( $key, $supported_post_types, true ) && in_array( $value, $supported_gating_options, true ) ) {
-				$new_monetization_settings[ $key ] = sanitize_key( $value );
+		foreach ( $previous_gating_options as $post_type => $gating_type ) {
+			if ( in_array( $post_type, $supported_post_types, true ) && in_array( $gating_type, $supported_gating_options, true ) ) {
+				$new_monetization_settings[ $post_type ] = sanitize_key( $gating_type );
 			}
 		}
 	}
 
-	// Delete old row
 	delete_option( 'coil_content_settings_posts_group' );
 
 	if ( false !== $existing_options ) {
