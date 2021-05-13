@@ -984,36 +984,37 @@ function transfer_customizer_message_settings() {
 	$coil_learn_more_button_text     = 'coil_learn_more_button_text';
 	$coil_learn_more_button_link     = 'coil_learn_more_button_link';
 
-	if ( get_theme_mod( $coil_partial_gating_message ) ) {
+	// Using 'null' for comparrison becasue custom messages that were deleted remain in the database with the value false, but still need to be removed.
+	if ( get_theme_mod( $coil_partial_gating_message, 'null' ) !== 'null' ) {
 		$messaging_settings['coil_partially_gated_content_message'] = get_theme_mod( $coil_partial_gating_message );
 		remove_theme_mod( $coil_partial_gating_message );
 	}
-	if ( get_theme_mod( $coil_unsupported_message ) ) {
+	if ( get_theme_mod( $coil_unsupported_message , 'null' ) !== 'null' ) {
 		$messaging_settings['coil_fully_gated_content_message'] = get_theme_mod( $coil_unsupported_message );
 		remove_theme_mod( $coil_unsupported_message );
 	}
 
-	if ( get_theme_mod( $coil_verifying_status_message ) ) {
+	if ( get_theme_mod( $coil_verifying_status_message, 'null' ) !== 'null' ) {
 		$messaging_settings['coil_verifying_status_message'] = get_theme_mod( $coil_verifying_status_message );
 		remove_theme_mod( $coil_verifying_status_message );
 	}
 
-	if ( get_theme_mod( $coil_unable_to_verify_message ) ) {
+	if ( get_theme_mod( $coil_unable_to_verify_message, 'null' ) !== 'null' ) {
 		$messaging_settings['coil_unable_to_verify_message'] = get_theme_mod( $coil_unable_to_verify_message );
 		remove_theme_mod( $coil_unable_to_verify_message );
 	}
 
-	if ( get_theme_mod( $coil_voluntary_donation_message ) ) {
+	if ( get_theme_mod( $coil_voluntary_donation_message, 'null' ) !== 'null' ) {
 		$messaging_settings['coil_voluntary_donation_message'] = get_theme_mod( $coil_voluntary_donation_message );
 		remove_theme_mod( $coil_voluntary_donation_message );
 	}
 
-	if ( get_theme_mod( $coil_learn_more_button_text ) ) {
+	if ( get_theme_mod( $coil_learn_more_button_text, 'null' ) !== 'null' ) {
 		$messaging_settings['coil_learn_more_button_text'] = get_theme_mod( $coil_learn_more_button_text );
 		remove_theme_mod( $coil_learn_more_button_text );
 	}
 
-	if ( get_theme_mod( $coil_learn_more_button_link ) ) {
+	if ( get_theme_mod( $coil_learn_more_button_link, 'null' ) !== 'null' ) {
 		$messaging_settings['coil_learn_more_button_link'] = get_theme_mod( $coil_learn_more_button_link );
 		remove_theme_mod( $coil_learn_more_button_link );
 	}
@@ -1029,6 +1030,7 @@ function transfer_customizer_monetization_settings() {
 	$previous_gating_options = get_option( 'coil_content_settings_posts_group' );
 
 	// If the setting has already been saved or transferred then simply return
+	// Using 'null' for comparrison becasue if the padlock and support creator messages were unselected they were stored in the database with the value false, but still need to be transferred.
 	if ( get_option( 'coil_monetization_settings_group' ) || ( ! get_option( 'coil_content_settings_posts_group' ) && 'null' === get_theme_mod( 'coil_title_padlock', 'null' ) && 'null' === get_theme_mod( 'coil_show_donation_bar', 'null' ) ) ) {
 		return;
 	}
