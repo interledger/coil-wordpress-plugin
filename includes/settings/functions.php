@@ -330,7 +330,7 @@ function coil_visual_settings_validation( $visual_settings ) : array {
  * ------------------------------------------------------------------------ */
 
 /**
- * Renders the output of the Getting Started tab.
+ * Renders the output of the help links sidebar tab.
  *
  * @return void
  */
