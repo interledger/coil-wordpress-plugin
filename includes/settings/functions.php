@@ -1050,7 +1050,7 @@ function transfer_customizer_monetization_settings() {
 	$supported_post_types = Coil\get_supported_post_types( 'names' );
 	$supported_gating_options = array_keys( Gating\get_monetization_setting_types() );
 
-	if ( ! empty( $supported_post_types ) ) {
+	if ( ! empty( $supported_post_types ) && ! empty( $previous_gating_options ) ) {
 		foreach ( $previous_gating_options as $post_type => $gating_type ) {
 			if ( in_array( $post_type, $supported_post_types, true ) && in_array( $gating_type, $supported_gating_options, true ) ) {
 				$new_monetization_settings[ $post_type ] = sanitize_key( $gating_type );
