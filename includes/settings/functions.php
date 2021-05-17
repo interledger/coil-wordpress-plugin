@@ -109,7 +109,7 @@ function register_admin_content_settings() {
 	// ==== Padlock Settings.
 	add_settings_field(
 		'coil_title_padlock',
-		__( 'Padlock Settings', 'coil-web-monetization' ),
+		__( 'Padlock settings', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_title_padlock_settings_render_callback',
 		'coil_visual_settings',
 		'coil_visual_settings_section'
@@ -118,7 +118,7 @@ function register_admin_content_settings() {
 	// ==== Donation bar Settings.
 	add_settings_field(
 		'coil_show_donation_bar',
-		__( 'Donation Bar Settings', 'coil-web-monetization' ),
+		__( 'Display support creator message', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_show_donation_bar_settings_render_callback',
 		'coil_visual_settings',
 		'coil_visual_settings_section'
@@ -300,7 +300,7 @@ function coil_visual_settings_validation( $visual_settings ) : array {
  * ------------------------------------------------------------------------ */
 
 /**
- * Renders the output of the Getting Started tab.
+ * Renders the output of the help links sidebar tab.
  *
  * @return void
  */
@@ -519,9 +519,6 @@ function coil_messaging_textbox_render_callback( $content_id ) {
 
 function coil_messaging_settings_render_callback( $args ) {
 
-	// Print <textarea> containing the setting value
-	coil_messaging_textbox_render_callback( $args['id'] );
-
 	switch ( $args['id'] ) {
 		case 'coil_fully_gated_content_message':
 			$helper_text = __( 'Appears for non-paying viewers over hidden Paying Viewers Only content.', 'coil-web-monetization' );
@@ -551,9 +548,12 @@ function coil_messaging_settings_render_callback( $args ) {
 
 	if ( '' !== $helper_text ) {
 		?>
-			<p><?php echo esc_html( $helper_text ); ?></p>
+		<p><?php echo esc_html( $helper_text ); ?></p>
 		<?php
 	}
+
+	// Print <textarea> containing the setting value
+	coil_messaging_textbox_render_callback( $args['id'] );
 }
 
 function coil_title_padlock_settings_render_callback() {
@@ -601,7 +601,7 @@ function coil_show_donation_bar_settings_render_callback() {
 	printf(
 		'<label for="%s">%s</label>',
 		esc_attr( 'display_donation_bar' ),
-		esc_html_e( 'Show a donation bar on posts that are Monetized and Public.', 'coil-web-monetization' )
+		esc_html_e( 'Show the support creator message in a footer bar on posts that are Monetized and Public.', 'coil-web-monetization' )
 	);
 }
 
@@ -909,22 +909,27 @@ function transfer_customizer_message_settings() {
 		$messaging_settings['coil_fully_gated_content_message'] = get_theme_mod( $coil_unsupported_message );
 		remove_theme_mod( $coil_unsupported_message );
 	}
+
 	if ( get_theme_mod( $coil_verifying_status_message ) ) {
 		$messaging_settings['coil_verifying_status_message'] = get_theme_mod( $coil_verifying_status_message );
 		remove_theme_mod( $coil_verifying_status_message );
 	}
+
 	if ( get_theme_mod( $coil_unable_to_verify_message ) ) {
 		$messaging_settings['coil_unable_to_verify_message'] = get_theme_mod( $coil_unable_to_verify_message );
 		remove_theme_mod( $coil_unable_to_verify_message );
 	}
+
 	if ( get_theme_mod( $coil_voluntary_donation_message ) ) {
 		$messaging_settings['coil_voluntary_donation_message'] = get_theme_mod( $coil_voluntary_donation_message );
 		remove_theme_mod( $coil_voluntary_donation_message );
 	}
+
 	if ( get_theme_mod( $coil_learn_more_button_text ) ) {
 		$messaging_settings['coil_learn_more_button_text'] = get_theme_mod( $coil_learn_more_button_text );
 		remove_theme_mod( $coil_learn_more_button_text );
 	}
+
 	if ( get_theme_mod( $coil_learn_more_button_link ) ) {
 		$messaging_settings['coil_learn_more_button_link'] = get_theme_mod( $coil_learn_more_button_link );
 		remove_theme_mod( $coil_learn_more_button_link );
@@ -939,7 +944,7 @@ function transfer_customizer_monetization_settings() {
 	$existing_options = get_option( 'coil_monetization_settings_group' );
 
 	// We've already saved or transferred this setting
-	if ( ( ! get_theme_mod( 'coil_title_padlock' ) && ! get_theme_mod( 'coil_show_donation_bar' ) ) || ( isset( $existing_options['coil_title_padlock'] ) || isset( $existing_options['coil_show_donation_bar'] ) ) ) {
+	if ( ( ! get_theme_mod( 'coil_title_padlock', true ) && ! get_theme_mod( 'coil_show_donation_bar', true ) ) || ( isset( $existing_options['coil_title_padlock'] ) || isset( $existing_options['coil_show_donation_bar'] ) ) ) {
 		return;
 	}
 
