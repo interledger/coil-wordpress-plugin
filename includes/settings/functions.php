@@ -168,14 +168,6 @@ function register_admin_content_settings() {
 		'coil_messaging_settings'
 	);
 
-	// === Invalid monetization message
-	add_settings_section(
-		'coil_unable_to_verify_message',
-		__( 'Invalid Web Monetization message', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
-		'coil_messaging_settings'
-	);
-
 	// === Voluntry donation message
 	add_settings_section(
 		'coil_voluntary_donation_message',
@@ -609,9 +601,6 @@ function coil_messaging_settings_render_callback( $args ) {
 		case 'coil_verifying_status_message':
 			$helper_text = __( 'Appears while the plugin checks that an active Web Monetization account is in place.', 'coil-web-monetization' );
 			break;
-		case 'coil_unable_to_verify_message':
-			$helper_text = __( 'Appears when content is set to Paying Viewers Only and browser setup is correct, but Web Monetization doesn\'t start. This can happen when the user doesn\'t have an active Coil account.', 'coil-web-monetization' );
-			break;
 		case 'coil_voluntary_donation_message':
 			$helper_text = __( 'Appears for non-paying viewers in a footer bar when content is set to Monetized and Public or Split Content.', 'coil-web-monetization' );
 			break;
@@ -998,8 +987,8 @@ function transfer_customizer_message_settings() {
 		remove_theme_mod( $coil_verifying_status_message );
 	}
 
+	// No longer supporting this message. Replcaed with coil_fully_gated_content_message
 	if ( get_theme_mod( $coil_unable_to_verify_message ) ) {
-		$messaging_settings['coil_unable_to_verify_message'] = get_theme_mod( $coil_unable_to_verify_message );
 		remove_theme_mod( $coil_unable_to_verify_message );
 	}
 
