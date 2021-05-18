@@ -40,7 +40,7 @@ For user documentation, visit our [help center](https://help.coil.com/for-creato
 Our plugin lets you add monetization to all or some of your pages and posts.
 
 * Monetized and Public (default) - Allow all visitors to see the content, get paid when your visitor is a Coil Member
-* Paying Viewers Only - Only allow Coil Members to see the content
+* Coil Members Only - Only allow Coil Members to see the content
 * No Monetization - Allow all visitors to see the content, don't get paid when your visitor is a Coil Member
 
 The plugin is supported with the Classic and Block/Gutenberg editors. Monetization can be assigned globally to pages and posts, to individual pages and posts, and to tags and categories. If you're using the Gutenberg editor, you can choose to monetize at the block level.
@@ -100,7 +100,7 @@ First release.
 * Enhancement - The padlock icon has been completely removed from split content page / post titles and will only appear when entire pages / posts are for paid viewers only.
 
 * Tweak - Minimum supported PHP version is now version 7.2.
-* Tweak - The gradient effect on the CTA boxes that block exclusive content for non-paying viewers has been replaced with a solid border instead so that the excerpt above it is now clearly legible.
+* Tweak - The gradient effect on the CTA boxes that block exclusive content for non-monetized users has been replaced with a solid border instead so that the excerpt above it is now clearly legible.
 * Tweak - Updated Coil header on the settings panel.
 * Tweak - Removed the “Configure the plugin” button in the settings panel (simply took users to the Global Settings tab).
 * Tweak - All buttons that point to external links now open in a new tab.

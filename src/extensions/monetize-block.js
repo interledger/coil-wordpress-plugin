@@ -196,11 +196,11 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 											value: 'always-show',
 										},
 										{
-											label: __( 'Only Show Paying Viewers' ),
+											label: __( 'Show for monetized users' ),
 											value: 'show-monetize-users',
 										},
 										{
-											label: __( 'Hide For Paying Viewers' ),
+											label: __( 'Hide for monetized users' ),
 											value: 'hide-monetize-users',
 										},
 									]
@@ -352,7 +352,7 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 					value: 'no-gating',
 				},
 				{
-					label: __( 'Paying Viewers Only', 'coil-web-monetization' ),
+					label: __( 'Coil Members Only', 'coil-web-monetization' ),
 					value: 'gate-all',
 				},
 				{
