@@ -189,7 +189,6 @@ function load_full_assets() : void {
 		'coil_js_ui_messages',
 		[
 			'content_container'       => Admin\get_global_settings( 'coil_content_container' ),
-			'unable_to_verify'        => Admin\get_messaging_setting_or_default( 'coil_unable_to_verify_message' ),
 			'voluntary_donation'      => Admin\get_messaging_setting_or_default( 'coil_voluntary_donation_message' ),
 			'loading_content'         => Admin\get_messaging_setting_or_default( 'coil_verifying_status_message' ),
 			'fully_gated'             => Admin\get_messaging_setting_or_default( 'coil_fully_gated_content_message' ),
