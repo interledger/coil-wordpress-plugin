@@ -121,7 +121,16 @@
 	 * not compatible or verified.
 	 */
 	function showSplitContentMessage( message ) {
-		return splitContentMessage( message );
+		const modalContainer = document.createElement( 'div' );
+		modalContainer.classList.add( 'entry-content', 'coil-message-container' );
+		const modalData = {
+			content: message,
+			button: {
+				href: learnMoreButtonLink,
+			},
+		};
+		$( modalContainer ).append( splitContentMessage( modalData ) );
+		return modalContainer;
 	}
 
 	/**
@@ -239,7 +248,7 @@
 				}
 			} else if ( isSplitContent() ) {
 				// Split content and unable to verify hidden content.
-				$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( unableToVerify ) );
+				$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( partialGating ) );
 
 				// Show non-Coil-members content.
 				// Removing class means blocks revert to their *original* display values.

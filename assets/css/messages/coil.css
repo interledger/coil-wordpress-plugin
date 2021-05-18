@@ -365,7 +365,7 @@ body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-c
 body.coil-hide-excerpt.show-fw-message .entry-content {
   display: none; }
 
-.coil-show-monetize-users span.coil-split-content-message {
+.coil-show-monetize-users div.coil-split-content-message {
   align-items: center;
   background: #fff;
   border: 1px solid #c4c4c4;
@@ -373,6 +373,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
   bottom: 0;
   color: #555d66;
   display: flex;
+  flex-direction: column;
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
   justify-content: center;
@@ -387,7 +388,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
   width: 100%;
   z-index: 110; }
   @media only screen and (min-width: 768px) {
-    .coil-show-monetize-users span.coil-split-content-message {
+    .coil-show-monetize-users div.coil-split-content-message {
       font-size: 18px;
       line-height: 27px;
       padding: 50px; } }

@@ -137,7 +137,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 }
 
 // Split content
-.coil-show-monetize-users span.coil-split-content-message {
+.coil-show-monetize-users div.coil-split-content-message {
 	align-items: center;
 	background: $white;
 	border: 1px solid $message_border_colour;
@@ -145,6 +145,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 	bottom: 0;
 	color: $grey;
 	display: flex;
+	flex-direction: column;
 	font-family: 'Open Sans', sans-serif;
 	font-size: 16px;
 	justify-content: center;
