@@ -37,6 +37,8 @@ jobs:
           cd $HOME
           ls -a
           cd /home/circleci/php
+          $WP_TESTS_DIR
+          WP_TESTS_DIR
           sudo bash ./setup-phpunit.sh
     - restore_cache:
         key: -v1-deps{{checksum "composer.lock"}}
