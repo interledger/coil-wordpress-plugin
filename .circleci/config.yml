@@ -16,6 +16,9 @@ jobs:
  php_linting:
    docker:
     - image: cimg/php:7.4.19
+      environment:
+        WP_TESTS_DIR: /tmp/wordpress-tests-lib
+        WP_CORE_DIR: /tmp/wordpress
     - image: circleci/mysql:8.0.16
       environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
