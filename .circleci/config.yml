@@ -31,7 +31,7 @@ jobs:
           curl -o setup-phpunit.sh https://gist.githubusercontent.com/keesiemeijer/a888f3d9609478b310c2d952644891ba/raw/
           pwd
           ls
-          bash /setup-phpunit.sh
+          bash ./setup-phpunit.sh
     - restore_cache:
         key: -v1-deps{{checksum "composer.lock"}}
     - run: composer install
