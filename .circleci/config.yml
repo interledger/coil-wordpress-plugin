@@ -22,6 +22,7 @@ jobs:
           MYSQL_USER: root
           MYSQL_ROOT_PASSWORD: 'root'
           MYSQL_DATABASE: local
+   working_directory: ~/php
    steps:
     - checkout # check out the code in the project directory
     - restore_cache:
