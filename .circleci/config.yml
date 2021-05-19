@@ -31,6 +31,10 @@ jobs:
       - restore_cache:
           key: -v1-deps{{checksum "composer.lock"}}
       - run: composer install
+      - save_cache:
+          key: -v1-deps{{checksum "composer.lock"}}
+          paths:
+            - vendor
       - run:
           # Our primary container isn't MYSQL so run a sleep command until it's ready.
           name: Waiting for MySQL to be ready
@@ -47,19 +51,14 @@ jobs:
           command: |
             sudo apt update
             sudo apt-get install mysql-client
-            mysql -h 127.0.0.1 -u $MYSQL_USER -p$MYSQL_ROOT_PASSWORD test_db < sql-data/dummy.sql
-            mysql -h 127.0.0.1 -u user -ppassw0rd --execute="SELECT * FROM test_db.Persons
-      - save_cache:
-          key: -v1-deps{{checksum "composer.lock"}}
-          paths:
-            - vendor
       - run:
           name: Install PHP exts
           command: |
+            pwd
+            ls -a
             echo $WP_TESTS_DIR
             mkdir "$WP_CORE_DIR"
             mkdir "$WP_TESTS_DIR"
-            curl -o setup-phpunit.sh https://gist.githubusercontent.com/keesiemeijer/a888f3d9609478b310c2d952644891ba/raw/
             sudo bash ./setup-phpunit.sh
       - run: composer phpcs
 workflows:
