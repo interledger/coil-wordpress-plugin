@@ -1,52 +1,70 @@
 version: 2.0
 jobs:
- js_scss_linting:
-   docker:
-    - image: cimg/node:14.10.1 # the primary container, where your job's commands are run
-   steps:
-    - checkout # check out the code in the project directory
-    - restore_cache:
-        key: v1-dependency-cache-{{checksum "package-lock.json"}}
-    - run: npm ci
-    - save_cache:
-        key: v1-dependency-cache-{{checksum "package-lock.json"}}
-        paths:
-          - node_modules
-    - run: npx grunt test
- php_linting:
-   docker:
-    - image: cimg/php:7.4.19
-      environment:
-        WP_TESTS_DIR: /tmp/wordpress-tests-lib
-        WP_CORE_DIR: /tmp/wordpress
-    - image: circleci/mysql:8.0.16
-      environment:
+  js_scss_linting:
+    docker:
+      - image: cimg/node:14.10.1 # the primary container, where your job's commands are run
+    steps:
+      - checkout # check out the code in the project directory
+      - restore_cache:
+          key: v1-dependency-cache-{{checksum "package-lock.json"}}
+      - run: npm ci
+      - save_cache:
+          key: v1-dependency-cache-{{checksum "package-lock.json"}}
+          paths:
+            - node_modules
+      - run: npx grunt test
+  php_linting:
+    docker:
+      - image: cimg/php:7.4.19
+        environment:
+          WP_TESTS_DIR: /tmp/wordpress-tests-lib
+          WP_CORE_DIR: /tmp/wordpress
+      - image: circleci/mysql:8.0.16
+        environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_USER: root
-          MYSQL_ROOT_PASSWORD: 'root'
+          MYSQL_ROOT_PASSWORD: "root"
           MYSQL_DATABASE: local
-   working_directory: ~/php
-   steps:
-    - checkout # check out the code in the project directory
-    - restore_cache:
-        key: -v1-deps{{checksum "composer.lock"}}
-    - run: composer install
-    - save_cache:
-        key: -v1-deps{{checksum "composer.lock"}}
-        paths:
-          - vendor
-    - run:
-        name: Install PHP exts
-        command: |
-          echo $WP_TESTS_DIR
-          mkdir "$WP_CORE_DIR"
-          mkdir "$WP_TESTS_DIR"
-          curl -o setup-phpunit.sh https://gist.githubusercontent.com/keesiemeijer/a888f3d9609478b310c2d952644891ba/raw/
-          sudo bash ./setup-phpunit.sh
-    - run: composer phpcs
+    working_directory: ~/php
+    steps:
+      - checkout # check out the code in the project directory
+      - restore_cache:
+          key: -v1-deps{{checksum "composer.lock"}}
+      - run: composer install
+      - run:
+          # Our primary container isn't MYSQL so run a sleep command until it's ready.
+          name: Waiting for MySQL to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z 127.0.0.1 3306 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for MySQL && exit 1
+      - run:
+          name: Install MySQL CLI; Import dummy data; run an example query
+          command: |
+            sudo apt update
+            sudo apt-get install mysql-client
+            mysql -h 127.0.0.1 -u $MYSQL_USER -p$MYSQL_ROOT_PASSWORD test_db < sql-data/dummy.sql
+            mysql -h 127.0.0.1 -u user -ppassw0rd --execute="SELECT * FROM test_db.Persons
+      - save_cache:
+          key: -v1-deps{{checksum "composer.lock"}}
+          paths:
+            - vendor
+      - run:
+          name: Install PHP exts
+          command: |
+            echo $WP_TESTS_DIR
+            mkdir "$WP_CORE_DIR"
+            mkdir "$WP_TESTS_DIR"
+            curl -o setup-phpunit.sh https://gist.githubusercontent.com/keesiemeijer/a888f3d9609478b310c2d952644891ba/raw/
+            sudo bash ./setup-phpunit.sh
+      - run: composer phpcs
 workflows:
- version: 2
- basic_linting_tests:
-   jobs:
-    - js_scss_linting
-    - php_linting
+  version: 2
+  basic_linting_tests:
+    jobs:
+      - js_scss_linting
+      - php_linting
