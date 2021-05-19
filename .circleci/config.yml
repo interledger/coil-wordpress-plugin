@@ -16,7 +16,7 @@ jobs:
  php_linting:
    docker:
     - image: cimg/php:7.4.19
-    - image: circleci/mysql:5.7
+    - image: circleci/mysql:8.0.16
       environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_USER: root
@@ -25,6 +25,13 @@ jobs:
    working_directory: ~/php
    steps:
     - checkout # check out the code in the project directory
+    - run:
+        name: Install PHP exts
+        command: |
+          curl -o setup-phpunit.sh https://gist.githubusercontent.com/keesiemeijer/a888f3d9609478b310c2d952644891ba/raw/
+          pwd
+          ls
+          bash /setup-phpunit.sh
     - restore_cache:
         key: -v1-deps{{checksum "composer.lock"}}
     - run: composer install
