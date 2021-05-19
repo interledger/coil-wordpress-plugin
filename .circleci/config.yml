@@ -31,7 +31,7 @@ jobs:
     - run:
         name: Install PHP exts
         command: |
-          $WP_TESTS_DIR
+          WP_TESTS_DIR
           curl -o setup-phpunit.sh https://gist.githubusercontent.com/keesiemeijer/a888f3d9609478b310c2d952644891ba/raw/
           sudo bash ./setup-phpunit.sh
     - restore_cache:
