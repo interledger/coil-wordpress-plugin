@@ -39,10 +39,8 @@ jobs:
         name: Install PHP exts
         command: |
           echo $WP_TESTS_DIR
-          -d "$WP_CORE_DIR" ]] || mkdir "$WP_CORE_DIR"
-          -d "$WP_TESTS_DIR" ]] || mkdir "$WP_TESTS_DIR"
-          cd $WP_CORE_DIR
-          pwd
+          mkdir "$WP_CORE_DIR"
+          mkdir "$WP_TESTS_DIR"
           curl -o setup-phpunit.sh https://gist.githubusercontent.com/keesiemeijer/a888f3d9609478b310c2d952644891ba/raw/
           sudo bash ./setup-phpunit.sh
     - run: composer phpcs
