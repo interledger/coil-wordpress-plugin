@@ -52,8 +52,6 @@ jobs:
           name: Setup PHPUnit
           command: |
             sudo bash ./setup-phpunit.sh
-            echo PHPUnit version
-            phpunit --version
       - run: composer phpcs
 workflows:
   version: 2
