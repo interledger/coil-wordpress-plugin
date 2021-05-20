@@ -337,6 +337,7 @@ if [[ -f "$WP_TESTS_DIR/wp-tests-config.php" ]]; then
 	sed -i "s/youremptytestdbnamehere/wordpress_test/" "$WP_TESTS_DIR/wp-tests-config.php"
 	sed -i "s/yourusernamehere/root/" "$WP_TESTS_DIR/wp-tests-config.php"
 	sed -i "s/yourpasswordhere/root/" "$WP_TESTS_DIR/wp-tests-config.php"
+	sed -i "s/localhost/127.0.0.1/" "$WP_TESTS_DIR/wp-tests-config.php"
 fi
 
 if [[ -f "$WP_TESTS_DIR/wp-tests-config.php" ]]; then
@@ -346,5 +347,9 @@ fi
 
 # Cleanup files.
 clean_up_temp_files
+
+echo "Chowning test folders to the circleci user"
+chown -R circleci:circleci $WP_TESTS_DIR
+chown -R circleci:circleci $WP_CORE_DIR
 
 printf "\nFinished setting up packages\n\n"
