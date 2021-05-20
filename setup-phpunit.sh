@@ -1,58 +1,25 @@
 #!/usr/bin/env bash
 
 # ===============================================================================
-# Script to install PHPUnit in the Local by Flywheel Mac app
+# Script to install PHPUnit in the Circle CI environment
+# Adapted from original source curl -o setup-phpunit.sh https://gist.githubusercontent.com/keesiemeijer/a888f3d9609478b310c2d952644891ba/raw/
 # These packages are installed
 # 
 #     PHPUnit, curl wget, rsync, git, subversion and composer.
 # 
+# The WordPress and WP Test Suite paths are created as global variables and the respetive folders are created.
 # WordPress is installed in the `/tmp/wordpress` directory for use by PHPUnit. 
 # The WordPress test suite is installed in the `/tmp/wordpress-tests-lib` directory.
-#
-# The WordPress and WP Test Suite paths are added to the ~/.bashrc file as environment
-# variables $WP_CORE_DIR and $WP_TESTS_DIR.
 # 
 # That way plugins can make use of them for unit testing. Plugins that have their
-# tests scaffolded by WP-CLI also makes use of them. VVV also adds these enviroment
-# variables to the ~/.bashrc file by default.
-# 
-# You only have to run this script once. PHPUnit (and the other packages) are 
-# still available next time you ssh into your site.
-# 
-# To update WordPress and the WP Test Suite re-run this script.
+# tests scaffolded by WP-CLI also makes use of them. 
+#
 # Use options to install specific versions for PHPUnit, WordPress or the WP_UnitTestCase.
-# 
-# Note: This script doesn't install the packages globally in the Local by Flywheel app
-# Packages are only installed for the site where you've run this script.
 # ===============================================================================
 
 
 # ===============================================================================
-# Instructions
-# 
-# 1 - Download this file (setup-phpunit.sh) inside your site's /app folder
-# curl -o setup-phpunit.sh https://gist.githubusercontent.com/keesiemeijer/a888f3d9609478b310c2d952644891ba/raw/
-# 
-# 2 - Right click your site in the Local App and click Open Site SSH
-# A new terminal window will open
-# 
-# 3 - Go to your site's /app folder:
-# cd /app
-# 
-# 4 - Run this script
-# bash setup-phpunit.sh
-# 
-# 5 - Reload the .bashrc file
-# source ~/.bashrc
-# 
-# 6 - Check if PHPUnit is installed
-# phpunit --version
-# 
-# ===============================================================================
-
-
-# ===============================================================================
-# Options
+# Options to use in config.yml file
 # 
 # Without options this script installs/updates PHPUnit, WordPress and the WP test suite.
 # 
@@ -84,22 +51,13 @@
 # ===============================================================================
 # Default PHPUnit version
 # 
-# The default installed PHPUnit version is similar to versions used in 
-# WordPress travis.yaml file in trunk.
-# 
-# See https://core.trac.wordpress.org/browser/trunk/.travis.yml#L64
-# 
 # PHPUnit version 7 is installed for PHP version 7.1 and above
 # PHPUnit version 5 is installed for PHP version 7.0
 # PHPUnit version 4 for all other PHP versions
 # 
-# See ticket https://core.trac.wordpress.org/ticket/39822
-# See ticket https://core.trac.wordpress.org/ticket/43218
-# 
 # Run the command with a version if you need to test with a specific PHPUnit version
 # 
 # bash setup-phpunit.sh --phpunit-version=7
-# 
 # This example will install the latest PHPUnit from version 7 (e.g. 7.5.3)
 # 
 # Available PHPUnit versions can be found here.
@@ -390,7 +348,7 @@ fi
 printf "Checking if database wordpress_test exists\n"
 
 # Suppress password warnings. It silly I know :-)
-printf "[client]\npassword=root\nuser=root\nsocket = /home/sarahjanejones/.config/Local/run/rXbNBLxXa/mysql/mysqld.sock" > "/tmp/my.cnf"
+printf "[client]\npassword=root\nuser=root\nsocket = /var/run/mysqld/mysqlx.sock" > "/tmp/my.cnf"
 
 database=$(mysqlshow --defaults-file="/tmp/my.cnf" wordpress_test | grep -v Wildcard | grep -o wordpress_test)
 if ! [[ "wordpress_test" = "$database" ]]; then

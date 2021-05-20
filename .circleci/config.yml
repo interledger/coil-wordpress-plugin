@@ -44,14 +44,16 @@ jobs:
             done
             echo Failed waiting for MySQL && exit 1
       - run:
-          name: Install MySQL CLI; Import dummy data; run an example query
+          name: Install MySQL CLI
           command: |
             sudo apt update
             sudo apt-get install mysql-client
       - run:
-          name: Install PHP exts
+          name: Setup PHPUnit
           command: |
             sudo bash ./setup-phpunit.sh
+            echo PHPUnit version
+            phpunit --version
       - run: composer phpcs
 workflows:
   version: 2
