@@ -284,6 +284,8 @@ else
 fi
 
 # Test WordPress environment variables.
+export WP_CORE_DIR=/tmp/wordpress
+export WP_TESTS_DIR=/tmp/wordpress-tests-lib
 if [[ -z "$WP_CORE_DIR" || -z "$WP_TESTS_DIR" ]]; then
 	printf "${RED}ERROR${RESET} The WordPress directories for PHPUnit are not set\n%s\n" "$QUIT"
 	exit_script
