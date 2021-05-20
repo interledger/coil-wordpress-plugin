@@ -332,30 +332,11 @@ fi
 # Update credentials in the wp-tests-config.php file.
 if [[ -f "$WP_TESTS_DIR/wp-tests-config.php" ]]; then
 	printf "Updating wp-tests-config-sample.php...\n"
-	if [[ $(uname -s) == 'Darwin' ]]; then
-		ioption='-i .bak'
-	else
-		ioption='-i'
-	fi
 
-	sed $ioption "s:dirname( __FILE__ ) . '/src/':'$WP_CORE_DIR/':" "$WP_TESTS_DIR/wp-tests-config.php"
-	sed $ioption "s/youremptytestdbnamehere/wordpress_test/" "$WP_TESTS_DIR/wp-tests-config.php"
-	sed $ioption "s/yourusernamehere/root/" "$WP_TESTS_DIR/wp-tests-config.php"
-	sed $ioption "s/yourpasswordhere/root/" "$WP_TESTS_DIR/wp-tests-config.php"
-fi
-
-# Install database if it doesn't exist.
-printf "Checking if database wordpress_test exists\n"
-
-# Suppress password warnings. It silly I know :-)
-printf "[client]\npassword=root\nuser=root\nsocket = /var/run/mysqld/mysqlx.sock" > "/tmp/my.cnf"
-
-database=$(mysqlshow --defaults-file="/tmp/my.cnf" wordpress_test | grep -v Wildcard | grep -o wordpress_test)
-if ! [[ "wordpress_test" = "$database" ]]; then
-	printf "Creating database wordpress_test\n"
-	mysqladmin --defaults-file="/tmp/my.cnf" create "wordpress_test" --host="localhost"
-else
-	printf "Database wordpress_test already exists\n"
+	sed -i "s:dirname( __FILE__ ) . '/src/':'$WP_CORE_DIR/':" "$WP_TESTS_DIR/wp-tests-config.php"
+	sed -i "s/youremptytestdbnamehere/wordpress_test/" "$WP_TESTS_DIR/wp-tests-config.php"
+	sed -i "s/yourusernamehere/root/" "$WP_TESTS_DIR/wp-tests-config.php"
+	sed -i "s/yourpasswordhere/root/" "$WP_TESTS_DIR/wp-tests-config.php"
 fi
 
 if [[ -f "$WP_TESTS_DIR/wp-tests-config.php" ]]; then

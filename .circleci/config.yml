@@ -21,7 +21,7 @@ jobs:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_USER: root
           MYSQL_ROOT_PASSWORD: "root"
-          MYSQL_DATABASE: local
+          MYSQL_DATABASE: wordpress_test/
     working_directory: ~/php
     steps:
       - checkout # check out the code in the project directory
@@ -52,6 +52,7 @@ jobs:
           name: Setup PHPUnit
           command: |
             sudo bash ./setup-phpunit.sh
+      - run: ./vendor/bin/phpunit
       - run: composer phpcs
 workflows:
   version: 2
