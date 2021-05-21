@@ -5,7 +5,7 @@
 # Adapted from original source curl -o setup-phpunit.sh https://gist.githubusercontent.com/keesiemeijer/a888f3d9609478b310c2d952644891ba/raw/
 # These packages are installed
 # 
-#     PHPUnit, curl wget, rsync, and subversion.
+#     PHPUnit, wget, rsync, and subversion.
 # 
 # The WordPress and WP Test Suite paths are created as global variables and the respetive folders are created.
 # WordPress is installed in the `/tmp/wordpress` directory for use by PHPUnit. 
@@ -37,7 +37,7 @@
 #     
 #     bash setup-phpunit.sh --wp-ts-version=trunk
 # 
-# Update all packages (wget, curl etc) installed by this script with the --update-packages option.
+# Update all packages (wget, etc) installed by this script with the --update-packages option.
 # 
 #     bash setup-phpunit.sh --update-packages
 # 
@@ -111,7 +111,7 @@ function download_test_suite() {
 }
 
 function packages_installed() {
-	for file in /usr/bin/wget /usr/bin/curl /usr/bin/svn /usr/bin/rsync; do
+	for file in /usr/bin/wget /usr/bin/svn /usr/bin/rsync; do
 		# Check if executable file.
 		if ! [[ -f "$file" && -x "$file" ]]; then
 			return 1
@@ -155,7 +155,7 @@ do
 				printf -- "\t--wp-ts-version      WordPress Test Suite version to install\n"
 				printf -- "\t                     Accepts a version number, 'latest', 'trunk' or 'nightly'. Default --wp-version option\n"
 				printf -- "\t--update-packages    Update all packages installed by this script\n"
-				printf -- "\t                     Updates curl wget, rsync, and subversion\n"
+				printf -- "\t                     Updates wget, rsync, and subversion\n"
 				printf -- "\t-?|--help            Display information about this script\n\n"
 				exit 0
 			;;
@@ -184,7 +184,7 @@ if [[ "$INSTALL_PACKAGES" = true || "$UPDATE_PACKAGES" = true ]]; then
 	apt-get update -y
 
 	# Install packages.
-	apt-get install -y wget subversion curl rsync
+	apt-get install -y wget subversion rsync
 fi
 
 # Re-check if all packages are installed.
