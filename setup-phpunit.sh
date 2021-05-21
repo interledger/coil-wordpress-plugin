@@ -5,7 +5,7 @@
 # Adapted from original source curl -o setup-phpunit.sh https://gist.githubusercontent.com/keesiemeijer/a888f3d9609478b310c2d952644891ba/raw/
 # These packages are installed
 # 
-#     PHPUnit, curl wget, rsync, subversion and composer.
+#     PHPUnit, curl wget, rsync, and subversion.
 # 
 # The WordPress and WP Test Suite paths are created as global variables and the respetive folders are created.
 # WordPress is installed in the `/tmp/wordpress` directory for use by PHPUnit. 
@@ -111,7 +111,7 @@ function download_test_suite() {
 }
 
 function packages_installed() {
-	for file in /usr/bin/wget /usr/bin/curl /usr/bin/svn /usr/bin/rsync /usr/local/bin/composer; do
+	for file in /usr/bin/wget /usr/bin/curl /usr/bin/svn /usr/bin/rsync; do
 		# Check if executable file.
 		if ! [[ -f "$file" && -x "$file" ]]; then
 			return 1
@@ -155,7 +155,7 @@ do
 				printf -- "\t--wp-ts-version      WordPress Test Suite version to install\n"
 				printf -- "\t                     Accepts a version number, 'latest', 'trunk' or 'nightly'. Default --wp-version option\n"
 				printf -- "\t--update-packages    Update all packages installed by this script\n"
-				printf -- "\t                     Updates curl wget, rsync, subversion and composer\n"
+				printf -- "\t                     Updates curl wget, rsync, and subversion\n"
 				printf -- "\t-?|--help            Display information about this script\n\n"
 				exit 0
 			;;
@@ -185,21 +185,6 @@ if [[ "$INSTALL_PACKAGES" = true || "$UPDATE_PACKAGES" = true ]]; then
 
 	# Install packages.
 	apt-get install -y wget subversion curl rsync
-
-	# Install composer.
-	if [[ -f "/usr/bin/curl" && ! -f "/usr/local/bin/composer" ]]; then
-		curl -sS https://getcomposer.org/installer | php
-		mv composer.phar /usr/local/bin/composer || exit
-		if [[ -f "$HOME/.bashrc" ]]; then
-			printf "Adding .composer/vendor/bin to the PATH\n"
-			echo 'export PATH="$PATH:$HOME/.composer/vendor/bin"' >> "$HOME/.bashrc"
-		fi
-	else
-		if [[ -f "/usr/local/bin/composer" ]]; then
-			printf "Updating composer...\n"
-			composer self-update || printf "${RED}WARNING${RESET} Could not update composer. %s\n" "$CONNECTION"
-		fi
-	fi
 fi
 
 # Re-check if all packages are installed.
