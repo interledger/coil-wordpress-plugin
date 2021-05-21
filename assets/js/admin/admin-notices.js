@@ -5,7 +5,7 @@
 		const activeTabID = $( '.nav-tab-wrapper a.nav-tab-active' ).attr( 'id' );
 
 		// Welcome notice
-		if ( activeTabID === 'coil-getting-started' ) {
+		if ( activeTabID === 'coil-global-settings' ) {
 			const $welcomeNoticeDismissButton = $( '.coil-welcome-notice .notice-dismiss' );
 
 			// No welcome notice on this screen.
