@@ -322,6 +322,7 @@ if [[ -f "$WP_TESTS_DIR/wp-tests-config.php" ]]; then
 	sed -i "s/youremptytestdbnamehere/wordpress_test/" "$WP_TESTS_DIR/wp-tests-config.php"
 	sed -i "s/yourusernamehere/root/" "$WP_TESTS_DIR/wp-tests-config.php"
 	sed -i "s/yourpasswordhere/root/" "$WP_TESTS_DIR/wp-tests-config.php"
+	# Replacing local host with 127.0.0.1 to use TCP sockets instead of Unix domain sockets
 	sed -i "s/localhost/127.0.0.1/" "$WP_TESTS_DIR/wp-tests-config.php"
 fi
 
