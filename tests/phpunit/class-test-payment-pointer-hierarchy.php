@@ -101,8 +101,13 @@ class Test_Payment_Pointer_Hierarchy extends WP_UnitTestCase {
 	 * 
 	 * @return void
 	 */
-	public function test_padlock_added_to_title() :  void {
-		
+	public function test_padlock_added_to_title_when_enabled() :  void {
+
+		// Ensuring the padlock display setting has been enabled
+		$options = get_option( 'coil_monetization_settings_group', [] );
+		$options[ 'coil_title_padlock' ] = true;
+		update_option( 'coil_monetization_settings_group', $options );
+
 		foreach ( self::$basic_posts as $gating => $post_obj ) {
 			$post_title = '';
 			switch ($gating) {
@@ -129,6 +134,44 @@ class Test_Payment_Pointer_Hierarchy extends WP_UnitTestCase {
 					break;
 			  }
 			$this->assertSame( $post_obj->post_title, $post_title );
+		}
+	}
+
+	/**
+	 * Check that post titles do no get a padlock icon when option is disabled.
+	 * 
+	 * @return void
+	 */
+	public function test_padlock_not_added_to_title_when_disabled() :  void {
+		
+		// Ensuring the padlock display setting has been disabled
+		$options = get_option( 'coil_monetization_settings_group', [] );
+		$options[ 'coil_title_padlock' ] = false;
+		update_option( 'coil_monetization_settings_group', $options );
+
+		foreach ( self::$basic_posts as $gating => $post_obj ) {
+			$post_title = '';
+			switch ($gating) {
+				case 'no':
+					$post_title = 'This is a post with no gating';
+					$post_obj->post_title = $post_title;
+				  	break;
+				case 'no-gating':
+					$post_title = 'This post is monetized and public';
+					$post_obj->post_title = $post_title;
+					break;
+				case 'gate-all':
+					$post_title = 'This is a post that is fully gated';
+					$post_obj->post_title = $post_title;
+					break;
+				case 'gate-tagged-blocks':
+					$post_title = 'This is a post that has partial gating';
+					$post_obj->post_title = $post_title;
+					$post_obj->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_obj->ID );
+					break;
+			  }
+			  $post_obj->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_obj->ID );
+			  $this->assertSame( $post_obj->post_title, $post_title );
 		}
 	}
 
