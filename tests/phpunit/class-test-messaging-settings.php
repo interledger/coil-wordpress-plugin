@@ -211,12 +211,12 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		$this->assertSame( 'Learn More', $message[ $id['button_text'] ] );
 		$this->assertSame( 'https://coil.com/', $message[ $id['button_link'] ] );
 
-        // Checking that the theme_mod messages have been removed
-        $this->assertFalse(get_theme_mod( $id['unverified'] ) );
-        $this->assertFalse(get_theme_mod( $id['pending'] ) );
-        $this->assertFalse(get_theme_mod( $id['fully_gated'] ) );
-        $this->assertFalse(get_theme_mod( $id['button_text'] ) );
-        $this->assertFalse(get_theme_mod( $id['button_link'] ) );
+		// Checking that the theme_mod messages have been removed
+		$this->assertFalse( get_theme_mod( $id['unverified'] ) );
+		$this->assertFalse( get_theme_mod( $id['pending'] ) );
+		$this->assertFalse( get_theme_mod( $id['fully_gated'] ) );
+		$this->assertFalse( get_theme_mod( $id['button_text'] ) );
+		$this->assertFalse( get_theme_mod( $id['button_link'] ) );
 	}
 }
 
