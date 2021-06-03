@@ -183,7 +183,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		// Adding custom messages to the theme_mod
 		set_theme_mod( $id['unverified'], 'Unable to verify' );
 		set_theme_mod( $id['pending'], 'Loading content' );
-		set_theme_mod( $id['fully_gated'], 'Fully gated' );
+		set_theme_mod( 'coil_unsupported_message', 'Fully gated' );
 		set_theme_mod( $id['button_text'], 'Learn More' );
 		// Leaving one option set to an empty string becasue this state occurs in the database once a custom message has been deleted
 		set_theme_mod( $id['button_link'], '' );
