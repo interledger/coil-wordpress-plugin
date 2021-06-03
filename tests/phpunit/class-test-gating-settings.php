@@ -73,10 +73,10 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		update_option( 'coil_monetization_settings_group', $options );
 
 		foreach ( self::$basic_posts as $gating => $post_obj ) {
-			$post_title = 'Post Title';
+			$post_title           = 'Post Title';
 			$post_obj->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_obj->ID );
-			if ($gating === 'gate-all' ) {
-				$post_title           = '🔒 ' . $post_title;
+			if ( $gating === 'gate-all' ) {
+				$post_title = '🔒 ' . $post_title;
 			}
 			$this->assertSame( $post_title, $post_obj->post_title );
 		}
@@ -95,7 +95,7 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		update_option( 'coil_monetization_settings_group', $options );
 
 		foreach ( self::$basic_posts as $gating => $post_obj ) {
-			$post_title = 'Post Title';
+			$post_title           = 'Post Title';
 			$post_obj->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_obj->ID );
 			$this->assertSame( $post_title, $post_obj->post_title );
 		}
