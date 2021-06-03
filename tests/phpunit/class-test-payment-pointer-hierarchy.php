@@ -5,6 +5,7 @@
 namespace Coil\Tests;
 
 use Coil\Gating;
+use Coil\Admin;
 use WP_UnitTestCase;
 use WP_UnitTest_Factory;
 
@@ -75,7 +76,7 @@ class Test_Payment_Pointer_Hierarchy extends WP_UnitTestCase {
 	/**
 	 * Test that gating provides the correct gating for posts.
 	 *
-	 * @dataProvider get_gating_data_provider
+	 * @dataProvider get_post_meta_data_provider
 	 *
 	 * @param string $content_type         Type of gating to test. Either "basic", "taxonomy", "posttype".
 	 * @param string $expected_gating_type See return values from Gating\get_post_gating().
@@ -96,13 +97,49 @@ class Test_Payment_Pointer_Hierarchy extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Get data for testing post gating.
+	 * Check that post titles get padlock icon when setting enabled and posts are fully gated.
+	 * 
+	 * @return void
+	 */
+	public function test_padlock_added_to_title() :  void {
+		
+		foreach ( self::$basic_posts as $gating => $post_obj ) {
+			$post_title = '';
+			switch ($gating) {
+				case 'no':
+					$post_title = 'This is a post with no gating';
+					$post_obj->post_title = $post_title;
+					$post_obj->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_obj->ID );
+				  	break;
+				case 'no-gating':
+					$post_title = 'This post is monetized and public';
+					$post_obj->post_title = $post_title;
+					$post_obj->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_obj->ID );
+					break;
+				case 'gate-all':
+					$post_title = 'This is a post that is fully gated';
+					$post_obj->post_title = $post_title;
+					$post_obj->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_obj->ID );
+					$post_title = '🔒 ' . $post_title;
+					break;
+				case 'gate-tagged-blocks':
+					$post_title = 'This is a post that has partial gating';
+					$post_obj->post_title = $post_title;
+					$post_obj->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_obj->ID );
+					break;
+			  }
+			$this->assertSame( $post_obj->post_title, $post_title );
+		}
+	}
+
+	/**
+	 * Get data for testing post gating and titles.
 	 *
 	 * @link https://phpunit.readthedocs.io/en/8.4/writing-tests-for-phpunit.html#data-providers
 	 *
 	 * @return array
 	 */
-	public function get_gating_data_provider() : array {
+	public function get_post_meta_data_provider() : array {
 
 		return [
 			[
