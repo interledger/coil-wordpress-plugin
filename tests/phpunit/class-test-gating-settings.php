@@ -134,8 +134,8 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 					$post_obj->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_obj->ID );
 					break;
 			}
-			  $post_obj->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_obj->ID );
-			  $this->assertSame( $post_obj->post_title, $post_title );
+			$post_obj->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_obj->ID );
+			$this->assertSame( $post_obj->post_title, $post_title );
 		}
 	}
 }
