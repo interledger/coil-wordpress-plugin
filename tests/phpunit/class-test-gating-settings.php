@@ -138,30 +138,4 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 			  $this->assertSame( $post_obj->post_title, $post_title );
 		}
 	}
-
-	/**
-	 * Check that excerpts are empty unless one as been set explicitly.
-	 * 
-	 * @return void
-	 */
-	public function test_excerpt_empty_by_default_when_post_is_gated() :  void {
-
-		foreach ( self::$basic_posts as $gating => $post_obj ) {
-			// Ensuring no explicit excerpt has been set
-			$post_obj->post_excerpt = '';
-			$post_obj->post_content = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.';
-			$this->assertSame( '', $post_obj->post_excerpt );
-			$post_obj->post_content = Gating\maybe_restrict_content( $post_obj->post_content );
-			switch ($gating) {
-				case 'no':
-				case 'no-gating':
-					$this->assertSame( 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', $post_obj->post_content );
-					break;
-				case 'gate-all':
-				case 'gate-tagged-blocks':
-					$this->assertSame( '', $post_obj->post_content );
-					break;
-			  }
-		}
-	}
 }
