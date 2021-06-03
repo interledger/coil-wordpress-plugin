@@ -73,29 +73,10 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		update_option( 'coil_monetization_settings_group', $options );
 
 		foreach ( self::$basic_posts as $gating => $post_obj ) {
-			$post_title = '';
-			switch ( $gating ) {
-				case 'no':
-					$post_title           = 'This is a post with no gating';
-					$post_obj->post_title = $post_title;
-					$post_obj->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_obj->ID );
-					break;
-				case 'no-gating':
-					$post_title           = 'This post is monetized and public';
-					$post_obj->post_title = $post_title;
-					$post_obj->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_obj->ID );
-					break;
-				case 'gate-all':
-					$post_title           = 'This is a post that is fully gated';
-					$post_obj->post_title = $post_title;
-					$post_obj->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_obj->ID );
-					$post_title           = '🔒 ' . $post_title;
-					break;
-				case 'gate-tagged-blocks':
-					$post_title           = 'This is a post that has partial gating';
-					$post_obj->post_title = $post_title;
-					$post_obj->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_obj->ID );
-					break;
+			$post_title = 'Post Title';
+			$post_obj->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_obj->ID );
+			if ($gating === 'gate-all' ) {
+				$post_title           = '🔒 ' . $post_title;
 			}
 			$this->assertSame( $post_title, $post_obj->post_title );
 		}
@@ -114,28 +95,9 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		update_option( 'coil_monetization_settings_group', $options );
 
 		foreach ( self::$basic_posts as $gating => $post_obj ) {
-			$post_title = '';
-			switch ( $gating ) {
-				case 'no':
-					$post_title           = 'This is a post with no gating';
-					$post_obj->post_title = $post_title;
-					break;
-				case 'no-gating':
-					$post_title           = 'This post is monetized and public';
-					$post_obj->post_title = $post_title;
-					break;
-				case 'gate-all':
-					$post_title           = 'This is a post that is fully gated';
-					$post_obj->post_title = $post_title;
-					break;
-				case 'gate-tagged-blocks':
-					$post_title           = 'This is a post that has partial gating';
-					$post_obj->post_title = $post_title;
-					$post_obj->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_obj->ID );
-					break;
-			}
+			$post_title = 'Post Title';
 			$post_obj->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_obj->ID );
-			$this->assertSame( $post_obj->post_title, $post_title );
+			$this->assertSame( $post_title, $post_obj->post_title );
 		}
 	}
 }
