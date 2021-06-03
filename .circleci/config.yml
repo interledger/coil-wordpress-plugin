@@ -13,7 +13,7 @@ jobs:
           paths:
             - node_modules
       - run: npx grunt test
-  php_linting:
+  php_testing:
     docker:
       - image: cimg/php:7.4.19
       - image: circleci/mysql:8.0.16
@@ -60,4 +60,4 @@ workflows:
   basic_linting_tests:
     jobs:
       - js_scss_linting
-      - php_linting
+      - php_testing
