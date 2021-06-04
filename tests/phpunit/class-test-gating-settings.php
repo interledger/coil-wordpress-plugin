@@ -150,25 +150,58 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		}
 	}
 
-	// /**
-	//  * Tests if the correct gating value retrieved for a specific post is returned 
-	//  * in cases that consider the combination of global, taxonomy or post monetization settings that have been used.
-	//  *
-	//  * @return void
-	//  */
-	// public function test_retrieving_content_gating() :  void {
+	/**
+	 * Tests if the correct gating value retrieved for a specific post is returned
+	 * in cases that consider the combination of global, taxonomy or post monetization settings that have been used.
+	 *
+	 * @return void
+	 */
+	public function test_retrieving_content_gating() :  void {
 
-	// 	$post_obj = self::factory()->post->create_and_get();
+		// Create a post
+		$post_obj = self::factory()->post->create_and_get();
 
-	// 	$monetization_settings = [ 'post' => 'gate-all', 'page' => 'gate-all' ];
-	// 	update_option( 'coil_monetization_settings_group', $monetization_settings ); 
+		// Set the global default monetization for posts 'gate-all' which will define the post's gating status at this point
+		$monetization_settings = [ 'post' => 'gate-all' ];
+		update_option( 'coil_monetization_settings_group', $monetization_settings );
 
-	// 	$this->assertSame( $global_gating, Gating\get_content_gating() );
-	// 	update_option( 'coil_monetization_settings_group', $monetization_settings );
-	// 	update_option( 'coil_monetization_settings_group', $monetization_settings );
-	// 	//Test with global
-	// 	// Test will taxonomy
-	// 	// Test with post level
+		$gating_status = Gating\get_content_gating( $post_obj->ID );
+		$this->assertSame( 'gate-all', $gating_status );
 
-	// }
+		// Add a category to the post which has the monetization status 'no'.
+		// This status will override the default and become the new monetization status of the post.
+		$category_name = 'Monetization Disabled Category';
+		wp_create_category( $category_name );
+		Gating\set_term_gating( get_cat_ID( $category_name ), 'no' );
+		wp_set_post_categories( $post_obj->ID, get_cat_ID( $category_name ), false );
+
+		$gating_status = Gating\get_content_gating( $post_obj->ID );
+		$this->assertSame( 'no', $gating_status );
+
+		// Add a post-level monetization status with the value 'gate-all'.
+		// This status will override the default and become the new monetization status of the post.
+		Gating\set_post_gating( $post_obj->ID, 'no-gating' );
+
+		$gating_status = Gating\get_content_gating( $post_obj->ID );
+		$this->assertSame( 'no-gating', $gating_status );
+
+		// Checking that changing the global default doesn't change the post's monetization status becasue it has been set at post-level
+		// Set the global default monetization for posts 'no'.
+		$monetization_settings = [ 'post' => 'no' ];
+		update_option( 'coil_monetization_settings_group', $monetization_settings );
+
+		$gating_status = Gating\get_content_gating( $post_obj->ID );
+		$this->assertNotSame( 'no', $gating_status );
+
+		// Checking that changing the category's monetization status doesn't change the post's monetization status becasue it has been set at post-level
+		// Set the global default monetization for posts 'gate-all'.
+		$category_name = 'Fully Gated Category';
+		wp_create_category( $category_name );
+		Gating\set_term_gating( get_cat_ID( $category_name ), 'gate-all' );
+		wp_set_post_categories( $post_obj->ID, get_cat_ID( $category_name ), false );
+
+		$gating_status = Gating\get_content_gating( $post_obj->ID );
+		$this->assertNotSame( 'gate-all', $gating_status );
+
+	}
 }
