@@ -100,4 +100,39 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 			$this->assertSame( $post_title, $post_obj->post_title );
 		}
 	}
+
+	/**
+	 * Tests taxonomy gating.
+	 *
+	 * @return void
+	 */
+	public function test_taxonomy_term_gating() :  void {
+
+		$category = [
+			'No Monetization'      => 'no',
+			'Monetized and Public' => 'no-gating',
+			'Fully Gated'          => 'gate-all',
+		];
+		foreach ( $category as $category_name => $gating_type ) {
+			wp_create_category( $category_name );
+			Gating\set_term_gating( get_cat_ID( $category_name ), $gating_type );
+			$post_obj = self::factory()->post->create_and_get();
+			wp_set_post_categories( $post_obj->ID, get_cat_ID( $category_name ), false );
+			$this->assertSame( $gating_type, Gating\get_taxonomy_term_gating( $post_obj->ID ) );
+		}
+	}
+
+	/**
+	 * Tests taxonomy gating.
+	 *
+	 * @return void
+	 */
+	public function test_taxonomy_term_gating() :  void {
+
+		// add global defaults to the database
+		delete_option( 'coil_monetization_settings_group' );
+		// create array of expected values $global_gating =
+		printf( Gating\get_global_posts_gating() );
+		//$this->assertSame( $global_gating, Gating\et_global_posts_gating() );
+	}
 }
