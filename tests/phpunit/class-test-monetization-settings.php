@@ -8,6 +8,7 @@ use Coil\Admin;
 use Coil\Gating;
 use Coil\Settings;
 use WP_UnitTestCase;
+use WP_UnitTest_Factory;
 
 /**
  * Testing the custom monetization settings.
@@ -15,27 +16,85 @@ use WP_UnitTestCase;
 class Test_Monetization_Settings extends WP_UnitTestCase {
 
 	/**
-	 * Testing if the content setings set posts to Monetized and Public by default.
+	 * Basic posts for testing with.
+	 *
+	 * These have:
+	 *
+	 * - No post type-specific gating.
+	 * - No taxonomy-specific gating.
+	 *
+	 * @var \WP_Post[] Standard post objects.
+	 */
+	protected static $basic_posts = [];
+
+	/**
+	 * Create fake data before tests run.
+	 *
+	 * @param WP_UnitTest_Factory $factory Helper that creates fake data.
 	 *
 	 * @return void
 	 */
-	public function test_if_content_settings_save_successfully() :  void {
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) : void {
 
-		$gating_type;
-		$post_obj = self::factory()->post->create_and_get();
+		self::$basic_posts = [
+			'no'                 => $factory->post->create_and_get(),
+			'no-gating'          => $factory->post->create_and_get(),
+			'gate-all'           => $factory->post->create_and_get(),
+			'gate-tagged-blocks' => $factory->post->create_and_get(),
+		];
 
-		// Using the set post function
-		$gating_type = 'no-gating';
-		Gating\set_post_gating( $post_obj->ID, $gating_type );
-		$this->assertSame( $gating_type, Gating\get_post_gating( $post_obj->ID ) );
-
-		// Accessing the database directly
-		$gating_type = 'gate-all';
-		update_post_meta( $post_obj->ID, '_coil_monetize_post_status', $gating_type );
-		if ( update_post_meta( $post_obj->ID, '_coil_monetize_post_status', $gating_type ) ) {
-			add_post_meta( $post_obj->ID, '_coil_monetize_post_status', $gating_type );
+		foreach ( self::$basic_posts as $gating_type => $post_obj ) {
+			Gating\set_post_gating( $post_obj->ID, $gating_type );
 		}
-		$this->assertSame( $gating_type, Gating\get_post_gating( $post_obj->ID ) );
+	}
+
+	/**
+	 * Delete fake data after tests run.
+	 *
+	 * @return void
+	 */
+	public static function wpTearDownAfterClass() : void {
+
+		foreach ( self::$basic_posts as $_ => $post_obj ) {
+			wp_delete_post( $post_obj->ID, true );
+		}
+
+		self::$basic_posts = [];
+	}
+
+	/**
+	 * Test that gating provides the correct gating for basic posts.
+	 *
+	 * @return void
+	 */
+	public function test_that_basic_posts_have_correct_gating() :  void {
+
+		foreach ( self::$basic_posts as $expected_gating_type => $post_obj ) {
+			$this->assertSame( $expected_gating_type, Gating\get_post_gating( $post_obj->ID ) );
+		}
+	}
+
+	/**
+	 * Test that gating provides the correct gating for posts.
+	 *
+	 * @dataProvider get_post_meta_data_provider
+	 *
+	 * @param string $content_type         Type of gating to test. Either "basic", "taxonomy", "posttype".
+	 * @param string $expected_gating_type See return values from Gating\get_post_gating().
+	 *
+	 * @return void
+	 */
+	public function test_that_posts_have_the_correct_gating( string $content_type, string $expected_gating_type ) :  void {
+
+		$content_objs = "{$content_type}_posts";
+
+		foreach ( self::$$content_objs as $expected_gating_type => $post_obj ) {
+			$this->assertSame(
+				$expected_gating_type,
+				Gating\get_post_gating( $post_obj->ID ),
+				"For {$content_type}, expected: {$expected_gating_type}/"
+			);
+		}
 	}
 
 	/**
@@ -49,7 +108,7 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing if the padlock icon setting is retreived correctly from the wp_options table.
+	 * Testing if the padlock icon setting is retrieved correctly from the wp_options table.
 	 *
 	 * @return void
 	 */
@@ -83,7 +142,7 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing if the donation bar display setting is retreived correctly from the wp_options table.
+	 * Testing if the donation bar display setting is retrieved correctly from the wp_options table.
 	 *
 	 * @return void
 	 */
@@ -121,13 +180,13 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 		// Transferrng settings to the wp_options table
 		Settings\transfer_customizer_monetization_settings();
 
-		// Creating an array of the visual settings that were retreived from the wp_options table.
+		// Creating an array of the visual settings that were retrieved from the wp_options table.
 		$visual_settings = [
 			'coil_show_donation_bar' => Admin\get_visual_settings( 'coil_show_donation_bar' ),
 			'coil_title_padlock'     => Admin\get_visual_settings( 'coil_title_padlock' ),
 		];
 
-		// Checking that all visual settings that were retreived are correct
+		// Checking that all visual settings that were retrieved are correct
 		$this->assertSame( false, $visual_settings['coil_show_donation_bar'] );
 		$this->assertSame( false, $visual_settings['coil_title_padlock'] );
 
@@ -143,13 +202,13 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 		// Transferrng settings to the wp_options table
 		Settings\transfer_customizer_monetization_settings();
 
-		// Creating an array of the visual settings that were retreived from the wp_options table.
+		// Creating an array of the visual settings that were retrieved from the wp_options table.
 		$visual_settings = [
 			'coil_show_donation_bar' => Admin\get_visual_settings( 'coil_show_donation_bar' ),
 			'coil_title_padlock'     => Admin\get_visual_settings( 'coil_title_padlock' ),
 		];
 
-		// Checking that all visual settings that were retreived are correct
+		// Checking that all visual settings that were retrieved are correct
 		$this->assertSame( true, $visual_settings['coil_show_donation_bar'] );
 		$this->assertSame( true, $visual_settings['coil_title_padlock'] );
 
@@ -166,13 +225,13 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 		// Transferrng settings to the wp_options table
 		Settings\transfer_customizer_monetization_settings();
 
-		// Creating an array of the visual settings that were retreived from the wp_options table.
+		// Creating an array of the visual settings that were retrieved from the wp_options table.
 		$visual_settings = [
 			'coil_show_donation_bar' => Admin\get_visual_settings( 'coil_show_donation_bar' ),
 			'coil_title_padlock'     => Admin\get_visual_settings( 'coil_title_padlock' ),
 		];
 
-		// Checking that all visual settings that were retreived are correct
+		// Checking that all visual settings that were retrieved are correct
 		$this->assertSame( true, $visual_settings['coil_show_donation_bar'] );
 		$this->assertSame( false, $visual_settings['coil_title_padlock'] );
 
@@ -180,5 +239,58 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 		$this->assertFalse( get_theme_mod( 'coil_show_donation_bar' ) );
 		$this->assertFalse( get_theme_mod( 'coil_title_padlock' ) );
 		$this->assertFalse( get_option( 'coil_content_settings_posts_group' ) );
+	}
+
+	// test must run last since it will delete the padlock and donation bar display settings.
+	/**
+	 * Testing if the content setings are retrieved correctly from the database.
+	 *
+	 * @return void
+	 */
+	public function test_if_content_settings_are_retrieved_successfully() :  void {
+
+		delete_option( 'coil_monetization_settings_group' );
+
+		foreach ( self::$basic_posts as $gating_type => $post_obj ) {
+			// Accessing the database directly
+			update_post_meta( $post_obj->ID, '_coil_monetize_post_status', $gating_type );
+			if ( update_post_meta( $post_obj->ID, '_coil_monetize_post_status', $gating_type ) ) {
+				add_post_meta( $post_obj->ID, '_coil_monetize_post_status', $gating_type );
+			}
+			$this->assertSame( $gating_type, Gating\get_post_gating( $post_obj->ID ) );
+		}
+	}
+
+	/**
+	 * Get data for testing post gating and titles.
+	 *
+	 * @link https://phpunit.readthedocs.io/en/8.4/writing-tests-for-phpunit.html#data-providers
+	 *
+	 * @return array
+	 */
+	public function get_post_meta_data_provider() : array {
+
+		return [
+			[
+				'basic',
+				'default',
+			],
+			[
+				'basic',
+				'no',
+			],
+			[
+				'basic',
+				'no-gating',
+			],
+			[
+				'basic',
+				'gate-all',
+			],
+			[
+				'basic',
+				'gate-tagged-blocks',
+			],
+		];
 	}
 }

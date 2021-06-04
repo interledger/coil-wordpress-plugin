@@ -14,11 +14,11 @@ use WP_UnitTestCase;
 class Test_Messaging_Settings extends WP_UnitTestCase {
 
 	/**
-	 * Check that message defaults can be retreived successfully.
+	 * Check that message defaults can be retrieved successfully.
 	 *
 	 * @return void
 	 */
-	public function test_retreiving_message_defaults() :  void {
+	public function test_retrieving_message_defaults() :  void {
 
 		// Setting simplified message ID's
 		$id = [
@@ -34,7 +34,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		// Ensuring no custom messages are present in the database
 		delete_option( 'coil_messaging_settings_group' );
 
-		// Creating an array of the message defaults that were retreived
+		// Creating an array of the message defaults that were retrieved
 		$message = [
 			$id['unverified']      => Admin\get_messaging_setting_or_default( $id['unverified'] ),
 			$id['donation_bar']    => Admin\get_messaging_setting_or_default( $id['donation_bar'] ),
@@ -56,11 +56,11 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Check that custom messages can be retreived successfully.
+	 * Check that custom messages can be retrieved successfully.
 	 *
 	 * @return void
 	 */
-	public function test_retreiving_custom_messages() :  void {
+	public function test_retrieving_custom_messages() :  void {
 
 		// Setting simplified message ID's
 		$id = [
@@ -88,7 +88,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 			add_option( 'coil_messaging_settings_group', $custom_message );
 		}
 
-		// Creating an array of the messages that were retreived
+		// Creating an array of the messages that were retrieved
 		$message = [
 			$id['unverified']      => Admin\get_messaging_setting_or_default( $id['unverified'] ),
 			$id['donation_bar']    => Admin\get_messaging_setting_or_default( $id['donation_bar'] ),
@@ -99,7 +99,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 			$id['button_link']     => Admin\get_messaging_setting_or_default( $id['button_link'] ),
 		];
 
-		// Checking that all messages that were retreived are correct
+		// Checking that all messages that were retrieved are correct
 		$this->assertSame( $custom_message[ $id['unverified'] ], $message[ $id['unverified'] ] );
 		$this->assertSame( $custom_message[ $id['donation_bar'] ], $message[ $id['donation_bar'] ] );
 		$this->assertSame( $custom_message[ $id['pending'] ], $message[ $id['pending'] ] );
@@ -110,11 +110,11 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Check that a variety of custom and default messages can be retreived successfully.
+	 * Check that a variety of custom and default messages can be retrieved successfully.
 	 *
 	 * @return void
 	 */
-	public function test_retreiving_custom_messages_and_defaults() :  void {
+	public function test_retrieving_custom_messages_and_defaults() :  void {
 		// Setting simplified message ID's
 		$id = [
 			'unverified'      => 'coil_unable_to_verify_message',
@@ -140,7 +140,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 			add_option( 'coil_messaging_settings_group', $custom_message );
 		}
 
-		// Creating an array of the messages that were retreived
+		// Creating an array of the messages that were retrieved
 		$message = [
 			$id['unverified']      => Admin\get_messaging_setting_or_default( $id['unverified'] ),
 			$id['donation_bar']    => Admin\get_messaging_setting_or_default( $id['donation_bar'] ),
@@ -151,7 +151,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 			$id['button_link']     => Admin\get_messaging_setting_or_default( $id['button_link'] ),
 		];
 
-		// Checking that all messages that were retreived are correct
+		// Checking that all messages that were retrieved are correct
 		$this->assertSame( $custom_message[ $id['unverified'] ], $message[ $id['unverified'] ] );
 		$this->assertSame( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', $message[ $id['donation_bar'] ] );
 		$this->assertSame( $custom_message[ $id['pending'] ], $message[ $id['pending'] ] );
@@ -190,7 +190,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		// Transferrng settings to the wp_options table
 		Settings\transfer_customizer_message_settings();
 
-		// Creating an array of the messages that were retreived from the wp_options table.
+		// Creating an array of the messages that were retrieved from the wp_options table.
 		$message = [
 			$id['unverified']      => Admin\get_messaging_setting_or_default( $id['unverified'] ),
 			$id['donation_bar']    => Admin\get_messaging_setting_or_default( $id['donation_bar'] ),
@@ -201,7 +201,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 			$id['button_link']     => Admin\get_messaging_setting_or_default( $id['button_link'] ),
 		];
 
-		// Checking that all messages that were retreived are correct
+		// Checking that all messages that were retrieved are correct
 		$this->assertSame( 'Unable to verify', $message[ $id['unverified'] ] );
 		$this->assertSame( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', $message[ $id['donation_bar'] ] );
 		$this->assertSame( 'Loading content', $message[ $id['pending'] ] );

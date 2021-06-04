@@ -39,11 +39,11 @@ class Test_Global_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing if the default content container can be retreived successfully from the wp_options table.
+	 * Testing if the default content container can be retrieved successfully from the wp_options table.
 	 *
 	 * @return void
 	 */
-	public function test_if_default_content_container_is_retreived_successfully() :  void {
+	public function test_if_default_content_container_is_retrieved_successfully() :  void {
 
 		$this->assertSame( '.content-area .entry-content', Admin\get_global_settings( 'coil_content_container' ) );
 	}
