@@ -31,9 +31,6 @@ class Test_Global_Settings extends WP_UnitTestCase {
 
 		$payment_pointer = [ 'coil_payment_pointer_id' => '$wallet.example.com/bob' ];
 		update_option( 'coil_global_settings_group', $payment_pointer );
-		if ( ! update_option( 'coil_global_settings_group', $payment_pointer ) ) {
-			add_option( 'coil_global_settings_group', $payment_pointer );
-		}
 
 		$this->assertSame( $payment_pointer['coil_payment_pointer_id'], Admin\get_global_settings( 'coil_payment_pointer_id' ) );
 	}
@@ -57,9 +54,6 @@ class Test_Global_Settings extends WP_UnitTestCase {
 
 		$content_container = [ 'coil_content_container' => '.content-area .entry-content, .post-story' ];
 		update_option( 'coil_global_settings_group', $content_container );
-		if ( ! update_option( 'coil_global_settings_group', $content_container ) ) {
-			add_option( 'coil_global_settings_group', $content_container );
-		}
 
 		$this->assertSame( $content_container['coil_content_container'], Admin\get_global_settings( 'coil_content_container' ) );
 	}

@@ -122,17 +122,17 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		}
 	}
 
-	/**
-	 * Tests taxonomy gating.
-	 *
-	 * @return void
-	 */
-	public function test_taxonomy_term_gating() :  void {
+	// /**
+	//  * Tests taxonomy gating.
+	//  *
+	//  * @return void
+	//  */
+	// public function test_taxonomy_term_gating() :  void {
 
-		// add global defaults to the database
-		delete_option( 'coil_monetization_settings_group' );
-		// create array of expected values $global_gating =
-		printf( Gating\get_global_posts_gating() );
-		//$this->assertSame( $global_gating, Gating\et_global_posts_gating() );
-	}
+	// 	// add global defaults to the database
+	// 	update_option( 'coil_monetization_settings_group' );
+	// 	// create array of expected values $global_gating =
+	// 	printf( Gating\get_global_posts_gating() );
+	// 	//$this->assertSame( $global_gating, Gating\et_global_posts_gating() );
+	// }
 }

@@ -116,17 +116,11 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 
 		$padlock_display = [ 'coil_title_padlock' => false ];
 		update_option( 'coil_monetization_settings_group', $padlock_display );
-		if ( ! update_option( 'coil_monetization_settings_group', $padlock_display ) ) {
-			add_option( 'coil_monetization_settings_group', $padlock_display );
-		}
 
 		$this->assertSame( false, Admin\get_visual_settings( 'coil_title_padlock' ) );
 
 		$padlock_display = [ 'coil_title_padlock' => true ];
 		update_option( 'coil_monetization_settings_group', $padlock_display );
-		if ( ! update_option( 'coil_monetization_settings_group', $padlock_display ) ) {
-			add_option( 'coil_monetization_settings_group', $padlock_display );
-		}
 
 		$this->assertSame( true, Admin\get_visual_settings( 'coil_title_padlock' ) );
 	}
@@ -150,17 +144,11 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 
 		$donation_bar_display = [ 'coil_show_donation_bar' => false ];
 		update_option( 'coil_monetization_settings_group', $donation_bar_display );
-		if ( ! update_option( 'coil_monetization_settings_group', $donation_bar_display ) ) {
-			add_option( 'coil_monetization_settings_group', $donation_bar_display );
-		}
 
 		$this->assertSame( false, Admin\get_visual_settings( 'coil_show_donation_bar' ) );
 
 		$donation_bar_display = [ 'coil_show_donation_bar' => true ];
 		update_option( 'coil_monetization_settings_group', $donation_bar_display );
-		if ( ! update_option( 'coil_monetization_settings_group', $donation_bar_display ) ) {
-			add_option( 'coil_monetization_settings_group', $donation_bar_display );
-		}
 
 		$this->assertSame( true, Admin\get_visual_settings( 'coil_show_donation_bar' ) );
 	}
@@ -241,15 +229,12 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 		$this->assertFalse( get_option( 'coil_content_settings_posts_group' ) );
 	}
 
-	// test must run last since it will delete the padlock and donation bar display settings.
 	/**
 	 * Testing if the content setings are retrieved correctly from the database.
 	 *
 	 * @return void
 	 */
 	public function test_if_content_settings_are_retrieved_successfully() :  void {
-
-		delete_option( 'coil_monetization_settings_group' );
 
 		foreach ( self::$basic_posts as $gating_type => $post_obj ) {
 			// Accessing the database directly

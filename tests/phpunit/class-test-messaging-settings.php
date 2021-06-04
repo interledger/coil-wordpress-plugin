@@ -84,9 +84,6 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 			$id['button_link']     => 'https://https://help.coil.com/docs/dev/web-monetization/index.html',
 		];
 		update_option( 'coil_messaging_settings_group', $custom_message );
-		if ( ! update_option( 'coil_messaging_settings_group', $custom_message ) ) {
-			add_option( 'coil_messaging_settings_group', $custom_message );
-		}
 
 		// Creating an array of the messages that were retrieved
 		$message = [
@@ -136,9 +133,6 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 			$id['button_link'] => '',
 		];
 		update_option( 'coil_messaging_settings_group', $custom_message );
-		if ( ! update_option( 'coil_messaging_settings_group', $custom_message ) ) {
-			add_option( 'coil_messaging_settings_group', $custom_message );
-		}
 
 		// Creating an array of the messages that were retrieved
 		$message = [
