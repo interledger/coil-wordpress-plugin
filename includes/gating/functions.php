@@ -178,7 +178,7 @@ function maybe_restrict_content( string $content ) : string {
  *
  * @param integer $post_id The post to check.
  *
- * @return string Either "no" (default), "no-gating", "gate-all", "gate-tagged-blocks".
+ * @return string Either "no-gating" (default), "no-gating", "gate-all", "gate-tagged-blocks".
  */
 function get_post_gating( $post_id ) : string {
 
