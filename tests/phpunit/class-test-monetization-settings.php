@@ -5,6 +5,7 @@
 namespace Coil\Tests;
 
 use Coil\Admin;
+use Coil\Gating;
 use Coil\Settings;
 use WP_UnitTestCase;
 
@@ -12,6 +13,30 @@ use WP_UnitTestCase;
  * Testing the custom monetization settings.
  */
 class Test_Monetization_Settings extends WP_UnitTestCase {
+
+	/**
+	 * Testing if the content setings set posts to Monetized and Public by default.
+	 *
+	 * @return void
+	 */
+	public function test_if_content_settings_save_successfully() :  void {
+
+		$gating_type;
+		$post_obj = self::factory()->post->create_and_get();
+
+		// Using the set post function
+		$gating_type = 'no-gating';
+		Gating\set_post_gating( $post_obj->ID, $gating_type );
+		$this->assertSame( $gating_type, Gating\get_post_gating( $post_obj->ID ) );
+
+		// Accessing the database directly
+		$gating_type = 'gate-all';
+		update_post_meta( $post_obj->ID, '_coil_monetize_post_status', $gating_type );
+		if ( update_post_meta( $post_obj->ID, '_coil_monetize_post_status', $gating_type ) ) {
+			add_post_meta( $post_obj->ID, '_coil_monetize_post_status', $gating_type );
+		}
+		$this->assertSame( $gating_type, Gating\get_post_gating( $post_obj->ID ) );
+	}
 
 	/**
 	 * Testing if the padlock icon shows next to geted post titles by default.

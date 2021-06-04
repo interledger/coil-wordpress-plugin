@@ -82,7 +82,7 @@ function get_valid_gating_types() {
 		'gate-all', // Paying Viewers Only.
 		'gate-tagged-blocks', // split content.
 		'no', // no monetization.
-		'no-gating', // monetixed and public.
+		'no-gating', // monetized and public.
 		'default', // whatever is set on the post to revert back.
 	];
 	return $valid;
@@ -164,7 +164,7 @@ function maybe_restrict_content( string $content ) : string {
 		 * and then the default post options.
 		 */
 		case 'no':
-		case 'no-gate':
+		case 'no-gating':
 		default:
 			$public_content = $content;
 			break;
