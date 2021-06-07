@@ -970,10 +970,6 @@ function transfer_customizer_message_settings() {
 
 	$existing_options = get_option( 'coil_messaging_settings_group' );
 
-	if ( ! empty( $existing_options ) ) {
-		return;
-	}
-
 	$messaging_settings = [];
 
 	$coil_partial_gating_message     = 'coil_partial_gating_message';
@@ -983,6 +979,20 @@ function transfer_customizer_message_settings() {
 	$coil_voluntary_donation_message = 'coil_voluntary_donation_message';
 	$coil_learn_more_button_text     = 'coil_learn_more_button_text';
 	$coil_learn_more_button_link     = 'coil_learn_more_button_link';
+
+	$customizer_empty = (
+		get_theme_mod( $coil_partial_gating_message, 'null' ) !== 'null'
+		&& get_theme_mod( $coil_unsupported_message, 'null' ) !== 'null'
+		&& get_theme_mod( $coil_verifying_status_message, 'null' ) !== 'null'
+		&& get_theme_mod( $coil_unable_to_verify_message, 'null' ) !== 'null'
+		&& get_theme_mod( $coil_voluntary_donation_message, 'null' ) !== 'null'
+		&& get_theme_mod( $coil_learn_more_button_text, 'null' ) !== 'null'
+		&& get_theme_mod( $coil_learn_more_button_link, 'null' ) !== 'null'
+	);
+
+	if ( $customizer_empty ) {
+		return;
+	}
 
 	// Using 'null' for comparrison becasue custom messages that were deleted remain in the database with the value false, but still need to be removed.
 	if ( get_theme_mod( $coil_partial_gating_message, 'null' ) !== 'null' ) {
@@ -1019,7 +1029,11 @@ function transfer_customizer_message_settings() {
 		remove_theme_mod( $coil_learn_more_button_link );
 	}
 
-	update_option( 'coil_messaging_settings_group', $messaging_settings );
+	if ( false !== $existing_options ) {
+		update_option( 'coil_messaging_settings_group', array_merge( $existing_options, $messaging_settings ) );
+	} else {
+		update_option( 'coil_messaging_settings_group', $messaging_settings );
+	}
 
 }
 

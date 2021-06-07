@@ -185,4 +185,62 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		$this->assertFalse( get_theme_mod( self::$id['button_text'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['button_link'] ) );
 	}
+
+	/**
+	 * Testing if a user has custom messages which they saved in the customizer
+	 * and custom messages saved in the settings panel that they are migrated successfully to the wp_options table
+	 *
+	 * @return void
+	 */
+	public function test_transfer_of_messages_from_customizer_when_messages_also_exist_in_settings_panel() :  void {
+
+		// Adding custom messages to the database from the settings panel
+		$settings_panel_messages = [
+			self::$id['donation_bar'] => 'Voluntary donation',
+			self::$id['pending']      => 'Please be patient while content loads.',
+			self::$id['button_text']  => '',
+		];
+		update_option( 'coil_messaging_settings_group', $settings_panel_messages );
+
+		// Adding custom messages to the theme_mod
+		set_theme_mod( self::$id['unverified'], 'Unable to verify' );
+		set_theme_mod( self::$id['pending'], 'Loading content' );
+		// Variable name was changed from coil_unsupported_message to fully_gated
+		set_theme_mod( 'coil_unsupported_message', 'Fully gated' );
+		set_theme_mod( self::$id['button_text'], 'Learn More' );
+		// Leaving one option set to an empty string becasue this state occurs in the database once a custom message has been deleted
+		set_theme_mod( self::$id['button_link'], '' );
+
+		// Transferrng settings to the wp_options table
+		Settings\transfer_customizer_message_settings();
+
+		// Creating an array of the messages that were retrieved from the wp_options table.
+		$message = [
+			self::$id['unverified']      => Admin\get_messaging_setting_or_default( self::$id['unverified'] ),
+			self::$id['donation_bar']    => Admin\get_messaging_setting_or_default( self::$id['donation_bar'] ),
+			self::$id['pending']         => Admin\get_messaging_setting_or_default( self::$id['pending'] ),
+			self::$id['fully_gated']     => Admin\get_messaging_setting_or_default( self::$id['fully_gated'] ),
+			self::$id['partially_gated'] => Admin\get_messaging_setting_or_default( self::$id['partially_gated'] ),
+			self::$id['button_text']     => Admin\get_messaging_setting_or_default( self::$id['button_text'] ),
+			self::$id['button_link']     => Admin\get_messaging_setting_or_default( self::$id['button_link'] ),
+		];
+
+		// Checking that all messages that were retrieved are correct
+		$this->assertSame( 'Unable to verify', $message[ self::$id['unverified'] ] );
+		$this->assertSame( 'Voluntary donation', $message[ self::$id['donation_bar'] ] );
+		$this->assertSame( 'Loading content', $message[ self::$id['pending'] ] );
+		$this->assertSame( 'Fully gated', $message[ self::$id['fully_gated'] ] );
+		$this->assertSame( 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.', $message[ self::$id['partially_gated'] ] );
+		$this->assertSame( 'Learn More', $message[ self::$id['button_text'] ] );
+		$this->assertSame( 'https://coil.com/', $message[ self::$id['button_link'] ] );
+
+		// Checking that the theme_mod messages have been removed
+		$this->assertFalse( get_theme_mod( self::$id['unverified'] ) );
+		$this->assertFalse( get_theme_mod( self::$id['donation_bar'] ) );
+		$this->assertFalse( get_theme_mod( self::$id['pending'] ) );
+		$this->assertFalse( get_theme_mod( self::$id['fully_gated'] ) );
+		$this->assertFalse( get_theme_mod( self::$id['partially_gated'] ) );
+		$this->assertFalse( get_theme_mod( self::$id['button_text'] ) );
+		$this->assertFalse( get_theme_mod( self::$id['button_link'] ) );
+	}
 }
