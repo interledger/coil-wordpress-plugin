@@ -25,25 +25,25 @@
 # 
 # Install a specific PHPUnit version with the --phpunit-version option.
 # 
-#     bash setup-phpunit.sh --phpunit-version=7
+#     bash setup-phpunit-ci.sh --phpunit-version=7
 # 
 # Install a specific WordPress version with the --wp-version option. This option
 # accepts a version number, 'latest', 'trunk' or 'nightly'. Default 'latest'
 # 
-#     bash setup-phpunit.sh --wp-version=5.0
+#     bash setup-phpunit-ci.sh --wp-version=5.0
 # 
 # Install a specific WordPress Test Suite with the --wp-ts-version option. This option
 # accepts a version number, 'latest', 'trunk' or 'nightly'. Default 'latest'
 #     
-#     bash setup-phpunit.sh --wp-ts-version=trunk
+#     bash setup-phpunit-ci.sh --wp-ts-version=trunk
 # 
 # Update all packages (wget, etc) installed by this script with the --update-packages option.
 # 
-#     bash setup-phpunit.sh --update-packages
+#     bash setup-phpunit-ci.sh --update-packages
 # 
 # Use the --help or -? option to see more information about this script.
 # 
-#     bash setup-phpunit.sh --help
+#     bash setup-phpunit-ci.sh --help
 # 
 # ===============================================================================
 
@@ -57,7 +57,7 @@
 # 
 # Run the command with a version if you need to test with a specific PHPUnit version
 # 
-# bash setup-phpunit.sh --phpunit-version=7
+# bash setup-phpunit-ci.sh --phpunit-version=7
 # This example will install the latest PHPUnit from version 7 (e.g. 7.5.3)
 # 
 # Available PHPUnit versions can be found here.
@@ -145,9 +145,9 @@ do
 			-?|--help)
 				printf "Install PHPUnit in the Local by Flywheel Mac app\n\n"
 				printf "Usage:\n"
-				printf "\tbash setup-phpunit.sh [option...]\n\n"
+				printf "\tbash setup-phpunit-ci.sh [option...]\n\n"
 				printf "Example:\n"
-				printf "\tbash setup-phpunit.sh --phpunit-version=6 --wp-version=trunk\n\n"
+				printf "\tbash setup-phpunit-ci.sh --phpunit-version=6 --wp-version=trunk\n\n"
 				printf "Options:\n"
 				printf -- "\t--phpunit-version    PHPUnit version to install\n"
 				printf -- "\t--wp-version         WordPress version to install\n"
@@ -160,13 +160,13 @@ do
 				exit 0
 			;;
 			*)
-				printf "Unknown option: %s.\nUse \"bash setup-phpunit.sh --help\" to see all options\n%s\n" "$arg" "$QUIT_MSG"
+				printf "Unknown option: %s.\nUse \"bash setup-phpunit-ci.sh --help\" to see all options\n%s\n" "$arg" "$QUIT_MSG"
 				exit_script
 			;;
 		esac
 	else
 		# Argument doesn't start with a dash.
-		printf "Unknown option: %s.\nUse \"bash setup-phpunit.sh --help\" to see all options\n%s\n" "$arg" "$QUIT_MSG"
+		printf "Unknown option: %s.\nUse \"bash setup-phpunit-ci.sh --help\" to see all options\n%s\n" "$arg" "$QUIT_MSG"
 		exit_script
 	fi
 done
