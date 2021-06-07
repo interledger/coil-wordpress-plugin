@@ -4,6 +4,7 @@
  */
 namespace Coil\Tests;
 
+use Coil;
 use Coil\Admin;
 use WP_UnitTestCase;
 
@@ -19,7 +20,8 @@ class Test_Global_Settings extends WP_UnitTestCase {
 	 */
 	public function test_if_default_payment_pointer_is_an_empty_string() :  void {
 
-		$default_payment_ponter_setting = Admin\get_global_settings( 'coil_payment_pointer_id' );
+		$default_payment_ponter_setting = Coil\get_payment_pointer();
+
 		$this->assertSame( '', $default_payment_ponter_setting );
 	}
 
@@ -33,7 +35,7 @@ class Test_Global_Settings extends WP_UnitTestCase {
 		$payment_pointer = [ 'coil_payment_pointer_id' => '$wallet.example.com/bob' ];
 		update_option( 'coil_global_settings_group', $payment_pointer );
 
-		$retrieved_payment_pointer = Admin\get_global_settings( 'coil_payment_pointer_id' );
+		$retrieved_payment_pointer = Coil\get_payment_pointer();
 
 		$this->assertSame( $payment_pointer['coil_payment_pointer_id'], $retrieved_payment_pointer );
 	}
