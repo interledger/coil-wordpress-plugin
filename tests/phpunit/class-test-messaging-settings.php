@@ -18,7 +18,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 	 * @var array
 	 * @var \WP_Post[] message ID's.
 	*/
-   protected static $id = [
+	protected static $id = [
 		'unverified'      => 'coil_unable_to_verify_message',
 		'donation_bar'    => 'coil_voluntary_donation_message',
 		'pending'         => 'coil_verifying_status_message',

@@ -140,7 +140,6 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	 */
 	public function test_if_default_donation_bar_display_is_enabled() :  void {
 
-
 		$default_visual_settings = Admin\get_visual_settings( 'coil_show_donation_bar' );
 
 		$this->assertSame( true, $default_visual_settings );
@@ -269,9 +268,9 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 		];
 		update_option( 'coil_monetization_settings_group', $options );
 
-		$stored_options = get_option('coil_monetization_settings_group' );
+		$stored_options = get_option( 'coil_monetization_settings_group' );
 
-		$this->assertSame($stored_options, $options );
+		$this->assertSame( $stored_options, $options );
 
 		// Transferrng settings to the wp_options table
 		Settings\transfer_customizer_monetization_settings();
@@ -289,9 +288,8 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 		$this->assertSame( true, $visual_settings['coil_title_padlock'] );
 
 		// Checking that all default content settings that were already set remained unchanged
-		$this->assertSame( $options[ 'post' ], $retrieved_global_gating_defaults[ 'post' ] );
-		$this->assertSame( $options[ 'page' ], $retrieved_global_gating_defaults[ 'page' ] );
-
+		$this->assertSame( $options['post'], $retrieved_global_gating_defaults['post'] );
+		$this->assertSame( $options['page'], $retrieved_global_gating_defaults['page'] );
 
 		// Checking that the theme_mod visual settings have been removed
 		$this->assertFalse( get_theme_mod( 'coil_show_donation_bar' ) );

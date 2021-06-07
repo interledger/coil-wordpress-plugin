@@ -1035,16 +1035,19 @@ function transfer_customizer_monetization_settings() {
 		return;
 	}
 
-	$coil_title_padlock     = 'coil_title_padlock';
-	$coil_show_donation_bar = 'coil_show_donation_bar';
+	$coil_title_padlock        = 'coil_title_padlock';
+	$coil_show_donation_bar    = 'coil_show_donation_bar';
+	$new_monetization_settings = [];
 
-	$new_monetization_settings = [
-		'coil_title_padlock'     => get_theme_mod( $coil_title_padlock, true ),
-		'coil_show_donation_bar' => get_theme_mod( $coil_show_donation_bar, true ),
-	];
+	if ( get_theme_mod( $coil_title_padlock, 'null' ) !== 'null' ) {
+		$new_monetization_settings['coil_title_padlock'] = get_theme_mod( $coil_title_padlock, true );
+		remove_theme_mod( $coil_title_padlock );
+	}
 
-	remove_theme_mod( $coil_title_padlock );
-	remove_theme_mod( $coil_show_donation_bar );
+	if ( get_theme_mod( $coil_show_donation_bar, 'null' ) !== 'null' ) {
+		$new_monetization_settings['coil_show_donation_bar'] = get_theme_mod( $coil_show_donation_bar, true );
+		remove_theme_mod( $coil_show_donation_bar );
+	}
 
 	// Before moving post gating settings across check that post types and gating types are valid.
 	$supported_post_types     = Coil\get_supported_post_types( 'names' );
