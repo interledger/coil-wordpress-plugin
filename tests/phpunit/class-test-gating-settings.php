@@ -9,7 +9,7 @@ use WP_UnitTestCase;
 use WP_UnitTest_Factory;
 
 /**
- * Payment pointer hierarchy tests.
+ * Payment pointer hierarchy and gating tests.
  */
 class Test_Gating_Settings extends WP_UnitTestCase {
 
@@ -78,7 +78,9 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 			if ( $gating === 'gate-all' ) {
 				$post_title = '🔒 ' . $post_title;
 			}
+
 			$final_post_title = $post_obj->post_title;
+
 			$this->assertSame( $post_title, $final_post_title );
 		}
 	}
@@ -183,6 +185,7 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 			update_option( 'coil_monetization_settings_group', $global_gating );
 
 			$global_default = Gating\get_global_posts_gating();
+
 			$this->assertSame( $global_gating, $global_default );
 		}
 	}
@@ -203,6 +206,7 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		update_option( 'coil_monetization_settings_group', $monetization_settings );
 
 		$gating_status = Gating\get_content_gating( $post_obj->ID );
+
 		$this->assertSame( 'gate-all', $gating_status );
 
 		// Add a category to the post which has the monetization status 'no'.
@@ -213,12 +217,12 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		wp_set_post_categories( $post_obj->ID, get_cat_ID( $category_name ), false );
 
 		$gating_status = Gating\get_content_gating( $post_obj->ID );
+
 		$this->assertSame( 'no', $gating_status );
 
 		// Add a tag to the post which has the monetization status 'gate-all'.
 		// This status will override the category's status because it has a stricter monetization status and will become the new monetization status of the post.
 		$tag_name = 'Fully Gated Tag';
-
 		wp_create_tag( $tag_name );
 		$tag    = get_term_by( 'name', $tag_name, 'post_tag' );
 		$tag_id = $tag->term_id;
@@ -226,6 +230,7 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		wp_set_post_tags( $post_obj->ID, $tag_name, false );
 
 		$gating_status = Gating\get_content_gating( $post_obj->ID );
+
 		$this->assertSame( 'gate-all', $gating_status );
 
 		// Add a post-level monetization status with the value 'no-gating'.
@@ -233,6 +238,7 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		Gating\set_post_gating( $post_obj->ID, 'no-gating' );
 
 		$gating_status = Gating\get_content_gating( $post_obj->ID );
+
 		$this->assertSame( 'no-gating', $gating_status );
 
 		// Checking that changing the global default doesn't change the post's monetization status becasue it has been set at post-level
@@ -241,6 +247,7 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		update_option( 'coil_monetization_settings_group', $monetization_settings );
 
 		$gating_status = Gating\get_content_gating( $post_obj->ID );
+
 		$this->assertNotSame( 'no', $gating_status );
 
 		// Checking that changing the category's monetization status doesn't change the post's monetization status becasue it has been set at post-level
@@ -251,6 +258,7 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		wp_set_post_categories( $post_obj->ID, get_cat_ID( $category_name ), false );
 
 		$gating_status = Gating\get_content_gating( $post_obj->ID );
+
 		$this->assertNotSame( 'gate-all', $gating_status );
 
 	}

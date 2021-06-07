@@ -13,6 +13,21 @@ use WP_UnitTestCase;
  */
 class Test_Messaging_Settings extends WP_UnitTestCase {
 
+	/*/**
+	 *
+	 * @var array
+	 * @var \WP_Post[] message ID's.
+	*/
+   protected static $id = [
+		'unverified'      => 'coil_unable_to_verify_message',
+		'donation_bar'    => 'coil_voluntary_donation_message',
+		'pending'         => 'coil_verifying_status_message',
+		'fully_gated'     => 'coil_fully_gated_content_message',
+		'partially_gated' => 'coil_partially_gated_content_message',
+		'button_text'     => 'coil_learn_more_button_text',
+		'button_link'     => 'coil_learn_more_button_link',
+	];
+
 	/**
 	 * Check that message defaults can be retrieved successfully.
 	 *
@@ -20,39 +35,33 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 	 */
 	public function test_retrieving_message_defaults() :  void {
 
-		// Setting simplified message ID's
-		$id = [
-			'unverified'      => 'coil_unable_to_verify_message',
-			'donation_bar'    => 'coil_voluntary_donation_message',
-			'pending'         => 'coil_verifying_status_message',
-			'fully_gated'     => 'coil_fully_gated_content_message',
-			'partially_gated' => 'coil_partially_gated_content_message',
-			'button_text'     => 'coil_learn_more_button_text',
-			'button_link'     => 'coil_learn_more_button_link',
-		];
-
 		// Ensuring no custom messages are present in the database
 		delete_option( 'coil_messaging_settings_group' );
 
 		// Creating an array of the message defaults that were retrieved
-		$message = [
-			$id['unverified']      => Admin\get_messaging_setting_or_default( $id['unverified'] ),
-			$id['donation_bar']    => Admin\get_messaging_setting_or_default( $id['donation_bar'] ),
-			$id['pending']         => Admin\get_messaging_setting_or_default( $id['pending'] ),
-			$id['fully_gated']     => Admin\get_messaging_setting_or_default( $id['fully_gated'] ),
-			$id['partially_gated'] => Admin\get_messaging_setting_or_default( $id['partially_gated'] ),
-			$id['button_text']     => Admin\get_messaging_setting_or_default( $id['button_text'] ),
-			$id['button_link']     => Admin\get_messaging_setting_or_default( $id['button_link'] ),
+		$defaults = [
+			self::$id['unverified']      => 'You need a valid Coil account to see this content.',
+			self::$id['donation_bar']    => 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…',
+			self::$id['pending']         => 'Verifying Web Monetization status. Please wait...',
+			self::$id['fully_gated']     => 'Unlock exclusive content with Coil. Need a Coil account?',
+			self::$id['partially_gated'] => 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.',
+			self::$id['button_text']     => 'Get Coil to access',
+			self::$id['button_link']     => 'https://coil.com/',
+		];
+
+		// Creating an array of the message defaults that were retrieved
+		$retrieved_messages = [
+			self::$id['unverified']      => Admin\get_messaging_setting_or_default( self::$id['unverified'] ),
+			self::$id['donation_bar']    => Admin\get_messaging_setting_or_default( self::$id['donation_bar'] ),
+			self::$id['pending']         => Admin\get_messaging_setting_or_default( self::$id['pending'] ),
+			self::$id['fully_gated']     => Admin\get_messaging_setting_or_default( self::$id['fully_gated'] ),
+			self::$id['partially_gated'] => Admin\get_messaging_setting_or_default( self::$id['partially_gated'] ),
+			self::$id['button_text']     => Admin\get_messaging_setting_or_default( self::$id['button_text'] ),
+			self::$id['button_link']     => Admin\get_messaging_setting_or_default( self::$id['button_link'] ),
 		];
 
 		// Checking that all defaults are correct
-		$this->assertSame( 'You need a valid Coil account to see this content.', $message[ $id['unverified'] ] );
-		$this->assertSame( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', $message[ $id['donation_bar'] ] );
-		$this->assertSame( 'Verifying Web Monetization status. Please wait...', $message[ $id['pending'] ] );
-		$this->assertSame( 'Unlock exclusive content with Coil. Need a Coil account?', $message[ $id['fully_gated'] ] );
-		$this->assertSame( 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.', $message[ $id['partially_gated'] ] );
-		$this->assertSame( 'Get Coil to access', $message[ $id['button_text'] ] );
-		$this->assertSame( 'https://coil.com/', $message[ $id['button_link'] ] );
+		$this->assertSame( $defaults, $retrieved_messages );
 	}
 
 	/**
@@ -62,48 +71,31 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 	 */
 	public function test_retrieving_custom_messages() :  void {
 
-		// Setting simplified message ID's
-		$id = [
-			'unverified'      => 'coil_unable_to_verify_message',
-			'donation_bar'    => 'coil_voluntary_donation_message',
-			'pending'         => 'coil_verifying_status_message',
-			'fully_gated'     => 'coil_fully_gated_content_message',
-			'partially_gated' => 'coil_partially_gated_content_message',
-			'button_text'     => 'coil_learn_more_button_text',
-			'button_link'     => 'coil_learn_more_button_link',
-		];
-
 		// Adding custom messages to the database
 		$custom_message = [
-			$id['unverified']      => 'Unable to verify',
-			$id['donation_bar']    => 'Voluntary donation',
-			$id['pending']         => 'Loading content',
-			$id['fully_gated']     => 'Fully gated',
-			$id['partially_gated'] => 'Partially gated',
-			$id['button_text']     => 'Learn More',
-			$id['button_link']     => 'https://https://help.coil.com/docs/dev/web-monetization/index.html',
+			self::$id['unverified']      => 'Unable to verify',
+			self::$id['donation_bar']    => 'Voluntary donation',
+			self::$id['pending']         => 'Loading content',
+			self::$id['fully_gated']     => 'Fully gated',
+			self::$id['partially_gated'] => 'Partially gated',
+			self::$id['button_text']     => 'Learn More',
+			self::$id['button_link']     => 'https://https://help.coil.com/docs/dev/web-monetization/index.html',
 		];
 		update_option( 'coil_messaging_settings_group', $custom_message );
 
 		// Creating an array of the messages that were retrieved
-		$message = [
-			$id['unverified']      => Admin\get_messaging_setting_or_default( $id['unverified'] ),
-			$id['donation_bar']    => Admin\get_messaging_setting_or_default( $id['donation_bar'] ),
-			$id['pending']         => Admin\get_messaging_setting_or_default( $id['pending'] ),
-			$id['fully_gated']     => Admin\get_messaging_setting_or_default( $id['fully_gated'] ),
-			$id['partially_gated'] => Admin\get_messaging_setting_or_default( $id['partially_gated'] ),
-			$id['button_text']     => Admin\get_messaging_setting_or_default( $id['button_text'] ),
-			$id['button_link']     => Admin\get_messaging_setting_or_default( $id['button_link'] ),
+		$retrieved_message = [
+			self::$id['unverified']      => Admin\get_messaging_setting_or_default( self::$id['unverified'] ),
+			self::$id['donation_bar']    => Admin\get_messaging_setting_or_default( self::$id['donation_bar'] ),
+			self::$id['pending']         => Admin\get_messaging_setting_or_default( self::$id['pending'] ),
+			self::$id['fully_gated']     => Admin\get_messaging_setting_or_default( self::$id['fully_gated'] ),
+			self::$id['partially_gated'] => Admin\get_messaging_setting_or_default( self::$id['partially_gated'] ),
+			self::$id['button_text']     => Admin\get_messaging_setting_or_default( self::$id['button_text'] ),
+			self::$id['button_link']     => Admin\get_messaging_setting_or_default( self::$id['button_link'] ),
 		];
 
 		// Checking that all messages that were retrieved are correct
-		$this->assertSame( $custom_message[ $id['unverified'] ], $message[ $id['unverified'] ] );
-		$this->assertSame( $custom_message[ $id['donation_bar'] ], $message[ $id['donation_bar'] ] );
-		$this->assertSame( $custom_message[ $id['pending'] ], $message[ $id['pending'] ] );
-		$this->assertSame( $custom_message[ $id['fully_gated'] ], $message[ $id['fully_gated'] ] );
-		$this->assertSame( $custom_message[ $id['partially_gated'] ], $message[ $id['partially_gated'] ] );
-		$this->assertSame( $custom_message[ $id['button_text'] ], $message[ $id['button_text'] ] );
-		$this->assertSame( $custom_message[ $id['button_link'] ], $message[ $id['button_link'] ] );
+		$this->assertSame( $custom_message, $retrieved_message );
 	}
 
 	/**
@@ -111,48 +103,38 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_retrieving_custom_messages_and_defaults() :  void {
-		// Setting simplified message ID's
-		$id = [
-			'unverified'      => 'coil_unable_to_verify_message',
-			'donation_bar'    => 'coil_voluntary_donation_message',
-			'pending'         => 'coil_verifying_status_message',
-			'fully_gated'     => 'coil_fully_gated_content_message',
-			'partially_gated' => 'coil_partially_gated_content_message',
-			'button_text'     => 'coil_learn_more_button_text',
-			'button_link'     => 'coil_learn_more_button_link',
-		];
+	public function test_retrieving_custom_messages_mixed_with_defaults() :  void {
 
 		// Adding custom messages to the database
 		$custom_message = [
-			$id['unverified']  => 'Unable to verify',
-			$id['pending']     => 'Loading content',
-			$id['fully_gated'] => 'Fully gated',
-			$id['button_text'] => 'Learn More',
+			self::$id['unverified']  => 'Unable to verify',
+			self::$id['pending']     => 'Loading content',
+			self::$id['fully_gated'] => 'Fully gated',
+			self::$id['button_text'] => 'Learn More',
 			// Leaving one option set to an empty string becasue this state occurs in the database once a custom message has been deleted
-			$id['button_link'] => '',
+			self::$id['button_link'] => '',
 		];
 		update_option( 'coil_messaging_settings_group', $custom_message );
 
 		// Creating an array of the messages that were retrieved
 		$message = [
-			$id['unverified']      => Admin\get_messaging_setting_or_default( $id['unverified'] ),
-			$id['donation_bar']    => Admin\get_messaging_setting_or_default( $id['donation_bar'] ),
-			$id['pending']         => Admin\get_messaging_setting_or_default( $id['pending'] ),
-			$id['fully_gated']     => Admin\get_messaging_setting_or_default( $id['fully_gated'] ),
-			$id['partially_gated'] => Admin\get_messaging_setting_or_default( $id['partially_gated'] ),
-			$id['button_text']     => Admin\get_messaging_setting_or_default( $id['button_text'] ),
-			$id['button_link']     => Admin\get_messaging_setting_or_default( $id['button_link'] ),
+			self::$id['unverified']      => Admin\get_messaging_setting_or_default( self::$id['unverified'] ),
+			self::$id['donation_bar']    => Admin\get_messaging_setting_or_default( self::$id['donation_bar'] ),
+			self::$id['pending']         => Admin\get_messaging_setting_or_default( self::$id['pending'] ),
+			self::$id['fully_gated']     => Admin\get_messaging_setting_or_default( self::$id['fully_gated'] ),
+			self::$id['partially_gated'] => Admin\get_messaging_setting_or_default( self::$id['partially_gated'] ),
+			self::$id['button_text']     => Admin\get_messaging_setting_or_default( self::$id['button_text'] ),
+			self::$id['button_link']     => Admin\get_messaging_setting_or_default( self::$id['button_link'] ),
 		];
 
 		// Checking that all messages that were retrieved are correct
-		$this->assertSame( $custom_message[ $id['unverified'] ], $message[ $id['unverified'] ] );
-		$this->assertSame( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', $message[ $id['donation_bar'] ] );
-		$this->assertSame( $custom_message[ $id['pending'] ], $message[ $id['pending'] ] );
-		$this->assertSame( $custom_message[ $id['fully_gated'] ], $message[ $id['fully_gated'] ] );
-		$this->assertSame( 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.', $message[ $id['partially_gated'] ] );
-		$this->assertSame( $custom_message[ $id['button_text'] ], $message[ $id['button_text'] ] );
-		$this->assertSame( 'https://coil.com/', $message[ $id['button_link'] ] );
+		$this->assertSame( $custom_message[ self::$id['unverified'] ], $message[ self::$id['unverified'] ] );
+		$this->assertSame( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', $message[ self::$id['donation_bar'] ] );
+		$this->assertSame( $custom_message[ self::$id['pending'] ], $message[ self::$id['pending'] ] );
+		$this->assertSame( $custom_message[ self::$id['fully_gated'] ], $message[ self::$id['fully_gated'] ] );
+		$this->assertSame( 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.', $message[ self::$id['partially_gated'] ] );
+		$this->assertSame( $custom_message[ self::$id['button_text'] ], $message[ self::$id['button_text'] ] );
+		$this->assertSame( 'https://coil.com/', $message[ self::$id['button_link'] ] );
 	}
 
 	/**
@@ -162,53 +144,45 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 	 */
 	public function test_transfer_of_messages_from_customizer() :  void {
 
-		// Setting simplified message ID's
-		$id = [
-			'unverified'      => 'coil_unable_to_verify_message',
-			'donation_bar'    => 'coil_voluntary_donation_message',
-			'pending'         => 'coil_verifying_status_message',
-			'fully_gated'     => 'coil_fully_gated_content_message',
-			'partially_gated' => 'coil_partially_gated_content_message',
-			'button_text'     => 'coil_learn_more_button_text',
-			'button_link'     => 'coil_learn_more_button_link',
-		];
-
 		// Adding custom messages to the theme_mod
-		set_theme_mod( $id['unverified'], 'Unable to verify' );
-		set_theme_mod( $id['pending'], 'Loading content' );
+		set_theme_mod( self::$id['unverified'], 'Unable to verify' );
+		set_theme_mod( self::$id['pending'], 'Loading content' );
+		// Variable name was changed from coil_unsupported_message to fully_gated
 		set_theme_mod( 'coil_unsupported_message', 'Fully gated' );
-		set_theme_mod( $id['button_text'], 'Learn More' );
+		set_theme_mod( self::$id['button_text'], 'Learn More' );
 		// Leaving one option set to an empty string becasue this state occurs in the database once a custom message has been deleted
-		set_theme_mod( $id['button_link'], '' );
+		set_theme_mod( self::$id['button_link'], '' );
 
 		// Transferrng settings to the wp_options table
 		Settings\transfer_customizer_message_settings();
 
 		// Creating an array of the messages that were retrieved from the wp_options table.
 		$message = [
-			$id['unverified']      => Admin\get_messaging_setting_or_default( $id['unverified'] ),
-			$id['donation_bar']    => Admin\get_messaging_setting_or_default( $id['donation_bar'] ),
-			$id['pending']         => Admin\get_messaging_setting_or_default( $id['pending'] ),
-			$id['fully_gated']     => Admin\get_messaging_setting_or_default( $id['fully_gated'] ),
-			$id['partially_gated'] => Admin\get_messaging_setting_or_default( $id['partially_gated'] ),
-			$id['button_text']     => Admin\get_messaging_setting_or_default( $id['button_text'] ),
-			$id['button_link']     => Admin\get_messaging_setting_or_default( $id['button_link'] ),
+			self::$id['unverified']      => Admin\get_messaging_setting_or_default( self::$id['unverified'] ),
+			self::$id['donation_bar']    => Admin\get_messaging_setting_or_default( self::$id['donation_bar'] ),
+			self::$id['pending']         => Admin\get_messaging_setting_or_default( self::$id['pending'] ),
+			self::$id['fully_gated']     => Admin\get_messaging_setting_or_default( self::$id['fully_gated'] ),
+			self::$id['partially_gated'] => Admin\get_messaging_setting_or_default( self::$id['partially_gated'] ),
+			self::$id['button_text']     => Admin\get_messaging_setting_or_default( self::$id['button_text'] ),
+			self::$id['button_link']     => Admin\get_messaging_setting_or_default( self::$id['button_link'] ),
 		];
 
 		// Checking that all messages that were retrieved are correct
-		$this->assertSame( 'Unable to verify', $message[ $id['unverified'] ] );
-		$this->assertSame( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', $message[ $id['donation_bar'] ] );
-		$this->assertSame( 'Loading content', $message[ $id['pending'] ] );
-		$this->assertSame( 'Fully gated', $message[ $id['fully_gated'] ] );
-		$this->assertSame( 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.', $message[ $id['partially_gated'] ] );
-		$this->assertSame( 'Learn More', $message[ $id['button_text'] ] );
-		$this->assertSame( 'https://coil.com/', $message[ $id['button_link'] ] );
+		$this->assertSame( 'Unable to verify', $message[ self::$id['unverified'] ] );
+		$this->assertSame( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', $message[ self::$id['donation_bar'] ] );
+		$this->assertSame( 'Loading content', $message[ self::$id['pending'] ] );
+		$this->assertSame( 'Fully gated', $message[ self::$id['fully_gated'] ] );
+		$this->assertSame( 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.', $message[ self::$id['partially_gated'] ] );
+		$this->assertSame( 'Learn More', $message[ self::$id['button_text'] ] );
+		$this->assertSame( 'https://coil.com/', $message[ self::$id['button_link'] ] );
 
 		// Checking that the theme_mod messages have been removed
-		$this->assertFalse( get_theme_mod( $id['unverified'] ) );
-		$this->assertFalse( get_theme_mod( $id['pending'] ) );
-		$this->assertFalse( get_theme_mod( $id['fully_gated'] ) );
-		$this->assertFalse( get_theme_mod( $id['button_text'] ) );
-		$this->assertFalse( get_theme_mod( $id['button_link'] ) );
+		$this->assertFalse( get_theme_mod( self::$id['unverified'] ) );
+		$this->assertFalse( get_theme_mod( self::$id['donation_bar'] ) );
+		$this->assertFalse( get_theme_mod( self::$id['pending'] ) );
+		$this->assertFalse( get_theme_mod( self::$id['fully_gated'] ) );
+		$this->assertFalse( get_theme_mod( self::$id['partially_gated'] ) );
+		$this->assertFalse( get_theme_mod( self::$id['button_text'] ) );
+		$this->assertFalse( get_theme_mod( self::$id['button_link'] ) );
 	}
 }
