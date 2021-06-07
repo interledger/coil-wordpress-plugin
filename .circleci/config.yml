@@ -42,7 +42,7 @@ jobs:
           command: |
             sudo apt update
             sudo apt-get install mysql-client
-            mysql -h 127.0.0.1 -u root -proot  -e "SHOW DATABASES;"
+            mysql -h 127.0.0.1 -u root -proot
       - run:
           name: Setup PHPUnit
           command: |
