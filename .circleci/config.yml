@@ -2,16 +2,10 @@ version: 2.0
 jobs:
   js_scss_linting:
     docker:
-      - image: cimg/node:14.10.1 # the primary container, where your job's commands are run
+      - image: cimg/node:14.10.1
     steps:
-      - checkout # check out the code in the project directory
-      - restore_cache:
-          key: v1-dependency-cache-{{checksum "package.json"}}
+      - checkout
       - run: npm install
-      - save_cache:
-          key: v1-dependency-cache-{{checksum "package.json"}}
-          paths:
-            - node_modules
       - run: npx grunt test
   php_testing:
     docker:
@@ -24,7 +18,7 @@ jobs:
           MYSQL_DATABASE: wordpress_test
     working_directory: ~/php
     steps:
-      - checkout # check out the code in the project directory
+      - checkout
       - restore_cache:
           key: -v1-deps{{checksum "composer.lock"}}
       - run: composer install
@@ -33,7 +27,7 @@ jobs:
           paths:
             - vendor
       - run:
-          # Our primary container isn't MYSQL so run a sleep command until it's ready.
+          # The primary container isn't MYSQL, running a sleep command until it's ready.
           name: Waiting for MySQL to be ready
           command: |
             for i in `seq 1 10`;
@@ -48,16 +42,20 @@ jobs:
           command: |
             sudo apt update
             sudo apt-get install mysql-client
-            mysql -h 127.0.0.1 -u root -proot  -e "SHOW DATABASES;"
+            mysql -h 127.0.0.1 -u root -proot
       - run:
           name: Setup PHPUnit
           command: |
             sudo bash ./setup-phpunit.sh
-      - run: ./vendor/bin/phpunit
-      - run: composer phpcs
+      - run:
+          name: PHPUnit functional tests
+          command: ./vendor/bin/phpunit
+      - run:
+        name: PHP linting tests
+        command: composer phpcs
 workflows:
   version: 2
-  basic_linting_tests:
+  basic_tests:
     jobs:
       - js_scss_linting
       - php_testing
