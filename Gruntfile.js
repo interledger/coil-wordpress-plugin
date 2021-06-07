@@ -154,7 +154,6 @@ module.exports = function( grunt ) {
 		eslint: {
 			options: {
 				configFile: '.eslintrc.json',
-				fix: true,
 			},
 			all: [
 				'assets/js/**/*.js',
@@ -168,7 +167,6 @@ module.exports = function( grunt ) {
 		stylelint: {
 			options: {
 				configFile: '.stylelintrc.json',
-				fix: true,
 			},
 			all: [
 				'assets/scss/**/*.scss',
