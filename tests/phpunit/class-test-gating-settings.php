@@ -9,7 +9,7 @@ use WP_UnitTestCase;
 use WP_UnitTest_Factory;
 
 /**
- * Payment pointer hierarchy and gating tests.
+ * Gating tests.
  */
 class Test_Gating_Settings extends WP_UnitTestCase {
 

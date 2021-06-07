@@ -9,7 +9,7 @@ use Coil\Admin;
 use WP_UnitTestCase;
 
 /**
- * Testing the custom global settings.
+ * Testing the custom default global monetization settings.
  */
 class Test_Global_Settings extends WP_UnitTestCase {
 
