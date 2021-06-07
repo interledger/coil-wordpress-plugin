@@ -42,20 +42,16 @@ jobs:
           command: |
             sudo apt update
             sudo apt-get install mysql-client
-            mysql -h 127.0.0.1 -u root -proot
+            mysql -h 127.0.0.1 -u root -proot  -e "SHOW DATABASES;"
       - run:
           name: Setup PHPUnit
           command: |
             sudo bash ./setup-phpunit.sh
-      - run:
-          name: PHPUnit functional tests
-          command: ./vendor/bin/phpunit
-      - run:
-        name: PHP linting tests
-        command: composer phpcs
+      - run: ./vendor/bin/phpunit
+      - run: composer phpcs
 workflows:
   version: 2
-  basic_tests:
+  basic_linting_tests:
     jobs:
       - js_scss_linting
       - php_testing
