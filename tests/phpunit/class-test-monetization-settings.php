@@ -173,7 +173,7 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_transfer_of_visual_settings_from_customizer() :  void {
+	public function test_transfer_of_visual_settings_from_customizer_when_settings_enabled() :  void {
 
 		// Testing when both settings are set to false
 		// Adding custom visual settings to the theme_mod
@@ -197,6 +197,15 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 		$this->assertFalse( get_theme_mod( 'coil_show_donation_bar' ) );
 		$this->assertFalse( get_theme_mod( 'coil_title_padlock' ) );
 		$this->assertFalse( get_option( 'coil_content_settings_posts_group' ) );
+	}
+
+	/**
+	 * Testing if a user has donation bar and padlock display settings which they saved in the customizer that they are migrated successfully to the wp_options table
+	 * In the case where both settings had been set in the customizer and no settings had been added to the settings panel.
+	 *
+	 * @return void
+	 */
+	public function test_transfer_of_visual_settings_from_customizer_when_settings_diabled() :  void {
 
 		// Testing when both settings are set to true
 		// Removing the existing option from the wp_options table.
@@ -223,6 +232,15 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 		$this->assertFalse( get_theme_mod( 'coil_show_donation_bar' ) );
 		$this->assertFalse( get_theme_mod( 'coil_title_padlock' ) );
 		$this->assertFalse( get_option( 'coil_content_settings_posts_group' ) );
+	}
+
+	/**
+	 * Testing if a user has donation bar and padlock display settings which they saved in the customizer that they are migrated successfully to the wp_options table
+	 * In the case where both settings had been set in the customizer and no settings had been added to the settings panel.
+	 *
+	 * @return void
+	 */
+	public function test_transfer_of_visual_settings_from_customizer_when_settings_are_mixed() :  void {
 
 		// Testing when one setting is set to true and the other to false
 		// Adding custom visual settings to the theme_mod
@@ -250,11 +268,11 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 
 	/**
 	 * Testing if a user has donation bar and padlock display settings which they saved in the customizer that they are migrated successfully to the wp_options table
-	 * In cases where some settings are saved to the customizer and others have been saved to the settings panel.
+	 * In cases where post and page gloabl monetization defaults are already present in the coil_monetization_settings_group.
 	 *
 	 * @return void
 	 */
-	public function test_transfer_of_visual_settings_from_customizer_where_settings_have_been_saved_in_both_locations() :  void {
+	public function test_transfer_of_visual_settings_from_customizer_where_global_gating_has_already_been_saved() :  void {
 
 		// Testing when both settings are set to false but there are existing global gating settings saved in the settings panel
 		// Adding custom visual settings to the theme_mod
@@ -295,6 +313,15 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 		$this->assertFalse( get_theme_mod( 'coil_show_donation_bar' ) );
 		$this->assertFalse( get_theme_mod( 'coil_title_padlock' ) );
 		$this->assertFalse( get_option( 'coil_content_settings_posts_group' ) );
+	}
+
+	/**
+	 * Testing if a user has donation bar and padlock display settings which they saved in the customizer that they are migrated successfully to the wp_options table
+	 * In cases where some settings are saved to the customizer and others have been saved to the settings panel.
+	 *
+	 * @return void
+	 */
+	public function test_transfer_of_visual_settings_from_customizer_where_settings_have_been_saved_in_both_locations() :  void {
 
 		// Testing when one setting is saved to the customizer and the other in the settings panel.
 		// Removing the existing option from the wp_options table.
