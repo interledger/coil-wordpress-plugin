@@ -44,7 +44,7 @@ jobs:
             sudo apt-get install mysql-client
       - run:
           name: Setup PHPUnit
-          command: sudo bash ./setup-phpunit-ci.sh
+          command: sudo bash ./scripts/setup-phpunit-ci.sh
       - run:
           name: Functional PHPUnit tests
           command: ./vendor/bin/phpunit
