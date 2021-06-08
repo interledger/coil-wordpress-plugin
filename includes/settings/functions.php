@@ -1046,8 +1046,8 @@ function transfer_customizer_monetization_settings() {
 	remove_theme_mod( $coil_show_donation_bar );
 
 	// Before moving post gating settings across check that post types and gating types are valid.
-	$supported_post_types 		= Coil\get_supported_post_types( 'names' );
-	$supported_gating_options 	= array_keys( Gating\get_monetization_setting_types() );
+	$supported_post_types     = Coil\get_supported_post_types( 'names' );
+	$supported_gating_options = array_keys( Gating\get_monetization_setting_types() );
 
 	if ( ! empty( $supported_post_types ) && ! empty( $previous_gating_options ) ) {
 		foreach ( $previous_gating_options as $post_type => $gating_type ) {
