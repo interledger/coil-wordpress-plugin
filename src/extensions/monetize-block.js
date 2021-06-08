@@ -328,9 +328,9 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 			} );
 		},
 		updateMetaValueOnSelect: ( value ) => {
-			var metaValue = ( 'enabled' == value ? 'default' : 'no' );
+			const metaValue = ( 'enabled' === value ? 'default' : 'no' );
 
-			console.log( value, metaValue );
+			//console.log( value, metaValue );
 
 			//updateMetaValue(metaValue);
 
@@ -359,7 +359,7 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 			] }
 		/>
 		<div
-			className={`coil-monetization-settings ${props.value ? props.value : ''}`}
+			className={ `coil-monetization-settings ${ props.value ? props.value : '' }` }
 		>
 			<RadioControl
 				selected={ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : 'default' }
