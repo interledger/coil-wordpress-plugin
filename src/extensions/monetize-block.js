@@ -16,7 +16,7 @@ const { Fragment } = wp.element;
 const { InspectorControls } = wp.blockEditor || wp.editor; // wp.editor for WP < 5.2.
 const { withSelect, withDispatch } = wp.data;
 const { createHigherOrderComponent } = wp.compose;
-const { PanelBody, RadioControl } = wp.components;
+const { PanelBody, RadioControl, SelectControl } = wp.components;
 const { registerPlugin } = wp.plugins;
 const { PluginDocumentSettingPanel } = wp.editPost; // WP >= 5.3.
 
@@ -327,6 +327,19 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 				},
 			} );
 		},
+		updateMetaValueOnSelect: ( value ) => {
+			var metaValue = ( 'enabled' == value ? 'default' : 'no' );
+
+			console.log( value, metaValue );
+
+			//updateMetaValue(metaValue);
+
+			dispatch( 'core/editor' ).editPost( {
+				meta: {
+					[ props.metaFieldName ]: metaValue,
+				},
+			} );
+		},
 	};
 } )( withSelect( ( select, props ) => {
 	const meta = select( 'core/editor' ).getEditedPostAttribute( 'meta' );
@@ -335,35 +348,50 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 		[ props.metaFieldName ]: meta && meta._coil_monetize_post_status,
 	};
 } )( ( props ) => (
-	<RadioControl
-		selected={ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : 'default' }
-		options={
-			[
-				{
-					label: __( 'Use Default', 'coil-web-monetization' ),
-					value: 'default',
-				},
-				{
-					label: __( 'No Monetization', 'coil-web-monetization' ),
-					value: 'no',
-				},
-				{
-					label: __( 'Monetized and Public', 'coil-web-monetization' ),
-					value: 'no-gating',
-				},
-				{
-					label: __( 'Paying Viewers Only', 'coil-web-monetization' ),
-					value: 'gate-all',
-				},
-				{
-					label: __( 'Split Content', 'coil-web-monetization' ),
-					value: 'gate-tagged-blocks',
-				},
-			]
-		}
-		help={ __( 'Set the type of monetization for the article.' ) }
-		onChange={ ( value ) => props.updateMetaValue( value ) }
-	/>
+	<div>
+		<SelectControl
+			label={ __( 'Select a monetization Status' ) }
+			//value={[ 'disabled' ]}
+			onChange={ ( value ) => props.updateMetaValueOnSelect( value ) }
+			options={ [
+				{ value: 'enabled', label: 'Enabled' },
+				{ value: 'disabled', label: 'Disabled' },
+			] }
+		/>
+		<div
+			className={`coil-monetization-settings ${props.value ? props.value : ''}`}
+		>
+			<RadioControl
+				selected={ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : 'default' }
+				options={
+					[
+						{
+							label: __( 'No Monetization', 'coil-web-monetization' ),
+							value: 'no',
+						},
+						{
+							label: __( 'Use Default', 'coil-web-monetization' ),
+							value: 'default',
+						},
+						{
+							label: __( 'Monetized and Public', 'coil-web-monetization' ),
+							value: 'no-gating',
+						},
+						{
+							label: __( 'Paying Viewers Only', 'coil-web-monetization' ),
+							value: 'gate-all',
+						},
+						{
+							label: __( 'Split Content', 'coil-web-monetization' ),
+							value: 'gate-tagged-blocks',
+						},
+					]
+				}
+				help={ __( 'Set the type of monetization for the article.' ) }
+				onChange={ ( value ) => props.updateMetaValue( value ) }
+			/>
+		</div>
+	</div>
 ) ) );
 
 // WP >= 5.3 only - register the panel.
