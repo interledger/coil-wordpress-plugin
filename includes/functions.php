@@ -53,6 +53,7 @@ function init_plugin() : void {
 	add_action( 'wp_ajax_dismiss_welcome_notice', __NAMESPACE__ . '\Settings\dismiss_welcome_notice' );
 	add_action( 'init', __NAMESPACE__ . '\Settings\transfer_customizer_message_settings' );
 	add_action( 'init', __NAMESPACE__ . '\Settings\transfer_customizer_monetization_settings' );
+	add_action( 'init', __NAMESPACE__ . '\Settings\transfer_customizer_style_settings' );
 
 	// Term meta.
 	add_action( 'edit_term', __NAMESPACE__ . '\Admin\maybe_save_term_meta', 10, 3 );
