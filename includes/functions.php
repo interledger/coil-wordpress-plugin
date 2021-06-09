@@ -196,7 +196,7 @@ function load_full_assets() : void {
 			'partial_gating'          => Admin\get_messaging_setting_or_default( 'coil_partially_gated_content_message' ),
 			'learn_more_button_text'  => Admin\get_messaging_setting_or_default( 'coil_learn_more_button_text' ),
 			'learn_more_button_link'  => Admin\get_messaging_setting_or_default( 'coil_learn_more_button_link' ),
-			'show_donation_bar'       => Admin\get_visual_settings( 'coil_show_donation_bar', true ),
+			'show_donation_bar'       => Admin\get_style_settings( 'coil_show_donation_bar' ),
 			'post_excerpt'            => get_the_excerpt(),
 			'site_logo'               => $site_logo,
 

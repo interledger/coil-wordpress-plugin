@@ -329,7 +329,7 @@ function add_redirect_customizer_section( $wp_customize ) : void {
 		esc_url( admin_url( 'admin.php?page=coil_settings&tab=messaging_settings', COIL__FILE__ ) )
 	) . '</p>';
 	$description .= '<p>' . sprintf(
-		__( 'Monetization options have been moved to the ', 'coil-web-monetization' ) . '<a href="%s">' . __( 'Monetization Settings tab.', 'coil-web-monetization' ) . '</a>',
+		__( 'Monetization options have been moved to the ', 'coil-web-monetization' ) . '<a href="%s">' . __( 'Default Earning Settings tab.', 'coil-web-monetization' ) . '</a>',
 		esc_url( admin_url( 'admin.php?page=coil_settings&tab=monetization_settings', COIL__FILE__ ) )
 	) . '</p>';
 
@@ -465,24 +465,24 @@ function get_messaging_setting( $field_id, $default = false ) {
 }
 
 /**
- * Retrieve the visual settings using a key from the monetization
- * settings group (serialized).
+ * Retrieve the padlock and donation bar display settings
+ * using a key from the style settings group (serialized).
  *
  * @param string $field_id The named key in the wp_options serialized array.
  * @return string
  */
-function get_visual_settings( $field_id, $default = false ) {
+function get_style_settings( $field_id ) {
 
-	/**
-	 * Default is not checked
-	 */
-	$options = get_option( 'coil_monetization_settings_group', [] );
+	$options = get_option( 'coil_style_settings_group', [] );
+	$display_setting_id_array = [ 'coil_title_padlock', 'coil_show_donation_bar' ];
 
-	if ( ! isset( $options[ $field_id ] ) ) {
-		$setting_value = $default;
-	} else {
-		$setting_value = $options[ $field_id ];
+	if ( in_array( $field_id, $display_setting_id_array, true ) ) {
+		// Default is checked
+		if ( ! isset( $options[ $field_id ] ) ) {
+			$setting_value = true ;
+		} else {
+			$setting_value = $options[ $field_id ];
+		}
 	}
-
 	return $setting_value;
 }
