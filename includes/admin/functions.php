@@ -496,16 +496,15 @@ function get_visual_settings( $field_id, $default = false ) {
  */
 function get_style_settings( $field_id ) {
 
-	/**
-	 * Default is the light theme
-	 */
 	$options = get_option( 'coil_style_settings_group', [] );
 
-	if ( isset( $options[ $field_id ] ) ) {
-		$setting_value = $options[ $field_id ];
-	} else {
-		$setting_value = 'light';
+	if ( $field_id === 'coil_message_color_theme' ) {
+		// Default is the light theme
+		if ( isset( $options[ $field_id ] ) ) {
+			$setting_value = $options[ $field_id ];
+		} else {
+			$setting_value = 'light';
+		}
 	}
-
 	return $setting_value;
 }
