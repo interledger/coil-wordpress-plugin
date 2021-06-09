@@ -206,6 +206,22 @@ function register_admin_content_settings() {
 		'coil_display_settings',
 		'coil_display_settings_section'
 	);
+
+	// ==== CTA theme
+	add_settings_section(
+		'coil_cta__settings_section',
+		__( 'Restricted Content Message Customization', 'coil-web-monetization' ),
+		false,
+		'coil_style_settings'
+	);
+
+	add_settings_field(
+		'coil_message_color_theme',
+		__( 'Color Theme', 'coil-web-monetization' ),
+		__NAMESPACE__ . '\coil_message_color_theme_render_callback',
+		'coil_style_settings',
+		'coil_cta__settings_section'
+	);
 }
 
 /* ------------------------------------------------------------------------ *
@@ -319,6 +335,34 @@ function coil_appearance_settings_validation( $appearance_settings ) {
 	}
 
 	return $appearance_settings;
+}
+
+/**
+ * Allow the radio buttons that select theme preferences
+ * and the padlock and donation bar display checkboxes
+ * to be properly validated
+ *
+ * @param array $style_settings The padlock and donation bar display checkboxes
+ * and the radio button settings for the restricted content message customization theme selection
+ *
+ * @return array
+ */
+function coil_style_settings_validation( $style_settings ) {
+
+	$valid_choices = [ 'light', 'dark' ];
+
+	foreach ( $style_settings as $key => $option_value ) {
+		if ( $key === 'coil_message_color_theme' ) {
+			if ( in_array( $option_value, $valid_choices, true ) ) {
+				$style_settings[ $key ] = sanitize_key( $option_value );
+			} else {
+				// The default value is the light theme
+				$style_settings[ $key ] = 'light';
+			}
+		}
+	}
+
+	return $style_settings;
 }
 
 /* ------------------------------------------------------------------------ *
@@ -688,6 +732,65 @@ function coil_show_donation_bar_settings_render_callback() {
 		esc_attr( 'display_donation_bar' ),
 		esc_html_e( 'Show the support creator message in a footer bar on posts that are Monetized and Public.', 'coil-web-monetization' )
 	);
+}
+
+function coil_message_color_theme_render_callback() {
+	/**
+	 * Select the appropriate radio button
+	 * based on settings stored in the database.
+	 * If the input status is not set, default to the light theme
+	 */
+
+	?>
+		<?php
+
+		$checked_input = Admin\get_style_settings( 'coil_message_color_theme' );
+
+		if ( ! empty( $checked_input ) && $checked_input === 'light' ) {
+			$checked_input = 'checked="true"';
+		} else {
+			$checked_input = false;
+		}
+
+		printf(
+			'<input type="radio" name="%s" id="%s" value="%s" %s />',
+			esc_attr( 'coil_style_settings_group[coil_message_color_theme]' ),
+			esc_attr( 'light_color_theme' ),
+			esc_attr( 'light' ),
+			$checked_input
+		);
+
+		printf(
+			'<label for="%s">%s</label>',
+			esc_attr( 'message_color_theme' ),
+			esc_html_e( 'Light theme', 'coil-web-monetization' )
+		);
+
+		printf( '<br>' );
+
+		$checked_input = Admin\get_style_settings( 'coil_message_color_theme' );
+
+		if ( ! empty( $checked_input ) && $checked_input === 'dark' ) {
+			$checked_input = 'checked="true"';
+		} else {
+			$checked_input = false;
+		}
+
+		printf(
+			'<input type="radio" name="%s" id="%s" value="%s" %s />',
+			esc_attr( 'coil_style_settings_group[coil_message_color_theme]' ),
+			esc_attr( 'dark_color_theme' ),
+			esc_attr( 'dark' ),
+			$checked_input
+		);
+
+		printf(
+			'<label for="%s">%s</label>',
+			esc_attr( 'message_color_theme' ),
+			esc_html_e( 'Dark theme', 'coil-web-monetization' )
+		);
+		?>
+	<?php
 }
 
 /**
