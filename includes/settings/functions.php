@@ -1045,7 +1045,7 @@ function transfer_customizer_monetization_settings() {
 
 	// If the setting has already been saved or transferred then simply return
 	// Using 'null' for comparrison becasue if the padlock and support creator messages were unselected they were stored in the database with the value false, but still need to be transferred.
-	if ( get_option( 'coil_monetization_settings_group' ) && ! get_option( 'coil_content_settings_posts_group' ) && 'null' === get_theme_mod( 'coil_title_padlock', 'null' ) && 'null' === get_theme_mod( 'coil_show_donation_bar', 'null' ) ) {
+	if ( ! get_option( 'coil_content_settings_posts_group' ) && 'null' === get_theme_mod( 'coil_title_padlock', 'null' ) && 'null' === get_theme_mod( 'coil_show_donation_bar', 'null' ) ) {
 		return;
 	}
 
