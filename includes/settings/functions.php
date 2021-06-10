@@ -243,16 +243,15 @@ function coil_global_settings_group_validation( $global_settings ) : array {
  * Allow the radio button options in the posts content section
  * to be properly validated
  *
- * @param array $monetization_settings The posted radio options from the content settings section and the padlock
- * and donation bar display checkboxes
+ * @param array $monetization_settings The posted radio options from the content settings section
  * @return array
  */
 function coil_content_settings_posts_validation( $monetization_settings ) : array {
 
-	foreach ( $monetization_settings as $key => $option_value ) {
+	// A list of valid post types
+	$valid_choices = array_keys( Gating\get_monetization_setting_types() );
 
-		// A list of valid post types
-		$valid_choices = array_keys( Gating\get_monetization_setting_types() );
+	foreach ( $monetization_settings as $key => $option_value ) {
 
 		// The default value is no-gating (Monetized and Public)
 		$monetization_settings[ $key ] = in_array( $option_value, $valid_choices, true ) ? sanitize_key( $option_value ) : 'no-gating';
@@ -303,8 +302,8 @@ function coil_messaging_settings_validation( $messaging_settings ) : array {
 }
 
 /**
- * Allow the radio buttons that select the padlock and donation bar
- * display checkboxes to be properly validated
+ * Allow the checkboxes that select the padlock and donation bar
+ * display settings to be properly validated
  *
  * @param array $appearance_settings The padlock and donation bar display checkboxes
  *
@@ -641,9 +640,9 @@ function coil_messaging_settings_render_callback( $args ) {
 function coil_title_padlock_settings_render_callback() {
 
 	/**
-	 * Specify the default checked state on the input from
+	 * Specify the default checked state for the input from
 	 * any settings stored in the database. If the
-	 * input status is not set, default to checked
+	 * input status is not set, default to checked.
 	 */
 	$checked_input_value = Admin\get_appearance_settings( 'coil_title_padlock' );
 
@@ -651,14 +650,14 @@ function coil_title_padlock_settings_render_callback() {
 		'<input type="%s" name="%s" id="%s" "%s">',
 		esc_attr( 'checkbox' ),
 		esc_attr( 'coil_appearance_settings_group[coil_title_padlock]' ),
-		esc_attr( 'display_donation_bar' ),
+		esc_attr( 'display_padlock_id' ),
 		checked( 1, $checked_input_value, false )
 	);
 
 	printf(
 		'<label for="%s">%s</label>',
-		esc_attr( 'display_donation_bar' ),
-		esc_html_e( 'Show the support creator message in a footer bar on posts that are Monetized and Public.', 'coil-web-monetization' )
+		esc_attr( 'display_padlock_id' ),
+		esc_html_e( 'Show padlock next to post title if the post is for Paying Viewers Only.', 'coil-web-monetization' )
 	);
 }
 
@@ -977,8 +976,6 @@ function dismiss_welcome_notice() {
 
 function transfer_customizer_message_settings() {
 
-	$existing_options = get_option( 'coil_messaging_settings_group' );
-
 	$messaging_settings = [];
 
 	$coil_partial_gating_message     = 'coil_partial_gating_message';
@@ -1038,6 +1035,8 @@ function transfer_customizer_message_settings() {
 		remove_theme_mod( $coil_learn_more_button_link );
 	}
 
+	$existing_options = get_option( 'coil_messaging_settings_group' );
+
 	if ( false !== $existing_options ) {
 		update_option( 'coil_messaging_settings_group', array_merge( $existing_options, $messaging_settings ) );
 	} else {
@@ -1056,7 +1055,7 @@ function transfer_customizer_message_settings() {
 function transfer_customizer_appearance_settings() {
 
 	// If the setting has already been saved or transferred then simply return
-	// Using 'null' for comparrison becasue if the padlock and support creator messages were unselected they were stored in the database with the value false, but still need to be transferred.
+	// Using 'null' for comparison becasue if the padlock and support creator messages were unselected they were stored in the database with the value false, but still need to be transferred.
 	if ( 'null' === get_theme_mod( 'coil_title_padlock', 'null' ) && 'null' === get_theme_mod( 'coil_show_donation_bar', 'null' ) ) {
 		return;
 	}
