@@ -471,7 +471,7 @@ function get_messaging_setting( $field_id, $default = false ) {
  * @param string $field_id The named key in the wp_options serialized array.
  * @return string
  */
-function get_visual_settings( $field_id, $default = false ) {
+function get_visual_settings( $field_id, $default = true ) {
 
 	/**
 	 * Default is not checked
