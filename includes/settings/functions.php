@@ -1044,7 +1044,7 @@ function transfer_customizer_monetization_settings() {
 		return;
 	}
 
-	$existing_options = get_option( 'coil_monetization_settings_group' );
+	$existing_options        = get_option( 'coil_monetization_settings_group' );
 	$previous_gating_options = get_option( 'coil_content_settings_posts_group' );
 
 	$coil_title_padlock        = 'coil_title_padlock';
