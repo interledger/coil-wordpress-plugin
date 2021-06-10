@@ -327,13 +327,9 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 				},
 			} );
 		},
-		updateMetaValueOnSelect: ( value ) => {
+		updateMetaValueOnSelect: ( value, selectBox ) => {
 			const metaValue = ( 'enabled' === value ? 'default' : 'no' );
-
-			//console.log( value, metaValue );
-
-			//updateMetaValue(metaValue);
-
+			console.log( selectBox, value );
 			dispatch( 'core/editor' ).editPost( {
 				meta: {
 					[ props.metaFieldName ]: metaValue,
@@ -351,8 +347,8 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 	<div>
 		<SelectControl
 			label={ __( 'Select a monetization Status' ) }
-			//value={[ 'disabled' ]}
-			onChange={ ( value ) => props.updateMetaValueOnSelect( value ) }
+			value={ ( value ) => 'no-monetization' === value ? 'disabled' :'enabled' }
+			onChange={ ( value ) => props.updateMetaValueOnSelect( value, props ) }
 			options={ [
 				{ value: 'enabled', label: 'Enabled' },
 				{ value: 'disabled', label: 'Disabled' },
