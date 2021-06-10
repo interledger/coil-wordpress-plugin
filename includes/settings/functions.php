@@ -1038,16 +1038,14 @@ function transfer_customizer_message_settings() {
 }
 
 function transfer_customizer_monetization_settings() {
-
-	$existing_options = get_option( 'coil_monetization_settings_group' );
-
-	$previous_gating_options = get_option( 'coil_content_settings_posts_group' );
-
 	// If the setting has already been saved or transferred then simply return
-	// Using 'null' for comparrison becasue if the padlock and support creator messages were unselected they were stored in the database with the value false, but still need to be transferred.
+	// Using 'null' for comparison becasue if the padlock and support creator messages were unselected they were stored in the database with the value false, but still need to be transferred.
 	if ( ! get_option( 'coil_content_settings_posts_group' ) && 'null' === get_theme_mod( 'coil_title_padlock', 'null' ) && 'null' === get_theme_mod( 'coil_show_donation_bar', 'null' ) ) {
 		return;
 	}
+
+	$existing_options = get_option( 'coil_monetization_settings_group' );
+	$previous_gating_options = get_option( 'coil_content_settings_posts_group' );
 
 	$coil_title_padlock        = 'coil_title_padlock';
 	$coil_show_donation_bar    = 'coil_show_donation_bar';
