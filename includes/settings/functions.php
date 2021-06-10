@@ -968,8 +968,6 @@ function dismiss_welcome_notice() {
 
 function transfer_customizer_message_settings() {
 
-	$existing_options = get_option( 'coil_messaging_settings_group' );
-
 	$messaging_settings = [];
 
 	$coil_partial_gating_message     = 'coil_partial_gating_message';
@@ -1029,6 +1027,8 @@ function transfer_customizer_message_settings() {
 		remove_theme_mod( $coil_learn_more_button_link );
 	}
 
+	$existing_options = get_option( 'coil_messaging_settings_group' );
+
 	if ( false !== $existing_options ) {
 		update_option( 'coil_messaging_settings_group', array_merge( $existing_options, $messaging_settings ) );
 	} else {
@@ -1038,6 +1038,7 @@ function transfer_customizer_message_settings() {
 }
 
 function transfer_customizer_monetization_settings() {
+
 	// If the setting has already been saved or transferred then simply return
 	// Using 'null' for comparison becasue if the padlock and support creator messages were unselected they were stored in the database with the value false, but still need to be transferred.
 	if ( ! get_option( 'coil_content_settings_posts_group' ) && 'null' === get_theme_mod( 'coil_title_padlock', 'null' ) && 'null' === get_theme_mod( 'coil_show_donation_bar', 'null' ) ) {
