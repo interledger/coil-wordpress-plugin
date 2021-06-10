@@ -106,7 +106,7 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	 */
 	public function test_if_default_padlock_display_is_enabled() :  void {
 
-		$padlock_setting = Admin\get_visual_settings( 'coil_title_padlock' );
+		$padlock_setting = Admin\get_appearance_settings( 'coil_title_padlock' );
 
 		$this->assertSame( true, $padlock_setting );
 	}
@@ -119,16 +119,16 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	public function test_if_the_padlock_display_setting_is_retrieved_successfully() :  void {
 
 		$padlock_display = [ 'coil_title_padlock' => false ];
-		update_option( 'coil_monetization_settings_group', $padlock_display );
+		update_option( 'coil_appearance_settings_group', $padlock_display );
 
-		$padlock_setting = Admin\get_visual_settings( 'coil_title_padlock' );
+		$padlock_setting = Admin\get_appearance_settings( 'coil_title_padlock' );
 
 		$this->assertSame( false, $padlock_setting );
 
 		$padlock_display = [ 'coil_title_padlock' => true ];
-		update_option( 'coil_monetization_settings_group', $padlock_display );
+		update_option( 'coil_appearance_settings_group', $padlock_display );
 
-		$padlock_setting = Admin\get_visual_settings( 'coil_title_padlock' );
+		$padlock_setting = Admin\get_appearance_settings( 'coil_title_padlock' );
 
 		$this->assertSame( true, $padlock_setting );
 	}
@@ -140,7 +140,7 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	 */
 	public function test_if_default_donation_bar_display_is_enabled() :  void {
 
-		$default_visual_settings = Admin\get_visual_settings( 'coil_show_donation_bar' );
+		$default_visual_settings = Admin\get_appearance_settings( 'coil_show_donation_bar' );
 
 		$this->assertSame( true, $default_visual_settings );
 	}
@@ -153,16 +153,16 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	public function test_if_the_donation_bar_display_setting_is_retrieved_successfully() :  void {
 
 		$donation_bar_display = [ 'coil_show_donation_bar' => false ];
-		update_option( 'coil_monetization_settings_group', $donation_bar_display );
+		update_option( 'coil_appearance_settings_group', $donation_bar_display );
 
-		$donation_bar_settings = Admin\get_visual_settings( 'coil_show_donation_bar' );
+		$donation_bar_settings = Admin\get_appearance_settings( 'coil_show_donation_bar' );
 
 		$this->assertSame( false, $donation_bar_settings );
 
 		$donation_bar_display = [ 'coil_show_donation_bar' => true ];
-		update_option( 'coil_monetization_settings_group', $donation_bar_display );
+		update_option( 'coil_appearance_settings_group', $donation_bar_display );
 
-		$donation_bar_settings = Admin\get_visual_settings( 'coil_show_donation_bar' );
+		$donation_bar_settings = Admin\get_appearance_settings( 'coil_show_donation_bar' );
 
 		$this->assertSame( true, $donation_bar_settings );
 	}
@@ -173,7 +173,7 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_transfer_of_visual_settings_from_customizer_when_settings_enabled() :  void {
+	public function test_transfer_of_visual_settings_from_customizer_when_settings_disabled() :  void {
 
 		// Testing when both settings are set to false
 		// Adding custom visual settings to the theme_mod
@@ -205,7 +205,7 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_transfer_of_visual_settings_from_customizer_when_settings_diabled() :  void {
+	public function test_transfer_of_visual_settings_from_customizer_when_settings_enabled() :  void {
 
 		// Testing when both settings are set to true
 		// Removing the existing option from the wp_options table.
