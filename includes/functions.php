@@ -52,7 +52,6 @@ function init_plugin() : void {
 	add_action( 'admin_notices', __NAMESPACE__ . '\Settings\admin_no_payment_pointer_notice' );
 	add_action( 'wp_ajax_dismiss_welcome_notice', __NAMESPACE__ . '\Settings\dismiss_welcome_notice' );
 	add_action( 'init', __NAMESPACE__ . '\Settings\transfer_customizer_message_settings' );
-	add_action( 'init', __NAMESPACE__ . '\Settings\transfer_customizer_monetization_settings' );
 	add_action( 'init', __NAMESPACE__ . '\Settings\transfer_customizer_style_settings' );
 
 	// Term meta.

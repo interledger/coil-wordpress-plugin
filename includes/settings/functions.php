@@ -86,9 +86,9 @@ function register_admin_content_settings() {
 
 	// Tab 2 - Content Settings.
 	register_setting(
-		'coil_monetization_settings_group',
-		'coil_monetization_settings_group',
-		__NAMESPACE__ . '\coil_monetization_settings_validation'
+		'coil_content_settings_posts_group',
+		'coil_content_settings_posts_group',
+		__NAMESPACE__ . '\coil_content_settings_posts_validation'
 	);
 
 		// ==== Content Settings.
@@ -247,7 +247,7 @@ function coil_global_settings_group_validation( $global_settings ) : array {
  * and donation bar display checkboxes
  * @return array
  */
-function coil_monetization_settings_validation( $monetization_settings ) : array {
+function coil_content_settings_posts_validation( $monetization_settings ) : array {
 
 	foreach ( $monetization_settings as $key => $option_value ) {
 
@@ -481,7 +481,7 @@ function coil_content_settings_posts_render_callback() {
 						<?php
 						foreach ( $form_gating_settings as $setting_key => $setting_value ) :
 							$input_id   = $post_type->name . '_' . $setting_key;
-							$input_name = 'coil_monetization_settings_group[' . $post_type->name . ']';
+							$input_name = 'coil_content_settings_posts_group[' . $post_type->name . ']';
 
 							/**
 							 * Specify the default checked state on the input from
@@ -824,7 +824,7 @@ function render_coil_settings_screen() : void {
 					submit_button();
 					break;
 				case 'monetization_settings':
-					settings_fields( 'coil_monetization_settings_group' );
+					settings_fields( 'coil_content_settings_posts_group' );
 					do_settings_sections( 'coil_content_settings_posts' );
 					submit_button();
 					break;
@@ -1049,56 +1049,11 @@ function transfer_customizer_message_settings() {
 /**
  * Translate customizer settings
  *
- * If a user has gating settings which they saved in the settings panel,
- * switch them to settings saved in the wp_options table under coil_monetization_settings_group
- *
- */
-
-function transfer_customizer_monetization_settings() {
-
-	$existing_options = get_option( 'coil_monetization_settings_group' );
-
-	$previous_gating_options = get_option( 'coil_content_settings_posts_group' );
-
-	// If the setting has already been saved or transferred then simply return
-	// Using 'null' for comparrison becasue if the padlock and support creator messages were unselected they were stored in the database with the value false, but still need to be transferred.
-	if ( ! get_option( 'coil_content_settings_posts_group' ) ) {
-		return;
-	}
-
-	$new_monetization_settings = [];
-
-	// Before moving post gating settings across check that post types and gating types are valid.
-	$supported_post_types     = Coil\get_supported_post_types( 'names' );
-	$supported_gating_options = array_keys( Gating\get_monetization_setting_types() );
-
-	if ( ! empty( $supported_post_types ) && ! empty( $previous_gating_options ) ) {
-		foreach ( $previous_gating_options as $post_type => $gating_type ) {
-			if ( in_array( $post_type, $supported_post_types, true ) && in_array( $gating_type, $supported_gating_options, true ) ) {
-				$new_monetization_settings[ $post_type ] = sanitize_key( $gating_type );
-			}
-		}
-	}
-
-	delete_option( 'coil_content_settings_posts_group' );
-
-	if ( false !== $existing_options ) {
-		update_option( 'coil_monetization_settings_group', array_merge( $existing_options, $new_monetization_settings ) );
-	} else {
-		update_option( 'coil_monetization_settings_group', $new_monetization_settings );
-	}
-}
-
-/**
- * Translate customizer settings
- *
  * If a user has style settings which they saved in the customizer, switch them to settings saved in the wp_options table
  *
  */
 
 function transfer_customizer_style_settings() {
-
-	$existing_options = get_option( 'coil_style_settings_group' );
 
 	// If the setting has already been saved or transferred then simply return
 	// Using 'null' for comparrison becasue if the padlock and support creator messages were unselected they were stored in the database with the value false, but still need to be transferred.
@@ -1120,6 +1075,8 @@ function transfer_customizer_style_settings() {
 		$new_style_settings['coil_show_donation_bar'] = get_theme_mod( $coil_show_donation_bar, true );
 		remove_theme_mod( $coil_show_donation_bar );
 	}
+
+	$existing_options = get_option( 'coil_style_settings_group' );
 
 	if ( false !== $existing_options ) {
 		update_option( 'coil_style_settings_group', array_merge( $existing_options, $new_style_settings ) );
