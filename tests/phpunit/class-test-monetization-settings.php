@@ -140,9 +140,9 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	 */
 	public function test_if_default_donation_bar_display_is_enabled() :  void {
 
-		$default_visual_settings = Admin\get_appearance_settings( 'coil_show_donation_bar' );
+		$default_appearance_settings = Admin\get_appearance_settings( 'coil_show_donation_bar' );
 
-		$this->assertSame( true, $default_visual_settings );
+		$this->assertSame( true, $default_appearance_settings );
 	}
 
 	/**
@@ -173,30 +173,29 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_transfer_of_visual_settings_from_customizer_when_settings_disabled() :  void {
+	public function test_transfer_of_appearance_settings_from_customizer_when_settings_disabled() :  void {
 
 		// Testing when both settings are set to false
-		// Adding custom visual settings to the theme_mod
+		// Adding custom appearance settings to the theme_mod
 		set_theme_mod( 'coil_show_donation_bar', false );
 		set_theme_mod( 'coil_title_padlock', false );
 
 		// Transferrng settings to the wp_options table
-		Settings\transfer_customizer_monetization_settings();
+		Settings\transfer_customizer_appearance_settings();
 
-		// Creating an array of the visual settings that were retrieved from the wp_options table.
-		$visual_settings = [
-			'coil_show_donation_bar' => Admin\get_visual_settings( 'coil_show_donation_bar' ),
-			'coil_title_padlock'     => Admin\get_visual_settings( 'coil_title_padlock' ),
+		// Creating an array of the appearance settings that were retrieved from the wp_options table.
+		$appearance_settings = [
+			'coil_show_donation_bar' => Admin\get_appearance_settings( 'coil_show_donation_bar' ),
+			'coil_title_padlock'     => Admin\get_appearance_settings( 'coil_title_padlock' ),
 		];
 
-		// Checking that all visual settings that were retrieved are correct
-		$this->assertSame( false, $visual_settings['coil_show_donation_bar'] );
-		$this->assertSame( false, $visual_settings['coil_title_padlock'] );
+		// Checking that all appearance settings that were retrieved are correct
+		$this->assertSame( false, $appearance_settings['coil_show_donation_bar'] );
+		$this->assertSame( false, $appearance_settings['coil_title_padlock'] );
 
-		// Checking that the theme_mod visual settings have been removed
+		// Checking that the theme_mod appearance settings have been removed
 		$this->assertFalse( get_theme_mod( 'coil_show_donation_bar' ) );
 		$this->assertFalse( get_theme_mod( 'coil_title_padlock' ) );
-		$this->assertFalse( get_option( 'coil_content_settings_posts_group' ) );
 	}
 
 	/**
@@ -205,33 +204,28 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_transfer_of_visual_settings_from_customizer_when_settings_enabled() :  void {
+	public function test_transfer_of_appearance_settings_from_customizer_when_settings_enabled() :  void {
 
-		// Testing when both settings are set to true
-		// Removing the existing option from the wp_options table.
-		delete_option( 'coil_monetization_settings_group' );
-
-		// Adding custom visual settings to the theme_mod
+		// Adding custom appearance settings to the theme_mod
 		set_theme_mod( 'coil_show_donation_bar', true );
 		set_theme_mod( 'coil_title_padlock', true );
 
 		// Transferrng settings to the wp_options table
-		Settings\transfer_customizer_monetization_settings();
+		Settings\transfer_customizer_appearance_settings();
 
-		// Creating an array of the visual settings that were retrieved from the wp_options table.
-		$visual_settings = [
-			'coil_show_donation_bar' => Admin\get_visual_settings( 'coil_show_donation_bar' ),
-			'coil_title_padlock'     => Admin\get_visual_settings( 'coil_title_padlock' ),
+		// Creating an array of the appearance settings that were retrieved from the wp_options table.
+		$appearance_settings = [
+			'coil_show_donation_bar' => Admin\get_appearance_settings( 'coil_show_donation_bar' ),
+			'coil_title_padlock'     => Admin\get_appearance_settings( 'coil_title_padlock' ),
 		];
 
-		// Checking that all visual settings that were retrieved are correct
-		$this->assertSame( true, $visual_settings['coil_show_donation_bar'] );
-		$this->assertSame( true, $visual_settings['coil_title_padlock'] );
+		// Checking that all appearance settings that were retrieved are correct
+		$this->assertSame( true, $appearance_settings['coil_show_donation_bar'] );
+		$this->assertSame( true, $appearance_settings['coil_title_padlock'] );
 
-		// Checking that the theme_mod visual settings have been removed
+		// Checking that the theme_mod appearance settings have been removed
 		$this->assertFalse( get_theme_mod( 'coil_show_donation_bar' ) );
 		$this->assertFalse( get_theme_mod( 'coil_title_padlock' ) );
-		$this->assertFalse( get_option( 'coil_content_settings_posts_group' ) );
 	}
 
 	/**
@@ -240,79 +234,29 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_transfer_of_visual_settings_from_customizer_when_settings_are_mixed() :  void {
+	public function test_transfer_of_appearance_settings_from_customizer_when_settings_are_mixed() :  void {
 
 		// Testing when one setting is set to true and the other to false
-		// Adding custom visual settings to the theme_mod
+		// Adding custom appearance settings to the theme_mod
 		set_theme_mod( 'coil_show_donation_bar', true );
 		set_theme_mod( 'coil_title_padlock', false );
 
 		// Transferrng settings to the wp_options table
-		Settings\transfer_customizer_monetization_settings();
+		Settings\transfer_customizer_appearance_settings();
 
-		// Creating an array of the visual settings that were retrieved from the wp_options table.
-		$visual_settings = [
-			'coil_show_donation_bar' => Admin\get_visual_settings( 'coil_show_donation_bar' ),
-			'coil_title_padlock'     => Admin\get_visual_settings( 'coil_title_padlock' ),
+		// Creating an array of the appearance settings that were retrieved from the wp_options table.
+		$appearance_settings = [
+			'coil_show_donation_bar' => Admin\get_appearance_settings( 'coil_show_donation_bar' ),
+			'coil_title_padlock'     => Admin\get_appearance_settings( 'coil_title_padlock' ),
 		];
 
-		// Checking that all visual settings that were retrieved are correct
-		$this->assertSame( true, $visual_settings['coil_show_donation_bar'] );
-		$this->assertSame( false, $visual_settings['coil_title_padlock'] );
+		// Checking that all appearance settings that were retrieved are correct
+		$this->assertSame( true, $appearance_settings['coil_show_donation_bar'] );
+		$this->assertSame( false, $appearance_settings['coil_title_padlock'] );
 
-		// Checking that the theme_mod visual settings have been removed
+		// Checking that the theme_mod appearance settings have been removed
 		$this->assertFalse( get_theme_mod( 'coil_show_donation_bar' ) );
 		$this->assertFalse( get_theme_mod( 'coil_title_padlock' ) );
-		$this->assertFalse( get_option( 'coil_content_settings_posts_group' ) );
-	}
-
-	/**
-	 * Testing if a user has donation bar and padlock display settings which they saved in the customizer that they are migrated successfully to the wp_options table
-	 * In cases where post and page gloabl monetization defaults are already present in the coil_monetization_settings_group.
-	 *
-	 * @return void
-	 */
-	public function test_transfer_of_visual_settings_from_customizer_where_global_gating_has_already_been_saved() :  void {
-
-		// Testing when both settings are set to false but there are existing global gating settings saved in the settings panel
-		// Adding custom visual settings to the theme_mod
-		set_theme_mod( 'coil_show_donation_bar', false );
-		set_theme_mod( 'coil_title_padlock', true );
-
-		// Settings global gating defaults
-		$options = [
-			'post' => 'no',
-			'page' => 'gate-all',
-		];
-		update_option( 'coil_monetization_settings_group', $options );
-
-		$stored_options = get_option( 'coil_monetization_settings_group' );
-
-		$this->assertSame( $stored_options, $options );
-
-		// Transferrng settings to the wp_options table
-		Settings\transfer_customizer_monetization_settings();
-
-		// Creating an array of the visual settings that were retrieved from the wp_options table.
-		$visual_settings = [
-			'coil_show_donation_bar' => Admin\get_visual_settings( 'coil_show_donation_bar' ),
-			'coil_title_padlock'     => Admin\get_visual_settings( 'coil_title_padlock' ),
-		];
-
-		$retrieved_global_gating_defaults = Gating\get_global_posts_gating();
-
-		// Checking that all visual settings that were retrieved are correct
-		$this->assertSame( false, $visual_settings['coil_show_donation_bar'] );
-		$this->assertSame( true, $visual_settings['coil_title_padlock'] );
-
-		// Checking that all default content settings that were already set remained unchanged
-		$this->assertSame( $options['post'], $retrieved_global_gating_defaults['post'] );
-		$this->assertSame( $options['page'], $retrieved_global_gating_defaults['page'] );
-
-		// Checking that the theme_mod visual settings have been removed
-		$this->assertFalse( get_theme_mod( 'coil_show_donation_bar' ) );
-		$this->assertFalse( get_theme_mod( 'coil_title_padlock' ) );
-		$this->assertFalse( get_option( 'coil_content_settings_posts_group' ) );
 	}
 
 	/**
@@ -321,35 +265,30 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_transfer_of_visual_settings_from_customizer_where_settings_have_been_saved_in_both_locations() :  void {
+	public function test_transfer_of_appearance_settings_from_customizer_where_settings_have_been_saved_in_both_locations() :  void {
 
-		// Testing when one setting is saved to the customizer and the other in the settings panel.
-		// Removing the existing option from the wp_options table.
-		delete_option( 'coil_monetization_settings_group' );
-
-		// Adding custom visual settings to the theme_mod
+		// Adding custom appearance settings to the theme_mod
 		set_theme_mod( 'coil_show_donation_bar', false );
-		$options                       = get_option( 'coil_monetization_settings_group', [] );
+		$options                       = get_option( 'coil_appearance_settings_group', [] );
 		$options['coil_title_padlock'] = false;
-		update_option( 'coil_monetization_settings_group', $options );
+		update_option( 'coil_appearance_settings_group', $options );
 
 		// Transferrng settings to the wp_options table
-		Settings\transfer_customizer_monetization_settings();
+		Settings\transfer_customizer_appearance_settings();
 
-		// Creating an array of the visual settings that were retrieved from the wp_options table.
-		$visual_settings = [
-			'coil_show_donation_bar' => Admin\get_visual_settings( 'coil_show_donation_bar' ),
-			'coil_title_padlock'     => Admin\get_visual_settings( 'coil_title_padlock' ),
+		// Creating an array of the appearance settings that were retrieved from the wp_options table.
+		$appearance_settings = [
+			'coil_show_donation_bar' => Admin\get_appearance_settings( 'coil_show_donation_bar' ),
+			'coil_title_padlock'     => Admin\get_appearance_settings( 'coil_title_padlock' ),
 		];
 
-		// Checking that all visual settings that were retrieved are correct
-		$this->assertSame( false, $visual_settings['coil_show_donation_bar'] );
-		$this->assertSame( false, $visual_settings['coil_title_padlock'] );
+		// Checking that all appearance settings that were retrieved are correct
+		$this->assertSame( false, $appearance_settings['coil_show_donation_bar'] );
+		$this->assertSame( false, $appearance_settings['coil_title_padlock'] );
 
-		// Checking that the theme_mod visual settings have been removed
+		// Checking that the theme_mod appearance settings have been removed
 		$this->assertFalse( get_theme_mod( 'coil_show_donation_bar' ) );
 		$this->assertFalse( get_theme_mod( 'coil_title_padlock' ) );
-		$this->assertFalse( get_option( 'coil_content_settings_posts_group' ) );
 	}
 
 	/**
