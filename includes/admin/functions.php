@@ -329,7 +329,7 @@ function add_redirect_customizer_section( $wp_customize ) : void {
 		esc_url( admin_url( 'admin.php?page=coil_settings&tab=messaging_settings', COIL__FILE__ ) )
 	) . '</p>';
 	$description .= '<p>' . sprintf(
-		__( 'Monetization options have been moved to the ', 'coil-web-monetization' ) . '<a href="%s">' . __( 'Default Earning Settings tab.', 'coil-web-monetization' ) . '</a>',
+		__( 'Monetization options have been moved to the ', 'coil-web-monetization' ) . '<a href="%s">' . __( 'Monetization Settings tab.', 'coil-web-monetization' ) . '</a>',
 		esc_url( admin_url( 'admin.php?page=coil_settings&tab=monetization_settings', COIL__FILE__ ) )
 	) . '</p>';
 
