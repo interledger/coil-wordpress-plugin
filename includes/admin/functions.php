@@ -466,14 +466,14 @@ function get_messaging_setting( $field_id, $default = false ) {
 
 /**
  * Retrieve the padlock and donation bar display settings
- * using a key from the style settings group (serialized).
+ * using a key from coil_appearance_settings_group (serialized).
  *
  * @param string $field_id The named key in the wp_options serialized array.
  * @return string
  */
-function get_style_settings( $field_id ) {
+function get_appearance_settings( $field_id ) {
 
-	$options                  = get_option( 'coil_style_settings_group', [] );
+	$options                  = get_option( 'coil_appearance_settings_group', [] );
 	$display_setting_id_array = [ 'coil_title_padlock', 'coil_show_donation_bar' ];
 
 	if ( in_array( $field_id, $display_setting_id_array, true ) ) {

@@ -175,11 +175,11 @@ function register_admin_content_settings() {
 		'coil_messaging_settings'
 	);
 
-	// Tab 5 - Style Settings.
+	// Tab 5 - Appearance Settings.
 	register_setting(
-		'coil_style_settings_group',
-		'coil_style_settings_group',
-		__NAMESPACE__ . '\coil_style_settings_validation'
+		'coil_appearance_settings_group',
+		'coil_appearance_settings_group',
+		__NAMESPACE__ . '\coil_appearance_settings_validation'
 	);
 
 	add_settings_section(
@@ -306,20 +306,20 @@ function coil_messaging_settings_validation( $messaging_settings ) : array {
  * Allow the radio buttons that select the padlock and donation bar
  * display checkboxes to be properly validated
  *
- * @param array $style_settings The padlock and donation bar display checkboxes
+ * @param array $appearance_settings The padlock and donation bar display checkboxes
  *
  * @return array
  */
-function coil_style_settings_validation( $style_settings ) {
+function coil_appearance_settings_validation( $appearance_settings ) {
 
 	$display_setting_id_array = [ 'coil_title_padlock', 'coil_show_donation_bar' ];
 
 	foreach ( $display_setting_id_array as $key ) {
 		// Default is checked
-		$style_settings[ $key ] = $style_settings[ $key ] === 'on' ? true : false;
+		$appearance_settings[ $key ] = $appearance_settings[ $key ] === 'on' ? true : false;
 	}
 
-	return $style_settings;
+	return $appearance_settings;
 }
 
 /* ------------------------------------------------------------------------ *
@@ -645,12 +645,12 @@ function coil_title_padlock_settings_render_callback() {
 	 * any settings stored in the database. If the
 	 * input status is not set, default to checked
 	 */
-	$checked_input_value = Admin\get_style_settings( 'coil_title_padlock' );
+	$checked_input_value = Admin\get_appearance_settings( 'coil_title_padlock' );
 
 	printf(
 		'<input type="%s" name="%s" id="%s" "%s">',
 		esc_attr( 'checkbox' ),
-		esc_attr( 'coil_style_settings_group[coil_title_padlock]' ),
+		esc_attr( 'coil_appearance_settings_group[coil_title_padlock]' ),
 		esc_attr( 'display_donation_bar' ),
 		checked( 1, $checked_input_value, false )
 	);
@@ -674,12 +674,12 @@ function coil_show_donation_bar_settings_render_callback() {
 	 * any settings stored in the database. If the
 	 * input status is not set, default to checked
 	 */
-	$checked_input_value = Admin\get_style_settings( 'coil_show_donation_bar' );
+	$checked_input_value = Admin\get_appearance_settings( 'coil_show_donation_bar' );
 
 	printf(
 		'<input type="%s" name="%s" id="%s" "%s">',
 		esc_attr( 'checkbox' ),
-		esc_attr( 'coil_style_settings_group[coil_show_donation_bar]' ),
+		esc_attr( 'coil_appearance_settings_group[coil_show_donation_bar]' ),
 		esc_attr( 'display_donation_bar' ),
 		checked( 1, $checked_input_value, false )
 	);
@@ -805,7 +805,7 @@ function render_coil_settings_screen() : void {
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=monetization_settings' ); ?>" id="coil-monetization-settings" class="nav-tab <?php echo $active_tab === 'monetization_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Monetization Settings', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=excerpt_settings' ); ?>" id="coil-excerpt-settings" class="nav-tab <?php echo $active_tab === 'excerpt_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Excerpt Settings', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=messaging_settings' ); ?>" id="coil-messaging-settings" class="nav-tab <?php echo $active_tab === 'messaging_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Messaging Settings', 'coil-web-monetization' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=style_settings' ); ?>" id="coil-style-settings" class="nav-tab <?php echo $active_tab === 'style_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Style Settings', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=appearance_settings' ); ?>" id="coil-appearance-settings" class="nav-tab <?php echo $active_tab === 'appearance_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Appearance Settings', 'coil-web-monetization' ); ?></a>
 		</h2>
 	</div>
 	<div class="wrap coil plugin-settings">
@@ -838,8 +838,8 @@ function render_coil_settings_screen() : void {
 					do_settings_sections( 'coil_messaging_settings' );
 					submit_button();
 					break;
-				case 'style_settings':
-					settings_fields( 'coil_style_settings_group' );
+				case 'appearance_settings':
+					settings_fields( 'coil_appearance_settings_group' );
 					do_settings_sections( 'coil_display_settings' );
 					submit_button();
 			}
@@ -1049,11 +1049,11 @@ function transfer_customizer_message_settings() {
 /**
  * Translate customizer settings
  *
- * If a user has style settings which they saved in the customizer, switch them to settings saved in the wp_options table
+ * If a user has appearance settings which they saved in the customizer, switch them to settings saved in the wp_options table
  *
  */
 
-function transfer_customizer_style_settings() {
+function transfer_customizer_appearance_settings() {
 
 	// If the setting has already been saved or transferred then simply return
 	// Using 'null' for comparrison becasue if the padlock and support creator messages were unselected they were stored in the database with the value false, but still need to be transferred.
@@ -1064,23 +1064,23 @@ function transfer_customizer_style_settings() {
 	$coil_title_padlock     = 'coil_title_padlock';
 	$coil_show_donation_bar = 'coil_show_donation_bar';
 
-	$new_style_settings = [];
+	$new_appearance_settings = [];
 
 	if ( get_theme_mod( $coil_title_padlock, 'null' ) !== 'null' ) {
-		$new_style_settings['coil_title_padlock'] = get_theme_mod( $coil_title_padlock, true );
+		$new_appearance_settings['coil_title_padlock'] = get_theme_mod( $coil_title_padlock, true );
 		remove_theme_mod( $coil_title_padlock );
 	}
 
 	if ( get_theme_mod( $coil_show_donation_bar, 'null' ) !== 'null' ) {
-		$new_style_settings['coil_show_donation_bar'] = get_theme_mod( $coil_show_donation_bar, true );
+		$new_appearance_settings['coil_show_donation_bar'] = get_theme_mod( $coil_show_donation_bar, true );
 		remove_theme_mod( $coil_show_donation_bar );
 	}
 
-	$existing_options = get_option( 'coil_style_settings_group' );
+	$existing_options = get_option( 'coil_appearance_settings_group' );
 
 	if ( false !== $existing_options ) {
-		update_option( 'coil_style_settings_group', array_merge( $existing_options, $new_style_settings ) );
+		update_option( 'coil_appearance_settings_group', array_merge( $existing_options, $new_appearance_settings ) );
 	} else {
-		update_option( 'coil_style_settings_group', $new_style_settings );
+		update_option( 'coil_appearance_settings_group', $new_appearance_settings );
 	}
 }
