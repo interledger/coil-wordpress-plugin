@@ -465,24 +465,24 @@ function get_messaging_setting( $field_id, $default = false ) {
 }
 
 /**
- * Retrieve the visual settings using a key from the monetization
- * settings group (serialized).
+ * Retrieve the padlock and donation bar display settings
+ * using a key from coil_appearance_settings_group (serialized).
  *
  * @param string $field_id The named key in the wp_options serialized array.
  * @return string
  */
-function get_visual_settings( $field_id, $default = true ) {
+function get_appearance_settings( $field_id ) {
 
-	/**
-	 * Default is not checked
-	 */
-	$options = get_option( 'coil_monetization_settings_group', [] );
+	$options                  = get_option( 'coil_appearance_settings_group', [] );
+	$display_setting_id_array = [ 'coil_title_padlock', 'coil_show_donation_bar' ];
 
-	if ( ! isset( $options[ $field_id ] ) ) {
-		$setting_value = $default;
-	} else {
-		$setting_value = $options[ $field_id ];
+	if ( in_array( $field_id, $display_setting_id_array, true ) ) {
+		// Default is checked
+		if ( ! isset( $options[ $field_id ] ) ) {
+			$setting_value = true;
+		} else {
+			$setting_value = $options[ $field_id ];
+		}
 	}
-
 	return $setting_value;
 }
