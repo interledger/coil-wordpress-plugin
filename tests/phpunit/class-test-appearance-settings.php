@@ -7,7 +7,6 @@ namespace Coil\Tests;
 use Coil\Admin;
 use Coil\Settings;
 use WP_UnitTestCase;
-use WP_UnitTest_Factory;
 
 /**
  * Testing the custom appearance settings.
@@ -204,5 +203,40 @@ class Test_Appearance_Settings extends WP_UnitTestCase {
 		// Checking that the theme_mod appearance settings have been removed
 		$this->assertFalse( get_theme_mod( 'coil_show_donation_bar' ) );
 		$this->assertFalse( get_theme_mod( 'coil_title_padlock' ) );
+	}
+
+	/**
+	 * Testing if the CTA box's default color theme is set to 'light'.
+	 *
+	 * @return void
+	 */
+	public function test_if_default_message_theme_is_light() {
+
+		$theme_setting = Admin\get_appearance_settings( 'coil_message_color_theme' );
+
+		$this->assertSame( 'light', $theme_setting );
+	}
+
+	/**
+	 * Testing if the CTA box's default color theme is retrieved correctly from the wp_options table.
+	 *
+	 * @return void
+	 */
+	public function test_if_the_color_theme_setting_is_retrieved_successfully() {
+
+		$dark_color_theme = [ 'coil_message_color_theme' => 'dark' ];
+		update_option( 'coil_appearance_settings_group', $dark_color_theme );
+
+		$retrieved_color_theme = Admin\get_appearance_settings( 'coil_message_color_theme' );
+
+		$this->assertSame( $dark_color_theme['coil_message_color_theme'], $retrieved_color_theme );
+
+		$light_color_theme = [ 'coil_message_color_theme' => 'light' ];
+		update_option( 'coil_appearance_settings_group', $light_color_theme );
+
+		$retrieved_color_theme = Admin\get_appearance_settings( 'coil_message_color_theme' );
+
+		$this->assertSame( $light_color_theme['coil_message_color_theme'], $retrieved_color_theme );
+
 	}
 }
