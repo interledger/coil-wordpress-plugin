@@ -239,4 +239,74 @@ class Test_Appearance_Settings extends WP_UnitTestCase {
 		$this->assertSame( $light_color_theme['coil_message_color_theme'], $retrieved_color_theme );
 
 	}
+
+	/**
+	 * Testing if the CTA box's default font is set to false.
+	 *
+	 * @return void
+	 */
+	public function test_if_default_theme_font_is_false() {
+
+		$default_font = Admin\get_appearance_settings( 'coil_message_font' );
+
+		$this->assertSame( false, $default_font );
+	}
+
+	/**
+	 * Testing if the CTA box's font selection is retrieved correctly from the wp_options table.
+	 *
+	 * @return void
+	 */
+	public function test_if_the_theme_font_setting_is_retrieved_successfully() {
+
+		$default_font = [ 'coil_message_font' => false ];
+		update_option( 'coil_appearance_settings_group', $default_font );
+
+		$retrieved_font = Admin\get_appearance_settings( 'coil_message_font' );
+
+		$this->assertSame( $default_font['coil_message_font'], $retrieved_font );
+
+		$theme_based_font = [ 'coil_message_font' => true ];
+		update_option( 'coil_appearance_settings_group', $theme_based_font );
+
+		$retrieved_color_theme = Admin\get_appearance_settings( 'coil_message_font' );
+
+		$this->assertSame( $theme_based_font['coil_message_font'], $retrieved_color_theme );
+
+	}
+
+	/**
+	 * Testing if the CTA box's Coil branding selection is set to false.
+	 *
+	 * @return void
+	 */
+	public function test_if_default_message_branding_option_is_false() {
+
+		$branding_setting = Admin\get_appearance_settings( 'coil_message_branding' );
+
+		$this->assertSame( false, $branding_setting );
+	}
+
+	/**
+	 * Testing if the CTA box's Coil branding selection is retrieved correctly from the wp_options table.
+	 *
+	 * @return void
+	 */
+	public function test_if_the_message_branding_option_is_retrieved_successfully() {
+
+		$branding_unchecked = [ 'coil_message_branding' => false ];
+		update_option( 'coil_appearance_settings_group', $branding_unchecked );
+
+		$retrieved_branding = Admin\get_appearance_settings( 'coil_message_branding' );
+
+		$this->assertSame( $branding_unchecked['coil_message_branding'], $retrieved_branding );
+
+		$branding_checked = [ 'coil_message_branding' => true ];
+		update_option( 'coil_appearance_settings_group', $branding_checked );
+
+		$retrieved_branding = Admin\get_appearance_settings( 'coil_message_branding' );
+
+		$this->assertSame( $branding_checked['coil_message_branding'], $retrieved_branding );
+
+	}
 }
