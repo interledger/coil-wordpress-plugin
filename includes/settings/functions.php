@@ -222,6 +222,22 @@ function register_admin_content_settings() {
 		'coil_cta__settings_section'
 	);
 
+	add_settings_field(
+		'coil_message_font',
+		__( 'Use Theme Font', 'coil-web-monetization' ),
+		__NAMESPACE__ . '\coil_message_font_render_callback',
+		'coil_style_settings',
+		'coil_cta__settings_section'
+	);
+
+	add_settings_field(
+		'coil_message_branding',
+		__( 'Show Coil Branding', 'coil-web-monetization' ),
+		__NAMESPACE__ . '\coil_message_branding_render_callback',
+		'coil_style_settings',
+		'coil_cta__settings_section'
+	);
+
 }
 
 /* ------------------------------------------------------------------------ *
@@ -329,25 +345,35 @@ function coil_messaging_settings_validation( $messaging_settings ) : array {
  */
 function coil_appearance_settings_validation( $appearance_settings ) {
 
-	$display_setting_id_array = [ 'coil_title_padlock', 'coil_show_donation_bar' ];
-	$valid_color_choices      = [ 'light', 'dark' ];
+	$general_display_checkbox_options = [ 'coil_title_padlock', 'coil_show_donation_bar' ];
+	$cta_style_checkbox_options       = [ 'coil_message_font', 'coil_message_branding' ];
+	$valid_color_choices              = [ 'light', 'dark' ];
+	$coil_theme_color_key             = 'coil_message_color_theme';
+	$array_keys                       = array_keys( $appearance_settings );
 
-	foreach ( $appearance_settings as $key => $option_value ) {
-		if ( $key === 'coil_message_color_theme' ) {
-			if ( in_array( $option_value, $valid_color_choices, true ) ) {
-				$appearance_settings[ $key ] = sanitize_key( $option_value );
-			} else {
-				// The default value is the light theme
-				$appearance_settings[ $key ] = 'light';
-			}
+	if ( in_array( $coil_theme_color_key, $array_keys, true ) ) {
+		if ( in_array( $appearance_settings[ $coil_theme_color_key ], $valid_color_choices, true ) ) {
+			$appearance_settings[ $coil_theme_color_key ] = sanitize_key( $appearance_settings[ $coil_theme_color_key ] );
+		}
+	} else {
+		// The default value is the light theme
+		$appearance_settings[ $coil_theme_color_key ] = 'light';
+	}
+
+	foreach ( $general_display_checkbox_options as $key ) {
+		if ( in_array( $key, $array_keys, true ) ) {
+			$appearance_settings[ $key ] = $appearance_settings[ $key ] === 'on' ? true : false;
+		} else {
+			$appearance_settings[ $key ] = false;
 		}
 	}
 
-	// Ensures that the display settings are explicitly set.
-	// If they are only validated then when checkboxes are off they are not entered into the database.
-	foreach ( $display_setting_id_array as $key ) {
-		// Default is checked
-		$appearance_settings[ $key ] = $appearance_settings[ $key ] === 'on' ? true : false;
+	foreach ( $cta_style_checkbox_options as $key ) {
+		if ( in_array( $key, $array_keys, true ) ) {
+			$appearance_settings[ $key ] = $appearance_settings[ $key ] === 'on' ? true : false;
+		} else {
+			$appearance_settings[ $key ] = false;
+		}
 	}
 
 	return $appearance_settings;
@@ -722,6 +748,11 @@ function coil_show_donation_bar_settings_render_callback() {
 	);
 }
 
+/**
+ * Renders the output of the color theme option checkbox
+ * @return void
+ */
+
 function coil_message_color_theme_render_callback() {
 	/**
 	 * Select the appropriate radio button
@@ -773,6 +804,64 @@ function coil_message_color_theme_render_callback() {
 		'<label for="%s">%s</label>',
 		esc_attr( 'message_color_theme' ),
 		esc_html_e( 'Dark theme', 'coil-web-monetization' )
+	);
+}
+
+/**
+ * Renders the output of the font option checkbox
+ * @return void
+ */
+
+function coil_message_font_render_callback() {
+
+	/**
+	 * Specify the default checked state on the input from
+	 * any settings stored in the database. If the
+	 * input status is not set, default to unchecked
+	 */
+	$checked_input_value = Admin\get_appearance_settings( 'coil_message_font' );
+
+	printf(
+		'<input type="%s" name="%s" id="%s" "%s">',
+		esc_attr( 'checkbox' ),
+		esc_attr( 'coil_appearance_settings_group[coil_message_font]' ),
+		esc_attr( 'message_font' ),
+		checked( 1, $checked_input_value, false )
+	);
+
+	printf(
+		'<label for="%s">%s</label>',
+		esc_attr( 'message_font' ),
+		esc_html_e( 'Either use the default font provided, or customize it to fit with your selected theme instead.', 'coil-web-monetization' )
+	);
+}
+
+/**
+ * Renders the output of the show Coil branding checkbox
+ * @return void
+ */
+
+function coil_message_branding_render_callback() {
+
+	/**
+	 * Specify the default checked state on the input from
+	 * any settings stored in the database. If the
+	 * input status is not set, default to unchecked
+	 */
+	$checked_input_value = Admin\get_appearance_settings( 'coil_message_branding' );
+
+	printf(
+		'<input type="%s" name="%s" id="%s" "%s">',
+		esc_attr( 'checkbox' ),
+		esc_attr( 'coil_appearance_settings_group[coil_message_branding]' ),
+		esc_attr( 'message_branding' ),
+		checked( 1, $checked_input_value, false )
+	);
+
+	printf(
+		'<label for="%s">%s</label>',
+		esc_attr( 'message_branding' ),
+		esc_html_e( 'Choose to add Coil branding to your restricted content message.', 'coil-web-monetization' )
 	);
 }
 
