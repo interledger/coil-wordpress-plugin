@@ -183,7 +183,7 @@ function register_admin_content_settings() {
 	);
 	add_settings_section(
 		'coil_display_settings_section',
-		false,
+		__( 'Display Settings', 'coil-web-monetization' ),
 		false,
 		'coil_display_settings'
 	);
@@ -209,7 +209,7 @@ function register_admin_content_settings() {
 	// ==== CTA theme
 	add_settings_section(
 		'coil_cta__settings_section',
-		__( 'Restricted Content Message Customization', 'coil-web-monetization' ),
+		__( 'Exclusive Post Message Customization', 'coil-web-monetization' ),
 		false,
 		'coil_style_settings'
 	);
@@ -232,7 +232,7 @@ function register_admin_content_settings() {
 
 	add_settings_field(
 		'coil_message_branding',
-		__( 'Show Coil Branding', 'coil-web-monetization' ),
+		__( 'Message Branding', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_message_branding_render_callback',
 		'coil_style_settings',
 		'coil_cta__settings_section'
@@ -345,11 +345,12 @@ function coil_messaging_settings_validation( $messaging_settings ) : array {
  */
 function coil_appearance_settings_validation( $appearance_settings ) {
 
-	$general_display_checkbox_options = [ 'coil_title_padlock', 'coil_show_donation_bar' ];
-	$cta_style_checkbox_options       = [ 'coil_message_font', 'coil_message_branding' ];
-	$valid_color_choices              = [ 'light', 'dark' ];
-	$coil_theme_color_key             = 'coil_message_color_theme';
-	$array_keys                       = array_keys( $appearance_settings );
+	$checkbox_options       = [ 'coil_title_padlock', 'coil_show_donation_bar', 'coil_message_font' ];
+	$valid_color_choices    = [ 'light', 'dark' ];
+	$valid_branding_choices = [ 'site_logo', 'coil_logo', 'no_logo' ];
+	$coil_theme_color_key   = 'coil_message_color_theme';
+	$message_branding_key   = 'coil_message_branding';
+	$array_keys             = array_keys( $appearance_settings );
 
 	if ( in_array( $coil_theme_color_key, $array_keys, true ) ) {
 		if ( in_array( $appearance_settings[ $coil_theme_color_key ], $valid_color_choices, true ) ) {
@@ -360,15 +361,16 @@ function coil_appearance_settings_validation( $appearance_settings ) {
 		$appearance_settings[ $coil_theme_color_key ] = 'light';
 	}
 
-	foreach ( $general_display_checkbox_options as $key ) {
-		if ( in_array( $key, $array_keys, true ) ) {
-			$appearance_settings[ $key ] = $appearance_settings[ $key ] === 'on' ? true : false;
-		} else {
-			$appearance_settings[ $key ] = false;
+	if ( in_array( $message_branding_key, $array_keys, true ) ) {
+		if ( in_array( $appearance_settings[ $message_branding_key ], $valid_branding_choices, true ) ) {
+			$appearance_settings[ $message_branding_key ] = sanitize_key( $appearance_settings[ $message_branding_key ] );
 		}
+	} else {
+		// The default value is the site logo
+		$appearance_settings[ $coil_theme_color_key ] = 'site_logo';
 	}
 
-	foreach ( $cta_style_checkbox_options as $key ) {
+	foreach ( $checkbox_options as $key ) {
 		if ( in_array( $key, $array_keys, true ) ) {
 			$appearance_settings[ $key ] = $appearance_settings[ $key ] === 'on' ? true : false;
 		} else {
@@ -850,19 +852,34 @@ function coil_message_branding_render_callback() {
 	 */
 	$checked_input_value = Admin\get_appearance_settings( 'coil_message_branding' );
 
-	printf(
-		'<input type="%s" name="%s" id="%s" "%s">',
-		esc_attr( 'checkbox' ),
-		esc_attr( 'coil_appearance_settings_group[coil_message_branding]' ),
-		esc_attr( 'message_branding' ),
-		checked( 1, $checked_input_value, false )
-	);
+	?>
+		<select name="coil_appearance_settings_group[coil_message_branding]" id="coil_message_branding">
+			<?php
+				printf(
+					'<option value="%s">%s</option>',
+					esc_attr( 'site_logo' ),
+					esc_attr( 'Site logo' )
+				);
 
-	printf(
-		'<label for="%s">%s</label>',
-		esc_attr( 'message_branding' ),
-		esc_html_e( 'Choose to add Coil branding to your restricted content message.', 'coil-web-monetization' )
-	);
+				printf(
+					'<option value="%s">%s</option>',
+					esc_attr( 'coil_logo' ),
+					esc_attr( 'Coil logo' )
+				);
+
+				printf(
+					'<option value="%s">%s</option>',
+					esc_attr( 'no_logo' ),
+					esc_attr( 'No branding' )
+				);
+			?>
+		</select>
+
+		<script type="text/javascript">
+			document.getElementById('coil_message_branding').value = "<?php echo $checked_input_value; ?>";
+		</script>
+	<?php
+
 }
 
 /**
