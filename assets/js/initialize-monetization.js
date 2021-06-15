@@ -16,7 +16,9 @@
 		adminMissingIdNotice = coilParams.admin_missing_id_notice,
 		learnMoreButtonText = coilParams.learn_more_button_text,
 		learnMoreButtonLink = coilParams.learn_more_button_link,
+		coilMessageBranding = coilParams.coil_message_branding,
 		siteLogo = coilParams.site_logo,
+		coilLogo = coilParams.coil_logo,
 		showDonationBar = Boolean( coilParams.show_donation_bar ), // Cast to boolean - wp_localize_script forces string values.
 		ExclusiveMessageTheme = coilParams.exclusive_message_theme,
 		FontSelection = Boolean( coilParams.font_selection );
@@ -88,8 +90,18 @@
 			modalContainer.classList.add( 'coil-inherit-theme-font' );
 		}
 
+		let brandingLogo;
+
+		if ( coilMessageBranding === 'site_logo' ) {
+			brandingLogo = siteLogo;
+		} else if ( coilMessageBranding === 'coil_logo' ) {
+			brandingLogo = coilLogo;
+		} else {
+			brandingLogo = '';
+		}
+
 		const modalData = {
-			headerLogo: siteLogo,
+			headerLogo: brandingLogo,
 			title: 'This content is for Paying Viewers Only',
 			content: message,
 			button: {
