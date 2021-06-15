@@ -114,8 +114,9 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 	.coil-message-container.coil-dark-theme {
 
 		.coil-message-inner {
-			background: #3c434b;
+			background: $black;
 			color: $message_background_colour;
+			opacity: 0.9;
 		}
 
 		.coil-message-header {
@@ -124,7 +125,7 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 				color: $message_font_colour;
 
 				&:hover {
-					background-color: #ebebeb;
+					background-color: $message_content_conceal_colour_dark_theme;
 				}
 			}
 		}
