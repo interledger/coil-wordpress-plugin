@@ -371,6 +371,14 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-
   body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container.coil-dark-theme .coil-message-header a.coil-message-button:hover {
     background-color: #ebebeb; }
 
+body.coil-gate-all.coil-extension-not-found.show-fw-message .coil-message-container.coil-inherit-theme-font,
+body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container.coil-inherit-theme-font,
+body.monetization-not-initialized.coil-gate-all.show-fw-message .coil-message-container.coil-inherit-theme-font,
+body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container.coil-inherit-theme-font,
+body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container.coil-inherit-theme-font,
+body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container.coil-inherit-theme-font {
+  font-family: inherit; }
+
 body.monetization-not-initialized.coil-gate-all.show-excerpt-message .coil-message-container,
 body.coil-gate-all.coil-extension-not-found.show-excerpt-message .coil-message-container {
   display: block !important; }
