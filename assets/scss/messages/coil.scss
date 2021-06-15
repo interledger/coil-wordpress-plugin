@@ -129,6 +129,13 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 			}
 		}
 	}
+
+	// Changes to implement theme font selection
+	.coil-message-container.coil-inherit-theme-font {
+
+		font-family: inherit;
+	}
+
 }
 
 // Scenario 2

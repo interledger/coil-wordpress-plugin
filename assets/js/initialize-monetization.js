@@ -18,7 +18,8 @@
 		learnMoreButtonLink = coilParams.learn_more_button_link,
 		siteLogo = coilParams.site_logo,
 		showDonationBar = Boolean( coilParams.show_donation_bar ), // Cast to boolean - wp_localize_script forces string values.
-		ExclusiveMessageTheme = coilParams.exclusive_message_theme;
+		ExclusiveMessageTheme = coilParams.exclusive_message_theme,
+		FontSelection = Boolean( coilParams.font_selection );
 
 	const subscriberOnlyMessage = wp.template( 'subscriber-only-message' );
 	const splitContentMessage = wp.template( 'split-content-message' );
@@ -79,10 +80,12 @@
 	 */
 	function showSubscriberOnlyMessage( message ) {
 		const modalContainer = document.createElement( 'div' );
+		modalContainer.classList.add( 'entry-content', 'coil-message-container' );
 		if ( ExclusiveMessageTheme === 'dark' ) {
-			modalContainer.classList.add( 'entry-content', 'coil-message-container', 'coil-dark-theme' );
-		} else {
-			modalContainer.classList.add( 'entry-content', 'coil-message-container' );
+			modalContainer.classList.add( 'coil-dark-theme' );
+		}
+		if ( FontSelection ) {
+			modalContainer.classList.add( 'coil-inherit-theme-font' );
 		}
 
 		const modalData = {
