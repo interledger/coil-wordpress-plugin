@@ -109,6 +109,26 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 			}
 		}
 	}
+	
+	// Changes to implement dark theme
+	.coil-message-container.coil-dark-theme {
+
+		.coil-message-inner {
+			background: #3c434b;
+			color: $message_background_colour;
+		}
+
+		.coil-message-header {
+			a.coil-message-button {
+				background-color: $message_background_colour;
+				color: $message_font_colour;
+
+				&:hover {
+					background-color: #ebebeb;
+				}
+			}
+		}
+	}
 }
 
 // Scenario 2
