@@ -642,7 +642,7 @@ function coil_messaging_textbox_render_callback( $content_id ) {
 		esc_attr( 'coil_messaging_settings_group[' . $content_id . ']' ),
 		esc_attr( $content_id ),
 		esc_attr( Admin\get_messaging_setting( $content_id, true ) ),
-		esc_attr( 'min-width: 440px' ),
+		esc_attr( 'width: 440px' ),
 		esc_attr( Admin\get_messaging_setting( $content_id ) )
 	);
 }
@@ -684,7 +684,7 @@ function coil_messaging_settings_render_callback( $args ) {
 
 	if ( '' !== $helper_text ) {
 		?>
-		<p><?php echo esc_html( $helper_text ); ?></p>
+		<p style="width: 440px;"><?php echo esc_html( $helper_text ); ?></p>
 		<?php
 	}
 
