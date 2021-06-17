@@ -978,13 +978,23 @@ function transfer_customizer_message_settings() {
 
 	$messaging_settings = [];
 
-	$coil_partial_gating_message     = 'coil_partial_gating_message';
-	$coil_unsupported_message        = 'coil_unsupported_message';
-	$coil_verifying_status_message   = 'coil_verifying_status_message';
-	$coil_unable_to_verify_message   = 'coil_unable_to_verify_message';
-	$coil_voluntary_donation_message = 'coil_voluntary_donation_message';
-	$coil_learn_more_button_text     = 'coil_learn_more_button_text';
-	$coil_learn_more_button_link     = 'coil_learn_more_button_link';
+	$coil_partial_gating_message          = 'coil_partial_gating_message';
+	$coil_unsupported_message             = 'coil_unsupported_message';
+	$coil_verifying_status_message        = 'coil_verifying_status_message';
+	$coil_unable_to_verify_message        = 'coil_unable_to_verify_message';
+	$coil_voluntary_donation_message      = 'coil_voluntary_donation_message';
+	$coil_learn_more_button_text          = 'coil_learn_more_button_text';
+	$coil_learn_more_button_link          = 'coil_learn_more_button_link';
+	$coil_fully_gated_excerpt_message     = 'coil_fully_gated_excerpt_message';
+	$coil_partially_gated_excerpt_message = 'coil_partially_gated_excerpt_message';
+
+	// Checking if deprecated custom messages have been saved and removing them if that is the case.
+	if ( get_theme_mod( $coil_fully_gated_excerpt_message, 'null' ) !== 'null' ) {
+		remove_theme_mod( $coil_fully_gated_excerpt_message );
+	}
+	if ( get_theme_mod( $coil_partially_gated_excerpt_message, 'null' ) !== 'null' ) {
+		remove_theme_mod( $coil_partially_gated_excerpt_message );
+	}
 
 	$customizer_empty = (
 		get_theme_mod( $coil_partial_gating_message, 'null' ) !== 'null'
