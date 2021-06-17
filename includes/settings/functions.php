@@ -208,7 +208,7 @@ function register_admin_content_settings() {
 
 	// ==== CTA theme
 	add_settings_section(
-		'coil_cta__settings_section',
+		'coil_exclusive_post__settings_section',
 		__( 'Exclusive Post Message Customization', 'coil-web-monetization' ),
 		false,
 		'coil_style_settings'
@@ -219,7 +219,7 @@ function register_admin_content_settings() {
 		__( 'Color Theme', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_message_color_theme_render_callback',
 		'coil_style_settings',
-		'coil_cta__settings_section'
+		'coil_exclusive_post__settings_section'
 	);
 
 	add_settings_field(
@@ -227,7 +227,7 @@ function register_admin_content_settings() {
 		__( 'Use Theme Font', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_message_font_render_callback',
 		'coil_style_settings',
-		'coil_cta__settings_section'
+		'coil_exclusive_post__settings_section'
 	);
 
 	add_settings_field(
@@ -235,7 +235,7 @@ function register_admin_content_settings() {
 		__( 'Message Branding', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_message_branding_render_callback',
 		'coil_style_settings',
-		'coil_cta__settings_section'
+		'coil_exclusive_post__settings_section'
 	);
 
 }
