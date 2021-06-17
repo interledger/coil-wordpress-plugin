@@ -19,6 +19,7 @@
 		coilMessageBranding = coilParams.coil_message_branding,
 		siteLogo = coilParams.site_logo,
 		coilLogo = coilParams.coil_logo,
+		coilLogoWhite = coilParams.coil_logo_white,
 		showDonationBar = Boolean( coilParams.show_donation_bar ), // Cast to boolean - wp_localize_script forces string values.
 		ExclusiveMessageTheme = coilParams.exclusive_message_theme,
 		FontSelection = Boolean( coilParams.font_selection );
@@ -94,6 +95,8 @@
 
 		if ( coilMessageBranding === 'site_logo' ) {
 			brandingLogo = siteLogo;
+		} else if ( coilMessageBranding === 'coil_logo' && ExclusiveMessageTheme === 'dark' ) {
+			brandingLogo = coilLogoWhite;
 		} else if ( coilMessageBranding === 'coil_logo' ) {
 			brandingLogo = coilLogo;
 		} else {
