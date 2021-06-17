@@ -19,13 +19,16 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 	 * @var \WP_Post[] message ID's.
 	*/
 	protected static $id = [
-		'unverified'      => 'coil_unable_to_verify_message',
-		'donation_bar'    => 'coil_voluntary_donation_message',
-		'pending'         => 'coil_verifying_status_message',
-		'fully_gated'     => 'coil_fully_gated_content_message',
-		'partially_gated' => 'coil_partially_gated_content_message',
-		'button_text'     => 'coil_learn_more_button_text',
-		'button_link'     => 'coil_learn_more_button_link',
+		'unverified'                      => 'coil_unable_to_verify_message',
+		'donation_bar'                    => 'coil_voluntary_donation_message',
+		'pending'                         => 'coil_verifying_status_message',
+		'fully_gated'                     => 'coil_fully_gated_content_message',
+		'partially_gated'                 => 'coil_partially_gated_content_message',
+		'button_text'                     => 'coil_learn_more_button_text',
+		'button_link'                     => 'coil_learn_more_button_link',
+		'fully_gated_excerpt_message'     => 'coil_fully_gated_excerpt_message',
+		'partially_gated_excerpt_message' => 'coil_partially_gated_excerpt_message',
+
 	];
 
 	/**
@@ -152,6 +155,8 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		set_theme_mod( self::$id['button_text'], 'Learn More' );
 		// Leaving one option set to an empty string becasue this state occurs in the database once a custom message has been deleted
 		set_theme_mod( self::$id['button_link'], '' );
+		// Testing removal of a deprecated message
+		set_theme_mod( self::$id['fully_gated_excerpt_message'], 'Fully gated excerpt' );
 
 		// Transferrng settings to the wp_options table
 		Settings\transfer_customizer_message_settings();
@@ -184,6 +189,9 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		$this->assertFalse( get_theme_mod( self::$id['partially_gated'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['button_text'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['button_link'] ) );
+		// Checking that deprecated message was removed
+		$this->assertFalse( get_theme_mod( self::$id['fully_gated_excerpt_message'] ) );
+
 	}
 
 	/**
@@ -210,6 +218,8 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		set_theme_mod( self::$id['button_text'], 'Learn More' );
 		// Leaving one option set to an empty string becasue this state occurs in the database once a custom message has been deleted
 		set_theme_mod( self::$id['button_link'], '' );
+		// Testing removal of a deprecated message
+		set_theme_mod( self::$id['partially_gated_excerpt_message'], 'Partially gated excerpt' );
 
 		// Transferrng settings to the wp_options table
 		Settings\transfer_customizer_message_settings();
@@ -242,5 +252,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		$this->assertFalse( get_theme_mod( self::$id['partially_gated'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['button_text'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['button_link'] ) );
+		// Checking that deprecated message was removed
+		$this->assertFalse( get_theme_mod( self::$id['partially_gated_excerpt_message'] ) );
 	}
 }
