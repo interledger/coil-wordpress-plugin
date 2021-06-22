@@ -63,9 +63,9 @@ function get_monetization_setting_types( $show_default = false ) : array {
 		$settings['default'] = esc_html__( 'Use Default', 'coil-web-monetization' );
 	}
 
-	$settings['no']        = esc_html__( 'No Monetization', 'coil-web-monetization' );
-	$settings['no-gating'] = esc_html__( 'Monetized and Public', 'coil-web-monetization' );
-	$settings['gate-all']  = esc_html__( 'Paying Viewers Only', 'coil-web-monetization' );
+	$settings['no']        = esc_html__( 'Disabled', 'coil-web-monetization' );
+	$settings['no-gating'] = esc_html__( 'Enabled for Everyone', 'coil-web-monetization' );
+	$settings['gate-all']  = esc_html__( 'Enabled for Coil Members Only', 'coil-web-monetization' );
 
 	return $settings;
 }
@@ -79,7 +79,7 @@ function get_monetization_setting_types( $show_default = false ) : array {
 function get_valid_gating_types() {
 
 	$valid = [
-		'gate-all', // Paying Viewers Only.
+		'gate-all', // Coil Members Only.
 		'gate-tagged-blocks', // split content.
 		'no', // no monetization.
 		'no-gating', // monetixed and public.

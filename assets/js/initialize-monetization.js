@@ -82,7 +82,7 @@
 
 		const modalData = {
 			headerLogo: siteLogo,
-			title: 'This content is for Paying Viewers Only',
+			title: 'This content is for Coil Members Only',
 			content: message,
 			button: {
 				text: learnMoreButtonText,

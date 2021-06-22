@@ -327,9 +327,25 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 				},
 			} );
 		},
+		updateSelectValue: ( value ) => {
+			// The is the reverse of updateMetaValueOnSelect where we compare the value Selected and update the radio button values
+			if ( 'gate-all' === value || 'no-gating' === value || 'gate-tagged-blocks' === value ) {
+				return 'enabled';
+			} else if ( 'default' === value ) {
+				return 'default';
+			} else {
+				return 'disabled';
+			}
+		},
 		updateMetaValueOnSelect: ( value, selectBox ) => {
-			const metaValue = ( 'enabled' === value ? 'default' : 'no' );
-			console.log( selectBox, value );
+			if( 'enabled' === value ) {
+				var metaValue = 'gate-all';
+			} else if ( 'default' === value ) {
+				var metaValue = 'default';
+			} else {
+				var metaValue = 'no';
+			}
+
 			dispatch( 'core/editor' ).editPost( {
 				meta: {
 					[ props.metaFieldName ]: metaValue,
@@ -340,22 +356,32 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 } )( withSelect( ( select, props ) => {
 	const meta = select( 'core/editor' ).getEditedPostAttribute( 'meta' );
 
+	if( 'no' == coilEditorParams.monetizationDefault ) {
+		var defaultLabel = __( 'Disabled' );
+	} else if( 'no-gating' == coilEditorParams.monetizationDefault ) {
+		var defaultLabel = __( 'Enabled' );
+	} else {
+		var defaultLabel = __( 'Coil Members Only' );
+	}
+
 	return {
 		[ props.metaFieldName ]: meta && meta._coil_monetize_post_status,
+		defaultLabel: defaultLabel,
 	};
 } )( ( props ) => (
 	<div>
 		<SelectControl
 			label={ __( 'Select a monetization Status' ) }
-			value={ ( value ) => 'no-monetization' === value ? 'disabled' :'enabled' }
+			value={ props.updateSelectValue( props[ props.metaFieldName ] ) }
 			onChange={ ( value ) => props.updateMetaValueOnSelect( value, props ) }
 			options={ [
+				{ value: 'default', label: 'Default (' + props.defaultLabel + ')' },
 				{ value: 'enabled', label: 'Enabled' },
 				{ value: 'disabled', label: 'Disabled' },
 			] }
 		/>
 		<div
-			className={ `coil-monetization-settings ${ props.value ? props.value : '' }` }
+			className={ `coil-monetization-settings ${ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : '' }` }
 		>
 			<RadioControl
 				selected={ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : 'default' }
@@ -370,15 +396,15 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 							value: 'default',
 						},
 						{
-							label: __( 'Monetized and Public', 'coil-web-monetization' ),
+							label: __( 'Everyone', 'coil-web-monetization' ),
 							value: 'no-gating',
 						},
 						{
-							label: __( 'Paying Viewers Only', 'coil-web-monetization' ),
+							label: __( 'Coil Members Only', 'coil-web-monetization' ),
 							value: 'gate-all',
 						},
 						{
-							label: __( 'Split Content', 'coil-web-monetization' ),
+							label: __( 'Split', 'coil-web-monetization' ),
 							value: 'gate-tagged-blocks',
 						},
 					]
