@@ -333,17 +333,16 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 				return 'enabled';
 			} else if ( 'default' === value ) {
 				return 'default';
-			} else {
-				return 'disabled';
 			}
+			return 'disabled';
 		},
-		updateMetaValueOnSelect: ( value, selectBox ) => {
-			if( 'enabled' === value ) {
-				var metaValue = 'gate-all';
+		updateMetaValueOnSelect: ( value ) => {
+			let metaValue = 'no';
+
+			if ( 'enabled' === value ) {
+				metaValue = 'gate-all';
 			} else if ( 'default' === value ) {
-				var metaValue = 'default';
-			} else {
-				var metaValue = 'no';
+				metaValue = 'default';
 			}
 
 			dispatch( 'core/editor' ).editPost( {
@@ -355,15 +354,13 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 	};
 } )( withSelect( ( select, props ) => {
 	const meta = select( 'core/editor' ).getEditedPostAttribute( 'meta' );
+	let defaultLabel = __( 'Coil Members Only' );
 
-	if( 'no' == coilEditorParams.monetizationDefault ) {
-		var defaultLabel = __( 'Disabled' );
-	} else if( 'no-gating' == coilEditorParams.monetizationDefault ) {
-		var defaultLabel = __( 'Enabled' );
-	} else {
-		var defaultLabel = __( 'Coil Members Only' );
+	if ( 'no' === coilEditorParams.monetizationDefault ) { // eslint-disable-line no-undef
+		defaultLabel = __( 'Disabled' );
+	} else if ( 'no-gating' === coilEditorParams.monetizationDefault ) { // eslint-disable-line no-undef
+		defaultLabel = __( 'Enabled' );
 	}
-
 	return {
 		[ props.metaFieldName ]: meta && meta._coil_monetize_post_status,
 		defaultLabel: defaultLabel,

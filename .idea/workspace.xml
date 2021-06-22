@@ -3,20 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="329023d4-a15a-4a17-909f-8baada28a64f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/js/admin/admin-notices.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/js/admin/admin-notices.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/js/initialize-monetization.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/js/initialize-monetization.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/js/initialize-monetization.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/js/initialize-monetization.min.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/blocks.build.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/blocks.build.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/blocks.editor.build.css" beforeDir="false" afterPath="$PROJECT_DIR$/dist/blocks.editor.build.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/blocks.editor.build.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/dist/blocks.editor.build.min.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/blocks.style.build.css" beforeDir="false" afterPath="$PROJECT_DIR$/dist/blocks.style.build.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/gating/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/gating/functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/settings/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/settings/functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readme.txt" beforeDir="false" afterPath="$PROJECT_DIR$/readme.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/extensions/monetize-block.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/extensions/monetize-block.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/extensions/styles/editor.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/extensions/styles/editor.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,11 +129,11 @@
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="css" type="js.build_tools.grunt" temporary="true">
+    <configuration name="eslint" type="js.build_tools.grunt" temporary="true">
       <node-interpreter value="project" />
       <gruntfile value="$PROJECT_DIR$/Gruntfile.js" />
       <tasks>
-        <task value="css" />
+        <task value="eslint" />
       </tasks>
       <envs />
       <method v="2" />
@@ -179,11 +169,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Grunt.js.build" />
+        <item itemvalue="Grunt.js.eslint" />
         <item itemvalue="npm.build" />
+        <item itemvalue="Grunt.js.build" />
         <item itemvalue="npm.start" />
         <item itemvalue="Grunt.js.stylelint" />
-        <item itemvalue="Grunt.js.css" />
       </list>
     </recent_temporary>
   </component>
@@ -208,7 +198,7 @@
       <workItem from="1620744017682" duration="1512000" />
       <workItem from="1622542050786" duration="6752000" />
       <workItem from="1623753744863" duration="3048000" />
-      <workItem from="1624363946493" duration="3114000" />
+      <workItem from="1624363946493" duration="3782000" />
     </task>
     <servers />
   </component>
