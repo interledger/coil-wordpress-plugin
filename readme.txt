@@ -39,9 +39,9 @@ For user documentation, visit our [help center](https://help.coil.com/for-creato
 
 Our plugin lets you add monetization to all or some of your pages and posts.
 
-* Monetized and Public (default) - Allow all visitors to see the content, get paid when your visitor is a Coil Member
-* Coil Members Only - Only allow Coil Members to see the content
-* No Monetization - Allow all visitors to see the content, don't get paid when your visitor is a Coil Member
+* Monetization enabled and visible to everyone (default) - Allow all visitors to see the content, get paid when your visitor is a Coil Member
+* Monetization enabled and visible to Coil members only - Only allow Coil Members to see the content
+* Monetization disabled - Allow all visitors to see the content, don't get paid when your visitor is a Coil Member
 
 The plugin is supported with the Classic and Block/Gutenberg editors. Monetization can be assigned globally to pages and posts, to individual pages and posts, and to tags and categories. If you're using the Gutenberg editor, you can choose to monetize at the block level.
 
@@ -97,10 +97,10 @@ First release.
 
 * Enhancement - Updated handling of excerpts for monetized posts in the post archive. The default excerpt is now blank unless a custom excerpt has been written.
 * Enhancement - A warning pop up has been added when a user saves their Global Settings and the payment pointer field is empty.
-* Enhancement - The padlock icon has been completely removed from split content page / post titles and will only appear when entire pages / posts are for paid viewers only.
+* Enhancement - The padlock icon has been completely removed from split content page / post titles and will only appear when entire pages / posts have monetization enabled and are only visable to Coil members.
 
 * Tweak - Minimum supported PHP version is now version 7.2.
-* Tweak - The gradient effect on the CTA boxes that block exclusive content for non-paying viewers has been replaced with a solid border instead so that the excerpt above it is now clearly legible.
+* Tweak - The gradient effect on the CTA boxes that block exclusive content for users without an active Coil Membership has been replaced with a solid border instead.
 * Tweak - Updated Coil header on the settings panel.
 * Tweak - Removed the “Configure the plugin” button in the settings panel (simply took users to the Global Settings tab).
 * Tweak - All buttons that point to external links now open in a new tab.
@@ -112,14 +112,13 @@ First release.
 = 20 May 2021 =
 
 * Fix - Fixed embedded videos that were set to Coil Members Only so that they now display correctly once monetization has begun.
-* Fix - The support creator footer bar message no longer displays for paying viewers.
+* Fix - The Coil Promotion Bar message no longer displays for Coil members.
 
 * Enhancement - The Coil settings panel's first tab is now the Global Settings tab where the payment pointers and CSS selectors are saved.
 * Enhancement - A sidebar has been added throughout the settings panel with help, FAQ and documentation links.
-* Enhancement - All customization features have been consolidated into the Coil settings panel (including message, button text and link, and padlock and support creator footer bar display customization).
+* Enhancement - All customization features have been consolidated into the Coil settings panel (including message, button text and link, and padlock and Coil Promotion Bar display customization).
 * Enhancement - The wording explaining message customizations has been simplified for easier reading.
-* Enhancement - The wording describing monetization settings has been adjusted to Paying Viewers instead of referring to Coil Members and Monetized Users.
-* Enhancement - The new default monetization setting for pages and posts is now Monetized and Public instead of No Monetization.
+* Enhancement - The new default monetization setting for pages and posts is now enabled and visible to everyone instead of having monetization disabled by default.
 
 * Tweak - Code has been linted.
 * Tweak - Eslint is the new linting tool being used instead of JSHint.

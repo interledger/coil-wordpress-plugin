@@ -115,10 +115,10 @@ function register_admin_content_settings() {
 		'coil_visual_settings_section'
 	);
 
-	// ==== Donation bar Settings.
+	// ==== Coil Promotion Bar Settings.
 	add_settings_field(
 		'coil_show_donation_bar',
-		__( 'Display support creator message', 'coil-web-monetization' ),
+		__( 'Display Coil Promotion Bar', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_show_donation_bar_settings_render_callback',
 		'coil_visual_settings',
 		'coil_visual_settings_section'
@@ -145,17 +145,18 @@ function register_admin_content_settings() {
 		__NAMESPACE__ . '\coil_messaging_settings_validation'
 	);
 
+	// === Exclusive Post Message content
 	add_settings_section(
 		'coil_fully_gated_content_message',
-		__( 'Coil Members Only message', 'coil-web-monetization' ),
+		__( 'Exclusive Post Message', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
 
-	// === Partially gated content message
+	// === Exclusive Block Message content
 	add_settings_section(
 		'coil_partially_gated_content_message',
-		__( 'Split Content message', 'coil-web-monetization' ),
+		__( 'Exclusive Block Message', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
@@ -176,10 +177,10 @@ function register_admin_content_settings() {
 		'coil_messaging_settings'
 	);
 
-	// === Voluntry donation message
+	// === Coil Promotion Bar message
 	add_settings_section(
 		'coil_voluntary_donation_message',
-		__( 'Support creator message', 'coil-web-monetization' ),
+		__( 'Coil Promotion Bar', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
@@ -234,11 +235,11 @@ function coil_global_settings_group_validation( $global_settings ) : array {
 
 /**
  * Allow the radio button options in the posts content section
- * and the padlock and donation bar display checkboxes
+ * and the padlock and Coil Promotion Bar display checkboxes
  * to be properly validated
  *
  * @param array $monetization_settings The posted radio options from the content settings section and the padlock
- * and donation bar display checkboxes
+ * and Coil Promotion Bar display checkboxes
  * @return array
  */
 function coil_monetization_settings_validation( $monetization_settings ) : array {
@@ -249,10 +250,10 @@ function coil_monetization_settings_validation( $monetization_settings ) : array
 			$monetization_settings[ $key ] = true;
 		} else {
 
-			// If it is not a value returned for the padlock and donation bar settings then it must relate to a post type.
+			// If it is not a value returned for the padlock and Coil Promotion Bar settings then it must relate to a post type.
 			$valid_choices = array_keys( Gating\get_monetization_setting_types() );
 
-			// The default value is no-gating (Monetized and Public)
+			// The default value is no-gating (Monetization is enabled and visable to everyone)
 			$value = in_array( $option_value, $valid_choices, true ) ? sanitize_key( $option_value ) : 'no-gating';
 		}
 	}
@@ -313,7 +314,7 @@ function coil_messaging_settings_validation( $messaging_settings ) : array {
  * Allow the checkbox options in the visual settings section to
  * be properly validated
  *
- * @param array $visual_settings The checkbox setting for the padlock display and the donation bar display
+ * @param array $visual_settings The checkbox setting for the padlock display and the Coil Promotion Bar display
  * @return array
  */
 function coil_visual_settings_validation( $visual_settings ) : array {
@@ -490,7 +491,7 @@ function coil_content_settings_posts_render_callback() {
 							 * Specify the default checked state on the input from
 							 * any settings stored in the database. If the individual
 							 * input status is not set, default to the first radio
-							 * option (No Monetization)
+							 * option (Monetization disabled)
 							 */
 							$checked_input = false;
 							if ( $setting_key === 'no' ) {
@@ -600,10 +601,10 @@ function coil_messaging_settings_render_callback( $args ) {
 
 	switch ( $args['id'] ) {
 		case 'coil_fully_gated_content_message':
-			$helper_text = __( 'Appears for non-paying viewers over hidden Coil Members Only content.', 'coil-web-monetization' );
+			$helper_text = __( 'This message replaces the post content for users without an active Coil Membership, when access is set to Coil Members Only.', 'coil-web-monetization' );
 			break;
 		case 'coil_partially_gated_content_message':
-			$helper_text = __( 'Appears for non-paying viewers over hidden blocks set to Only Show Paying Viewers on a Split Content post / page.', 'coil-web-monetization' );
+			$helper_text = __( 'This message replaces a specific block for users without an active Coil Membership, when access is set to Coil Members Only.', 'coil-web-monetization' );
 			break;
 		case 'coil_verifying_status_message':
 			$helper_text = __( 'Appears while the plugin checks that an active Web Monetization account is in place.', 'coil-web-monetization' );
@@ -612,13 +613,13 @@ function coil_messaging_settings_render_callback( $args ) {
 			$helper_text = __( 'Appears when content is set to Coil Members Only and browser setup is correct, but Web Monetization doesn\'t start. This can happen when the user doesn\'t have an active Coil account.', 'coil-web-monetization' );
 			break;
 		case 'coil_voluntary_donation_message':
-			$helper_text = __( 'Appears for non-paying viewers in a footer bar when content is set to Monetized and Public or Split Content.', 'coil-web-monetization' );
+			$helper_text = __( 'Appears at the bottom of the screen for users without an active Coil Membership, when access is set to Split or Coil Members Only.', 'coil-web-monetization' );
 			break;
 		case 'coil_learn_more_button_text':
-			$helper_text = __( 'Text on the "Learn more" shown below the Coil Members Only message and in the support creator footer.', 'coil-web-monetization' );
+			$helper_text = __( 'Text on the "Learn more" button shown below the Exclusive Post Message and in the Coil Promotion Bar.', 'coil-web-monetization' );
 			break;
 		case 'coil_learn_more_button_link':
-			$helper_text = __( '"Learn more" button link/URL to direct non-paying viewers to Coil\'s website. Shown below the Coil Members Only message and in the support creator footer.', 'coil-web-monetization' );
+			$helper_text = __( '"Learn more" button link/URL to direct users without an active Coil Membership to Coil\'s website. Shown below the Exclusive Post Message and in the Coil Promotion Bar.', 'coil-web-monetization' );
 			break;
 		default:
 			$helper_text = '';
@@ -656,7 +657,7 @@ function coil_title_padlock_settings_render_callback() {
 	printf(
 		'<label for="%s">%s</label>',
 		esc_attr( 'display_padlock_id' ),
-		esc_html_e( 'Show padlock next to post title if the post is for Coil Members Only.', 'coil-web-monetization' )
+		esc_html_e( 'Show padlock next to post title if the post has monetization enabled and is visable to Coil members only.', 'coil-web-monetization' )
 	);
 }
 
@@ -680,7 +681,7 @@ function coil_show_donation_bar_settings_render_callback() {
 	printf(
 		'<label for="%s">%s</label>',
 		esc_attr( 'display_donation_bar' ),
-		esc_html_e( 'Show the support creator message in a footer bar on posts that are Monetized and Public.', 'coil-web-monetization' )
+		esc_html_e( 'Show the Coil Promotion Bar on posts that have monetization enabled and are visable to everyone or are split.', 'coil-web-monetization' )
 	);
 }
 
@@ -1029,7 +1030,7 @@ function transfer_customizer_monetization_settings() {
 	$previous_gating_options = get_option( 'coil_content_settings_posts_group' );
 
 	// If the setting has already been saved or transferred then simply return
-	// Using 'null' for comparrison becasue if the padlock and support creator messages were unselected they were stored in the database with the value false, but still need to be transferred.
+	// Using 'null' for comparrison becasue if the padlock and Coil Promotion Bar messages were unselected they were stored in the database with the value false, but still need to be transferred.
 	if ( get_option( 'coil_monetization_settings_group' ) || ( ! get_option( 'coil_content_settings_posts_group' ) && 'null' === get_theme_mod( 'coil_title_padlock', 'null' ) && 'null' === get_theme_mod( 'coil_show_donation_bar', 'null' ) ) ) {
 		return;
 	}
