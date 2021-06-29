@@ -381,6 +381,7 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 			className={ `coil-monetization-settings ${ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : 'default' }` }
 		>
 			<RadioControl
+				label={ __( 'Who can access this content?', 'coil-web-monetization' ) }
 				selected={ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : 'default' }
 				options={
 					[
@@ -398,7 +399,6 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 						},
 					]
 				}
-				help={ __( 'Set the type of monetization for the article.', 'coil-web-monetization' ) }
 				onChange={ ( value ) => props.updateMetaValue( value ) }
 			/>
 		</div>
