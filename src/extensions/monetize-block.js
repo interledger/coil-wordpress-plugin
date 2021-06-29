@@ -328,7 +328,7 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 			} );
 		},
 		updateSelectValue: ( value ) => {
-			// The is the reverse of updateMetaValueOnSelect where we compare the value Selected and update the radio button values
+			// This the reverse of updateMetaValueOnSelect where we compare the value Selected and update the radio button values
 			if ( 'gate-all' === value || 'no-gating' === value || 'gate-tagged-blocks' === value ) {
 				return 'enabled';
 			} else if ( 'no' === value ) {
@@ -340,7 +340,7 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 			let metaValue = 'no';
 
 			if ( 'enabled' === value ) {
-				metaValue = 'gate-all';
+				metaValue = coilEditorParams.monetizationDefault === 'gate-all' ? 'gate-all' : 'no-gating'; // eslint-disable-line no-undef
 			} else if ( 'default' === value ) {
 				metaValue = 'default';
 			}
