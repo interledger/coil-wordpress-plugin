@@ -1,13 +1,14 @@
 .coil-monetization-settings {
-  &.default,
-  &.no{
-	display: none;
-  }
-
-  .components-radio-control__option:nth-child( 1 ),
-  .components-radio-control__option:nth-child( 2 ) {
-	display: none;
-  }
+	&.default,
+	&.no {
+		display: none;
+	}
+/*
+	.components-radio-control__option:nth-child( 1 ),
+	.components-radio-control__option:nth-child( 2 ) {
+		display: none;
+	}
+*/
 }
 
 .coil-hide-monetize-users:not( .has-warning ),

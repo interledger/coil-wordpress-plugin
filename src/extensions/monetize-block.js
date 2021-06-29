@@ -331,10 +331,10 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 			// The is the reverse of updateMetaValueOnSelect where we compare the value Selected and update the radio button values
 			if ( 'gate-all' === value || 'no-gating' === value || 'gate-tagged-blocks' === value ) {
 				return 'enabled';
-			} else if ( 'default' === value ) {
-				return 'default';
+			} else if ( 'no' === value ) {
+				return 'disabled';
 			}
-			return 'disabled';
+			return 'default';
 		},
 		updateMetaValueOnSelect: ( value ) => {
 			let metaValue = 'no';
@@ -345,21 +345,17 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 				metaValue = 'default';
 			}
 
-			dispatch( 'core/editor' ).editPost( {
-				meta: {
-					[ props.metaFieldName ]: metaValue,
-				},
-			} );
+			props.updateMetaValue( metaValue );
 		},
 	};
 } )( withSelect( ( select, props ) => {
 	const meta = select( 'core/editor' ).getEditedPostAttribute( 'meta' );
-	let defaultLabel = __( 'Coil Members Only' );
+	let defaultLabel = __( 'Enabled for Coil Members Only' );
 
 	if ( 'no' === coilEditorParams.monetizationDefault ) { // eslint-disable-line no-undef
 		defaultLabel = __( 'Disabled' );
 	} else if ( 'no-gating' === coilEditorParams.monetizationDefault ) { // eslint-disable-line no-undef
-		defaultLabel = __( 'Enabled' );
+		defaultLabel = __( 'Enabled for Everyone' );
 	}
 	return {
 		[ props.metaFieldName ]: meta && meta._coil_monetize_post_status,
@@ -378,20 +374,12 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 			] }
 		/>
 		<div
-			className={ `coil-monetization-settings ${ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : '' }` }
+			className={ `coil-monetization-settings ${ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : 'default' }` }
 		>
 			<RadioControl
 				selected={ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : 'default' }
 				options={
 					[
-						{
-							label: __( 'No Monetization', 'coil-web-monetization' ),
-							value: 'no',
-						},
-						{
-							label: __( 'Use Default', 'coil-web-monetization' ),
-							value: 'default',
-						},
 						{
 							label: __( 'Everyone', 'coil-web-monetization' ),
 							value: 'no-gating',
@@ -406,7 +394,7 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 						},
 					]
 				}
-				help={ __( 'Set the type of monetization for the article.' ) }
+				help={ __( 'Set the type of monetization for the article.', 'coil-web-monetization' ) }
 				onChange={ ( value ) => props.updateMetaValue( value ) }
 			/>
 		</div>
