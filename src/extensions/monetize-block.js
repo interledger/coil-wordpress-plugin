@@ -368,7 +368,7 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 } )( ( props ) => (
 	<div>
 		<SelectControl
-			label={ __( 'Select a monetization Status' ) }
+			label={ __( 'Select a monetization status' ) }
 			value={ props.updateSelectValue( props[ props.metaFieldName ] ) }
 			onChange={ ( value ) => props.updateMetaValueOnSelect( value ) }
 			options={ [
