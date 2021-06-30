@@ -378,7 +378,7 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 			] }
 		/>
 		<div
-			className={ `coil-monetization-settings ${ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : 'default' }` }
+			className={ `coil-post-monetization-level ${ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : 'default' }` }
 		>
 			<RadioControl
 				label={ __( 'Who can access this content?', 'coil-web-monetization' ) }
