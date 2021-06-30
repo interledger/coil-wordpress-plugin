@@ -188,6 +188,7 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 							className="coil-panel"
 						>
 							<RadioControl
+								label={ __( 'Set the block\'s visibility.', 'coil-web-monetization' ) }
 								selected={ monetizeBlockDisplay }
 								options={
 									[
@@ -205,7 +206,6 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 										},
 									]
 								}
-								help={ __( 'Set the visibility based on the monetization you prefer.' ) }
 								onChange={ ( value ) => setAttributes( { monetizeBlockDisplay: value } ) }
 							/>
 
