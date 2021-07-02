@@ -1189,10 +1189,6 @@ function transfer_customizer_message_settings() {
 		remove_theme_mod( $coil_partially_gated_excerpt_message );
 	}
 
-	if ( $customizer_empty ) {
-		return;
-	}
-
 	$customizer_empty = (
 		get_theme_mod( $coil_partial_gating_message, 'null' ) !== 'null'
 		&& get_theme_mod( $coil_unsupported_message, 'null' ) !== 'null'
