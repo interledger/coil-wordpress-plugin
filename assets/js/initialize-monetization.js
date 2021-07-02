@@ -21,8 +21,8 @@
 		coilLogo = coilParams.coil_logo,
 		coilLogoWhite = coilParams.coil_logo_white,
 		showDonationBar = Boolean( coilParams.show_donation_bar ), // Cast to boolean - wp_localize_script forces string values.
-		ExclusiveMessageTheme = coilParams.exclusive_message_theme,
-		FontSelection = Boolean( coilParams.font_selection );
+		exclusiveMessageTheme = coilParams.exclusive_message_theme,
+		fontSelection = Boolean( coilParams.font_selection );
 
 	const subscriberOnlyMessage = wp.template( 'subscriber-only-message' );
 	const splitContentMessage = wp.template( 'split-content-message' );
@@ -84,10 +84,10 @@
 	function showSubscriberOnlyMessage( message ) {
 		const modalContainer = document.createElement( 'div' );
 		modalContainer.classList.add( 'entry-content', 'coil-message-container' );
-		if ( ExclusiveMessageTheme === 'dark' ) {
+		if ( exclusiveMessageTheme === 'dark' ) {
 			modalContainer.classList.add( 'coil-dark-theme' );
 		}
-		if ( FontSelection ) {
+		if ( fontSelection ) {
 			modalContainer.classList.add( 'coil-inherit-theme-font' );
 		}
 
@@ -95,7 +95,7 @@
 
 		if ( coilMessageBranding === 'site_logo' ) {
 			brandingLogo = siteLogo;
-		} else if ( coilMessageBranding === 'coil_logo' && ExclusiveMessageTheme === 'dark' ) {
+		} else if ( coilMessageBranding === 'coil_logo' && exclusiveMessageTheme === 'dark' ) {
 			brandingLogo = coilLogoWhite;
 		} else if ( coilMessageBranding === 'coil_logo' ) {
 			brandingLogo = coilLogo;
