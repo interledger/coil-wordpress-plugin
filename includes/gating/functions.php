@@ -82,7 +82,7 @@ function get_valid_gating_types() {
 		'gate-all', // Paying Viewers Only.
 		'gate-tagged-blocks', // split content.
 		'no', // no monetization.
-		'no-gating', // monetixed and public.
+		'no-gating', // monetized and public.
 		'default', // whatever is set on the post to revert back.
 	];
 	return $valid;
@@ -108,7 +108,7 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 		return $title;
 	}
 
-	if ( ! Admin\get_visual_settings( 'coil_title_padlock', true ) ) {
+	if ( ! Admin\get_appearance_settings( 'coil_title_padlock' ) ) {
 		return $title;
 	}
 
@@ -128,6 +128,7 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 
 /**
  * Maybe restrict (gate) visibility of the post content on archive pages, home pages, and feeds.
+ * If the post is gated then no excerpt will show unless one as been set explicitly.
  *
  * @param string $content Post content.
  *
@@ -163,7 +164,7 @@ function maybe_restrict_content( string $content ) : string {
 		 * and then the default post options.
 		 */
 		case 'no':
-		case 'no-gate':
+		case 'no-gating':
 		default:
 			$public_content = $content;
 			break;
@@ -177,7 +178,7 @@ function maybe_restrict_content( string $content ) : string {
  *
  * @param integer $post_id The post to check.
  *
- * @return string Either "no" (default), "no-gating", "gate-all", "gate-tagged-blocks".
+ * @return string Either "no-gating" (default), "no-gating", "gate-all", "gate-tagged-blocks".
  */
 function get_post_gating( $post_id ) : string {
 
@@ -345,7 +346,7 @@ function get_content_gating( $post_id ) : string {
  */
 function get_global_posts_gating() : array {
 
-	$global_settings = get_option( 'coil_monetization_settings_group' );
+	$global_settings = get_option( 'coil_content_settings_posts_group' );
 	if ( ! empty( $global_settings ) ) {
 		return $global_settings;
 	}
