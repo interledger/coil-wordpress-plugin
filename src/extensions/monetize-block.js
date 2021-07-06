@@ -188,6 +188,7 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 							className="coil-panel"
 						>
 							<RadioControl
+								label={ __( 'Set the block\'s visibility.', 'coil-web-monetization' ) }
 								selected={ monetizeBlockDisplay }
 								options={
 									[
@@ -205,7 +206,6 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 										},
 									]
 								}
-								help={ __( 'Set the visibility based on the monetization you prefer.' ) }
 								onChange={ ( value ) => setAttributes( { monetizeBlockDisplay: value } ) }
 							/>
 
@@ -328,7 +328,7 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 			} );
 		},
 		updateSelectValue: ( value ) => {
-			// The is the reverse of updateMetaValueOnSelect where we compare the value Selected and update the radio button values
+			// This the reverse of updateMetaValueOnSelect where we compare the value Selected and update the radio button values
 			if ( 'gate-all' === value || 'no-gating' === value || 'gate-tagged-blocks' === value ) {
 				return 'enabled';
 			} else if ( 'no' === value ) {
@@ -340,7 +340,7 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 			let metaValue = 'no';
 
 			if ( 'enabled' === value ) {
-				metaValue = 'gate-all';
+				metaValue = coilEditorParams.monetizationDefault === 'gate-all' ? 'gate-all' : 'no-gating'; // eslint-disable-line no-undef
 			} else if ( 'default' === value ) {
 				metaValue = 'default';
 			}
@@ -380,7 +380,7 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 			/>
 		</div>
 		<div
-			className={ `coil-monetization-settings ${ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : 'default' }` }
+			className={ `coil-post-monetization-level ${ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : 'default' }` }
 		>
 			<RadioControl
 				label={ __( 'Who can access this content?', 'coil-web-monetization' ) }
