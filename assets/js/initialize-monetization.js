@@ -8,7 +8,6 @@
 
 	const contentContainer = coilParams.content_container,
 		fullyGated = coilParams.fully_gated,
-		unableToVerify = coilParams.unable_to_verify,
 		voluntaryDonation = coilParams.voluntary_donation,
 		loadingContent = coilParams.loading_content,
 		partialGating = coilParams.partial_gating,
@@ -233,15 +232,15 @@
 			if ( isSubscribersOnly() ) {
 				if ( isExcerptEnabled() && getContentExcerpt() ) {
 					document.body.classList.add( 'show-excerpt-message' );
-					$( contentContainer ).before( showSubscriberOnlyMessage( unableToVerify ) );
+					$( contentContainer ).before( showSubscriberOnlyMessage( fullyGated ) );
 					$( contentContainer ).prepend( getContentExcerpt() );
 				} else {
 					document.body.classList.add( 'show-fw-message' );
-					$( contentContainer ).before( showSubscriberOnlyMessage( unableToVerify ) );
+					$( contentContainer ).before( showSubscriberOnlyMessage( fullyGated ) );
 				}
 			} else if ( isSplitContent() ) {
 				// Split content and unable to verify hidden content.
-				$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( unableToVerify ) );
+				$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( fullyGated ) );
 
 				// Show non-Coil-members content.
 				// Removing class means blocks revert to their *original* display values.
@@ -256,7 +255,7 @@
 			} else {
 				// No tagged blocks.
 				document.body.classList.add( 'show-fw-message' );
-				document.querySelector( contentContainer ).before( showSubscriberOnlyMessage( unableToVerify ) );
+				document.querySelector( contentContainer ).before( showSubscriberOnlyMessage( fullyGated ) );
 			}
 		}
 	}

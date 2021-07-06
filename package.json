@@ -32,7 +32,7 @@
 	},
 	"devDependencies": {
 		"cypress": "^5.4.0",
-		"grunt": "^1.1.0",
+		"grunt": "^1.4.0",
 		"grunt-checktextdomain": "~1.0.1",
 		"grunt-contrib-clean": "~2.0.0",
 		"grunt-contrib-compress": "^1.6.0",
@@ -56,6 +56,7 @@
 	},
 	"dependencies": {
 		"cgb-scripts": "1.21.0",
-		"classnames": "^2.2.6"
+		"classnames": "^2.2.6",
+		"grunt-cli": "*"
 	}
 }

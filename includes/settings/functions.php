@@ -86,42 +86,17 @@ function register_admin_content_settings() {
 
 	// Tab 2 - Content Settings.
 	register_setting(
-		'coil_monetization_settings_group',
-		'coil_monetization_settings_group',
-		__NAMESPACE__ . '\coil_monetization_settings_validation'
+		'coil_content_settings_posts_group',
+		'coil_content_settings_posts_group',
+		__NAMESPACE__ . '\coil_content_settings_posts_validation'
 	);
 
 		// ==== Content Settings.
 	add_settings_section(
 		'coil_content_settings_posts_section',
-		__( 'Content Settings', 'coil-web-monetization' ),
+		false,
 		__NAMESPACE__ . '\coil_content_settings_posts_render_callback',
 		'coil_content_settings_posts'
-	);
-
-	add_settings_section(
-		'coil_visual_settings_section',
-		false,
-		false,
-		'coil_visual_settings'
-	);
-
-	// ==== Padlock Settings.
-	add_settings_field(
-		'coil_title_padlock',
-		__( 'Padlock settings', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_title_padlock_settings_render_callback',
-		'coil_visual_settings',
-		'coil_visual_settings_section'
-	);
-
-	// ==== Coil Promotion Bar Settings.
-	add_settings_field(
-		'coil_show_donation_bar',
-		__( 'Display Coil Promotion Bar', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_show_donation_bar_settings_render_callback',
-		'coil_visual_settings',
-		'coil_visual_settings_section'
 	);
 
 	// Tab 3 - Excerpt settings.
@@ -145,18 +120,17 @@ function register_admin_content_settings() {
 		__NAMESPACE__ . '\coil_messaging_settings_validation'
 	);
 
-	// === Exclusive Post Message content
 	add_settings_section(
 		'coil_fully_gated_content_message',
-		__( 'Exclusive Post Message', 'coil-web-monetization' ),
+		__( 'Coil Members Only message', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
 
-	// === Exclusive Block Message content
+	// === Partially gated content message
 	add_settings_section(
 		'coil_partially_gated_content_message',
-		__( 'Exclusive Block Message', 'coil-web-monetization' ),
+		__( 'Split Content message', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
@@ -169,18 +143,10 @@ function register_admin_content_settings() {
 		'coil_messaging_settings'
 	);
 
-	// === Invalid monetization message
-	add_settings_section(
-		'coil_unable_to_verify_message',
-		__( 'Invalid Web Monetization message', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
-		'coil_messaging_settings'
-	);
-
-	// === Coil Promotion Bar message
+	// === Voluntry donation message
 	add_settings_section(
 		'coil_voluntary_donation_message',
-		__( 'Coil Promotion Bar', 'coil-web-monetization' ),
+		__( 'Support creator message', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
@@ -199,6 +165,38 @@ function register_admin_content_settings() {
 		__( 'Learn more button link', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
+	);
+
+	// Tab 5 - Appearance Settings.
+	register_setting(
+		'coil_appearance_settings_group',
+		'coil_appearance_settings_group',
+		__NAMESPACE__ . '\coil_appearance_settings_validation'
+	);
+
+	add_settings_section(
+		'coil_display_settings_section',
+		false,
+		false,
+		'coil_display_settings'
+	);
+
+	// ==== Padlock Settings.
+	add_settings_field(
+		'coil_title_padlock',
+		__( 'Padlock settings', 'coil-web-monetization' ),
+		__NAMESPACE__ . '\coil_title_padlock_settings_render_callback',
+		'coil_display_settings',
+		'coil_display_settings_section'
+	);
+
+	// ==== Coil Promotion Bar Settings.
+	add_settings_field(
+		'coil_show_donation_bar',
+		__( 'Display Coil Promotion Bar', 'coil-web-monetization' ),
+		__NAMESPACE__ . '\coil_show_donation_bar_settings_render_callback',
+		'coil_display_settings',
+		'coil_display_settings_section'
 	);
 }
 
@@ -235,35 +233,20 @@ function coil_global_settings_group_validation( $global_settings ) : array {
 
 /**
  * Allow the radio button options in the posts content section
- * and the padlock and Coil Promotion Bar display checkboxes
  * to be properly validated
  *
- * @param array $monetization_settings The posted radio options from the content settings section and the padlock
- * and Coil Promotion Bar display checkboxes
+ * @param array $monetization_settings The posted radio options from the content settings section
  * @return array
  */
-function coil_monetization_settings_validation( $monetization_settings ) : array {
+function coil_content_settings_posts_validation( $monetization_settings ) : array {
+
+	// A list of valid post types
+	$valid_choices = array_keys( Gating\get_monetization_setting_types() );
 
 	foreach ( $monetization_settings as $key => $option_value ) {
 
-		if ( 'on' === $monetization_settings[ $key ] ) {
-			$monetization_settings[ $key ] = true;
-		} else {
-
-			// If it is not a value returned for the padlock and Coil Promotion Bar settings then it must relate to a post type.
-			$valid_choices = array_keys( Gating\get_monetization_setting_types() );
-
-			// The default value is no-gating (Monetization is enabled and visable to everyone)
-			$value = in_array( $option_value, $valid_choices, true ) ? sanitize_key( $option_value ) : 'no-gating';
-		}
-	}
-
-	// Set the array keys to include 'coil_show_donation_bar' and 'coil_title_padlock'
-	$coil_checkbox_settings = [ 'coil_show_donation_bar', 'coil_title_padlock' ];
-
-	// Loop through the keys and check if they exist, if not set them to false
-	foreach ( $coil_checkbox_settings as $setting_id ) {
-		$monetization_settings[ $setting_id ] = isset( $_POST['coil_monetization_settings_group'][ $setting_id ] );
+		// The default value is no-gating (Monetized and Public)
+		$monetization_settings[ $key ] = in_array( $option_value, $valid_choices, true ) ? sanitize_key( $option_value ) : 'no-gating';
 	}
 
 	return $monetization_settings;
@@ -311,19 +294,23 @@ function coil_messaging_settings_validation( $messaging_settings ) : array {
 }
 
 /**
- * Allow the checkbox options in the visual settings section to
- * be properly validated
+ * Allow the checkboxes that select the padlock and Coil Promotion Bar
+ * display settings to be properly validated
  *
- * @param array $visual_settings The checkbox setting for the padlock display and the Coil Promotion Bar display
+ * @param array $appearance_settings The padlock and Coil Promotion Bar display checkboxes
+ *
  * @return array
  */
-function coil_visual_settings_validation( $visual_settings ) : array {
-	return array_map(
-		function( $checkbox_value ) {
-			return ( isset( $checkbox_value ) ) ? true : false;
-		},
-		(array) $visual_settings
-	);
+function coil_appearance_settings_validation( $appearance_settings ) {
+
+	$display_setting_id_array = [ 'coil_title_padlock', 'coil_show_donation_bar' ];
+
+	foreach ( $display_setting_id_array as $key ) {
+		// Default is checked
+		$appearance_settings[ $key ] = $appearance_settings[ $key ] === 'on' ? true : false;
+	}
+
+	return $appearance_settings;
 }
 
 /* ------------------------------------------------------------------------ *
@@ -485,7 +472,7 @@ function coil_content_settings_posts_render_callback() {
 						<?php
 						foreach ( $form_gating_settings as $setting_key => $setting_value ) :
 							$input_id   = $post_type->name . '_' . $setting_key;
-							$input_name = 'coil_monetization_settings_group[' . $post_type->name . ']';
+							$input_name = 'coil_content_settings_posts_group[' . $post_type->name . ']';
 
 							/**
 							 * Specify the default checked state on the input from
@@ -597,6 +584,7 @@ function coil_messaging_textbox_render_callback( $content_id ) {
  * @return void
  */
 
+
 function coil_messaging_settings_render_callback( $args ) {
 
 	switch ( $args['id'] ) {
@@ -608,9 +596,6 @@ function coil_messaging_settings_render_callback( $args ) {
 			break;
 		case 'coil_verifying_status_message':
 			$helper_text = __( 'Appears while the plugin checks that an active Web Monetization account is in place.', 'coil-web-monetization' );
-			break;
-		case 'coil_unable_to_verify_message':
-			$helper_text = __( 'Appears when content is set to Coil Members Only and browser setup is correct, but Web Monetization doesn\'t start. This can happen when the user doesn\'t have an active Coil account.', 'coil-web-monetization' );
 			break;
 		case 'coil_voluntary_donation_message':
 			$helper_text = __( 'Appears at the bottom of the screen for users without an active Coil Membership, when access is set to Split or Coil Members Only.', 'coil-web-monetization' );
@@ -636,20 +621,24 @@ function coil_messaging_settings_render_callback( $args ) {
 	coil_messaging_textbox_render_callback( $args['id'] );
 }
 
+/**
+ * Renders the output of the display title padlock checkbox
+ * @return void
+ */
+
 function coil_title_padlock_settings_render_callback() {
 
 	/**
-	 * Specify the default checked state on the input form
+	 * Specify the default checked state for the input from
 	 * any settings stored in the database. If the
-	 * input status is not set, default to checked
+	 * input status is not set, default to checked.
 	 */
-
-	$checked_input_value = Admin\get_visual_settings( 'coil_title_padlock', true );
+	$checked_input_value = Admin\get_appearance_settings( 'coil_title_padlock' );
 
 	printf(
-		'<input type="%s" name="%s" id="%s" "%s"/>',
+		'<input type="%s" name="%s" id="%s" "%s">',
 		esc_attr( 'checkbox' ),
-		esc_attr( 'coil_monetization_settings_group[coil_title_padlock]' ),
+		esc_attr( 'coil_appearance_settings_group[coil_title_padlock]' ),
 		esc_attr( 'display_padlock_id' ),
 		checked( 1, $checked_input_value, false )
 	);
@@ -657,9 +646,14 @@ function coil_title_padlock_settings_render_callback() {
 	printf(
 		'<label for="%s">%s</label>',
 		esc_attr( 'display_padlock_id' ),
-		esc_html_e( 'Show padlock next to post title if the post has monetization enabled and is visable to Coil members only.', 'coil-web-monetization' )
+		esc_html_e( 'Show padlock next to post title if the post is for Coil Members Only.', 'coil-web-monetization' )
 	);
 }
+
+/**
+ * Renders the output of the show Coil Promotion Bar footer checkbox
+ * @return void
+ */
 
 function coil_show_donation_bar_settings_render_callback() {
 
@@ -668,12 +662,12 @@ function coil_show_donation_bar_settings_render_callback() {
 	 * any settings stored in the database. If the
 	 * input status is not set, default to checked
 	 */
-	$checked_input_value = Admin\get_visual_settings( 'coil_show_donation_bar', true );
+	$checked_input_value = Admin\get_appearance_settings( 'coil_show_donation_bar' );
 
 	printf(
 		'<input type="%s" name="%s" id="%s" "%s">',
 		esc_attr( 'checkbox' ),
-		esc_attr( 'coil_monetization_settings_group[coil_show_donation_bar]' ),
+		esc_attr( 'coil_appearance_settings_group[coil_show_donation_bar]' ),
 		esc_attr( 'display_donation_bar' ),
 		checked( 1, $checked_input_value, false )
 	);
@@ -681,7 +675,7 @@ function coil_show_donation_bar_settings_render_callback() {
 	printf(
 		'<label for="%s">%s</label>',
 		esc_attr( 'display_donation_bar' ),
-		esc_html_e( 'Show the Coil Promotion Bar on posts that have monetization enabled and are visable to everyone or are split.', 'coil-web-monetization' )
+		esc_html_e( 'Show the support creator message in a footer bar on posts that are Monetized and Public.', 'coil-web-monetization' )
 	);
 }
 
@@ -795,10 +789,11 @@ function render_coil_settings_screen() : void {
 		<?php $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'global_settings'; ?>
 
 		<h2 class="nav-tab-wrapper">
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=global_settings' ); ?>" id="coil-global-settings" class="nav-tab <?php echo $active_tab === 'global_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Global Settings', 'coil-web-monetization' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=monetization_settings' ); ?>" id="coil-monetization-settings" class="nav-tab <?php echo $active_tab === 'monetization_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Monetization Settings', 'coil-web-monetization' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=excerpt_settings' ); ?>" id="coil-excerpt-settings" class="nav-tab <?php echo $active_tab === 'excerpt_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Excerpt Settings', 'coil-web-monetization' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=messaging_settings' ); ?>" id="coil-messaging-settings" class="nav-tab <?php echo $active_tab === 'messaging_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Messaging Settings', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=global_settings' ); ?>" id="coil-global-settings" class="nav-tab <?php echo $active_tab === 'global_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Global', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=monetization_settings' ); ?>" id="coil-monetization-settings" class="nav-tab <?php echo $active_tab === 'monetization_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Monetization', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=excerpt_settings' ); ?>" id="coil-excerpt-settings" class="nav-tab <?php echo $active_tab === 'excerpt_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Excerpts', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=messaging_settings' ); ?>" id="coil-messaging-settings" class="nav-tab <?php echo $active_tab === 'messaging_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Messages', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=appearance_settings' ); ?>" id="coil-appearance-settings" class="nav-tab <?php echo $active_tab === 'appearance_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Appearance', 'coil-web-monetization' ); ?></a>
 		</h2>
 	</div>
 	<div class="wrap coil plugin-settings">
@@ -817,10 +812,8 @@ function render_coil_settings_screen() : void {
 					submit_button();
 					break;
 				case 'monetization_settings':
-					settings_fields( 'coil_monetization_settings_group' );
+					settings_fields( 'coil_content_settings_posts_group' );
 					do_settings_sections( 'coil_content_settings_posts' );
-					settings_fields( 'coil_monetization_settings_group' );
-					do_settings_sections( 'coil_visual_settings' );
 					submit_button();
 					break;
 				case 'excerpt_settings':
@@ -833,6 +826,10 @@ function render_coil_settings_screen() : void {
 					do_settings_sections( 'coil_messaging_settings' );
 					submit_button();
 					break;
+				case 'appearance_settings':
+					settings_fields( 'coil_appearance_settings_group' );
+					do_settings_sections( 'coil_display_settings' );
+					submit_button();
 			}
 			?>
 		</form>
@@ -962,27 +959,45 @@ function dismiss_welcome_notice() {
 /**
  * Translate customizer settings
  *
- * If a user has settings which they saved in the customizer, switch them to settings saved in the wp_options table
+ * If a user has message settings which they saved in the customizer, switch them to settings saved in the wp_options table
  *
  */
 
 function transfer_customizer_message_settings() {
 
-	$existing_options = get_option( 'coil_messaging_settings_group' );
-
-	if ( ! empty( $existing_options ) ) {
-		return;
-	}
-
 	$messaging_settings = [];
 
-	$coil_partial_gating_message     = 'coil_partial_gating_message';
-	$coil_unsupported_message        = 'coil_unsupported_message';
-	$coil_verifying_status_message   = 'coil_verifying_status_message';
-	$coil_unable_to_verify_message   = 'coil_unable_to_verify_message';
-	$coil_voluntary_donation_message = 'coil_voluntary_donation_message';
-	$coil_learn_more_button_text     = 'coil_learn_more_button_text';
-	$coil_learn_more_button_link     = 'coil_learn_more_button_link';
+	$coil_partial_gating_message          = 'coil_partial_gating_message';
+	$coil_unsupported_message             = 'coil_unsupported_message';
+	$coil_verifying_status_message        = 'coil_verifying_status_message';
+	$coil_unable_to_verify_message        = 'coil_unable_to_verify_message';
+	$coil_voluntary_donation_message      = 'coil_voluntary_donation_message';
+	$coil_learn_more_button_text          = 'coil_learn_more_button_text';
+	$coil_learn_more_button_link          = 'coil_learn_more_button_link';
+	$coil_fully_gated_excerpt_message     = 'coil_fully_gated_excerpt_message';
+	$coil_partially_gated_excerpt_message = 'coil_partially_gated_excerpt_message';
+
+	// Checking if deprecated custom messages have been saved and removing them if that is the case.
+	if ( get_theme_mod( $coil_fully_gated_excerpt_message, 'null' ) !== 'null' ) {
+		remove_theme_mod( $coil_fully_gated_excerpt_message );
+	}
+	if ( get_theme_mod( $coil_partially_gated_excerpt_message, 'null' ) !== 'null' ) {
+		remove_theme_mod( $coil_partially_gated_excerpt_message );
+	}
+
+	$customizer_empty = (
+		get_theme_mod( $coil_partial_gating_message, 'null' ) !== 'null'
+		&& get_theme_mod( $coil_unsupported_message, 'null' ) !== 'null'
+		&& get_theme_mod( $coil_verifying_status_message, 'null' ) !== 'null'
+		&& get_theme_mod( $coil_unable_to_verify_message, 'null' ) !== 'null'
+		&& get_theme_mod( $coil_voluntary_donation_message, 'null' ) !== 'null'
+		&& get_theme_mod( $coil_learn_more_button_text, 'null' ) !== 'null'
+		&& get_theme_mod( $coil_learn_more_button_link, 'null' ) !== 'null'
+	);
+
+	if ( $customizer_empty ) {
+		return;
+	}
 
 	// Using 'null' for comparrison becasue custom messages that were deleted remain in the database with the value false, but still need to be removed.
 	if ( get_theme_mod( $coil_partial_gating_message, 'null' ) !== 'null' ) {
@@ -999,8 +1014,8 @@ function transfer_customizer_message_settings() {
 		remove_theme_mod( $coil_verifying_status_message );
 	}
 
-	if ( get_theme_mod( $coil_unable_to_verify_message, 'null' ) !== 'null' ) {
-		$messaging_settings['coil_unable_to_verify_message'] = get_theme_mod( $coil_unable_to_verify_message );
+	// No longer supporting this message. Replcaed with coil_fully_gated_content_message
+	if ( get_theme_mod( $coil_unable_to_verify_message ) ) {
 		remove_theme_mod( $coil_unable_to_verify_message );
 	}
 
@@ -1019,50 +1034,51 @@ function transfer_customizer_message_settings() {
 		remove_theme_mod( $coil_learn_more_button_link );
 	}
 
-	update_option( 'coil_messaging_settings_group', $messaging_settings );
+	$existing_options = get_option( 'coil_messaging_settings_group' );
+
+	if ( false !== $existing_options ) {
+		update_option( 'coil_messaging_settings_group', array_merge( $existing_options, $messaging_settings ) );
+	} else {
+		update_option( 'coil_messaging_settings_group', $messaging_settings );
+	}
 
 }
 
-function transfer_customizer_monetization_settings() {
+/**
+ * Translate customizer settings
+ *
+ * If a user has appearance settings which they saved in the customizer, switch them to settings saved in the wp_options table
+ *
+ */
 
-	$existing_options = get_option( 'coil_monetization_settings_group' );
-
-	$previous_gating_options = get_option( 'coil_content_settings_posts_group' );
+function transfer_customizer_appearance_settings() {
 
 	// If the setting has already been saved or transferred then simply return
-	// Using 'null' for comparrison becasue if the padlock and Coil Promotion Bar messages were unselected they were stored in the database with the value false, but still need to be transferred.
-	if ( get_option( 'coil_monetization_settings_group' ) || ( ! get_option( 'coil_content_settings_posts_group' ) && 'null' === get_theme_mod( 'coil_title_padlock', 'null' ) && 'null' === get_theme_mod( 'coil_show_donation_bar', 'null' ) ) ) {
+	// Using 'null' for comparison becasue if the padlock and support creator messages were unselected they were stored in the database with the value false, but still need to be transferred.
+	if ( 'null' === get_theme_mod( 'coil_title_padlock', 'null' ) && 'null' === get_theme_mod( 'coil_show_donation_bar', 'null' ) ) {
 		return;
 	}
 
 	$coil_title_padlock     = 'coil_title_padlock';
 	$coil_show_donation_bar = 'coil_show_donation_bar';
 
-	$new_monetization_settings = [
-		'coil_title_padlock'     => get_theme_mod( $coil_title_padlock, true ),
-		'coil_show_donation_bar' => get_theme_mod( $coil_show_donation_bar, true ),
-	];
+	$new_appearance_settings = [];
 
-	remove_theme_mod( $coil_title_padlock );
-	remove_theme_mod( $coil_show_donation_bar );
-
-	// Before moving post gating settings across check that post types and gating types are valid.
-	$supported_post_types     = Coil\get_supported_post_types( 'names' );
-	$supported_gating_options = array_keys( Gating\get_monetization_setting_types() );
-
-	if ( ! empty( $supported_post_types ) && ! empty( $previous_gating_options ) ) {
-		foreach ( $previous_gating_options as $post_type => $gating_type ) {
-			if ( in_array( $post_type, $supported_post_types, true ) && in_array( $gating_type, $supported_gating_options, true ) ) {
-				$new_monetization_settings[ $post_type ] = sanitize_key( $gating_type );
-			}
-		}
+	if ( get_theme_mod( $coil_title_padlock, 'null' ) !== 'null' ) {
+		$new_appearance_settings['coil_title_padlock'] = get_theme_mod( $coil_title_padlock, true );
+		remove_theme_mod( $coil_title_padlock );
 	}
 
-	delete_option( 'coil_content_settings_posts_group' );
+	if ( get_theme_mod( $coil_show_donation_bar, 'null' ) !== 'null' ) {
+		$new_appearance_settings['coil_show_donation_bar'] = get_theme_mod( $coil_show_donation_bar, true );
+		remove_theme_mod( $coil_show_donation_bar );
+	}
+
+	$existing_options = get_option( 'coil_appearance_settings_group' );
 
 	if ( false !== $existing_options ) {
-		update_option( 'coil_monetization_settings_group', array_merge( $existing_options, $new_monetization_settings ) );
+		update_option( 'coil_appearance_settings_group', array_merge( $existing_options, $new_appearance_settings ) );
 	} else {
-		update_option( 'coil_monetization_settings_group', $new_monetization_settings );
+		update_option( 'coil_appearance_settings_group', $new_appearance_settings );
 	}
 }
