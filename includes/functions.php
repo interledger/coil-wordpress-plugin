@@ -139,7 +139,7 @@ function load_block_editor_assets() : void {
 		false
 	);
 
-	$monetization_settings = get_option( 'coil_monetization_settings_group' );
+	$monetization_settings = get_option( 'coil_content_settings_posts_group' );
 	wp_localize_script(
 		'coil-editor',
 		'coilEditorParams',

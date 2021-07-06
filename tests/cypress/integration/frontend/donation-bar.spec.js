@@ -60,7 +60,7 @@ describe('Coil options panel', function () {
 });
 
 /**
- * Set the state of the donation bar option.
+ * Set the state of the Coil Promotion Bar option.
  *
  * @param {('check'|'uncheck')} checkboxState
  */
