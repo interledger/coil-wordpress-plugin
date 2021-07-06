@@ -367,16 +367,18 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 	};
 } )( ( props ) => (
 	<div>
-		<SelectControl
-			label={ __( 'Select a monetization status' ) }
-			value={ props.updateSelectValue( props[ props.metaFieldName ] ) }
-			onChange={ ( value ) => props.updateMetaValueOnSelect( value ) }
-			options={ [
-				{ value: 'default', label: 'Default (' + props.defaultLabel + ')' },
-				{ value: 'enabled', label: 'Enabled' },
-				{ value: 'disabled', label: 'Disabled' },
-			] }
-		/>
+		<div>
+			<SelectControl
+				label={ __( 'Select a monetization status', 'coil-web-monetization' ) }
+				value={ props.updateSelectValue( props[ props.metaFieldName ] ) }
+				onChange={ ( value ) => props.updateMetaValueOnSelect( value ) }
+				options={ [
+					{ value: 'default', label: 'Default (' + props.defaultLabel + ')' },
+					{ value: 'enabled', label: 'Enabled' },
+					{ value: 'disabled', label: 'Disabled' },
+				] }
+			/>
+		</div>
 		<div
 			className={ `coil-monetization-settings ${ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : 'default' }` }
 		>
