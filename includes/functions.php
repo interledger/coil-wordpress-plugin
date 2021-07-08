@@ -139,6 +139,13 @@ function load_block_editor_assets() : void {
 		false
 	);
 
+	$monetization_settings = get_option( 'coil_content_settings_posts_group' );
+	wp_localize_script(
+		'coil-editor',
+		'coilEditorParams',
+		[ 'monetizationDefault' => $monetization_settings[ get_current_screen()->post_type ] ]
+	);
+
 	// Load JS i18n, requires WP 5.0+.
 	if ( ! function_exists( 'wp_set_script_translations' ) ) {
 		return;

@@ -63,9 +63,9 @@ function get_monetization_setting_types( $show_default = false ) : array {
 		$settings['default'] = esc_html__( 'Use Default', 'coil-web-monetization' );
 	}
 
-	$settings['no']        = esc_html__( 'No Monetization', 'coil-web-monetization' );
-	$settings['no-gating'] = esc_html__( 'Monetized and Public', 'coil-web-monetization' );
-	$settings['gate-all']  = esc_html__( 'Paying Viewers Only', 'coil-web-monetization' );
+	$settings['no']        = esc_html__( 'Disabled', 'coil-web-monetization' );
+	$settings['no-gating'] = esc_html__( 'Enabled & Public', 'coil-web-monetization' );
+	$settings['gate-all']  = esc_html__( 'Enabled & Exclusive', 'coil-web-monetization' );
 
 	return $settings;
 }
@@ -79,11 +79,11 @@ function get_monetization_setting_types( $show_default = false ) : array {
 function get_valid_gating_types() {
 
 	$valid = [
-		'gate-all', // Paying Viewers Only.
+		'gate-all', // Monetization is enabled and content is visable to Coil members only.
 		'gate-tagged-blocks', // split content.
-		'no', // no monetization.
-		'no-gating', // monetized and public.
-		'default', // whatever is set on the post to revert back.
+		'no', // Monetization is disabled.
+		'no-gating', // Monetization is enabled and visable to everyone.
+		'default', // Whatever is set on the post to revert back.
 	];
 	return $valid;
 }
@@ -128,7 +128,6 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 
 /**
  * Maybe restrict (gate) visibility of the post content on archive pages, home pages, and feeds.
- * If the post is gated then no excerpt will show unless one as been set explicitly.
  *
  * @param string $content Post content.
  *
@@ -272,17 +271,17 @@ function get_taxonomy_term_gating( $post_id ) {
 	// 3) If terms have gating, rank by priority.
 	if ( in_array( 'gate-all', $term_gating_options, true ) ) {
 
-		// Priority 1 - Monetized Member Only.
+		// Priority 1 - Monetization is enabled and visable to Coil members only.
 		return 'gate-all';
 
 	} elseif ( in_array( 'no-gating', $term_gating_options, true ) ) {
 
-		// Priority 2 - Monetized and Public.
+		// Priority 2 - Monetization is enabled and visable to everyone.
 		return 'no-gating';
 
 	} elseif ( in_array( 'no', $term_gating_options, true ) ) {
 
-		// Priority 3 - No Monetization.
+		// Priority 3 - Monetization is disabled.
 		return 'no';
 
 	} else {

@@ -1,3 +1,10 @@
+.coil-post-monetization-level {
+	&.default,
+	&.no {
+		display: none;
+	}
+}
+
 .coil-hide-monetize-users:not( .has-warning ),
 .coil-show-monetize-users:not( .has-warning ) {
 	position: relative;
