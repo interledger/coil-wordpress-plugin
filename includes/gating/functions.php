@@ -64,8 +64,8 @@ function get_monetization_setting_types( $show_default = false ) : array {
 	}
 
 	$settings['no']        = esc_html__( 'Disabled', 'coil-web-monetization' );
-	$settings['no-gating'] = esc_html__( 'Enabled for Everyone', 'coil-web-monetization' );
-	$settings['gate-all']  = esc_html__( 'Enabled for Coil Members Only', 'coil-web-monetization' );
+	$settings['no-gating'] = esc_html__( 'Enabled & Public', 'coil-web-monetization' );
+	$settings['gate-all']  = esc_html__( 'Enabled & Exclusive', 'coil-web-monetization' );
 
 	return $settings;
 }
