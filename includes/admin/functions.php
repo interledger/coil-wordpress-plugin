@@ -464,7 +464,7 @@ function get_messaging_setting( $field_id, $default = false ) {
 }
 
 /**
- * Retrieve the padlock and donation bar display settings
+ * Retrieve the padlock and Coil Promotion Bar display settings
  * using a key from coil_appearance_settings_group (serialized).
  *
  * @param string $field_id The named key in the wp_options serialized array.

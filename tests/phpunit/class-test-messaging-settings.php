@@ -74,7 +74,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Adding custom messages to the database
 		$custom_message = [
-			self::$id['donation_bar']    => 'Voluntary donation',
+			self::$id['donation_bar']    => 'Coil promotion',
 			self::$id['pending']         => 'Loading content',
 			self::$id['fully_gated']     => 'Fully gated',
 			self::$id['partially_gated'] => 'Partially gated',
@@ -195,7 +195,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Adding custom messages to the database from the settings panel
 		$settings_panel_messages = [
-			self::$id['donation_bar'] => 'Voluntary donation',
+			self::$id['donation_bar'] => 'Coil promotion',
 			self::$id['pending']      => 'Please be patient while content loads.',
 			self::$id['button_text']  => '',
 		];
@@ -226,7 +226,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		];
 
 		// Checking that all messages that were retrieved are correct
-		$this->assertSame( 'Voluntary donation', $message[ self::$id['donation_bar'] ] );
+		$this->assertSame( 'Coil promotion', $message[ self::$id['donation_bar'] ] );
 		$this->assertSame( 'Loading content', $message[ self::$id['pending'] ] );
 		$this->assertSame( 'Fully gated', $message[ self::$id['fully_gated'] ] );
 		$this->assertSame( 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.', $message[ self::$id['partially_gated'] ] );

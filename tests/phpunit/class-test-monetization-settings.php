@@ -134,7 +134,7 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing if the donation bar footer shows by default.
+	 * Testing if the Coil Promotion Bar shows by default.
 	 *
 	 * @return void
 	 */
@@ -146,7 +146,7 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing if the donation bar display setting is retrieved correctly from the wp_options table.
+	 * Testing if the Coil Promotion Bar display setting is retrieved correctly from the wp_options table.
 	 *
 	 * @return void
 	 */
@@ -168,7 +168,7 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing if a user has donation bar and padlock display settings which they saved in the customizer that they are migrated successfully to the wp_options table
+	 * Testing if a user has the Coil Promotion Bar and padlock display settings which they saved in the customizer that they are migrated successfully to the wp_options table
 	 * In the case where both settings had been set in the customizer and no settings had been added to the settings panel.
 	 *
 	 * @return void
@@ -199,7 +199,7 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing if a user has donation bar and padlock display settings which they saved in the customizer that they are migrated successfully to the wp_options table
+	 * Testing if a user has the Coil Promotion Bar and padlock display settings which they saved in the customizer that they are migrated successfully to the wp_options table
 	 * In the case where both settings had been set in the customizer and no settings had been added to the settings panel.
 	 *
 	 * @return void
@@ -229,7 +229,7 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing if a user has donation bar and padlock display settings which they saved in the customizer that they are migrated successfully to the wp_options table
+	 * Testing if a user has the Coil Promotion Bar and padlock display settings which they saved in the customizer that they are migrated successfully to the wp_options table
 	 * In the case where both settings had been set in the customizer and no settings had been added to the settings panel.
 	 *
 	 * @return void
@@ -260,7 +260,7 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing if a user has donation bar and padlock display settings which they saved in the customizer that they are migrated successfully to the wp_options table
+	 * Testing if a user has the Coil Promotion Bar and padlock display settings which they saved in the customizer that they are migrated successfully to the wp_options table
 	 * In cases where some settings are saved to the customizer and others have been saved to the settings panel.
 	 *
 	 * @return void

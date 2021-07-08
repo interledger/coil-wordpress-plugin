@@ -94,7 +94,7 @@ function register_admin_content_settings() {
 		// ==== Content Settings.
 	add_settings_section(
 		'coil_content_settings_posts_section',
-		false,
+		__( 'Content Settings', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_content_settings_posts_render_callback',
 		'coil_content_settings_posts'
 	);
@@ -120,17 +120,18 @@ function register_admin_content_settings() {
 		__NAMESPACE__ . '\coil_messaging_settings_validation'
 	);
 
+	// === Exclusive Post Message
 	add_settings_section(
 		'coil_fully_gated_content_message',
-		__( 'Paying Viewers Only message', 'coil-web-monetization' ),
+		__( 'Exclusive Post Message', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
 
-	// === Partially gated content message
+	// === Exclusive Block Message
 	add_settings_section(
 		'coil_partially_gated_content_message',
-		__( 'Split Content message', 'coil-web-monetization' ),
+		__( 'Exclusive Block Message', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
@@ -143,10 +144,10 @@ function register_admin_content_settings() {
 		'coil_messaging_settings'
 	);
 
-	// === Voluntry donation message
+	// === Coil Promotion Bar message
 	add_settings_section(
 		'coil_voluntary_donation_message',
-		__( 'Support creator message', 'coil-web-monetization' ),
+		__( 'Coil Promotion Bar Message', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
@@ -190,10 +191,10 @@ function register_admin_content_settings() {
 		'coil_display_settings_section'
 	);
 
-	// ==== Donation bar Settings.
+	// ==== Coil Promotion Bar Settings.
 	add_settings_field(
 		'coil_show_donation_bar',
-		__( 'Display support creator message', 'coil-web-monetization' ),
+		__( 'Display Coil Promotion Bar', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_show_donation_bar_settings_render_callback',
 		'coil_display_settings',
 		'coil_display_settings_section'
@@ -294,10 +295,10 @@ function coil_messaging_settings_validation( $messaging_settings ) : array {
 }
 
 /**
- * Allow the checkboxes that select the padlock and donation bar
+ * Allow the checkboxes that select the padlock and Coil Promotion Bar
  * display settings to be properly validated
  *
- * @param array $appearance_settings The padlock and donation bar display checkboxes
+ * @param array $appearance_settings The padlock and Coil Promotion Bar display checkboxes
  *
  * @return array
  */
@@ -478,7 +479,7 @@ function coil_content_settings_posts_render_callback() {
 							 * Specify the default checked state on the input from
 							 * any settings stored in the database. If the individual
 							 * input status is not set, default to the first radio
-							 * option (No Monetization)
+							 * option (Monetization disabled)
 							 */
 							$checked_input = false;
 							if ( $setting_key === 'no' ) {
@@ -589,22 +590,22 @@ function coil_messaging_settings_render_callback( $args ) {
 
 	switch ( $args['id'] ) {
 		case 'coil_fully_gated_content_message':
-			$helper_text = __( 'Appears for non-paying viewers over hidden Paying Viewers Only content.', 'coil-web-monetization' );
+			$helper_text = __( 'This message replaces the post content for users without an active Coil Membership, when access is set to Coil Members Only.', 'coil-web-monetization' );
 			break;
 		case 'coil_partially_gated_content_message':
-			$helper_text = __( 'Appears for non-paying viewers over hidden blocks set to Only Show Paying Viewers on a Split Content post / page.', 'coil-web-monetization' );
+			$helper_text = __( 'This message replaces a specific block for users without an active Coil Membership, when access is set to Coil Members Only.', 'coil-web-monetization' );
 			break;
 		case 'coil_verifying_status_message':
 			$helper_text = __( 'Appears while the plugin checks that an active Web Monetization account is in place.', 'coil-web-monetization' );
 			break;
 		case 'coil_voluntary_donation_message':
-			$helper_text = __( 'Appears for non-paying viewers in a footer bar when content is set to Monetized and Public or Split Content.', 'coil-web-monetization' );
+			$helper_text = __( 'Appears at the bottom of the screen for users without an active Coil Membership, when access is set to Split or Coil Members Only.', 'coil-web-monetization' );
 			break;
 		case 'coil_learn_more_button_text':
-			$helper_text = __( 'Text on the "Learn more" shown below the Paying Viewers Only message and in the support creator footer.', 'coil-web-monetization' );
+			$helper_text = __( 'Text on the "Learn more" button shown below the Exclusive Post Message and in the Coil Promotion Bar.', 'coil-web-monetization' );
 			break;
 		case 'coil_learn_more_button_link':
-			$helper_text = __( '"Learn more" button link/URL to direct non-paying viewers to Coil\'s website. Shown below the Paying Viewers Only message and in the support creator footer.', 'coil-web-monetization' );
+			$helper_text = __( '"Learn more" button link/URL to direct users without an active Coil Membership to Coil\'s website. Shown below the Exclusive Post Message and in the Coil Promotion Bar.', 'coil-web-monetization' );
 			break;
 		default:
 			$helper_text = '';
@@ -646,12 +647,12 @@ function coil_title_padlock_settings_render_callback() {
 	printf(
 		'<label for="%s">%s</label>',
 		esc_attr( 'display_padlock_id' ),
-		esc_html_e( 'Show padlock next to post title if the post is for Paying Viewers Only.', 'coil-web-monetization' )
+		esc_html_e( 'Show padlock next to post title if the post is for Coil Members Only.', 'coil-web-monetization' )
 	);
 }
 
 /**
- * Renders the output of the show donation bar footer checkbox
+ * Renders the output of the show Coil Promotion Bar footer checkbox
  * @return void
  */
 
@@ -675,7 +676,7 @@ function coil_show_donation_bar_settings_render_callback() {
 	printf(
 		'<label for="%s">%s</label>',
 		esc_attr( 'display_donation_bar' ),
-		esc_html_e( 'Show the support creator message in a footer bar on posts that are Monetized and Public.', 'coil-web-monetization' )
+		esc_html_e( 'Show the Coil Promotion Bar on posts that have monetization enabled and are visable to everyone or are split.', 'coil-web-monetization' )
 	);
 }
 
