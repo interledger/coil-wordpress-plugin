@@ -94,7 +94,7 @@ function register_admin_content_settings() {
 		// ==== Content Settings.
 	add_settings_section(
 		'coil_content_settings_posts_section',
-		false,
+		__( 'Content Settings', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_content_settings_posts_render_callback',
 		'coil_content_settings_posts'
 	);
@@ -120,17 +120,18 @@ function register_admin_content_settings() {
 		__NAMESPACE__ . '\coil_messaging_settings_validation'
 	);
 
+	// === Exclusive Post Message
 	add_settings_section(
 		'coil_fully_gated_content_message',
-		__( 'Coil Members Only message', 'coil-web-monetization' ),
+		__( 'Exclusive Post Message', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
 
-	// === Partially gated content message
+	// === Exclusive Block Message
 	add_settings_section(
 		'coil_partially_gated_content_message',
-		__( 'Split Content message', 'coil-web-monetization' ),
+		__( 'Exclusive Block Message', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
@@ -143,10 +144,10 @@ function register_admin_content_settings() {
 		'coil_messaging_settings'
 	);
 
-	// === Voluntry donation message
+	// === Coil Promotion Bar message
 	add_settings_section(
 		'coil_voluntary_donation_message',
-		__( 'Support creator message', 'coil-web-monetization' ),
+		__( 'Coil Promotion Bar Message', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
 	);
@@ -675,7 +676,7 @@ function coil_show_donation_bar_settings_render_callback() {
 	printf(
 		'<label for="%s">%s</label>',
 		esc_attr( 'display_donation_bar' ),
-		esc_html_e( 'Show the support creator message in a footer bar on posts that are Monetized and Public.', 'coil-web-monetization' )
+		esc_html_e( 'Show the Coil Promotion Bar on posts that have monetization enabled and are visable to everyone or are split.', 'coil-web-monetization' )
 	);
 }
 

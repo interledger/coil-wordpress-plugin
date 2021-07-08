@@ -128,7 +128,6 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 
 /**
  * Maybe restrict (gate) visibility of the post content on archive pages, home pages, and feeds.
- * If the post is gated then no excerpt will show unless one as been set explicitly.
  *
  * @param string $content Post content.
  *

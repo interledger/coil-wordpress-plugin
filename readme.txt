@@ -109,7 +109,7 @@ First release.
 
 = v1.9.0 =
 
-= 20 May 2021 =
+= 13 July 2021 =
 
 * Fix - Fixed embedded videos that were set to Coil Members Only so that they now display correctly once monetization has begun.
 * Fix - The Coil Promotion Bar message no longer displays for Coil members.
@@ -118,8 +118,12 @@ First release.
 * Enhancement - A sidebar has been added throughout the settings panel with help, FAQ and documentation links.
 * Enhancement - All customization features have been consolidated into the Coil settings panel (including message, button text and link, and padlock and Coil Promotion Bar display customization).
 * Enhancement - The wording explaining message customizations has been simplified for easier reading.
+* Enhancement - The wording describing monetization settings has been adjusted. The new description distinguishes between monetization being enabled or disabled. If it is enabled users can select who the content is visable to: everyone (previously Monetized and Public), Coil members only or split.
+* Enhancement - When creating posts / pages the monetization options have been made easier to understand. A dropdown menu has three monetization options: default, enabled and disabled. If monetization is enabled additional options appear to set visibility: everyone (previously Monetized and Public), Coil Members Only or Split.
+* Enhancement - When creating posts / pgaes the default monetization setting is listed next to "Default" so there is no need to remember what it was set to.
 * Enhancement - The new default monetization setting for pages and posts is now enabled and visible to everyone instead of having monetization disabled by default.
 
+* Tweak - Certain messages have been deprecated. These include the fully and partially gated excerpt messages, as well as the unable to verify message which has been merged with the unsupported message.
 * Tweak - Code has been linted.
 * Tweak - Eslint is the new linting tool being used instead of JSHint.
 * Tweak - The Grunt watch task now also includes minifying the relevant CSS files as well to reflect SCSS changes made in real time during development.
