@@ -968,7 +968,7 @@ function transfer_customizer_message_settings() {
 
 	$messaging_settings = [];
 
-	$coil_partial_gating_message          = 'coil_partial_gating_message';
+	$coil_partial_gating_message          = 'coil_partially_gated_content_message';
 	$coil_unsupported_message             = 'coil_unsupported_message';
 	$coil_verifying_status_message        = 'coil_verifying_status_message';
 	$coil_unable_to_verify_message        = 'coil_unable_to_verify_message';
@@ -987,13 +987,13 @@ function transfer_customizer_message_settings() {
 	}
 
 	$customizer_empty = (
-		get_theme_mod( $coil_partial_gating_message, 'null' ) !== 'null'
-		&& get_theme_mod( $coil_unsupported_message, 'null' ) !== 'null'
-		&& get_theme_mod( $coil_verifying_status_message, 'null' ) !== 'null'
-		&& get_theme_mod( $coil_unable_to_verify_message, 'null' ) !== 'null'
-		&& get_theme_mod( $coil_voluntary_donation_message, 'null' ) !== 'null'
-		&& get_theme_mod( $coil_learn_more_button_text, 'null' ) !== 'null'
-		&& get_theme_mod( $coil_learn_more_button_link, 'null' ) !== 'null'
+		get_theme_mod( $coil_partial_gating_message, 'null' ) === 'null'
+		&& get_theme_mod( $coil_unsupported_message, 'null' ) === 'null'
+		&& get_theme_mod( $coil_verifying_status_message, 'null' ) === 'null'
+		&& get_theme_mod( $coil_unable_to_verify_message, 'null' ) === 'null'
+		&& get_theme_mod( $coil_voluntary_donation_message, 'null' ) === 'null'
+		&& get_theme_mod( $coil_learn_more_button_text, 'null' ) === 'null'
+		&& get_theme_mod( $coil_learn_more_button_link, 'null' ) === 'null'
 	);
 
 	if ( $customizer_empty ) {
@@ -1005,7 +1005,18 @@ function transfer_customizer_message_settings() {
 		$messaging_settings['coil_partially_gated_content_message'] = get_theme_mod( $coil_partial_gating_message );
 		remove_theme_mod( $coil_partial_gating_message );
 	}
-	if ( get_theme_mod( $coil_unsupported_message, 'null' ) !== 'null' ) {
+
+	// The two fully gated content messages have been combined into one.
+	// If one has been added to the customizer and not the other then it will be migrated across.
+	// If both are present the coil_unsupported_message will be selected.
+	if ( get_theme_mod( $coil_unable_to_verify_message ) !== 'null' && get_theme_mod( $coil_unsupported_message, 'null' ) === 'null' ) {
+		$messaging_settings['coil_fully_gated_content_message'] = get_theme_mod( $coil_unable_to_verify_message );
+		remove_theme_mod( $coil_unable_to_verify_message );
+	} elseif ( get_theme_mod( $coil_unable_to_verify_message ) !== 'null' && get_theme_mod( $coil_unsupported_message, 'null' ) !== 'null' ) {
+		$messaging_settings['coil_fully_gated_content_message'] = get_theme_mod( $coil_unsupported_message );
+		remove_theme_mod( $coil_unsupported_message );
+		remove_theme_mod( $coil_unable_to_verify_message );
+	} elseif ( get_theme_mod( $coil_unsupported_message, 'null' ) !== 'null' && get_theme_mod( $coil_unable_to_verify_message ) === 'null' ) {
 		$messaging_settings['coil_fully_gated_content_message'] = get_theme_mod( $coil_unsupported_message );
 		remove_theme_mod( $coil_unsupported_message );
 	}
@@ -1013,11 +1024,6 @@ function transfer_customizer_message_settings() {
 	if ( get_theme_mod( $coil_verifying_status_message, 'null' ) !== 'null' ) {
 		$messaging_settings['coil_verifying_status_message'] = get_theme_mod( $coil_verifying_status_message );
 		remove_theme_mod( $coil_verifying_status_message );
-	}
-
-	// No longer supporting this message. Replcaed with coil_fully_gated_content_message
-	if ( get_theme_mod( $coil_unable_to_verify_message ) ) {
-		remove_theme_mod( $coil_unable_to_verify_message );
 	}
 
 	if ( get_theme_mod( $coil_voluntary_donation_message, 'null' ) !== 'null' ) {
