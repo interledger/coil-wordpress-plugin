@@ -189,7 +189,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		$this->assertFalse( get_theme_mod( self::$id['donation_bar'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['pending'] ) );
 		$this->assertFalse( get_theme_mod( 'coil_unsupported_message' ) );
-		// $this->assertFalse( get_theme_mod( self::$id['partially_gated'] ) );
+		$this->assertFalse( get_theme_mod( self::$id['partially_gated'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['button_text'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['button_link'] ) );
 		// Checking that deprecated message was removed
