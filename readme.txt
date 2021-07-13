@@ -109,7 +109,7 @@ First release.
 
 = v1.9.0 =
 
-= 13 July 2021 =
+= 15 July 2021 =
 
 * Fix - Fixed embedded videos that were set to Coil Members Only so that they now display correctly once monetization has begun.
 * Fix - The Coil Promotion Bar message no longer displays for Coil members.
@@ -119,7 +119,7 @@ First release.
 * Enhancement - All customization features have been consolidated into the Coil settings panel (including message, button text and link, and padlock and Coil Promotion Bar display customization).
 * Enhancement - The wording explaining message customizations has been simplified for easier reading.
 * Enhancement - The wording describing monetization settings has been adjusted. The new description distinguishes between monetization being enabled or disabled. If it is enabled users can select who the content is visable to: everyone (previously Monetized and Public), Coil members only or split.
-* Enhancement - When creating posts / pages the monetization options have been made easier to understand. A dropdown menu has three monetization options: default, enabled and disabled. If monetization is enabled additional options appear to set visibility: everyone (previously Monetized and Public), Coil Members Only or Split.
+* Enhancement - When creating posts / pages the monetization options have been made easier to understand. A simple Enabled / Disabled selector has been added with extra options for fine tuning the monetization level.
 * Enhancement - When creating posts / pgaes the default monetization setting is listed next to "Default" so there is no need to remember what it was set to.
 * Enhancement - The new default monetization setting for pages and posts is now enabled and visible to everyone instead of having monetization disabled by default.
 

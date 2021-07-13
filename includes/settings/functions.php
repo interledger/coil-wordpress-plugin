@@ -968,7 +968,7 @@ function transfer_customizer_message_settings() {
 
 	$messaging_settings = [];
 
-	$coil_partial_gating_message          = 'coil_partially_gated_content_message';
+	$coil_partial_gating_message          = 'coil_partial_gating_message';
 	$coil_unsupported_message             = 'coil_unsupported_message';
 	$coil_verifying_status_message        = 'coil_verifying_status_message';
 	$coil_unable_to_verify_message        = 'coil_unable_to_verify_message';

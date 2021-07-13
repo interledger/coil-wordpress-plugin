@@ -158,7 +158,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		// Leaving one option set to an empty string becasue this state occurs in the database once a custom message has been deleted
 		set_theme_mod( self::$id['button_link'], '' );
 		set_theme_mod( self::$id['donation_bar'], self::$example_messages[ self::$id['donation_bar'] ] );
-		set_theme_mod( self::$id['partially_gated'], self::$example_messages[ self::$id['partially_gated'] ] );
+		set_theme_mod( 'coil_partial_gating_message', self::$example_messages[ self::$id['partially_gated'] ] );
 		// Testing removal of a deprecated message
 		set_theme_mod( self::$id['unverified'], 'Unable to verify' );
 		set_theme_mod( self::$id['fully_gated_excerpt_message'], 'Fully gated excerpt' );
@@ -188,8 +188,8 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		// Checking that the theme_mod messages have been removed
 		$this->assertFalse( get_theme_mod( self::$id['donation_bar'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['pending'] ) );
-		$this->assertFalse( get_theme_mod( self::$id['fully_gated'] ) );
-		// $this->assertFalse( get_theme_mod( self::$id['partially_gated'] ) );
+		$this->assertFalse( get_theme_mod( 'coil_unsupported_message' ) );
+		$this->assertFalse( get_theme_mod( 'coil_partial_gating_message' ) );
 		$this->assertFalse( get_theme_mod( self::$id['button_text'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['button_link'] ) );
 		// Checking that deprecated message was removed
@@ -224,7 +224,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		// Checking that the theme_mod messages remained empty
 		$this->assertFalse( get_theme_mod( self::$id['donation_bar'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['pending'] ) );
-		$this->assertFalse( get_theme_mod( self::$id['fully_gated'] ) );
+		$this->assertFalse( get_theme_mod( 'coil_unsupported_message' ) );
 		$this->assertFalse( get_theme_mod( self::$id['partially_gated'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['button_text'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['button_link'] ) );
@@ -285,7 +285,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		// Checking that the theme_mod messages have been removed
 		$this->assertFalse( get_theme_mod( self::$id['donation_bar'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['pending'] ) );
-		$this->assertFalse( get_theme_mod( self::$id['fully_gated'] ) );
+		$this->assertFalse( get_theme_mod( 'coil_unsupported_message' ) );
 		$this->assertFalse( get_theme_mod( self::$id['partially_gated'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['button_text'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['button_link'] ) );
@@ -311,7 +311,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		$retrieved_fully_gated_message = Admin\get_messaging_setting_or_default( self::$id['fully_gated'] );
 
 		// Checking that the unverified message has been transferred instead of using the unsupported default message
-		//$this->assertSame( 'Unable to verify', $retrieved_fully_gated_message );
+		$this->assertSame( 'Unable to verify', $retrieved_fully_gated_message );
 		// Checking that the theme_mod message was removed
 		$this->assertFalse( get_theme_mod( self::$id['unverified'] ) );
 	}
