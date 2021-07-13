@@ -109,7 +109,7 @@ First release.
 
 = v1.9.0 =
 
-= 13 July 2021 =
+= 15 July 2021 =
 
 * Fix - Fixed embedded videos that were set to Coil Members Only so that they now display correctly once monetization has begun.
 * Fix - The Coil Promotion Bar message no longer displays for Coil members.
