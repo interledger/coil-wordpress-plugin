@@ -140,7 +140,7 @@ function load_block_editor_assets() : void {
 	);
 
 	$monetization_settings = get_option( 'coil_content_settings_posts_group' );
-	$monetization_default = isset( $monetization_settings[ get_current_screen()->post_type ] ) ? $monetization_settings[ get_current_screen()->post_type ] : 'default';
+	$monetization_default  = isset( $monetization_settings[ get_current_screen()->post_type ] ) ? $monetization_settings[ get_current_screen()->post_type ] : 'default';
 
 	wp_localize_script(
 		'coil-editor',
