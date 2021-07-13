@@ -325,7 +325,7 @@ function add_redirect_customizer_section( $wp_customize ) : void {
 	);
 
 	$description  = '<p>' . sprintf(
-		__( 'Message customization settings have moved to the ', 'coil-web-monetization' ) . '<a href="%s">' . __( 'Message Settings tab', 'coil-web-monetization' ) . '</a>' . '.',
+		__( 'Message customization settings have been moved to the ', 'coil-web-monetization' ) . '<a href="%s">' . __( 'Message Settings tab', 'coil-web-monetization' ) . '</a>' . '.',
 		esc_url( admin_url( 'admin.php?page=coil_settings&tab=messaging_settings', COIL__FILE__ ) )
 	) . '</p>';
 	$description .= '<p>' . sprintf(
