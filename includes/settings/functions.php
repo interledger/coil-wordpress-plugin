@@ -195,7 +195,7 @@ function register_admin_content_settings() {
 	add_settings_field(
 		'coil_show_donation_bar',
 		__( 'Display Coil Promotion Bar', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_show_donation_bar_settings_render_callback',
+		__NAMESPACE__ . '\coil_show_promotion_bar_settings_render_callback',
 		'coil_display_settings',
 		'coil_display_settings_section'
 	);
@@ -656,7 +656,7 @@ function coil_title_padlock_settings_render_callback() {
  * @return void
  */
 
-function coil_show_donation_bar_settings_render_callback() {
+function coil_show_promotion_bar_settings_render_callback() {
 
 	/**
 	 * Specify the default checked state on the input from
