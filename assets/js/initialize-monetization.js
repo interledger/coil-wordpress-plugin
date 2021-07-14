@@ -16,7 +16,7 @@
 		learnMoreButtonText = coilParams.learn_more_button_text,
 		learnMoreButtonLink = coilParams.learn_more_button_link,
 		siteLogo = coilParams.site_logo,
-		showDonationBar = Boolean( coilParams.show_donation_bar ); // Cast to boolean - wp_localize_script forces string values.
+		showPromotionBar = Boolean( coilParams.show_donation_bar ); // Cast to boolean - wp_localize_script forces string values.
 
 	const subscriberOnlyMessage = wp.template( 'subscriber-only-message' );
 	const splitContentMessage = wp.template( 'split-content-message' );
@@ -248,7 +248,7 @@
 
 				showContentContainer();
 
-				if ( showDonationBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+				if ( showPromotionBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 					$( 'body' ).append( showBannerMessage( promotionBar ) );
 					addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 				}
@@ -348,14 +348,14 @@
 
 			showContentContainer();
 
-			if ( showDonationBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+			if ( showPromotionBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 				$( 'body' ).append( showBannerMessage( promotionBar ) );
 				addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 			}
 		} else if ( isMonetizedAndPublic() ) {
 			// Content has monetization enabled and visible for everyone but no extension found.
 
-			if ( showDonationBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+			if ( showPromotionBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 				$( 'body' ).append( showBannerMessage( promotionBar ) );
 				addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 			}
@@ -414,7 +414,7 @@
 			setTimeout( function() {
 				showVerificationFailureMessage();
 			}, 5000 );
-		} else if ( showDonationBar && monetizationNotInitialized() && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+		} else if ( showPromotionBar && monetizationNotInitialized() && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 			$( 'body' ).append( showBannerMessage( promotionBar ) );
 			addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 		}
@@ -451,7 +451,7 @@
 					showVerificationFailureMessage();
 				} else if ( isMonetizedAndPublic() ) {
 					// Content has monetization enabled and is visable to everyone but extension is stopped.
-					if ( showDonationBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+					if ( showPromotionBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 						$( 'body' ).append( showBannerMessage( promotionBar ) );
 						addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 					}
@@ -484,7 +484,7 @@
 			$( 'div.coil-post-excerpt' ).remove(); // Remove post excerpt.
 		}
 
-		if ( showDonationBar ) {
+		if ( showPromotionBar ) {
 			removeDonationBar();
 		}
 
