@@ -8,7 +8,7 @@
 
 	const contentContainer = coilParams.content_container,
 		fullyGated = coilParams.fully_gated,
-		voluntaryDonation = coilParams.voluntary_donation,
+		promotionBar = coilParams.voluntary_donation,
 		loadingContent = coilParams.loading_content,
 		partialGating = coilParams.partial_gating,
 		postExcerpt = coilParams.post_excerpt,
@@ -249,7 +249,7 @@
 				showContentContainer();
 
 				if ( showDonationBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-					$( 'body' ).append( showBannerMessage( voluntaryDonation ) );
+					$( 'body' ).append( showBannerMessage( promotionBar ) );
 					addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 				}
 			} else {
@@ -349,14 +349,14 @@
 			showContentContainer();
 
 			if ( showDonationBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-				$( 'body' ).append( showBannerMessage( voluntaryDonation ) );
+				$( 'body' ).append( showBannerMessage( promotionBar ) );
 				addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 			}
 		} else if ( isMonetizedAndPublic() ) {
 			// Content has monetization enabled and visible for everyone but no extension found.
 
 			if ( showDonationBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-				$( 'body' ).append( showBannerMessage( voluntaryDonation ) );
+				$( 'body' ).append( showBannerMessage( promotionBar ) );
 				addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 			}
 		}
@@ -415,7 +415,7 @@
 				showVerificationFailureMessage();
 			}, 5000 );
 		} else if ( showDonationBar && monetizationNotInitialized() && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-			$( 'body' ).append( showBannerMessage( voluntaryDonation ) );
+			$( 'body' ).append( showBannerMessage( promotionBar ) );
 			addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 		}
 	}
@@ -452,7 +452,7 @@
 				} else if ( isMonetizedAndPublic() ) {
 					// Content has monetization enabled and is visable to everyone but extension is stopped.
 					if ( showDonationBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-						$( 'body' ).append( showBannerMessage( voluntaryDonation ) );
+						$( 'body' ).append( showBannerMessage( promotionBar ) );
 						addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 					}
 				}
