@@ -166,7 +166,7 @@
 		return jQuery( 'p.coil-post-excerpt' ).remove();
 	}
 
-	function removeDonationBar() {
+	function removePromotionBar() {
 		return $( 'div' ).remove( '.coil-banner-message-container' );
 	}
 
@@ -485,7 +485,7 @@
 		}
 
 		if ( showPromotionBar ) {
-			removeDonationBar();
+			removePromotionBar();
 		}
 
 		// Show embedded content.
