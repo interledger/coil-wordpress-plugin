@@ -8,7 +8,7 @@
 
 	const contentContainer = coilParams.content_container,
 		fullyGated = coilParams.fully_gated,
-		promotionBar = coilParams.voluntary_donation,
+		promotionBar = coilParams.promotion_bar,
 		loadingContent = coilParams.loading_content,
 		partialGating = coilParams.partial_gating,
 		postExcerpt = coilParams.post_excerpt,

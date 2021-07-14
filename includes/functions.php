@@ -198,7 +198,7 @@ function load_full_assets() : void {
 		'coil_js_ui_messages',
 		[
 			'content_container'       => Admin\get_global_settings( 'coil_content_container' ),
-			'voluntary_donation'      => Admin\get_messaging_setting_or_default( 'coil_voluntary_donation_message' ),
+			'promotion_bar'           => Admin\get_messaging_setting_or_default( 'coil_promotion_bar_message' ),
 			'loading_content'         => Admin\get_messaging_setting_or_default( 'coil_verifying_status_message' ),
 			'fully_gated'             => Admin\get_messaging_setting_or_default( 'coil_fully_gated_content_message' ),
 			'partial_gating'          => Admin\get_messaging_setting_or_default( 'coil_partially_gated_content_message' ),

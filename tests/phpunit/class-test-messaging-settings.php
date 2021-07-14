@@ -20,7 +20,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 	*/
 	protected static $id = [
 		'unverified'                      => 'coil_unable_to_verify_message',
-		'donation_bar'                    => 'coil_voluntary_donation_message',
+		'promotion_bar'                   => 'coil_promotion_bar_message',
 		'pending'                         => 'coil_verifying_status_message',
 		'fully_gated'                     => 'coil_fully_gated_content_message',
 		'partially_gated'                 => 'coil_partially_gated_content_message',
@@ -37,7 +37,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 	 * @var \WP_Post[] message default wording.
 	*/
 	protected static $defaults = [
-		'coil_voluntary_donation_message'      => 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…',
+		'coil_promotion_bar_message'           => 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…',
 		'coil_verifying_status_message'        => 'Verifying Web Monetization status. Please wait...',
 		'coil_fully_gated_content_message'     => 'Unlock exclusive content with Coil. Need a Coil account?',
 		'coil_partially_gated_content_message' => 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.',
@@ -51,7 +51,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 	 * @var \WP_Post[] examples of custom messages.
 	*/
 	protected static $example_messages = [
-		'coil_voluntary_donation_message'      => 'Please support me by joining Coil!',
+		'coil_promotion_bar_message'           => 'Please support me by joining Coil!',
 		'coil_verifying_status_message'        => 'Please be patient.',
 		'coil_fully_gated_content_message'     => 'This is exclusive to Coil members.',
 		'coil_partially_gated_content_message' => 'Read more with Coil.',
@@ -71,7 +71,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the message defaults that were retrieved
 		$retrieved_messages = [
-			self::$id['donation_bar']    => Admin\get_messaging_setting_or_default( self::$id['donation_bar'] ),
+			self::$id['promotion_bar']   => Admin\get_messaging_setting_or_default( self::$id['promotion_bar'] ),
 			self::$id['pending']         => Admin\get_messaging_setting_or_default( self::$id['pending'] ),
 			self::$id['fully_gated']     => Admin\get_messaging_setting_or_default( self::$id['fully_gated'] ),
 			self::$id['partially_gated'] => Admin\get_messaging_setting_or_default( self::$id['partially_gated'] ),
@@ -95,7 +95,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the messages that were retrieved
 		$retrieved_message = [
-			self::$id['donation_bar']    => Admin\get_messaging_setting_or_default( self::$id['donation_bar'] ),
+			self::$id['promotion_bar']   => Admin\get_messaging_setting_or_default( self::$id['promotion_bar'] ),
 			self::$id['pending']         => Admin\get_messaging_setting_or_default( self::$id['pending'] ),
 			self::$id['fully_gated']     => Admin\get_messaging_setting_or_default( self::$id['fully_gated'] ),
 			self::$id['partially_gated'] => Admin\get_messaging_setting_or_default( self::$id['partially_gated'] ),
@@ -126,7 +126,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the messages that were retrieved
 		$message = [
-			self::$id['donation_bar']    => Admin\get_messaging_setting_or_default( self::$id['donation_bar'] ),
+			self::$id['promotion_bar']   => Admin\get_messaging_setting_or_default( self::$id['promotion_bar'] ),
 			self::$id['pending']         => Admin\get_messaging_setting_or_default( self::$id['pending'] ),
 			self::$id['fully_gated']     => Admin\get_messaging_setting_or_default( self::$id['fully_gated'] ),
 			self::$id['partially_gated'] => Admin\get_messaging_setting_or_default( self::$id['partially_gated'] ),
@@ -135,7 +135,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		];
 
 		// Checking that all messages that were retrieved are correct
-		$this->assertSame( self::$defaults[ self::$id['donation_bar'] ], $message[ self::$id['donation_bar'] ] );
+		$this->assertSame( self::$defaults[ self::$id['promotion_bar'] ], $message[ self::$id['promotion_bar'] ] );
 		$this->assertSame( $custom_message[ self::$id['pending'] ], $message[ self::$id['pending'] ] );
 		$this->assertSame( $custom_message[ self::$id['fully_gated'] ], $message[ self::$id['fully_gated'] ] );
 		$this->assertSame( self::$defaults[ self::$id['partially_gated'] ], $message[ self::$id['partially_gated'] ] );
@@ -157,7 +157,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		set_theme_mod( self::$id['button_text'], self::$example_messages[ self::$id['button_text'] ] );
 		// Leaving one option set to an empty string becasue this state occurs in the database once a custom message has been deleted
 		set_theme_mod( self::$id['button_link'], '' );
-		set_theme_mod( self::$id['donation_bar'], self::$example_messages[ self::$id['donation_bar'] ] );
+		set_theme_mod( 'coil_voluntary_donation_message', self::$example_messages[ self::$id['promotion_bar'] ] );
 		set_theme_mod( 'coil_partial_gating_message', self::$example_messages[ self::$id['partially_gated'] ] );
 		// Testing removal of a deprecated message
 		set_theme_mod( self::$id['unverified'], 'Unable to verify' );
@@ -169,7 +169,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the messages that were retrieved from the wp_options table.
 		$message = [
-			self::$id['donation_bar']    => Admin\get_messaging_setting_or_default( self::$id['donation_bar'] ),
+			self::$id['promotion_bar']   => Admin\get_messaging_setting_or_default( self::$id['promotion_bar'] ),
 			self::$id['pending']         => Admin\get_messaging_setting_or_default( self::$id['pending'] ),
 			self::$id['fully_gated']     => Admin\get_messaging_setting_or_default( self::$id['fully_gated'] ),
 			self::$id['partially_gated'] => Admin\get_messaging_setting_or_default( self::$id['partially_gated'] ),
@@ -178,7 +178,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		];
 
 		// Checking that all messages that were retrieved are correct
-		$this->assertSame( self::$example_messages[ self::$id['donation_bar'] ], $message[ self::$id['donation_bar'] ] );
+		$this->assertSame( self::$example_messages[ self::$id['promotion_bar'] ], $message[ self::$id['promotion_bar'] ] );
 		$this->assertSame( self::$example_messages[ self::$id['pending'] ], $message[ self::$id['pending'] ] );
 		$this->assertSame( self::$example_messages[ self::$id['fully_gated'] ], $message[ self::$id['fully_gated'] ] );
 		$this->assertSame( self::$example_messages[ self::$id['partially_gated'] ], $message[ self::$id['partially_gated'] ] );
@@ -186,7 +186,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		$this->assertSame( self::$defaults[ self::$id['button_link'] ], $message[ self::$id['button_link'] ] );
 
 		// Checking that the theme_mod messages have been removed
-		$this->assertFalse( get_theme_mod( self::$id['donation_bar'] ) );
+		$this->assertFalse( get_theme_mod( 'coil_voluntary_donation_message' ) );
 		$this->assertFalse( get_theme_mod( self::$id['pending'] ) );
 		$this->assertFalse( get_theme_mod( 'coil_unsupported_message' ) );
 		$this->assertFalse( get_theme_mod( 'coil_partial_gating_message' ) );
@@ -210,7 +210,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the messages that were retrieved from the wp_options table.
 		$retrieved_messages = [
-			self::$id['donation_bar']    => Admin\get_messaging_setting_or_default( self::$id['donation_bar'] ),
+			self::$id['promotion_bar']   => Admin\get_messaging_setting_or_default( self::$id['promotion_bar'] ),
 			self::$id['pending']         => Admin\get_messaging_setting_or_default( self::$id['pending'] ),
 			self::$id['fully_gated']     => Admin\get_messaging_setting_or_default( self::$id['fully_gated'] ),
 			self::$id['partially_gated'] => Admin\get_messaging_setting_or_default( self::$id['partially_gated'] ),
@@ -222,7 +222,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		$this->assertSame( self::$defaults, $retrieved_messages );
 
 		// Checking that the theme_mod messages remained empty
-		$this->assertFalse( get_theme_mod( self::$id['donation_bar'] ) );
+		$this->assertFalse( get_theme_mod( 'coil_voluntary_donation_message' ) );
 		$this->assertFalse( get_theme_mod( self::$id['pending'] ) );
 		$this->assertFalse( get_theme_mod( 'coil_unsupported_message' ) );
 		$this->assertFalse( get_theme_mod( self::$id['partially_gated'] ) );
@@ -244,9 +244,9 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Adding custom messages to the database from the settings panel
 		$settings_panel_messages = [
-			self::$id['donation_bar'] => self::$example_messages[ self::$id['donation_bar'] ],
-			self::$id['pending']      => self::$example_messages[ self::$id['pending'] ],
-			self::$id['button_text']  => '',
+			self::$id['promotion_bar'] => self::$example_messages[ self::$id['promotion_bar'] ],
+			self::$id['pending']       => self::$example_messages[ self::$id['pending'] ],
+			self::$id['button_text']   => '',
 		];
 		update_option( 'coil_messaging_settings_group', $settings_panel_messages );
 
@@ -266,7 +266,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the messages that were retrieved from the wp_options table.
 		$message = [
-			self::$id['donation_bar']    => Admin\get_messaging_setting_or_default( self::$id['donation_bar'] ),
+			self::$id['promotion_bar']   => Admin\get_messaging_setting_or_default( self::$id['promotion_bar'] ),
 			self::$id['pending']         => Admin\get_messaging_setting_or_default( self::$id['pending'] ),
 			self::$id['fully_gated']     => Admin\get_messaging_setting_or_default( self::$id['fully_gated'] ),
 			self::$id['partially_gated'] => Admin\get_messaging_setting_or_default( self::$id['partially_gated'] ),
@@ -275,7 +275,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		];
 
 		// Checking that all messages that were retrieved are correct
-		$this->assertSame( self::$example_messages[ self::$id['donation_bar'] ], $message[ self::$id['donation_bar'] ] );
+		$this->assertSame( self::$example_messages[ self::$id['promotion_bar'] ], $message[ self::$id['promotion_bar'] ] );
 		$this->assertSame( 'Loading content', $message[ self::$id['pending'] ] );
 		$this->assertSame( 'Fully gated', $message[ self::$id['fully_gated'] ] );
 		$this->assertSame( self::$defaults[ self::$id['partially_gated'] ], $message[ self::$id['partially_gated'] ] );
@@ -283,7 +283,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		$this->assertSame( self::$defaults[ self::$id['button_link'] ], $message[ self::$id['button_link'] ] );
 
 		// Checking that the theme_mod messages have been removed
-		$this->assertFalse( get_theme_mod( self::$id['donation_bar'] ) );
+		$this->assertFalse( get_theme_mod( 'coil_voluntary_donation_message' ) );
 		$this->assertFalse( get_theme_mod( self::$id['pending'] ) );
 		$this->assertFalse( get_theme_mod( 'coil_unsupported_message' ) );
 		$this->assertFalse( get_theme_mod( self::$id['partially_gated'] ) );

@@ -146,7 +146,7 @@ function register_admin_content_settings() {
 
 	// === Coil Promotion Bar message
 	add_settings_section(
-		'coil_voluntary_donation_message',
+		'coil_promotion_bar_message',
 		__( 'Coil Promotion Bar Message', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
 		'coil_messaging_settings'
@@ -598,7 +598,7 @@ function coil_messaging_settings_render_callback( $args ) {
 		case 'coil_verifying_status_message':
 			$helper_text = __( 'Appears while the plugin checks that an active Web Monetization account is in place.', 'coil-web-monetization' );
 			break;
-		case 'coil_voluntary_donation_message':
+		case 'coil_promotion_bar_message':
 			$helper_text = __( 'Appears at the bottom of the screen for users without an active Coil Membership, when access is set to Split or Coil Members Only.', 'coil-web-monetization' );
 			break;
 		case 'coil_learn_more_button_text':
@@ -1027,7 +1027,7 @@ function transfer_customizer_message_settings() {
 	}
 
 	if ( get_theme_mod( $coil_voluntary_donation_message, 'null' ) !== 'null' ) {
-		$messaging_settings['coil_voluntary_donation_message'] = get_theme_mod( $coil_voluntary_donation_message );
+		$messaging_settings['coil_promotion_bar_message'] = get_theme_mod( $coil_voluntary_donation_message );
 		remove_theme_mod( $coil_voluntary_donation_message );
 	}
 
