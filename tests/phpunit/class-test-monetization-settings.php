@@ -138,7 +138,7 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_if_default_donation_bar_display_is_enabled() :  void {
+	public function test_if_default_promotion_bar_display_is_enabled() :  void {
 
 		$default_appearance_settings = Admin\get_appearance_settings( 'coil_show_donation_bar' );
 
@@ -150,7 +150,7 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_if_the_donation_bar_display_setting_is_retrieved_successfully() :  void {
+	public function test_if_the_promotion_bar_display_setting_is_retrieved_successfully() :  void {
 
 		$donation_bar_display = [ 'coil_show_donation_bar' => false ];
 		update_option( 'coil_appearance_settings_group', $donation_bar_display );
