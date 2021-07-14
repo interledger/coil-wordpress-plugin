@@ -152,15 +152,15 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	 */
 	public function test_if_the_promotion_bar_display_setting_is_retrieved_successfully() :  void {
 
-		$donation_bar_display = [ 'coil_show_donation_bar' => false ];
-		update_option( 'coil_appearance_settings_group', $donation_bar_display );
+		$promotion_bar_display = [ 'coil_show_donation_bar' => false ];
+		update_option( 'coil_appearance_settings_group', $promotion_bar_display );
 
 		$donation_bar_settings = Admin\get_appearance_settings( 'coil_show_donation_bar' );
 
 		$this->assertSame( false, $donation_bar_settings );
 
-		$donation_bar_display = [ 'coil_show_donation_bar' => true ];
-		update_option( 'coil_appearance_settings_group', $donation_bar_display );
+		$promotion_bar_display = [ 'coil_show_donation_bar' => true ];
+		update_option( 'coil_appearance_settings_group', $promotion_bar_display );
 
 		$donation_bar_settings = Admin\get_appearance_settings( 'coil_show_donation_bar' );
 
