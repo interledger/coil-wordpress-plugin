@@ -1001,12 +1001,13 @@ function transfer_customizer_message_settings() {
 	}
 
 	// Using 'null' for comparrison becasue custom messages that were deleted remain in the database with the value false, but still need to be removed.
+	// coil_partial_gating_message has changed name to coil_partially_gated_content_message.
 	if ( get_theme_mod( $coil_partial_gating_message, 'null' ) !== 'null' ) {
 		$messaging_settings['coil_partially_gated_content_message'] = get_theme_mod( $coil_partial_gating_message );
 		remove_theme_mod( $coil_partial_gating_message );
 	}
 
-	// The two fully gated content messages have been combined into one.
+	// The two fully gated content messages have been combined into one; coil_fully_gated_content_message.
 	// If one has been added to the customizer and not the other then it will be migrated across.
 	// If both are present the coil_unsupported_message will be selected.
 	if ( get_theme_mod( $coil_unable_to_verify_message ) !== 'null' && get_theme_mod( $coil_unsupported_message, 'null' ) === 'null' ) {
@@ -1026,6 +1027,7 @@ function transfer_customizer_message_settings() {
 		remove_theme_mod( $coil_verifying_status_message );
 	}
 
+	// coil_voluntary_donation_message has changed name to coil_promotion_bar_message.
 	if ( get_theme_mod( $coil_voluntary_donation_message, 'null' ) !== 'null' ) {
 		$messaging_settings['coil_promotion_bar_message'] = get_theme_mod( $coil_voluntary_donation_message );
 		remove_theme_mod( $coil_voluntary_donation_message );
@@ -1076,6 +1078,7 @@ function transfer_customizer_appearance_settings() {
 		remove_theme_mod( $coil_title_padlock );
 	}
 
+	// coil_show_donation_bar has been renamed to coil_show_promotion_bar
 	if ( get_theme_mod( $coil_show_donation_bar, 'null' ) !== 'null' ) {
 		$new_appearance_settings['coil_show_promotion_bar'] = get_theme_mod( $coil_show_donation_bar, true );
 		remove_theme_mod( $coil_show_donation_bar );
