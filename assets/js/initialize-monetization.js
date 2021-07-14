@@ -16,7 +16,7 @@
 		learnMoreButtonText = coilParams.learn_more_button_text,
 		learnMoreButtonLink = coilParams.learn_more_button_link,
 		siteLogo = coilParams.site_logo,
-		showPromotionBar = Boolean( coilParams.show_donation_bar ); // Cast to boolean - wp_localize_script forces string values.
+		showPromotionBar = Boolean( coilParams.show_promotion_bar ); // Cast to boolean - wp_localize_script forces string values.
 
 	const subscriberOnlyMessage = wp.template( 'subscriber-only-message' );
 	const splitContentMessage = wp.template( 'split-content-message' );

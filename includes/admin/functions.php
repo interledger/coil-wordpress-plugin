@@ -473,7 +473,7 @@ function get_messaging_setting( $field_id, $default = false ) {
 function get_appearance_settings( $field_id ) {
 
 	$options                  = get_option( 'coil_appearance_settings_group', [] );
-	$display_setting_id_array = [ 'coil_title_padlock', 'coil_show_donation_bar' ];
+	$display_setting_id_array = [ 'coil_title_padlock', 'coil_show_promotion_bar' ];
 
 	if ( in_array( $field_id, $display_setting_id_array, true ) ) {
 		// Default is checked

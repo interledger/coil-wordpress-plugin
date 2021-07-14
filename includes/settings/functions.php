@@ -193,7 +193,7 @@ function register_admin_content_settings() {
 
 	// ==== Coil Promotion Bar Settings.
 	add_settings_field(
-		'coil_show_donation_bar',
+		'coil_show_promotion_bar',
 		__( 'Display Coil Promotion Bar', 'coil-web-monetization' ),
 		__NAMESPACE__ . '\coil_show_promotion_bar_settings_render_callback',
 		'coil_display_settings',
@@ -304,7 +304,7 @@ function coil_messaging_settings_validation( $messaging_settings ) : array {
  */
 function coil_appearance_settings_validation( $appearance_settings ) {
 
-	$display_setting_id_array = [ 'coil_title_padlock', 'coil_show_donation_bar' ];
+	$display_setting_id_array = [ 'coil_title_padlock', 'coil_show_promotion_bar' ];
 
 	foreach ( $display_setting_id_array as $key ) {
 		// Default is checked
@@ -663,12 +663,12 @@ function coil_show_promotion_bar_settings_render_callback() {
 	 * any settings stored in the database. If the
 	 * input status is not set, default to checked
 	 */
-	$checked_input_value = Admin\get_appearance_settings( 'coil_show_donation_bar' );
+	$checked_input_value = Admin\get_appearance_settings( 'coil_show_promotion_bar' );
 
 	printf(
 		'<input type="%s" name="%s" id="%s" "%s">',
 		esc_attr( 'checkbox' ),
-		esc_attr( 'coil_appearance_settings_group[coil_show_donation_bar]' ),
+		esc_attr( 'coil_appearance_settings_group[coil_show_promotion_bar]' ),
 		esc_attr( 'display_promotion_bar' ),
 		checked( 1, $checked_input_value, false )
 	);
@@ -1077,7 +1077,7 @@ function transfer_customizer_appearance_settings() {
 	}
 
 	if ( get_theme_mod( $coil_show_donation_bar, 'null' ) !== 'null' ) {
-		$new_appearance_settings['coil_show_donation_bar'] = get_theme_mod( $coil_show_donation_bar, true );
+		$new_appearance_settings['coil_show_promotion_bar'] = get_theme_mod( $coil_show_donation_bar, true );
 		remove_theme_mod( $coil_show_donation_bar );
 	}
 

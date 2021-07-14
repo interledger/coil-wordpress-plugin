@@ -140,7 +140,7 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	 */
 	public function test_if_default_promotion_bar_display_is_enabled() :  void {
 
-		$default_appearance_settings = Admin\get_appearance_settings( 'coil_show_donation_bar' );
+		$default_appearance_settings = Admin\get_appearance_settings( 'coil_show_promotion_bar' );
 
 		$this->assertSame( true, $default_appearance_settings );
 	}
@@ -152,17 +152,17 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 	 */
 	public function test_if_the_promotion_bar_display_setting_is_retrieved_successfully() :  void {
 
-		$promotion_bar_display = [ 'coil_show_donation_bar' => false ];
+		$promotion_bar_display = [ 'coil_show_promotion_bar' => false ];
 		update_option( 'coil_appearance_settings_group', $promotion_bar_display );
 
-		$promotion_bar_settings = Admin\get_appearance_settings( 'coil_show_donation_bar' );
+		$promotion_bar_settings = Admin\get_appearance_settings( 'coil_show_promotion_bar' );
 
 		$this->assertSame( false, $promotion_bar_settings );
 
-		$promotion_bar_display = [ 'coil_show_donation_bar' => true ];
+		$promotion_bar_display = [ 'coil_show_promotion_bar' => true ];
 		update_option( 'coil_appearance_settings_group', $promotion_bar_display );
 
-		$promotion_bar_settings = Admin\get_appearance_settings( 'coil_show_donation_bar' );
+		$promotion_bar_settings = Admin\get_appearance_settings( 'coil_show_promotion_bar' );
 
 		$this->assertSame( true, $promotion_bar_settings );
 	}
@@ -185,12 +185,12 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
-			'coil_show_donation_bar' => Admin\get_appearance_settings( 'coil_show_donation_bar' ),
-			'coil_title_padlock'     => Admin\get_appearance_settings( 'coil_title_padlock' ),
+			'coil_show_promotion_bar' => Admin\get_appearance_settings( 'coil_show_promotion_bar' ),
+			'coil_title_padlock'      => Admin\get_appearance_settings( 'coil_title_padlock' ),
 		];
 
 		// Checking that all appearance settings that were retrieved are correct
-		$this->assertSame( false, $appearance_settings['coil_show_donation_bar'] );
+		$this->assertSame( false, $appearance_settings['coil_show_promotion_bar'] );
 		$this->assertSame( false, $appearance_settings['coil_title_padlock'] );
 
 		// Checking that the theme_mod appearance settings have been removed
@@ -215,12 +215,12 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
-			'coil_show_donation_bar' => Admin\get_appearance_settings( 'coil_show_donation_bar' ),
-			'coil_title_padlock'     => Admin\get_appearance_settings( 'coil_title_padlock' ),
+			'coil_show_promotion_bar' => Admin\get_appearance_settings( 'coil_show_promotion_bar' ),
+			'coil_title_padlock'      => Admin\get_appearance_settings( 'coil_title_padlock' ),
 		];
 
 		// Checking that all appearance settings that were retrieved are correct
-		$this->assertSame( true, $appearance_settings['coil_show_donation_bar'] );
+		$this->assertSame( true, $appearance_settings['coil_show_promotion_bar'] );
 		$this->assertSame( true, $appearance_settings['coil_title_padlock'] );
 
 		// Checking that the theme_mod appearance settings have been removed
@@ -246,12 +246,12 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
-			'coil_show_donation_bar' => Admin\get_appearance_settings( 'coil_show_donation_bar' ),
-			'coil_title_padlock'     => Admin\get_appearance_settings( 'coil_title_padlock' ),
+			'coil_show_promotion_bar' => Admin\get_appearance_settings( 'coil_show_promotion_bar' ),
+			'coil_title_padlock'      => Admin\get_appearance_settings( 'coil_title_padlock' ),
 		];
 
 		// Checking that all appearance settings that were retrieved are correct
-		$this->assertSame( true, $appearance_settings['coil_show_donation_bar'] );
+		$this->assertSame( true, $appearance_settings['coil_show_promotion_bar'] );
 		$this->assertSame( false, $appearance_settings['coil_title_padlock'] );
 
 		// Checking that the theme_mod appearance settings have been removed
@@ -278,12 +278,12 @@ class Test_Monetization_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
-			'coil_show_donation_bar' => Admin\get_appearance_settings( 'coil_show_donation_bar' ),
-			'coil_title_padlock'     => Admin\get_appearance_settings( 'coil_title_padlock' ),
+			'coil_show_promotion_bar' => Admin\get_appearance_settings( 'coil_show_promotion_bar' ),
+			'coil_title_padlock'      => Admin\get_appearance_settings( 'coil_title_padlock' ),
 		];
 
 		// Checking that all appearance settings that were retrieved are correct
-		$this->assertSame( false, $appearance_settings['coil_show_donation_bar'] );
+		$this->assertSame( false, $appearance_settings['coil_show_promotion_bar'] );
 		$this->assertSame( false, $appearance_settings['coil_title_padlock'] );
 
 		// Checking that the theme_mod appearance settings have been removed
