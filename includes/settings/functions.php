@@ -669,13 +669,13 @@ function coil_show_promotion_bar_settings_render_callback() {
 		'<input type="%s" name="%s" id="%s" "%s">',
 		esc_attr( 'checkbox' ),
 		esc_attr( 'coil_appearance_settings_group[coil_show_donation_bar]' ),
-		esc_attr( 'display_donation_bar' ),
+		esc_attr( 'display_promotion_bar' ),
 		checked( 1, $checked_input_value, false )
 	);
 
 	printf(
 		'<label for="%s">%s</label>',
-		esc_attr( 'display_donation_bar' ),
+		esc_attr( 'display_promotion_bar' ),
 		esc_html_e( 'Show the Coil Promotion Bar on posts that have monetization enabled and are visable to everyone or are split.', 'coil-web-monetization' )
 	);
 }
