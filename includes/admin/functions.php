@@ -433,7 +433,7 @@ function get_messaging_defaults() {
 		'coil_fully_gated_content_message'     => __( 'Unlock exclusive content with Coil. Need a Coil account?', 'coil-web-monetization' ),
 		'coil_partially_gated_content_message' => __( 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.', 'coil-web-monetization' ),
 		'coil_verifying_status_message'        => __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' ),
-		'coil_voluntary_donation_message'      => __( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', 'coil-web-monetization' ),
+		'coil_promotion_bar_message'           => __( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', 'coil-web-monetization' ),
 		'coil_learn_more_button_text'          => __( 'Get Coil to access', 'coil-web-monetization' ),
 		'coil_learn_more_button_link'          => 'https://coil.com/',
 	];
@@ -473,7 +473,7 @@ function get_messaging_setting( $field_id, $default = false ) {
 function get_appearance_settings( $field_id ) {
 
 	$options                  = get_option( 'coil_appearance_settings_group', [] );
-	$display_setting_id_array = [ 'coil_title_padlock', 'coil_show_donation_bar' ];
+	$display_setting_id_array = [ 'coil_title_padlock', 'coil_show_promotion_bar' ];
 
 	if ( in_array( $field_id, $display_setting_id_array, true ) ) {
 		// Default is checked

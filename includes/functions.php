@@ -198,13 +198,13 @@ function load_full_assets() : void {
 		'coil_js_ui_messages',
 		[
 			'content_container'       => Admin\get_global_settings( 'coil_content_container' ),
-			'voluntary_donation'      => Admin\get_messaging_setting_or_default( 'coil_voluntary_donation_message' ),
+			'promotion_bar'           => Admin\get_messaging_setting_or_default( 'coil_promotion_bar_message' ),
 			'loading_content'         => Admin\get_messaging_setting_or_default( 'coil_verifying_status_message' ),
 			'fully_gated'             => Admin\get_messaging_setting_or_default( 'coil_fully_gated_content_message' ),
 			'partial_gating'          => Admin\get_messaging_setting_or_default( 'coil_partially_gated_content_message' ),
 			'learn_more_button_text'  => Admin\get_messaging_setting_or_default( 'coil_learn_more_button_text' ),
 			'learn_more_button_link'  => Admin\get_messaging_setting_or_default( 'coil_learn_more_button_link' ),
-			'show_donation_bar'       => Admin\get_appearance_settings( 'coil_show_donation_bar' ),
+			'show_promotion_bar'      => Admin\get_appearance_settings( 'coil_show_promotion_bar' ),
 			'post_excerpt'            => get_the_excerpt(),
 			'site_logo'               => $site_logo,
 
