@@ -384,26 +384,20 @@
 		} else if ( ! isMonetizedAndPublic() ) {
 			// Verify monetization only if we are gating or partially gating content.
 			// If post is gated then show verification message after excerpt.
-			if ( isSubscribersOnly() ) {
-				if ( isExcerptEnabled() ) {
-					// Subscriber gating and no post excerpt...Verifying extension.
-					document.querySelector( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
-				} else {
-					// Subscriber gating and has post excerpt...Verifying extension.
-					$( 'p.coil-post-excerpt' ).after( showMonetizationMessage( loadingContent, '' ) );
-				}
+			if ( isSubscribersOnly() && isExcerptEnabled() && getContentExcerpt() ) {
+				$( contentContainer ).before( getContentExcerpt() );
+				$( contentContainer ).after( showMonetizationMessage( loadingContent, '' ) );
 			} else {
 				document.querySelector( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
 			}
 
 			// Update message if browser extension is verifying user.
 			setTimeout( function() {
-				hideContentExcerpt();
 				messageWrapper.html( loadingContent );
 			}, 2000 );
-
 			// Update message if browser extension is unable to verify user.
 			setTimeout( function() {
+				hideContentExcerpt();
 				showVerificationFailureMessage();
 			}, 5000 );
 		} else if ( showPromotionBar && monetizationNotInitialized() && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
