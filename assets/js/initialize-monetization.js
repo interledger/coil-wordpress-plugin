@@ -242,10 +242,6 @@
 				// Split content and unable to verify hidden content.
 				$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( fullyGated ) );
 
-				// Show non-Coil-members content.
-				// Removing class means blocks revert to their *original* display values.
-				$( '.coil-hide-monetize-users' ).removeClass( 'coil-hide-monetize-users' );
-
 				showContentContainer();
 
 				if ( showPromotionBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
@@ -342,10 +338,6 @@
 			// Split content with no extension found.
 			$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( partialGating ) );
 
-			// Show non-coil-members content.
-			// Removing class means blocks revert to their *original* display values.
-			$( '.coil-hide-monetize-users' ).removeClass( 'coil-hide-monetize-users' );
-
 			showContentContainer();
 
 			if ( showPromotionBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
@@ -408,12 +400,12 @@
 			setTimeout( function() {
 				hideContentExcerpt();
 				messageWrapper.html( loadingContent );
-			}, 300 );
+			}, 2000 );
 
 			// Update message if browser extension is unable to verify user.
 			setTimeout( function() {
 				showVerificationFailureMessage();
-			}, 500 );
+			}, 5000 );
 		} else if ( showPromotionBar && monetizationNotInitialized() && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 			$( 'body' ).append( showBannerMessage( promotionBar ) );
 			addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
@@ -491,8 +483,6 @@
 		} else if ( isSplitContent() ) {
 			$( '.coil-show-monetize-users' ).removeClass( 'coil-show-monetize-users' );
 			$( '.coil-split-content-message' ).remove();
-
-			// TODO: Hide sections from monetized users - the identifying class (coil-hide-monetize-users) was already removed after loading stage failed.
 		}
 
 		showContentContainer();

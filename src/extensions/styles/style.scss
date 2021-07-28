@@ -54,7 +54,7 @@ body.coil-missing-id:not( .coil-no-gating ),
 body.monetization-not-initialized.coil-gate-tagged-blocks:not( .coil-no-gating ) {
 
 	*.coil-hide-monetize-users {
-		display: none;
+		display: block;
 	}
 
 	*.coil-show-monetize-users {
