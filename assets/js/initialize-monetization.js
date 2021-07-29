@@ -384,7 +384,7 @@
 		} else if ( ! isMonetizedAndPublic() ) {
 			// Verify monetization only if we are gating or partially gating content.
 			// If post is gated then show verification message after excerpt.
-			if ( isSubscribersOnly() && isExcerptEnabled() && getContentExcerpt() ) {
+			if ( isSubscribersOnly() && isExcerptEnabled() ) {
 				$( contentContainer ).before( getContentExcerpt() );
 				$( contentContainer ).after( showMonetizationMessage( loadingContent, '' ) );
 			} else {
