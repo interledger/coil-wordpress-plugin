@@ -48,6 +48,12 @@ body.coil-show-admin-notice .monetize-msg {
 	padding: 0.5em 0;
 }
 
+body.coil-gate-tagged-blocks:not(.coil-extension-not-found) {
+  .coil-show-monetize-users {
+	display: none;
+  }
+}
+
 // Client side message.
 .monetize-msg {
 	left: calc( 50% - 50vw );
