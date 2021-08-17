@@ -242,10 +242,6 @@
 				// Split content and unable to verify hidden content.
 				$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( fullyGated ) );
 
-				// Show non-Coil-members content.
-				// Removing class means blocks revert to their *original* display values.
-				$( '.coil-hide-monetize-users' ).removeClass( 'coil-hide-monetize-users' );
-
 				showContentContainer();
 
 				if ( showPromotionBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
@@ -342,10 +338,6 @@
 			// Split content with no extension found.
 			$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( partialGating ) );
 
-			// Show non-coil-members content.
-			// Removing class means blocks revert to their *original* display values.
-			$( '.coil-hide-monetize-users' ).removeClass( 'coil-hide-monetize-users' );
-
 			showContentContainer();
 
 			if ( showPromotionBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
@@ -392,26 +384,20 @@
 		} else if ( ! isMonetizedAndPublic() ) {
 			// Verify monetization only if we are gating or partially gating content.
 			// If post is gated then show verification message after excerpt.
-			if ( isSubscribersOnly() ) {
-				if ( isExcerptEnabled() ) {
-					// Subscriber gating and no post excerpt...Verifying extension.
-					document.querySelector( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
-				} else {
-					// Subscriber gating and has post excerpt...Verifying extension.
-					$( 'p.coil-post-excerpt' ).after( showMonetizationMessage( loadingContent, '' ) );
-				}
+			if ( isSubscribersOnly() && isExcerptEnabled() ) {
+				$( contentContainer ).before( getContentExcerpt() );
+				$( contentContainer ).after( showMonetizationMessage( loadingContent, '' ) );
 			} else {
 				document.querySelector( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
 			}
 
 			// Update message if browser extension is verifying user.
 			setTimeout( function() {
-				hideContentExcerpt();
 				messageWrapper.html( loadingContent );
 			}, 2000 );
-
 			// Update message if browser extension is unable to verify user.
 			setTimeout( function() {
+				hideContentExcerpt();
 				showVerificationFailureMessage();
 			}, 5000 );
 		} else if ( showPromotionBar && monetizationNotInitialized() && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
@@ -469,24 +455,31 @@
 	 */
 	function monetizationStartListener( event ) {
 		monetizationStartEventOccurred = true;
-		if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
-			showContentContainer();
-			document.body.classList.remove( 'show-fw-message' );
-			if ( isExcerptEnabled() ) {
-				hideContentExcerpt();
-			}
+
+		if ( document.body.classList.contains( 'show-fw-message' ) ) {
+			$( 'body' ).removeClass( 'show-fw-message' );
 		}
 
 		$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'monetization-initialized' ); // Update body class to show content.
 		messageWrapper.remove(); // Remove status message.
 
-		if ( ! isExcerptEnabled() ) {
-			$( 'div.coil-post-excerpt' ).remove(); // Remove post excerpt.
+		if ( isExcerptEnabled() ) {
+			$( 'p.coil-post-excerpt' ).remove(); // Remove post excerpt.
 		}
 
 		if ( showPromotionBar ) {
 			removePromotionBar();
 		}
+
+		// Removes exclusive messages
+		if ( isSubscribersOnly() ) {
+			$( '.entry-content.coil-message-container' ).remove();
+		} else if ( isSplitContent() ) {
+			$( '.coil-show-monetize-users' ).removeClass( 'coil-show-monetize-users' );
+			$( '.coil-split-content-message' ).remove();
+		}
+
+		showContentContainer();
 
 		// Show embedded content.
 		document.querySelectorAll( 'iframe, object, video' ).forEach( function( embed ) {
@@ -507,8 +500,6 @@
 		// Monetization is verified, remove any messages
 		if ( $( 'p.monetize-msg' ).length > 0 ) {
 			$( 'p.monetize-msg' ).remove();
-			hideContentExcerpt();
-			showContentContainer();
 		}
 
 		// Manually triggering resize to ensure elements get sized corretly after the verification proccess has been completed and they are no longer hidden.
