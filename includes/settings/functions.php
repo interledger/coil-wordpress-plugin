@@ -367,7 +367,7 @@ function coil_appearance_settings_validation( $appearance_settings ) {
 		}
 	} else {
 		// The default value is the site logo
-		$appearance_settings[ $coil_theme_color_key ] = 'site_logo';
+		$appearance_settings[ $message_branding_key ] = 'site_logo';
 	}
 
 	foreach ( $checkbox_options as $key ) {
