@@ -45,28 +45,43 @@ function register_admin_menu() : void {
  */
 function register_admin_content_settings() {
 
-	// Tab 1 - Global Settings.
+	// Tab 1 - Welcome.
+	register_setting(
+		'coil_welcome_group',
+		'coil_global_settings_group',
+		__NAMESPACE__ . '\coil_welcome_group_validation'
+	);
+
+	// ==== Welcome.
+	add_settings_section(
+		'coil_payment_pointer',
+		false,
+		__NAMESPACE__ . '\coil_settings_welcome_render_callback',
+		'coil_welcome'
+	);
+	
+	// Tab 2 - General Settings.
 	register_setting(
 		'coil_global_settings_group',
 		'coil_global_settings_group',
 		__NAMESPACE__ . '\coil_global_settings_group_validation'
 	);
 
-	// ==== Global Settings.
-	add_settings_section(
-		'coil_global_settings_top_section',
-		__( 'Global Settings', 'coil-web-monetization' ),
-		false,
-		'coil_global_settings_global'
-	);
+	// // ==== General Settings.
+	// add_settings_section(
+	// 	'coil_global_settings_top_section',
+	// 	__( 'General Settings', 'coil-web-monetization' ),
+	// 	false,
+	// 	'coil_global_settings_global'
+	// );
 
-	add_settings_field(
-		'coil_payment_pointer',
-		__( 'Payment Pointer', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_global_settings_payment_pointer_render_callback',
-		'coil_global_settings_global',
-		'coil_global_settings_top_section'
-	);
+	// add_settings_field(
+	// 	'coil_payment_pointer',
+	// 	__( 'Payment Pointer', 'coil-web-monetization' ),
+	// 	__NAMESPACE__ . '\coil_global_settings_payment_pointer_render_callback',
+	// 	'coil_global_settings_global',
+	// 	'coil_global_settings_top_section'
+	// );
 
 	// ==== Advanced Config.
 	add_settings_section(
@@ -245,9 +260,30 @@ function register_admin_content_settings() {
  * ------------------------------------------------------------------------ */
 
 /**
- * Allow the text inputs in the global settings section to
- * be properly validated. These allow the payment pointer
- * to be saved.
+ * Allow the payment pointer text input in the welcome section to
+ * be properly validated.
+ *
+ * @param array $global_settings The posted text input fields.
+ * @return array
+ */
+function coil_welcome_group_validation( $welcome_settings ) : array {
+
+	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
+		return [];
+	}
+
+	return array_map(
+		function( $welcome_settings ) {
+
+			return sanitize_text_field( $welcome_settings );
+		},
+		(array) $global_settings
+	);
+}
+
+/**
+ * Allow the CSS selector text input in the general settings section to
+ * be properly validated.
  *
  * @param array $global_settings The posted text input fields.
  * @return array
@@ -262,13 +298,7 @@ function coil_global_settings_group_validation( $global_settings ) : array {
 		$global_settings['coil_content_container'] = '.content-area .entry-content';
 	}
 
-	return array_map(
-		function( $global_settings_input ) {
-
-			return sanitize_text_field( $global_settings_input );
-		},
-		(array) $global_settings
-	);
+	return $global_settings;
 }
 
 /**
@@ -385,6 +415,57 @@ function coil_appearance_settings_validation( $appearance_settings ) {
  * Settings Rendering
  * ------------------------------------------------------------------------ */
 
+ /**
+ * Renders the output of the welcome tab.
+ *
+ * @return void
+ */
+function coil_settings_welcome_render_callback() {
+	
+	?>
+		<div class="coil welcome-tab">
+			<?php
+				
+				printf(
+					'<h1>%1$s</h1>',
+					esc_html__( 'Thank you for using Coil', 'coil-web-monetization' )
+				);
+			?>
+			<div class="section">
+			<?php
+				printf(
+					'<p>%1$s<a href="%2$s">%3$s</a>%4$s</p>',
+					esc_html__( 'Please ensure your payment pointer is setup ', 'coil-web-monetization' ),
+					esc_url( admin_url( 'admin.php?page=coil_settings&tab=global_settings', COIL__FILE__ ) ),
+					esc_html__( 'click here to add a payment pointer', 'coil-web-monetization' ),
+					esc_html__( '.', 'coil-web-monetization' )
+				);
+				coil_global_settings_payment_pointer_render_callback();
+			?>
+			</div>
+			<?php
+
+				echo '<h1>' . esc_html__( 'Monetize Your Content', 'coil-web-monetization' ) . '</h1>';
+			?>
+			<div class="section">
+			<?php
+				echo '<p>' . esc_html__( 'Enable or disable content depending on your visitor\'s Coil Member status.', 'coil-web-monetization' ) . '</p>';
+			?>
+			</div>
+			<?php
+				echo '<h1>' . esc_html__( 'Promote Coil', 'coil-web-monetization' ) . '</h1>';
+			?>
+			<div class="section">
+				<?php
+					echo '<p>' . esc_html__( 'Promote Coil to your members via a floating Coil Support button.', 'coil-web-monetization' ) . '</p>';
+				?>
+			</div>
+			<h2></h2>
+			<h2></h2>
+		</div>
+	<?php
+}
+
 /**
  * Renders the output of the help links sidebar tab.
  *
@@ -448,11 +529,11 @@ function coil_settings_sidebar_render_callback() {
 	<?php
 }
 
-// Render the text field for the payment point in global settings.
+// Render the text field for the payment point in general settings.
 function coil_global_settings_payment_pointer_render_callback() {
 
 	printf(
-		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" />',
+		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" required="required" />',
 		esc_attr( 'wide-input' ),
 		esc_attr( 'text' ),
 		esc_attr( 'coil_global_settings_group[coil_payment_pointer_id]' ),
@@ -473,7 +554,7 @@ function coil_global_settings_payment_pointer_render_callback() {
 		esc_attr( 'button button-large' ),
 		esc_html__( 'Learn more about digital wallets and payment pointers', 'coil-web-monetization' )
 	);
-
+	submit_button();
 }
 
 /**
@@ -989,10 +1070,11 @@ function render_coil_settings_screen() : void {
 			</svg>
 			<h3 class="plugin-branding"><?php _e( 'Coil Web Monetization', 'coil-web-monetization' ); ?></h3>
 		</div>
-		<?php $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'global_settings'; ?>
+		<?php $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'coil_welcome_group'; ?>
 
 		<h2 class="nav-tab-wrapper">
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=global_settings' ); ?>" id="coil-global-settings" class="nav-tab <?php echo $active_tab === 'global_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Global', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=coil_welcome_group' ); ?>" id="coil_welcome_group" class="nav-tab <?php echo $active_tab === 'coil-welcome_group' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Welcome', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=global_settings' ); ?>" id="coil-global-settings" class="nav-tab <?php echo $active_tab === 'global_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'General Settings', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=monetization_settings' ); ?>" id="coil-monetization-settings" class="nav-tab <?php echo $active_tab === 'monetization_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Monetization', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=excerpt_settings' ); ?>" id="coil-excerpt-settings" class="nav-tab <?php echo $active_tab === 'excerpt_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Excerpts', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=messaging_settings' ); ?>" id="coil-messaging-settings" class="nav-tab <?php echo $active_tab === 'messaging_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Messages', 'coil-web-monetization' ); ?></a>
@@ -1001,16 +1083,18 @@ function render_coil_settings_screen() : void {
 	</div>
 	<div class="wrap coil plugin-settings">
 
-		<?php coil_settings_sidebar_render_callback(); ?>
-
 		<?php settings_errors(); ?>
 
 		<form action="options.php" method="post">
 			<?php
 			switch ( $active_tab ) {
+				case 'coil_welcome_group':
+					coil_settings_sidebar_render_callback();
+					do_settings_sections( 'coil_welcome' );
+					break;
 				case 'global_settings':
 					settings_fields( 'coil_global_settings_group' );
-					do_settings_sections( 'coil_global_settings_global' );
+					// do_settings_sections( 'coil_global_settings_global' );
 					do_settings_sections( 'coil_global_settings_advanced' );
 					submit_button();
 					break;

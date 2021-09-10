@@ -90,6 +90,16 @@
   float: left;
   width: 70%; }
 
+.coil .welcome-tab {
+  background: #fff;
+  padding: 0px 15px 0px;
+  width: 70%; }
+  .coil .welcome-tab div {
+    border-bottom: 1px solid #dedede;
+    padding-bottom: 15px; }
+  .coil .welcome-tab h1 {
+    padding-top: 15px; }
+
 .coil .settings-sidebar {
   background: #fff;
   border: 1px solid #d5d5d5;
