@@ -381,6 +381,20 @@ function get_valid_taxonomies() : array {
 }
 
 /**
+ * Retrieve the Welcome settings using a key from the welcome
+ * settings group (serialized).
+ *
+ * @param string $setting_id The named key in the wp_options serialized array.
+ * @return string
+ */
+function get_welcome_settings( $setting_id ) {
+
+	$options = get_option( 'coil_welcome_settings_group', [] );
+
+	return ( ! empty( $options[ $setting_id ] ) ) ? $options[ $setting_id ] : '';
+}
+
+/**
  * Retrieve the global content settings using a key from the global
  * settings group (serialized).
  *
@@ -391,7 +405,6 @@ function get_global_settings( $setting_id ) {
 
 	// Set up defaults.
 	$defaults = [
-		'coil_payment_pointer_id' => '',
 		'coil_content_container'  => '.content-area .entry-content',
 	];
 

@@ -47,17 +47,17 @@ function register_admin_content_settings() {
 
 	// Tab 1 - Welcome.
 	register_setting(
-		'coil_global_settings_group',
-		'coil_global_settings_group',
+		'coil_welcome_settings_group',
+		'coil_welcome_settings_group',
 		__NAMESPACE__ . '\coil_welcome_group_validation'
 	);
 
 	// ==== Welcome.
 	add_settings_section(
-		'coil_global_settings_top_section',
+		'coil_welcome_settings_section',
 		false,
 		__NAMESPACE__ . '\coil_settings_welcome_render_callback',
-		'coil_global_settings_top_section'
+		'coil_welcome_settings_section'
 	);
 
 	// Tab 2 - General Settings.
@@ -66,22 +66,6 @@ function register_admin_content_settings() {
 		'coil_global_settings_group',
 		__NAMESPACE__ . '\coil_global_settings_group_validation'
 	);
-
-	// // ==== General Settings.
-	// add_settings_section(
-	// 	'coil_global_settings_top_section',
-	// 	__( 'General Settings', 'coil-web-monetization' ),
-	// 	false,
-	// 	'coil_global_settings_global'
-	// );
-
-	// add_settings_field(
-	// 	'coil_payment_pointer',
-	// 	__( 'Payment Pointer', 'coil-web-monetization' ),
-	// 	__NAMESPACE__ . '\coil_global_settings_payment_pointer_render_callback',
-	// 	'coil_global_settings_global',
-	// 	'coil_global_settings_top_section'
-	// );
 
 	// ==== Advanced Config.
 	add_settings_section(
@@ -263,7 +247,7 @@ function register_admin_content_settings() {
  * Allow the payment pointer text input in the welcome section to
  * be properly validated.
  *
- * @param array $global_settings The posted text input fields.
+ * @param array $welcome_settings The posted text input fields.
  * @return array
  */
 function coil_welcome_group_validation( $welcome_settings ) : array {
@@ -273,16 +257,16 @@ function coil_welcome_group_validation( $welcome_settings ) : array {
 	}
 
 	return array_map(
-		function( $global_settings_input ) {
+		function( $welcome_settings_input ) {
 
-			return sanitize_text_field( $global_settings_input );
+			return sanitize_text_field( $welcome_settings_input );
 		},
 		(array) $welcome_settings
 	);
 }
 
 /**
- * Allow the CSS selector text input in the general settings section to
+ * Allow the CSS selector text input in the Exclusive Content section to
  * be properly validated.
  *
  * @param array $global_settings The posted text input fields.
@@ -298,7 +282,13 @@ function coil_global_settings_group_validation( $global_settings ) : array {
 		$global_settings['coil_content_container'] = '.content-area .entry-content';
 	}
 
-	return $global_settings;
+	return array_map(
+		function( $global_settings_input ) {
+
+			return sanitize_text_field( $global_settings_input );
+		},
+		(array) $global_settings
+	);
 }
 
 /**
@@ -421,30 +411,70 @@ function coil_appearance_settings_validation( $appearance_settings ) {
  * @return void
  */
 function coil_settings_welcome_render_callback() {
+	?>
+	<div class="coil welcome-tab">
+		<?php
+			
+			printf(
+				'<h1>%1$s</h1>',
+				esc_html__( 'Thank you for using Coil', 'coil-web-monetization' )
+			);
+		?>
+		<div class="section">
+		<?php
+			printf(
+				'<p>%1$s<a href="%2$s">%3$s</a>%4$s</p>',
+				esc_html__( 'Please ensure your payment pointer is setup ', 'coil-web-monetization' ),
+				esc_url( admin_url( 'admin.php?page=coil_settings&tab=global_settings', COIL__FILE__ ) ),
+				esc_html__( 'click here to add a payment pointer', 'coil-web-monetization' ),
+				esc_html__( '.', 'coil-web-monetization' )
+			);
+			printf(
+				'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" />',
+				esc_attr( 'wide-input' ),
+				esc_attr( 'text' ),
+				esc_attr( 'coil_welcome_settings_group[coil_payment_pointer_id]' ),
+				esc_attr( 'coil_payment_pointer_id' ),
+				esc_attr( Admin\get_welcome_settings( 'coil_payment_pointer_id' ) ),
+				esc_attr( '$wallet.example.com/alice' )
+			);
+		
+			echo '<p class="' . esc_attr( 'description' ) . '">';
+		
+			$payment_pointer_description = esc_html__( 'Enter the payment pointer assigned by your digital wallet provider. Don\'t have a digital wallet or know your payment pointer?', 'coil-web-monetization' );
+			echo $payment_pointer_description . '</p>'; // phpcs:ignore. Output already escaped.
+		
+			printf(
+				'<br><a href="%s" target="%s" class="%s">%s</a>',
+				esc_url( 'https://webmonetization.org/docs/ilp-wallets' ),
+				esc_attr( '_blank' ),
+				esc_attr( 'button button-large' ),
+				esc_html__( 'Learn more about digital wallets and payment pointers', 'coil-web-monetization' )
+			);
+			submit_button();
+		?>
+		</div>
+		<?php
 
-	printf(
-		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" />',
-		esc_attr( 'wide-input' ),
-		esc_attr( 'text' ),
-		esc_attr( 'coil_global_settings_group[coil_payment_pointer_id]' ),
-		esc_attr( 'coil_payment_pointer_id' ),
-		esc_attr( Admin\get_global_settings( 'coil_payment_pointer_id' ) ),
-		esc_attr( '$wallet.example.com/alice' )
-	);
-
-	echo '<p class="' . esc_attr( 'description' ) . '">';
-
-	$payment_pointer_description = esc_html__( 'Enter the payment pointer assigned by your digital wallet provider. Don\'t have a digital wallet or know your payment pointer?', 'coil-web-monetization' );
-	echo $payment_pointer_description . '</p>'; // phpcs:ignore. Output already escaped.
-
-	printf(
-		'<br><a href="%s" target="%s" class="%s">%s</a>',
-		esc_url( 'https://webmonetization.org/docs/ilp-wallets' ),
-		esc_attr( '_blank' ),
-		esc_attr( 'button button-large' ),
-		esc_html__( 'Learn more about digital wallets and payment pointers', 'coil-web-monetization' )
-	);
-	submit_button();
+			echo '<h1>' . esc_html__( 'Monetize Your Content', 'coil-web-monetization' ) . '</h1>';
+		?>
+		<div class="section">
+		<?php
+			echo '<p>' . esc_html__( 'Enable or disable content depending on your visitor\'s Coil Member status.', 'coil-web-monetization' ) . '</p>';
+		?>
+		</div>
+		<?php
+			echo '<h1>' . esc_html__( 'Promote Coil', 'coil-web-monetization' ) . '</h1>';
+		?>
+		<div class="section">
+			<?php
+				echo '<p>' . esc_html__( 'Promote Coil to your members via a floating Coil Support button.', 'coil-web-monetization' ) . '</p>';
+			?>
+		</div>
+		<h2></h2>
+		<h2></h2>
+	</div>
+<?php
 }
 
 /**
@@ -508,34 +538,6 @@ function coil_settings_sidebar_render_callback() {
 		</section>
 	</div>
 	<?php
-}
-
-// Render the text field for the payment point in general settings.
-function coil_global_settings_payment_pointer_render_callback() {
-
-	printf(
-		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" required="required" />',
-		esc_attr( 'wide-input' ),
-		esc_attr( 'text' ),
-		esc_attr( 'coil_global_settings_group[coil_payment_pointer_id]' ),
-		esc_attr( 'coil_payment_pointer_id' ),
-		esc_attr( Admin\get_global_settings( 'coil_payment_pointer_id' ) ),
-		esc_attr( '$wallet.example.com/alice' )
-	);
-
-	echo '<p class="' . esc_attr( 'description' ) . '">';
-
-	$payment_pointer_description = esc_html__( 'Enter the payment pointer assigned by your digital wallet provider. Don\'t have a digital wallet or know your payment pointer?', 'coil-web-monetization' );
-	echo $payment_pointer_description . '</p>'; // phpcs:ignore. Output already escaped.
-
-	printf(
-		'<br><a href="%s" target="%s" class="%s">%s</a>',
-		esc_url( 'https://webmonetization.org/docs/ilp-wallets' ),
-		esc_attr( '_blank' ),
-		esc_attr( 'button button-large' ),
-		esc_html__( 'Learn more about digital wallets and payment pointers', 'coil-web-monetization' )
-	);
-	submit_button();
 }
 
 /**
@@ -960,7 +962,7 @@ function admin_welcome_notice() {
 		return;
 	}
 
-	$payment_pointer_id = Admin\get_global_settings( 'coil_payment_pointer_id' );
+	$payment_pointer_id = Admin\get_welcome_settings( 'coil_payment_pointer_id' );
 	$notice_dismissed   = get_user_meta( $current_user->ID, 'coil-welcome-notice-dismissed', true );
 
 	if ( $payment_pointer_id || $notice_dismissed === 'true' ) {
@@ -1012,7 +1014,7 @@ function admin_no_payment_pointer_notice() {
 		return;
 	}
 
-	$payment_pointer_id = Admin\get_global_settings( 'coil_payment_pointer_id' );
+	$payment_pointer_id = Admin\get_welcome_settings( 'coil_payment_pointer_id' );
 
 	if ( $payment_pointer_id ) {
 		return;
@@ -1051,10 +1053,10 @@ function render_coil_settings_screen() : void {
 			</svg>
 			<h3 class="plugin-branding"><?php _e( 'Coil Web Monetization', 'coil-web-monetization' ); ?></h3>
 		</div>
-		<?php $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'coil_welcome_group'; ?>
+		<?php $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'coil-welcome_group'; ?>
 
 		<h2 class="nav-tab-wrapper">
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=coil-welcome_group' ); ?>" id="coil_global_settings_top_section" class="nav-tab <?php echo $active_tab === 'coil-welcome_group' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Welcome', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=coil-welcome_group' ); ?>" id="coil-global-settings" class="nav-tab <?php echo $active_tab === 'coil-welcome_group' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Welcome', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=global_settings' ); ?>" id="coil-global-settings" class="nav-tab <?php echo $active_tab === 'global_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'General Settings', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=monetization_settings' ); ?>" id="coil-monetization-settings" class="nav-tab <?php echo $active_tab === 'monetization_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Monetization', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=excerpt_settings' ); ?>" id="coil-excerpt-settings" class="nav-tab <?php echo $active_tab === 'excerpt_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Excerpts', 'coil-web-monetization' ); ?></a>
@@ -1069,9 +1071,10 @@ function render_coil_settings_screen() : void {
 		<form action="options.php" method="post">
 			<?php
 			switch ( $active_tab ) {
-				case 'coil_global_settings_top_section':
+				case 'coil-welcome_group':
 					coil_settings_sidebar_render_callback();
-					do_settings_sections( 'coil_welcome' );
+					settings_fields( 'coil_welcome_settings_group' );
+					do_settings_sections( 'coil_welcome_settings_section' );
 					break;
 				case 'global_settings':
 					settings_fields( 'coil_global_settings_group' );
