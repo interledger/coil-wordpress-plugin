@@ -368,14 +368,14 @@ function coil_welcome_group_validation( $welcome_settings ) : array {
  */
 function coil_general_settings_group_validation( $monetization_settings ) : array {
 		// A list of valid post types
-		$valid_choices = [ 'not-monetized', 'monetized'];
+		$valid_choices = [ 'not-monetized', 'monetized' ];
 
-		foreach ( $monetization_settings as $key => $option_value ) {
-	
-			// The default value is monetized
-			$monetization_settings[ $key ] = in_array( $option_value, $valid_choices, true ) ? sanitize_key( $option_value ) : 'monetized';
-		}
-	
+	foreach ( $monetization_settings as $key => $option_value ) {
+
+		// The default value is monetized
+		$monetization_settings[ $key ] = in_array( $option_value, $valid_choices, true ) ? sanitize_key( $option_value ) : 'monetized';
+	}
+
 		return $monetization_settings;
 }
 
@@ -392,7 +392,7 @@ function coil_exclusive_settings_group_validation( $general_settings ) : array {
 	}
 
 	$fields = [
-		'coil_content_container'
+		'coil_content_container',
 	];
 
 	foreach ( $fields as $option_item ) {
@@ -526,7 +526,7 @@ function coil_settings_welcome_render_callback() {
 	<div class="coil tab-styling">
 		<div>
 		<?php
-			
+
 			printf(
 				'<h1>%1$s</h1>',
 				esc_html__( 'Thank you for using Coil', 'coil-web-monetization' )
@@ -536,7 +536,7 @@ function coil_settings_welcome_render_callback() {
 
 		<div>
 		<?php
-			
+
 			printf(
 				'<h1>%1$s</h1>',
 				esc_html__( 'Setup Your Payment Pointer', 'coil-web-monetization' )
@@ -553,9 +553,9 @@ function coil_settings_welcome_render_callback() {
 				esc_attr( Admin\get_welcome_settings( 'coil_payment_pointer_id' ) ),
 				esc_attr( '$wallet.example.com/alice' )
 			);
-		
+
 			echo '<p class="' . esc_attr( 'description' ) . '">' . esc_html__( 'Don\'t have a digital wallet or know your payment pointer?', 'coil-web-monetization' ) . '</p>';
-		
+
 			printf(
 				'<br><a href="%s" target="%s" class="%s">%s</a>',
 				esc_url( 'https://webmonetization.org/docs/ilp-wallets' ),
@@ -612,7 +612,7 @@ function coil_settings_welcome_render_callback() {
 		?>
 		</div>
 	</div>
-<?php
+	<?php
 }
 
 /**

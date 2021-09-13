@@ -405,7 +405,7 @@ function get_exclusive_settings( $setting_id ) {
 
 	// Set up defaults.
 	$defaults = [
-		'coil_content_container'  => '.content-area .entry-content',
+		'coil_content_container' => '.content-area .entry-content',
 	];
 
 	$options = get_option( 'coil_exclusive_settings_group', [] );
