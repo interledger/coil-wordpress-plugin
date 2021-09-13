@@ -277,7 +277,7 @@ function coil_welcome_group_validation( $welcome_settings ) : array {
 
 			return sanitize_text_field( $global_settings_input );
 		},
-		(array) $global_settings
+		(array) $welcome_settings
 	);
 }
 
@@ -1054,8 +1054,7 @@ function render_coil_settings_screen() : void {
 		<?php $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'coil_welcome_group'; ?>
 
 		<h2 class="nav-tab-wrapper">
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=global_settings' ); ?>" id="coil-global-settings" class="nav-tab <?php echo $active_tab === 'global_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Welcome', 'coil-web-monetization' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=coil_welcome_group' ); ?>" id="coil_welcome_group" class="nav-tab <?php echo $active_tab === 'coil-welcome_group' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Welcome', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=coil-welcome_group' ); ?>" id="coil_global_settings_top_section" class="nav-tab <?php echo $active_tab === 'coil-welcome_group' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Welcome', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=global_settings' ); ?>" id="coil-global-settings" class="nav-tab <?php echo $active_tab === 'global_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'General Settings', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=monetization_settings' ); ?>" id="coil-monetization-settings" class="nav-tab <?php echo $active_tab === 'monetization_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Monetization', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=excerpt_settings' ); ?>" id="coil-excerpt-settings" class="nav-tab <?php echo $active_tab === 'excerpt_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Excerpts', 'coil-web-monetization' ); ?></a>
@@ -1070,7 +1069,7 @@ function render_coil_settings_screen() : void {
 		<form action="options.php" method="post">
 			<?php
 			switch ( $active_tab ) {
-				case 'coil_welcome_group':
+				case 'coil_global_settings_top_section':
 					coil_settings_sidebar_render_callback();
 					do_settings_sections( 'coil_welcome' );
 					break;
