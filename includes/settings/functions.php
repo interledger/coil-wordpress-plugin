@@ -45,7 +45,6 @@ function register_admin_menu() : void {
  */
 function register_admin_content_settings() {
 
-	
 	// Tab 1 - Welcome.
 	register_setting(
 		'coil_global_settings_group',
@@ -60,7 +59,7 @@ function register_admin_content_settings() {
 		__NAMESPACE__ . '\coil_settings_welcome_render_callback',
 		'coil_global_settings_top_section'
 	);
-	
+
 	// Tab 2 - General Settings.
 	register_setting(
 		'coil_global_settings_group',
@@ -416,13 +415,13 @@ function coil_appearance_settings_validation( $appearance_settings ) {
  * Settings Rendering
  * ------------------------------------------------------------------------ */
 
- /**
+/**
  * Renders the output of the welcome tab.
  *
  * @return void
  */
 function coil_settings_welcome_render_callback() {
-	
+
 	printf(
 		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" />',
 		esc_attr( 'wide-input' ),
