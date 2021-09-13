@@ -324,7 +324,7 @@ function add_redirect_customizer_section( $wp_customize ) : void {
 		]
 	);
 
-	$description  = '<p>' . $description .= sprintf(
+	$description  = '<p>' . sprintf(
 		__( 'Message customization settings have moved to the ', 'coil-web-monetization' ) . '<a href="%s">' . __( 'Messaging Settings tab', 'coil-web-monetization' ) . '</a>',
 		esc_url( admin_url( 'admin.php?page=coil_settings&tab=messaging_settings', COIL__FILE__ ) )
 	) . '</p>';
@@ -401,14 +401,14 @@ function get_welcome_settings( $setting_id ) {
  * @param string $setting_id The named key in the wp_options serialized array.
  * @return string
  */
-function get_global_settings( $setting_id ) {
+function get_exclusive_settings( $setting_id ) {
 
 	// Set up defaults.
 	$defaults = [
 		'coil_content_container'  => '.content-area .entry-content',
 	];
 
-	$options = get_option( 'coil_global_settings_group', [] );
+	$options = get_option( 'coil_exclusive_settings_group', [] );
 
 	return ( ! empty( $options[ $setting_id ] ) ) ? $options[ $setting_id ] : $defaults[ $setting_id ];
 }

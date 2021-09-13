@@ -45,197 +45,290 @@ function register_admin_menu() : void {
  */
 function register_admin_content_settings() {
 
-	// Tab 1 - Welcome.
+	// Tab 1 - Welcome
 	register_setting(
 		'coil_welcome_settings_group',
 		'coil_welcome_settings_group',
 		__NAMESPACE__ . '\coil_welcome_group_validation'
 	);
 
-	// ==== Welcome.
+	// ==== Welcome Note, Payment Pointer and Guide
 	add_settings_section(
-		'coil_welcome_settings_section',
+		'coil_welcome_section',
 		false,
 		__NAMESPACE__ . '\coil_settings_welcome_render_callback',
-		'coil_welcome_settings_section'
+		'coil_welcome_section'
 	);
 
-	// Tab 2 - General Settings.
+	// Tab 2 - General Settings
 	register_setting(
-		'coil_global_settings_group',
-		'coil_global_settings_group',
-		__NAMESPACE__ . '\coil_global_settings_group_validation'
+		'coil_general_settings_group',
+		'coil_general_settings_group',
+		__NAMESPACE__ . '\coil_general_settings_group_validation'
 	);
 
-	// ==== Advanced Config.
+	// ==== Global Monetization Defaults
 	add_settings_section(
-		'coil_global_settings_bottom_section',
-		__( 'Advanced Config', 'coil-web-monetization' ),
-		'\__return_empty_string',
-		'coil_global_settings_advanced'
-	);
-
-	add_settings_field(
-		'coil_content_container',
-		__( 'CSS Selectors', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_global_settings_advanced_config_render_callback',
-		'coil_global_settings_advanced',
-		'coil_global_settings_bottom_section'
-	);
-
-	// Tab 2 - Content Settings.
-	register_setting(
-		'coil_content_settings_posts_group',
-		'coil_content_settings_posts_group',
-		__NAMESPACE__ . '\coil_content_settings_posts_validation'
-	);
-
-		// ==== Content Settings.
-	add_settings_section(
-		'coil_content_settings_posts_section',
+		'coil_default_monetization_section',
 		false,
-		__NAMESPACE__ . '\coil_content_settings_posts_render_callback',
-		'coil_content_settings_posts'
+		__NAMESPACE__ . '\coil_settings_monetization_render_callback',
+		'coil_default_monetization_section'
 	);
 
-	// Tab 3 - Excerpt settings.
+	// Tab 3 - Exclusive Content
 	register_setting(
-		'coil_content_settings_excerpt_group',
-		'coil_content_settings_excerpt_group',
-		__NAMESPACE__ . '\coil_content_settings_excerpt_validation'
+		'coil_exclusive_settings_group',
+		'coil_exclusive_settings_group',
+		__NAMESPACE__ . '\coil_exclusive_settings_group_validation'
 	);
 
+	// ==== Enable / Disable
 	add_settings_section(
-		'coil_content_settings_excerpts_section',
+		'coil_enable_exclusive_section',
 		false,
-		__NAMESPACE__ . '\coil_content_settings_excerpts_render_callback',
-		'coil_content_settings_excerpts'
+		__NAMESPACE__ . '\coil_settings_enable_exclusive_render_callback',
+		'coil_enable_exclusive_section'
 	);
 
-	// Tab 4 - Messaging settings.
+	// ==== Paywall Appearance
+	add_settings_section(
+		'coil_paywall_section',
+		false,
+		__NAMESPACE__ . '\coil_settings_paywall_render_callback',
+		'coil_paywall_section'
+	);
+
+	// ==== Exclusive Post Appearance
+	add_settings_section(
+		'coil_exclusive_post_section',
+		false,
+		__NAMESPACE__ . '\coil_settings_exclusive_post_render_callback',
+		'coil_exclusive_post_section'
+	);
+
+	// ==== Global Visibility Defaults
+	add_settings_section(
+		'coil_default_post_visibility_section',
+		false,
+		__NAMESPACE__ . '\coil_settings_post_visibility_render_callback',
+		'coil_default_post_visibility_section'
+	);
+
+	// ==== CSS Selectors
+	add_settings_section(
+		'coil_css_selector_section',
+		false,
+		__NAMESPACE__ . '\coil_settings_css_selector_render_callback',
+		'coil_css_selector_section'
+	);
+
+	// Tab 4 - Floating Button
 	register_setting(
-		'coil_messaging_settings_group',
-		'coil_messaging_settings_group',
-		__NAMESPACE__ . '\coil_messaging_settings_validation'
+		'coil_floating_button_settings_group',
+		'coil_floating_button_settings_group',
+		__NAMESPACE__ . '\coil_floating_button_settings_group_validation'
 	);
 
+	// ==== Enable / Disable
 	add_settings_section(
-		'coil_fully_gated_content_message',
-		__( 'Paying Viewers Only message', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
-		'coil_messaging_settings'
-	);
-
-	// === Partially gated content message
-	add_settings_section(
-		'coil_partially_gated_content_message',
-		__( 'Split Content message', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
-		'coil_messaging_settings'
-	);
-
-	// === Monetization status pending message
-	add_settings_section(
-		'coil_verifying_status_message',
-		__( 'Pending message', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
-		'coil_messaging_settings'
-	);
-
-	// === Invalid monetization message
-	add_settings_section(
-		'coil_unable_to_verify_message',
-		__( 'Invalid Web Monetization message', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
-		'coil_messaging_settings'
-	);
-
-	// === Voluntry donation message
-	add_settings_section(
-		'coil_voluntary_donation_message',
-		__( 'Support creator message', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
-		'coil_messaging_settings'
-	);
-
-	// === Learn more button text
-	add_settings_section(
-		'coil_learn_more_button_text',
-		__( 'Learn more button text', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
-		'coil_messaging_settings'
-	);
-
-	// === Learn more button link
-	add_settings_section(
-		'coil_learn_more_button_link',
-		__( 'Learn more button link', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_messaging_settings_render_callback',
-		'coil_messaging_settings'
-	);
-
-	// Tab 5 - Appearance Settings.
-	register_setting(
-		'coil_appearance_settings_group',
-		'coil_appearance_settings_group',
-		__NAMESPACE__ . '\coil_appearance_settings_validation'
-	);
-	add_settings_section(
-		'coil_display_settings_section',
-		__( 'Display Settings', 'coil-web-monetization' ),
+		'coil_enable_button_section',
 		false,
-		'coil_display_settings'
+		__NAMESPACE__ . '\coil_settings_enable_button_render_callback',
+		'coil_enable_button_section'
 	);
 
-	// ==== Padlock Settings.
-	add_settings_field(
-		'coil_title_padlock',
-		__( 'Padlock settings', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_title_padlock_settings_render_callback',
-		'coil_display_settings',
-		'coil_display_settings_section'
-	);
-
-	// ==== Donation bar Settings.
-	add_settings_field(
-		'coil_show_donation_bar',
-		__( 'Display support creator message', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_show_donation_bar_settings_render_callback',
-		'coil_display_settings',
-		'coil_display_settings_section'
-	);
-
-	// ==== CTA theme
+	// ==== Button Settings
 	add_settings_section(
-		'coil_exclusive_post__settings_section',
-		__( 'Exclusive Post Message Customization', 'coil-web-monetization' ),
+		'coil_floating_button_section',
 		false,
-		'coil_style_settings'
+		__NAMESPACE__ . '\coil_settings_floating_button_render_callback',
+		'coil_floating_button_section'
 	);
 
-	add_settings_field(
-		'coil_message_color_theme',
-		__( 'Color Theme', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_message_color_theme_render_callback',
-		'coil_style_settings',
-		'coil_exclusive_post__settings_section'
+	// ==== Button Visibility
+	add_settings_section(
+		'coil_button_visibility_section',
+		false,
+		__NAMESPACE__ . '\coil_settings_button_visibility_render_callback',
+		'coil_button_visibility_section'
 	);
 
-	add_settings_field(
-		'coil_message_font',
-		__( 'Use Theme Font', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_message_font_render_callback',
-		'coil_style_settings',
-		'coil_exclusive_post__settings_section'
-	);
+	// // Tab 2 - General Settings.
+	// register_setting(
+	// 	'coil_global_settings_group',
+	// 	'coil_global_settings_group',
+	// 	__NAMESPACE__ . '\coil_global_settings_group_validation'
+	// );
 
-	add_settings_field(
-		'coil_message_branding',
-		__( 'Message Branding', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\coil_message_branding_render_callback',
-		'coil_style_settings',
-		'coil_exclusive_post__settings_section'
-	);
+	// // ==== Advanced Config.
+	// add_settings_section(
+	// 	'coil_global_settings_bottom_section',
+	// 	__( 'Advanced Config', 'coil-web-monetization' ),
+	// 	'\__return_empty_string',
+	// 	'coil_global_settings_advanced'
+	// );
+
+	// add_settings_field(
+	// 	'coil_content_container',
+	// 	__( 'CSS Selectors', 'coil-web-monetization' ),
+	// 	__NAMESPACE__ . '\coil_global_settings_advanced_config_render_callback',
+	// 	'coil_global_settings_advanced',
+	// 	'coil_global_settings_bottom_section'
+	// );
+
+	// // Tab 2 - Content Settings.
+	// register_setting(
+	// 	'coil_content_settings_posts_group',
+	// 	'coil_content_settings_posts_group',
+	// 	__NAMESPACE__ . '\coil_content_settings_posts_validation'
+	// );
+
+	// 	// ==== Content Settings.
+	// add_settings_section(
+	// 	'coil_content_settings_posts_section',
+	// 	false,
+	// 	__NAMESPACE__ . '\coil_content_settings_posts_render_callback',
+	// 	'coil_content_settings_posts'
+	// );
+
+	// // Tab 3 - Excerpt settings.
+	// register_setting(
+	// 	'coil_content_settings_excerpt_group',
+	// 	'coil_content_settings_excerpt_group',
+	// 	__NAMESPACE__ . '\coil_content_settings_excerpt_validation'
+	// );
+
+	// add_settings_section(
+	// 	'coil_content_settings_excerpts_section',
+	// 	false,
+	// 	__NAMESPACE__ . '\coil_content_settings_excerpts_render_callback',
+	// 	'coil_content_settings_excerpts'
+	// );
+
+	// // Tab 4 - Messaging settings.
+	// register_setting(
+	// 	'coil_messaging_settings_group',
+	// 	'coil_messaging_settings_group',
+	// 	__NAMESPACE__ . '\coil_messaging_settings_validation'
+	// );
+
+	// add_settings_section(
+	// 	'coil_fully_gated_content_message',
+	// 	__( 'Paying Viewers Only message', 'coil-web-monetization' ),
+	// 	__NAMESPACE__ . '\coil_messaging_settings_render_callback',
+	// 	'coil_messaging_settings'
+	// );
+
+	// // === Partially gated content message
+	// add_settings_section(
+	// 	'coil_partially_gated_content_message',
+	// 	__( 'Split Content message', 'coil-web-monetization' ),
+	// 	__NAMESPACE__ . '\coil_messaging_settings_render_callback',
+	// 	'coil_messaging_settings'
+	// );
+
+	// // === Monetization status pending message
+	// add_settings_section(
+	// 	'coil_verifying_status_message',
+	// 	__( 'Pending message', 'coil-web-monetization' ),
+	// 	__NAMESPACE__ . '\coil_messaging_settings_render_callback',
+	// 	'coil_messaging_settings'
+	// );
+
+	// // === Invalid monetization message
+	// add_settings_section(
+	// 	'coil_unable_to_verify_message',
+	// 	__( 'Invalid Web Monetization message', 'coil-web-monetization' ),
+	// 	__NAMESPACE__ . '\coil_messaging_settings_render_callback',
+	// 	'coil_messaging_settings'
+	// );
+
+	// // === Voluntry donation message
+	// add_settings_section(
+	// 	'coil_voluntary_donation_message',
+	// 	__( 'Support creator message', 'coil-web-monetization' ),
+	// 	__NAMESPACE__ . '\coil_messaging_settings_render_callback',
+	// 	'coil_messaging_settings'
+	// );
+
+	// // === Learn more button text
+	// add_settings_section(
+	// 	'coil_learn_more_button_text',
+	// 	__( 'Learn more button text', 'coil-web-monetization' ),
+	// 	__NAMESPACE__ . '\coil_messaging_settings_render_callback',
+	// 	'coil_messaging_settings'
+	// );
+
+	// // === Learn more button link
+	// add_settings_section(
+	// 	'coil_learn_more_button_link',
+	// 	__( 'Learn more button link', 'coil-web-monetization' ),
+	// 	__NAMESPACE__ . '\coil_messaging_settings_render_callback',
+	// 	'coil_messaging_settings'
+	// );
+
+	// // Tab 5 - Appearance Settings.
+	// register_setting(
+	// 	'coil_appearance_settings_group',
+	// 	'coil_appearance_settings_group',
+	// 	__NAMESPACE__ . '\coil_appearance_settings_validation'
+	// );
+	// add_settings_section(
+	// 	'coil_display_settings_section',
+	// 	__( 'Display Settings', 'coil-web-monetization' ),
+	// 	false,
+	// 	'coil_display_settings'
+	// );
+
+	// // ==== Padlock Settings.
+	// add_settings_field(
+	// 	'coil_title_padlock',
+	// 	__( 'Padlock settings', 'coil-web-monetization' ),
+	// 	__NAMESPACE__ . '\coil_title_padlock_settings_render_callback',
+	// 	'coil_display_settings',
+	// 	'coil_display_settings_section'
+	// );
+
+	// // ==== Donation bar Settings.
+	// add_settings_field(
+	// 	'coil_show_donation_bar',
+	// 	__( 'Display support creator message', 'coil-web-monetization' ),
+	// 	__NAMESPACE__ . '\coil_show_donation_bar_settings_render_callback',
+	// 	'coil_display_settings',
+	// 	'coil_display_settings_section'
+	// );
+
+	// // ==== CTA theme
+	// add_settings_section(
+	// 	'coil_exclusive_post__settings_section',
+	// 	__( 'Exclusive Post Message Customization', 'coil-web-monetization' ),
+	// 	false,
+	// 	'coil_style_settings'
+	// );
+
+	// add_settings_field(
+	// 	'coil_message_color_theme',
+	// 	__( 'Color Theme', 'coil-web-monetization' ),
+	// 	__NAMESPACE__ . '\coil_message_color_theme_render_callback',
+	// 	'coil_style_settings',
+	// 	'coil_exclusive_post__settings_section'
+	// );
+
+	// add_settings_field(
+	// 	'coil_message_font',
+	// 	__( 'Use Theme Font', 'coil-web-monetization' ),
+	// 	__NAMESPACE__ . '\coil_message_font_render_callback',
+	// 	'coil_style_settings',
+	// 	'coil_exclusive_post__settings_section'
+	// );
+
+	// add_settings_field(
+	// 	'coil_message_branding',
+	// 	__( 'Message Branding', 'coil-web-monetization' ),
+	// 	__NAMESPACE__ . '\coil_message_branding_render_callback',
+	// 	'coil_style_settings',
+	// 	'coil_exclusive_post__settings_section'
+	// );
 
 }
 
@@ -266,38 +359,56 @@ function coil_welcome_group_validation( $welcome_settings ) : array {
 }
 
 /**
+ * Allow the radio button options,
+ * that set the global monetization defaults,
+ * to be properly validated
+ *
+ * @param array $monetization_settings The posted radio options from the General Settings section
+ * @return array
+ */
+function coil_general_settings_group_validation( $monetization_settings ) : array {
+		// A list of valid post types
+		$valid_choices = [ 'not-monetized', 'monetized'];
+
+		foreach ( $monetization_settings as $key => $option_value ) {
+	
+			// The default value is monetized
+			$monetization_settings[ $key ] = in_array( $option_value, $valid_choices, true ) ? sanitize_key( $option_value ) : 'monetized';
+		}
+	
+		return $monetization_settings;
+}
+
+/**
  * Allow the CSS selector text input in the Exclusive Content section to
  * be properly validated.
  *
- * @param array $global_settings The posted text input fields.
+ * @param array $general_settings The posted text input fields.
  * @return array
  */
-function coil_global_settings_group_validation( $global_settings ) : array {
-
+function coil_exclusive_settings_group_validation( $general_settings ) : array {
 	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
 		return [];
 	}
 
-	if ( isset( $global_settings['coil_content_container'] ) && empty( $global_settings['coil_content_container'] ) ) {
-		$global_settings['coil_content_container'] = '.content-area .entry-content';
+	$fields = [
+		'coil_content_container'
+	];
+
+	foreach ( $fields as $option_item ) {
+
+		switch ( $option_item ) {
+			case 'coil_content_container':
+				// Set the CSS selectors used to hide exclusive content.
+				$general_settings['coil_content_container'] = isset( $general_settings['coil_content_container'] ) && ! empty( $general_settings['coil_content_container'] ) ? sanitize_text_field( $general_settings['coil_content_container'] ) : '.content-area .entry-content';
+				break;
+		}
 	}
 
-	return array_map(
-		function( $global_settings_input ) {
-
-			return sanitize_text_field( $global_settings_input );
-		},
-		(array) $global_settings
-	);
+	return $general_settings;
 }
 
-/**
- * Allow the radio button options in the posts content section
- * to be properly validated
- *
- * @param array $monetization_settings The posted radio options from the content settings section
- * @return array
- */
+
 function coil_content_settings_posts_validation( $monetization_settings ) : array {
 
 	// A list of valid post types
@@ -412,7 +523,8 @@ function coil_appearance_settings_validation( $appearance_settings ) {
  */
 function coil_settings_welcome_render_callback() {
 	?>
-	<div class="coil welcome-tab">
+	<div class="coil tab-styling">
+		<div>
 		<?php
 			
 			printf(
@@ -420,15 +532,18 @@ function coil_settings_welcome_render_callback() {
 				esc_html__( 'Thank you for using Coil', 'coil-web-monetization' )
 			);
 		?>
-		<div class="section">
+		</div>
+
+		<div>
 		<?php
+			
 			printf(
-				'<p>%1$s<a href="%2$s">%3$s</a>%4$s</p>',
-				esc_html__( 'Please ensure your payment pointer is setup ', 'coil-web-monetization' ),
-				esc_url( admin_url( 'admin.php?page=coil_settings&tab=global_settings', COIL__FILE__ ) ),
-				esc_html__( 'click here to add a payment pointer', 'coil-web-monetization' ),
-				esc_html__( '.', 'coil-web-monetization' )
+				'<h1>%1$s</h1>',
+				esc_html__( 'Setup Your Payment Pointer', 'coil-web-monetization' )
 			);
+		?>
+		<?php
+			echo '<p>' . esc_html__( 'Enter the payment pointer assigned by your digital wallet provider.', 'coil-web-monetization' ) . '</p>';
 			printf(
 				'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" />',
 				esc_attr( 'wide-input' ),
@@ -439,10 +554,7 @@ function coil_settings_welcome_render_callback() {
 				esc_attr( '$wallet.example.com/alice' )
 			);
 		
-			echo '<p class="' . esc_attr( 'description' ) . '">';
-		
-			$payment_pointer_description = esc_html__( 'Enter the payment pointer assigned by your digital wallet provider. Don\'t have a digital wallet or know your payment pointer?', 'coil-web-monetization' );
-			echo $payment_pointer_description . '</p>'; // phpcs:ignore. Output already escaped.
+			echo '<p class="' . esc_attr( 'description' ) . '">' . esc_html__( 'Don\'t have a digital wallet or know your payment pointer?', 'coil-web-monetization' ) . '</p>';
 		
 			printf(
 				'<br><a href="%s" target="%s" class="%s">%s</a>',
@@ -451,28 +563,54 @@ function coil_settings_welcome_render_callback() {
 				esc_attr( 'button button-large' ),
 				esc_html__( 'Learn more about digital wallets and payment pointers', 'coil-web-monetization' )
 			);
+
 			submit_button();
+
 		?>
 		</div>
+
+		<div>
 		<?php
 
 			echo '<h1>' . esc_html__( 'Monetize Your Content', 'coil-web-monetization' ) . '</h1>';
 		?>
-		<div class="section">
 		<?php
-			echo '<p>' . esc_html__( 'Enable or disable content depending on your visitor\'s Coil Member status.', 'coil-web-monetization' ) . '</p>';
+			echo '<p>' . esc_html__( 'Enable content to receive streaming payments from Coil members.', 'coil-web-monetization' ) . '</p>';
+			printf(
+				'<a class="button button-large" href="%s">%s</a>',
+				esc_url( admin_url( 'admin.php?page=coil_settings&tab=general_settings', COIL__FILE__ ) ),
+				esc_html__( 'Setup Monetization', 'coil-web-monetization' )
+			);
 		?>
 		</div>
+
+		<div>
+		<?php
+			echo '<h1>' . esc_html__( 'Make Your Content Exclusive', 'coil-web-monetization' ) . '</h1>';
+		?>
+		<?php
+			echo '<p>' . esc_html__( 'Set whether content is publicly available or only accessible for Coil members.', 'coil-web-monetization' ) . '</p>';
+			printf(
+				'<a class="button button-large" href="%s">%s</a>',
+				esc_url( admin_url( 'admin.php?page=coil_settings&tab=exclusive_settings', COIL__FILE__ ) ),
+				esc_html__( 'Setup Exclusivity', 'coil-web-monetization' )
+			);
+		?>
+		</div>
+
+		<div>
 		<?php
 			echo '<h1>' . esc_html__( 'Promote Coil', 'coil-web-monetization' ) . '</h1>';
 		?>
-		<div class="section">
-			<?php
-				echo '<p>' . esc_html__( 'Promote Coil to your members via a floating Coil Support button.', 'coil-web-monetization' ) . '</p>';
-			?>
+		<?php
+			echo '<p>' . esc_html__( 'Promote Coil to your members via a floating Coil Support button.', 'coil-web-monetization' ) . '</p>';
+			printf(
+				'<a class="button button-large" href="%s">%s</a>',
+				esc_url( admin_url( 'admin.php?page=coil_settings&tab=floating_button', COIL__FILE__ ) ),
+				esc_html__( 'Setup Floating Button', 'coil-web-monetization' )
+			);
+		?>
 		</div>
-		<h2></h2>
-		<h2></h2>
 	</div>
 <?php
 }
@@ -541,19 +679,99 @@ function coil_settings_sidebar_render_callback() {
 }
 
 /**
- * Render the advanced config settings fields.
+ * Renders the output of the global monetization default settings
+ * showing radio buttons based on the post types available in WordPress.
  *
  * @return void
  */
-function coil_global_settings_advanced_config_render_callback() {
+function coil_settings_monetization_render_callback() {
+	$post_type_options = Coil\get_supported_post_types( 'objects' );
+
+	// If there are post types available, output them:
+	if ( ! empty( $post_type_options ) ) {
+
+		$form_gating_settings           = Gating\get_monetization_setting_types();
+		$content_settings_posts_options = Gating\get_global_posts_gating();
+
+		?>
+		<div class="coil tab-styling">
+			<p><?php esc_html_e( 'Use the settings below to control the defaults for how your content is monetized and gated across your whole site. You can override the defaults by configuring monetization against your categories and taxonomies. You can also override the defaults against individual pages and posts or even specific blocks inside of them.', 'coil-web-monetization' ); ?>
+			</p>
+			<table class="widefat">
+				<thead>
+					<th><?php esc_html_e( 'Post Type', 'coil-web-monetization' ); ?></th>
+					<?php foreach ( $form_gating_settings as $setting_key => $setting_value ) : ?>
+						<th class="posts_table_header">
+							<?php echo esc_html( $setting_value ); ?>
+						</th>
+					<?php endforeach; ?>
+				</thead>
+				<tbody>
+					<?php foreach ( $post_type_options as $post_type ) : ?>
+						<tr>
+							<th scope="row"><?php echo esc_html( $post_type->label ); ?></th>
+							<?php
+							foreach ( $form_gating_settings as $setting_key => $setting_value ) :
+								$input_id   = $post_type->name . '_' . $setting_key;
+								$input_name = 'coil_content_settings_posts_group[' . $post_type->name . ']';
+
+								/**
+								 * Specify the default checked state on the input from
+								 * any settings stored in the database. If the individual
+								 * input status is not set, default to the first radio
+								 * option (No Monetization)
+								 */
+								$checked_input = false;
+								if ( $setting_key === 'no' ) {
+									$checked_input = 'checked="true"';
+								} elseif ( isset( $content_settings_posts_options[ $post_type->name ] ) ) {
+									$checked_input = checked( $setting_key, $content_settings_posts_options[ $post_type->name ], false );
+								} elseif ( 'no-gating' === $setting_key ) {
+									$checked_input = 'checked="true"';
+								}
+								?>
+								<td>
+									<?php
+									printf(
+										'<input type="radio" name="%s" id="%s" value="%s"%s />',
+										esc_attr( $input_name ),
+										esc_attr( $input_id ),
+										esc_attr( $setting_key ),
+										$checked_input
+									);
+									?>
+								</td>
+								<?php
+							endforeach;
+							?>
+						</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+		<?php
+	}
+}
+
+/**
+ * Render the CSS selector settings inpt field.
+ *
+ * @return void
+ */
+function coil_settings_css_selector_render_callback() {
+
+	?>
+	<div class="coil tab-styling">
+		<h1>CSS Selector</h1>
+	<?php
 
 	printf(
 		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" required="required"/>',
 		esc_attr( 'wide-input' ),
 		esc_attr( 'text' ),
-		esc_attr( 'coil_global_settings_group[coil_content_container]' ),
+		esc_attr( 'coil_exclusive_settings_group[coil_content_container]' ),
 		esc_attr( 'coil_content_container' ),
-		esc_attr( Admin\get_global_settings( 'coil_content_container' ) ),
+		esc_attr( Admin\get_exclusive_settings( 'coil_content_container' ) ),
 		esc_attr( '.content-area .entry-content' )
 	);
 
@@ -567,6 +785,9 @@ function coil_global_settings_advanced_config_render_callback() {
 	);
 
 	echo '</p>';
+	?>
+	</div>
+	<?php
 }
 
 /**
@@ -1053,15 +1274,19 @@ function render_coil_settings_screen() : void {
 			</svg>
 			<h3 class="plugin-branding"><?php _e( 'Coil Web Monetization', 'coil-web-monetization' ); ?></h3>
 		</div>
-		<?php $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'coil-welcome_group'; ?>
+		<?php $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'welcome'; ?>
 
 		<h2 class="nav-tab-wrapper">
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=coil-welcome_group' ); ?>" id="coil-global-settings" class="nav-tab <?php echo $active_tab === 'coil-welcome_group' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Welcome', 'coil-web-monetization' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=global_settings' ); ?>" id="coil-global-settings" class="nav-tab <?php echo $active_tab === 'global_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'General Settings', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=welcome' ); ?>" id="coil-welcome-settings" class="nav-tab <?php echo $active_tab === 'coil-welcome' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Welcome', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=general_settings' ); ?>" id="coil-general-settings" class="nav-tab <?php echo $active_tab === 'coil-general_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'General Settings', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=exclusive_settings' ); ?>" id="coil-exclusive-settings" class="nav-tab <?php echo $active_tab === 'coil-exclusive_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Exclusive Content', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=floating_button' ); ?>" id="coil-floating-button-settings" class="nav-tab <?php echo $active_tab === 'coil-floating_button' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Floating Button', 'coil-web-monetization' ); ?></a>
+
+			<!-- <a href="<?php echo esc_url( '?page=coil_settings&tab=global_settings' ); ?>" id="coil-global-settings" class="nav-tab <?php echo $active_tab === 'global_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'General Settings', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=monetization_settings' ); ?>" id="coil-monetization-settings" class="nav-tab <?php echo $active_tab === 'monetization_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Monetization', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=excerpt_settings' ); ?>" id="coil-excerpt-settings" class="nav-tab <?php echo $active_tab === 'excerpt_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Excerpts', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=messaging_settings' ); ?>" id="coil-messaging-settings" class="nav-tab <?php echo $active_tab === 'messaging_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Messages', 'coil-web-monetization' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=appearance_settings' ); ?>" id="coil-appearance-settings" class="nav-tab <?php echo $active_tab === 'appearance_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Appearance', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=appearance_settings' ); ?>" id="coil-appearance-settings" class="nav-tab <?php echo $active_tab === 'appearance_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Appearance', 'coil-web-monetization' ); ?></a> -->
 		</h2>
 	</div>
 	<div class="wrap coil plugin-settings">
@@ -1071,37 +1296,52 @@ function render_coil_settings_screen() : void {
 		<form action="options.php" method="post">
 			<?php
 			switch ( $active_tab ) {
-				case 'coil-welcome_group':
+				case 'welcome':
 					coil_settings_sidebar_render_callback();
 					settings_fields( 'coil_welcome_settings_group' );
-					do_settings_sections( 'coil_welcome_settings_section' );
+					do_settings_sections( 'coil_welcome_section' );
 					break;
-				case 'global_settings':
-					settings_fields( 'coil_global_settings_group' );
-					// do_settings_sections( 'coil_global_settings_global' );
-					do_settings_sections( 'coil_global_settings_advanced' );
+				case 'general_settings':
+					settings_fields( 'coil_general_settings_group' );
+					do_settings_sections( 'coil_default_monetization_section' );
 					submit_button();
 					break;
-				case 'monetization_settings':
-					settings_fields( 'coil_content_settings_posts_group' );
-					do_settings_sections( 'coil_content_settings_posts' );
+				case 'exclusive_settings':
+					settings_fields( 'coil_exclusive_settings_group' );
+					// do_settings_sections( 'coil_enable_exclusive_section' );
+					// do_settings_sections( 'coil_paywall_section' );
+					// do_settings_sections( 'coil_exclusive_post_section' );
+					// do_settings_sections( 'coil_default_post_visibility_section' );
+					do_settings_sections( 'coil_css_selector_section' );
 					submit_button();
 					break;
-				case 'excerpt_settings':
-					settings_fields( 'coil_content_settings_excerpt_group' );
-					do_settings_sections( 'coil_content_settings_excerpts' );
-					submit_button();
+				case 'floating_button':
+					// settings_fields( 'coil_floating_button_settings_group' );
+					// do_settings_sections( 'coil_enable_button_section' );
+					// o_settings_sections( 'coil_floating_button_section' );
+					// o_settings_sections( 'coil_button_visibility_section' );
+					// submit_button();
 					break;
-				case 'messaging_settings':
-					settings_fields( 'coil_messaging_settings_group' );
-					do_settings_sections( 'coil_messaging_settings' );
-					submit_button();
-					break;
-				case 'appearance_settings':
-					settings_fields( 'coil_appearance_settings_group' );
-					do_settings_sections( 'coil_display_settings' );
-					do_settings_sections( 'coil_style_settings' );
-					submit_button();
+				// case 'monetization_settings':
+				// 	settings_fields( 'coil_content_settings_posts_group' );
+				// 	do_settings_sections( 'coil_content_settings_posts' );
+				// 	submit_button();
+				// 	break;
+				// case 'excerpt_settings':
+				// 	settings_fields( 'coil_content_settings_excerpt_group' );
+				// 	do_settings_sections( 'coil_content_settings_excerpts' );
+				// 	submit_button();
+				// 	break;
+				// case 'messaging_settings':
+				// 	settings_fields( 'coil_messaging_settings_group' );
+				// 	do_settings_sections( 'coil_messaging_settings' );
+				// 	submit_button();
+				// 	break;
+				// case 'appearance_settings':
+				// 	settings_fields( 'coil_appearance_settings_group' );
+				// 	do_settings_sections( 'coil_display_settings' );
+				// 	do_settings_sections( 'coil_style_settings' );
+				// 	submit_button();
 			}
 			?>
 		</form>
