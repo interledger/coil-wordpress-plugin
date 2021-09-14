@@ -94,7 +94,7 @@
   background: #fff;
   padding: 15px;
   width: 70%; }
-  .coil .tab-styling div {
+  .coil .tab-styling div.tab-section {
     border-bottom: 1px solid #dedede;
     padding-bottom: 15px;
     padding-top: 15px; }

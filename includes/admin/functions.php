@@ -424,22 +424,35 @@ function get_monetization_types() {
 }
 
 /**
- * Retrieve the global content settings using a key from the global
- * settings group (serialized).
- *
- * @param string $setting_id The named key in the wp_options serialized array.
- * @return string
+ * Retrieve the Exclusive Content settings.
+ * @return array Setting stored in options.
  */
-function get_exclusive_settings( $setting_id ) {
+function get_exclusive_settings() {
 
 	// Set up defaults.
 	$defaults = [
 		'coil_content_container' => '.content-area .entry-content',
 	];
 
-	$options = get_option( 'coil_exclusive_settings_group', [] );
+	$exclusive_options = get_option( 'coil_exclusive_settings_group', [] );
+	if ( empty( $exclusive_options ['coil_content_container'] ) ) {
+		$exclusive_options ['coil_content_container'] = $defaults['coil_content_container'];
+	}
 
-	return ( ! empty( $options[ $setting_id ] ) ) ? $options[ $setting_id ] : $defaults[ $setting_id ];
+	return $exclusive_options;
+}
+
+/**
+ * @return array Valid visibility states - Public or Exclusive.
+ */
+function get_visibility_types() : array {
+
+	$visibility_types = [
+		'public'    => 'Public',
+		'exclusive' => 'Exclusive',
+	];
+
+	return $visibility_types;
 }
 
 /**

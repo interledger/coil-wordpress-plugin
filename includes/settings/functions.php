@@ -373,46 +373,69 @@ function coil_general_settings_group_validation( $monetization_settings ) : arra
 	}
 
 	// A list of valid post types
-	$valid_choices = array_keys( Admin\get_monetization_types(), true );
+	$valid_choices = array_keys( Admin\get_monetization_types() );
+	// Post visibility defaults
+	$visibility_default = Admin\get_exclusive_settings();
 
 	foreach ( $monetization_settings as $key => $option_value ) {
 
 		// The default value is monetized
 		$monetization_settings[ $key ] = in_array( $option_value, $valid_choices, true ) ? sanitize_key( $option_value ) : 'monetized';
+		// Ensures that a post cannot default to be Not Monetized and Exclusive
+		if ( $monetization_settings[ $key ] === 'not-monetized' && $visibility_default[ $key ] === 'exclusive' ) {
+			$visibility_default [ $key ] = 'public';
+			update_option( 'coil_exclusive_settings_group', $visibility_default );
+		}
 	}
 
 	return $monetization_settings;
 }
 
 /**
- * Allow the CSS selector text input in the Exclusive Content section to
- * be properly validated.
+ * Validates the post type default visibility settings.
+ * Validates the CSS selector text input.
  *
- * @param array $general_settings The posted text input fields.
+ * @param array $exclusive_settings The posted text input fields.
  * @return array
  */
-function coil_exclusive_settings_group_validation( $general_settings ) : array {
+function coil_exclusive_settings_group_validation( $exclusive_settings ) : array {
+
 	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
 		return [];
 	}
 
-	$fields = [
+	$post_monetization_defaults = Admin\get_general_settings();
+	$valid_visibility_choices   = array_keys( Admin\get_visibility_types() );
+	$post_type_options          = Coil\get_supported_post_types( 'objects' );
+
+	foreach ( $post_type_options as $post_type ) {
+		$input_name           = $post_type->name;
+		$monetization_setting = ! empty( $post_monetization_defaults[ $input_name ] ) ? $post_monetization_defaults[ $input_name ] : 'monetized';
+		$visibility_setting   = ! empty( $exclusive_settings[ $input_name ] ) && in_array( $exclusive_settings[ $input_name ], $valid_visibility_choices, true ) ? sanitize_key( $exclusive_settings[ $input_name ] ) : 'public';
+
+		if ( $visibility_setting === 'exclusive' && $monetization_setting === 'not-monetized' ) {
+			$visibility_setting = 'public';
+		}
+
+		$exclusive_settings[ $input_name ] = $visibility_setting;
+	}
+
+	$text_fields = [
 		'coil_content_container',
 	];
 
-	foreach ( $fields as $option_item ) {
+	foreach ( $text_fields as $option_item ) {
 
 		switch ( $option_item ) {
 			case 'coil_content_container':
 				// Set the CSS selectors used to hide exclusive content.
-				$general_settings['coil_content_container'] = isset( $general_settings['coil_content_container'] ) && ! empty( $general_settings['coil_content_container'] ) ? sanitize_text_field( $general_settings['coil_content_container'] ) : '.content-area .entry-content';
+				$exclusive_settings['coil_content_container'] = isset( $exclusive_settings['coil_content_container'] ) && ! empty( $exclusive_settings['coil_content_container'] ) ? sanitize_text_field( $exclusive_settings['coil_content_container'] ) : '.content-area .entry-content';
 				break;
 		}
 	}
 
-	return $general_settings;
+	return $exclusive_settings;
 }
-
 
 // function coil_content_settings_posts_validation( $monetization_settings ) : array {
 
@@ -435,6 +458,10 @@ function coil_exclusive_settings_group_validation( $general_settings ) : array {
  * @return array
  */
 function coil_content_settings_excerpt_validation( $excerpt_content_settings ) : array {
+
+	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
+		return [];
+	}
 
 	return array_map(
 		function( $checkbox_value ) {
@@ -480,6 +507,10 @@ function coil_messaging_settings_validation( $messaging_settings ) : array {
  * @return array
  */
 function coil_appearance_settings_validation( $appearance_settings ) {
+
+	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
+		return [];
+	}
 
 	$checkbox_options       = [ 'coil_title_padlock', 'coil_show_donation_bar', 'coil_message_font' ];
 	$valid_color_choices    = [ 'light', 'dark' ];
@@ -529,7 +560,7 @@ function coil_appearance_settings_validation( $appearance_settings ) {
 function coil_settings_welcome_render_callback() {
 	?>
 	<div class="coil tab-styling">
-		<div>
+		<div class="coil tab-section">
 		<?php
 
 			printf(
@@ -539,7 +570,7 @@ function coil_settings_welcome_render_callback() {
 		?>
 		</div>
 
-		<div>
+		<div class="coil tab-section">
 		<?php
 
 			printf(
@@ -574,7 +605,7 @@ function coil_settings_welcome_render_callback() {
 		?>
 		</div>
 
-		<div>
+		<div class="coil tab-section">
 		<?php
 
 			echo '<h1>' . esc_html__( 'Monetize Your Content', 'coil-web-monetization' ) . '</h1>';
@@ -589,7 +620,7 @@ function coil_settings_welcome_render_callback() {
 		?>
 		</div>
 
-		<div>
+		<div class="coil tab-section">
 		<?php
 			echo '<h1>' . esc_html__( 'Make Your Content Exclusive', 'coil-web-monetization' ) . '</h1>';
 		?>
@@ -603,7 +634,7 @@ function coil_settings_welcome_render_callback() {
 		?>
 		</div>
 
-		<div>
+		<div class="coil tab-section">
 		<?php
 			echo '<h1>' . esc_html__( 'Promote Coil', 'coil-web-monetization' ) . '</h1>';
 		?>
@@ -704,7 +735,7 @@ function coil_settings_monetization_render_callback() {
 			echo '<h1>' . esc_html__( 'Monetization Settings', 'coil-web-monetization' ) . '</h1>';
 			echo '<p>' . esc_html_e( 'Create defaults to enable or disable monetization for specific post types. When monetization is enabled, Coil members can stream micropayments to you as they enjoy your content. These defaults can be overridden by configuring monetization against individual pages and posts, or against your categories and taxonomies.', 'coil-web-monetization' ) . '</p>';
 			?>
-			
+
 			<table class="widefat">
 				<thead>
 					<th><?php esc_html_e( 'Post Type', 'coil-web-monetization' ); ?></th>
@@ -760,6 +791,90 @@ function coil_settings_monetization_render_callback() {
 }
 
 /**
+ * Renders the output of the global monetization default settings
+ * showing radio buttons based on the post types available in WordPress.
+ *
+ * @return void
+ */
+function coil_settings_post_visibility_render_callback() {
+	$post_type_options = Coil\get_supported_post_types( 'objects' );
+
+	// If there are post types available, output them:
+	if ( ! empty( $post_type_options ) ) {
+
+		$post_monetization_defaults = Admin\get_general_settings();
+		$visibility_options         = Admin\get_visibility_types();
+		$post_visibility_defaults   = Admin\get_exclusive_settings();
+
+		?>
+		<div class="coil tab-styling">
+			<?php
+			echo '<h1>' . esc_html__( 'Visibility Settings', 'coil-web-monetization' ) . '</h1>';
+			echo '<p>' . esc_html_e( 'Create defaults to set specific post types to be publicly visible, or only exclusively available to Coil members. These defaults can be overridden by configuring visibility against individual pages and posts, or against your categories and taxonomies.', 'coil-web-monetization' ) . '</p>';
+			printf(
+				'<p>%1$s<a href="%2$s">%3$s</a>%4$s</p>',
+				esc_html( 'Post types can only be marked as exclusive if they are also marked as monetized under ', 'coil-web-monetization' ),
+				esc_url( admin_url( 'admin.php?page=coil_settings&tab=general_settings', COIL__FILE__ ) ),
+				esc_html( 'General Settings', 'coil-web-monetization' ),
+				'.'
+			);
+			?>
+
+			<table class="widefat">
+				<thead>
+					<th><?php esc_html_e( 'Post Type', 'coil-web-monetization' ); ?></th>
+					<?php foreach ( $visibility_options as $setting_key => $setting_value ) : ?>
+						<th class="posts_table_header">
+							<?php echo esc_html( $setting_value ); ?>
+						</th>
+					<?php endforeach; ?>
+				</thead>
+				<tbody>
+					<?php foreach ( $post_type_options as $post_type ) : ?>
+						<tr>
+							<th scope="row"><?php echo esc_html( $post_type->label ); ?></th>
+							<?php
+							foreach ( $visibility_options as $setting_key => $setting_value ) :
+								$input_id   = $post_type->name . '_' . $setting_key;
+								$input_name = 'coil_exclusive_settings_group[' . $post_type->name . ']';
+
+								/**
+								 * Specify the default checked state on the input from
+								 * any settings stored in the database. If the individual
+								 * input status is not set, default to the first radio
+								 * option (No Monetization)
+								 */
+								$checked_input = false;
+								if ( $setting_key === 'public' ) {
+									$checked_input = 'checked="true"';
+								} elseif ( isset( $post_visibility_defaults[ $post_type->name ] ) ) {
+									$checked_input = checked( $setting_key, $post_visibility_defaults[ $post_type->name ], false );
+								}
+								?>
+								<td>
+									<?php
+									printf(
+										'<input type="radio" name="%s" id="%s" value="%s"%s />',
+										esc_attr( $input_name ),
+										esc_attr( $input_id ),
+										esc_attr( $setting_key ),
+										$checked_input
+									);
+									?>
+								</td>
+								<?php
+							endforeach;
+							?>
+						</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+		<?php
+	}
+}
+
+/**
  * Render the CSS selector settings inpt field.
  *
  * @return void
@@ -771,13 +886,15 @@ function coil_settings_css_selector_render_callback() {
 		<h1>CSS Selector</h1>
 	<?php
 
+	$exclusive_settings = Admin\get_exclusive_settings();
+
 	printf(
 		'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" required="required"/>',
 		esc_attr( 'wide-input' ),
 		esc_attr( 'text' ),
 		esc_attr( 'coil_exclusive_settings_group[coil_content_container]' ),
 		esc_attr( 'coil_content_container' ),
-		esc_attr( Admin\get_exclusive_settings( 'coil_content_container' ) ),
+		esc_attr( $exclusive_settings['coil_content_container'] ),
 		esc_attr( '.content-area .entry-content' )
 	);
 
@@ -1317,7 +1434,7 @@ function render_coil_settings_screen() : void {
 					// do_settings_sections( 'coil_enable_exclusive_section' );
 					// do_settings_sections( 'coil_paywall_section' );
 					// do_settings_sections( 'coil_exclusive_post_section' );
-					// do_settings_sections( 'coil_default_post_visibility_section' );
+					do_settings_sections( 'coil_default_post_visibility_section' );
 					do_settings_sections( 'coil_css_selector_section' );
 					submit_button();
 					break;
