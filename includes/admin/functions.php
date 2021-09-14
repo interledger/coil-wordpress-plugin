@@ -395,6 +395,35 @@ function get_welcome_settings( $setting_id ) {
 }
 
 /**
+ * Get whatever settings are stored in the plugin as the default
+ * content monetization settings (post, page, cpt etc).
+ *
+ * @return array Setting stored in options, or blank array.
+ */
+function get_general_settings() : array {
+
+	$general_settings = get_option( 'coil_general_settings_group' );
+	if ( ! empty( $general_settings ) ) {
+		return $general_settings;
+	}
+
+	return [];
+}
+
+/**
+ * @return array Valid monetization states - Monetized or Not Monetized.
+ */
+function get_monetization_types() {
+
+	$monetization_types = [
+		'monetized'     => 'Monetized',
+		'not-monetized' => 'Not Monetized',
+	];
+
+	return $monetization_types;
+}
+
+/**
  * Retrieve the global content settings using a key from the global
  * settings group (serialized).
  *

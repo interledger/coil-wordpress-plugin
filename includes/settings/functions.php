@@ -367,8 +367,13 @@ function coil_welcome_group_validation( $welcome_settings ) : array {
  * @return array
  */
 function coil_general_settings_group_validation( $monetization_settings ) : array {
-		// A list of valid post types
-		$valid_choices = [ 'not-monetized', 'monetized' ];
+
+	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
+		return [];
+	}
+
+	// A list of valid post types
+	$valid_choices = array_keys( Admin\get_monetization_types(), true );
 
 	foreach ( $monetization_settings as $key => $option_value ) {
 
@@ -376,7 +381,7 @@ function coil_general_settings_group_validation( $monetization_settings ) : arra
 		$monetization_settings[ $key ] = in_array( $option_value, $valid_choices, true ) ? sanitize_key( $option_value ) : 'monetized';
 	}
 
-		return $monetization_settings;
+	return $monetization_settings;
 }
 
 /**
@@ -409,19 +414,19 @@ function coil_exclusive_settings_group_validation( $general_settings ) : array {
 }
 
 
-function coil_content_settings_posts_validation( $monetization_settings ) : array {
+// function coil_content_settings_posts_validation( $monetization_settings ) : array {
 
-	// A list of valid post types
-	$valid_choices = array_keys( Gating\get_monetization_setting_types() );
+// 	// A list of valid post types
+// 	$valid_choices = array_keys( Gating\get_monetization_setting_types() );
 
-	foreach ( $monetization_settings as $key => $option_value ) {
+// 	foreach ( $monetization_settings as $key => $option_value ) {
 
-		// The default value is no-gating (Monetized and Public)
-		$monetization_settings[ $key ] = in_array( $option_value, $valid_choices, true ) ? sanitize_key( $option_value ) : 'no-gating';
-	}
+// 		// The default value is no-gating (Monetized and Public)
+// 		$monetization_settings[ $key ] = in_array( $option_value, $valid_choices, true ) ? sanitize_key( $option_value ) : 'no-gating';
+// 	}
 
-	return $monetization_settings;
-}
+// 	return $monetization_settings;
+// }
 
 /**
  * Allow each "Display Excerpt" checkbox in the content setting table to be properly validated
@@ -690,17 +695,20 @@ function coil_settings_monetization_render_callback() {
 	// If there are post types available, output them:
 	if ( ! empty( $post_type_options ) ) {
 
-		$form_gating_settings           = Gating\get_monetization_setting_types();
-		$content_settings_posts_options = Gating\get_global_posts_gating();
+		$monetization_options       = Admin\get_monetization_types();
+		$post_monetization_defaults = Admin\get_general_settings();
 
 		?>
 		<div class="coil tab-styling">
-			<p><?php esc_html_e( 'Use the settings below to control the defaults for how your content is monetized and gated across your whole site. You can override the defaults by configuring monetization against your categories and taxonomies. You can also override the defaults against individual pages and posts or even specific blocks inside of them.', 'coil-web-monetization' ); ?>
-			</p>
+			<?php
+			echo '<h1>' . esc_html__( 'Monetization Settings', 'coil-web-monetization' ) . '</h1>';
+			echo '<p>' . esc_html_e( 'Create defaults to enable or disable monetization for specific post types. When monetization is enabled, Coil members can stream micropayments to you as they enjoy your content. These defaults can be overridden by configuring monetization against individual pages and posts, or against your categories and taxonomies.', 'coil-web-monetization' ) . '</p>';
+			?>
+			
 			<table class="widefat">
 				<thead>
 					<th><?php esc_html_e( 'Post Type', 'coil-web-monetization' ); ?></th>
-					<?php foreach ( $form_gating_settings as $setting_key => $setting_value ) : ?>
+					<?php foreach ( $monetization_options as $setting_key => $setting_value ) : ?>
 						<th class="posts_table_header">
 							<?php echo esc_html( $setting_value ); ?>
 						</th>
@@ -711,9 +719,9 @@ function coil_settings_monetization_render_callback() {
 						<tr>
 							<th scope="row"><?php echo esc_html( $post_type->label ); ?></th>
 							<?php
-							foreach ( $form_gating_settings as $setting_key => $setting_value ) :
+							foreach ( $monetization_options as $setting_key => $setting_value ) :
 								$input_id   = $post_type->name . '_' . $setting_key;
-								$input_name = 'coil_content_settings_posts_group[' . $post_type->name . ']';
+								$input_name = 'coil_general_settings_group[' . $post_type->name . ']';
 
 								/**
 								 * Specify the default checked state on the input from
@@ -722,12 +730,10 @@ function coil_settings_monetization_render_callback() {
 								 * option (No Monetization)
 								 */
 								$checked_input = false;
-								if ( $setting_key === 'no' ) {
+								if ( $setting_key === 'monetized' ) {
 									$checked_input = 'checked="true"';
-								} elseif ( isset( $content_settings_posts_options[ $post_type->name ] ) ) {
-									$checked_input = checked( $setting_key, $content_settings_posts_options[ $post_type->name ], false );
-								} elseif ( 'no-gating' === $setting_key ) {
-									$checked_input = 'checked="true"';
+								} elseif ( isset( $post_monetization_defaults[ $post_type->name ] ) ) {
+									$checked_input = checked( $setting_key, $post_monetization_defaults[ $post_type->name ], false );
 								}
 								?>
 								<td>
