@@ -92,10 +92,66 @@ function register_admin_content_settings() {
 
 	// ==== Paywall Appearance
 	add_settings_section(
-		'coil_paywall_section',
+		'coil_paywall_settings',
 		false,
-		__NAMESPACE__ . '\coil_settings_paywall_render_callback',
+		__NAMESPACE__ . '\coil_settings_paywall_appearance_render_callback', // Try place title in here so we can place it in correct div tags with appropriate styling class
 		'coil_paywall_section'
+	);
+
+	add_settings_field(
+		'coil_paywall_title',
+		false,
+		__NAMESPACE__ . '\coil_exclusive_settings_paywall_title_render_callback',
+		'coil_paywall_section',
+		'coil_paywall_settings'
+	);
+
+	add_settings_field(
+		'coil_paywall_message',
+		false,
+		__NAMESPACE__ . '\coil_exclusive_settings_paywall_message_render_callback',
+		'coil_paywall_section',
+		'coil_paywall_settings'
+	);
+
+	add_settings_field(
+		'coil_paywall_button_text',
+		false,
+		__NAMESPACE__ . '\coil_exclusive_settings_paywall_button_text_render_callback',
+		'coil_paywall_section',
+		'coil_paywall_settings'
+	);
+
+	add_settings_field(
+		'coil_paywall_button_link',
+		false,
+		__NAMESPACE__ . '\coil_exclusive_settings_paywall_button_link_render_callback',
+		'coil_paywall_section',
+		'coil_paywall_settings'
+	);
+
+	add_settings_field(
+		'coil_paywall_theme',
+		false,
+		__NAMESPACE__ . '\coil_exclusive_settings_paywall_theme_render_callback',
+		'coil_paywall_section',
+		'coil_paywall_settings'
+	);
+
+	add_settings_field(
+		'coil_paywall_branding',
+		false,
+		__NAMESPACE__ . '\coil_exclusive_settings_paywall_branding_render_callback',
+		'coil_paywall_section',
+		'coil_paywall_settings'
+	);
+
+	add_settings_field(
+		'coil_paywall_font',
+		false,
+		__NAMESPACE__ . '\coil_exclusive_settings_paywall_font_render_callback',
+		'coil_paywall_section',
+		'coil_paywall_settings'
 	);
 
 	// ==== Exclusive Post Appearance
@@ -112,6 +168,14 @@ function register_admin_content_settings() {
 		false,
 		__NAMESPACE__ . '\coil_settings_post_visibility_render_callback',
 		'coil_default_post_visibility_section'
+	);
+
+	// ==== Excerpt Visibility Defaults
+	add_settings_section(
+		'coil_excerpt_visibility_section',
+		false,
+		__NAMESPACE__ . '\coil_excerpts_visibility_render_callback',
+		'coil_excerpt_visibility_section'
 	);
 
 	// ==== CSS Selectors
@@ -152,183 +216,6 @@ function register_admin_content_settings() {
 		__NAMESPACE__ . '\coil_settings_button_visibility_render_callback',
 		'coil_button_visibility_section'
 	);
-
-	// // Tab 2 - General Settings.
-	// register_setting(
-	// 	'coil_global_settings_group',
-	// 	'coil_global_settings_group',
-	// 	__NAMESPACE__ . '\coil_global_settings_group_validation'
-	// );
-
-	// // ==== Advanced Config.
-	// add_settings_section(
-	// 	'coil_global_settings_bottom_section',
-	// 	__( 'Advanced Config', 'coil-web-monetization' ),
-	// 	'\__return_empty_string',
-	// 	'coil_global_settings_advanced'
-	// );
-
-	// add_settings_field(
-	// 	'coil_content_container',
-	// 	__( 'CSS Selectors', 'coil-web-monetization' ),
-	// 	__NAMESPACE__ . '\coil_global_settings_advanced_config_render_callback',
-	// 	'coil_global_settings_advanced',
-	// 	'coil_global_settings_bottom_section'
-	// );
-
-	// // Tab 2 - Content Settings.
-	// register_setting(
-	// 	'coil_content_settings_posts_group',
-	// 	'coil_content_settings_posts_group',
-	// 	__NAMESPACE__ . '\coil_content_settings_posts_validation'
-	// );
-
-	// 	// ==== Content Settings.
-	// add_settings_section(
-	// 	'coil_content_settings_posts_section',
-	// 	false,
-	// 	__NAMESPACE__ . '\coil_content_settings_posts_render_callback',
-	// 	'coil_content_settings_posts'
-	// );
-
-	// // Tab 3 - Excerpt settings.
-	// register_setting(
-	// 	'coil_content_settings_excerpt_group',
-	// 	'coil_content_settings_excerpt_group',
-	// 	__NAMESPACE__ . '\coil_content_settings_excerpt_validation'
-	// );
-
-	// add_settings_section(
-	// 	'coil_content_settings_excerpts_section',
-	// 	false,
-	// 	__NAMESPACE__ . '\coil_content_settings_excerpts_render_callback',
-	// 	'coil_content_settings_excerpts'
-	// );
-
-	// // Tab 4 - Messaging settings.
-	// register_setting(
-	// 	'coil_messaging_settings_group',
-	// 	'coil_messaging_settings_group',
-	// 	__NAMESPACE__ . '\coil_messaging_settings_validation'
-	// );
-
-	// add_settings_section(
-	// 	'coil_fully_gated_content_message',
-	// 	__( 'Paying Viewers Only message', 'coil-web-monetization' ),
-	// 	__NAMESPACE__ . '\coil_messaging_settings_render_callback',
-	// 	'coil_messaging_settings'
-	// );
-
-	// // === Partially gated content message
-	// add_settings_section(
-	// 	'coil_partially_gated_content_message',
-	// 	__( 'Split Content message', 'coil-web-monetization' ),
-	// 	__NAMESPACE__ . '\coil_messaging_settings_render_callback',
-	// 	'coil_messaging_settings'
-	// );
-
-	// // === Monetization status pending message
-	// add_settings_section(
-	// 	'coil_verifying_status_message',
-	// 	__( 'Pending message', 'coil-web-monetization' ),
-	// 	__NAMESPACE__ . '\coil_messaging_settings_render_callback',
-	// 	'coil_messaging_settings'
-	// );
-
-	// // === Invalid monetization message
-	// add_settings_section(
-	// 	'coil_unable_to_verify_message',
-	// 	__( 'Invalid Web Monetization message', 'coil-web-monetization' ),
-	// 	__NAMESPACE__ . '\coil_messaging_settings_render_callback',
-	// 	'coil_messaging_settings'
-	// );
-
-	// // === Voluntry donation message
-	// add_settings_section(
-	// 	'coil_voluntary_donation_message',
-	// 	__( 'Support creator message', 'coil-web-monetization' ),
-	// 	__NAMESPACE__ . '\coil_messaging_settings_render_callback',
-	// 	'coil_messaging_settings'
-	// );
-
-	// // === Learn more button text
-	// add_settings_section(
-	// 	'coil_learn_more_button_text',
-	// 	__( 'Learn more button text', 'coil-web-monetization' ),
-	// 	__NAMESPACE__ . '\coil_messaging_settings_render_callback',
-	// 	'coil_messaging_settings'
-	// );
-
-	// // === Learn more button link
-	// add_settings_section(
-	// 	'coil_learn_more_button_link',
-	// 	__( 'Learn more button link', 'coil-web-monetization' ),
-	// 	__NAMESPACE__ . '\coil_messaging_settings_render_callback',
-	// 	'coil_messaging_settings'
-	// );
-
-	// // Tab 5 - Appearance Settings.
-	// register_setting(
-	// 	'coil_appearance_settings_group',
-	// 	'coil_appearance_settings_group',
-	// 	__NAMESPACE__ . '\coil_appearance_settings_validation'
-	// );
-	// add_settings_section(
-	// 	'coil_display_settings_section',
-	// 	__( 'Display Settings', 'coil-web-monetization' ),
-	// 	false,
-	// 	'coil_display_settings'
-	// );
-
-	// // ==== Padlock Settings.
-	// add_settings_field(
-	// 	'coil_title_padlock',
-	// 	__( 'Padlock settings', 'coil-web-monetization' ),
-	// 	__NAMESPACE__ . '\coil_title_padlock_settings_render_callback',
-	// 	'coil_display_settings',
-	// 	'coil_display_settings_section'
-	// );
-
-	// // ==== Donation bar Settings.
-	// add_settings_field(
-	// 	'coil_show_donation_bar',
-	// 	__( 'Display support creator message', 'coil-web-monetization' ),
-	// 	__NAMESPACE__ . '\coil_show_donation_bar_settings_render_callback',
-	// 	'coil_display_settings',
-	// 	'coil_display_settings_section'
-	// );
-
-	// // ==== CTA theme
-	// add_settings_section(
-	// 	'coil_exclusive_post__settings_section',
-	// 	__( 'Exclusive Post Message Customization', 'coil-web-monetization' ),
-	// 	false,
-	// 	'coil_style_settings'
-	// );
-
-	// add_settings_field(
-	// 	'coil_message_color_theme',
-	// 	__( 'Color Theme', 'coil-web-monetization' ),
-	// 	__NAMESPACE__ . '\coil_message_color_theme_render_callback',
-	// 	'coil_style_settings',
-	// 	'coil_exclusive_post__settings_section'
-	// );
-
-	// add_settings_field(
-	// 	'coil_message_font',
-	// 	__( 'Use Theme Font', 'coil-web-monetization' ),
-	// 	__NAMESPACE__ . '\coil_message_font_render_callback',
-	// 	'coil_style_settings',
-	// 	'coil_exclusive_post__settings_section'
-	// );
-
-	// add_settings_field(
-	// 	'coil_message_branding',
-	// 	__( 'Message Branding', 'coil-web-monetization' ),
-	// 	__NAMESPACE__ . '\coil_message_branding_render_callback',
-	// 	'coil_style_settings',
-	// 	'coil_exclusive_post__settings_section'
-	// );
 
 }
 
@@ -374,7 +261,7 @@ function coil_general_settings_group_validation( $monetization_settings ) : arra
 
 	// A list of valid post types
 	$valid_choices = array_keys( Admin\get_monetization_types() );
-	// Post visibility defaults
+	// Post type visibility defaults
 	$visibility_default = Admin\get_exclusive_settings();
 
 	foreach ( $monetization_settings as $key => $option_value ) {
@@ -394,6 +281,7 @@ function coil_general_settings_group_validation( $monetization_settings ) : arra
 /**
  * Validates the post type default visibility settings.
  * Validates the CSS selector text input.
+ * Validates the excerpt visibility setings per post type.
  *
  * @param array $exclusive_settings The posted text input fields.
  * @return array
@@ -404,22 +292,37 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 		return [];
 	}
 
+	// Monetization defaults needed to check the exclusive and not monetized defaults are never set on a post type
 	$post_monetization_defaults = Admin\get_general_settings();
-	$valid_visibility_choices   = array_keys( Admin\get_visibility_types() );
-	$post_type_options          = Coil\get_supported_post_types( 'objects' );
+	// Post type visibility defaults
+	$valid_visibility_choices = array_keys( Admin\get_visibility_types() );
+	// A list of valid post types
+	$post_type_options = Coil\get_supported_post_types( 'objects' );
 
+	// Loops through each post type to validate post visibility defaults and excerpt display settings
 	foreach ( $post_type_options as $post_type ) {
-		$input_name           = $post_type->name;
-		$monetization_setting = ! empty( $post_monetization_defaults[ $input_name ] ) ? $post_monetization_defaults[ $input_name ] : 'monetized';
-		$visibility_setting   = ! empty( $exclusive_settings[ $input_name ] ) && in_array( $exclusive_settings[ $input_name ], $valid_visibility_choices, true ) ? sanitize_key( $exclusive_settings[ $input_name ] ) : 'public';
+		// Validates post type visibility defaults.
+		$visibility_input_name = $post_type->name . '_visibility';
+		// The default value is monetized
+		$monetization_setting = ! empty( $post_monetization_defaults[ $visibility_input_name ] ) ? $post_monetization_defaults[ $visibility_input_name ] : 'monetized';
+		// The default value is public
+		$visibility_setting = ! empty( $exclusive_settings[ $visibility_input_name ] ) && in_array( $exclusive_settings[ $visibility_input_name ], $valid_visibility_choices, true ) ? sanitize_key( $exclusive_settings[ $visibility_input_name ] ) : 'public';
 
+		// Ensures that a post cannot default to be Not Monetized and Exclusive
 		if ( $visibility_setting === 'exclusive' && $monetization_setting === 'not-monetized' ) {
 			$visibility_setting = 'public';
 		}
 
-		$exclusive_settings[ $input_name ] = $visibility_setting;
+		$exclusive_settings[ $visibility_input_name ] = $visibility_setting;
+
+		// Validates excerpt visibility settings.
+		$excerpt_input_name = $post_type->name . '_excerpt';
+		$excerpt_setting    = isset( $exclusive_settings[ $excerpt_input_name ] ) ? true : false;
+
+		$exclusive_settings[ $excerpt_input_name ] = $excerpt_setting;
 	}
 
+	// Validates all text input fields
 	$text_fields = [
 		'coil_content_container',
 	];
@@ -428,47 +331,13 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 
 		switch ( $option_item ) {
 			case 'coil_content_container':
-				// Set the CSS selectors used to hide exclusive content.
+				// Validates the CSS selectors used to hide exclusive content.
 				$exclusive_settings['coil_content_container'] = isset( $exclusive_settings['coil_content_container'] ) && ! empty( $exclusive_settings['coil_content_container'] ) ? sanitize_text_field( $exclusive_settings['coil_content_container'] ) : '.content-area .entry-content';
 				break;
 		}
 	}
 
 	return $exclusive_settings;
-}
-
-// function coil_content_settings_posts_validation( $monetization_settings ) : array {
-
-// 	// A list of valid post types
-// 	$valid_choices = array_keys( Gating\get_monetization_setting_types() );
-
-// 	foreach ( $monetization_settings as $key => $option_value ) {
-
-// 		// The default value is no-gating (Monetized and Public)
-// 		$monetization_settings[ $key ] = in_array( $option_value, $valid_choices, true ) ? sanitize_key( $option_value ) : 'no-gating';
-// 	}
-
-// 	return $monetization_settings;
-// }
-
-/**
- * Allow each "Display Excerpt" checkbox in the content setting table to be properly validated
- *
- * @param array $excerpt_content_settings The posted checkbox options from the content settings section.
- * @return array
- */
-function coil_content_settings_excerpt_validation( $excerpt_content_settings ) : array {
-
-	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
-		return [];
-	}
-
-	return array_map(
-		function( $checkbox_value ) {
-			return ( isset( $checkbox_value ) ) ? true : false;
-		},
-		(array) $excerpt_content_settings
-	);
 }
 
 /**
@@ -802,9 +671,8 @@ function coil_settings_post_visibility_render_callback() {
 	// If there are post types available, output them:
 	if ( ! empty( $post_type_options ) ) {
 
-		$post_monetization_defaults = Admin\get_general_settings();
-		$visibility_options         = Admin\get_visibility_types();
-		$post_visibility_defaults   = Admin\get_exclusive_settings();
+		$visibility_options       = Admin\get_visibility_types();
+		$post_visibility_defaults = Admin\get_exclusive_settings();
 
 		?>
 		<div class="coil tab-styling">
@@ -835,8 +703,8 @@ function coil_settings_post_visibility_render_callback() {
 							<th scope="row"><?php echo esc_html( $post_type->label ); ?></th>
 							<?php
 							foreach ( $visibility_options as $setting_key => $setting_value ) :
-								$input_id   = $post_type->name . '_' . $setting_key;
-								$input_name = 'coil_exclusive_settings_group[' . $post_type->name . ']';
+								$input_id   = $post_type->name . 'visibility_' . $setting_key;
+								$input_name = 'coil_exclusive_settings_group[' . $post_type->name . '_visibility]';
 
 								/**
 								 * Specify the default checked state on the input from
@@ -847,8 +715,8 @@ function coil_settings_post_visibility_render_callback() {
 								$checked_input = false;
 								if ( $setting_key === 'public' ) {
 									$checked_input = 'checked="true"';
-								} elseif ( isset( $post_visibility_defaults[ $post_type->name ] ) ) {
-									$checked_input = checked( $setting_key, $post_visibility_defaults[ $post_type->name ], false );
+								} elseif ( isset( $post_visibility_defaults[ $post_type->name . '_visibility' ] ) ) {
+									$checked_input = checked( $setting_key, $post_visibility_defaults[ $post_type->name . '_visibility' ], false );
 								}
 								?>
 								<td>
@@ -865,6 +733,61 @@ function coil_settings_post_visibility_render_callback() {
 								<?php
 							endforeach;
 							?>
+						</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+		<?php
+	}
+}
+
+/**
+ * Renders the output of the excerpt settings showing checkbox
+ * inputs based on the post types available in WordPress.
+ *
+ * @return void
+ */
+function coil_excerpts_visibility_render_callback() {
+
+	$post_type_options = Coil\get_supported_post_types( 'objects' );
+
+	// If there are post types available, output them:
+	if ( ! empty( $post_type_options ) ) {
+
+		$excerpt_visibility_defaults = Admin\get_exclusive_settings();
+		?>
+		<div class="coil tab-styling">
+		<?php
+			echo '<h1>' . esc_html__( 'Excerpt Settings', 'coil-web-monetization' ) . '</h1>';
+			echo '<p>' . esc_html_e( 'Use the settings below to select whether to show a short excerpt for any pages, posts, or other content types you choose to gate access to. Support for displaying an excerpt may depend on your particular theme and setup of WordPress.', 'coil-web-monetization' ) . '</p>';
+		?>
+			<table class="widefat">
+				<thead>
+					<th><?php esc_html_e( 'Post Type', 'coil-web-monetization' ); ?></th>
+					<th><?php esc_html_e( 'Display Excerpt', 'coil-web-monetization' ); ?></th>
+				</thead>
+				<tbody>
+					<?php foreach ( $post_type_options as $post_type ) : ?>
+						<tr>
+							<th scope="row"><?php echo esc_html( $post_type->label ); ?></th>
+							<td>
+							<?php
+							$excerpt_name = 'coil_exclusive_settings_group[' . $post_type->name . '_excerpt]';
+							$excerpt_id   = $post_type->name . '_display_excerpt';
+
+							$checked_excerpt = false;
+							if ( isset( $excerpt_visibility_defaults[ $post_type->name . '_excerpt' ] ) ) {
+								$checked_excerpt = checked( 1, $excerpt_visibility_defaults[ $post_type->name . '_excerpt' ], false );
+							}
+							printf(
+								'<input type="checkbox" name="%s" id="%s" %s />',
+								esc_attr( $excerpt_name ),
+								esc_attr( $excerpt_id ),
+								$checked_excerpt
+							);
+							?>
+							</td>
 						</tr>
 					<?php endforeach; ?>
 				</tbody>
@@ -979,56 +902,6 @@ function coil_content_settings_posts_render_callback() {
 							<?php
 						endforeach;
 						?>
-					</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
-		<?php
-	}
-}
-
-/**
- * Renders the output of the excerpt settings showing checkbox
- * inputs based on the post types available in WordPress.
- *
- * @return void
- */
-function coil_content_settings_excerpts_render_callback() {
-
-	$post_type_options = Coil\get_supported_post_types( 'objects' );
-
-	// If there are post types available, output them:
-	if ( ! empty( $post_type_options ) ) {
-
-		$content_settings_excerpt_options = Gating\get_global_excerpt_settings();
-		?>
-		<p><?php esc_html_e( 'Use the settings below to select whether to show a short excerpt for any pages, posts, or other content types you choose to gate access to. Support for displaying an excerpt may depend on your particular theme and setup of WordPress.', 'coil-web-monetization' ); ?></p>
-		<table class="widefat">
-			<thead>
-				<th><?php esc_html_e( 'Post Type', 'coil-web-monetization' ); ?></th>
-				<th><?php esc_html_e( 'Display Excerpt', 'coil-web-monetization' ); ?></th>
-			</thead>
-			<tbody>
-				<?php foreach ( $post_type_options as $post_type ) : ?>
-					<tr>
-						<th scope="row"><?php echo esc_html( $post_type->label ); ?></th>
-						<td>
-						<?php
-						$excerpt_name = 'coil_content_settings_excerpt_group[' . $post_type->name . ']';
-						$excerpt_id   = $post_type->name . '_display_excerpt';
-
-						$checked_excerpt = false;
-						if ( isset( $content_settings_excerpt_options[ $post_type->name ] ) ) {
-							$checked_excerpt = checked( 1, $content_settings_excerpt_options[ $post_type->name ], false );
-						}
-						printf(
-							'<input type="checkbox" name="%s" id="%s" %s />',
-							esc_attr( $excerpt_name ),
-							esc_attr( $excerpt_id ),
-							$checked_excerpt
-						);
-						?>
-						</td>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>
@@ -1292,6 +1165,7 @@ function coil_message_branding_render_callback() {
 
 /**
  * Creates dismissable welcome notice on coil admin screen
+ * @return void
  */
 function admin_welcome_notice() {
 
@@ -1341,6 +1215,7 @@ function admin_welcome_notice() {
 
 /**
  * Admin notice to ensure payment pointer has been set
+ * @return void
  */
 function admin_no_payment_pointer_notice() {
 
@@ -1366,7 +1241,7 @@ function admin_no_payment_pointer_notice() {
 
 	$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : '';
 
-	if ( $active_tab !== 'global_settings' ) {
+	if ( $active_tab !== 'welcome' ) {
 		return;
 	}
 	?>
@@ -1379,6 +1254,76 @@ function admin_no_payment_pointer_notice() {
 		</div>
 	</div>
 	<?php
+}
+
+/**
+ * Sets up a table to create radio button / checkbox options for the different post types available.
+ * @return void
+ * @param array $column_names
+ * @param string $input_type checkbox or radio.
+ * @param array $value_id_suffix The suffix that goes after the post type name to create an id for it.
+ */
+function post_type_defaults_table( $column_names, $input_type, $value_id_suffix, $current_options ) {
+	$post_type_options = Coil\get_supported_post_types( 'objects' );
+
+	// If there are post types available, output them:
+	if ( ! empty( $post_type_options ) ) {
+		// Get the values behind the column names
+		$keys = array_keys( $column_names );
+
+		?>
+		<table class="widefat">
+			<thead>
+				<th><?php esc_html_e( 'Post Type', 'coil-web-monetization' ); ?></th>
+				<?php foreach ( $column_names as $setting_key => $setting_value ) : ?>
+					<th class="posts_table_header">
+						<?php echo esc_html( $setting_value ); ?>
+					</th>
+				<?php endforeach; ?>
+			</thead>
+			<tbody>
+				<?php foreach ( $post_type_options as $post_type ) : ?>
+					<tr>
+						<th scope="row"><?php echo esc_html( $post_type->label ); ?></th>
+						<?php
+						foreach ( $column_names as $setting_key => $setting_value ) :
+							$input_id   = $post_type->name . $value_id_suffix . $setting_key;
+							$input_name = 'coil_exclusive_settings_group[' . $post_type->name . '_' . $value_id_suffix . ']';
+
+							/**
+							 * Specify the default checked state on the input from
+							 * any settings stored in the database. If the individual
+							 * input status is not set, default to the first radio
+							 * option (No Monetization)
+							 */
+							$checked_input = false;
+							if ( $setting_key === $keys[0] ) {
+								$checked_input = 'checked="true"';
+							} elseif ( isset( $current_options[ $post_type->name . '_' . $value_id_suffix ] ) ) {
+								$checked_input = checked( $setting_key, $current_options[ $post_type->name . '_' . $value_id_suffix ], false );
+							}
+							?>
+							<td>
+								<?php
+								printf(
+									'<input type="%s" name="%s" id="%s" value="%s"%s />',
+									esc_attr( $input_type ),
+									esc_attr( $input_name ),
+									esc_attr( $input_id ),
+									esc_attr( $setting_key ),
+									$checked_input
+								);
+								?>
+							</td>
+							<?php
+						endforeach;
+						?>
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+		<?php
+	}
 }
 
 /**
@@ -1432,9 +1377,10 @@ function render_coil_settings_screen() : void {
 				case 'exclusive_settings':
 					settings_fields( 'coil_exclusive_settings_group' );
 					// do_settings_sections( 'coil_enable_exclusive_section' );
-					// do_settings_sections( 'coil_paywall_section' );
+					// do_settings_sections( 'coil_paywall_settings' );
 					// do_settings_sections( 'coil_exclusive_post_section' );
 					do_settings_sections( 'coil_default_post_visibility_section' );
+					do_settings_sections( 'coil_excerpt_visibility_section' );
 					do_settings_sections( 'coil_css_selector_section' );
 					submit_button();
 					break;
