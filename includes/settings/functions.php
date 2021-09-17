@@ -269,8 +269,9 @@ function coil_general_settings_group_validation( $monetization_settings ) : arra
 		// The default value is monetized
 		$monetization_settings[ $key ] = in_array( $option_value, $valid_choices, true ) ? sanitize_key( $option_value ) : 'monetized';
 		// Ensures that a post cannot default to be Not Monetized and Exclusive
-		if ( $monetization_settings[ $key ] === 'not-monetized' && $visibility_default[ $key ] === 'exclusive' ) {
-			$visibility_default [ $key ] = 'public';
+		$visibility_key = str_replace( "_monetization", "_visibility", $key );
+		if ( $monetization_settings[ $key ] === 'not-monetized' && $visibility_default[ $visibility_key ] === 'exclusive' ) {
+			$visibility_default [ $visibility_key ] = 'public';
 			update_option( 'coil_exclusive_settings_group', $visibility_default );
 		}
 	}
@@ -303,8 +304,9 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 	foreach ( $post_type_options as $post_type ) {
 		// Validates post type visibility defaults.
 		$visibility_input_name = $post_type->name . '_visibility';
+		$monetization_input_name = $post_type->name . '_monetization';
 		// The default value is monetized
-		$monetization_setting = ! empty( $post_monetization_defaults[ $visibility_input_name ] ) ? $post_monetization_defaults[ $visibility_input_name ] : 'monetized';
+		$monetization_setting = ! empty( $post_monetization_defaults[ $monetization_input_name ] ) ? $post_monetization_defaults[ $monetization_input_name ] : 'monetized';
 		// The default value is public
 		$visibility_setting = ! empty( $exclusive_settings[ $visibility_input_name ] ) && in_array( $exclusive_settings[ $visibility_input_name ], $valid_visibility_choices, true ) ? sanitize_key( $exclusive_settings[ $visibility_input_name ] ) : 'public';
 
@@ -590,73 +592,20 @@ function coil_settings_sidebar_render_callback() {
  * @return void
  */
 function coil_settings_monetization_render_callback() {
-	$post_type_options = Coil\get_supported_post_types( 'objects' );
-
-	// If there are post types available, output them:
-	if ( ! empty( $post_type_options ) ) {
-
-		$monetization_options       = Admin\get_monetization_types();
-		$post_monetization_defaults = Admin\get_general_settings();
-
-		?>
-		<div class="coil tab-styling">
-			<?php
-			echo '<h1>' . esc_html__( 'Monetization Settings', 'coil-web-monetization' ) . '</h1>';
-			echo '<p>' . esc_html_e( 'Create defaults to enable or disable monetization for specific post types. When monetization is enabled, Coil members can stream micropayments to you as they enjoy your content. These defaults can be overridden by configuring monetization against individual pages and posts, or against your categories and taxonomies.', 'coil-web-monetization' ) . '</p>';
-			?>
-
-			<table class="widefat">
-				<thead>
-					<th><?php esc_html_e( 'Post Type', 'coil-web-monetization' ); ?></th>
-					<?php foreach ( $monetization_options as $setting_key => $setting_value ) : ?>
-						<th class="posts_table_header">
-							<?php echo esc_html( $setting_value ); ?>
-						</th>
-					<?php endforeach; ?>
-				</thead>
-				<tbody>
-					<?php foreach ( $post_type_options as $post_type ) : ?>
-						<tr>
-							<th scope="row"><?php echo esc_html( $post_type->label ); ?></th>
-							<?php
-							foreach ( $monetization_options as $setting_key => $setting_value ) :
-								$input_id   = $post_type->name . '_' . $setting_key;
-								$input_name = 'coil_general_settings_group[' . $post_type->name . ']';
-
-								/**
-								 * Specify the default checked state on the input from
-								 * any settings stored in the database. If the individual
-								 * input status is not set, default to the first radio
-								 * option (No Monetization)
-								 */
-								$checked_input = false;
-								if ( $setting_key === 'monetized' ) {
-									$checked_input = 'checked="true"';
-								} elseif ( isset( $post_monetization_defaults[ $post_type->name ] ) ) {
-									$checked_input = checked( $setting_key, $post_monetization_defaults[ $post_type->name ], false );
-								}
-								?>
-								<td>
-									<?php
-									printf(
-										'<input type="radio" name="%s" id="%s" value="%s"%s />',
-										esc_attr( $input_name ),
-										esc_attr( $input_id ),
-										esc_attr( $setting_key ),
-										$checked_input
-									);
-									?>
-								</td>
-								<?php
-							endforeach;
-							?>
-						</tr>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
-		</div>
-		<?php
-	}
+	?>
+	<div class="coil tab-styling">
+	<?php
+	echo '<h1>' . esc_html__( 'Monetization Settings', 'coil-web-monetization' ) . '</h1>';
+	echo '<p>' . esc_html_e( 'Create defaults to enable or disable monetization for specific post types. When monetization is enabled, Coil members can stream micropayments to you as they enjoy your content. These defaults can be overridden by configuring monetization against individual pages and posts, or against your categories and taxonomies.', 'coil-web-monetization' ) . '</p>';
+	$group = 'coil_general_settings_group';
+	$columns = Admin\get_monetization_types();
+	$input_type = 'radio';
+	$suffix = 'monetization';
+	$monetization_options = Admin\get_general_settings();
+	post_type_defaults_table( $group, $columns, $input_type, $suffix, $monetization_options );
+	?>
+	</div>
+	<?php
 }
 
 /**
@@ -666,80 +615,27 @@ function coil_settings_monetization_render_callback() {
  * @return void
  */
 function coil_settings_post_visibility_render_callback() {
-	$post_type_options = Coil\get_supported_post_types( 'objects' );
-
-	// If there are post types available, output them:
-	if ( ! empty( $post_type_options ) ) {
-
-		$visibility_options       = Admin\get_visibility_types();
-		$post_visibility_defaults = Admin\get_exclusive_settings();
-
-		?>
-		<div class="coil tab-styling">
-			<?php
-			echo '<h1>' . esc_html__( 'Visibility Settings', 'coil-web-monetization' ) . '</h1>';
-			echo '<p>' . esc_html_e( 'Create defaults to set specific post types to be publicly visible, or only exclusively available to Coil members. These defaults can be overridden by configuring visibility against individual pages and posts, or against your categories and taxonomies.', 'coil-web-monetization' ) . '</p>';
-			printf(
-				'<p>%1$s<a href="%2$s">%3$s</a>%4$s</p>',
-				esc_html( 'Post types can only be marked as exclusive if they are also marked as monetized under ', 'coil-web-monetization' ),
-				esc_url( admin_url( 'admin.php?page=coil_settings&tab=general_settings', COIL__FILE__ ) ),
-				esc_html( 'General Settings', 'coil-web-monetization' ),
-				'.'
-			);
-			?>
-
-			<table class="widefat">
-				<thead>
-					<th><?php esc_html_e( 'Post Type', 'coil-web-monetization' ); ?></th>
-					<?php foreach ( $visibility_options as $setting_key => $setting_value ) : ?>
-						<th class="posts_table_header">
-							<?php echo esc_html( $setting_value ); ?>
-						</th>
-					<?php endforeach; ?>
-				</thead>
-				<tbody>
-					<?php foreach ( $post_type_options as $post_type ) : ?>
-						<tr>
-							<th scope="row"><?php echo esc_html( $post_type->label ); ?></th>
-							<?php
-							foreach ( $visibility_options as $setting_key => $setting_value ) :
-								$input_id   = $post_type->name . 'visibility_' . $setting_key;
-								$input_name = 'coil_exclusive_settings_group[' . $post_type->name . '_visibility]';
-
-								/**
-								 * Specify the default checked state on the input from
-								 * any settings stored in the database. If the individual
-								 * input status is not set, default to the first radio
-								 * option (No Monetization)
-								 */
-								$checked_input = false;
-								if ( $setting_key === 'public' ) {
-									$checked_input = 'checked="true"';
-								} elseif ( isset( $post_visibility_defaults[ $post_type->name . '_visibility' ] ) ) {
-									$checked_input = checked( $setting_key, $post_visibility_defaults[ $post_type->name . '_visibility' ], false );
-								}
-								?>
-								<td>
-									<?php
-									printf(
-										'<input type="radio" name="%s" id="%s" value="%s"%s />',
-										esc_attr( $input_name ),
-										esc_attr( $input_id ),
-										esc_attr( $setting_key ),
-										$checked_input
-									);
-									?>
-								</td>
-								<?php
-							endforeach;
-							?>
-						</tr>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
-		</div>
-		<?php
-	}
+	?>
+	<div class="coil tab-styling">
+	<?php
+	echo '<h1>' . esc_html__( 'Visibility Settings', 'coil-web-monetization' ) . '</h1>';
+	echo '<p>' . esc_html_e( 'Create defaults to set specific post types to be publicly visible, or only exclusively available to Coil members. These defaults can be overridden by configuring visibility against individual pages and posts, or against your categories and taxonomies.', 'coil-web-monetization' ) . '</p>';
+	printf(
+		'<p>%1$s<a href="%2$s">%3$s</a>%4$s</p>',
+		esc_html( 'Post types can only be marked as exclusive if they are also marked as monetized under ', 'coil-web-monetization' ),
+		esc_url( admin_url( 'admin.php?page=coil_settings&tab=general_settings', COIL__FILE__ ) ),
+		esc_html( 'General Settings', 'coil-web-monetization' ),
+		'.'
+	);
+	$group = 'coil_exclusive_settings_group';
+	$columns = Admin\get_visibility_types();
+	$input_type = 'radio';
+	$suffix = 'visibility';
+	$visibility_options = Admin\get_exclusive_settings();
+	post_type_defaults_table( $group, $columns, $input_type, $suffix, $visibility_options );
+	?>
+	</div>
+	<?php
 }
 
 /**
@@ -1263,7 +1159,7 @@ function admin_no_payment_pointer_notice() {
  * @param string $input_type checkbox or radio.
  * @param array $value_id_suffix The suffix that goes after the post type name to create an id for it.
  */
-function post_type_defaults_table( $column_names, $input_type, $value_id_suffix, $current_options ) {
+function post_type_defaults_table( $settings_group, $column_names, $input_type, $value_id_suffix, $current_options ) {
 	$post_type_options = Coil\get_supported_post_types( 'objects' );
 
 	// If there are post types available, output them:
@@ -1287,8 +1183,8 @@ function post_type_defaults_table( $column_names, $input_type, $value_id_suffix,
 						<th scope="row"><?php echo esc_html( $post_type->label ); ?></th>
 						<?php
 						foreach ( $column_names as $setting_key => $setting_value ) :
-							$input_id   = $post_type->name . $value_id_suffix . $setting_key;
-							$input_name = 'coil_exclusive_settings_group[' . $post_type->name . '_' . $value_id_suffix . ']';
+							$input_id   = $post_type->name . '_' . $value_id_suffix . '_' . $setting_key;
+							$input_name = $settings_group . '[' . $post_type->name . '_' . $value_id_suffix . ']';
 
 							/**
 							 * Specify the default checked state on the input from
