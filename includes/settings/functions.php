@@ -93,7 +93,7 @@ function register_admin_content_settings() {
 	add_settings_field(
 		'coil_paywall_title',
 		false,
-		__NAMESPACE__ . '\coil_exclusive_settings_paywall_title_render_callback',
+		__NAMESPACE__ . '\coil_paywall_appearance_text_field_settings_render_callback',
 		'coil_paywall_section',
 		'coil_paywall_settings'
 	);
@@ -101,7 +101,7 @@ function register_admin_content_settings() {
 	add_settings_field(
 		'coil_paywall_message',
 		false,
-		__NAMESPACE__ . '\coil_exclusive_settings_paywall_message_render_callback',
+		__NAMESPACE__ . '\coil_paywall_appearance_text_field_settings_render_callback',
 		'coil_paywall_section',
 		'coil_paywall_settings'
 	);
@@ -109,7 +109,7 @@ function register_admin_content_settings() {
 	add_settings_field(
 		'coil_paywall_button_text',
 		false,
-		__NAMESPACE__ . '\coil_exclusive_settings_paywall_button_text_render_callback',
+		__NAMESPACE__ . '\coil_paywall_appearance_text_field_settings_render_callback',
 		'coil_paywall_section',
 		'coil_paywall_settings'
 	);
@@ -117,34 +117,34 @@ function register_admin_content_settings() {
 	add_settings_field(
 		'coil_paywall_button_link',
 		false,
-		__NAMESPACE__ . '\coil_exclusive_settings_paywall_button_link_render_callback',
+		__NAMESPACE__ . '\coil_paywall_appearance_text_field_settings_render_callback',
 		'coil_paywall_section',
 		'coil_paywall_settings'
 	);
 
-	add_settings_field(
-		'coil_paywall_theme',
-		false,
-		__NAMESPACE__ . '\coil_exclusive_settings_paywall_theme_render_callback',
-		'coil_paywall_section',
-		'coil_paywall_settings'
-	);
+	// add_settings_field(
+	// 	'coil_paywall_theme',
+	// 	false,
+	// 	__NAMESPACE__ . '\coil_exclusive_settings_paywall_theme_render_callback',
+	// 	'coil_paywall_section',
+	// 	'coil_paywall_settings'
+	// );
 
-	add_settings_field(
-		'coil_paywall_branding',
-		false,
-		__NAMESPACE__ . '\coil_exclusive_settings_paywall_branding_render_callback',
-		'coil_paywall_section',
-		'coil_paywall_settings'
-	);
+	// add_settings_field(
+	// 	'coil_paywall_branding',
+	// 	false,
+	// 	__NAMESPACE__ . '\coil_exclusive_settings_paywall_branding_render_callback',
+	// 	'coil_paywall_section',
+	// 	'coil_paywall_settings'
+	// );
 
-	add_settings_field(
-		'coil_paywall_font',
-		false,
-		__NAMESPACE__ . '\coil_exclusive_settings_paywall_font_render_callback',
-		'coil_paywall_section',
-		'coil_paywall_settings'
-	);
+	// add_settings_field(
+	// 	'coil_paywall_font',
+	// 	false,
+	// 	__NAMESPACE__ . '\coil_exclusive_settings_paywall_font_render_callback',
+	// 	'coil_paywall_section',
+	// 	'coil_paywall_settings'
+	// );
 
 	// Tab 3 - Exclusive Content
 	register_setting(
@@ -284,6 +284,33 @@ function coil_general_settings_group_validation( $monetization_settings ) : arra
 	}
 
 	return $monetization_settings;
+}
+
+/**
+ * Allow the radio button options,
+ * that set the global monetization defaults,
+ * to be properly validated
+ *
+ * @param array $monetization_settings The posted radio options from the General Settings section
+ * @return array
+ */
+function coil_paywall_appearance_settings_group_validation( $paywall_settings) {
+
+	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
+		return [];
+	}
+
+	$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link', ];
+
+	foreach ( $text_fields as $message_type ) {
+		if ( $message_type === 'coil_learn_more_button_link' ) {
+			$paywall_settings[ $message_type ] = esc_url_raw( $paywall_settings[ $message_type ] );
+		} else {
+			$paywall_settings[ $message_type ] = ( isset( $paywall_settings[ $message_type ] ) ) ? sanitize_text_field( $paywall_settings[ $message_type ] ) : '';
+		}
+	}
+
+	return $paywall_settings;
 }
 
 /**
@@ -637,23 +664,23 @@ function coil_settings_paywall_appearance_render_callback() {
  *
  * @return void
  */
-function coil_messaging_textbox_render_callback( $content_id ) {
+function coil_paywall_appearance_textfield_render_callback( $field_id ) {
 
 	printf(
 		'<textarea class="%s" name="%s" id="%s" placeholder="%s">%s</textarea>',
 		esc_attr( 'wide-input' ),
-		esc_attr( 'coil_paywall_appearance_settings_group[' . $content_id . ']' ),
-		esc_attr( $content_id ),
-		esc_attr( Admin\get_paywall_appearance_setting( $content_id, true ) ),
-		esc_attr( Admin\get_paywall_appearance_setting( $content_id ) )
+		esc_attr( 'coil_paywall_appearance_settings_group[' . $field_id . ']' ),
+		esc_attr( $field_id ),
+		esc_attr( Admin\get_paywall_appearance_setting( $field_id, true ) ),
+		esc_attr( Admin\get_paywall_appearance_setting( $field_id ) )
 	);
 }
 
-coil_exclusive_settings_paywall_theme_render_callback
+// coil_exclusive_settings_paywall_theme_render_callback
 
-coil_exclusive_settings_paywall_branding_render_callback
+// coil_exclusive_settings_paywall_branding_render_callback
 
-coil_exclusive_settings_paywall_font_render_callback
+// coil_exclusive_settings_paywall_font_render_callback
 
 /**
  * Renders the output of the global monetization default settings
@@ -825,52 +852,45 @@ function coil_content_settings_posts_render_callback() {
  * Renders the output of the content messaging customization setting
  * @return void
  */
+function coil_paywall_appearance_text_field_settings_render_callback() {
 
+	$args = get_option( 'coil_paywall_appearance_settings' );
+	foreach ( $args ) {
 
-function coil_messaging_settings_render_callback( $args ) {
+	}
 
 	switch ( $args['id'] ) {
-		case 'coil_fully_gated_content_message':
-			$helper_text = __( 'Appears for non-paying viewers over hidden Paying Viewers Only content.', 'coil-web-monetization' );
+		case 'coil_paywall_title':
+			$heading = __( 'Title', 'coil-web-monetization' );
 			break;
-		case 'coil_partially_gated_content_message':
-			$helper_text = __( 'Appears for non-paying viewers over hidden blocks set to Only Show Paying Viewers on a Split Content post / page.', 'coil-web-monetization' );
+		case 'coil_paywall_message':
+			$heading = __( 'Message', 'coil-web-monetization' );
 			break;
-		case 'coil_verifying_status_message':
-			$helper_text = __( 'Appears while the plugin checks that an active Web Monetization account is in place.', 'coil-web-monetization' );
+		case 'coil_paywall_button_text':
+			$heading = __( 'Button Text', 'coil-web-monetization' );
 			break;
-		case 'coil_unable_to_verify_message':
-			$helper_text = __( 'Appears when content is set to Paying Viewers Only and browser setup is correct, but Web Monetization doesn\'t start. This can happen when the user doesn\'t have an active Coil account.', 'coil-web-monetization' );
-			break;
-		case 'coil_voluntary_donation_message':
-			$helper_text = __( 'Appears for non-paying viewers in a footer bar when content is set to Monetized and Public or Split Content.', 'coil-web-monetization' );
-			break;
-		case 'coil_learn_more_button_text':
-			$helper_text = __( 'Text on the "Learn more" shown below the Paying Viewers Only message and in the support creator footer.', 'coil-web-monetization' );
-			break;
-		case 'coil_learn_more_button_link':
-			$helper_text = __( '"Learn more" button link/URL to direct non-paying viewers to Coil\'s website. Shown below the Paying Viewers Only message and in the support creator footer.', 'coil-web-monetization' );
+		case 'coil_paywall_button_link':
+			$heading = __( 'Button Link', 'coil-web-monetization' );
 			break;
 		default:
-			$helper_text = '';
+			$heading = '';
 			break;
 	}
 
-	if ( '' !== $helper_text ) {
+	if ( '' !== $heading ) {
 		?>
-		<p style="width: 440px;"><?php echo esc_html( $helper_text ); ?></p>
+		<h3><?php echo esc_html( $heading ); ?></h3>
 		<?php
 	}
 
 	// Print <textarea> containing the setting value
-	coil_messaging_textbox_render_callback( $args['id'] );
+	coil_paywall_appearance_textfield_render_callback( $args['id'] );
 }
 
 /**
  * Renders the output of the display title padlock checkbox
  * @return void
  */
-
 function coil_title_padlock_settings_render_callback() {
 
 	/**
@@ -899,7 +919,6 @@ function coil_title_padlock_settings_render_callback() {
  * Renders the output of the show donation bar footer checkbox
  * @return void
  */
-
 function coil_show_donation_bar_settings_render_callback() {
 
 	/**
@@ -928,7 +947,6 @@ function coil_show_donation_bar_settings_render_callback() {
  * Renders the output of the color theme option checkbox
  * @return void
  */
-
 function coil_message_color_theme_render_callback() {
 	/**
 	 * Select the appropriate radio button
@@ -987,7 +1005,6 @@ function coil_message_color_theme_render_callback() {
  * Renders the output of the font option checkbox
  * @return void
  */
-
 function coil_message_font_render_callback() {
 
 	/**
@@ -1016,7 +1033,6 @@ function coil_message_font_render_callback() {
  * Renders the output of the show Coil branding checkbox
  * @return void
  */
-
 function coil_message_branding_render_callback() {
 
 	/**
@@ -1271,9 +1287,12 @@ function render_coil_settings_screen() : void {
 					submit_button();
 					break;
 				case 'exclusive_settings':
+					settings_fields( 'coil_paywall_appearance_settings_group' );
+					do_settings_sections( 'coil_paywall_section' );
+					do_settings_sections( 'coil_paywall_title' );
 					settings_fields( 'coil_exclusive_settings_group' );
 					// do_settings_sections( 'coil_enable_exclusive_section' );
-					// do_settings_sections( 'coil_paywall_settings' );
+					
 					// do_settings_sections( 'coil_exclusive_post_section' );
 					do_settings_sections( 'coil_default_post_visibility_section' );
 					do_settings_sections( 'coil_excerpt_visibility_section' );
@@ -1439,7 +1458,6 @@ function dismiss_welcome_notice() {
  * If a user has message settings which they saved in the customizer, switch them to settings saved in the wp_options table
  *
  */
-
 function transfer_customizer_message_settings() {
 
 	$messaging_settings = [];
@@ -1527,7 +1545,6 @@ function transfer_customizer_message_settings() {
  * If a user has appearance settings which they saved in the customizer, switch them to settings saved in the wp_options table
  *
  */
-
 function transfer_customizer_appearance_settings() {
 
 	// If the setting has already been saved or transferred then simply return
