@@ -621,16 +621,102 @@ function coil_settings_monetization_render_callback() {
  *
  * @return void
  */
-coil_settings_paywall_appearance_render_callback {
+function coil_settings_paywall_appearance_render_callback() {
 	?>
 	<div class="coil tab-styling">
 	<?php
 	echo '<h1>' . esc_html__( 'Paywall Appearance', 'coil-web-monetization' ) . '</h1>';
-	echo '<p>' . esc_html_e( 'Exclusive posts will show a paywall instead of their content for the users without a Coil Membership.', 'coil-web-monetization' ) . '</p>';
+	echo '<p>' . esc_html_e( 'This paywall replaces the post content for users without an active Coil Membership, when access is set to exclusive.', 'coil-web-monetization' ) . '</p>';
 	?>
 	</div>
 	<?php
 }
+
+/**
+ * Renders the output of the paywall title.
+ *
+ * @return void
+ * @param String $content_id ID for the text filed
+ */
+function coil_exclusive_settings_paywall_title_render_callback ( $content_id ){
+	?>
+	<div class="coil tab-styling">
+	<?php
+	echo '<h2>' . esc_html__( 'Title', 'coil-web-monetization' ) . '</h2>';
+	printf(
+		'<textarea class="%s" name="%s" id="%s" placeholder="%s">%s</textarea>',
+		esc_attr( 'wide-input' ),
+		esc_attr( 'coil_paywall_appearance_settings_group[' . $content_id . ']' ),
+		esc_attr( $content_id ),
+		esc_attr( Admin\get_messaging_setting( $content_id, true ) ),
+		esc_attr( Admin\get_messaging_setting( $content_id ) )
+	);
+	?>
+	</div>
+	<?php
+}
+
+/**
+ * Renders the output of the paywall title.
+ *
+ * @return void
+ * @param String $content_id ID for the text filed
+ */
+function coil_exclusive_settings_paywall_message_render_callback ( $content_id ){
+	?>
+	<div class="coil tab-styling">
+	<?php
+	echo '<h2>' . esc_html__( 'Title', 'coil-web-monetization' ) . '</h2>';
+	printf(
+		'<textarea class="%s" name="%s" id="%s" placeholder="%s">%s</textarea>',
+		esc_attr( 'wide-input' ),
+		esc_attr( 'coil_paywall_appearance_settings_group[' . $content_id . ']' ),
+		esc_attr( $content_id ),
+		esc_attr( Admin\get_messaging_setting( $content_id, true ) ),
+		esc_attr( Admin\get_messaging_setting( $content_id ) )
+	);
+	?>
+	</div>
+	<?php
+}
+
+/**
+ * Renders the output of the paywall title.
+ *
+ * @return void
+ * @param String $content_id ID for the text filed
+ */
+function coil_exclusive_settings_paywall_button_text_render_callback ( $content_id ){
+	?>
+	<div class="coil tab-styling">
+	<?php
+	echo '<h2>' . esc_html__( 'Title', 'coil-web-monetization' ) . '</h2>';
+	printf(
+		'<textarea class="%s" name="%s" id="%s" placeholder="%s">%s</textarea>',
+		esc_attr( 'wide-input' ),
+		esc_attr( 'coil_paywall_appearance_settings_group[' . $content_id . ']' ),
+		esc_attr( $content_id ),
+		esc_attr( Admin\get_messaging_setting( $content_id, true ) ),
+		esc_attr( Admin\get_messaging_setting( $content_id ) )
+	);
+	?>
+	</div>
+	<?php
+}
+
+/**
+ * Renders the output of the paywall title.
+ *
+ * @return void
+ * @param String $content_id ID for the text filed
+ */
+function coil_exclusive_settings_paywall_button_link_render_callback
+
+coil_exclusive_settings_paywall_theme_render_callback
+
+coil_exclusive_settings_paywall_branding_render_callback
+
+coil_exclusive_settings_paywall_font_render_callback
 
 /**
  * Renders the output of the global monetization default settings
