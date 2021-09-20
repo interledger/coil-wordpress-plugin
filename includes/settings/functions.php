@@ -75,19 +75,11 @@ function register_admin_content_settings() {
 		'coil_default_monetization_section'
 	);
 
-	// Tab 3 - Exclusive Content
+	// Tab 3 - Exclusive Content - Paywall Appearance
 	register_setting(
-		'coil_exclusive_settings_group',
-		'coil_exclusive_settings_group',
-		__NAMESPACE__ . '\coil_exclusive_settings_group_validation'
-	);
-
-	// ==== Enable / Disable
-	add_settings_section(
-		'coil_enable_exclusive_section',
-		false,
-		__NAMESPACE__ . '\coil_settings_enable_exclusive_render_callback',
-		'coil_enable_exclusive_section'
+		'coil_paywall_appearance_settings_group',
+		'coil_paywall_appearance_settings_group',
+		__NAMESPACE__ . '\coil_paywall_appearance_settings_group_validation'
 	);
 
 	// ==== Paywall Appearance
@@ -152,6 +144,21 @@ function register_admin_content_settings() {
 		__NAMESPACE__ . '\coil_exclusive_settings_paywall_font_render_callback',
 		'coil_paywall_section',
 		'coil_paywall_settings'
+	);
+
+	// Tab 3 - Exclusive Content
+	register_setting(
+		'coil_exclusive_settings_group',
+		'coil_exclusive_settings_group',
+		__NAMESPACE__ . '\coil_exclusive_settings_group_validation'
+	);
+
+	// ==== Enable / Disable
+	add_settings_section(
+		'coil_enable_exclusive_section',
+		false,
+		__NAMESPACE__ . '\coil_settings_enable_exclusive_render_callback',
+		'coil_enable_exclusive_section'
 	);
 
 	// ==== Exclusive Post Appearance
@@ -609,9 +616,25 @@ function coil_settings_monetization_render_callback() {
 }
 
 /**
+ * Renders the output of the paywall appearance settings title
+ * and explanation.
+ *
+ * @return void
+ */
+coil_settings_paywall_appearance_render_callback {
+	?>
+	<div class="coil tab-styling">
+	<?php
+	echo '<h1>' . esc_html__( 'Paywall Appearance', 'coil-web-monetization' ) . '</h1>';
+	echo '<p>' . esc_html_e( 'Exclusive posts will show a paywall instead of their content for the users without a Coil Membership.', 'coil-web-monetization' ) . '</p>';
+	?>
+	</div>
+	<?php
+}
+
+/**
  * Renders the output of the global monetization default settings
  * showing radio buttons based on the post types available in WordPress.
- *
  * @return void
  */
 function coil_settings_post_visibility_render_callback() {
@@ -646,51 +669,20 @@ function coil_settings_post_visibility_render_callback() {
  */
 function coil_excerpts_visibility_render_callback() {
 
-	$post_type_options = Coil\get_supported_post_types( 'objects' );
-
-	// If there are post types available, output them:
-	if ( ! empty( $post_type_options ) ) {
-
-		$excerpt_visibility_defaults = Admin\get_exclusive_settings();
-		?>
-		<div class="coil tab-styling">
-		<?php
-			echo '<h1>' . esc_html__( 'Excerpt Settings', 'coil-web-monetization' ) . '</h1>';
-			echo '<p>' . esc_html_e( 'Use the settings below to select whether to show a short excerpt for any pages, posts, or other content types you choose to gate access to. Support for displaying an excerpt may depend on your particular theme and setup of WordPress.', 'coil-web-monetization' ) . '</p>';
-		?>
-			<table class="widefat">
-				<thead>
-					<th><?php esc_html_e( 'Post Type', 'coil-web-monetization' ); ?></th>
-					<th><?php esc_html_e( 'Display Excerpt', 'coil-web-monetization' ); ?></th>
-				</thead>
-				<tbody>
-					<?php foreach ( $post_type_options as $post_type ) : ?>
-						<tr>
-							<th scope="row"><?php echo esc_html( $post_type->label ); ?></th>
-							<td>
-							<?php
-							$excerpt_name = 'coil_exclusive_settings_group[' . $post_type->name . '_excerpt]';
-							$excerpt_id   = $post_type->name . '_display_excerpt';
-
-							$checked_excerpt = false;
-							if ( isset( $excerpt_visibility_defaults[ $post_type->name . '_excerpt' ] ) ) {
-								$checked_excerpt = checked( 1, $excerpt_visibility_defaults[ $post_type->name . '_excerpt' ], false );
-							}
-							printf(
-								'<input type="checkbox" name="%s" id="%s" %s />',
-								esc_attr( $excerpt_name ),
-								esc_attr( $excerpt_id ),
-								$checked_excerpt
-							);
-							?>
-							</td>
-						</tr>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
-		</div>
-		<?php
-	}
+	?>
+	<div class="coil tab-styling">
+	<?php
+	echo '<h1>' . esc_html__( 'Excerpt Settings', 'coil-web-monetization' ) . '</h1>';
+	echo '<p>' . esc_html_e( 'Use the settings below to select whether to show a short excerpt for any pages, posts, or other content types you choose to gate access to. Support for displaying an excerpt may depend on your particular theme and setup of WordPress.', 'coil-web-monetization' ) . '</p>';
+	$group = 'coil_exclusive_settings_group';
+	$columns = [ 'Display Excerpt' ];
+	$input_type = 'checkbox';
+	$suffix = 'excerpt';
+	$excerpt_visibility_defaults = Admin\get_exclusive_settings();
+	post_type_defaults_table( $group, $columns, $input_type, $suffix, $excerpt_visibility_defaults );
+	?>
+	</div>
+	<?php
 }
 
 /**
@@ -1193,10 +1185,12 @@ function post_type_defaults_table( $settings_group, $column_names, $input_type, 
 							 * option (No Monetization)
 							 */
 							$checked_input = false;
-							if ( $setting_key === $keys[0] ) {
+							if ( $input_type === 'radio' && $setting_key === $keys[0] ) {
 								$checked_input = 'checked="true"';
-							} elseif ( isset( $current_options[ $post_type->name . '_' . $value_id_suffix ] ) ) {
+							} elseif ( $input_type === 'radio' && isset( $current_options[ $post_type->name . '_' . $value_id_suffix ] ) ) {
 								$checked_input = checked( $setting_key, $current_options[ $post_type->name . '_' . $value_id_suffix ], false );
+							} elseif ( $input_type === 'checkbox' && isset( $current_options[ $post_type->name . '_' . $value_id_suffix ] ) ) {
+								$checked_input = checked( 1, $current_options[ $post_type->name . '_' . $value_id_suffix ], false );
 							}
 							?>
 							<td>
@@ -1209,6 +1203,7 @@ function post_type_defaults_table( $settings_group, $column_names, $input_type, 
 									esc_attr( $setting_key ),
 									$checked_input
 								);
+
 								?>
 							</td>
 							<?php
