@@ -424,6 +424,68 @@ function get_monetization_types() {
 }
 
 /**
+ * Retrieve the paywall text field defaults
+ * This includes the title, message, button text and button link
+ *
+ * @return array Text field default values
+ */
+function get_paywall_apprearance_text_defaults() {
+
+	// Set up defaults.
+	return [
+		'coil_paywall_title'       => __( 'Keep Reading with Coil', 'coil-web-monetization' ),
+		'coil_paywall_message'     => __( 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.', 'coil-web-monetization' ),
+		'coil_paywall_button_text' => __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' ),
+		'coil_paywall_button_link' => __( 'You need a valid Coil account to see this content.', 'coil-web-monetization' ),
+	];
+}
+
+function get_paywall_appearance_settings() {
+
+}
+
+/**
+ * Retrieve the messaging settings using a key from the messaging
+ * settings group (serialized).
+ *
+ * @param string $field_id The named key in the wp_options serialized array.
+ * @return string
+ */
+function get_paywall_appearance_text_setting( $field_id, $default = false ) {
+
+	$defaults = get_paywall_apprearance_text_defaults();
+
+	$options = get_option( 'coil_paywall_appearance_settings_group', [] );
+
+	// The default is returned as a placeholder or as a coil_js_ui_messages field when no custom input has been provided
+	if ( $default ) {
+		return $defaults[ $field_id ];
+	}
+
+	return ( ! empty( $options[ $field_id ] ) ) ? $options[ $field_id ] : '';
+}
+
+/**
+ * Retrieve the messaging settings using a key from the messaging
+ * or return a default value for the setting
+ *
+ * @param string $field_id The named key in the wp_options serialized array.
+ * @return string $setting_value The value of the setting after checking the default
+ */
+
+function get_paywall_appearance_text_setting_or_default( $setting_id ) {
+
+	// Check if the setting exists, if not load the default
+	if ( '' === get_paywall_appearance_text_setting( $setting_id ) ) {
+		$setting_value = get_paywall_appearance_text_setting( $setting_id, true );
+	} else {
+		$setting_value = get_paywall_appearance_text_setting( $setting_id );
+	}
+
+	return $setting_value;
+}
+
+/**
  * Retrieve the Exclusive Content settings.
  * @return array Setting stored in options.
  */
@@ -453,70 +515,6 @@ function get_visibility_types() : array {
 	];
 
 	return $visibility_types;
-}
-
-/**
- * Retrieve the messaging settings using a key from the messaging
- * or return a default value for the setting
- *
- * @param string $field_id The named key in the wp_options serialized array.
- * @return string $setting_value The value of the setting after checking the default
- */
-
-function get_messaging_setting_or_default( $setting_id ) {
-
-	// Check if the setting exists, if not load the default
-	if ( '' === get_messaging_setting( $setting_id ) ) {
-		$setting_value = get_messaging_setting( $setting_id, true );
-	} else {
-		$setting_value = get_messaging_setting( $setting_id );
-	}
-
-	return $setting_value;
-}
-
-/**
- * Retrieve the messaging settings and their defaults
- *
- * @return array Add the messaging settings and their default values
- */
-
-function get_messaging_defaults() {
-
-	// Set up defaults.
-	return [
-		'coil_fully_gated_content_message'     => __( 'Unlock exclusive content with Coil. Need a Coil account?', 'coil-web-monetization' ),
-		'coil_partially_gated_content_message' => __( 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.', 'coil-web-monetization' ),
-		'coil_verifying_status_message'        => __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' ),
-		'coil_unable_to_verify_message'        => __( 'You need a valid Coil account to see this content.', 'coil-web-monetization' ),
-		'coil_voluntary_donation_message'      => __( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', 'coil-web-monetization' ),
-		'coil_learn_more_button_text'          => __( 'Get Coil to access', 'coil-web-monetization' ),
-		'coil_learn_more_button_link'          => 'https://coil.com/',
-	];
-
-}
-
-
-/**
- * Retrieve the messaging settings using a key from the messaging
- * settings group (serialized).
- *
- * @param string $field_id The named key in the wp_options serialized array.
- * @return string
- */
-
-function get_messaging_setting( $field_id, $default = false ) {
-
-	$defaults = get_messaging_defaults();
-
-	$options = get_option( 'coil_messaging_settings_group', [] );
-
-	// The default is returned as a placeholder or as a coil_js_ui_messages field when no custom input has been provided
-	if ( $default ) {
-		return $defaults[ $field_id ];
-	}
-
-	return ( ! empty( $options[ $field_id ] ) ) ? $options[ $field_id ] : '';
 }
 
 /**

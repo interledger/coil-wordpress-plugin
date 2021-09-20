@@ -633,84 +633,21 @@ function coil_settings_paywall_appearance_render_callback() {
 }
 
 /**
- * Renders the output of the paywall title.
+ * Renders the output of a generic message customization textarea.
  *
  * @return void
- * @param String $content_id ID for the text filed
  */
-function coil_exclusive_settings_paywall_title_render_callback ( $content_id ){
-	?>
-	<div class="coil tab-styling">
-	<?php
-	echo '<h2>' . esc_html__( 'Title', 'coil-web-monetization' ) . '</h2>';
+function coil_messaging_textbox_render_callback( $content_id ) {
+
 	printf(
 		'<textarea class="%s" name="%s" id="%s" placeholder="%s">%s</textarea>',
 		esc_attr( 'wide-input' ),
 		esc_attr( 'coil_paywall_appearance_settings_group[' . $content_id . ']' ),
 		esc_attr( $content_id ),
-		esc_attr( Admin\get_messaging_setting( $content_id, true ) ),
-		esc_attr( Admin\get_messaging_setting( $content_id ) )
+		esc_attr( Admin\get_paywall_appearance_setting( $content_id, true ) ),
+		esc_attr( Admin\get_paywall_appearance_setting( $content_id ) )
 	);
-	?>
-	</div>
-	<?php
 }
-
-/**
- * Renders the output of the paywall title.
- *
- * @return void
- * @param String $content_id ID for the text filed
- */
-function coil_exclusive_settings_paywall_message_render_callback ( $content_id ){
-	?>
-	<div class="coil tab-styling">
-	<?php
-	echo '<h2>' . esc_html__( 'Title', 'coil-web-monetization' ) . '</h2>';
-	printf(
-		'<textarea class="%s" name="%s" id="%s" placeholder="%s">%s</textarea>',
-		esc_attr( 'wide-input' ),
-		esc_attr( 'coil_paywall_appearance_settings_group[' . $content_id . ']' ),
-		esc_attr( $content_id ),
-		esc_attr( Admin\get_messaging_setting( $content_id, true ) ),
-		esc_attr( Admin\get_messaging_setting( $content_id ) )
-	);
-	?>
-	</div>
-	<?php
-}
-
-/**
- * Renders the output of the paywall title.
- *
- * @return void
- * @param String $content_id ID for the text filed
- */
-function coil_exclusive_settings_paywall_button_text_render_callback ( $content_id ){
-	?>
-	<div class="coil tab-styling">
-	<?php
-	echo '<h2>' . esc_html__( 'Title', 'coil-web-monetization' ) . '</h2>';
-	printf(
-		'<textarea class="%s" name="%s" id="%s" placeholder="%s">%s</textarea>',
-		esc_attr( 'wide-input' ),
-		esc_attr( 'coil_paywall_appearance_settings_group[' . $content_id . ']' ),
-		esc_attr( $content_id ),
-		esc_attr( Admin\get_messaging_setting( $content_id, true ) ),
-		esc_attr( Admin\get_messaging_setting( $content_id ) )
-	);
-	?>
-	</div>
-	<?php
-}
-
-/**
- * Renders the output of the paywall title.
- *
- * @return void
- * @param String $content_id ID for the text filed
- */
-function coil_exclusive_settings_paywall_button_link_render_callback
 
 coil_exclusive_settings_paywall_theme_render_callback
 
@@ -882,24 +819,6 @@ function coil_content_settings_posts_render_callback() {
 		</table>
 		<?php
 	}
-}
-
-/**
- * Renders the output of a generic message customization textarea.
- *
- * @return void
- */
-function coil_messaging_textbox_render_callback( $content_id ) {
-
-	printf(
-		'<textarea class="%s" name="%s" id="%s" placeholder="%s" style="%s">%s</textarea>',
-		esc_attr( 'wide-input' ),
-		esc_attr( 'coil_messaging_settings_group[' . $content_id . ']' ),
-		esc_attr( $content_id ),
-		esc_attr( Admin\get_messaging_setting( $content_id, true ) ),
-		esc_attr( 'width: 440px' ),
-		esc_attr( Admin\get_messaging_setting( $content_id ) )
-	);
 }
 
 /**
