@@ -1118,8 +1118,8 @@ function post_type_defaults_table( $settings_group, $column_names, $input_type, 
 								$checked_input = 'checked="true"';
 							} elseif ( $input_type === 'radio' && isset( $current_options[ $post_type->name . '_' . $value_id_suffix ] ) ) {
 								$checked_input = checked( $setting_key, $current_options[ $post_type->name . '_' . $value_id_suffix ], false );
-							} elseif ( $input_type === 'checkbox' ) {
-								$checked_input = isset( $current_options[ $post_type->name . '_' . $value_id_suffix ] ) ? checked( 1, $current_options[ $post_type->name . '_' . $value_id_suffix ], false ) : 'checked';
+							} elseif ( $input_type === 'checkbox' && isset( $current_options[ $post_type->name ] ) ) {
+								$checked_excerpt = checked( 1, $current_options[ $post_type->name ], false );
 							}
 							?>
 							<td>
