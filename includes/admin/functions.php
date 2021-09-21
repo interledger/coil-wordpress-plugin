@@ -441,7 +441,7 @@ function get_paywall_apprearance_text_defaults() {
 }
 
 /**
- * Retrieve the paywall text field using a key from the 
+ * Retrieve the paywall text field using a key from the
  * paywall appearance settings group (serialized).
  *
  * @param string $field_id The named key in the wp_options serialized array.
@@ -472,9 +472,8 @@ function get_paywall_appearance_setting( $field_id, $default = false ) {
 
 	$paywall_appearance_options = get_option( 'coil_exclusive_settings_group' );
 
-	$text_fields                = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link', ];
+	$text_fields                = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
 	$cta_style_checkbox_options = [ 'coil_message_font', 'coil_message_branding' ];
-
 
 	// Text inputs can be empty strings, in which the placeholder text will display or the default text will be returned.
 	if ( in_array( $field_id, $text_fields, true ) ) {

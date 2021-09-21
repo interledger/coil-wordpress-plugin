@@ -213,7 +213,7 @@ function coil_general_settings_group_validation( $monetization_settings ) : arra
 		// The default value is monetized
 		$monetization_settings[ $key ] = in_array( $option_value, $valid_choices, true ) ? sanitize_key( $option_value ) : 'monetized';
 		// Ensures that a post cannot default to be Not Monetized and Exclusive
-		$visibility_key = str_replace( "_monetization", "_visibility", $key );
+		$visibility_key = str_replace( '_monetization', '_visibility', $key );
 		if ( $monetization_settings[ $key ] === 'not-monetized' && $visibility_default[ $visibility_key ] === 'exclusive' ) {
 			$visibility_default [ $visibility_key ] = 'public';
 			update_option( 'coil_exclusive_settings_group', $visibility_default );
@@ -247,7 +247,7 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 	// Loops through each post type to validate post visibility defaults and excerpt display settings
 	foreach ( $post_type_options as $post_type ) {
 		// Validates post type visibility defaults.
-		$visibility_input_name = $post_type->name . '_visibility';
+		$visibility_input_name   = $post_type->name . '_visibility';
 		$monetization_input_name = $post_type->name . '_monetization';
 		// The default value is monetized
 		$monetization_setting = ! empty( $post_monetization_defaults[ $monetization_input_name ] ) ? $post_monetization_defaults[ $monetization_input_name ] : 'monetized';
@@ -289,10 +289,10 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 	}
 
 	// Theme validation
-	$valid_color_choices    = [ 'light', 'dark' ];
-	$coil_theme_color_key   = 'coil_message_color_theme';
+	$valid_color_choices  = [ 'light', 'dark' ];
+	$coil_theme_color_key = 'coil_message_color_theme';
 
-	$exclusive_settings[ $coil_theme_color_key ]  = in_array( $exclusive_settings[ $coil_theme_color_key ], $valid_color_choices, true ) ? sanitize_key( $exclusive_settings[ $coil_theme_color_key ] ) : 'light';
+	$exclusive_settings[ $coil_theme_color_key ] = in_array( $exclusive_settings[ $coil_theme_color_key ], $valid_color_choices, true ) ? sanitize_key( $exclusive_settings[ $coil_theme_color_key ] ) : 'light';
 
 	return $exclusive_settings;
 }
@@ -513,10 +513,10 @@ function coil_settings_monetization_render_callback() {
 		echo '<p>' . esc_html_e( 'Create defaults to enable or disable monetization for specific post types. When monetization is enabled, Coil members can stream micropayments to you as they enjoy your content. These defaults can be overridden by configuring monetization against individual pages and posts, or against your categories and taxonomies.', 'coil-web-monetization' ) . '</p>';
 
 		// Using a function to generate the table with the global monetization radio button options.
-		$group = 'coil_general_settings_group';
-		$columns = Admin\get_monetization_types();
-		$input_type = 'radio';
-		$suffix = 'monetization';
+		$group                = 'coil_general_settings_group';
+		$columns              = Admin\get_monetization_types();
+		$input_type           = 'radio';
+		$suffix               = 'monetization';
 		$monetization_options = Admin\get_general_settings();
 		post_type_defaults_table( $group, $columns, $input_type, $suffix, $monetization_options );
 	?>
@@ -536,12 +536,12 @@ function coil_settings_paywall_appearance_render_callback() {
 	<?php
 		echo '<h1>' . esc_html__( 'Paywall Appearance', 'coil-web-monetization' ) . '</h1>';
 		echo '<p>' . esc_html_e( 'This paywall replaces the post content for users without an active Coil Membership, when access is set to exclusive.', 'coil-web-monetization' ) . '</p>';
-		$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link', ];
-		
+		$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
+
 		// Renders the textfield for each paywall text field input.
-		foreach( $text_fields as $field_name ) {
-			coil_paywall_appearance_text_field_settings_render_callback( $field_name );
-		}
+	foreach ( $text_fields as $field_name ) {
+		coil_paywall_appearance_text_field_settings_render_callback( $field_name );
+	}
 	?>
 		<?php
 			// renders the color theme radio buttons
@@ -569,11 +569,11 @@ function coil_settings_paywall_appearance_render_callback() {
 
 			$theme_color_checked_input = Admin\get_paywall_appearance_setting( 'coil_message_color_theme' );
 
-			if ( ! empty( $theme_color_checked_input ) && $theme_color_checked_input === 'dark' ) {
-				$theme_color_checked_input = 'checked="true"';
-			} else {
-				$theme_color_checked_input = false;
-			}
+		if ( ! empty( $theme_color_checked_input ) && $theme_color_checked_input === 'dark' ) {
+			$theme_color_checked_input = 'checked="true"';
+		} else {
+			$theme_color_checked_input = false;
+		}
 
 			printf(
 				'<input type="radio" name="%s" id="%s" value="%s" %s />',
@@ -619,10 +619,10 @@ function coil_settings_post_visibility_render_callback() {
 		);
 
 		// Using a function to generate the table with the global visibility radio button options.
-		$group = 'coil_exclusive_settings_group';
-		$columns = Admin\get_visibility_types();
-		$input_type = 'radio';
-		$suffix = 'visibility';
+		$group              = 'coil_exclusive_settings_group';
+		$columns            = Admin\get_visibility_types();
+		$input_type         = 'radio';
+		$suffix             = 'visibility';
 		$visibility_options = Admin\get_exclusive_settings();
 		post_type_defaults_table( $group, $columns, $input_type, $suffix, $visibility_options );
 	?>
@@ -643,12 +643,12 @@ function coil_excerpts_visibility_render_callback() {
 	<?php
 		echo '<h1>' . esc_html__( 'Excerpt Settings', 'coil-web-monetization' ) . '</h1>';
 		echo '<p>' . esc_html_e( 'Use the settings below to select whether to show a short excerpt for any pages, posts, or other content types you choose to gate access to. Support for displaying an excerpt may depend on your particular theme and setup of WordPress.', 'coil-web-monetization' ) . '</p>';
-		
+
 		// Using a function to generate the table with the post type excerpt checkboxes.
-		$group = 'coil_exclusive_settings_group';
-		$columns = [ 'Display Excerpt' ];
-		$input_type = 'checkbox';
-		$suffix = 'excerpt';
+		$group                       = 'coil_exclusive_settings_group';
+		$columns                     = [ 'Display Excerpt' ];
+		$input_type                  = 'checkbox';
+		$suffix                      = 'excerpt';
 		$excerpt_visibility_defaults = Admin\get_exclusive_settings();
 		post_type_defaults_table( $group, $columns, $input_type, $suffix, $excerpt_visibility_defaults );
 	?>
@@ -1119,10 +1119,10 @@ function post_type_defaults_table( $settings_group, $column_names, $input_type, 
 						<th scope="row"><?php echo esc_html( $post_type->label ); ?></th>
 						<?php
 						foreach ( $column_names as $setting_key => $setting_value ) :
-							if($input_type === 'checkbox' ) {
-								$input_id   = $post_type->name . '_' . $value_id_suffix;
+							if ( $input_type === 'checkbox' ) {
+								$input_id = $post_type->name . '_' . $value_id_suffix;
 							} else {
-								$input_id   = $post_type->name . '_' . $value_id_suffix . '_' . $setting_key;
+								$input_id = $post_type->name . '_' . $value_id_suffix . '_' . $setting_key;
 							}
 							$input_name = $settings_group . '[' . $post_type->name . '_' . $value_id_suffix . ']';
 
@@ -1139,7 +1139,7 @@ function post_type_defaults_table( $settings_group, $column_names, $input_type, 
 								$checked_input = checked( $setting_key, $current_options[ $post_type->name . '_' . $value_id_suffix ], false );
 							} elseif ( $input_type === 'checkbox' && isset( $current_options[ $post_type->name . '_' . $value_id_suffix ] ) ) {
 								$checked_input = 'checked="true"';
-								$setting_key = true;
+								$setting_key   = true;
 							}
 							?>
 							<td>
