@@ -472,7 +472,9 @@ function get_paywall_appearance_setting( $field_id, $default = false ) {
 
 	$paywall_appearance_options = get_option( 'coil_exclusive_settings_group' );
 
-	$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link', ];
+	$text_fields                = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link', ];
+	$cta_style_checkbox_options = [ 'coil_message_font', 'coil_message_branding' ];
+
 
 	// Text inputs can be empty strings, in which the placeholder text will display or the default text will be returned.
 	if ( in_array( $field_id, $text_fields, true ) ) {
@@ -481,12 +483,27 @@ function get_paywall_appearance_setting( $field_id, $default = false ) {
 		if ( $default ) {
 			$defaults = get_paywall_apprearance_text_defaults();
 			return $defaults[ $field_id ];
+		} else {
+			return ( ! empty( $paywall_appearance_options[ $field_id ] ) ) ? $paywall_appearance_options[ $field_id ] : '';
 		}
-
-		return ( ! empty( $paywall_appearance_options[ $field_id ] ) ) ? $paywall_appearance_options[ $field_id ] : '';
-	} else {
-		return null;
+	} elseif ( $field_id === 'coil_message_color_theme' ) {
+		// Default is the light theme
+		if ( isset( $paywall_appearance_options[ $field_id ] ) ) {
+			$setting_value = $paywall_appearance_options[ $field_id ];
+		} else {
+			$setting_value = 'light';
+		}
+		return $setting_value;
+	} elseif ( in_array( $field_id, $cta_style_checkbox_options, true ) ) {
+		// Default is unchecked
+		if ( ! isset( $paywall_appearance_options[ $field_id ] ) ) {
+			$setting_value = false;
+		} else {
+			$setting_value = $paywall_appearance_options[ $field_id ];
+		}
+		return $setting_value;
 	}
+	return null;
 }
 
 /**
@@ -532,30 +549,15 @@ function get_appearance_settings( $field_id ) {
 
 	$options                          = get_option( 'coil_appearance_settings_group', [] );
 	$general_display_checkbox_options = [ 'coil_title_padlock', 'coil_show_donation_bar' ];
-	$cta_style_checkbox_options       = [ 'coil_message_font', 'coil_message_branding' ];
 
-	if ( $field_id === 'coil_message_color_theme' ) {
-		// Default is the light theme
-		if ( isset( $options[ $field_id ] ) ) {
-			$setting_value = $options[ $field_id ];
-		} else {
-			$setting_value = 'light';
-		}
-	} elseif ( in_array( $field_id, $general_display_checkbox_options, true ) ) {
+	if ( in_array( $field_id, $general_display_checkbox_options, true ) ) {
 		// Default is checked
 		if ( ! isset( $options[ $field_id ] ) ) {
 			$setting_value = true;
 		} else {
 			$setting_value = $options[ $field_id ];
 		}
-	} elseif ( in_array( $field_id, $cta_style_checkbox_options, true ) ) {
-		// Default is unchecked
-		if ( ! isset( $options[ $field_id ] ) ) {
-			$setting_value = false;
-		} else {
-			$setting_value = $options[ $field_id ];
-		}
 	}
-	return $setting_value;
+	return $field_id;
 }
 
