@@ -473,7 +473,6 @@ function get_paywall_appearance_setting( $field_id, $default = false ) {
 	$paywall_appearance_options = get_option( 'coil_exclusive_settings_group' );
 
 	$text_fields                = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
-	$cta_style_checkbox_options = [ 'coil_message_font', 'coil_message_branding' ];
 
 	// Text inputs can be empty strings, in which the placeholder text will display or the default text will be returned.
 	if ( in_array( $field_id, $text_fields, true ) ) {
@@ -493,12 +492,12 @@ function get_paywall_appearance_setting( $field_id, $default = false ) {
 			$setting_value = 'light';
 		}
 		return $setting_value;
-	} elseif ( in_array( $field_id, $cta_style_checkbox_options, true ) ) {
-		// Default is unchecked
-		if ( ! isset( $paywall_appearance_options[ $field_id ] ) ) {
-			$setting_value = false;
-		} else {
+	} elseif ( $field_id === 'coil_message_branding' ) {
+		// Default is Coil logo
+		if ( isset( $paywall_appearance_options[ $field_id ] ) ) {
 			$setting_value = $paywall_appearance_options[ $field_id ];
+		} else {
+			$setting_value = 'coil_logo';
 		}
 		return $setting_value;
 	}

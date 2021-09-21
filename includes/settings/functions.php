@@ -294,6 +294,12 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 
 	$exclusive_settings[ $coil_theme_color_key ] = in_array( $exclusive_settings[ $coil_theme_color_key ], $valid_color_choices, true ) ? sanitize_key( $exclusive_settings[ $coil_theme_color_key ] ) : 'light';
 
+	// Branding validation
+	$valid_branding_choices = [ 'site_logo', 'coil_logo', 'no_logo' ];
+	$message_branding_key   = 'coil_message_branding';
+
+	$exclusive_settings[ $message_branding_key ] = in_array( $exclusive_settings[ $message_branding_key ], $valid_branding_choices, true ) ? sanitize_key( $exclusive_settings[ $message_branding_key ] ) : 'site_logo';
+
 	return $exclusive_settings;
 }
 
@@ -314,18 +320,7 @@ function coil_appearance_settings_validation( $appearance_settings ) : array {
 	}
 
 	$checkbox_options       = [ 'coil_title_padlock', 'coil_show_donation_bar', 'coil_message_font' ];
-	$valid_branding_choices = [ 'site_logo', 'coil_logo', 'no_logo' ];
-	$message_branding_key   = 'coil_message_branding';
 	$array_keys             = array_keys( $appearance_settings );
-
-	if ( in_array( $message_branding_key, $array_keys, true ) ) {
-		if ( in_array( $appearance_settings[ $message_branding_key ], $valid_branding_choices, true ) ) {
-			$appearance_settings[ $message_branding_key ] = sanitize_key( $appearance_settings[ $message_branding_key ] );
-		}
-	} else {
-		// The default value is the site logo
-		$appearance_settings[ $message_branding_key ] = 'site_logo';
-	}
 
 	foreach ( $checkbox_options as $key ) {
 		if ( in_array( $key, $array_keys, true ) ) {
@@ -539,35 +534,34 @@ function coil_settings_paywall_appearance_render_callback() {
 		$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
 
 		// Renders the textfield for each paywall text field input.
-	foreach ( $text_fields as $field_name ) {
-		coil_paywall_appearance_text_field_settings_render_callback( $field_name );
-	}
-	?>
-		<?php
-			// renders the color theme radio buttons
-			$theme_color_checked_input = Admin\get_paywall_appearance_setting( 'coil_message_color_theme' );
-			echo '<h3>' . esc_html__( 'Color Theme', 'coil-web-monetization' ) . '</h3>';
+		foreach ( $text_fields as $field_name ) {
+			coil_paywall_appearance_text_field_settings_render_callback( $field_name );
+		}
 
-			// The default color theme is the light theme.
-			$theme_color_checked_input = 'checked="true"';
+		// Renders the color theme radio buttons
+		$theme_color_checked_input = Admin\get_paywall_appearance_setting( 'coil_message_color_theme' );
+		echo '<h3>' . esc_html__( 'Color Theme', 'coil-web-monetization' ) . '</h3>';
 
-			printf(
-				'<input type="radio" name="%s" id="%s" value="%s" %s />',
-				esc_attr( 'coil_exclusive_settings_group[coil_message_color_theme]' ),
-				esc_attr( 'light_color_theme' ),
-				esc_attr( 'light' ),
-				$theme_color_checked_input
-			);
+		// The default color theme is the light theme.
+		$theme_color_checked_input = 'checked="true"';
 
-			printf(
-				'<label for="%s">%s</label>',
-				esc_attr( 'light_color_theme' ),
-				esc_html_e( 'Light theme', 'coil-web-monetization' )
-			);
+		printf(
+			'<input type="radio" name="%s" id="%s" value="%s" %s />',
+			esc_attr( 'coil_exclusive_settings_group[coil_message_color_theme]' ),
+			esc_attr( 'light_color_theme' ),
+			esc_attr( 'light' ),
+			$theme_color_checked_input
+		);
 
-			printf( '<br>' );
+		printf(
+			'<label for="%s">%s</label>',
+			esc_attr( 'light_color_theme' ),
+			esc_html_e( 'Light theme', 'coil-web-monetization' )
+		);
 
-			$theme_color_checked_input = Admin\get_paywall_appearance_setting( 'coil_message_color_theme' );
+		printf( '<br>' );
+
+		$theme_color_checked_input = Admin\get_paywall_appearance_setting( 'coil_message_color_theme' );
 
 		if ( ! empty( $theme_color_checked_input ) && $theme_color_checked_input === 'dark' ) {
 			$theme_color_checked_input = 'checked="true"';
@@ -575,20 +569,54 @@ function coil_settings_paywall_appearance_render_callback() {
 			$theme_color_checked_input = false;
 		}
 
+		printf(
+			'<input type="radio" name="%s" id="%s" value="%s" %s />',
+			esc_attr( 'coil_exclusive_settings_group[coil_message_color_theme]' ),
+			esc_attr( 'dark_color_theme' ),
+			esc_attr( 'dark' ),
+			$theme_color_checked_input
+		);
+
+		printf(
+			'<label for="%s">%s</label>',
+			esc_attr( 'dark_color_theme' ),
+			esc_html_e( 'Dark theme', 'coil-web-monetization' )
+		);
+	?>
+		<?php
+			// Renders the branding selection box
+			echo '<h3>' . esc_html__( 'Branding', 'coil-web-monetization' ) . '</h3>';
 			printf(
-				'<input type="radio" name="%s" id="%s" value="%s" %s />',
-				esc_attr( 'coil_exclusive_settings_group[coil_message_color_theme]' ),
-				esc_attr( 'dark_color_theme' ),
-				esc_attr( 'dark' ),
-				$theme_color_checked_input
+				'<select name="%s" id="%s">',
+				esc_attr( 'coil_exclusive_settings_group[coil_message_branding]' ),
+				esc_attr( 'coil_branding' )
+			);
+			// Defaults to the Coil logo
+			$checked_input_value = Admin\get_paywall_appearance_setting( 'coil_message_branding' );
+
+			printf(
+				'<option value="%s">%s</option>',
+				esc_attr( 'site_logo' ),
+				esc_attr( 'Site logo' )
 			);
 
 			printf(
-				'<label for="%s">%s</label>',
-				esc_attr( 'dark_color_theme' ),
-				esc_html_e( 'Dark theme', 'coil-web-monetization' )
+				'<option value="%s">%s</option>',
+				esc_attr( 'coil_logo' ),
+				esc_attr( 'Coil logo' )
+			);
+
+			printf(
+				'<option value="%s">%s</option>',
+				esc_attr( 'no_logo' ),
+				esc_attr( 'No branding' )
 			);
 		?>
+		</select>
+
+		<script type="text/javascript">
+			document.getElementById('coil_branding').value = "<?php echo $checked_input_value; ?>";
+		</script>
 	</div>
 	<?php
 }
@@ -867,64 +895,6 @@ function coil_show_donation_bar_settings_render_callback() {
 }
 
 /**
- * Renders the output of the color theme option checkbox
- * @return void
- */
-function coil_message_color_theme_render_callback() {
-	/**
-	 * Select the appropriate radio button
-	 * based on settings stored in the database.
-	 * If the input status is not set, default to the light theme
-	 */
-
-	$checked_input = Admin\get_appearance_settings( 'coil_message_color_theme' );
-
-	if ( ! empty( $checked_input ) && $checked_input === 'light' ) {
-		$checked_input = 'checked="true"';
-	} else {
-		$checked_input = false;
-	}
-
-	printf(
-		'<input type="radio" name="%s" id="%s" value="%s" %s />',
-		esc_attr( 'coil_appearance_settings_group[coil_message_color_theme]' ),
-		esc_attr( 'light_color_theme' ),
-		esc_attr( 'light' ),
-		$checked_input
-	);
-
-	printf(
-		'<label for="%s">%s</label>',
-		esc_attr( 'message_color_theme' ),
-		esc_html_e( 'Light theme', 'coil-web-monetization' )
-	);
-
-	printf( '<br>' );
-
-	$checked_input = Admin\get_appearance_settings( 'coil_message_color_theme' );
-
-	if ( ! empty( $checked_input ) && $checked_input === 'dark' ) {
-		$checked_input = 'checked="true"';
-	} else {
-		$checked_input = false;
-	}
-
-	printf(
-		'<input type="radio" name="%s" id="%s" value="%s" %s />',
-		esc_attr( 'coil_appearance_settings_group[coil_message_color_theme]' ),
-		esc_attr( 'dark_color_theme' ),
-		esc_attr( 'dark' ),
-		$checked_input
-	);
-
-	printf(
-		'<label for="%s">%s</label>',
-		esc_attr( 'message_color_theme' ),
-		esc_html_e( 'Dark theme', 'coil-web-monetization' )
-	);
-}
-
-/**
  * Renders the output of the font option checkbox
  * @return void
  */
@@ -966,33 +936,32 @@ function coil_message_branding_render_callback() {
 	$checked_input_value = Admin\get_appearance_settings( 'coil_message_branding' );
 
 	?>
-		<select name="coil_appearance_settings_group[coil_message_branding]" id="coil_message_branding">
-			<?php
-				printf(
-					'<option value="%s">%s</option>',
-					esc_attr( 'site_logo' ),
-					esc_attr( 'Site logo' )
-				);
+	<select name="coil_appearance_settings_group[coil_message_branding]" id="coil_message_branding">
+		<?php
+			printf(
+				'<option value="%s">%s</option>',
+				esc_attr( 'site_logo' ),
+				esc_attr( 'Site logo' )
+			);
 
-				printf(
-					'<option value="%s">%s</option>',
-					esc_attr( 'coil_logo' ),
-					esc_attr( 'Coil logo' )
-				);
+			printf(
+				'<option value="%s">%s</option>',
+				esc_attr( 'coil_logo' ),
+				esc_attr( 'Coil logo' )
+			);
 
-				printf(
-					'<option value="%s">%s</option>',
-					esc_attr( 'no_logo' ),
-					esc_attr( 'No branding' )
-				);
-			?>
-		</select>
+			printf(
+				'<option value="%s">%s</option>',
+				esc_attr( 'no_logo' ),
+				esc_attr( 'No branding' )
+			);
+		?>
+	</select>
 
-		<script type="text/javascript">
-			document.getElementById('coil_message_branding').value = "<?php echo $checked_input_value; ?>";
-		</script>
+	<script type="text/javascript">
+		document.getElementById('coil_message_branding').value = "<?php echo $checked_input_value; ?>";
+	</script>
 	<?php
-
 }
 
 /**
