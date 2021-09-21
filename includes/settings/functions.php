@@ -540,7 +540,7 @@ function coil_settings_paywall_appearance_render_callback() {
 
 		// Renders the color theme radio buttons
 		$theme_color_checked_input = Admin\get_paywall_appearance_setting( 'coil_message_color_theme' );
-		echo '<h3>' . esc_html__( 'Color Theme', 'coil-web-monetization' ) . '</h3>';
+		echo '<br><h3>' . esc_html__( 'Color Theme', 'coil-web-monetization' ) . '</h3>';
 
 		// The default color theme is the light theme.
 		$theme_color_checked_input = 'checked="true"';
@@ -559,7 +559,7 @@ function coil_settings_paywall_appearance_render_callback() {
 			esc_html_e( 'Light theme', 'coil-web-monetization' )
 		);
 
-		printf( '<br>' );
+		echo '<br>';
 
 		$theme_color_checked_input = Admin\get_paywall_appearance_setting( 'coil_message_color_theme' );
 
@@ -578,45 +578,44 @@ function coil_settings_paywall_appearance_render_callback() {
 		);
 
 		printf(
-			'<label for="%s">%s</label>',
+			'<label for="%s">%s</label><br>',
 			esc_attr( 'dark_color_theme' ),
 			esc_html_e( 'Dark theme', 'coil-web-monetization' )
 		);
+
+		// Renders the branding selection box
+		echo '<br><h3>' . esc_html__( 'Branding', 'coil-web-monetization' ) . '</h3>';
+		printf(
+			'<select name="%s" id="%s">',
+			esc_attr( 'coil_exclusive_settings_group[coil_message_branding]' ),
+			esc_attr( 'coil_branding' )
+		);
+		// Defaults to the Coil logo
+		$checked_input_value = Admin\get_paywall_appearance_setting( 'coil_message_branding' );
+
+		printf(
+			'<option value="%s">%s</option>',
+			esc_attr( 'coil_logo' ),
+			esc_attr( 'Show Coil logo' )
+		);
+		
+		printf(
+			'<option value="%s">%s</option>',
+			esc_attr( 'site_logo' ),
+			esc_attr( 'Show website logo' )
+		);
+
+		printf(
+			'<option value="%s">%s</option>',
+			esc_attr( 'no_logo' ),
+			esc_attr( 'Show no logo' )
+		);
 	?>
-		<?php
-			// Renders the branding selection box
-			echo '<h3>' . esc_html__( 'Branding', 'coil-web-monetization' ) . '</h3>';
-			printf(
-				'<select name="%s" id="%s">',
-				esc_attr( 'coil_exclusive_settings_group[coil_message_branding]' ),
-				esc_attr( 'coil_branding' )
-			);
-			// Defaults to the Coil logo
-			$checked_input_value = Admin\get_paywall_appearance_setting( 'coil_message_branding' );
+	</select>
 
-			printf(
-				'<option value="%s">%s</option>',
-				esc_attr( 'coil_logo' ),
-				esc_attr( 'Show Coil logo' )
-			);
-			
-			printf(
-				'<option value="%s">%s</option>',
-				esc_attr( 'site_logo' ),
-				esc_attr( 'Show website logo' )
-			);
-
-			printf(
-				'<option value="%s">%s</option>',
-				esc_attr( 'no_logo' ),
-				esc_attr( 'Show no logo' )
-			);
-		?>
-		</select>
-
-		<script type="text/javascript">
-			document.getElementById('coil_branding').value = "<?php echo $checked_input_value; ?>";
-		</script>
+	<script type="text/javascript">
+		document.getElementById('coil_branding').value = "<?php echo $checked_input_value; ?>";
+	</script>
 	</div>
 	<?php
 }
