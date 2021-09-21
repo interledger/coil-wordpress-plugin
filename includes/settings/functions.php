@@ -75,77 +75,6 @@ function register_admin_content_settings() {
 		'coil_default_monetization_section'
 	);
 
-	// Tab 3 - Exclusive Content - Paywall Appearance
-	register_setting(
-		'coil_paywall_appearance_settings_group',
-		'coil_paywall_appearance_settings_group',
-		__NAMESPACE__ . '\coil_paywall_appearance_settings_group_validation'
-	);
-
-	// ==== Paywall Appearance
-	add_settings_section(
-		'coil_paywall_settings',
-		false,
-		__NAMESPACE__ . '\coil_settings_paywall_appearance_render_callback', // Try place title in here so we can place it in correct div tags with appropriate styling class
-		'coil_paywall_section'
-	);
-
-	add_settings_field(
-		'coil_paywall_title',
-		false,
-		__NAMESPACE__ . '\coil_paywall_appearance_text_field_settings_render_callback',
-		'coil_paywall_section',
-		'coil_paywall_settings'
-	);
-
-	add_settings_field(
-		'coil_paywall_message',
-		false,
-		__NAMESPACE__ . '\coil_paywall_appearance_text_field_settings_render_callback',
-		'coil_paywall_section',
-		'coil_paywall_settings'
-	);
-
-	add_settings_field(
-		'coil_paywall_button_text',
-		false,
-		__NAMESPACE__ . '\coil_paywall_appearance_text_field_settings_render_callback',
-		'coil_paywall_section',
-		'coil_paywall_settings'
-	);
-
-	add_settings_field(
-		'coil_paywall_button_link',
-		false,
-		__NAMESPACE__ . '\coil_paywall_appearance_text_field_settings_render_callback',
-		'coil_paywall_section',
-		'coil_paywall_settings'
-	);
-
-	// add_settings_field(
-	// 	'coil_paywall_theme',
-	// 	false,
-	// 	__NAMESPACE__ . '\coil_exclusive_settings_paywall_theme_render_callback',
-	// 	'coil_paywall_section',
-	// 	'coil_paywall_settings'
-	// );
-
-	// add_settings_field(
-	// 	'coil_paywall_branding',
-	// 	false,
-	// 	__NAMESPACE__ . '\coil_exclusive_settings_paywall_branding_render_callback',
-	// 	'coil_paywall_section',
-	// 	'coil_paywall_settings'
-	// );
-
-	// add_settings_field(
-	// 	'coil_paywall_font',
-	// 	false,
-	// 	__NAMESPACE__ . '\coil_exclusive_settings_paywall_font_render_callback',
-	// 	'coil_paywall_section',
-	// 	'coil_paywall_settings'
-	// );
-
 	// Tab 3 - Exclusive Content
 	register_setting(
 		'coil_exclusive_settings_group',
@@ -159,6 +88,14 @@ function register_admin_content_settings() {
 		false,
 		__NAMESPACE__ . '\coil_settings_enable_exclusive_render_callback',
 		'coil_enable_exclusive_section'
+	);
+
+	// ==== Paywall Appearance
+	add_settings_section(
+		'coil_paywall_settings',
+		false,
+		__NAMESPACE__ . '\coil_settings_paywall_appearance_render_callback',
+		'coil_paywall_section'
 	);
 
 	// ==== Exclusive Post Appearance
@@ -287,35 +224,8 @@ function coil_general_settings_group_validation( $monetization_settings ) : arra
 }
 
 /**
- * Allow the radio button options,
- * that set the global monetization defaults,
- * to be properly validated
- *
- * @param array $monetization_settings The posted radio options from the General Settings section
- * @return array
- */
-function coil_paywall_appearance_settings_group_validation( $paywall_settings) {
-
-	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
-		return [];
-	}
-
-	$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link', ];
-
-	foreach ( $text_fields as $message_type ) {
-		if ( $message_type === 'coil_learn_more_button_link' ) {
-			$paywall_settings[ $message_type ] = esc_url_raw( $paywall_settings[ $message_type ] );
-		} else {
-			$paywall_settings[ $message_type ] = ( isset( $paywall_settings[ $message_type ] ) ) ? sanitize_text_field( $paywall_settings[ $message_type ] ) : '';
-		}
-	}
-
-	return $paywall_settings;
-}
-
-/**
  * Validates the post type default visibility settings.
- * Validates the CSS selector text input.
+ * Validates text inputs (the paywall title, message, button text and link and the CSS selector).
  * Validates the excerpt visibility setings per post type.
  *
  * @param array $exclusive_settings The posted text input fields.
@@ -361,15 +271,22 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 	// Validates all text input fields
 	$text_fields = [
 		'coil_content_container',
+		'coil_paywall_title',
+		'coil_paywall_message',
+		'coil_paywall_button_text',
+		'coil_paywall_button_link',
 	];
 
-	foreach ( $text_fields as $option_item ) {
+	foreach ( $text_fields as $field_name ) {
 
-		switch ( $option_item ) {
-			case 'coil_content_container':
-				// Validates the CSS selectors used to hide exclusive content.
-				$exclusive_settings['coil_content_container'] = isset( $exclusive_settings['coil_content_container'] ) && ! empty( $exclusive_settings['coil_content_container'] ) ? sanitize_text_field( $exclusive_settings['coil_content_container'] ) : '.content-area .entry-content';
-				break;
+		if ( $field_name === 'coil_learn_more_button_link' ) {
+			$exclusive_settings[ $field_name ] = esc_url_raw( $exclusive_settings[ $field_name ] );
+		} else {
+			$exclusive_settings[ $field_name ] = ( isset( $exclusive_settings[ $field_name ] ) ) ? sanitize_text_field( $exclusive_settings[ $field_name ] ) : '';
+			// If no CSS selector is set then the default value must be used
+			if ( $field_name === 'coil_content_container' && $exclusive_settings[ $field_name ] === '' ) {
+				$exclusive_settings[ $field_name ] = '.content-area .entry-content';
+			}
 		}
 	}
 
@@ -411,7 +328,7 @@ function coil_messaging_settings_validation( $messaging_settings ) : array {
  *
  * @return array
  */
-function coil_appearance_settings_validation( $appearance_settings ) {
+function coil_appearance_settings_validation( $appearance_settings ) : array {
 
 	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
 		return [];
@@ -654,26 +571,15 @@ function coil_settings_paywall_appearance_render_callback() {
 	<?php
 	echo '<h1>' . esc_html__( 'Paywall Appearance', 'coil-web-monetization' ) . '</h1>';
 	echo '<p>' . esc_html_e( 'This paywall replaces the post content for users without an active Coil Membership, when access is set to exclusive.', 'coil-web-monetization' ) . '</p>';
+	$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link', ];
+	
+	// Renders the textfield for each paywall text field input.
+	foreach( $text_fields as $field_name ) {
+		coil_paywall_appearance_text_field_settings_render_callback( $field_name );
+	}
 	?>
 	</div>
 	<?php
-}
-
-/**
- * Renders the output of a generic message customization textarea.
- *
- * @return void
- */
-function coil_paywall_appearance_textfield_render_callback( $field_id ) {
-
-	printf(
-		'<textarea class="%s" name="%s" id="%s" placeholder="%s">%s</textarea>',
-		esc_attr( 'wide-input' ),
-		esc_attr( 'coil_paywall_appearance_settings_group[' . $field_id . ']' ),
-		esc_attr( $field_id ),
-		esc_attr( Admin\get_paywall_appearance_setting( $field_id, true ) ),
-		esc_attr( Admin\get_paywall_appearance_setting( $field_id ) )
-	);
 }
 
 // coil_exclusive_settings_paywall_theme_render_callback
@@ -852,14 +758,9 @@ function coil_content_settings_posts_render_callback() {
  * Renders the output of the content messaging customization setting
  * @return void
  */
-function coil_paywall_appearance_text_field_settings_render_callback() {
+function coil_paywall_appearance_text_field_settings_render_callback( $field_name ) {
 
-	$args = get_option( 'coil_paywall_appearance_settings' );
-	foreach ( $args ) {
-
-	}
-
-	switch ( $args['id'] ) {
+	switch ( $field_name ) {
 		case 'coil_paywall_title':
 			$heading = __( 'Title', 'coil-web-monetization' );
 			break;
@@ -884,7 +785,14 @@ function coil_paywall_appearance_text_field_settings_render_callback() {
 	}
 
 	// Print <textarea> containing the setting value
-	coil_paywall_appearance_textfield_render_callback( $args['id'] );
+	printf(
+		'<textarea class="%s" name="%s" id="%s" placeholder="%s">%s</textarea>',
+		esc_attr( 'wide-input' ),
+		esc_attr( 'coil_exclusive_settings_group[' . $field_name . ']' ),
+		esc_attr( $field_name ),
+		esc_attr( Admin\get_paywall_appearance_setting( $field_name, true ) ),
+		esc_attr( Admin\get_paywall_appearance_setting( $field_name ) )
+	);
 }
 
 /**
@@ -1181,7 +1089,7 @@ function post_type_defaults_table( $settings_group, $column_names, $input_type, 
 		$keys = array_keys( $column_names );
 
 		?>
-		<table class="widefat">
+		<table class="widefat" style="border-radius: 4px;">
 			<thead>
 				<th><?php esc_html_e( 'Post Type', 'coil-web-monetization' ); ?></th>
 				<?php foreach ( $column_names as $setting_key => $setting_value ) : ?>
@@ -1210,8 +1118,8 @@ function post_type_defaults_table( $settings_group, $column_names, $input_type, 
 								$checked_input = 'checked="true"';
 							} elseif ( $input_type === 'radio' && isset( $current_options[ $post_type->name . '_' . $value_id_suffix ] ) ) {
 								$checked_input = checked( $setting_key, $current_options[ $post_type->name . '_' . $value_id_suffix ], false );
-							} elseif ( $input_type === 'checkbox' && isset( $current_options[ $post_type->name . '_' . $value_id_suffix ] ) ) {
-								$checked_input = checked( 1, $current_options[ $post_type->name . '_' . $value_id_suffix ], false );
+							} elseif ( $input_type === 'checkbox' ) {
+								$checked_input = isset( $current_options[ $post_type->name . '_' . $value_id_suffix ] ) ? checked( 1, $current_options[ $post_type->name . '_' . $value_id_suffix ], false ) : 'checked';
 							}
 							?>
 							<td>
@@ -1287,12 +1195,9 @@ function render_coil_settings_screen() : void {
 					submit_button();
 					break;
 				case 'exclusive_settings':
-					settings_fields( 'coil_paywall_appearance_settings_group' );
-					do_settings_sections( 'coil_paywall_section' );
-					do_settings_sections( 'coil_paywall_title' );
 					settings_fields( 'coil_exclusive_settings_group' );
 					// do_settings_sections( 'coil_enable_exclusive_section' );
-					
+					do_settings_sections( 'coil_paywall_section' );
 					// do_settings_sections( 'coil_exclusive_post_section' );
 					do_settings_sections( 'coil_default_post_visibility_section' );
 					do_settings_sections( 'coil_excerpt_visibility_section' );

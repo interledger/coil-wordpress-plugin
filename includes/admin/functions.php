@@ -449,7 +449,7 @@ function get_paywall_apprearance_text_defaults() {
  */
 function get_paywall_appearance_text_setting( $field_id, $default = false ) {
 
-	$options = get_option( 'coil_paywall_appearance_settings_group', [] );
+	$options = get_option( 'coil_exclusive_settings_group', [] );
 
 	// The default is returned as a placeholder or as a coil_js_ui_messages field when no custom input has been provided
 	if ( $default ) {
@@ -461,41 +461,31 @@ function get_paywall_appearance_text_setting( $field_id, $default = false ) {
 }
 
 /**
- * Retrieve the paywall appearance settings using a key from the
- * paywall appearance settings group or return a default value.
- *
- * @param string $field_id The named key in the wp_options serialized array.
- * @return string $setting_value The value of the setting after checking the default
- */
-function get_paywall_appearance_text_setting_or_default( $field_id ) {
-
-	// Check if the setting exists, if not load the default
-	if ( '' === get_paywall_appearance_text_setting( $field_id ) ) {
-		$setting_value = get_paywall_appearance_text_setting( $field_id, true );
-	} else {
-		$setting_value = get_paywall_appearance_text_setting( $field_id );
-	}
-
-	return $setting_value;
-}
-
-/**
  * Retrieve the paywall appearance settings
- * using a key from coil_paywall_appearance_settings_group (serialized).
+ * using a key from coil_exclusive_settings_group (serialized).
  *
  * @param string $field_id The named key in the wp_options serialized array.
+ * @param bool $default set to either return the default if the item is empty or to return an empty string.
  * @return string
  */
-function get_paywall_appearance_setting( $field_id ) {
+function get_paywall_appearance_setting( $field_id, $default = false ) {
 
-	$paywall_appearance_options = get_option( 'coil_paywall_appearance_settings_group' );
+	$paywall_appearance_options = get_option( 'coil_exclusive_settings_group' );
 
 	$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link', ];
 
+	// Text inputs can be empty strings, in which the placeholder text will display or the default text will be returned.
 	if ( in_array( $field_id, $text_fields, true ) ) {
-		get_paywall_appearance_text_setting_or_default( $field_id );
+
+		// The default is returned as a placeholder or as a coil_js_ui_messages field when no custom input has been provided
+		if ( $default ) {
+			$defaults = get_paywall_apprearance_text_defaults();
+			return $defaults[ $field_id ];
+		}
+
+		return ( ! empty( $paywall_appearance_options[ $field_id ] ) ) ? $paywall_appearance_options[ $field_id ] : '';
 	} else {
-		return ! empty( $paywall_appearance_options[ $field_id ] ) ? $paywall_appearance_options[ $field_id ] : '';
+		return null;
 	}
 }
 
