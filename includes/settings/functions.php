@@ -596,20 +596,20 @@ function coil_settings_paywall_appearance_render_callback() {
 
 			printf(
 				'<option value="%s">%s</option>',
-				esc_attr( 'site_logo' ),
-				esc_attr( 'Site logo' )
+				esc_attr( 'coil_logo' ),
+				esc_attr( 'Show Coil logo' )
 			);
-
+			
 			printf(
 				'<option value="%s">%s</option>',
-				esc_attr( 'coil_logo' ),
-				esc_attr( 'Coil logo' )
+				esc_attr( 'site_logo' ),
+				esc_attr( 'Show website logo' )
 			);
 
 			printf(
 				'<option value="%s">%s</option>',
 				esc_attr( 'no_logo' ),
-				esc_attr( 'No branding' )
+				esc_attr( 'Show no logo' )
 			);
 		?>
 		</select>
@@ -836,6 +836,10 @@ function coil_paywall_appearance_text_field_settings_render_callback( $field_nam
 		esc_attr( Admin\get_paywall_appearance_setting( $field_name, true ) ),
 		esc_attr( Admin\get_paywall_appearance_setting( $field_name ) )
 	);
+
+	if( $field_name === 'coil_paywall_button_link' ) {
+		echo '<p>' . __( 'If you have an affiliate link add it here.', 'coil-web-monetization' ). '</p>';
+	}
 }
 
 /**
