@@ -465,10 +465,10 @@ function get_paywall_appearance_text_setting( $field_id, $default = false ) {
  * using a key from coil_exclusive_settings_group (serialized).
  *
  * @param string $field_id The named key in the wp_options serialized array.
- * @param bool $default set to either return the default if the item is empty or to return an empty string.
+ * @param bool $default set to either return the text field default if the text field item is empty or to return an empty string.
  * @return string
  */
-function get_paywall_appearance_setting( $field_id, $default = false ) {
+function get_paywall_appearance_setting( $field_id, $use_text_default = false ) {
 
 	$paywall_appearance_options = get_option( 'coil_exclusive_settings_group' );
 
@@ -478,7 +478,7 @@ function get_paywall_appearance_setting( $field_id, $default = false ) {
 	if ( in_array( $field_id, $text_fields, true ) ) {
 
 		// The default is returned as a placeholder or as a coil_js_ui_messages field when no custom input has been provided
-		if ( $default ) {
+		if ( $use_text_default ) {
 			$defaults = get_paywall_apprearance_text_defaults();
 			return $defaults[ $field_id ];
 		} else {
