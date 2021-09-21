@@ -300,6 +300,10 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 
 	$exclusive_settings[ $message_branding_key ] = in_array( $exclusive_settings[ $message_branding_key ], $valid_branding_choices, true ) ? sanitize_key( $exclusive_settings[ $message_branding_key ] ) : 'site_logo';
 
+	// Font style validation
+	$message_font_key   = 'coil_message_font';
+	$exclusive_settings[ $message_font_key ] = $exclusive_settings[ $message_font_key ] === 'on' ? true : false;
+
 	return $exclusive_settings;
 }
 
@@ -319,7 +323,7 @@ function coil_appearance_settings_validation( $appearance_settings ) : array {
 		return [];
 	}
 
-	$checkbox_options       = [ 'coil_title_padlock', 'coil_show_donation_bar', 'coil_message_font' ];
+	$checkbox_options       = [ 'coil_title_padlock', 'coil_show_donation_bar' ];
 	$array_keys             = array_keys( $appearance_settings );
 
 	foreach ( $checkbox_options as $key ) {
@@ -591,7 +595,7 @@ function coil_settings_paywall_appearance_render_callback() {
 			esc_attr( 'coil_branding' )
 		);
 		// Defaults to the Coil logo
-		$checked_input_value = Admin\get_paywall_appearance_setting( 'coil_message_branding' );
+		$branding_selected_input = Admin\get_paywall_appearance_setting( 'coil_message_branding' );
 
 		printf(
 			'<option value="%s">%s</option>',
@@ -611,13 +615,43 @@ function coil_settings_paywall_appearance_render_callback() {
 			esc_attr( 'Show no logo' )
 		);
 	?>
-	</select>
+	</select><br>
 
 	<script type="text/javascript">
-		document.getElementById('coil_branding').value = "<?php echo $checked_input_value; ?>";
+		document.getElementById('coil_branding').value = "<?php echo $branding_selected_input; ?>";
 	</script>
+	<?php
+		// Renders the font checkbox
+		echo '<br><h3>' . esc_html__( 'Font Style', 'coil-web-monetization' ) . '</h3>';
+		coil_message_font_render_callback();
+
+	?>
 	</div>
 	<?php
+}
+
+/**
+ * Renders the output of the font option checkbox
+ * The default is unchecked
+ * @return void
+ */
+function coil_message_font_render_callback() {
+
+	$checked_input_value = Admin\get_paywall_appearance_setting( 'coil_message_font' );
+
+	printf(
+		'<input type="%s" name="%s" id="%s" "%s">',
+		esc_attr( 'checkbox' ),
+		esc_attr( 'coil_exclusive_settings_group[coil_message_font]' ),
+		esc_attr( 'message_font' ),
+		checked( 1, $checked_input_value, false )
+	);
+
+	printf(
+		'<label for="%s">%s</label>',
+		esc_attr( 'message_font' ),
+		esc_html_e( 'Use theme font styles', 'coil-web-monetization' )
+	);
 }
 
 // coil_exclusive_settings_paywall_theme_render_callback
@@ -895,76 +929,6 @@ function coil_show_donation_bar_settings_render_callback() {
 		esc_attr( 'display_donation_bar' ),
 		esc_html_e( 'Show the support creator message in a footer bar on posts that are Monetized and Public.', 'coil-web-monetization' )
 	);
-}
-
-/**
- * Renders the output of the font option checkbox
- * @return void
- */
-function coil_message_font_render_callback() {
-
-	/**
-	 * Specify the default checked state on the input from
-	 * any settings stored in the database. If the
-	 * input status is not set, default to unchecked
-	 */
-	$checked_input_value = Admin\get_appearance_settings( 'coil_message_font' );
-
-	printf(
-		'<input type="%s" name="%s" id="%s" "%s">',
-		esc_attr( 'checkbox' ),
-		esc_attr( 'coil_appearance_settings_group[coil_message_font]' ),
-		esc_attr( 'message_font' ),
-		checked( 1, $checked_input_value, false )
-	);
-
-	printf(
-		'<label for="%s">%s</label>',
-		esc_attr( 'message_font' ),
-		esc_html_e( 'Either use the default font provided, or customize it to fit with your selected theme instead.', 'coil-web-monetization' )
-	);
-}
-
-/**
- * Renders the output of the show Coil branding checkbox
- * @return void
- */
-function coil_message_branding_render_callback() {
-
-	/**
-	 * Specify the default checked state on the input from
-	 * any settings stored in the database. If the
-	 * input status is not set, default to unchecked
-	 */
-	$checked_input_value = Admin\get_appearance_settings( 'coil_message_branding' );
-
-	?>
-	<select name="coil_appearance_settings_group[coil_message_branding]" id="coil_message_branding">
-		<?php
-			printf(
-				'<option value="%s">%s</option>',
-				esc_attr( 'site_logo' ),
-				esc_attr( 'Site logo' )
-			);
-
-			printf(
-				'<option value="%s">%s</option>',
-				esc_attr( 'coil_logo' ),
-				esc_attr( 'Coil logo' )
-			);
-
-			printf(
-				'<option value="%s">%s</option>',
-				esc_attr( 'no_logo' ),
-				esc_attr( 'No branding' )
-			);
-		?>
-	</select>
-
-	<script type="text/javascript">
-		document.getElementById('coil_message_branding').value = "<?php echo $checked_input_value; ?>";
-	</script>
-	<?php
 }
 
 /**

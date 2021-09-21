@@ -500,6 +500,14 @@ function get_paywall_appearance_setting( $field_id, $default = false ) {
 			$setting_value = 'coil_logo';
 		}
 		return $setting_value;
+	} elseif ( $field_id === 'coil_message_font' ) {
+		// Default is unchecked
+		if ( isset( $paywall_appearance_options[ $field_id ] ) ) {
+			$setting_value = $paywall_appearance_options[ $field_id ];
+		} else {
+			$setting_value = false;
+		}
+		return $setting_value;
 	}
 	return null;
 }
