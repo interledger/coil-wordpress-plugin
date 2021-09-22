@@ -300,9 +300,15 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 
 	$exclusive_settings[ $message_branding_key ] = in_array( $exclusive_settings[ $message_branding_key ], $valid_branding_choices, true ) ? sanitize_key( $exclusive_settings[ $message_branding_key ] ) : 'site_logo';
 
-	// Font style validation
-	$message_font_key   = 'coil_message_font';
-	$exclusive_settings[ $message_font_key ] = $exclusive_settings[ $message_font_key ] === 'on' ? true : false;
+	// Validates all checkbox input fields
+	$checkbox_fields = [
+		'coil_message_font',
+		'display_padlock_id',
+	];
+
+	foreach ( $checkbox_fields as $field_name ) {
+		$exclusive_settings[ $field_name ] = isset( $exclusive_settings[ $field_name ] ) && $exclusive_settings[ $field_name ] === 'on' ? true : false;
+	}
 
 	return $exclusive_settings;
 }
@@ -535,57 +541,16 @@ function coil_settings_paywall_appearance_render_callback() {
 	<?php
 		echo '<h1>' . esc_html__( 'Paywall Appearance', 'coil-web-monetization' ) . '</h1>';
 		echo '<p>' . esc_html_e( 'This paywall replaces the post content for users without an active Coil Membership, when access is set to exclusive.', 'coil-web-monetization' ) . '</p>';
-		$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
-
+		
 		// Renders the textfield for each paywall text field input.
+		$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
 		foreach ( $text_fields as $field_name ) {
 			coil_paywall_appearance_text_field_settings_render_callback( $field_name );
 		}
 
 		// Renders the color theme radio buttons
-		$theme_color_checked_input = Admin\get_paywall_appearance_setting( 'coil_message_color_theme' );
 		echo '<br><h3>' . esc_html__( 'Color Theme', 'coil-web-monetization' ) . '</h3>';
-
-		// The default color theme is the light theme.
-		$theme_color_checked_input = 'checked="true"';
-
-		printf(
-			'<input type="radio" name="%s" id="%s" value="%s" %s />',
-			esc_attr( 'coil_exclusive_settings_group[coil_message_color_theme]' ),
-			esc_attr( 'light_color_theme' ),
-			esc_attr( 'light' ),
-			$theme_color_checked_input
-		);
-
-		printf(
-			'<label for="%s">%s</label>',
-			esc_attr( 'light_color_theme' ),
-			esc_html_e( 'Light theme', 'coil-web-monetization' )
-		);
-
-		echo '<br>';
-
-		$theme_color_checked_input = Admin\get_paywall_appearance_setting( 'coil_message_color_theme' );
-
-		if ( ! empty( $theme_color_checked_input ) && $theme_color_checked_input === 'dark' ) {
-			$theme_color_checked_input = 'checked="true"';
-		} else {
-			$theme_color_checked_input = false;
-		}
-
-		printf(
-			'<input type="radio" name="%s" id="%s" value="%s" %s />',
-			esc_attr( 'coil_exclusive_settings_group[coil_message_color_theme]' ),
-			esc_attr( 'dark_color_theme' ),
-			esc_attr( 'dark' ),
-			$theme_color_checked_input
-		);
-
-		printf(
-			'<label for="%s">%s</label><br>',
-			esc_attr( 'dark_color_theme' ),
-			esc_html_e( 'Dark theme', 'coil-web-monetization' )
-		);
+		paywall_theme_render_callback();
 
 		// Renders the branding selection box
 		echo '<br><h3>' . esc_html__( 'Branding', 'coil-web-monetization' ) . '</h3>';
@@ -594,28 +559,14 @@ function coil_settings_paywall_appearance_render_callback() {
 			esc_attr( 'coil_exclusive_settings_group[coil_message_branding]' ),
 			esc_attr( 'coil_branding' )
 		);
+
 		// Defaults to the Coil logo
 		$branding_selected_input = Admin\get_paywall_appearance_setting( 'coil_message_branding' );
 
-		printf(
-			'<option value="%s">%s</option>',
-			esc_attr( 'coil_logo' ),
-			esc_attr( 'Show Coil logo' )
-		);
-		
-		printf(
-			'<option value="%s">%s</option>',
-			esc_attr( 'site_logo' ),
-			esc_attr( 'Show website logo' )
-		);
+		paywall_branding_render_callback();
 
-		printf(
-			'<option value="%s">%s</option>',
-			esc_attr( 'no_logo' ),
-			esc_attr( 'Show no logo' )
-		);
+		echo '</select><br>';
 	?>
-	</select><br>
 
 	<script type="text/javascript">
 		document.getElementById('coil_branding').value = "<?php echo $branding_selected_input; ?>";
@@ -623,7 +574,7 @@ function coil_settings_paywall_appearance_render_callback() {
 	<?php
 		// Renders the font checkbox
 		echo '<br><h3>' . esc_html__( 'Font Style', 'coil-web-monetization' ) . '</h3>';
-		coil_message_font_render_callback();
+		paywall_font_render_callback();
 
 	?>
 	</div>
@@ -631,11 +582,84 @@ function coil_settings_paywall_appearance_render_callback() {
 }
 
 /**
+ * Renders the output of the paywall theme radio button settings.
+ *
+ * @return void
+ */
+function paywall_theme_render_callback() {
+	// The default color theme is the light theme.
+	$theme_color_checked_input = 'checked="true"';
+
+	printf(
+		'<input type="radio" name="%s" id="%s" value="%s" %s />',
+		esc_attr( 'coil_exclusive_settings_group[coil_message_color_theme]' ),
+		esc_attr( 'light_color_theme' ),
+		esc_attr( 'light' ),
+		$theme_color_checked_input
+	);
+
+	printf(
+		'<label for="%s">%s</label>',
+		esc_attr( 'light_color_theme' ),
+		esc_html_e( 'Light theme', 'coil-web-monetization' )
+	);
+
+	echo '<br>';
+
+	$theme_color = Admin\get_paywall_appearance_setting( 'coil_message_color_theme' );
+
+	if ( ! empty( $theme_color ) && $theme_color === 'dark' ) {
+		$theme_color_checked_input = 'checked="true"';
+	} else {
+		$theme_color_checked_input = false;
+	}
+
+	printf(
+		'<input type="radio" name="%s" id="%s" value="%s" %s />',
+		esc_attr( 'coil_exclusive_settings_group[coil_message_color_theme]' ),
+		esc_attr( 'dark_color_theme' ),
+		esc_attr( 'dark' ),
+		$theme_color_checked_input
+	);
+
+	printf(
+		'<label for="%s">%s</label><br>',
+		esc_attr( 'dark_color_theme' ),
+		esc_html_e( 'Dark theme', 'coil-web-monetization' )
+	);
+}
+
+/**
+ * Renders the output of the branding selection box settings.
+ *
+ * @return void
+ */
+function paywall_branding_render_callback() {
+	printf(
+		'<option value="%s">%s</option>',
+		esc_attr( 'coil_logo' ),
+		esc_attr( 'Show Coil logo' )
+	);
+	
+	printf(
+		'<option value="%s">%s</option>',
+		esc_attr( 'site_logo' ),
+		esc_attr( 'Show website logo' )
+	);
+
+	printf(
+		'<option value="%s">%s</option>',
+		esc_attr( 'no_logo' ),
+		esc_attr( 'Show no logo' )
+	);
+}
+
+/**
  * Renders the output of the font option checkbox
  * The default is unchecked
  * @return void
  */
-function coil_message_font_render_callback() {
+function paywall_font_render_callback() {
 
 	$checked_input_value = Admin\get_paywall_appearance_setting( 'coil_message_font' );
 
@@ -654,11 +678,55 @@ function coil_message_font_render_callback() {
 	);
 }
 
-// coil_exclusive_settings_paywall_theme_render_callback
+/**
+ * Renders the output of the exclusive post appearance settings.
+ * This includes choosing whether to tdisplay the padloc, where to display it and which icon to use.
+ *
+ * @return void
+ */
+function coil_settings_exclusive_post_render_callback() {
 
-// coil_exclusive_settings_paywall_branding_render_callback
+	?>
+	<div class="coil tab-styling">
+	<?php
+		echo '<h1>' . esc_html__( 'Exclusive Post Appearance', 'coil-web-monetization' ) . '</h1>';
+		echo '<p>' . esc_html_e( 'Customize the appearance for exclusive posts on archive pages.', 'coil-web-monetization' ) . '</p>';
 
-// coil_exclusive_settings_paywall_font_render_callback
+		// Renders the padlock display checkbox
+		echo '<br>';
+		coil_padlock_display_checkbox_render_callback();
+	?>
+	</div>
+	<?php
+}
+
+/**
+ * Renders the output of the display title padlock checkbox
+ * @return void
+ */
+function coil_padlock_display_checkbox_render_callback() {
+
+	/**
+	 * Specify the default checked state for the input from
+	 * any settings stored in the database. If the
+	 * input status is not set, default to checked.
+	 */
+	$checked_input_value = Admin\get_exlusive_post_appearance_settings( 'display_padlock_id' );
+
+	printf(
+		'<input type="%s" name="%s" id="%s" "%s">',
+		esc_attr( 'checkbox' ),
+		esc_attr( 'coil_exclusive_settings_group[display_padlock_id]' ),
+		esc_attr( 'display_padlock_id' ),
+		checked( 1, $checked_input_value, false )
+	);
+
+	printf(
+		'<label for="%s">%s</label>',
+		esc_attr( 'display_padlock_id' ),
+		esc_html_e( 'Show padlock icon next to exclusive post titles.', 'coil-web-monetization' )
+	);
+}
 
 /**
  * Renders the output of the global post type visibility default settings
@@ -873,34 +941,6 @@ function coil_paywall_appearance_text_field_settings_render_callback( $field_nam
 	if( $field_name === 'coil_paywall_button_link' ) {
 		echo '<p>' . __( 'If you have an affiliate link add it here.', 'coil-web-monetization' ). '</p>';
 	}
-}
-
-/**
- * Renders the output of the display title padlock checkbox
- * @return void
- */
-function coil_title_padlock_settings_render_callback() {
-
-	/**
-	 * Specify the default checked state for the input from
-	 * any settings stored in the database. If the
-	 * input status is not set, default to checked.
-	 */
-	$checked_input_value = Admin\get_appearance_settings( 'coil_title_padlock' );
-
-	printf(
-		'<input type="%s" name="%s" id="%s" "%s">',
-		esc_attr( 'checkbox' ),
-		esc_attr( 'coil_appearance_settings_group[coil_title_padlock]' ),
-		esc_attr( 'display_padlock_id' ),
-		checked( 1, $checked_input_value, false )
-	);
-
-	printf(
-		'<label for="%s">%s</label>',
-		esc_attr( 'display_padlock_id' ),
-		esc_html_e( 'Show padlock next to post title if the post is for Paying Viewers Only.', 'coil-web-monetization' )
-	);
 }
 
 /**
@@ -1154,7 +1194,7 @@ function render_coil_settings_screen() : void {
 					settings_fields( 'coil_exclusive_settings_group' );
 					// do_settings_sections( 'coil_enable_exclusive_section' );
 					do_settings_sections( 'coil_paywall_section' );
-					// do_settings_sections( 'coil_exclusive_post_section' );
+					do_settings_sections( 'coil_exclusive_post_section' );
 					do_settings_sections( 'coil_default_post_visibility_section' );
 					do_settings_sections( 'coil_excerpt_visibility_section' );
 					do_settings_sections( 'coil_css_selector_section' );

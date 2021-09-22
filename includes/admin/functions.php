@@ -513,6 +513,29 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
 }
 
 /**
+ * Retrieve the exclusive post appearance settings
+ * using a key from coil_exclusive_settings_group (serialized).
+ *
+ * @param string $field_id The named key in the wp_options serialized array.
+ * @return string
+ */
+function get_exlusive_post_appearance_settings( $field_id ) {
+
+	$exclusive_post_appearance_options = get_option( 'coil_exclusive_settings_group' );
+
+	if ( $field_id === 'display_padlock_id' ) {
+		// Default is checked
+		if ( isset( $exclusive_post_appearance_options[ $field_id ] ) ) {
+			$setting_value = $exclusive_post_appearance_options[ $field_id ];
+		} else {
+			$setting_value = true;
+		}
+		return $setting_value;
+	}
+	return null;
+}
+
+/**
  * Retrieve the Exclusive Content settings.
  * @return array Setting stored in options.
  */
