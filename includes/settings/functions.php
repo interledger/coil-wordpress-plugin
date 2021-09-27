@@ -161,6 +161,28 @@ function register_admin_content_settings() {
 		'coil_button_visibility_section'
 	);
 
+	maybe_load_database_defaults();
+}
+
+function maybe_load_database_defaults() {
+	// Use existing get functions from Admin - easier to maintain that way
+	// Each item? 
+	// Just check if option group is present and if it is then carry on - seems risky given the shitty behaviour - but then if it has been deleted we will either revert to a default or the off state - not so bad.
+	// get_welcome_settings();
+	// get_welcome setting();
+	// get_general_settings();
+	// get_general setting();
+	// get_exclusive_settings(); - get paywall appearance, getexclusive post appearance, get visibility settings, get excerpt visibility, get CSS selector
+	// get_exclusive setting();
+}
+
+/**
+ *
+ * @param String $group_name
+ * @return array
+ */
+function get_option_group( $group_name ) :array {
+
 }
 
 /* ------------------------------------------------------------------------ *
@@ -292,13 +314,13 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 	$valid_color_choices  = [ 'light', 'dark' ];
 	$coil_theme_color_key = 'coil_message_color_theme';
 
-	$exclusive_settings[ $coil_theme_color_key ] = in_array( $exclusive_settings[ $coil_theme_color_key ], $valid_color_choices, true ) ? sanitize_key( $exclusive_settings[ $coil_theme_color_key ] ) : 'light';
+	$exclusive_settings[ $coil_theme_color_key ] = isset( $exclusive_settings[ $coil_theme_color_key ] ) && in_array( $exclusive_settings[ $coil_theme_color_key ], $valid_color_choices, true ) ? sanitize_key( $exclusive_settings[ $coil_theme_color_key ] ) : 'light';
 
 	// Branding validation
 	$valid_branding_choices = [ 'site_logo', 'coil_logo', 'no_logo' ];
 	$message_branding_key   = 'coil_message_branding';
 
-	$exclusive_settings[ $message_branding_key ] = in_array( $exclusive_settings[ $message_branding_key ], $valid_branding_choices, true ) ? sanitize_key( $exclusive_settings[ $message_branding_key ] ) : 'site_logo';
+	$exclusive_settings[ $message_branding_key ] = isset( $exclusive_settings[ $message_branding_key ] ) && in_array( $exclusive_settings[ $message_branding_key ], $valid_branding_choices, true ) ? sanitize_key( $exclusive_settings[ $message_branding_key ] ) : 'site_logo';
 
 	// Validates all checkbox input fields
 	$checkbox_fields = [
@@ -307,9 +329,11 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 	];
 
 	foreach ( $checkbox_fields as $field_name ) {
-		$exclusive_settings[ $field_name ] = isset( $exclusive_settings[ $field_name ] ) && $exclusive_settings[ $field_name ] === 'on' ? true : false;
+		if ( $field_name === 'display_padlock_id' && ! array_key_exists( 'display_padlock_id', $exclusive_settings ) ) {
+			$exclusive_settings[ $field_name ] =  true;
+		}
+		$exclusive_settings[ $field_name ] = array_key_exists( 'display_padlock_id', $exclusive_settings ) && $exclusive_settings[ $field_name ] ? true : false;
 	}
-
 	return $exclusive_settings;
 }
 
@@ -588,7 +612,7 @@ function coil_settings_paywall_appearance_render_callback() {
  */
 function paywall_theme_render_callback() {
 	// The default color theme is the light theme.
-	$theme_color_checked_input = 'checked="true"';
+	$theme_color_checked_input = '"checked=true"';
 
 	printf(
 		'<input type="radio" name="%s" id="%s" value="%s" %s />',
@@ -609,7 +633,7 @@ function paywall_theme_render_callback() {
 	$theme_color = Admin\get_paywall_appearance_setting( 'coil_message_color_theme' );
 
 	if ( ! empty( $theme_color ) && $theme_color === 'dark' ) {
-		$theme_color_checked_input = 'checked="true"';
+		$theme_color_checked_input = '"checked=true"';
 	} else {
 		$theme_color_checked_input = false;
 	}
@@ -711,13 +735,27 @@ function coil_padlock_display_checkbox_render_callback() {
 	 * any settings stored in the database. If the
 	 * input status is not set, default to checked.
 	 */
-	$checked_input_value = Admin\get_exlusive_post_appearance_settings( 'display_padlock_id' );
+
+	$options = get_option( 'coil_exclusive_settings_group' );
+
+	if ( empty( $options ) || ! array_key_exists( 'display_padlock_id', $options ) ) {
+		$value   = true;
+	} else {
+		$value = $options[ 'display_padlock_id' ];
+	}
+
+	if( $value ) {
+		$checked_input_value = '"checked=true"';
+	} else {
+		$checked_input_value = '';
+	}
 
 	printf(
-		'<input type="%s" name="%s" id="%s" "%s">',
+		'<input type="%s" name="%s" id="%s" value="%s" "%s">',
 		esc_attr( 'checkbox' ),
 		esc_attr( 'coil_exclusive_settings_group[display_padlock_id]' ),
 		esc_attr( 'display_padlock_id' ),
+		esc_attr( $value ),
 		checked( 1, $checked_input_value, false )
 	);
 
@@ -869,11 +907,11 @@ function coil_content_settings_posts_render_callback() {
 							 */
 							$checked_input = false;
 							if ( $setting_key === 'no' ) {
-								$checked_input = 'checked="true"';
+								$checked_input = '"checked=true"';
 							} elseif ( isset( $content_settings_posts_options[ $post_type->name ] ) ) {
 								$checked_input = checked( $setting_key, $content_settings_posts_options[ $post_type->name ], false );
 							} elseif ( 'no-gating' === $setting_key ) {
-								$checked_input = 'checked="true"';
+								$checked_input = '"checked=true"';
 							}
 							?>
 							<td>
@@ -1103,18 +1141,15 @@ function post_type_defaults_table( $settings_group, $column_names, $input_type, 
 							$input_name = $settings_group . '[' . $post_type->name . '_' . $value_id_suffix . ']';
 
 							/**
-							 * Specify the default checked state on the input from
-							 * any settings stored in the database. If the individual
-							 * input status is not set, default to the first radio
-							 * option (No Monetization)
+							 * The default checked state is the first option on the input from.
 							 */
 							$checked_input = false;
 							if ( $input_type === 'radio' && $setting_key === $keys[0] ) {
-								$checked_input = 'checked="true"';
+								$checked_input = '"checked=true"';
 							} elseif ( $input_type === 'radio' && isset( $current_options[ $post_type->name . '_' . $value_id_suffix ] ) ) {
 								$checked_input = checked( $setting_key, $current_options[ $post_type->name . '_' . $value_id_suffix ], false );
 							} elseif ( $input_type === 'checkbox' && isset( $current_options[ $post_type->name . '_' . $value_id_suffix ] ) ) {
-								$checked_input = 'checked="true"';
+								$checked_input = '"checked=true"';
 								$setting_key   = true;
 							}
 							?>
@@ -1264,7 +1299,7 @@ function coil_add_term_custom_meta( $term ) {
 
 				$checked_input = false;
 				if ( $setting_key === 'default' ) {
-					$checked_input = 'checked="true"';
+					$checked_input = '"checked=true"';
 				} elseif ( ! empty( $gating ) ) {
 					$checked_input = checked( $setting_key, $gating, false );
 				}
@@ -1313,7 +1348,7 @@ function coil_edit_term_custom_meta() {
 		foreach ( $gating_options as $setting_key => $setting_value ) {
 			$checked_input = false;
 			if ( $setting_key === 'default' ) {
-				$checked_input = 'checked="true"';
+				$checked_input = '"checked=true"';
 			}
 			?>
 			<label for="<?php echo esc_attr( $setting_key ); ?>">
