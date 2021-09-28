@@ -300,13 +300,13 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 	}
 
 	// Theme validation
-	$valid_color_choices  = get_theme_color_types();
+	$valid_color_choices  = Admin\get_theme_color_types();
 	$coil_theme_color_key = 'coil_message_color_theme';
 
 	$exclusive_settings[ $coil_theme_color_key ] = isset( $exclusive_settings[ $coil_theme_color_key ] ) && in_array( $exclusive_settings[ $coil_theme_color_key ], $valid_color_choices, true ) ? sanitize_key( $exclusive_settings[ $coil_theme_color_key ] ) : $paywall_defaults[ $coil_theme_color_key ];
 
 	// Branding validation
-	$valid_branding_choices = get_branding_options();
+	$valid_branding_choices = Admin\get_branding_options();
 	$message_branding_key   = 'coil_message_branding';
 
 	$exclusive_settings[ $message_branding_key ] = isset( $exclusive_settings[ $message_branding_key ] ) && in_array( $exclusive_settings[ $message_branding_key ], $valid_branding_choices, true ) ? sanitize_key( $exclusive_settings[ $message_branding_key ] ) : $paywall_defaults[ $message_branding_key ];
