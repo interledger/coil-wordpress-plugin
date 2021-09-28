@@ -388,11 +388,15 @@ function get_valid_taxonomies() : array {
  * @param string $setting_id The named key in the wp_options serialized array.
  * @return string
  */
-function get_welcome_settings( $setting_id ) {
+function get_welcome_setting( $setting_id ) {
 
 	$options = get_option( 'coil_welcome_settings_group', [] );
 
-	return ( ! empty( $options[ $setting_id ] ) ) ? $options[ $setting_id ] : '';
+	if ( $setting_id === 'coil_payment_pointer_id' ) {
+		return ( ! empty( $options[ $setting_id ] ) ) ? $options[ $setting_id ] : '';
+	}
+
+	return '';
 }
 
 /**
@@ -403,7 +407,7 @@ function get_welcome_settings( $setting_id ) {
  */
 function get_general_settings() : array {
 
-	$general_settings = get_option( 'coil_general_settings_group' );
+	$general_settings = get_option( 'coil_general_settings_group', [] );
 	if ( ! empty( $general_settings ) ) {
 		return $general_settings;
 	}
@@ -422,6 +426,25 @@ function get_monetization_types() {
 	];
 
 	return $monetization_types;
+}
+
+/**
+ * Retrieve the Exclusive Content settings.
+ * @return array Setting stored in options.
+ */
+function get_exclusive_settings(): array {
+
+	// Set up defaults.
+	$defaults = [
+		'coil_content_container' => '.content-area .entry-content',
+	];
+
+	$exclusive_options = get_option( 'coil_exclusive_settings_group', [] );
+	if ( empty( $exclusive_options ['coil_content_container'] ) ) {
+		$exclusive_options ['coil_content_container'] = $defaults['coil_content_container'];
+	}
+
+	return $exclusive_options;
 }
 
 /**
@@ -451,7 +474,7 @@ function get_paywall_apprearance_text_defaults() {
  */
 function get_paywall_appearance_setting( $field_id, $use_text_default = false ) {
 
-	$paywall_appearance_options = get_option( 'coil_exclusive_settings_group' );
+	$paywall_appearance_options = get_exclusive_settings();
 
 	$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
 
@@ -490,19 +513,22 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
  * using its key from coil_exclusive_settings_group (serialized).
  * This is a separate function from the rest of the paywall appearance settings because it returns a boolean.
  *
+ * @param string $field_id The named key in the wp_options serialized array.
  * @return string
  */
-function get_inherited_font_setting() {
+function get_inherited_font_setting( $field_id ) {
 
-	$paywall_appearance_options = get_option( 'coil_exclusive_settings_group' );
-	$field_id = 'coil_message_font';
-
-	if ( isset( $paywall_appearance_options[ $field_id ] ) ) {
-		$setting_value = $paywall_appearance_options[ $field_id ];
-	} else {
-		$setting_value = false;
+	$paywall_appearance_options = get_exclusive_settings();
+	if ( $field_id === 'coil_message_font' ) {
+		if ( isset( $paywall_appearance_options[ $field_id ] ) ) {
+			$setting_value = $paywall_appearance_options[ $field_id ];
+		} else {
+			$setting_value = false;
+		}
+		return $setting_value;
 	}
-	return $setting_value;
+
+	return false;
 }
 
 /**
@@ -514,7 +540,7 @@ function get_inherited_font_setting() {
  */
 function get_exlusive_post_appearance_setting( $field_id ): bool {
 
-	$exclusive_post_appearance_options = get_option( 'coil_exclusive_settings_group' );
+	$exclusive_post_appearance_options = get_exclusive_settings();
 
 	if ( $field_id === 'coil_title_padlock' ) {
 		// Default is checked
@@ -529,25 +555,6 @@ function get_exlusive_post_appearance_setting( $field_id ): bool {
 }
 
 /**
- * Retrieve the Exclusive Content settings.
- * @return array Setting stored in options.
- */
-function get_exclusive_settings() {
-
-	// Set up defaults.
-	$defaults = [
-		'coil_content_container' => '.content-area .entry-content',
-	];
-
-	$exclusive_options = get_option( 'coil_exclusive_settings_group', [] );
-	if ( empty( $exclusive_options ['coil_content_container'] ) ) {
-		$exclusive_options ['coil_content_container'] = $defaults['coil_content_container'];
-	}
-
-	return $exclusive_options;
-}
-
-/**
  * @return array Valid visibility states - Public or Exclusive.
  */
 function get_visibility_types() : array {
@@ -559,4 +566,3 @@ function get_visibility_types() : array {
 
 	return $visibility_types;
 }
-

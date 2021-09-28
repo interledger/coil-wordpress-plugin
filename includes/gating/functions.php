@@ -346,7 +346,7 @@ function get_content_gating( $post_id ) : string {
  */
 function get_global_posts_gating() : array {
 
-	$global_settings = get_option( 'coil_content_settings_posts_group' );
+	$global_settings = get_option( 'coil_content_settings_posts_group', [] );
 	if ( ! empty( $global_settings ) ) {
 		return $global_settings;
 	}
@@ -362,7 +362,7 @@ function get_global_posts_gating() : array {
  */
 function get_global_excerpt_settings() {
 
-	$global_excerpt_settings = get_option( 'coil_content_settings_excerpt_group' );
+	$global_excerpt_settings = get_option( 'coil_content_settings_excerpt_group', [] );
 	if ( ! empty( $global_excerpt_settings ) ) {
 		return $global_excerpt_settings;
 	}

@@ -351,7 +351,7 @@ function coil_settings_welcome_render_callback() {
 				esc_attr( 'text' ),
 				esc_attr( 'coil_welcome_settings_group[coil_payment_pointer_id]' ),
 				esc_attr( 'coil_payment_pointer_id' ),
-				esc_attr( Admin\get_welcome_settings( 'coil_payment_pointer_id' ) ),
+				esc_attr( Admin\get_welcome_setting( 'coil_payment_pointer_id' ) ),
 				esc_attr( '$wallet.example.com/alice' )
 			);
 
@@ -976,7 +976,7 @@ function admin_welcome_notice() {
 		return;
 	}
 
-	$payment_pointer_id = Admin\get_welcome_settings( 'coil_payment_pointer_id' );
+	$payment_pointer_id = Admin\get_welcome_setting( 'coil_payment_pointer_id' );
 	$notice_dismissed   = get_user_meta( $current_user->ID, 'coil-welcome-notice-dismissed', true );
 
 	if ( $payment_pointer_id || $notice_dismissed === 'true' ) {
@@ -1029,7 +1029,7 @@ function admin_no_payment_pointer_notice() {
 		return;
 	}
 
-	$payment_pointer_id = Admin\get_welcome_settings( 'coil_payment_pointer_id' );
+	$payment_pointer_id = Admin\get_welcome_setting( 'coil_payment_pointer_id' );
 
 	if ( $payment_pointer_id ) {
 		return;
@@ -1435,7 +1435,7 @@ function transfer_customizer_message_settings() {
 		remove_theme_mod( $coil_learn_more_button_link );
 	}
 
-	$existing_options = get_option( 'coil_messaging_settings_group' );
+	$existing_options = get_option( 'coil_messaging_settings_group', [] );
 
 	if ( false !== $existing_options ) {
 		update_option( 'coil_messaging_settings_group', array_merge( $existing_options, $messaging_settings ) );
@@ -1476,7 +1476,7 @@ function transfer_customizer_appearance_settings() {
 		remove_theme_mod( $coil_show_donation_bar );
 	}
 
-	$existing_options = get_option( 'coil_appearance_settings_group' );
+	$existing_options = get_option( 'coil_appearance_settings_group', [] );
 
 	if ( false !== $existing_options ) {
 		update_option( 'coil_appearance_settings_group', array_merge( $existing_options, $new_appearance_settings ) );
