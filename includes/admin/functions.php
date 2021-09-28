@@ -568,9 +568,9 @@ function get_inherited_font_setting( $field_id ) {
  */
 function get_paywall_appearance_defaults(): array {
 	$paywall_appearance_defaults = [
-		'coil_message_color_theme' => 'light';
-		'coil_message_branding' => 'coil_logo';
-		'coil_message_font' => false;,
+		'coil_message_color_theme' => 'light',
+		'coil_message_branding' => 'coil_logo',
+		'coil_message_font' => false,
 	];
 
 	return $paywall_appearance_defaults;
@@ -605,7 +605,7 @@ function get_exlusive_post_appearance_setting( $field_id ): bool {
  * @return array
  */
 function get_exclusive_post_defaults(): array {
-	$exclusive_post_defaults[ 'coil_title_padlock' => true ];
+	$exclusive_post_defaults = [ 'coil_title_padlock' => true ];
 
 	return $exclusive_post_defaults;
 }
