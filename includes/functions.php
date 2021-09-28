@@ -199,7 +199,7 @@ function load_full_assets() : void {
 			'paywall_message'         => Admin\get_paywall_appearance_text_settings_or_default( 'coil_paywall_message' ),
 			'partial_gating'          => Admin\get_paywall_appearance_text_settings_or_default( 'coil_paywall_message' ),
 			// 'partial_gating'          => Admin\get_set_message_fields( 'coil_partially_gated_content_message' ),
-			'paywall_button_text'  => Admin\get_paywall_appearance_text_settings_or_default( 'coil_paywall_button_text' ),
+			'paywall_button_text'     => Admin\get_paywall_appearance_text_settings_or_default( 'coil_paywall_button_text' ),
 			'learn_more_button_link'  => Admin\get_paywall_appearance_text_settings_or_default( 'coil_paywall_button_link' ),
 			'show_donation_bar'       => Admin\get_floating_button_setting( 'coil_show_donation_bar' ),
 			'post_excerpt'            => get_the_excerpt(),

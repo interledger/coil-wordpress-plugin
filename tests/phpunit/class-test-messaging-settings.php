@@ -43,7 +43,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		$defaults = [
 			self::$id['donation_bar']    => 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…',
 			self::$id['pending']         => 'Verifying Web Monetization status. Please wait...',
-			self::$id['paywall_message']     => 'Unlock exclusive content with Coil. Need a Coil account?',
+			self::$id['paywall_message'] => 'Unlock exclusive content with Coil. Need a Coil account?',
 			self::$id['partially_gated'] => 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.',
 			self::$id['button_text']     => 'Get Coil to access',
 			self::$id['button_link']     => 'https://coil.com/',
@@ -53,7 +53,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		$retrieved_messages = [
 			self::$id['donation_bar']    => Admin\get_paywall_appearance_text_settings_or_default( self::$id['donation_bar'] ),
 			self::$id['pending']         => Admin\get_paywall_appearance_text_settings_or_default( self::$id['pending'] ),
-			self::$id['paywall_message']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['paywall_message'] ),
+			self::$id['paywall_message'] => Admin\get_paywall_appearance_text_settings_or_default( self::$id['paywall_message'] ),
 			self::$id['partially_gated'] => Admin\get_paywall_appearance_text_settings_or_default( self::$id['partially_gated'] ),
 			self::$id['button_text']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['button_text'] ),
 			self::$id['button_link']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['button_link'] ),
@@ -74,7 +74,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		$custom_message = [
 			self::$id['donation_bar']    => 'Voluntary donation',
 			self::$id['pending']         => 'Loading content',
-			self::$id['paywall_message']     => 'Fully gated',
+			self::$id['paywall_message'] => 'Fully gated',
 			self::$id['partially_gated'] => 'Partially gated',
 			self::$id['button_text']     => 'Learn More',
 			self::$id['button_link']     => 'https://https://help.coil.com/docs/dev/web-monetization/index.html',
@@ -85,7 +85,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		$retrieved_message = [
 			self::$id['donation_bar']    => Admin\get_paywall_appearance_text_settings_or_default( self::$id['donation_bar'] ),
 			self::$id['pending']         => Admin\get_paywall_appearance_text_settings_or_default( self::$id['pending'] ),
-			self::$id['paywall_message']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['paywall_message'] ),
+			self::$id['paywall_message'] => Admin\get_paywall_appearance_text_settings_or_default( self::$id['paywall_message'] ),
 			self::$id['partially_gated'] => Admin\get_paywall_appearance_text_settings_or_default( self::$id['partially_gated'] ),
 			self::$id['button_text']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['button_text'] ),
 			self::$id['button_link']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['button_link'] ),
@@ -104,11 +104,11 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Adding custom messages to the database
 		$custom_message = [
-			self::$id['pending']     => 'Loading content',
+			self::$id['pending']         => 'Loading content',
 			self::$id['paywall_message'] => 'Fully gated',
-			self::$id['button_text'] => 'Learn More',
+			self::$id['button_text']     => 'Learn More',
 			// Leaving one option set to an empty string becasue this state occurs in the database once a custom message has been deleted
-			self::$id['button_link'] => '',
+			self::$id['button_link']     => '',
 		];
 		update_option( 'coil_messaging_settings_group', $custom_message );
 
@@ -116,7 +116,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		$message = [
 			self::$id['donation_bar']    => Admin\get_paywall_appearance_text_settings_or_default( self::$id['donation_bar'] ),
 			self::$id['pending']         => Admin\get_paywall_appearance_text_settings_or_default( self::$id['pending'] ),
-			self::$id['paywall_message']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['paywall_message'] ),
+			self::$id['paywall_message'] => Admin\get_paywall_appearance_text_settings_or_default( self::$id['paywall_message'] ),
 			self::$id['partially_gated'] => Admin\get_paywall_appearance_text_settings_or_default( self::$id['partially_gated'] ),
 			self::$id['button_text']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['button_text'] ),
 			self::$id['button_link']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['button_link'] ),
@@ -156,7 +156,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		$message = [
 			self::$id['donation_bar']    => Admin\get_paywall_appearance_text_settings_or_default( self::$id['donation_bar'] ),
 			self::$id['pending']         => Admin\get_paywall_appearance_text_settings_or_default( self::$id['pending'] ),
-			self::$id['paywall_message']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['paywall_message'] ),
+			self::$id['paywall_message'] => Admin\get_paywall_appearance_text_settings_or_default( self::$id['paywall_message'] ),
 			self::$id['partially_gated'] => Admin\get_paywall_appearance_text_settings_or_default( self::$id['partially_gated'] ),
 			self::$id['button_text']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['button_text'] ),
 			self::$id['button_link']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['button_link'] ),
@@ -217,7 +217,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		$message = [
 			self::$id['donation_bar']    => Admin\get_paywall_appearance_text_settings_or_default( self::$id['donation_bar'] ),
 			self::$id['pending']         => Admin\get_paywall_appearance_text_settings_or_default( self::$id['pending'] ),
-			self::$id['paywall_message']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['paywall_message'] ),
+			self::$id['paywall_message'] => Admin\get_paywall_appearance_text_settings_or_default( self::$id['paywall_message'] ),
 			self::$id['partially_gated'] => Admin\get_paywall_appearance_text_settings_or_default( self::$id['partially_gated'] ),
 			self::$id['button_text']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['button_text'] ),
 			self::$id['button_link']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['button_link'] ),
