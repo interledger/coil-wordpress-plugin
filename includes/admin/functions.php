@@ -300,6 +300,7 @@ function load_admin_assets() : void {
  * to the Coil Settings panel.
  *
  * @param \WP_Customize_Manager $wp_customize WordPress Customizer object.
+ * @return void
  */
 function add_redirect_customizer_section( $wp_customize ) : void {
 
@@ -441,26 +442,6 @@ function get_paywall_apprearance_text_defaults() {
 }
 
 /**
- * Retrieve the paywall text field using a key from the
- * paywall appearance settings group (serialized).
- *
- * @param string $field_id The named key in the wp_options serialized array.
- * @return string
- */
-function get_paywall_appearance_text_setting( $field_id, $default = false ) {
-
-	$options = get_option( 'coil_exclusive_settings_group', [] );
-
-	// The default is returned as a placeholder or as a coil_js_ui_messages field when no custom input has been provided
-	if ( $default ) {
-		$defaults = get_paywall_apprearance_text_defaults();
-		return $defaults[ $field_id ];
-	}
-
-	return ( ! empty( $options[ $field_id ] ) ) ? $options[ $field_id ] : '';
-}
-
-/**
  * Retrieve the paywall appearance settings
  * using a key from coil_exclusive_settings_group (serialized).
  *
@@ -500,16 +481,28 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
 			$setting_value = 'coil_logo';
 		}
 		return $setting_value;
-	} elseif ( $field_id === 'coil_message_font' ) {
-		// Default is unchecked
-		if ( isset( $paywall_appearance_options[ $field_id ] ) ) {
-			$setting_value = $paywall_appearance_options[ $field_id ];
-		} else {
-			$setting_value = false;
-		}
-		return $setting_value;
 	}
 	return null;
+}
+
+/**
+ * Retrieve the inherited font paywall appearance setting
+ * using its key from coil_exclusive_settings_group (serialized).
+ * This is a separate function from the rest of the paywall appearance settings because it returns a boolean.
+ *
+ * @return string
+ */
+function get_inherited_font_setting() {
+
+	$paywall_appearance_options = get_option( 'coil_exclusive_settings_group' );
+	$field_id = 'coil_message_font';
+
+	if ( isset( $paywall_appearance_options[ $field_id ] ) ) {
+		$setting_value = $paywall_appearance_options[ $field_id ];
+	} else {
+		$setting_value = false;
+	}
+	return $setting_value;
 }
 
 /**

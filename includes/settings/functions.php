@@ -162,15 +162,6 @@ function register_admin_content_settings() {
 	);
 }
 
-/**
- *
- * @param String $group_name
- * @return array
- */
-function get_option_group( $group_name ): array {
-
-}
-
 /* ------------------------------------------------------------------------ *
  * Section Validation
  * ------------------------------------------------------------------------ */
@@ -640,7 +631,7 @@ function paywall_branding_render_callback() {
 function paywall_font_render_callback() {
 
 	$font_id = 'coil_message_font';
-	$value   = Admin\get_paywall_appearance_setting( $font_id );
+	$value   = Admin\get_inherited_font_setting( $font_id );
 
 	if ( $value === true ) {
 		$checked_input = 'checked="checked"';
