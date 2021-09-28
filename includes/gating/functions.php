@@ -108,7 +108,7 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 		return $title;
 	}
 
-	if ( ! Admin\get_appearance_settings( 'coil_title_padlock' ) ) {
+	if ( ! Admin\get_exlusive_post_appearance_setting( 'coil_title_padlock' ) ) {
 		return $title;
 	}
 

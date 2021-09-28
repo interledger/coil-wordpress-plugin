@@ -160,20 +160,6 @@ function register_admin_content_settings() {
 		__NAMESPACE__ . '\coil_settings_button_visibility_render_callback',
 		'coil_button_visibility_section'
 	);
-
-	maybe_load_database_defaults();
-}
-
-function maybe_load_database_defaults() {
-	// Use existing get functions from Admin - easier to maintain that way
-	// Each item? 
-	// Just check if option group is present and if it is then carry on - seems risky given the shitty behaviour - but then if it has been deleted we will either revert to a default or the off state - not so bad.
-	// get_welcome_settings();
-	// get_welcome setting();
-	// get_general_settings();
-	// get_general setting();
-	// get_exclusive_settings(); - get paywall appearance, getexclusive post appearance, get visibility settings, get excerpt visibility, get CSS selector
-	// get_exclusive setting();
 }
 
 /**
@@ -181,7 +167,7 @@ function maybe_load_database_defaults() {
  * @param String $group_name
  * @return array
  */
-function get_option_group( $group_name ) :array {
+function get_option_group( $group_name ): array {
 
 }
 
@@ -284,8 +270,9 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 		$exclusive_settings[ $visibility_input_name ] = $visibility_setting;
 
 		// Validates excerpt visibility settings.
-		$excerpt_input_name = $post_type->name . '_excerpt';
-		$excerpt_setting    = isset( $exclusive_settings[ $excerpt_input_name ] ) ? true : false;
+		$excerpt_input_name                        = $post_type->name . '_excerpt';
+		$excerpt_setting                           = isset( $exclusive_settings[ $excerpt_input_name ] ) ? true : false;
+		$exclusive_settings[ $excerpt_input_name ] = $excerpt_setting;
 	}
 
 	// Validates all text input fields
@@ -325,46 +312,13 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 	// Validates all checkbox input fields
 	$checkbox_fields = [
 		'coil_message_font',
-		'display_padlock_id',
+		'coil_title_padlock',
 	];
 
 	foreach ( $checkbox_fields as $field_name ) {
-		if ( $field_name === 'display_padlock_id' && ! array_key_exists( 'display_padlock_id', $exclusive_settings ) ) {
-			$exclusive_settings[ $field_name ] =  true;
-		}
-		$exclusive_settings[ $field_name ] = array_key_exists( 'display_padlock_id', $exclusive_settings ) && $exclusive_settings[ $field_name ] ? true : false;
+		$exclusive_settings[ $field_name ] = isset( $exclusive_settings[ $field_name ] ) ? true : false;
 	}
 	return $exclusive_settings;
-}
-
-/**
- * Allow the radio buttons that select theme preferences
- * and the padlock and donation bar display checkboxes
- * to be properly validated
- *
- * @param array $appearance_settings The padlock and donation bar display checkboxes
- * and the radio button settings for the restricted content message customization theme selection
- *
- * @return array
- */
-function coil_appearance_settings_validation( $appearance_settings ) : array {
-
-	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
-		return [];
-	}
-
-	$checkbox_options       = [ 'coil_title_padlock', 'coil_show_donation_bar' ];
-	$array_keys             = array_keys( $appearance_settings );
-
-	foreach ( $checkbox_options as $key ) {
-		if ( in_array( $key, $array_keys, true ) ) {
-			$appearance_settings[ $key ] = $appearance_settings[ $key ] === 'on' ? true : false;
-		} else {
-			$appearance_settings[ $key ] = false;
-		}
-	}
-
-	return $appearance_settings;
 }
 
 /* ------------------------------------------------------------------------ *
@@ -565,12 +519,12 @@ function coil_settings_paywall_appearance_render_callback() {
 	<?php
 		echo '<h1>' . esc_html__( 'Paywall Appearance', 'coil-web-monetization' ) . '</h1>';
 		echo '<p>' . esc_html_e( 'This paywall replaces the post content for users without an active Coil Membership, when access is set to exclusive.', 'coil-web-monetization' ) . '</p>';
-		
+
 		// Renders the textfield for each paywall text field input.
 		$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
-		foreach ( $text_fields as $field_name ) {
-			coil_paywall_appearance_text_field_settings_render_callback( $field_name );
-		}
+	foreach ( $text_fields as $field_name ) {
+		coil_paywall_appearance_text_field_settings_render_callback( $field_name );
+	}
 
 		// Renders the color theme radio buttons
 		echo '<br><h3>' . esc_html__( 'Color Theme', 'coil-web-monetization' ) . '</h3>';
@@ -612,7 +566,7 @@ function coil_settings_paywall_appearance_render_callback() {
  */
 function paywall_theme_render_callback() {
 	// The default color theme is the light theme.
-	$theme_color_checked_input = '"checked=true"';
+	$theme_color_checked_input = 'checked="true"';
 
 	printf(
 		'<input type="radio" name="%s" id="%s" value="%s" %s />',
@@ -633,7 +587,7 @@ function paywall_theme_render_callback() {
 	$theme_color = Admin\get_paywall_appearance_setting( 'coil_message_color_theme' );
 
 	if ( ! empty( $theme_color ) && $theme_color === 'dark' ) {
-		$theme_color_checked_input = '"checked=true"';
+		$theme_color_checked_input = 'checked="true"';
 	} else {
 		$theme_color_checked_input = false;
 	}
@@ -664,7 +618,7 @@ function paywall_branding_render_callback() {
 		esc_attr( 'coil_logo' ),
 		esc_attr( 'Show Coil logo' )
 	);
-	
+
 	printf(
 		'<option value="%s">%s</option>',
 		esc_attr( 'site_logo' ),
@@ -685,19 +639,28 @@ function paywall_branding_render_callback() {
  */
 function paywall_font_render_callback() {
 
-	$checked_input_value = Admin\get_paywall_appearance_setting( 'coil_message_font' );
+	$font_id = 'coil_message_font';
+	$value   = Admin\get_paywall_appearance_setting( $font_id );
+
+	if ( $value === true ) {
+		$checked_input = 'checked="checked"';
+	} else {
+		$checked_input = false;
+		$value         = false;
+	}
 
 	printf(
-		'<input type="%s" name="%s" id="%s" "%s">',
+		'<input type="%s" name="%s" id="%s" value=%b %s>',
 		esc_attr( 'checkbox' ),
-		esc_attr( 'coil_exclusive_settings_group[coil_message_font]' ),
-		esc_attr( 'message_font' ),
-		checked( 1, $checked_input_value, false )
+		esc_attr( 'coil_exclusive_settings_group[' . $font_id . ']' ),
+		esc_attr( $font_id ),
+		esc_attr( $value ),
+		$checked_input
 	);
 
 	printf(
 		'<label for="%s">%s</label>',
-		esc_attr( 'message_font' ),
+		esc_attr( $font_id ),
 		esc_html_e( 'Use theme font styles', 'coil-web-monetization' )
 	);
 }
@@ -736,32 +699,28 @@ function coil_padlock_display_checkbox_render_callback() {
 	 * input status is not set, default to checked.
 	 */
 
-	$options = get_option( 'coil_exclusive_settings_group' );
+	$padlock_id = 'coil_title_padlock';
+	$value      = Admin\get_exlusive_post_appearance_setting( $padlock_id );
 
-	if ( empty( $options ) || ! array_key_exists( 'display_padlock_id', $options ) ) {
-		$value   = true;
+	if ( $value === true ) {
+		$checked_input = 'checked="checked"';
 	} else {
-		$value = $options[ 'display_padlock_id' ];
-	}
-
-	if( $value ) {
-		$checked_input_value = '"checked=true"';
-	} else {
-		$checked_input_value = '';
+		$checked_input = false;
+		$value         = false;
 	}
 
 	printf(
-		'<input type="%s" name="%s" id="%s" value="%s" "%s">',
+		'<input type="%s" name="%s" id="%s" value=%b %s>',
 		esc_attr( 'checkbox' ),
-		esc_attr( 'coil_exclusive_settings_group[display_padlock_id]' ),
-		esc_attr( 'display_padlock_id' ),
+		esc_attr( 'coil_exclusive_settings_group[' . $padlock_id . ']' ),
+		esc_attr( $padlock_id ),
 		esc_attr( $value ),
-		checked( 1, $checked_input_value, false )
+		$checked_input
 	);
 
 	printf(
 		'<label for="%s">%s</label>',
-		esc_attr( 'display_padlock_id' ),
+		esc_attr( $padlock_id ),
 		esc_html_e( 'Show padlock icon next to exclusive post titles.', 'coil-web-monetization' )
 	);
 }
@@ -907,11 +866,11 @@ function coil_content_settings_posts_render_callback() {
 							 */
 							$checked_input = false;
 							if ( $setting_key === 'no' ) {
-								$checked_input = '"checked=true"';
+								$checked_input = 'checked="true"';
 							} elseif ( isset( $content_settings_posts_options[ $post_type->name ] ) ) {
 								$checked_input = checked( $setting_key, $content_settings_posts_options[ $post_type->name ], false );
 							} elseif ( 'no-gating' === $setting_key ) {
-								$checked_input = '"checked=true"';
+								$checked_input = 'checked="true"';
 							}
 							?>
 							<td>
@@ -976,8 +935,8 @@ function coil_paywall_appearance_text_field_settings_render_callback( $field_nam
 		esc_attr( Admin\get_paywall_appearance_setting( $field_name ) )
 	);
 
-	if( $field_name === 'coil_paywall_button_link' ) {
-		echo '<p>' . __( 'If you have an affiliate link add it here.', 'coil-web-monetization' ). '</p>';
+	if ( $field_name === 'coil_paywall_button_link' ) {
+		echo '<p>' . __( 'If you have an affiliate link add it here.', 'coil-web-monetization' ) . '</p>';
 	}
 }
 
@@ -1145,12 +1104,17 @@ function post_type_defaults_table( $settings_group, $column_names, $input_type, 
 							 */
 							$checked_input = false;
 							if ( $input_type === 'radio' && $setting_key === $keys[0] ) {
-								$checked_input = '"checked=true"';
+								$checked_input = 'checked="true"';
 							} elseif ( $input_type === 'radio' && isset( $current_options[ $post_type->name . '_' . $value_id_suffix ] ) ) {
 								$checked_input = checked( $setting_key, $current_options[ $post_type->name . '_' . $value_id_suffix ], false );
-							} elseif ( $input_type === 'checkbox' && isset( $current_options[ $post_type->name . '_' . $value_id_suffix ] ) ) {
-								$checked_input = '"checked=true"';
-								$setting_key   = true;
+							} elseif ( $input_type === 'checkbox' ) {
+								if ( isset( $current_options[ $post_type->name . '_' . $value_id_suffix ] ) && $current_options[ $post_type->name . '_' . $value_id_suffix ] === true ) {
+									$checked_input = 'checked="true"';
+									$setting_key   = true;
+								} else {
+									$checked_input = false;
+									$setting_key   = false;
+								}
 							}
 							?>
 							<td>
@@ -1299,7 +1263,7 @@ function coil_add_term_custom_meta( $term ) {
 
 				$checked_input = false;
 				if ( $setting_key === 'default' ) {
-					$checked_input = '"checked=true"';
+					$checked_input = 'checked="true"';
 				} elseif ( ! empty( $gating ) ) {
 					$checked_input = checked( $setting_key, $gating, false );
 				}
@@ -1348,7 +1312,7 @@ function coil_edit_term_custom_meta() {
 		foreach ( $gating_options as $setting_key => $setting_value ) {
 			$checked_input = false;
 			if ( $setting_key === 'default' ) {
-				$checked_input = '"checked=true"';
+				$checked_input = 'checked="true"';
 			}
 			?>
 			<label for="<?php echo esc_attr( $setting_key ); ?>">
@@ -1387,11 +1351,26 @@ function dismiss_welcome_notice() {
 	update_user_meta( $current_user->ID, 'coil-welcome-notice-dismissed', 'true' );
 }
 
+/**
+ * Ensures the database is in the correct state.
+ * This involves entering group options if they don't exist so that neccessary default values are correctly stored.
+ * It also involves migrating data if it is stored in a deprecated option group or in the customizer.
+ *
+ * @return void
+ */
+function maybe_update_database() {
+	maybe_load_database_defaults();
+	transfer_customizer_message_settings();
+	transfer_customizer_appearance_settings();
+}
+
 
 /**
  * Translate customizer settings
  *
  * If a user has message settings which they saved in the customizer, switch them to settings saved in the wp_options table
+ *
+ * @return void
  *
  */
 function transfer_customizer_message_settings() {
@@ -1480,6 +1459,8 @@ function transfer_customizer_message_settings() {
  *
  * If a user has appearance settings which they saved in the customizer, switch them to settings saved in the wp_options table
  *
+ * @return void
+ *
  */
 function transfer_customizer_appearance_settings() {
 
@@ -1510,5 +1491,126 @@ function transfer_customizer_appearance_settings() {
 		update_option( 'coil_appearance_settings_group', array_merge( $existing_options, $new_appearance_settings ) );
 	} else {
 		update_option( 'coil_appearance_settings_group', $new_appearance_settings );
+	}
+}
+
+/**
+ * Returns an array of the monetization defaults,
+ * All supported post types default to monetized.
+ *
+ * @return array
+ */
+function get_monetization_defaults(): array {
+	$default                       = 'monetized';
+	$monetization_setting_defaults = [];
+	$post_type_options             = Coil\get_supported_post_types( 'objects' );
+
+	// Loop through all the post types and if not set then set to the default 'monetized'
+	if ( ! empty( $post_type_options ) ) {
+		foreach ( $post_type_options as $post_type ) {
+			$monetization_setting_defaults[ $post_type->name . '_monetization' ] = $default;
+		}
+	}
+	return $monetization_setting_defaults;
+}
+
+/**
+ * Returns the paywall appearance settings for all fields that are not text based.
+ * This includes the color theme, branding choice, and font style.
+ *
+ * @return array
+ */
+function get_paywall_appearance_defaults(): array {
+	$paywall_appearance_defaults                             = [];
+	$paywall_appearance_defaults['coil_message_color_theme'] = 'light';
+	$paywall_appearance_defaults['coil_message_branding']    = 'coil_logo';
+	$paywall_appearance_defaults['coil_message_font']        = false;
+
+	return $paywall_appearance_defaults;
+}
+
+/**
+ * Returns the padlock default as true.
+ *
+ * @return array
+ */
+function get_exclusive_post_defaults(): array {
+	$exclusive_post_defaults                       = [];
+	$exclusive_post_defaults['coil_title_padlock'] = true;
+
+	return $exclusive_post_defaults;
+}
+
+/**
+ * Returns an array of the post visibility defaults,
+ * All supported post types default to public.
+ *
+ * @return array
+ */
+function get_post_visibility_defaults(): array {
+	$default                     = 'public';
+	$visibility_setting_defaults = [];
+	$post_type_options           = Coil\get_supported_post_types( 'objects' );
+
+	// Loop through all the post types and if not set then set to the default 'monetized'
+	if ( ! empty( $post_type_options ) ) {
+		foreach ( $post_type_options as $post_type ) {
+			$visibility_setting_defaults[ $post_type->name . '_visibility' ] = $default;
+		}
+	}
+	return $visibility_setting_defaults;
+}
+
+/**
+* Returns an array of the excerpt visibility defaults,
+* All supported post types default to false, i.e. to not diplay.
+*
+* @return array
+*/
+function get_excerpt_visibility_defaults(): array {
+	$default                  = false;
+	$excerpt_setting_defaults = [];
+	$post_type_options        = Coil\get_supported_post_types( 'objects' );
+
+	// Loop through all the post types and if not set then set to the default which is false.
+	if ( ! empty( $post_type_options ) ) {
+		foreach ( $post_type_options as $post_type ) {
+			$excerpt_setting_defaults[ $post_type->name . '_excerpt' ] = $default;
+		}
+	}
+	return $excerpt_setting_defaults;
+}
+
+/**
+ * If certain database entries are empty this functions adds them.
+ * This includes the post monetization defaults, paywall appearance settings,
+ * exclusive post settings, and post and excerpt visibility settings.
+ *
+ * @return void
+ */
+function maybe_load_database_defaults() {
+
+	// Loads monetization defaults if they have not yet been entered into the database
+	$monetization_settings = get_option( 'coil_general_settings_group', 'absent' );
+
+	if ( $monetization_settings === 'absent' ) {
+		$monetization_settings = get_monetization_defaults();
+		add_option( 'coil_general_settings_group', $monetization_settings );
+	}
+
+	// Loads applicable exclusive setting defaults if they have not yet been entered into the database.
+	// This includes paywall appearance settings, exclusive post settings, and post and excerpt visibility settings.
+	$exclusive_settings = get_option( 'coil_exclusive_settings_group', 'absent' );
+
+	if ( $exclusive_settings === 'absent' ) {
+		$exclusive_settings          = [];
+		$post_visibility_settings    = get_post_visibility_defaults();
+		$excerpt_visibility_settings = get_excerpt_visibility_defaults();
+		$exclusive_post_settings     = get_exclusive_post_defaults();
+		$paywall_appearance_settings = get_paywall_appearance_defaults();
+
+		// Merges all the sections together and updates the option group in the database.
+		$exclusive_settings = array_merge( $post_visibility_settings, $excerpt_visibility_settings, $exclusive_post_settings, $paywall_appearance_settings );
+		add_option( 'coil_exclusive_settings_group', $exclusive_settings );
 	}
 }

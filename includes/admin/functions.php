@@ -472,7 +472,7 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
 
 	$paywall_appearance_options = get_option( 'coil_exclusive_settings_group' );
 
-	$text_fields                = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
+	$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
 
 	// Text inputs can be empty strings, in which the placeholder text will display or the default text will be returned.
 	if ( in_array( $field_id, $text_fields, true ) ) {
@@ -517,22 +517,22 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
  * using a key from coil_exclusive_settings_group (serialized).
  *
  * @param string $field_id The named key in the wp_options serialized array.
- * @return string
+ * @return bool
  */
-function get_exlusive_post_appearance_settings( $field_id ) {
+function get_exlusive_post_appearance_setting( $field_id ): bool {
 
 	$exclusive_post_appearance_options = get_option( 'coil_exclusive_settings_group' );
 
-	if ( $field_id === 'display_padlock_id' ) {
+	if ( $field_id === 'coil_title_padlock' ) {
 		// Default is checked
-		if ( isset( $exclusive_post_appearance_options[ $field_id ] ) ) {
-			$setting_value = $exclusive_post_appearance_options[ $field_id ];
-		} else {
+		if ( ! isset( $exclusive_post_appearance_options[ $field_id ] ) ) {
 			$setting_value = true;
+		} else {
+			$setting_value = $exclusive_post_appearance_options[ $field_id ];
 		}
 		return $setting_value;
 	}
-	return null;
+	return false;
 }
 
 /**
@@ -565,28 +565,5 @@ function get_visibility_types() : array {
 	];
 
 	return $visibility_types;
-}
-
-/**
- * Retrieve the padlock and donation bar general display settings
- * using a key from coil_appearance_settings_group (serialized).
- *
- * @param string $field_id The named key in the wp_options serialized array.
- * @return string
- */
-function get_appearance_settings( $field_id ) {
-
-	$options                          = get_option( 'coil_appearance_settings_group', [] );
-	$general_display_checkbox_options = [ 'coil_title_padlock', 'coil_show_donation_bar' ];
-
-	if ( in_array( $field_id, $general_display_checkbox_options, true ) ) {
-		// Default is checked
-		if ( ! isset( $options[ $field_id ] ) ) {
-			$setting_value = true;
-		} else {
-			$setting_value = $options[ $field_id ];
-		}
-	}
-	return $field_id;
 }
 
