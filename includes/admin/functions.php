@@ -444,13 +444,11 @@ function get_monetization_default() {
 function get_exclusive_settings(): array {
 
 	// Set up defaults.
-	$defaults = [
-		'coil_content_container' => '.content-area .entry-content',
-	];
+	$defaults = [ 'coil_content_container' => '.content-area .entry-content' ];
 
 	$exclusive_options = get_option( 'coil_exclusive_settings_group', [] );
-	if ( empty( $exclusive_options ['coil_content_container'] ) ) {
-		$exclusive_options ['coil_content_container'] = $defaults['coil_content_container'];
+	if ( ! isset( $exclusive_options['coil_content_container'] ) ) {
+		$exclusive_options['coil_content_container'] = $defaults[ 'coil_content_container' ];
 	}
 
 	return $exclusive_options;
@@ -483,7 +481,10 @@ function get_paywall_apprearance_text_defaults() {
  */
 function get_paywall_appearance_setting( $field_id, $use_text_default = false ) {
 
-	$paywall_appearance_options = get_exclusive_settings();
+	$exclusive_options = get_exclusive_settings();
+
+	$text_defaults = get_paywall_apprearance_text_defaults();
+	$style_defaults = get_paywall_appearance_defaults();
 
 	$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
 
@@ -492,25 +493,24 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
 
 		// The default is returned as a placeholder or as a coil_js_ui_messages field when no custom input has been provided
 		if ( $use_text_default ) {
-			$defaults = get_paywall_apprearance_text_defaults();
-			return $defaults[ $field_id ];
+			return $text_defaults[ $field_id ];
 		} else {
-			return ( ! empty( $paywall_appearance_options[ $field_id ] ) ) ? $paywall_appearance_options[ $field_id ] : '';
+			return ( ! empty( $exclusive_options[ $field_id ] ) ) ? $exclusive_options[ $field_id ] : '';
 		}
 	} elseif ( $field_id === 'coil_message_color_theme' ) {
 		// Default is the light theme
-		if ( isset( $paywall_appearance_options[ $field_id ] ) ) {
-			$setting_value = $paywall_appearance_options[ $field_id ];
+		if ( isset( $exclusive_options[ $field_id ] ) ) {
+			$setting_value = $exclusive_options[ $field_id ];
 		} else {
-			$setting_value = 'light';
+			$setting_value = style_defaults[ $field_id ];
 		}
 		return $setting_value;
 	} elseif ( $field_id === 'coil_message_branding' ) {
 		// Default is Coil logo
-		if ( isset( $paywall_appearance_options[ $field_id ] ) ) {
-			$setting_value = $paywall_appearance_options[ $field_id ];
+		if ( isset( $exclusive_options[ $field_id ] ) ) {
+			$setting_value = $exclusive_options[ $field_id ];
 		} else {
-			$setting_value = 'coil_logo';
+			$setting_value = style_defaults[ $field_id ];
 		}
 		return $setting_value;
 	}
@@ -547,10 +547,10 @@ function get_branding_options() {
  */
 function get_inherited_font_setting( $field_id ) {
 
-	$paywall_appearance_options = get_exclusive_settings();
+	$exclusive_options = get_exclusive_settings();
 	if ( $field_id === 'coil_message_font' ) {
-		if ( isset( $paywall_appearance_options[ $field_id ] ) ) {
-			$setting_value = $paywall_appearance_options[ $field_id ];
+		if ( isset( $exclusive_options[ $field_id ] ) ) {
+			$setting_value = $exclusive_options[ $field_id ];
 		} else {
 			$setting_value = false;
 		}
@@ -584,14 +584,14 @@ function get_paywall_appearance_defaults(): array {
  */
 function get_exlusive_post_appearance_setting( $field_id ): bool {
 
-	$exclusive_post_appearance_options = get_exclusive_settings();
+	$exclusive_options = get_exclusive_settings();
 
 	if ( $field_id === 'coil_title_padlock' ) {
 		// Default is checked
-		if ( ! isset( $exclusive_post_appearance_options[ $field_id ] ) ) {
+		if ( ! isset( $exclusive_options[ $field_id ] ) ) {
 			$setting_value = true;
 		} else {
-			$setting_value = $exclusive_post_appearance_options[ $field_id ];
+			$setting_value = $exclusive_options[ $field_id ];
 		}
 		return $setting_value;
 	}
@@ -641,4 +641,23 @@ function get_post_visibility_default() {
 function get_excerpt_visibility_default() {
 
 	return false;
+}
+
+/**
+ * Retrieve the CSS selector setting settings.
+ * @param string $field_name
+ * @return string Setting stored in options.
+ */
+function get_css_selector_setting( $field_name) {
+
+	if ( $field_name === 'coil_content_container' ) {
+		$exclusive_options = get_exclusive_settings();
+		if ( empty( $exclusive_options ['coil_content_container'] ) ) {
+			return '.content-area .entry-content';
+		} else {
+			return $exclusive_options ['coil_content_container'];
+		}
+	} else {
+		return '';
+	}
 }

@@ -242,7 +242,6 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 	$post_monetization_default = Admin\get_monetization_default();
 	$paywall_defaults = Admin\get_paywall_appearance_defaults();
 	$post_visibility_default = Admin\get_post_visibility_default();
-	$excerpt_display_default = Admin\get_excerpt_visibility_default();
 
 	// Monetization defaults are needed to check that the 'exclusive' and 'not-monetized' defaults are never set on a post type
 	$post_monetization_settings = Admin\get_general_settings();
@@ -272,7 +271,7 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 
 		// Validates excerpt display settings.
 		$excerpt_setting_key                        = $post_type->name . '_excerpt';
-		$excerpt_setting                           = isset( $exclusive_settings[ $excerpt_setting_key ] ) ? true : $excerpt_display_default;
+		$excerpt_setting                           = isset( $exclusive_settings[ $excerpt_setting_key ] ) ? true : false;
 		$exclusive_settings[ $excerpt_setting_key ] = $excerpt_setting;
 
 	}
@@ -752,8 +751,8 @@ function coil_settings_post_visibility_render_callback() {
 		$columns            = Admin\get_visibility_types();
 		$input_type         = 'radio';
 		$suffix             = 'visibility';
-		$visibility_options = Admin\get_exclusive_settings();
-		post_type_defaults_table( $group, $columns, $input_type, $suffix, $visibility_options );
+		$exclusive_options = Admin\get_exclusive_settings();
+		post_type_defaults_table( $group, $columns, $input_type, $suffix, $exclusive_options );
 	?>
 	</div>
 	<?php
@@ -778,8 +777,8 @@ function coil_excerpts_visibility_render_callback() {
 		$columns                     = [ 'Display Excerpt' ];
 		$input_type                  = 'checkbox';
 		$suffix                      = 'excerpt';
-		$excerpt_visibility_defaults = Admin\get_exclusive_settings();
-		post_type_defaults_table( $group, $columns, $input_type, $suffix, $excerpt_visibility_defaults );
+		$exclusive_options = Admin\get_exclusive_settings();
+		post_type_defaults_table( $group, $columns, $input_type, $suffix, $exclusive_options );
 	?>
 	</div>
 	<?php
@@ -1414,13 +1413,18 @@ function maybe_load_database_defaults() {
 
 	// Loads monetization defaults if they have not yet been entered into the database
 	$monetization_settings = get_option( 'coil_general_settings_group', 'absent' );
-	$default = Admin\get_monetization_default();
 
 	if ( $monetization_settings === 'absent' ) {
-		foreach( $monetization_settings as $key => $value ) {
-			$monetization_settings[ $key ] = $default;
+		// Monetization default is 'monetized'
+		$monetization_default = Admin\get_monetization_default();
+		$new_monetization_settings = [];
+		$post_type_options = Coil\get_supported_post_types( 'objects' );
+
+		// Set monetization default for each post type
+		foreach ( $post_type_options as $post_type ) {
+			$new_monetization_settings[ $post_type->name . '_monetization' ] = $monetization_default;
 		}
-		add_option( 'coil_general_settings_group', $monetization_settings );
+		add_option( 'coil_general_settings_group', $new_monetization_settings );
 	}
 
 	// Loads applicable exclusive setting defaults if they have not yet been entered into the database.
@@ -1428,14 +1432,27 @@ function maybe_load_database_defaults() {
 	$exclusive_settings = get_option( 'coil_exclusive_settings_group', 'absent' );
 
 	if ( $exclusive_settings === 'absent' ) {
-		$exclusive_settings          = [];
-		$post_visibility_settings    = Admin\get_post_visibility_default();
-		$excerpt_visibility_settings = Admin\get_excerpt_visibility_default();
-		$exclusive_post_settings     = Admin\get_exclusive_post_defaults();
+
 		$paywall_appearance_settings = Admin\get_paywall_appearance_defaults();
+		$exclusive_post_settings     = Admin\get_exclusive_post_defaults();
+
+		// Visibility default is 'public'
+		$post_visibility_default = Admin\get_post_visibility_default();
+		// Excerpt display default is false
+		$excerpt_display_default = Admin\get_excerpt_visibility_default();
+
+		$post_visibility_settings = [];
+		$excerpt_display_settings = [];
+		$post_type_options = Coil\get_supported_post_types( 'objects' );
+
+		// Set visibility and excerpt display default for each post type
+		foreach ( $post_type_options as $post_type ) {
+			$post_visibility_settings[ $post_type->name . '_visibility' ] = $post_visibility_default;
+			$excerpt_display_settings[ $post_type->name . '_excerpt' ] = $excerpt_display_default;
+		}
 
 		// Merges all the sections together and updates the option group in the database.
-		$exclusive_settings = array_merge( $post_visibility_settings, $excerpt_visibility_settings, $exclusive_post_settings, $paywall_appearance_settings );
-		add_option( 'coil_exclusive_settings_group', $exclusive_settings );
+		$new_exclusive_settings = array_merge( $paywall_appearance_settings, $exclusive_post_settings, $post_visibility_settings, $excerpt_display_settings );
+		add_option( 'coil_exclusive_settings_group', $new_exclusive_settings );
 	}
 }
