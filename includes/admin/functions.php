@@ -713,9 +713,6 @@ function get_set_message_fields( $field_id ) {
 			return '';
 		case 'coil_verifying_status_message':
 			return '';
-		case 'coil_partially_gated_content_message':
-			return '';
-
 	}
 
 }

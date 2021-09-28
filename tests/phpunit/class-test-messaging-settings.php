@@ -21,8 +21,8 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 	protected static $id = [
 		'donation_bar'                    => 'coil_voluntary_donation_message',
 		'pending'                         => 'coil_verifying_status_message',
-		'paywall_message'                     => 'coil_paywall_message',
-		'partially_gated'                 => 'coil_partially_gated_content_message',
+		'paywall_message'                 => 'coil_paywall_message',
+		'partially_gated'                 => 'coil_paywall_message',
 		'button_text'                     => 'coil_paywall_button_text',
 		'button_link'                     => 'coil_paywall_button_link',
 		'fully_gated_excerpt_message'     => 'coil_fully_gated_excerpt_message',
