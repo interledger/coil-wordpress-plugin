@@ -429,6 +429,15 @@ function get_monetization_types() {
 }
 
 /**
+ * Returns the single default 'monetized'.
+ *
+ * @return string
+ */
+function get_monetization_default() {
+	return 'monetized';
+}
+
+/**
  * Retrieve the Exclusive Content settings.
  * @return array Setting stored in options.
  */
@@ -509,6 +518,26 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
 }
 
 /**
+ * @return array Valid colour theme states
+ */
+function get_theme_color_types() {
+
+	$theme_colors = [ 'light', 'dark', ];
+
+	return $theme_colors;
+}
+
+/**
+ * @return array Valid branding options.
+ */
+function get_branding_options() {
+
+	$branding_choices = [ 'site_logo', 'coil_logo', 'no_logo' ];
+
+	return $branding_choices;
+}
+
+/**
  * Retrieve the inherited font paywall appearance setting
  * using its key from coil_exclusive_settings_group (serialized).
  * This is a separate function from the rest of the paywall appearance settings because it returns a boolean.
@@ -529,6 +558,21 @@ function get_inherited_font_setting( $field_id ) {
 	}
 
 	return false;
+}
+
+/**
+ * Returns the paywall appearance settings for all fields that are not text based.
+ * This includes the color theme, branding choice, and font style.
+ *
+ * @return array
+ */
+function get_paywall_appearance_defaults(): array {
+	$paywall_appearance_defaults                             = [];
+	$paywall_appearance_defaults['coil_message_color_theme'] = 'light';
+	$paywall_appearance_defaults['coil_message_branding']    = 'coil_logo';
+	$paywall_appearance_defaults['coil_message_font']        = false;
+
+	return $paywall_appearance_defaults;
 }
 
 /**
@@ -555,6 +599,18 @@ function get_exlusive_post_appearance_setting( $field_id ): bool {
 }
 
 /**
+ * Returns the padlock default as true.
+ *
+ * @return array
+ */
+function get_exclusive_post_defaults(): array {
+	$exclusive_post_defaults                       = [];
+	$exclusive_post_defaults['coil_title_padlock'] = true;
+
+	return $exclusive_post_defaults;
+}
+
+/**
  * @return array Valid visibility states - Public or Exclusive.
  */
 function get_visibility_types() : array {
@@ -565,4 +621,24 @@ function get_visibility_types() : array {
 	];
 
 	return $visibility_types;
+}
+
+/**
+ * Returns the visibility default which is 'public' for all post types.
+ *
+ * @return string
+ */
+function get_post_visibility_default() {
+
+	return 'public';
+}
+
+/**
+* Returns the default excerpt dialay for all post types which is to not diplay.
+*
+* @return boolean
+*/
+function get_excerpt_visibility_default() {
+
+	return false;
 }
