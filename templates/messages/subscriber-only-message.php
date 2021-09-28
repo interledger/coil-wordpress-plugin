@@ -14,8 +14,5 @@
 				<a target="_blank" href="{{data.button.href}}" class="coil-message-button">{{data.button.text}}</a>
 			<# } #>
 		</div>
-		<div class="coil-message-footer">
-			<p class="coil-footer-content"><?php esc_html_e( 'Already a member? Check that you\'re using a supported browser, have the Coil extension installed, and are logged in to your Coil account.', 'coil-web-monetization' ); ?></p>
-		</div>
 	</div>
 </script>

@@ -7,15 +7,16 @@
 	}
 
 	const contentContainer = coilParams.content_container,
-		fullyGated = coilParams.fully_gated,
+		paywallTitle = coilParams.paywall_title,
+		paywallMessage = coilParams.paywall_message,
 		unableToVerify = coilParams.unable_to_verify,
 		voluntaryDonation = coilParams.voluntary_donation,
 		loadingContent = coilParams.loading_content,
 		partialGating = coilParams.partial_gating,
 		postExcerpt = coilParams.post_excerpt,
 		adminMissingIdNotice = coilParams.admin_missing_id_notice,
-		learnMoreButtonText = coilParams.learn_more_button_text,
-		learnMoreButtonLink = coilParams.learn_more_button_link,
+		paywallButtonText = coilParams.paywall_button_text,
+		paywallButtonLink = coilParams.learn_more_button_link,
 		coilMessageBranding = coilParams.coil_message_branding,
 		siteLogo = coilParams.site_logo,
 		coilLogo = coilParams.coil_logo,
@@ -105,11 +106,11 @@
 
 		const modalData = {
 			headerLogo: brandingLogo,
-			title: 'This content is for Paying Viewers Only',
+			title: paywallTitle,
 			content: message,
 			button: {
-				text: learnMoreButtonText,
-				href: learnMoreButtonLink,
+				text: paywallButtonText,
+				href: paywallButtonLink,
 			},
 		};
 
@@ -128,8 +129,8 @@
 		const modalData = {
 			content: message,
 			button: {
-				text: learnMoreButtonText,
-				href: learnMoreButtonLink,
+				text: paywallButtonText,
+				href: paywallButtonLink,
 			},
 		};
 
@@ -352,7 +353,7 @@
 		$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'coil-extension-not-found' );
 
 		if ( isSubscribersOnly() ) {
-			$( contentContainer ).before( showSubscriberOnlyMessage( fullyGated ) );
+			$( contentContainer ).before( showSubscriberOnlyMessage( paywallMessage ) );
 
 			if ( isExcerptEnabled() && getContentExcerpt() ) {
 				document.body.classList.add( 'show-excerpt-message' );

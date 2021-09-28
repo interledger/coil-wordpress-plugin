@@ -87,27 +87,6 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 				}
 			}
 		}
-
-		.coil-message-footer {
-			border-top: 1px solid $message_border_colour;
-			padding-top: $message_spacing_baseline * 1;
-
-			@media only screen and (min-width: $message_desktop_breakpoint) {
-				padding-top: $message_spacing_baseline * 2;
-			}
-
-			.coil-footer-content {
-				font-size: 12px;
-				line-height: 17px;
-				margin: 0 auto;
-				max-width: 720px;
-
-				@media only screen and (min-width: $message_desktop_breakpoint) {
-					font-size: 14px;
-					line-height: 22px;
-				}
-			}
-		}
 	}
 
 	// Changes to implement dark theme
@@ -128,10 +107,6 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 					background-color: $message_content_conceal_colour_dark_theme;
 				}
 			}
-		}
-
-		.coil-message-footer {
-			border-top: 1px solid $message_border_colour_dark_theme;
 		}
 	}
 

@@ -472,6 +472,22 @@ function get_paywall_apprearance_text_defaults() {
 }
 
 /**
+ * Retrieve the paywall text fields.
+ * If a value has been set then return it, otherwise return the default.
+ * This includes the title, message, button text and button link
+ *
+ * @return string Text field value
+ */
+function get_paywall_appearance_text_settings_or_default( $field_id ) {
+	$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
+	if ( in_array( $field_id, $text_fields ) ) {
+		$value = get_paywall_appearance_setting( $field_id ) === '' ? get_paywall_appearance_setting( $field_id, true ) : get_paywall_appearance_setting( $field_id );
+		return $value;
+	}
+	return '';
+}
+
+/**
  * Retrieve the paywall appearance settings
  * using a key from coil_exclusive_settings_group (serialized).
  *
@@ -569,8 +585,8 @@ function get_inherited_font_setting( $field_id ) {
 function get_paywall_appearance_defaults(): array {
 	$paywall_appearance_defaults = [
 		'coil_message_color_theme' => 'light',
-		'coil_message_branding' => 'coil_logo',
-		'coil_message_font' => false,
+		'coil_message_branding'    => 'coil_logo',
+		'coil_message_font'        => false,
 	];
 
 	return $paywall_appearance_defaults;
@@ -660,4 +676,46 @@ function get_css_selector_setting( $field_name ) {
 	} else {
 		return '';
 	}
+}
+
+/**
+ * Retrieve the Floating Button settings.
+ * @return array Setting stored in options.
+ */
+function get_floating_button_settings() : array {
+
+	$floating_button_settings = get_option( 'coil_floating_button_settings_group', [] );
+	if ( empty( $floating_button_settings ) ) {
+		$floating_button_settings = [];
+	}
+
+	return $floating_button_settings;
+}
+
+/**
+ * Retrieve the checkbox value for whether or not to display the Promotion Bar.
+ * @param string $field_name
+ * @return string Setting stored in options.
+ */
+function get_floating_button_setting( $field_id ) {
+	$floating_button_settings = get_floating_button_settings();
+	if ( $field_id === 'coil_show_donation_bar' ) {
+		$value = isset( $floating_button_settings[ $field_id ] ) ? $floating_button_settings[ $field_id ] : false;
+	}
+	return $value;
+}
+
+function get_set_message_fields( $field_id ) {
+	switch ( $field_id ) {
+		case 'coil_unable_to_verify_message':
+			return '';
+		case 'coil_voluntary_donation_message':
+			return '';
+		case 'coil_verifying_status_message':
+			return '';
+		case 'coil_partially_gated_content_message':
+			return '';
+
+	}
+
 }

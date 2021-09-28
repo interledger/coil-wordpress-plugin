@@ -130,12 +130,12 @@ function register_admin_content_settings() {
 		'coil_css_selector_section'
 	);
 
-	// // Tab 4 - Floating Button
-	// register_setting(
-	// 	'coil_floating_button_settings_group',
-	// 	'coil_floating_button_settings_group',
-	// 	__NAMESPACE__ . '\coil_floating_button_settings_group_validation'
-	// );
+	// Tab 4 - Floating Button
+	register_setting(
+		'coil_floating_button_settings_group',
+		'coil_floating_button_settings_group',
+		__NAMESPACE__ . '\coil_floating_button_settings_group_validation'
+	);
 
 	// // ==== Enable / Disable
 	// add_settings_section(
@@ -144,6 +144,14 @@ function register_admin_content_settings() {
 	// 	__NAMESPACE__ . '\coil_settings_enable_button_render_callback',
 	// 	'coil_enable_button_section'
 	// );
+
+	// ==== Button Settings
+	add_settings_section(
+		'coil_promotion_bar_section',
+		false,
+		__NAMESPACE__ . '\coil_settings_promotion_render_callback',
+		'coil_promotion_bar_section'
+	);
 
 	// // ==== Button Settings
 	// add_settings_section(
@@ -287,7 +295,7 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 
 	foreach ( $text_fields as $field_name ) {
 
-		if ( $field_name === 'coil_learn_more_button_link' ) {
+		if ( $field_name === 'coil_paywall_button_link' ) {
 			$exclusive_settings[ $field_name ] = ( isset( $exclusive_settings[ $field_name ] ) ) ? esc_url_raw( $exclusive_settings[ $field_name ] ) : '';
 		} else {
 			// If no CSS selector is set then the default value must be used
@@ -321,6 +329,21 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 		$exclusive_settings[ $field_name ] = isset( $exclusive_settings[ $field_name ] ) ? true : false;
 	}
 	return $exclusive_settings;
+}
+
+/**
+ * Validates the checkbox that cntrols the display of the Promotion Bar.
+ *
+ * @param array $floating_button_settings The checkbox input field.
+ * @return array
+ */
+function coil_floating_button_settings_group_validation( $floating_button_settings ): array {
+	$checkbox_fields = [ 'coil_show_donation_bar' ];
+
+	foreach ( $checkbox_fields as $field_name ) {
+		$floating_button_settings[ $field_name ] = isset( $floating_button_settings[ $field_name ] ) ? true : false;
+	}
+	return $floating_button_settings;
 }
 
 /* ------------------------------------------------------------------------ *
@@ -868,34 +891,33 @@ function coil_paywall_appearance_text_field_settings_render_callback( $field_nam
 	}
 }
 
-// Need to edit this for the floating button
-// /**
-//  * Renders the output of the show donation bar footer checkbox
-//  * @return void
-//  */
-// function coil_show_donation_bar_settings_render_callback() {
+/**
+ * Renders the output of the show donation bar footer checkbox
+ * @return void
+ */
+function coil_settings_promotion_render_callback() {
 
-// 	/**
-// 	 * Specify the default checked state on the input from
-// 	 * any settings stored in the database. If the
-// 	 * input status is not set, default to checked
-// 	 */
-// 	$checked_input_value = Admin\get_appearance_settings( 'coil_show_donation_bar' );
+	/**
+	 * Specify the default checked state on the input from
+	 * any settings stored in the database. If the
+	 * input status is not set, default to checked
+	 */
+	$checked_input_value = Admin\get_floating_button_setting( 'coil_show_donation_bar' );
 
-// 	printf(
-// 		'<input type="%s" name="%s" id="%s" "%s">',
-// 		esc_attr( 'checkbox' ),
-// 		esc_attr( 'coil_appearance_settings_group[coil_show_donation_bar]' ),
-// 		esc_attr( 'display_donation_bar' ),
-// 		checked( 1, $checked_input_value, false )
-// 	);
+	printf(
+		'<input type="%s" name="%s" id="%s" "%s">',
+		esc_attr( 'checkbox' ),
+		esc_attr( 'coil_floating_button_settings_group[coil_show_donation_bar]' ),
+		esc_attr( 'coil_show_donation_bar' ),
+		checked( 1, $checked_input_value, false )
+	);
 
-// 	printf(
-// 		'<label for="%s">%s</label>',
-// 		esc_attr( 'display_donation_bar' ),
-// 		esc_html_e( 'Show the support creator message in a footer bar on posts that are Monetized and Public.', 'coil-web-monetization' )
-// 	);
-// }
+	printf(
+		'<label for="%s">%s</label>',
+		esc_attr( 'coil_show_donation_bar' ),
+		esc_html_e( 'Show the support creator message in a footer bar on posts that are monetized and publicly visible.', 'coil-web-monetization' )
+	);
+}
 
 /**
  * Creates dismissable welcome notice on coil admin screen
@@ -1092,7 +1114,7 @@ function render_coil_settings_screen() : void {
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=welcome' ); ?>" id="coil-welcome-settings" class="nav-tab <?php echo $active_tab === 'coil-welcome' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Welcome', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=general_settings' ); ?>" id="coil-general-settings" class="nav-tab <?php echo $active_tab === 'coil-general_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'General Settings', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=exclusive_settings' ); ?>" id="coil-exclusive-settings" class="nav-tab <?php echo $active_tab === 'coil-exclusive_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Exclusive Content', 'coil-web-monetization' ); ?></a>
-			<!-- <a href="<?php echo esc_url( '?page=coil_settings&tab=floating_button' ); ?>" id="coil-floating-button-settings" class="nav-tab <?php echo $active_tab === 'coil-floating_button' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Floating Button', 'coil-web-monetization' ); ?></a> -->
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=floating_button' ); ?>" id="coil-floating-button-settings" class="nav-tab <?php echo $active_tab === 'coil-floating_button' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Floating Button', 'coil-web-monetization' ); ?></a>
 
 		</h2>
 	</div>
@@ -1123,13 +1145,14 @@ function render_coil_settings_screen() : void {
 					do_settings_sections( 'coil_css_selector_section' );
 					submit_button();
 					break;
-				// case 'floating_button':
-				// 	settings_fields( 'coil_floating_button_settings_group' );
-				// 	do_settings_sections( 'coil_enable_button_section' );
-				// 	o_settings_sections( 'coil_floating_button_section' );
-				// 	o_settings_sections( 'coil_button_visibility_section' );
-				// 	submit_button();
-				// 	break;
+				case 'floating_button':
+					settings_fields( 'coil_floating_button_settings_group' );
+					do_settings_sections( 'coil_promotion_bar_section' );
+					// 	do_settings_sections( 'coil_enable_button_section' );
+					// 	do_settings_sections( 'coil_floating_button_section' );
+					// 	do_settings_sections( 'coil_button_visibility_section' );
+					submit_button();
+					break;
 			}
 			?>
 		</form>
