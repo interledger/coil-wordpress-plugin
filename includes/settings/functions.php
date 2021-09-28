@@ -240,8 +240,8 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 
 	// Defaults if setting fields are empty
 	$post_monetization_default = Admin\get_monetization_default();
-	$paywall_defaults = Admin\get_paywall_appearance_defaults();
-	$post_visibility_default = Admin\get_post_visibility_default();
+	$paywall_defaults          = Admin\get_paywall_appearance_defaults();
+	$post_visibility_default   = Admin\get_post_visibility_default();
 
 	// Monetization defaults are needed to check that the 'exclusive' and 'not-monetized' defaults are never set on a post type
 	$post_monetization_settings = Admin\get_general_settings();
@@ -271,7 +271,7 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 
 		// Validates excerpt display settings.
 		$excerpt_setting_key                        = $post_type->name . '_excerpt';
-		$excerpt_setting                           = isset( $exclusive_settings[ $excerpt_setting_key ] ) ? true : false;
+		$excerpt_setting                            = isset( $exclusive_settings[ $excerpt_setting_key ] ) ? true : false;
 		$exclusive_settings[ $excerpt_setting_key ] = $excerpt_setting;
 
 	}
@@ -503,7 +503,7 @@ function coil_settings_monetization_render_callback() {
 		$input_type           = 'radio';
 		$suffix               = 'monetization';
 		$monetization_options = Admin\get_general_settings();
-		post_type_defaults_table( $group, $columns, $input_type, $suffix, $monetization_options );
+		render_generic_post_type_table( $group, $columns, $input_type, $suffix, $monetization_options );
 	?>
 	</div>
 	<?php
@@ -747,12 +747,12 @@ function coil_settings_post_visibility_render_callback() {
 		);
 
 		// Using a function to generate the table with the global visibility radio button options.
-		$group              = 'coil_exclusive_settings_group';
-		$columns            = Admin\get_visibility_types();
-		$input_type         = 'radio';
-		$suffix             = 'visibility';
+		$group             = 'coil_exclusive_settings_group';
+		$columns           = Admin\get_visibility_types();
+		$input_type        = 'radio';
+		$suffix            = 'visibility';
 		$exclusive_options = Admin\get_exclusive_settings();
-		post_type_defaults_table( $group, $columns, $input_type, $suffix, $exclusive_options );
+		render_generic_post_type_table( $group, $columns, $input_type, $suffix, $exclusive_options );
 	?>
 	</div>
 	<?php
@@ -773,12 +773,12 @@ function coil_excerpts_visibility_render_callback() {
 		echo '<p>' . esc_html_e( 'Use the settings below to select whether to show a short excerpt for any pages, posts, or other content types you choose to gate access to. Support for displaying an excerpt may depend on your particular theme and setup of WordPress.', 'coil-web-monetization' ) . '</p>';
 
 		// Using a function to generate the table with the post type excerpt checkboxes.
-		$group                       = 'coil_exclusive_settings_group';
-		$columns                     = [ 'Display Excerpt' ];
-		$input_type                  = 'checkbox';
-		$suffix                      = 'excerpt';
+		$group             = 'coil_exclusive_settings_group';
+		$columns           = [ 'Display Excerpt' ];
+		$input_type        = 'checkbox';
+		$suffix            = 'excerpt';
 		$exclusive_options = Admin\get_exclusive_settings();
-		post_type_defaults_table( $group, $columns, $input_type, $suffix, $exclusive_options );
+		render_generic_post_type_table( $group, $columns, $input_type, $suffix, $exclusive_options );
 	?>
 	</div>
 	<?php
@@ -997,7 +997,7 @@ function admin_no_payment_pointer_notice() {
  * @param string $input_type checkbox or radio.
  * @param array $value_id_suffix The suffix that goes after the post type name to create an id for it.
  */
-function post_type_defaults_table( $settings_group, $column_names, $input_type, $value_id_suffix, $current_options ) {
+function render_generic_post_type_table( $settings_group, $column_names, $input_type, $value_id_suffix, $current_options ) {
 	$post_type_options = Coil\get_supported_post_types( 'objects' );
 
 	// If there are post types available, output them:
@@ -1416,9 +1416,9 @@ function maybe_load_database_defaults() {
 
 	if ( $monetization_settings === 'absent' ) {
 		// Monetization default is 'monetized'
-		$monetization_default = Admin\get_monetization_default();
+		$monetization_default      = Admin\get_monetization_default();
 		$new_monetization_settings = [];
-		$post_type_options = Coil\get_supported_post_types( 'objects' );
+		$post_type_options         = Coil\get_supported_post_types( 'objects' );
 
 		// Set monetization default for each post type
 		foreach ( $post_type_options as $post_type ) {
@@ -1443,12 +1443,12 @@ function maybe_load_database_defaults() {
 
 		$post_visibility_settings = [];
 		$excerpt_display_settings = [];
-		$post_type_options = Coil\get_supported_post_types( 'objects' );
+		$post_type_options        = Coil\get_supported_post_types( 'objects' );
 
 		// Set visibility and excerpt display default for each post type
 		foreach ( $post_type_options as $post_type ) {
 			$post_visibility_settings[ $post_type->name . '_visibility' ] = $post_visibility_default;
-			$excerpt_display_settings[ $post_type->name . '_excerpt' ] = $excerpt_display_default;
+			$excerpt_display_settings[ $post_type->name . '_excerpt' ]    = $excerpt_display_default;
 		}
 
 		// Merges all the sections together and updates the option group in the database.

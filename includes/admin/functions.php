@@ -448,7 +448,7 @@ function get_exclusive_settings(): array {
 
 	$exclusive_options = get_option( 'coil_exclusive_settings_group', [] );
 	if ( ! isset( $exclusive_options['coil_content_container'] ) ) {
-		$exclusive_options['coil_content_container'] = $defaults[ 'coil_content_container' ];
+		$exclusive_options['coil_content_container'] = $defaults['coil_content_container'];
 	}
 
 	return $exclusive_options;
@@ -483,7 +483,7 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
 
 	$exclusive_options = get_exclusive_settings();
 
-	$text_defaults = get_paywall_apprearance_text_defaults();
+	$text_defaults  = get_paywall_apprearance_text_defaults();
 	$style_defaults = get_paywall_appearance_defaults();
 
 	$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
@@ -522,7 +522,7 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
  */
 function get_theme_color_types() {
 
-	$theme_colors = [ 'light', 'dark', ];
+	$theme_colors = [ 'light', 'dark' ];
 
 	return $theme_colors;
 }
@@ -567,10 +567,11 @@ function get_inherited_font_setting( $field_id ) {
  * @return array
  */
 function get_paywall_appearance_defaults(): array {
-	$paywall_appearance_defaults                             = [];
-	$paywall_appearance_defaults['coil_message_color_theme'] = 'light';
-	$paywall_appearance_defaults['coil_message_branding']    = 'coil_logo';
-	$paywall_appearance_defaults['coil_message_font']        = false;
+	$paywall_appearance_defaults = [
+		'coil_message_color_theme' => 'light';
+		'coil_message_branding' => 'coil_logo';
+		'coil_message_font' => false;,
+	];
 
 	return $paywall_appearance_defaults;
 }
@@ -604,8 +605,7 @@ function get_exlusive_post_appearance_setting( $field_id ): bool {
  * @return array
  */
 function get_exclusive_post_defaults(): array {
-	$exclusive_post_defaults                       = [];
-	$exclusive_post_defaults['coil_title_padlock'] = true;
+	$exclusive_post_defaults[ 'coil_title_padlock' => true ];
 
 	return $exclusive_post_defaults;
 }
@@ -648,7 +648,7 @@ function get_excerpt_visibility_default() {
  * @param string $field_name
  * @return string Setting stored in options.
  */
-function get_css_selector_setting( $field_name) {
+function get_css_selector_setting( $field_name ) {
 
 	if ( $field_name === 'coil_content_container' ) {
 		$exclusive_options = get_exclusive_settings();
