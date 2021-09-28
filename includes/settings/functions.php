@@ -1430,7 +1430,7 @@ function maybe_load_database_defaults() {
 	if ( $exclusive_settings === 'absent' ) {
 		$exclusive_settings          = [];
 		$post_visibility_settings    = Admin\get_post_visibility_default();
-		$excerpt_visibility_settings = Adminget_excerpt_visibility_defaults();
+		$excerpt_visibility_settings = Admin\get_excerpt_visibility_default();
 		$exclusive_post_settings     = Admin\get_exclusive_post_defaults();
 		$paywall_appearance_settings = Admin\get_paywall_appearance_defaults();
 
