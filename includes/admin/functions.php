@@ -480,7 +480,7 @@ function get_paywall_apprearance_text_defaults() {
  */
 function get_paywall_appearance_text_settings_or_default( $field_id ) {
 	$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
-	if ( in_array( $field_id, $text_fields ) ) {
+	if ( in_array( $field_id, $text_fields, true ) ) {
 		$value = get_paywall_appearance_setting( $field_id ) === '' ? get_paywall_appearance_setting( $field_id, true ) : get_paywall_appearance_setting( $field_id );
 		return $value;
 	}
