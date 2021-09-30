@@ -1290,16 +1290,75 @@ function dismiss_welcome_notice() {
  * @return void
  */
 function maybe_update_database() {
+	// maybe_load_database_defaults function must be called first becasue it loads neccessary defaults but only if the option group is empty.
+	// The transfer functions will override the defaults that were loaded if neccessary.
 	maybe_load_database_defaults();
+
+	// Transfer settings saved in the customizer
 	transfer_customizer_message_settings();
 	transfer_customizer_appearance_settings();
+
+	// Transfer settings saved in version 1.9 of the plugin where deprecated option groups are being used in the wp_options table
+	transfer_version_1_9_panel_settings();
 }
 
+/**
+ * If certain database entries are empty this functions adds them.
+ * This includes the post monetization defaults, paywall appearance settings,
+ * exclusive post settings, and post and excerpt visibility settings.
+ *
+ * @return void
+ */
+function maybe_load_database_defaults() {
+
+	// Loads monetization defaults if they have not yet been entered into the database
+	$monetization_settings = get_option( 'coil_general_settings_group', 'absent' );
+
+	if ( $monetization_settings === 'absent' ) {
+		// Monetization default is 'monetized'
+		$monetization_default      = Admin\get_monetization_default();
+		$new_monetization_settings = [];
+		$post_type_options         = Coil\get_supported_post_types( 'objects' );
+
+		// Set monetization default for each post type
+		foreach ( $post_type_options as $post_type ) {
+			$new_monetization_settings[ $post_type->name . '_monetization' ] = $monetization_default;
+		}
+		add_option( 'coil_general_settings_group', $new_monetization_settings );
+	}
+
+	// Loads applicable exclusive setting defaults if they have not yet been entered into the database.
+	// This includes paywall appearance settings, exclusive post settings, post visibility, and excerpt display settings.
+	$exclusive_settings = get_option( 'coil_exclusive_settings_group', 'absent' );
+
+	if ( $exclusive_settings === 'absent' ) {
+
+		$paywall_appearance_settings = Admin\get_paywall_appearance_defaults();
+		$exclusive_post_settings     = Admin\get_exclusive_post_defaults();
+
+		// Visibility default is 'public'
+		$post_visibility_default = Admin\get_post_visibility_default();
+		// Excerpt display default is false
+		$excerpt_display_default = Admin\get_excerpt_display_default();
+
+		$post_visibility_settings = [];
+		$excerpt_display_settings = [];
+		$post_type_options        = Coil\get_supported_post_types( 'objects' );
+
+		// Set post visibility and excerpt display default for each post type
+		foreach ( $post_type_options as $post_type ) {
+			$post_visibility_settings[ $post_type->name . '_visibility' ] = $post_visibility_default;
+			$excerpt_display_settings[ $post_type->name . '_excerpt' ]    = $excerpt_display_default;
+		}
+
+		// Merges all the sections together and updates the option group in the database.
+		$new_exclusive_settings = array_merge( $paywall_appearance_settings, $exclusive_post_settings, $post_visibility_settings, $excerpt_display_settings );
+		add_option( 'coil_exclusive_settings_group', $new_exclusive_settings );
+	}
+}
 
 /**
- * Translate customizer settings
- *
- * If a user has message settings which they saved in the customizer, switch them to settings saved in the wp_options table
+ * Transfer settings saved in version 1.9 of the plugin where deprecated option groups are being used in the wp_options table
  *
  * @return void
  *
@@ -1436,58 +1495,108 @@ function transfer_customizer_appearance_settings() {
 		}
 	}
 }
-
 /**
- * If certain database entries are empty this functions adds them.
- * This includes the post monetization defaults, paywall appearance settings,
- * exclusive post settings, and post and excerpt visibility settings.
+ * Translate settings in version 1.9
+ *
+ * If a user has message settings which they saved in the customizer, switch them to settings saved in the wp_options table
  *
  * @return void
+ *
  */
-function maybe_load_database_defaults() {
+function transfer_version_1_9_panel_settings() {
 
-	// Loads monetization defaults if they have not yet been entered into the database
-	$monetization_settings = get_option( 'coil_general_settings_group', 'absent' );
+	// Retrieve all current option groups from the database
+	$welcome_settings = get_option( 'coil_welcome_settings_group', [] );
+	$general_settings = get_option( 'coil_general_settings_group', [] );
+	$exclusive_settings = get_option( 'coil_exclusive_settings_group', [] );
+	$floating_button_settings = get_option( 'coil_floating_button_settings_group', [] );
 
-	if ( $monetization_settings === 'absent' ) {
-		// Monetization default is 'monetized'
-		$monetization_default      = Admin\get_monetization_default();
-		$new_monetization_settings = [];
-		$post_type_options         = Coil\get_supported_post_types( 'objects' );
+	$new_welcome_settings = [];
+	$new_general_settings = [];
+	$new_exclusive_settings = [];
+	$new_floating_button_settings = [];
 
-		// Set monetization default for each post type
-		foreach ( $post_type_options as $post_type ) {
-			$new_monetization_settings[ $post_type->name . '_monetization' ] = $monetization_default;
+	$global_settings = get_option( 'coil_global_settings_group', 'absent' );
+	if ( $global_settings !== 'absent' ) {
+		if (isset( $global_settings[ 'coil_payment_pointer' ] ) ) {
+			$new_welcome_settings[] =
 		}
-		add_option( 'coil_general_settings_group', $new_monetization_settings );
+		if (isset( $global_settings[ 'coil_content_container' ] ) ) {
+			$new_exclusive_settings[] =
+		}
+		remove_option( $global_settings );
 	}
 
-	// Loads applicable exclusive setting defaults if they have not yet been entered into the database.
-	// This includes paywall appearance settings, exclusive post settings, post visibility, and excerpt display settings.
-	$exclusive_settings = get_option( 'coil_exclusive_settings_group', 'absent' );
-
-	if ( $exclusive_settings === 'absent' ) {
-
-		$paywall_appearance_settings = Admin\get_paywall_appearance_defaults();
-		$exclusive_post_settings     = Admin\get_exclusive_post_defaults();
-
-		// Visibility default is 'public'
-		$post_visibility_default = Admin\get_post_visibility_default();
-		// Excerpt display default is false
-		$excerpt_display_default = Admin\get_excerpt_display_default();
-
-		$post_visibility_settings = [];
-		$excerpt_display_settings = [];
-		$post_type_options        = Coil\get_supported_post_types( 'objects' );
-
-		// Set post visibility and excerpt display default for each post type
-		foreach ( $post_type_options as $post_type ) {
-			$post_visibility_settings[ $post_type->name . '_visibility' ] = $post_visibility_default;
-			$excerpt_display_settings[ $post_type->name . '_excerpt' ]    = $excerpt_display_default;
+	$monetization_settings = get_option( 'coil_content_settings_posts_group', 'absent' );
+	if ( $monetization_settings !== 'absent' ) {
+		if (isset( $monetization_settings[ /*all post types - coil_content_settings_posts*/ ] ) ) {
+			$new_general_settings[] =
 		}
+		remove_option( $monetization_settings );
+	}
 
-		// Merges all the sections together and updates the option group in the database.
-		$new_exclusive_settings = array_merge( $paywall_appearance_settings, $exclusive_post_settings, $post_visibility_settings, $excerpt_display_settings );
-		add_option( 'coil_exclusive_settings_group', $new_exclusive_settings );
+	$excerpt_settings = get_option( 'coil_content_settings_excerpt_group' 'absent' );
+	if ( $excerpt_settings !== 'absent' ) {
+		if (isset( $excerpt_settings[ /*all post types - coil_content_settings_excerpts*/ ] ) ) {
+			$new_exclusive_settings[] =
+		}
+		remove_option( $excerpt_settings );
+	}
+
+	$message_settings = get_option( 'coil_messaging_settings_group' 'absent' );
+	if ( $message_settings !== 'absent' ) {
+		if (isset( $message_settings[ 'coil_fully_gated_content_message' ] ) ) {
+			$new_exclusive_settings[]=
+		}
+		if (isset( $message_settings[ 'coil_learn_more_button_text' ] ) ) {
+			$new_exclusive_settings[] =
+		}
+		if (isset( $message_settings[ 'coil_learn_more_button_link' ] ) ) {
+			$new_exclusive_settings[] =
+		}
+		remove_option( $message_settings );
+	}		
+
+	$appearance_settings = get_option( 'coil_appearance_settings_group' 'absent' );
+	if ( $appearance_settings !== 'absent' ) {
+		if (isset( $appearance_settings[ 'coil_title_padlock' ] ) ) {
+			$new_exclusive_settings[] =
+		}
+		if (isset( $appearance_settings[ 'coil_show_promotion_bar' ] ) ) {
+			$new_floating_button_settings[] =
+		}
+		remove_option( $appearance_settings );
+	}
+
+	// Update all option groups
+	if ( $new_welcome_settings !== [] ) {
+		if ( $welcome_settings === 'absent' ) {
+			add_option( 'coil_welcome_settings_group', $new_welcome_settings );
+		} else {
+			update_option( 'coil_welcome_settings_group', array_merge( $welcome_settings, $new_welcome_settings );
+		}
+	}
+	if ( $new_general_settings !== [] ) {
+		if ( $general_settings === 'absent' ) {
+			add_option( 'coil_general_settings_group', $new_general_settings );
+		} else {
+			update_option( 'coil_general_settings_group', array_merge( $general_settings, $new_general_settings );
+		}
+	}
+
+	if ( $new_exclusive_settings !== [] ) {
+		if ( $exclusive_settings === 'absent' ) {
+			add_option( 'coil_exclusive_settings_group', $new_exclusive_settings );
+		} else {
+			update_option( 'coil_exclusive_settings_group', array_merge( $exclusive_settings, $new_exclusive_settings );
+		}
+	}
+
+	if ( $new_floating_button_settings !== [] ) {
+		if ( $floating_button_settings === 'absent' ) {
+			add_option( 'coil_floating_button_settings_group', $new_floating_button_settings );
+		} else {
+			update_option( 'coil_floating_button_settings_group', array_merge( $floating_button_settings, $new_floating_button_settings );
+		}
 	}
 }
