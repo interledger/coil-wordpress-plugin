@@ -326,12 +326,12 @@ function add_redirect_customizer_section( $wp_customize ) : void {
 	);
 
 	$description  = '<p>' . sprintf(
-		__( 'Message customization settings have moved to the ', 'coil-web-monetization' ) . '<a href="%s">' . __( 'Messaging Settings tab', 'coil-web-monetization' ) . '</a>',
-		esc_url( admin_url( 'admin.php?page=coil_settings&tab=messaging_settings', COIL__FILE__ ) )
+		__( 'Message customization and post visibility settings have moved to the ', 'coil-web-monetization' ) . '<a href="%s">' . __( 'Exclusive Content tab', 'coil-web-monetization' ) . '</a>' . '.',
+		esc_url( admin_url( 'admin.php?page=coil_settings&tab=exclusive_settings', COIL__FILE__ ) )
 	) . '</p>';
 	$description .= '<p>' . sprintf(
-		__( 'Monetization options have been moved to the ', 'coil-web-monetization' ) . '<a href="%s">' . __( 'Monetization Settings tab.', 'coil-web-monetization' ) . '</a>',
-		esc_url( admin_url( 'admin.php?page=coil_settings&tab=monetization_settings', COIL__FILE__ ) )
+		__( 'Monetization options have been moved to the ', 'coil-web-monetization' ) . '<a href="%s">' . __( 'General Settings tab', 'coil-web-monetization' ) . '</a>' . '.',
+		esc_url( admin_url( 'admin.php?page=coil_settings&tab=general_settings', COIL__FILE__ ) )
 	) . '</p>';
 
 	$wp_customize->add_control(

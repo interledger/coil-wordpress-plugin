@@ -9,14 +9,13 @@
 	const contentContainer = coilParams.content_container,
 		paywallTitle = coilParams.paywall_title,
 		paywallMessage = coilParams.paywall_message,
-		unableToVerify = coilParams.unable_to_verify,
 		voluntaryDonation = coilParams.voluntary_donation,
 		loadingContent = coilParams.loading_content,
 		partialGating = coilParams.partial_gating,
 		postExcerpt = coilParams.post_excerpt,
 		adminMissingIdNotice = coilParams.admin_missing_id_notice,
 		paywallButtonText = coilParams.paywall_button_text,
-		paywallButtonLink = coilParams.learn_more_button_link,
+		paywallButtonLink = coilParams.paywall_button_link,
 		coilMessageBranding = coilParams.coil_message_branding,
 		siteLogo = coilParams.site_logo,
 		coilLogo = coilParams.coil_logo,
@@ -255,15 +254,15 @@
 			if ( isSubscribersOnly() ) {
 				if ( isExcerptEnabled() && getContentExcerpt() ) {
 					document.body.classList.add( 'show-excerpt-message' );
-					$( contentContainer ).before( showSubscriberOnlyMessage( unableToVerify ) );
+					$( contentContainer ).before( showSubscriberOnlyMessage( paywallMessage ) );
 					$( contentContainer ).prepend( getContentExcerpt() );
 				} else {
 					document.body.classList.add( 'show-fw-message' );
-					$( contentContainer ).before( showSubscriberOnlyMessage( unableToVerify ) );
+					$( contentContainer ).before( showSubscriberOnlyMessage( paywallMessage ) );
 				}
 			} else if ( isSplitContent() ) {
 				// Split content and unable to verify hidden content.
-				$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( unableToVerify ) );
+				$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( paywallMessage ) );
 
 				// Show non-Coil-members content.
 				// Removing class means blocks revert to their *original* display values.
@@ -278,7 +277,7 @@
 			} else {
 				// No tagged blocks.
 				document.body.classList.add( 'show-fw-message' );
-				document.querySelector( contentContainer ).before( showSubscriberOnlyMessage( unableToVerify ) );
+				document.querySelector( contentContainer ).before( showSubscriberOnlyMessage( paywallMessage ) );
 			}
 		}
 	}

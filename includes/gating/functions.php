@@ -203,7 +203,7 @@ function get_excerpt_gating( $post_id ) : bool {
 	$post_id   = (int) $post_id;
 	$post_type = get_post_type( $post_id );
 
-	$display_excerpt  = false;
+	$display_excerpt   = false;
 	$exclusive_options = Admin\get_exclusive_settings();
 	if ( ! empty( $exclusive_options ) && isset( $exclusive_options[ $post_type . '_excerpt' ] ) ) {
 		$display_excerpt = $exclusive_options[ $post_type . '_excerpt' ];
