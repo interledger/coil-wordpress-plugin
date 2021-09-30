@@ -10,7 +10,6 @@
 		paywallTitle = coilParams.paywall_title,
 		paywallMessage = coilParams.paywall_message,
 		loadingContent = coilParams.loading_content,
-		partialGating = coilParams.partial_gating,
 		postExcerpt = coilParams.post_excerpt,
 		adminMissingIdNotice = coilParams.admin_missing_id_notice,
 		paywallButtonText = coilParams.paywall_button_text,
@@ -361,7 +360,7 @@
 			}
 		} else if ( isSplitContent() ) {
 			// Split content with no extension found.
-			$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( partialGating ) );
+			$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( paywallMessage ) );
 
 			// Show non-coil-members content.
 			// Removing class means blocks revert to their *original* display values.

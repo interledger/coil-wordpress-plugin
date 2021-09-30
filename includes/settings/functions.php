@@ -1341,8 +1341,9 @@ function transfer_customizer_message_settings() {
 	}
 
 	// Using 'null' for comparrison becasue custom messages that were deleted remain in the database with the value false, but still need to be removed.
+
+	// Message has been deprecated
 	if ( get_theme_mod( $coil_partial_gating_message, 'null' ) !== 'null' ) {
-		$messaging_settings['coil_partially_gated_content_message'] = get_theme_mod( $coil_partial_gating_message );
 		remove_theme_mod( $coil_partial_gating_message );
 	}
 	if ( get_theme_mod( $coil_unsupported_message, 'null' ) !== 'null' ) {

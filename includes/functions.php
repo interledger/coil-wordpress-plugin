@@ -195,7 +195,6 @@ function load_full_assets() : void {
 			'paywall_title'           => Admin\get_paywall_text_settings_or_default( 'coil_paywall_title' ),
 			'loading_content'         => Admin\get_set_message_fields( 'coil_verifying_status_message' ),
 			'paywall_message'         => Admin\get_paywall_text_settings_or_default( 'coil_paywall_message' ),
-			'partial_gating'          => Admin\get_paywall_text_settings_or_default( 'coil_paywall_message' ),
 			'paywall_button_text'     => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_text' ),
 			'paywall_button_link'     => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_link' ),
 			'show_donation_bar'       => Admin\get_floating_button_setting( 'coil_show_donation_bar' ),
