@@ -128,7 +128,7 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 
 /**
  * Maybe restrict (gate) visibility of the post content on archive pages, home pages, and feeds.
- * If the post is gated then no excerpt will show unless one as been set explicitly.
+ * If the post is gated then no excerpt will show unless one has been set explicitly.
  *
  * @param string $content Post content.
  *
@@ -204,9 +204,9 @@ function get_excerpt_gating( $post_id ) : bool {
 	$post_type = get_post_type( $post_id );
 
 	$display_excerpt  = false;
-	$excerpt_settings = get_global_excerpt_settings();
-	if ( ! empty( $excerpt_settings ) && isset( $excerpt_settings[ $post_type ] ) ) {
-		$display_excerpt = $excerpt_settings[ $post_type ];
+	$exclusive_options = Admin\get_exclusive_settings();
+	if ( ! empty( $exclusive_options ) && isset( $exclusive_options[ $post_type . '_excerpt' ] ) ) {
+		$display_excerpt = $exclusive_options[ $post_type . '_excerpt' ];
 	}
 	return $display_excerpt;
 }
@@ -349,22 +349,6 @@ function get_global_posts_gating() : array {
 	$global_settings = get_option( 'coil_content_settings_posts_group', [] );
 	if ( ! empty( $global_settings ) ) {
 		return $global_settings;
-	}
-
-	return [];
-}
-
-/**
- * Get whatever settings are stored in the plugin as the default
- * excerpt settings for the various content types.
- *
- * @return void
- */
-function get_global_excerpt_settings() {
-
-	$global_excerpt_settings = get_option( 'coil_content_settings_excerpt_group', [] );
-	if ( ! empty( $global_excerpt_settings ) ) {
-		return $global_excerpt_settings;
 	}
 
 	return [];

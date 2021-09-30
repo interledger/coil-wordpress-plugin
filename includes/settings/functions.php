@@ -116,10 +116,10 @@ function register_admin_content_settings() {
 
 	// ==== Excerpt Visibility Defaults
 	add_settings_section(
-		'coil_excerpt_visibility_section',
+		'coil_excerpt_display_section',
 		false,
-		__NAMESPACE__ . '\coil_excerpts_visibility_render_callback',
-		'coil_excerpt_visibility_section'
+		__NAMESPACE__ . '\coil_excerpts_display_render_callback',
+		'coil_excerpt_display_section'
 	);
 
 	// ==== CSS Selectors
@@ -787,7 +787,7 @@ function coil_settings_post_visibility_render_callback() {
  *
  * @return void
  */
-function coil_excerpts_visibility_render_callback() {
+function coil_excerpts_display_render_callback() {
 
 	?>
 	<div class="coil tab-styling">
@@ -1141,7 +1141,7 @@ function render_coil_settings_screen() : void {
 					do_settings_sections( 'coil_paywall_section' );
 					do_settings_sections( 'coil_exclusive_post_section' );
 					do_settings_sections( 'coil_default_post_visibility_section' );
-					do_settings_sections( 'coil_excerpt_visibility_section' );
+					do_settings_sections( 'coil_excerpt_display_section' );
 					do_settings_sections( 'coil_css_selector_section' );
 					submit_button();
 					break;
@@ -1451,7 +1451,7 @@ function maybe_load_database_defaults() {
 	}
 
 	// Loads applicable exclusive setting defaults if they have not yet been entered into the database.
-	// This includes paywall appearance settings, exclusive post settings, and post and excerpt visibility settings.
+	// This includes paywall appearance settings, exclusive post settings, post visibility, and excerpt display settings.
 	$exclusive_settings = get_option( 'coil_exclusive_settings_group', 'absent' );
 
 	if ( $exclusive_settings === 'absent' ) {
@@ -1468,7 +1468,7 @@ function maybe_load_database_defaults() {
 		$excerpt_display_settings = [];
 		$post_type_options        = Coil\get_supported_post_types( 'objects' );
 
-		// Set visibility and excerpt display default for each post type
+		// Set post visibility and excerpt display default for each post type
 		foreach ( $post_type_options as $post_type ) {
 			$post_visibility_settings[ $post_type->name . '_visibility' ] = $post_visibility_default;
 			$excerpt_display_settings[ $post_type->name . '_excerpt' ]    = $excerpt_display_default;
