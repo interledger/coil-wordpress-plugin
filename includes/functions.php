@@ -193,7 +193,6 @@ function load_full_assets() : void {
 		[
 			'content_container'       => Admin\get_css_selector( 'coil_content_container' ),
 			'paywall_title'           => Admin\get_paywall_text_settings_or_default( 'coil_paywall_title' ),
-			'voluntary_donation'      => Admin\get_set_message_fields( 'coil_voluntary_donation_message' ),
 			'loading_content'         => Admin\get_set_message_fields( 'coil_verifying_status_message' ),
 			'paywall_message'         => Admin\get_paywall_text_settings_or_default( 'coil_paywall_message' ),
 			'partial_gating'          => Admin\get_paywall_text_settings_or_default( 'coil_paywall_message' ),

@@ -1360,8 +1360,8 @@ function transfer_customizer_message_settings() {
 		remove_theme_mod( $coil_unable_to_verify_message );
 	}
 
+	// Message has been deprecated
 	if ( get_theme_mod( $coil_voluntary_donation_message, 'null' ) !== 'null' ) {
-		$messaging_settings['coil_voluntary_donation_message'] = get_theme_mod( $coil_voluntary_donation_message );
 		remove_theme_mod( $coil_voluntary_donation_message );
 	}
 

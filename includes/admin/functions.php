@@ -707,8 +707,6 @@ function get_floating_button_setting( $field_id ) {
 
 function get_set_message_fields( $field_id ) {
 	switch ( $field_id ) {
-		case 'coil_voluntary_donation_message':
-			return __( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', 'coil-web-monetization' );
 		case 'coil_verifying_status_message':
 			return __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' );
 	}

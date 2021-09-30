@@ -19,7 +19,6 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 	 * @var \WP_Post[] message ID's.
 	*/
 	protected static $id = [
-		'donation_bar'                    => 'coil_voluntary_donation_message',
 		'pending'                         => 'coil_verifying_status_message',
 		'paywall_message'                 => 'coil_paywall_message',
 		'partially_gated'                 => 'coil_paywall_message',
@@ -41,7 +40,6 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the message defaults that were retrieved
 		$defaults = [
-			self::$id['donation_bar']    => 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…',
 			self::$id['pending']         => 'Verifying Web Monetization status. Please wait...',
 			self::$id['paywall_message'] => 'Unlock exclusive content with Coil. Need a Coil account?',
 			self::$id['partially_gated'] => 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.',
@@ -51,7 +49,6 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the message defaults that were retrieved
 		$retrieved_messages = [
-			self::$id['donation_bar']    => Admin\get_paywall_text_settings_or_default( self::$id['donation_bar'] ),
 			self::$id['pending']         => Admin\get_paywall_text_settings_or_default( self::$id['pending'] ),
 			self::$id['paywall_message'] => Admin\get_paywall_text_settings_or_default( self::$id['paywall_message'] ),
 			self::$id['partially_gated'] => Admin\get_paywall_text_settings_or_default( self::$id['partially_gated'] ),
@@ -72,7 +69,6 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Adding custom messages to the database
 		$custom_message = [
-			self::$id['donation_bar']    => 'Voluntary donation',
 			self::$id['pending']         => 'Loading content',
 			self::$id['paywall_message'] => 'Fully gated',
 			self::$id['partially_gated'] => 'Partially gated',
@@ -83,7 +79,6 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the messages that were retrieved
 		$retrieved_message = [
-			self::$id['donation_bar']    => Admin\get_paywall_text_settings_or_default( self::$id['donation_bar'] ),
 			self::$id['pending']         => Admin\get_paywall_text_settings_or_default( self::$id['pending'] ),
 			self::$id['paywall_message'] => Admin\get_paywall_text_settings_or_default( self::$id['paywall_message'] ),
 			self::$id['partially_gated'] => Admin\get_paywall_text_settings_or_default( self::$id['partially_gated'] ),
@@ -114,7 +109,6 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the messages that were retrieved
 		$message = [
-			self::$id['donation_bar']    => Admin\get_paywall_text_settings_or_default( self::$id['donation_bar'] ),
 			self::$id['pending']         => Admin\get_paywall_text_settings_or_default( self::$id['pending'] ),
 			self::$id['paywall_message'] => Admin\get_paywall_text_settings_or_default( self::$id['paywall_message'] ),
 			self::$id['partially_gated'] => Admin\get_paywall_text_settings_or_default( self::$id['partially_gated'] ),
@@ -123,7 +117,6 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		];
 
 		// Checking that all messages that were retrieved are correct
-		$this->assertSame( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', $message[ self::$id['donation_bar'] ] );
 		$this->assertSame( $custom_message[ self::$id['pending'] ], $message[ self::$id['pending'] ] );
 		$this->assertSame( $custom_message[ self::$id['paywall_message'] ], $message[ self::$id['paywall_message'] ] );
 		$this->assertSame( 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.', $message[ self::$id['partially_gated'] ] );
@@ -154,7 +147,6 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the messages that were retrieved from the wp_options table.
 		$message = [
-			self::$id['donation_bar']    => Admin\get_paywall_text_settings_or_default( self::$id['donation_bar'] ),
 			self::$id['pending']         => Admin\get_paywall_text_settings_or_default( self::$id['pending'] ),
 			self::$id['paywall_message'] => Admin\get_paywall_text_settings_or_default( self::$id['paywall_message'] ),
 			self::$id['partially_gated'] => Admin\get_paywall_text_settings_or_default( self::$id['partially_gated'] ),
@@ -163,7 +155,6 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		];
 
 		// Checking that all messages that were retrieved are correct
-		$this->assertSame( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', $message[ self::$id['donation_bar'] ] );
 		$this->assertSame( 'Loading content', $message[ self::$id['pending'] ] );
 		$this->assertSame( 'Fully gated', $message[ self::$id['paywall_message'] ] );
 		$this->assertSame( 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.', $message[ self::$id['partially_gated'] ] );
@@ -172,7 +163,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Checking that the theme_mod messages have been removed
 		$this->assertFalse( get_theme_mod( self::$id['unverified'] ) );
-		$this->assertFalse( get_theme_mod( self::$id['donation_bar'] ) );
+		$this->assertFalse( get_theme_mod( 'coil_voluntary_donation_message' ) );
 		$this->assertFalse( get_theme_mod( self::$id['pending'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['paywall_message'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['partially_gated'] ) );
@@ -193,7 +184,6 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Adding custom messages to the database from the settings panel
 		$settings_panel_messages = [
-			self::$id['donation_bar'] => 'Voluntary donation',
 			self::$id['pending']      => 'Please be patient while content loads.',
 			self::$id['button_text']  => '',
 		];
@@ -215,7 +205,6 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the messages that were retrieved from the wp_options table.
 		$message = [
-			self::$id['donation_bar']    => Admin\get_paywall_text_settings_or_default( self::$id['donation_bar'] ),
 			self::$id['pending']         => Admin\get_paywall_text_settings_or_default( self::$id['pending'] ),
 			self::$id['paywall_message'] => Admin\get_paywall_text_settings_or_default( self::$id['paywall_message'] ),
 			self::$id['partially_gated'] => Admin\get_paywall_text_settings_or_default( self::$id['partially_gated'] ),
@@ -224,7 +213,6 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		];
 
 		// Checking that all messages that were retrieved are correct
-		$this->assertSame( 'Voluntary donation', $message[ self::$id['donation_bar'] ] );
 		$this->assertSame( 'Loading content', $message[ self::$id['pending'] ] );
 		$this->assertSame( 'Fully gated', $message[ self::$id['paywall_message'] ] );
 		$this->assertSame( 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.', $message[ self::$id['partially_gated'] ] );
@@ -233,7 +221,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Checking that the theme_mod messages have been removed
 		$this->assertFalse( get_theme_mod( self::$id['unverified'] ) );
-		$this->assertFalse( get_theme_mod( self::$id['donation_bar'] ) );
+		$this->assertFalse( get_theme_mod( 'coil_voluntary_donation_message' ) );
 		$this->assertFalse( get_theme_mod( self::$id['pending'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['paywall_message'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['partially_gated'] ) );

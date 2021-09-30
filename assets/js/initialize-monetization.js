@@ -9,7 +9,6 @@
 	const contentContainer = coilParams.content_container,
 		paywallTitle = coilParams.paywall_title,
 		paywallMessage = coilParams.paywall_message,
-		voluntaryDonation = coilParams.voluntary_donation,
 		loadingContent = coilParams.loading_content,
 		partialGating = coilParams.partial_gating,
 		postExcerpt = coilParams.post_excerpt,
@@ -271,7 +270,7 @@
 				showContentContainer();
 
 				if ( showDonationBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-					$( 'body' ).append( showBannerMessage( voluntaryDonation ) );
+					$( 'body' ).append( showBannerMessage() );
 					addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 				}
 			} else {
@@ -371,14 +370,14 @@
 			showContentContainer();
 
 			if ( showDonationBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-				$( 'body' ).append( showBannerMessage( voluntaryDonation ) );
+				$( 'body' ).append( showBannerMessage() );
 				addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 			}
 		} else if ( isMonetizedAndPublic() ) {
 			// Content is monetized and public but no extension found.
 
 			if ( showDonationBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-				$( 'body' ).append( showBannerMessage( voluntaryDonation ) );
+				$( 'body' ).append( showBannerMessage() );
 				addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 			}
 		}
@@ -437,7 +436,7 @@
 				showVerificationFailureMessage();
 			}, 5000 );
 		} else if ( showDonationBar && monetizationNotInitialized() && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-			$( 'body' ).append( showBannerMessage( voluntaryDonation ) );
+			$( 'body' ).append( showBannerMessage() );
 			addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 		}
 	}
@@ -474,7 +473,7 @@
 				} else if ( isMonetizedAndPublic() ) {
 					// Content is monetized and public but extension is stopped.
 					if ( showDonationBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-						$( 'body' ).append( showBannerMessage( voluntaryDonation ) );
+						$( 'body' ).append( showBannerMessage() );
 						addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 					}
 				}
