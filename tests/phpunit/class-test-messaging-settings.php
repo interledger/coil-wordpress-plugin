@@ -184,8 +184,8 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Adding custom messages to the database from the settings panel
 		$settings_panel_messages = [
-			self::$id['pending']      => 'Please be patient while content loads.',
-			self::$id['button_text']  => '',
+			self::$id['pending']     => 'Please be patient while content loads.',
+			self::$id['button_text'] => '',
 		];
 		update_option( 'coil_messaging_settings_group', $settings_panel_messages );
 

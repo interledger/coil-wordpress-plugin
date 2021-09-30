@@ -1472,7 +1472,7 @@ function transfer_customizer_appearance_settings() {
 
 	// The padlock display setting is now in the coil_exclusive_settings_group
 	if ( get_theme_mod( $coil_title_padlock, 'null' ) !== 'null' ) {
-		$existing_padlock_setting = get_option( 'coil_exclusive_settings_group', [] );
+		$existing_padlock_setting                   = get_option( 'coil_exclusive_settings_group', [] );
 		$new_padlock_settings['coil_title_padlock'] = get_theme_mod( $coil_title_padlock, true );
 		remove_theme_mod( $coil_title_padlock );
 		if ( false !== $existing_padlock_setting ) {
@@ -1485,7 +1485,7 @@ function transfer_customizer_appearance_settings() {
 	// The donation bar display setting is now in the coil_floating_button_settings_group.
 	// The donation bar has been deprecated and a floating button is taking its place instead.
 	if ( get_theme_mod( $coil_show_donation_bar, 'null' ) !== 'null' ) {
-		$existing_donation_bar_setting = get_option( 'coil_floating_button_settings_group', [] );
+		$existing_donation_bar_setting                   = get_option( 'coil_floating_button_settings_group', [] );
 		$new_donation_bar_settings['coil_title_padlock'] = get_theme_mod( $coil_show_donation_bar, true );
 		remove_theme_mod( $coil_show_donation_bar );
 		if ( false !== $existing_donation_bar_setting ) {
@@ -1506,22 +1506,22 @@ function transfer_customizer_appearance_settings() {
 function transfer_version_1_9_panel_settings() {
 
 	// Retrieve all current option groups from the database
-	$welcome_settings = get_option( 'coil_welcome_settings_group', [] );
-	$general_settings = get_option( 'coil_general_settings_group', [] );
-	$exclusive_settings = get_option( 'coil_exclusive_settings_group', [] );
+	$welcome_settings         = get_option( 'coil_welcome_settings_group', [] );
+	$general_settings         = get_option( 'coil_general_settings_group', [] );
+	$exclusive_settings       = get_option( 'coil_exclusive_settings_group', [] );
 	$floating_button_settings = get_option( 'coil_floating_button_settings_group', [] );
 
-	$new_welcome_settings = [];
-	$new_general_settings = [];
-	$new_exclusive_settings = [];
+	$new_welcome_settings         = [];
+	$new_general_settings         = [];
+	$new_exclusive_settings       = [];
 	$new_floating_button_settings = [];
 
 	$global_settings = get_option( 'coil_global_settings_group', 'absent' );
 	if ( $global_settings !== 'absent' ) {
-		if (isset( $global_settings[ 'coil_payment_pointer' ] ) ) {
+		if ( isset( $global_settings['coil_payment_pointer'] ) ) {
 			$new_welcome_settings[] =
 		}
-		if (isset( $global_settings[ 'coil_content_container' ] ) ) {
+		if ( isset( $global_settings['coil_content_container'] ) ) {
 			$new_exclusive_settings[] =
 		}
 		remove_option( $global_settings );
@@ -1529,7 +1529,7 @@ function transfer_version_1_9_panel_settings() {
 
 	$monetization_settings = get_option( 'coil_content_settings_posts_group', 'absent' );
 	if ( $monetization_settings !== 'absent' ) {
-		if (isset( $monetization_settings[ /*all post types - coil_content_settings_posts*/ ] ) ) {
+		if ( isset( $monetization_settings[ /*all post types - coil_content_settings_posts*/ ] ) ) {
 			$new_general_settings[] =
 		}
 		remove_option( $monetization_settings );
@@ -1537,7 +1537,7 @@ function transfer_version_1_9_panel_settings() {
 
 	$excerpt_settings = get_option( 'coil_content_settings_excerpt_group' 'absent' );
 	if ( $excerpt_settings !== 'absent' ) {
-		if (isset( $excerpt_settings[ /*all post types - coil_content_settings_excerpts*/ ] ) ) {
+		if ( isset( $excerpt_settings[ /*all post types - coil_content_settings_excerpts*/ ] ) ) {
 			$new_exclusive_settings[] =
 		}
 		remove_option( $excerpt_settings );
@@ -1545,24 +1545,24 @@ function transfer_version_1_9_panel_settings() {
 
 	$message_settings = get_option( 'coil_messaging_settings_group' 'absent' );
 	if ( $message_settings !== 'absent' ) {
-		if (isset( $message_settings[ 'coil_fully_gated_content_message' ] ) ) {
-			$new_exclusive_settings[]=
-		}
-		if (isset( $message_settings[ 'coil_learn_more_button_text' ] ) ) {
+		if ( isset( $message_settings['coil_fully_gated_content_message'] ) ) {
 			$new_exclusive_settings[] =
 		}
-		if (isset( $message_settings[ 'coil_learn_more_button_link' ] ) ) {
+		if ( isset( $message_settings['coil_learn_more_button_text'] ) ) {
+			$new_exclusive_settings[] =
+		}
+		if ( isset( $message_settings['coil_learn_more_button_link'] ) ) {
 			$new_exclusive_settings[] =
 		}
 		remove_option( $message_settings );
-	}		
+	}
 
 	$appearance_settings = get_option( 'coil_appearance_settings_group' 'absent' );
 	if ( $appearance_settings !== 'absent' ) {
-		if (isset( $appearance_settings[ 'coil_title_padlock' ] ) ) {
+		if ( isset( $appearance_settings['coil_title_padlock'] ) ) {
 			$new_exclusive_settings[] =
 		}
-		if (isset( $appearance_settings[ 'coil_show_promotion_bar' ] ) ) {
+		if ( isset( $appearance_settings['coil_show_promotion_bar'] ) ) {
 			$new_floating_button_settings[] =
 		}
 		remove_option( $appearance_settings );
