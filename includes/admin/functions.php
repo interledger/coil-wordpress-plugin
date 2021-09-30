@@ -664,7 +664,7 @@ function get_excerpt_visibility_default() {
  * @param string $field_name
  * @return string Setting stored in options.
  */
-function get_css_selector_setting( $field_name ) {
+function get_css_selector( $field_name ) {
 
 	if ( $field_name === 'coil_content_container' ) {
 		$exclusive_options = get_exclusive_settings();
