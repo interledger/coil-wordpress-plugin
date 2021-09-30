@@ -460,7 +460,7 @@ function get_exclusive_settings(): array {
  *
  * @return array Text field default values
  */
-function get_paywall_apprearance_text_defaults() {
+function get_paywall_text_defaults() {
 
 	// Set up defaults.
 	return [
@@ -478,7 +478,7 @@ function get_paywall_apprearance_text_defaults() {
  *
  * @return string Text field value
  */
-function get_paywall_appearance_text_settings_or_default( $field_id ) {
+function get_paywall_text_settings_or_default( $field_id ) {
 	$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
 	if ( in_array( $field_id, $text_fields, true ) ) {
 		$value = get_paywall_appearance_setting( $field_id ) === '' ? get_paywall_appearance_setting( $field_id, true ) : get_paywall_appearance_setting( $field_id );
@@ -499,7 +499,7 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
 
 	$exclusive_options = get_exclusive_settings();
 
-	$text_defaults  = get_paywall_apprearance_text_defaults();
+	$text_defaults  = get_paywall_text_defaults();
 	$style_defaults = get_paywall_appearance_defaults();
 
 	$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
@@ -546,7 +546,7 @@ function get_theme_color_types() {
 /**
  * @return array Valid branding options.
  */
-function get_branding_options() {
+function get_paywall_branding_options() {
 
 	$branding_choices = [ 'site_logo', 'coil_logo', 'no_logo' ];
 
@@ -599,7 +599,7 @@ function get_paywall_appearance_defaults(): array {
  * @param string $field_id The named key in the wp_options serialized array.
  * @return bool
  */
-function get_exlusive_post_appearance_setting( $field_id ): bool {
+function get_exlusive_post_setting( $field_id ): bool {
 
 	$exclusive_options = get_exclusive_settings();
 
@@ -654,7 +654,7 @@ function get_post_visibility_default() {
 *
 * @return boolean
 */
-function get_excerpt_visibility_default() {
+function get_excerpt_display_default() {
 
 	return false;
 }

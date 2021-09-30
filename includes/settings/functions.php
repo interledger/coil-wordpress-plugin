@@ -69,10 +69,10 @@ function register_admin_content_settings() {
 
 	// ==== Global Monetization Defaults
 	add_settings_section(
-		'coil_default_monetization_section',
+		'coil_monetization_section',
 		false,
 		__NAMESPACE__ . '\coil_settings_monetization_render_callback',
-		'coil_default_monetization_section'
+		'coil_monetization_section'
 	);
 
 	// Tab 3 - Exclusive Content
@@ -86,7 +86,7 @@ function register_admin_content_settings() {
 	// add_settings_section(
 	// 	'coil_enable_exclusive_section',
 	// 	false,
-	// 	__NAMESPACE__ . '\coil_settings_enable_exclusive_render_callback',
+	// 	__NAMESPACE__ . '\coil_settings_enable_exclusive_toggel_render_callback',
 	// 	'coil_enable_exclusive_section'
 	// );
 
@@ -94,7 +94,7 @@ function register_admin_content_settings() {
 	add_settings_section(
 		'coil_paywall_settings',
 		false,
-		__NAMESPACE__ . '\coil_settings_paywall_appearance_render_callback',
+		__NAMESPACE__ . '\coil_settings_paywall_render_callback',
 		'coil_paywall_section'
 	);
 
@@ -108,17 +108,17 @@ function register_admin_content_settings() {
 
 	// ==== Global Visibility Defaults
 	add_settings_section(
-		'coil_default_post_visibility_section',
+		'coil_post_visibility_section',
 		false,
 		__NAMESPACE__ . '\coil_settings_post_visibility_render_callback',
-		'coil_default_post_visibility_section'
+		'coil_post_visibility_section'
 	);
 
 	// ==== Excerpt Visibility Defaults
 	add_settings_section(
 		'coil_excerpt_display_section',
 		false,
-		__NAMESPACE__ . '\coil_excerpts_display_render_callback',
+		__NAMESPACE__ . '\coil_settings_excerpt_display_render_callback',
 		'coil_excerpt_display_section'
 	);
 
@@ -141,7 +141,7 @@ function register_admin_content_settings() {
 	// add_settings_section(
 	// 	'coil_enable_button_section',
 	// 	false,
-	// 	__NAMESPACE__ . '\coil_settings_enable_button_render_callback',
+	// 	__NAMESPACE__ . '\coil_settings_enable_floating_button_toggel_render_callback',
 	// 	'coil_enable_button_section'
 	// );
 
@@ -149,7 +149,7 @@ function register_admin_content_settings() {
 	add_settings_section(
 		'coil_promotion_bar_section',
 		false,
-		__NAMESPACE__ . '\coil_settings_promotion_render_callback',
+		__NAMESPACE__ . '\coil_settings_promotion_bar_render_callback',
 		'coil_promotion_bar_section'
 	);
 
@@ -157,16 +157,16 @@ function register_admin_content_settings() {
 	// add_settings_section(
 	// 	'coil_floating_button_section',
 	// 	false,
-	// 	__NAMESPACE__ . '\coil_settings_floating_button_render_callback',
+	// 	__NAMESPACE__ . '\coil_settings_floating_button_settings_render_callback',
 	// 	'coil_floating_button_section'
 	// );
 
 	// // ==== Button Visibility
 	// add_settings_section(
-	// 	'coil_button_visibility_section',
+	// 	'coil_floating_button_visibility_section',
 	// 	false,
-	// 	__NAMESPACE__ . '\coil_settings_button_visibility_render_callback',
-	// 	'coil_button_visibility_section'
+	// 	__NAMESPACE__ . '\coil_settings_floating_button_visibility_render_callback',
+	// 	'coil_floating_button_visibility_section'
 	// );
 }
 
@@ -314,7 +314,7 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 	$exclusive_settings[ $coil_theme_color_key ] = isset( $exclusive_settings[ $coil_theme_color_key ] ) && in_array( $exclusive_settings[ $coil_theme_color_key ], $valid_color_choices, true ) ? sanitize_key( $exclusive_settings[ $coil_theme_color_key ] ) : $paywall_defaults[ $coil_theme_color_key ];
 
 	// Branding validation
-	$valid_branding_choices = Admin\get_branding_options();
+	$valid_branding_choices = Admin\get_paywall_branding_options();
 	$message_branding_key   = 'coil_message_branding';
 
 	$exclusive_settings[ $message_branding_key ] = isset( $exclusive_settings[ $message_branding_key ] ) && in_array( $exclusive_settings[ $message_branding_key ], $valid_branding_choices, true ) ? sanitize_key( $exclusive_settings[ $message_branding_key ] ) : $paywall_defaults[ $message_branding_key ];
@@ -538,7 +538,7 @@ function coil_settings_monetization_render_callback() {
  *
  * @return void
  */
-function coil_settings_paywall_appearance_render_callback() {
+function coil_settings_paywall_render_callback() {
 	?>
 	<div class="coil tab-styling">
 	<?php
@@ -725,7 +725,7 @@ function coil_padlock_display_checkbox_render_callback() {
 	 */
 
 	$padlock_id = 'coil_title_padlock';
-	$value      = Admin\get_exlusive_post_appearance_setting( $padlock_id );
+	$value      = Admin\get_exlusive_post_setting( $padlock_id );
 
 	if ( $value === true ) {
 		$checked_input = 'checked="checked"';
@@ -787,7 +787,7 @@ function coil_settings_post_visibility_render_callback() {
  *
  * @return void
  */
-function coil_excerpts_display_render_callback() {
+function coil_settings_excerpt_display_render_callback() {
 
 	?>
 	<div class="coil tab-styling">
@@ -895,7 +895,7 @@ function coil_paywall_appearance_text_field_settings_render_callback( $field_nam
  * Renders the output of the show donation bar footer checkbox
  * @return void
  */
-function coil_settings_promotion_render_callback() {
+function coil_settings_promotion_bar_render_callback() {
 
 	/**
 	 * Specify the default checked state on the input from
@@ -1132,7 +1132,7 @@ function render_coil_settings_screen() : void {
 					break;
 				case 'general_settings':
 					settings_fields( 'coil_general_settings_group' );
-					do_settings_sections( 'coil_default_monetization_section' );
+					do_settings_sections( 'coil_monetization_section' );
 					submit_button();
 					break;
 				case 'exclusive_settings':
@@ -1140,7 +1140,7 @@ function render_coil_settings_screen() : void {
 					// do_settings_sections( 'coil_enable_exclusive_section' );
 					do_settings_sections( 'coil_paywall_section' );
 					do_settings_sections( 'coil_exclusive_post_section' );
-					do_settings_sections( 'coil_default_post_visibility_section' );
+					do_settings_sections( 'coil_post_visibility_section' );
 					do_settings_sections( 'coil_excerpt_display_section' );
 					do_settings_sections( 'coil_css_selector_section' );
 					submit_button();
@@ -1150,7 +1150,7 @@ function render_coil_settings_screen() : void {
 					do_settings_sections( 'coil_promotion_bar_section' );
 					// 	do_settings_sections( 'coil_enable_button_section' );
 					// 	do_settings_sections( 'coil_floating_button_section' );
-					// 	do_settings_sections( 'coil_button_visibility_section' );
+					// 	do_settings_sections( 'coil_floating_button_visibility_section' );
 					submit_button();
 					break;
 			}
@@ -1462,7 +1462,7 @@ function maybe_load_database_defaults() {
 		// Visibility default is 'public'
 		$post_visibility_default = Admin\get_post_visibility_default();
 		// Excerpt display default is false
-		$excerpt_display_default = Admin\get_excerpt_visibility_default();
+		$excerpt_display_default = Admin\get_excerpt_display_default();
 
 		$post_visibility_settings = [];
 		$excerpt_display_settings = [];

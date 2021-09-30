@@ -51,12 +51,12 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the message defaults that were retrieved
 		$retrieved_messages = [
-			self::$id['donation_bar']    => Admin\get_paywall_appearance_text_settings_or_default( self::$id['donation_bar'] ),
-			self::$id['pending']         => Admin\get_paywall_appearance_text_settings_or_default( self::$id['pending'] ),
-			self::$id['paywall_message'] => Admin\get_paywall_appearance_text_settings_or_default( self::$id['paywall_message'] ),
-			self::$id['partially_gated'] => Admin\get_paywall_appearance_text_settings_or_default( self::$id['partially_gated'] ),
-			self::$id['button_text']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['button_text'] ),
-			self::$id['button_link']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['button_link'] ),
+			self::$id['donation_bar']    => Admin\get_paywall_text_settings_or_default( self::$id['donation_bar'] ),
+			self::$id['pending']         => Admin\get_paywall_text_settings_or_default( self::$id['pending'] ),
+			self::$id['paywall_message'] => Admin\get_paywall_text_settings_or_default( self::$id['paywall_message'] ),
+			self::$id['partially_gated'] => Admin\get_paywall_text_settings_or_default( self::$id['partially_gated'] ),
+			self::$id['button_text']     => Admin\get_paywall_text_settings_or_default( self::$id['button_text'] ),
+			self::$id['button_link']     => Admin\get_paywall_text_settings_or_default( self::$id['button_link'] ),
 		];
 
 		// Checking that all defaults are correct
@@ -83,12 +83,12 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the messages that were retrieved
 		$retrieved_message = [
-			self::$id['donation_bar']    => Admin\get_paywall_appearance_text_settings_or_default( self::$id['donation_bar'] ),
-			self::$id['pending']         => Admin\get_paywall_appearance_text_settings_or_default( self::$id['pending'] ),
-			self::$id['paywall_message'] => Admin\get_paywall_appearance_text_settings_or_default( self::$id['paywall_message'] ),
-			self::$id['partially_gated'] => Admin\get_paywall_appearance_text_settings_or_default( self::$id['partially_gated'] ),
-			self::$id['button_text']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['button_text'] ),
-			self::$id['button_link']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['button_link'] ),
+			self::$id['donation_bar']    => Admin\get_paywall_text_settings_or_default( self::$id['donation_bar'] ),
+			self::$id['pending']         => Admin\get_paywall_text_settings_or_default( self::$id['pending'] ),
+			self::$id['paywall_message'] => Admin\get_paywall_text_settings_or_default( self::$id['paywall_message'] ),
+			self::$id['partially_gated'] => Admin\get_paywall_text_settings_or_default( self::$id['partially_gated'] ),
+			self::$id['button_text']     => Admin\get_paywall_text_settings_or_default( self::$id['button_text'] ),
+			self::$id['button_link']     => Admin\get_paywall_text_settings_or_default( self::$id['button_link'] ),
 		];
 
 		// Checking that all messages that were retrieved are correct
@@ -114,12 +114,12 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the messages that were retrieved
 		$message = [
-			self::$id['donation_bar']    => Admin\get_paywall_appearance_text_settings_or_default( self::$id['donation_bar'] ),
-			self::$id['pending']         => Admin\get_paywall_appearance_text_settings_or_default( self::$id['pending'] ),
-			self::$id['paywall_message'] => Admin\get_paywall_appearance_text_settings_or_default( self::$id['paywall_message'] ),
-			self::$id['partially_gated'] => Admin\get_paywall_appearance_text_settings_or_default( self::$id['partially_gated'] ),
-			self::$id['button_text']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['button_text'] ),
-			self::$id['button_link']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['button_link'] ),
+			self::$id['donation_bar']    => Admin\get_paywall_text_settings_or_default( self::$id['donation_bar'] ),
+			self::$id['pending']         => Admin\get_paywall_text_settings_or_default( self::$id['pending'] ),
+			self::$id['paywall_message'] => Admin\get_paywall_text_settings_or_default( self::$id['paywall_message'] ),
+			self::$id['partially_gated'] => Admin\get_paywall_text_settings_or_default( self::$id['partially_gated'] ),
+			self::$id['button_text']     => Admin\get_paywall_text_settings_or_default( self::$id['button_text'] ),
+			self::$id['button_link']     => Admin\get_paywall_text_settings_or_default( self::$id['button_link'] ),
 		];
 
 		// Checking that all messages that were retrieved are correct
@@ -154,12 +154,12 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the messages that were retrieved from the wp_options table.
 		$message = [
-			self::$id['donation_bar']    => Admin\get_paywall_appearance_text_settings_or_default( self::$id['donation_bar'] ),
-			self::$id['pending']         => Admin\get_paywall_appearance_text_settings_or_default( self::$id['pending'] ),
-			self::$id['paywall_message'] => Admin\get_paywall_appearance_text_settings_or_default( self::$id['paywall_message'] ),
-			self::$id['partially_gated'] => Admin\get_paywall_appearance_text_settings_or_default( self::$id['partially_gated'] ),
-			self::$id['button_text']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['button_text'] ),
-			self::$id['button_link']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['button_link'] ),
+			self::$id['donation_bar']    => Admin\get_paywall_text_settings_or_default( self::$id['donation_bar'] ),
+			self::$id['pending']         => Admin\get_paywall_text_settings_or_default( self::$id['pending'] ),
+			self::$id['paywall_message'] => Admin\get_paywall_text_settings_or_default( self::$id['paywall_message'] ),
+			self::$id['partially_gated'] => Admin\get_paywall_text_settings_or_default( self::$id['partially_gated'] ),
+			self::$id['button_text']     => Admin\get_paywall_text_settings_or_default( self::$id['button_text'] ),
+			self::$id['button_link']     => Admin\get_paywall_text_settings_or_default( self::$id['button_link'] ),
 		];
 
 		// Checking that all messages that were retrieved are correct
@@ -215,12 +215,12 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the messages that were retrieved from the wp_options table.
 		$message = [
-			self::$id['donation_bar']    => Admin\get_paywall_appearance_text_settings_or_default( self::$id['donation_bar'] ),
-			self::$id['pending']         => Admin\get_paywall_appearance_text_settings_or_default( self::$id['pending'] ),
-			self::$id['paywall_message'] => Admin\get_paywall_appearance_text_settings_or_default( self::$id['paywall_message'] ),
-			self::$id['partially_gated'] => Admin\get_paywall_appearance_text_settings_or_default( self::$id['partially_gated'] ),
-			self::$id['button_text']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['button_text'] ),
-			self::$id['button_link']     => Admin\get_paywall_appearance_text_settings_or_default( self::$id['button_link'] ),
+			self::$id['donation_bar']    => Admin\get_paywall_text_settings_or_default( self::$id['donation_bar'] ),
+			self::$id['pending']         => Admin\get_paywall_text_settings_or_default( self::$id['pending'] ),
+			self::$id['paywall_message'] => Admin\get_paywall_text_settings_or_default( self::$id['paywall_message'] ),
+			self::$id['partially_gated'] => Admin\get_paywall_text_settings_or_default( self::$id['partially_gated'] ),
+			self::$id['button_text']     => Admin\get_paywall_text_settings_or_default( self::$id['button_text'] ),
+			self::$id['button_link']     => Admin\get_paywall_text_settings_or_default( self::$id['button_link'] ),
 		];
 
 		// Checking that all messages that were retrieved are correct

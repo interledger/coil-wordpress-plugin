@@ -20,7 +20,7 @@ class Test_Appearance_Settings extends WP_UnitTestCase {
 	 */
 	public function test_if_default_padlock_display_is_enabled() :  void {
 
-		$padlock_setting = Admin\get_exlusive_post_appearance_setting( 'coil_title_padlock' );
+		$padlock_setting = Admin\get_exlusive_post_setting( 'coil_title_padlock' );
 
 		$this->assertSame( true, $padlock_setting );
 	}
@@ -35,14 +35,14 @@ class Test_Appearance_Settings extends WP_UnitTestCase {
 		$padlock_display = [ 'coil_title_padlock' => false ];
 		update_option( 'coil_appearance_settings_group', $padlock_display );
 
-		$padlock_setting = Admin\get_exlusive_post_appearance_setting( 'coil_title_padlock' );
+		$padlock_setting = Admin\get_exlusive_post_setting( 'coil_title_padlock' );
 
 		$this->assertSame( false, $padlock_setting );
 
 		$padlock_display = [ 'coil_title_padlock' => true ];
 		update_option( 'coil_appearance_settings_group', $padlock_display );
 
-		$padlock_setting = Admin\get_exlusive_post_appearance_setting( 'coil_title_padlock' );
+		$padlock_setting = Admin\get_exlusive_post_setting( 'coil_title_padlock' );
 
 		$this->assertSame( true, $padlock_setting );
 	}
@@ -100,7 +100,7 @@ class Test_Appearance_Settings extends WP_UnitTestCase {
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
 			'coil_show_donation_bar' => Admin\get_floating_button_setting( 'coil_show_donation_bar' ),
-			'coil_title_padlock'     => Admin\get_exlusive_post_appearance_setting( 'coil_title_padlock' ),
+			'coil_title_padlock'     => Admin\get_exlusive_post_setting( 'coil_title_padlock' ),
 		];
 
 		// Checking that all appearance settings that were retrieved are correct
@@ -130,7 +130,7 @@ class Test_Appearance_Settings extends WP_UnitTestCase {
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
 			'coil_show_donation_bar' => Admin\get_floating_button_setting( 'coil_show_donation_bar' ),
-			'coil_title_padlock'     => Admin\get_exlusive_post_appearance_setting( 'coil_title_padlock' ),
+			'coil_title_padlock'     => Admin\get_exlusive_post_setting( 'coil_title_padlock' ),
 		];
 
 		// Checking that all appearance settings that were retrieved are correct
@@ -161,7 +161,7 @@ class Test_Appearance_Settings extends WP_UnitTestCase {
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
 			'coil_show_donation_bar' => Admin\get_floating_button_setting( 'coil_show_donation_bar' ),
-			'coil_title_padlock'     => Admin\get_exlusive_post_appearance_setting( 'coil_title_padlock' ),
+			'coil_title_padlock'     => Admin\get_exlusive_post_setting( 'coil_title_padlock' ),
 		];
 
 		// Checking that all appearance settings that were retrieved are correct
@@ -193,7 +193,7 @@ class Test_Appearance_Settings extends WP_UnitTestCase {
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
 			'coil_show_donation_bar' => Admin\get_floating_button_setting( 'coil_show_donation_bar' ),
-			'coil_title_padlock'     => Admin\get_exlusive_post_appearance_setting( 'coil_title_padlock' ),
+			'coil_title_padlock'     => Admin\get_exlusive_post_setting( 'coil_title_padlock' ),
 		];
 
 		// Checking that all appearance settings that were retrieved are correct
