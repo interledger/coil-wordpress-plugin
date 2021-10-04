@@ -392,7 +392,7 @@ function get_welcome_setting( $setting_id ) {
 
 	$options = get_option( 'coil_welcome_settings_group', [] );
 
-	if ( $setting_id === 'coil_payment_pointer_id' ) {
+	if ( $setting_id === 'coil_payment_pointer' ) {
 		return ( ! empty( $options[ $setting_id ] ) ) ? $options[ $setting_id ] : '';
 	}
 

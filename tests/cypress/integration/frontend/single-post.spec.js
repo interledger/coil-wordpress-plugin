@@ -11,7 +11,7 @@ describe('Single Posts', function () {
 
 		// Make sure a payment pointer is set.
 		cy.get('#coil-global-settings').click();
-		cy.get('#coil_payment_pointer_id').as('paymentPointerField');
+		cy.get('#coil_payment_pointer').as('paymentPointerField');
 		cy.get('@paymentPointerField')
 			.click()
 			.clear()

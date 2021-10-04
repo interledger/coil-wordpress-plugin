@@ -200,7 +200,7 @@ INSERT INTO `wp_options` (`option_id`, `option_name`, `option_value`, `autoload`
 (144,	'finished_updating_comment_type',	'1',	'yes'),
 (150,	'theme_mods_twentytwenty',	'a:5:{s:18:\"custom_css_post_id\";i:-1;s:24:\"coil_unsupported_message\";s:26:\"This post is fully locked!\";s:27:\"coil_learn_more_button_text\";s:29:\"New Button Text 1603189220507\";s:18:\"coil_title_padlock\";b:0;s:22:\"coil_show_donation_bar\";b:1;}',	'yes'),
 (157,	'recently_activated',	'a:0:{}',	'yes'),
-(158,	'coil_global_settings_group',	'a:2:{s:23:\"coil_payment_pointer_id\";s:48:\"https://example.com/0.jpoxxgblhv/.well-known/pay\";s:22:\"coil_content_container\";s:22:\"article .entry-content\";}',	'yes'),
+(158,	'coil_global_settings_group',	'a:2:{s:23:\"coil_payment_pointer\";s:48:\"https://example.com/0.jpoxxgblhv/.well-known/pay\";s:22:\"coil_content_container\";s:22:\"article .entry-content\";}',	'yes'),
 (185,	'WPLANG',	'',	'yes'),
 (186,	'new_admin_email',	'dev-email@flywheel.local',	'yes'),
 (191,	'_transient_health-check-site-status-result',	'{\"good\":\"11\",\"recommended\":\"9\",\"critical\":\"0\"}',	'yes'),

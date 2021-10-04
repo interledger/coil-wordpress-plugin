@@ -66,7 +66,7 @@ function init_plugin() : void {
 	add_action( 'personal_options', __NAMESPACE__ . '\User\add_user_profile_payment_pointer_option' );
 	add_action( 'personal_options_update', __NAMESPACE__ . '\User\maybe_save_user_profile_payment_pointer_option' );
 	add_action( 'edit_user_profile_update', __NAMESPACE__ . '\User\maybe_save_user_profile_payment_pointer_option' );
-	add_filter( 'option_coil_payment_pointer_id', __NAMESPACE__ . '\User\maybe_output_user_payment_pointer' );
+	add_filter( 'option_coil_payment_pointer', __NAMESPACE__ . '\User\maybe_output_user_payment_pointer' );
 
 	// Metaboxes.
 	add_action( 'load-post.php', __NAMESPACE__ . '\Admin\load_metaboxes' );
@@ -279,7 +279,7 @@ function add_body_class( $classes ) : array {
 		return $classes;
 	}
 
-	$payment_pointer_id = Admin\get_welcome_setting( 'coil_payment_pointer_id' );
+	$payment_pointer_id = Admin\get_welcome_setting( 'coil_payment_pointer' );
 
 	if ( Gating\is_content_monetized( get_queried_object_id() ) ) {
 		$classes[] = 'monetization-not-initialized';
@@ -342,7 +342,7 @@ function print_meta_tag() : void {
 function get_payment_pointer() : string {
 
 	// Fetch the global payment pointer
-	$global_payment_pointer_id = Admin\get_welcome_setting( 'coil_payment_pointer_id' );
+	$global_payment_pointer_id = Admin\get_welcome_setting( 'coil_payment_pointer' );
 
 	// If payment pointer is set on the user, use that instead of the global payment pointer.
 	$payment_pointer_id = User\maybe_output_user_payment_pointer( $global_payment_pointer_id );

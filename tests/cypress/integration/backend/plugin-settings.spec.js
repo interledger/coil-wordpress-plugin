@@ -26,7 +26,7 @@ describe('Plugin Settings', function () {
 		cy.get('#coil-global-settings').click();
 
 		const paymentPointer = 'https://example.com/' + Math.random().toString(36) + '/.well-known/pay';
-		cy.get('#coil_payment_pointer_id').as('paymentPointerField');
+		cy.get('#coil_payment_pointer').as('paymentPointerField');
 		cy.get('@paymentPointerField')
 			.click()
 			.clear()

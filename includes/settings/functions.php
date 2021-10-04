@@ -383,9 +383,9 @@ function coil_settings_welcome_render_callback() {
 				'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" />',
 				esc_attr( 'wide-input' ),
 				esc_attr( 'text' ),
-				esc_attr( 'coil_welcome_settings_group[coil_payment_pointer_id]' ),
-				esc_attr( 'coil_payment_pointer_id' ),
-				esc_attr( Admin\get_welcome_setting( 'coil_payment_pointer_id' ) ),
+				esc_attr( 'coil_welcome_settings_group[coil_payment_pointer]' ),
+				esc_attr( 'coil_payment_pointer' ),
+				esc_attr( Admin\get_welcome_setting( 'coil_payment_pointer' ) ),
 				esc_attr( '$wallet.example.com/alice' )
 			);
 
@@ -936,7 +936,7 @@ function admin_welcome_notice() {
 		return;
 	}
 
-	$payment_pointer_id = Admin\get_welcome_setting( 'coil_payment_pointer_id' );
+	$payment_pointer_id = Admin\get_welcome_setting( 'coil_payment_pointer' );
 	$notice_dismissed   = get_user_meta( $current_user->ID, 'coil-welcome-notice-dismissed', true );
 
 	if ( $payment_pointer_id || $notice_dismissed === 'true' ) {
@@ -989,7 +989,7 @@ function admin_no_payment_pointer_notice() {
 		return;
 	}
 
-	$payment_pointer_id = Admin\get_welcome_setting( 'coil_payment_pointer_id' );
+	$payment_pointer_id = Admin\get_welcome_setting( 'coil_payment_pointer' );
 
 	if ( $payment_pointer_id ) {
 		return;
@@ -1506,10 +1506,10 @@ function transfer_customizer_appearance_settings() {
 function transfer_version_1_9_panel_settings() {
 
 	// Retrieve all current option groups from the database
-	$welcome_settings         = get_option( 'coil_welcome_settings_group', [] );
-	$general_settings         = get_option( 'coil_general_settings_group', [] );
-	$exclusive_settings       = get_option( 'coil_exclusive_settings_group', [] );
-	$floating_button_settings = get_option( 'coil_floating_button_settings_group', [] );
+	$welcome_settings         = get_option( 'coil_welcome_settings_group', 'absent' );
+	$general_settings         = get_option( 'coil_general_settings_group', 'absent' );
+	$exclusive_settings       = get_option( 'coil_exclusive_settings_group', 'absent' );
+	$floating_button_settings = get_option( 'coil_floating_button_settings_group', 'absent' );
 
 	$new_welcome_settings         = [];
 	$new_general_settings         = [];
@@ -1519,53 +1519,69 @@ function transfer_version_1_9_panel_settings() {
 	$global_settings = get_option( 'coil_global_settings_group', 'absent' );
 	if ( $global_settings !== 'absent' ) {
 		if ( isset( $global_settings['coil_payment_pointer'] ) ) {
-			$new_welcome_settings[] =
+			$new_welcome_settings['coil_payment_pointer'] = $global_settings['coil_payment_pointer'];
 		}
 		if ( isset( $global_settings['coil_content_container'] ) ) {
-			$new_exclusive_settings[] =
+			$new_exclusive_settings['coil_content_container'] = $global_settings['coil_content_container'];
 		}
-		remove_option( $global_settings );
+		delete_option( 'coil_global_settings_group' );
 	}
 
+	// Splits the monetization and visibility data into different option groups
 	$monetization_settings = get_option( 'coil_content_settings_posts_group', 'absent' );
 	if ( $monetization_settings !== 'absent' ) {
-		if ( isset( $monetization_settings[ /*all post types - coil_content_settings_posts*/ ] ) ) {
-			$new_general_settings[] =
+		$post_type_options = Coil\get_supported_post_types( 'objects' );
+		foreach ( $post_type_options as $post_type ) {
+			if ( isset( $monetization_settings[ $post_type->name ] ) ) {
+				if ( $monetization_settings[ $post_type->name ] === 'gate-all' ) {
+					$new_general_settings[ $post_type->name . '_monetization' ] = 'monetized';
+					$new_exclusive_settings[ $post_type->name . '_visibility' ] = 'exclusive';
+				} elseif ( $monetization_settings[ $post_type->name ] === 'no-gating' ) {
+					$new_general_settings[ $post_type->name . '_monetization' ] = 'monetized';
+					$new_exclusive_settings[ $post_type->name . '_visibility' ] = 'public';
+				} elseif ( $monetization_settings[ $post_type->name ] === 'no' ) {
+					$new_general_settings[ $post_type->name . '_monetization' ] = 'not-monetized';
+					$new_exclusive_settings[ $post_type->name . '_visibility' ] = 'public';
+				}
+			}
 		}
-		remove_option( $monetization_settings );
+		delete_option( 'coil_content_settings_posts_group' );
 	}
 
-	$excerpt_settings = get_option( 'coil_content_settings_excerpt_group' 'absent' );
+	$excerpt_settings = get_option( 'coil_content_settings_excerpt_group', 'absent' );
 	if ( $excerpt_settings !== 'absent' ) {
-		if ( isset( $excerpt_settings[ /*all post types - coil_content_settings_excerpts*/ ] ) ) {
-			$new_exclusive_settings[] =
+		$post_type_options = Coil\get_supported_post_types( 'objects' );
+		foreach ( $post_type_options as $post_type ) {
+			if ( isset( $excerpt_settings[ $post_type->name ] ) ) {
+				$new_exclusive_settings[ $post_type->name . '_excerpt' ] = true;
+			}
 		}
-		remove_option( $excerpt_settings );
+		delete_option( 'coil_content_settings_excerpt_group' );
 	}
 
-	$message_settings = get_option( 'coil_messaging_settings_group' 'absent' );
+	$message_settings = get_option( 'coil_messaging_settings_group', 'absent' );
 	if ( $message_settings !== 'absent' ) {
 		if ( isset( $message_settings['coil_fully_gated_content_message'] ) ) {
-			$new_exclusive_settings[] =
+			$new_exclusive_settings['coil_paywall_message'] = $message_settings['coil_fully_gated_content_message'];
 		}
 		if ( isset( $message_settings['coil_learn_more_button_text'] ) ) {
-			$new_exclusive_settings[] =
+			$new_exclusive_settings['coil_paywall_button_text'] = $message_settings['coil_learn_more_button_text'];
 		}
 		if ( isset( $message_settings['coil_learn_more_button_link'] ) ) {
-			$new_exclusive_settings[] =
+			$new_exclusive_settings['coil_paywall_button_link'] = $message_settings['coil_learn_more_button_link'];
 		}
-		remove_option( $message_settings );
+		delete_option( 'coil_messaging_settings_group' );
 	}
 
-	$appearance_settings = get_option( 'coil_appearance_settings_group' 'absent' );
+	$appearance_settings = get_option( 'coil_appearance_settings_group', 'absent' );
 	if ( $appearance_settings !== 'absent' ) {
 		if ( isset( $appearance_settings['coil_title_padlock'] ) ) {
-			$new_exclusive_settings[] =
+			$new_exclusive_settings['coil_title_padlock'] = $appearance_settings['coil_title_padlock'];
 		}
 		if ( isset( $appearance_settings['coil_show_promotion_bar'] ) ) {
-			$new_floating_button_settings[] =
+			$new_floating_button_settings['coil_show_donation_bar'] = $appearance_settings['coil_show_promotion_bar'];
 		}
-		remove_option( $appearance_settings );
+		delete_option( 'coil_appearance_settings_group' );
 	}
 
 	// Update all option groups
@@ -1573,14 +1589,14 @@ function transfer_version_1_9_panel_settings() {
 		if ( $welcome_settings === 'absent' ) {
 			add_option( 'coil_welcome_settings_group', $new_welcome_settings );
 		} else {
-			update_option( 'coil_welcome_settings_group', array_merge( $welcome_settings, $new_welcome_settings );
+			update_option( 'coil_welcome_settings_group', array_merge( $welcome_settings, $new_welcome_settings ) );
 		}
 	}
 	if ( $new_general_settings !== [] ) {
 		if ( $general_settings === 'absent' ) {
 			add_option( 'coil_general_settings_group', $new_general_settings );
 		} else {
-			update_option( 'coil_general_settings_group', array_merge( $general_settings, $new_general_settings );
+			update_option( 'coil_general_settings_group', array_merge( $general_settings, $new_general_settings ) );
 		}
 	}
 
@@ -1588,7 +1604,7 @@ function transfer_version_1_9_panel_settings() {
 		if ( $exclusive_settings === 'absent' ) {
 			add_option( 'coil_exclusive_settings_group', $new_exclusive_settings );
 		} else {
-			update_option( 'coil_exclusive_settings_group', array_merge( $exclusive_settings, $new_exclusive_settings );
+			update_option( 'coil_exclusive_settings_group', array_merge( $exclusive_settings, $new_exclusive_settings ) );
 		}
 	}
 
@@ -1596,7 +1612,7 @@ function transfer_version_1_9_panel_settings() {
 		if ( $floating_button_settings === 'absent' ) {
 			add_option( 'coil_floating_button_settings_group', $new_floating_button_settings );
 		} else {
-			update_option( 'coil_floating_button_settings_group', array_merge( $floating_button_settings, $new_floating_button_settings );
+			update_option( 'coil_floating_button_settings_group', array_merge( $floating_button_settings, $new_floating_button_settings ) );
 		}
 	}
 }

@@ -32,12 +32,12 @@ class Test_Global_Settings extends WP_UnitTestCase {
 	 */
 	public function test_if_payment_pointer_is_retrieved_successfully() :  void {
 
-		$payment_pointer = [ 'coil_payment_pointer_id' => '$wallet.example.com/bob' ];
+		$payment_pointer = [ 'coil_payment_pointer' => '$wallet.example.com/bob' ];
 		update_option( 'coil_welcome_settings_group', $payment_pointer );
 
 		$retrieved_payment_pointer = Coil\get_payment_pointer();
 
-		$this->assertSame( $payment_pointer['coil_payment_pointer_id'], $retrieved_payment_pointer );
+		$this->assertSame( $payment_pointer['coil_payment_pointer'], $retrieved_payment_pointer );
 	}
 
 	/**
