@@ -943,9 +943,9 @@ function admin_welcome_notice() {
 		return;
 	}
 
-	$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'global_settings';
+	$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'welcome';
 
-	if ( $active_tab !== 'global_settings' ) {
+	if ( $active_tab !== 'welcome' ) {
 		return;
 	}
 	?>
@@ -959,7 +959,7 @@ function admin_welcome_notice() {
 			printf(
 				/* translators: 1) HTML link open tag, 2) HTML link close tag */
 				esc_html__( 'To start using Web Monetization please set up your %1$spayment pointer%2$s.', 'coil-web-monetization' ),
-				sprintf( '<a href="%1$s">', esc_url( '?page=coil_settings&tab=global_settings' ) ),
+				sprintf( '<a href="%1$s">', esc_url( '?page=coil_settings&tab=welcome' ) ),
 				'</a>'
 			);
 			?>
