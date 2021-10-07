@@ -1384,13 +1384,19 @@ function transfer_customizer_message_settings() {
 	if ( get_theme_mod( $coil_partially_gated_excerpt_message, 'null' ) !== 'null' ) {
 		remove_theme_mod( $coil_partially_gated_excerpt_message );
 	}
+	if ( get_theme_mod( $coil_partial_gating_message, 'null' ) !== 'null' ) {
+		remove_theme_mod( $coil_partial_gating_message );
+	}
+	if ( get_theme_mod( $coil_verifying_status_message, 'null' ) !== 'null' ) {
+		remove_theme_mod( $coil_verifying_status_message );
+	}
+	if ( get_theme_mod( $coil_voluntary_donation_message, 'null' ) !== 'null' ) {
+		remove_theme_mod( $coil_voluntary_donation_message );
+	}
 
 	$customizer_empty = (
-		get_theme_mod( $coil_partial_gating_message, 'null' ) !== 'null'
-		&& get_theme_mod( $coil_unsupported_message, 'null' ) !== 'null'
-		&& get_theme_mod( $coil_verifying_status_message, 'null' ) !== 'null'
+		get_theme_mod( $coil_unsupported_message, 'null' ) !== 'null'
 		&& get_theme_mod( $coil_unable_to_verify_message, 'null' ) !== 'null'
-		&& get_theme_mod( $coil_voluntary_donation_message, 'null' ) !== 'null'
 		&& get_theme_mod( $coil_learn_more_button_text, 'null' ) !== 'null'
 		&& get_theme_mod( $coil_learn_more_button_link, 'null' ) !== 'null'
 	);
@@ -1401,34 +1407,32 @@ function transfer_customizer_message_settings() {
 
 	// Using 'null' for comparrison becasue custom messages that were deleted remain in the database with the value false, but still need to be removed.
 
-	// Message has been deprecated
-	if ( get_theme_mod( $coil_partial_gating_message, 'null' ) !== 'null' ) {
-		remove_theme_mod( $coil_partial_gating_message );
-	}
 
-	// The two fully gated content messages have been combined into one; coil_paywall_message.
-	// If one has been added to the customizer and not the other then it will be migrated across.
-	// If both are present the coil_unsupported_message will be selected.
-	if ( get_theme_mod( $coil_unable_to_verify_message ) !== 'null' && get_theme_mod( $coil_unsupported_message, 'null' ) === 'null' ) {
-		$messaging_settings['coil_paywall_message'] = get_theme_mod( $coil_unable_to_verify_message );
-		remove_theme_mod( $coil_unable_to_verify_message );
-	} elseif ( get_theme_mod( $coil_unable_to_verify_message ) !== 'null' && get_theme_mod( $coil_unsupported_message, 'null' ) !== 'null' ) {
-		$messaging_settings['coil_paywall_message'] = get_theme_mod( $coil_unsupported_message );
+	// // The two fully gated content messages have been combined into one; coil_paywall_message.
+	// // If one has been added to the customizer and not the other then it will be migrated across.
+	// // If both are present the coil_unsupported_message will be selected.
+	// if ( get_theme_mod( $coil_unable_to_verify_message ) !== 'null' && get_theme_mod( $coil_unsupported_message, 'null' ) === 'null' ) {
+	// 	$messaging_settings['coil_paywall_message'] = get_theme_mod( $coil_unable_to_verify_message );
+	// 	remove_theme_mod( $coil_unable_to_verify_message );
+	// } elseif ( get_theme_mod( $coil_unable_to_verify_message ) !== 'null' && get_theme_mod( $coil_unsupported_message, 'null' ) !== 'null' ) {
+	// 	$messaging_settings['coil_paywall_message'] = get_theme_mod( $coil_unsupported_message );
+	// 	remove_theme_mod( $coil_unsupported_message );
+	// 	remove_theme_mod( $coil_unable_to_verify_message );
+	// } elseif ( get_theme_mod( $coil_unsupported_message, 'null' ) !== 'null' && get_theme_mod( $coil_unable_to_verify_message ) === 'null' ) {
+	// 	$messaging_settings['coil_paywall_message'] = get_theme_mod( $coil_unsupported_message );
+	// 	remove_theme_mod( $coil_unsupported_message );
+	// }
+	$unable_to_verify_message_exists = get_theme_mod( $coil_unable_to_verify_message, 'null' ) !== 'null';
+	$unsupported_message_exists = get_theme_mod( $coil_unsupported_message, 'null' ) !== 'null';
+
+	if ( $unable_to_verify_exists || $unsupported_exists ) {
+		if($unsupported_exists) {
+			$messaging_settings['coil_paywall_message'] = get_theme_mod( $coil_unsupported_message );
+		} else {
+			$messaging_settings['coil_paywall_message'] = get_theme_mod( $coil_unable_to_verify_message );
+		}
 		remove_theme_mod( $coil_unsupported_message );
 		remove_theme_mod( $coil_unable_to_verify_message );
-	} elseif ( get_theme_mod( $coil_unsupported_message, 'null' ) !== 'null' && get_theme_mod( $coil_unable_to_verify_message ) === 'null' ) {
-		$messaging_settings['coil_paywall_message'] = get_theme_mod( $coil_unsupported_message );
-		remove_theme_mod( $coil_unsupported_message );
-	}
-
-	// Message has been deprecated
-	if ( get_theme_mod( $coil_verifying_status_message, 'null' ) !== 'null' ) {
-		remove_theme_mod( $coil_verifying_status_message );
-	}
-
-	// Message has been deprecated
-	if ( get_theme_mod( $coil_voluntary_donation_message, 'null' ) !== 'null' ) {
-		remove_theme_mod( $coil_voluntary_donation_message );
 	}
 
 	if ( get_theme_mod( $coil_learn_more_button_text, 'null' ) !== 'null' ) {
@@ -1441,14 +1445,13 @@ function transfer_customizer_message_settings() {
 		remove_theme_mod( $coil_learn_more_button_link );
 	}
 
-	$existing_options = get_option( 'coil_exclusive_settings_group', [] );
+	$existing_options = get_option( 'coil_exclusive_settings_group', 'absent' );
 
-	if ( false !== $existing_options ) {
+	if ( $existing_options !== 'absent' ) {
 		update_option( 'coil_exclusive_settings_group', array_merge( $existing_options, $messaging_settings ) );
 	} else {
-		update_option( 'coil_exclusive_settings_group', $messaging_settings );
+		add_option( 'coil_exclusive_settings_group', $messaging_settings );
 	}
-
 }
 
 /**
