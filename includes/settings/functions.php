@@ -1518,8 +1518,8 @@ function transfer_version_1_9_panel_settings() {
 
 	$global_settings = get_option( 'coil_global_settings_group', 'absent' );
 	if ( $global_settings !== 'absent' ) {
-		if ( isset( $global_settings['coil_payment_pointer'] ) ) {
-			$new_welcome_settings['coil_payment_pointer'] = $global_settings['coil_payment_pointer'];
+		if ( isset( $global_settings['coil_payment_pointer_id'] ) ) {
+			$new_welcome_settings['coil_payment_pointer'] = $global_settings['coil_payment_pointer_id'];
 		}
 		if ( isset( $global_settings['coil_content_container'] ) ) {
 			$new_exclusive_settings['coil_content_container'] = $global_settings['coil_content_container'];
