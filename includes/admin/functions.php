@@ -518,7 +518,7 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
 		if ( isset( $exclusive_options[ $field_id ] ) ) {
 			$setting_value = $exclusive_options[ $field_id ];
 		} else {
-			$setting_value = style_defaults[ $field_id ];
+			$setting_value = $style_defaults[ $field_id ];
 		}
 		return $setting_value;
 	} elseif ( $field_id === 'coil_message_branding' ) {
@@ -526,7 +526,7 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
 		if ( isset( $exclusive_options[ $field_id ] ) ) {
 			$setting_value = $exclusive_options[ $field_id ];
 		} else {
-			$setting_value = style_defaults[ $field_id ];
+			$setting_value = $style_defaults[ $field_id ];
 		}
 		return $setting_value;
 	}
