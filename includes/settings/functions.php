@@ -1553,7 +1553,7 @@ function transfer_version_1_9_panel_settings() {
 		$post_type_options = Coil\get_supported_post_types( 'objects' );
 		foreach ( $post_type_options as $post_type ) {
 			if ( isset( $excerpt_settings[ $post_type->name ] ) ) {
-				$new_exclusive_settings[ $post_type->name . '_excerpt' ] = true;
+				$new_exclusive_settings[ $post_type->name . '_excerpt' ] = $excerpt_settings[ $post_type->name ];
 			}
 		}
 		delete_option( 'coil_content_settings_excerpt_group' );
