@@ -1395,10 +1395,10 @@ function transfer_customizer_message_settings() {
 	}
 
 	$customizer_empty = (
-		get_theme_mod( $coil_unsupported_message, 'null' ) !== 'null'
-		&& get_theme_mod( $coil_unable_to_verify_message, 'null' ) !== 'null'
-		&& get_theme_mod( $coil_learn_more_button_text, 'null' ) !== 'null'
-		&& get_theme_mod( $coil_learn_more_button_link, 'null' ) !== 'null'
+		get_theme_mod( $coil_unsupported_message, 'null' ) === 'null'
+		&& get_theme_mod( $coil_unable_to_verify_message, 'null' ) === 'null'
+		&& get_theme_mod( $coil_learn_more_button_text, 'null' ) === 'null'
+		&& get_theme_mod( $coil_learn_more_button_link, 'null' ) === 'null'
 	);
 
 	if ( $customizer_empty ) {
