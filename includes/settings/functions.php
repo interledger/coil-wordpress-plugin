@@ -1394,6 +1394,7 @@ function transfer_customizer_message_settings() {
 		remove_theme_mod( $coil_voluntary_donation_message );
 	}
 
+	// Using 'null' for comparrison becasue custom messages that were deleted remain in the database with the value false, but still need to be removed.
 	$customizer_empty = (
 		get_theme_mod( $coil_unsupported_message, 'null' ) === 'null'
 		&& get_theme_mod( $coil_unable_to_verify_message, 'null' ) === 'null'
@@ -1405,28 +1406,13 @@ function transfer_customizer_message_settings() {
 		return;
 	}
 
-	// Using 'null' for comparrison becasue custom messages that were deleted remain in the database with the value false, but still need to be removed.
-
-
-	// // The two fully gated content messages have been combined into one; coil_paywall_message.
-	// // If one has been added to the customizer and not the other then it will be migrated across.
-	// // If both are present the coil_unsupported_message will be selected.
-	// if ( get_theme_mod( $coil_unable_to_verify_message ) !== 'null' && get_theme_mod( $coil_unsupported_message, 'null' ) === 'null' ) {
-	// 	$messaging_settings['coil_paywall_message'] = get_theme_mod( $coil_unable_to_verify_message );
-	// 	remove_theme_mod( $coil_unable_to_verify_message );
-	// } elseif ( get_theme_mod( $coil_unable_to_verify_message ) !== 'null' && get_theme_mod( $coil_unsupported_message, 'null' ) !== 'null' ) {
-	// 	$messaging_settings['coil_paywall_message'] = get_theme_mod( $coil_unsupported_message );
-	// 	remove_theme_mod( $coil_unsupported_message );
-	// 	remove_theme_mod( $coil_unable_to_verify_message );
-	// } elseif ( get_theme_mod( $coil_unsupported_message, 'null' ) !== 'null' && get_theme_mod( $coil_unable_to_verify_message ) === 'null' ) {
-	// 	$messaging_settings['coil_paywall_message'] = get_theme_mod( $coil_unsupported_message );
-	// 	remove_theme_mod( $coil_unsupported_message );
-	// }
+	// The two fully gated content messages have been combined into one; coil_paywall_message.
+	// If one has been added to the customizer and not the other then it will be migrated across.
+	// If both are present the coil_unsupported_message will be selected.
 	$unable_to_verify_message_exists = get_theme_mod( $coil_unable_to_verify_message, 'null' ) !== 'null';
-	$unsupported_message_exists = get_theme_mod( $coil_unsupported_message, 'null' ) !== 'null';
-
+	$unsupported_message_exists      = get_theme_mod( $coil_unsupported_message, 'null' ) !== 'null';
 	if ( $unable_to_verify_message_exists || $unsupported_message_exists ) {
-		if($unsupported_message_exists) {
+		if ( $unsupported_message_exists ) {
 			$messaging_settings['coil_paywall_message'] = get_theme_mod( $coil_unsupported_message );
 		} else {
 			$messaging_settings['coil_paywall_message'] = get_theme_mod( $coil_unable_to_verify_message );
