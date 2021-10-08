@@ -1425,8 +1425,8 @@ function transfer_customizer_message_settings() {
 	$unable_to_verify_message_exists = get_theme_mod( $coil_unable_to_verify_message, 'null' ) !== 'null';
 	$unsupported_message_exists = get_theme_mod( $coil_unsupported_message, 'null' ) !== 'null';
 
-	if ( $unable_to_verify_exists || $unsupported_exists ) {
-		if($unsupported_exists) {
+	if ( $unable_to_verify_message_exists || $unsupported_message_exists ) {
+		if($unsupported_message_exists) {
 			$messaging_settings['coil_paywall_message'] = get_theme_mod( $coil_unsupported_message );
 		} else {
 			$messaging_settings['coil_paywall_message'] = get_theme_mod( $coil_unable_to_verify_message );
