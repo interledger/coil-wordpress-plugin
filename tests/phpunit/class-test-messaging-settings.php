@@ -20,6 +20,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 	*/
 	protected static $id = [
 		'pending'                         => 'coil_verifying_status_message',
+		'paywall_title'                   => 'coil_paywall_title',
 		'paywall_message'                 => 'coil_paywall_message',
 		'partially_gated'                 => 'coil_paywall_message',
 		'button_text'                     => 'coil_paywall_button_text',
@@ -36,22 +37,20 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 	public function test_retrieving_message_defaults() :  void {
 
 		// Ensuring no custom messages are present in the database
-		delete_option( 'coil_messaging_settings_group' );
+		delete_option( 'coil_exclusive_settings_group' );
 
 		// Creating an array of the message defaults that were retrieved
 		$defaults = [
-			self::$id['pending']         => 'Verifying Web Monetization status. Please wait...',
+			self::$id['paywall_title']   => 'Keep Reading with Coil',
 			self::$id['paywall_message'] => 'Unlock exclusive content with Coil. Need a Coil account?',
-			self::$id['partially_gated'] => 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.',
 			self::$id['button_text']     => 'Get Coil to access',
 			self::$id['button_link']     => 'https://coil.com/',
 		];
 
 		// Creating an array of the message defaults that were retrieved
 		$retrieved_messages = [
-			self::$id['pending']         => Admin\get_paywall_text_settings_or_default( self::$id['pending'] ),
+			self::$id['paywall_title']   => Admin\get_paywall_text_settings_or_default( self::$id['paywall_message'] ),
 			self::$id['paywall_message'] => Admin\get_paywall_text_settings_or_default( self::$id['paywall_message'] ),
-			self::$id['partially_gated'] => Admin\get_paywall_text_settings_or_default( self::$id['partially_gated'] ),
 			self::$id['button_text']     => Admin\get_paywall_text_settings_or_default( self::$id['button_text'] ),
 			self::$id['button_link']     => Admin\get_paywall_text_settings_or_default( self::$id['button_link'] ),
 		];
@@ -69,19 +68,17 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Adding custom messages to the database
 		$custom_message = [
-			self::$id['pending']         => 'Loading content',
+			self::$id['paywall_title']   => 'Exclusive content',
 			self::$id['paywall_message'] => 'Fully gated',
-			self::$id['partially_gated'] => 'Partially gated',
 			self::$id['button_text']     => 'Learn More',
 			self::$id['button_link']     => 'https://https://help.coil.com/docs/dev/web-monetization/index.html',
 		];
-		update_option( 'coil_messaging_settings_group', $custom_message );
+		update_option( 'coil_exclusive_settings_group', $custom_message );
 
 		// Creating an array of the messages that were retrieved
 		$retrieved_message = [
-			self::$id['pending']         => Admin\get_paywall_text_settings_or_default( self::$id['pending'] ),
+			self::$id['paywall_title']   => Admin\get_paywall_text_settings_or_default( self::$id['paywall_title'] ),
 			self::$id['paywall_message'] => Admin\get_paywall_text_settings_or_default( self::$id['paywall_message'] ),
-			self::$id['partially_gated'] => Admin\get_paywall_text_settings_or_default( self::$id['partially_gated'] ),
 			self::$id['button_text']     => Admin\get_paywall_text_settings_or_default( self::$id['button_text'] ),
 			self::$id['button_link']     => Admin\get_paywall_text_settings_or_default( self::$id['button_link'] ),
 		];
@@ -99,7 +96,6 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Adding custom messages to the database
 		$custom_message = [
-			self::$id['pending']         => 'Loading content',
 			self::$id['paywall_message'] => 'Fully gated',
 			self::$id['button_text']     => 'Learn More',
 			// Leaving one option set to an empty string becasue this state occurs in the database once a custom message has been deleted
@@ -109,17 +105,15 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the messages that were retrieved
 		$message = [
-			self::$id['pending']         => Admin\get_paywall_text_settings_or_default( self::$id['pending'] ),
+			self::$id['paywall_title'] => Admin\get_paywall_text_settings_or_default( self::$id['paywall_title'] ),
 			self::$id['paywall_message'] => Admin\get_paywall_text_settings_or_default( self::$id['paywall_message'] ),
-			self::$id['partially_gated'] => Admin\get_paywall_text_settings_or_default( self::$id['partially_gated'] ),
 			self::$id['button_text']     => Admin\get_paywall_text_settings_or_default( self::$id['button_text'] ),
 			self::$id['button_link']     => Admin\get_paywall_text_settings_or_default( self::$id['button_link'] ),
 		];
 
 		// Checking that all messages that were retrieved are correct
-		$this->assertSame( $custom_message[ self::$id['pending'] ], $message[ self::$id['pending'] ] );
+		$this->assertSame( 'Keep Reading with Coil', $message[ self::$id['paywall_title'] ] );
 		$this->assertSame( $custom_message[ self::$id['paywall_message'] ], $message[ self::$id['paywall_message'] ] );
-		$this->assertSame( 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.', $message[ self::$id['partially_gated'] ] );
 		$this->assertSame( $custom_message[ self::$id['button_text'] ], $message[ self::$id['button_text'] ] );
 		$this->assertSame( 'https://coil.com/', $message[ self::$id['button_link'] ] );
 	}
@@ -147,17 +141,13 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the messages that were retrieved from the wp_options table.
 		$message = [
-			self::$id['pending']         => Admin\get_paywall_text_settings_or_default( self::$id['pending'] ),
 			self::$id['paywall_message'] => Admin\get_paywall_text_settings_or_default( self::$id['paywall_message'] ),
-			self::$id['partially_gated'] => Admin\get_paywall_text_settings_or_default( self::$id['partially_gated'] ),
 			self::$id['button_text']     => Admin\get_paywall_text_settings_or_default( self::$id['button_text'] ),
 			self::$id['button_link']     => Admin\get_paywall_text_settings_or_default( self::$id['button_link'] ),
 		];
 
 		// Checking that all messages that were retrieved are correct
-		$this->assertSame( 'Loading content', $message[ self::$id['pending'] ] );
 		$this->assertSame( 'Fully gated', $message[ self::$id['paywall_message'] ] );
-		$this->assertSame( 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.', $message[ self::$id['partially_gated'] ] );
 		$this->assertSame( 'Learn More', $message[ self::$id['button_text'] ] );
 		$this->assertSame( 'https://coil.com/', $message[ self::$id['button_link'] ] );
 
@@ -169,7 +159,6 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		$this->assertFalse( get_theme_mod( self::$id['partially_gated'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['button_text'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['button_link'] ) );
-		// Checking that deprecated message was removed
 		$this->assertFalse( get_theme_mod( self::$id['fully_gated_excerpt_message'] ) );
 
 	}
@@ -184,10 +173,9 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Adding custom messages to the database from the settings panel
 		$settings_panel_messages = [
-			self::$id['pending']     => 'Please be patient while content loads.',
-			self::$id['button_text'] => '',
+			self::$id['button_text'] => 'Button text',
 		];
-		update_option( 'coil_messaging_settings_group', $settings_panel_messages );
+		update_option( 'coil_exclusive_settings_group', $settings_panel_messages );
 
 		// Adding custom messages to the theme_mod
 		set_theme_mod( self::$id['unverified'], 'Unable to verify' );
@@ -205,17 +193,13 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the messages that were retrieved from the wp_options table.
 		$message = [
-			self::$id['pending']         => Admin\get_paywall_text_settings_or_default( self::$id['pending'] ),
 			self::$id['paywall_message'] => Admin\get_paywall_text_settings_or_default( self::$id['paywall_message'] ),
-			self::$id['partially_gated'] => Admin\get_paywall_text_settings_or_default( self::$id['partially_gated'] ),
 			self::$id['button_text']     => Admin\get_paywall_text_settings_or_default( self::$id['button_text'] ),
 			self::$id['button_link']     => Admin\get_paywall_text_settings_or_default( self::$id['button_link'] ),
 		];
 
 		// Checking that all messages that were retrieved are correct
-		$this->assertSame( 'Loading content', $message[ self::$id['pending'] ] );
 		$this->assertSame( 'Fully gated', $message[ self::$id['paywall_message'] ] );
-		$this->assertSame( 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.', $message[ self::$id['partially_gated'] ] );
 		$this->assertSame( 'Learn More', $message[ self::$id['button_text'] ] );
 		$this->assertSame( 'https://coil.com/', $message[ self::$id['button_link'] ] );
 
@@ -227,7 +211,6 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		$this->assertFalse( get_theme_mod( self::$id['partially_gated'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['button_text'] ) );
 		$this->assertFalse( get_theme_mod( self::$id['button_link'] ) );
-		// Checking that deprecated message was removed
 		$this->assertFalse( get_theme_mod( self::$id['partially_gated_excerpt_message'] ) );
 	}
 }

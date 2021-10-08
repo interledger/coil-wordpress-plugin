@@ -68,9 +68,9 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 	public function test_padlock_added_to_title_when_enabled_and_gated() :  void {
 
 		// Ensuring the padlock display setting has been enabled
-		$options                       = get_option( 'coil_appearance_settings_group', [] );
+		$options                       = get_option( 'coil_exclusive_settings_group', [] );
 		$options['coil_title_padlock'] = true;
-		update_option( 'coil_appearance_settings_group', $options );
+		update_option( 'coil_exclusive_settings_group', $options );
 
 		foreach ( self::$basic_posts as $gating => $post_obj ) {
 			$post_title           = 'Post Title';
