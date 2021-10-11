@@ -1470,7 +1470,7 @@ function transfer_customizer_appearance_settings() {
 
 	// The padlock display setting is now in the coil_exclusive_settings_group
 	if ( get_theme_mod( $coil_title_padlock, 'null' ) !== 'null' ) {
-		$existing_padlock_settings                   = get_option( 'coil_exclusive_settings_group', 'absent' );
+		$existing_padlock_settings                  = get_option( 'coil_exclusive_settings_group', 'absent' );
 		$new_padlock_settings['coil_title_padlock'] = get_theme_mod( $coil_title_padlock );
 		remove_theme_mod( $coil_title_padlock );
 		if ( 'absent' !== $existing_padlock_settings ) {
