@@ -679,8 +679,8 @@ function get_css_selector( $field_name ) {
  */
 function get_coil_button_settings() : array {
 
-	$coil_button_settings = get_option( 'coil_button_settings_group', [] );
-	if ( empty( $coil_button_settings ) ) {
+	$coil_button_settings = get_option( 'coil_button_settings_group', 'absent' );
+	if ( 'absent' === $coil_button_settings ) {
 		$coil_button_settings = [];
 	}
 

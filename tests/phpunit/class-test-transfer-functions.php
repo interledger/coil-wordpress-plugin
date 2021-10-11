@@ -81,7 +81,8 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 
 		// Adding custom messages to the database from the settings panel
 		$settings_panel_messages = [
-			self::$id['button_text'] => 'Button text',
+			self::$id['paywall_title'] => 'Paywall Title',
+			self::$id['button_text']   => 'Button text',
 		];
 		add_option( 'coil_exclusive_settings_group', $settings_panel_messages );
 
@@ -101,12 +102,14 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 
 		// Creating an array of the messages that were retrieved from the wp_options table.
 		$message = [
+			self::$id['paywall_title']   => Admin\get_paywall_text_settings_or_default( self::$id['paywall_title'] ),
 			self::$id['paywall_message'] => Admin\get_paywall_text_settings_or_default( self::$id['paywall_message'] ),
 			self::$id['button_text']     => Admin\get_paywall_text_settings_or_default( self::$id['button_text'] ),
 			self::$id['button_link']     => Admin\get_paywall_text_settings_or_default( self::$id['button_link'] ),
 		];
 
 		// Checking that all messages that were retrieved are correct
+		$this->assertSame( 'Paywall Title', $message[ self::$id['paywall_title'] ] );
 		$this->assertSame( 'Fully gated', $message[ self::$id['paywall_message'] ] );
 		$this->assertSame( 'Learn More', $message[ self::$id['button_text'] ] );
 		$this->assertSame( 'https://coil.com/', $message[ self::$id['button_link'] ] );

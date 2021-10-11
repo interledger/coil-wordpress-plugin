@@ -1461,7 +1461,7 @@ function transfer_customizer_appearance_settings() {
 
 	// If the setting has already been saved or transferred then simply return
 	// Using 'null' for comparison becasue if the padlock and support creator messages were unselected they were stored in the database with the value false, but still need to be transferred.
-	if ( 'null' === get_theme_mod( 'coil_title_padlock', 'null' ) && 'null' === get_theme_mod( 'coil_show_donation_bar', 'null' ) ) {
+	if ( 'absent' === get_theme_mod( 'coil_title_padlock', 'absent' ) && 'absent' === get_theme_mod( 'coil_show_donation_bar', 'absent' ) ) {
 		return;
 	}
 
@@ -1469,7 +1469,7 @@ function transfer_customizer_appearance_settings() {
 	$coil_show_donation_bar = 'coil_show_donation_bar';
 
 	// The padlock display setting is now in the coil_exclusive_settings_group
-	if ( get_theme_mod( $coil_title_padlock, 'null' ) !== 'null' ) {
+	if ( get_theme_mod( $coil_title_padlock, 'absent' ) !== 'absent' ) {
 		$existing_padlock_settings                  = get_option( 'coil_exclusive_settings_group', 'absent' );
 		$new_padlock_settings['coil_title_padlock'] = get_theme_mod( $coil_title_padlock );
 		remove_theme_mod( $coil_title_padlock );
@@ -1482,7 +1482,7 @@ function transfer_customizer_appearance_settings() {
 
 	// The donation bar display setting is now in the coil_button_settings_group.
 	// The donation bar has been deprecated and a Coil button is taking its place instead.
-	if ( get_theme_mod( $coil_show_donation_bar, 'null' ) !== 'null' ) {
+	if ( get_theme_mod( $coil_show_donation_bar, 'absent' ) !== 'absent' ) {
 		$existing_donation_bar_setting                       = get_option( 'coil_button_settings_group', 'absent' );
 		$new_donation_bar_settings['coil_show_donation_bar'] = get_theme_mod( $coil_show_donation_bar );
 		remove_theme_mod( $coil_show_donation_bar );
