@@ -27,7 +27,7 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 		$this->assertSame( true, $default_donation_bar_display );
 	}
 
-    	/**
+		/**
 	 * Testing if the donation bar display setting is retrieved correctly from the wp_options table.
 	 *
 	 * @return void

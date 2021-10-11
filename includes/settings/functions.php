@@ -1483,7 +1483,7 @@ function transfer_customizer_appearance_settings() {
 	// The donation bar display setting is now in the coil_button_settings_group.
 	// The donation bar has been deprecated and a Coil button is taking its place instead.
 	if ( get_theme_mod( $coil_show_donation_bar, 'null' ) !== 'null' ) {
-		$existing_donation_bar_setting                   = get_option( 'coil_button_settings_group', [] );
+		$existing_donation_bar_setting                       = get_option( 'coil_button_settings_group', [] );
 		$new_donation_bar_settings['coil_show_donation_bar'] = get_theme_mod( $coil_show_donation_bar );
 		remove_theme_mod( $coil_show_donation_bar );
 		if ( false !== $existing_donation_bar_setting ) {

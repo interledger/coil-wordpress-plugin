@@ -5,14 +5,13 @@
 namespace Coil\Tests;
 
 use Coil\Admin;
-use Coil\Settings;
 use WP_UnitTestCase;
 
 /**
  * Testing the exclusive settings.
  */
 class Test_Exclusive_Settings extends WP_UnitTestCase {
-    
+
 	/*/**
 	 *
 	 * @var array
@@ -115,7 +114,7 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 		$this->assertSame( 'https://coil.com/', $message[ self::$id['button_link'] ] );
 	}
 
-    	/**
+		/**
 	 * Testing if the CTA box's default color theme is set to 'light'.
 	 *
 	 * @return void
@@ -220,7 +219,7 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 
 	}
 
-    /**
+	/**
 	 * Testing if the padlock icon shows next to geted post titles by default.
 	 *
 	 * @return void

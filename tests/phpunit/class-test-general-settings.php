@@ -5,7 +5,6 @@
 namespace Coil\Tests;
 
 use Coil;
-use Coil\Admin;
 use WP_UnitTestCase;
 
 /**
@@ -14,7 +13,7 @@ use WP_UnitTestCase;
  */
 class Test_General_Settings extends WP_UnitTestCase {
 
-    /**
+	/**
 	 * Testing if the the default payment pointer is an empty string.
 	 *
 	 * @return void
