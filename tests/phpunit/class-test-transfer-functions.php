@@ -223,8 +223,8 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 	public function test_transfer_of_appearance_settings_from_customizer_where_settings_have_been_saved_in_both_locations() :  void {
 
 		// Adding custom appearance settings to the theme_mod
-		set_theme_mod( 'coil_show_donation_bar', false );
-		add_option( 'coil_exclusive_settings_group', [ 'coil_title_padlock' => false ] );
+		set_theme_mod( 'coil_title_padlock', false );
+		add_option( 'coil_exclusive_settings_group', [ 'coil_show_donation_bar' => false ] );
 
 		// Transferrng settings to the wp_options table
 		Settings\maybe_update_database();
