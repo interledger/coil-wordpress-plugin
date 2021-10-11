@@ -56,9 +56,9 @@ class Test_Appearance_Settings extends WP_UnitTestCase {
 
 		// Database defaults must first be setup
 		Settings\maybe_update_database();
-		$default_appearance_settings = Admin\get_floating_button_setting( 'coil_show_donation_bar' );
+		$default_donation_bar_display = Admin\get_coil_button_setting( 'coil_show_donation_bar' );
 
-		$this->assertSame( true, $default_appearance_settings );
+		$this->assertSame( true, $default_donation_bar_display );
 	}
 
 	/**
@@ -69,16 +69,16 @@ class Test_Appearance_Settings extends WP_UnitTestCase {
 	public function test_if_the_donation_bar_display_setting_is_retrieved_successfully() :  void {
 
 		$donation_bar_display = [ 'coil_show_donation_bar' => false ];
-		update_option( 'coil_floating_button_settings_group', $donation_bar_display );
+		update_option( 'coil_button_settings_group', $donation_bar_display );
 
-		$donation_bar_settings = Admin\get_floating_button_setting( 'coil_show_donation_bar' );
+		$donation_bar_settings = Admin\get_coil_button_setting( 'coil_show_donation_bar' );
 
 		$this->assertSame( false, $donation_bar_settings );
 
 		$donation_bar_display = [ 'coil_show_donation_bar' => true ];
-		update_option( 'coil_floating_button_settings_group', $donation_bar_display );
+		update_option( 'coil_button_settings_group', $donation_bar_display );
 
-		$donation_bar_settings = Admin\get_floating_button_setting( 'coil_show_donation_bar' );
+		$donation_bar_settings = Admin\get_coil_button_setting( 'coil_show_donation_bar' );
 
 		$this->assertSame( true, $donation_bar_settings );
 	}
@@ -101,7 +101,7 @@ class Test_Appearance_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
-			'coil_show_donation_bar' => Admin\get_floating_button_setting( 'coil_show_donation_bar' ),
+			'coil_show_donation_bar' => Admin\get_coil_button_setting( 'coil_show_donation_bar' ),
 			'coil_title_padlock'     => Admin\get_exlusive_post_setting( 'coil_title_padlock' ),
 		];
 
@@ -131,7 +131,7 @@ class Test_Appearance_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
-			'coil_show_donation_bar' => Admin\get_floating_button_setting( 'coil_show_donation_bar' ),
+			'coil_show_donation_bar' => Admin\get_coil_button_setting( 'coil_show_donation_bar' ),
 			'coil_title_padlock'     => Admin\get_exlusive_post_setting( 'coil_title_padlock' ),
 		];
 
@@ -162,7 +162,7 @@ class Test_Appearance_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
-			'coil_show_donation_bar' => Admin\get_floating_button_setting( 'coil_show_donation_bar' ),
+			'coil_show_donation_bar' => Admin\get_coil_button_setting( 'coil_show_donation_bar' ),
 			'coil_title_padlock'     => Admin\get_exlusive_post_setting( 'coil_title_padlock' ),
 		];
 
@@ -185,14 +185,14 @@ class Test_Appearance_Settings extends WP_UnitTestCase {
 
 		// Adding custom appearance settings to the theme_mod
 		set_theme_mod( 'coil_show_donation_bar', false );
-		add_option( 'coil_exclusive_settings_group', ['coil_title_padlock' => false] );
+		add_option( 'coil_exclusive_settings_group', [ 'coil_title_padlock' => false ] );
 
 		// Transferrng settings to the wp_options table
 		Settings\maybe_update_database();
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
-			'coil_show_donation_bar' => Admin\get_floating_button_setting( 'coil_show_donation_bar' ),
+			'coil_show_donation_bar' => Admin\get_coil_button_setting( 'coil_show_donation_bar' ),
 			'coil_title_padlock'     => Admin\get_exlusive_post_setting( 'coil_title_padlock' ),
 		];
 
@@ -281,10 +281,10 @@ class Test_Appearance_Settings extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_if_default_message_branding_option_is_false() {
+	
+	$branding_setting = Admin\get_paywall_appearance_setting( 'coil_message_branding' );
 
-		$branding_setting = Admin\get_paywall_appearance_setting( 'coil_message_branding' );
-
-		$this->assertSame( false, $branding_setting );
+		$this->assertSame( 'coil_logo', $branding_setting );
 	}
 
 	/**

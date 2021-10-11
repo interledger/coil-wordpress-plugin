@@ -197,7 +197,7 @@ function load_full_assets() : void {
 			'paywall_message'         => Admin\get_paywall_text_settings_or_default( 'coil_paywall_message' ),
 			'paywall_button_text'     => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_text' ),
 			'paywall_button_link'     => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_link' ),
-			'show_donation_bar'       => Admin\get_floating_button_setting( 'coil_show_donation_bar' ),
+			'show_donation_bar'       => Admin\get_coil_button_setting( 'coil_show_donation_bar' ),
 			'post_excerpt'            => get_the_excerpt(),
 			'coil_message_branding'   => Admin\get_paywall_appearance_setting( 'coil_message_branding' ),
 			'site_logo'               => $site_logo,

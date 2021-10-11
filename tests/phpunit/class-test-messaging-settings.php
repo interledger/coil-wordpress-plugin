@@ -43,8 +43,8 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		// Creating an array of the message defaults that were retrieved
 		$defaults = [
 			self::$id['paywall_title']   => 'Keep Reading with Coil',
-			self::$id['paywall_message'] => 'Unlock exclusive content with Coil. Need a Coil account?',
-			self::$id['button_text']     => 'Get Coil to access',
+			self::$id['paywall_message'] => 'We partnered with Coil to offer exclusive content. Access this and other great content with a Coil membership.',
+			self::$id['button_text']     => 'Become a Coil Member',
 			self::$id['button_link']     => 'https://coil.com/',
 		];
 

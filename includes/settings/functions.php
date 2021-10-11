@@ -130,18 +130,18 @@ function register_admin_content_settings() {
 		'coil_css_selector_section'
 	);
 
-	// Tab 4 - Floating Button
+	// Tab 4 - Coil Button
 	register_setting(
-		'coil_floating_button_settings_group',
-		'coil_floating_button_settings_group',
-		__NAMESPACE__ . '\coil_floating_button_settings_group_validation'
+		'coil_button_settings_group',
+		'coil_button_settings_group',
+		__NAMESPACE__ . '\coil_button_settings_group_validation'
 	);
 
 	// // ==== Enable / Disable
 	// add_settings_section(
 	// 	'coil_enable_button_section',
 	// 	false,
-	// 	__NAMESPACE__ . '\coil_settings_enable_floating_button_toggel_render_callback',
+	// 	__NAMESPACE__ . '\coil_settings_enable_coil_button_toggel_render_callback',
 	// 	'coil_enable_button_section'
 	// );
 
@@ -155,18 +155,18 @@ function register_admin_content_settings() {
 
 	// // ==== Button Settings
 	// add_settings_section(
-	// 	'coil_floating_button_section',
+	// 	'coil_button_section',
 	// 	false,
-	// 	__NAMESPACE__ . '\coil_settings_floating_button_settings_render_callback',
-	// 	'coil_floating_button_section'
+	// 	__NAMESPACE__ . '\coil_settings_coil_button_settings_render_callback',
+	// 	'coil_button_section'
 	// );
 
 	// // ==== Button Visibility
 	// add_settings_section(
-	// 	'coil_floating_button_visibility_section',
+	// 	'coil_button_visibility_section',
 	// 	false,
-	// 	__NAMESPACE__ . '\coil_settings_floating_button_visibility_render_callback',
-	// 	'coil_floating_button_visibility_section'
+	// 	__NAMESPACE__ . '\coil_settings_coil_button_visibility_render_callback',
+	// 	'coil_button_visibility_section'
 	// );
 }
 
@@ -334,16 +334,16 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 /**
  * Validates the checkbox that cntrols the display of the Promotion Bar.
  *
- * @param array $floating_button_settings The checkbox input field.
+ * @param array $coil_button_settings The checkbox input field.
  * @return array
  */
-function coil_floating_button_settings_group_validation( $floating_button_settings ): array {
+function coil_button_settings_group_validation( $coil_button_settings ): array {
 	$checkbox_fields = [ 'coil_show_donation_bar' ];
 
 	foreach ( $checkbox_fields as $field_name ) {
-		$floating_button_settings[ $field_name ] = isset( $floating_button_settings[ $field_name ] ) ? true : false;
+		$coil_button_settings[ $field_name ] = isset( $coil_button_settings[ $field_name ] ) ? true : false;
 	}
-	return $floating_button_settings;
+	return $coil_button_settings;
 }
 
 /* ------------------------------------------------------------------------ *
@@ -435,11 +435,11 @@ function coil_settings_welcome_render_callback() {
 		<?php
 			echo '<h1>' . esc_html__( 'Promote Coil', 'coil-web-monetization' ) . '</h1>';
 
-			echo '<p>' . esc_html__( 'Promote Coil to your members via a floating Coil Support button.', 'coil-web-monetization' ) . '</p>';
+			echo '<p>' . esc_html__( 'Promote Coil to your members via a Coil support button.', 'coil-web-monetization' ) . '</p>';
 			printf(
 				'<a class="button button-large" href="%s">%s</a>',
-				esc_url( admin_url( 'admin.php?page=coil_settings&tab=floating_button', COIL__FILE__ ) ),
-				esc_html__( 'Setup Floating Button', 'coil-web-monetization' )
+				esc_url( admin_url( 'admin.php?page=coil_settings&tab=coil_button', COIL__FILE__ ) ),
+				esc_html__( 'Setup Coil Button', 'coil-web-monetization' )
 			);
 		?>
 		</div>
@@ -902,12 +902,12 @@ function coil_settings_promotion_bar_render_callback() {
 	 * any settings stored in the database. If the
 	 * input status is not set, default to checked
 	 */
-	$checked_input_value = Admin\get_floating_button_setting( 'coil_show_donation_bar' );
+	$checked_input_value = Admin\get_coil_button_setting( 'coil_show_donation_bar' );
 
 	printf(
 		'<input type="%s" name="%s" id="%s" "%s">',
 		esc_attr( 'checkbox' ),
-		esc_attr( 'coil_floating_button_settings_group[coil_show_donation_bar]' ),
+		esc_attr( 'coil_button_settings_group[coil_show_donation_bar]' ),
 		esc_attr( 'coil_show_donation_bar' ),
 		checked( 1, $checked_input_value, false )
 	);
@@ -1114,7 +1114,7 @@ function render_coil_settings_screen() : void {
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=welcome' ); ?>" id="coil-welcome-settings" class="nav-tab <?php echo $active_tab === 'coil-welcome' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Welcome', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=general_settings' ); ?>" id="coil-general-settings" class="nav-tab <?php echo $active_tab === 'coil-general_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'General Settings', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=exclusive_settings' ); ?>" id="coil-exclusive-settings" class="nav-tab <?php echo $active_tab === 'coil-exclusive_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Exclusive Content', 'coil-web-monetization' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=floating_button' ); ?>" id="coil-floating-button-settings" class="nav-tab <?php echo $active_tab === 'coil-floating_button' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Floating Button', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=coil_button' ); ?>" id="coil-button-settings" class="nav-tab <?php echo $active_tab === 'coil-coil_button' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Coil Button', 'coil-web-monetization' ); ?></a>
 
 		</h2>
 	</div>
@@ -1145,12 +1145,12 @@ function render_coil_settings_screen() : void {
 					do_settings_sections( 'coil_css_selector_section' );
 					submit_button();
 					break;
-				case 'floating_button':
-					settings_fields( 'coil_floating_button_settings_group' );
+				case 'coil_button':
+					settings_fields( 'coil_button_settings_group' );
 					do_settings_sections( 'coil_promotion_bar_section' );
 					// 	do_settings_sections( 'coil_enable_button_section' );
-					// 	do_settings_sections( 'coil_floating_button_section' );
-					// 	do_settings_sections( 'coil_floating_button_visibility_section' );
+					// 	do_settings_sections( 'coil_button_section' );
+					// 	do_settings_sections( 'coil_button_visibility_section' );
 					submit_button();
 					break;
 			}
@@ -1355,6 +1355,15 @@ function maybe_load_database_defaults() {
 		$new_exclusive_settings = array_merge( $paywall_appearance_settings, $exclusive_post_settings, $post_visibility_settings, $excerpt_display_settings );
 		add_option( 'coil_exclusive_settings_group', $new_exclusive_settings );
 	}
+
+	// Loads donation bar default if it has not yet been entered into the database
+	$coil_button_settings = get_option( 'coil_button_settings_group', 'absent' );
+
+	if ( $coil_button_settings === 'absent' ) {
+		// Donation bar default is true
+		$coil_button_settings = ['coil_show_donation_bar' => true];
+		add_option( 'coil_button_settings_group', $coil_button_settings );
+	}
 }
 
 /**
@@ -1471,16 +1480,16 @@ function transfer_customizer_appearance_settings() {
 		}
 	}
 
-	// The donation bar display setting is now in the coil_floating_button_settings_group.
-	// The donation bar has been deprecated and a floating button is taking its place instead.
+	// The donation bar display setting is now in the coil_button_settings_group.
+	// The donation bar has been deprecated and a Coil button is taking its place instead.
 	if ( get_theme_mod( $coil_show_donation_bar, 'null' ) !== 'null' ) {
-		$existing_donation_bar_setting                   = get_option( 'coil_floating_button_settings_group', [] );
+		$existing_donation_bar_setting                   = get_option( 'coil_button_settings_group', [] );
 		$new_donation_bar_settings['coil_title_padlock'] = get_theme_mod( $coil_show_donation_bar, true );
 		remove_theme_mod( $coil_show_donation_bar );
 		if ( false !== $existing_donation_bar_setting ) {
-			update_option( 'coil_floating_button_settings_group', array_merge( $existing_donation_bar_setting, $new_donation_bar_settings ) );
+			update_option( 'coil_button_settings_group', array_merge( $existing_donation_bar_setting, $new_donation_bar_settings ) );
 		} else {
-			update_option( 'coil_floating_button_settings_group', $new_donation_bar_settings );
+			update_option( 'coil_button_settings_group', $new_donation_bar_settings );
 		}
 	}
 }
@@ -1498,12 +1507,12 @@ function transfer_version_1_9_panel_settings() {
 	$welcome_settings         = get_option( 'coil_welcome_settings_group', 'absent' );
 	$general_settings         = get_option( 'coil_general_settings_group', 'absent' );
 	$exclusive_settings       = get_option( 'coil_exclusive_settings_group', 'absent' );
-	$floating_button_settings = get_option( 'coil_floating_button_settings_group', 'absent' );
+	$coil_button_settings = get_option( 'coil_button_settings_group', 'absent' );
 
 	$new_welcome_settings         = [];
 	$new_general_settings         = [];
 	$new_exclusive_settings       = [];
-	$new_floating_button_settings = [];
+	$new_coil_button_settings = [];
 
 	$global_settings = get_option( 'coil_global_settings_group', 'absent' );
 	if ( $global_settings !== 'absent' ) {
@@ -1568,7 +1577,7 @@ function transfer_version_1_9_panel_settings() {
 			$new_exclusive_settings['coil_title_padlock'] = $appearance_settings['coil_title_padlock'];
 		}
 		if ( isset( $appearance_settings['coil_show_promotion_bar'] ) ) {
-			$new_floating_button_settings['coil_show_donation_bar'] = $appearance_settings['coil_show_promotion_bar'];
+			$new_coil_button_settings['coil_show_donation_bar'] = $appearance_settings['coil_show_promotion_bar'];
 		}
 		delete_option( 'coil_appearance_settings_group' );
 	}
@@ -1597,11 +1606,11 @@ function transfer_version_1_9_panel_settings() {
 		}
 	}
 
-	if ( $new_floating_button_settings !== [] ) {
-		if ( $floating_button_settings === 'absent' ) {
-			add_option( 'coil_floating_button_settings_group', $new_floating_button_settings );
+	if ( $new_coil_button_settings !== [] ) {
+		if ( $coil_button_settings === 'absent' ) {
+			add_option( 'coil_button_settings_group', $new_coil_button_settings );
 		} else {
-			update_option( 'coil_floating_button_settings_group', array_merge( $floating_button_settings, $new_floating_button_settings ) );
+			update_option( 'coil_button_settings_group', array_merge( $coil_button_settings, $new_coil_button_settings ) );
 		}
 	}
 }

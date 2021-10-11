@@ -679,17 +679,17 @@ function get_css_selector( $field_name ) {
 }
 
 /**
- * Retrieve the Floating Button settings.
+ * Retrieve the Coil Button settings.
  * @return array Setting stored in options.
  */
-function get_floating_button_settings() : array {
+function get_coil_button_settings() : array {
 
-	$floating_button_settings = get_option( 'coil_floating_button_settings_group', [] );
-	if ( empty( $floating_button_settings ) ) {
-		$floating_button_settings = [];
+	$coil_button_settings = get_option( 'coil_button_settings_group', [] );
+	if ( empty( $coil_button_settings ) ) {
+		$coil_button_settings = [];
 	}
 
-	return $floating_button_settings;
+	return $coil_button_settings;
 }
 
 /**
@@ -697,10 +697,10 @@ function get_floating_button_settings() : array {
  * @param string $field_name
  * @return string Setting stored in options.
  */
-function get_floating_button_setting( $field_id ) {
-	$floating_button_settings = get_floating_button_settings();
+function get_coil_button_setting( $field_id ) {
+	$coil_button_settings = get_coil_button_settings();
 	if ( $field_id === 'coil_show_donation_bar' ) {
-		$value = isset( $floating_button_settings[ $field_id ] ) ? $floating_button_settings[ $field_id ] : false;
+		$value = isset( $coil_button_settings[ $field_id ] ) ? $coil_button_settings[ $field_id ] : false;
 	}
 	return $value;
 }
