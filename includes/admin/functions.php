@@ -700,6 +700,12 @@ function get_coil_button_settings() : array {
 function get_coil_button_setting( $field_id ) {
 	$coil_button_settings = get_coil_button_settings();
 	if ( $field_id === 'coil_show_donation_bar' ) {
+		// Default is checked
+		if ( ! isset( $coil_button_settings[ $field_id ] ) ) {
+			$value = true;
+		} else {
+			$value = $coil_button_settings[ $field_id ];
+		}
 		$value = isset( $coil_button_settings[ $field_id ] ) ? $coil_button_settings[ $field_id ] : false;
 	}
 	return $value;
