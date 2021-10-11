@@ -9,78 +9,117 @@ use Coil\Settings;
 use WP_UnitTestCase;
 
 /**
- * Testing the custom appearance settings.
+ * Testing the functions that transfer data saved in the customizer or outdated option groups in the settings panel.
  */
-class Test_Appearance_Settings extends WP_UnitTestCase {
+class Test_Transfer_Functions extends WP_UnitTestCase {
+
+	/*/**
+	 *
+	 * @var array
+	 * @var \WP_Post[] message ID's.
+	*/
+	protected static $id = [
+		'paywall_title'               => 'coil_paywall_title',
+		'paywall_message'             => 'coil_paywall_message',
+		'button_text'                 => 'coil_paywall_button_text',
+		'button_link'                 => 'coil_paywall_button_link',
+		'fully_gated_excerpt_message' => 'coil_fully_gated_excerpt_message',
+	];
 
 	/**
-	 * Testing if the padlock icon shows next to geted post titles by default.
+	 * Testing if a user has custom messages which they saved in the customizer that they are migrated successfully to the wp_options table
 	 *
 	 * @return void
 	 */
-	public function test_if_default_padlock_display_is_enabled() :  void {
+	public function test_transfer_of_messages_from_customizer() :  void {
 
-		$padlock_setting = Admin\get_exlusive_post_setting( 'coil_title_padlock' );
+		// Adding custom messages to the theme_mod
+		set_theme_mod( 'coil_unable_to_verify_message', 'Unable to verify' );
+		set_theme_mod( 'coil_verifying_status_message', 'Loading content' );
+		// Variable name was changed from coil_unsupported_message to fully_gated
+		set_theme_mod( 'coil_unsupported_message', 'Fully gated' );
+		set_theme_mod( 'coil_learn_more_button_text', 'Learn More' );
+		// Leaving one option set to an empty string becasue this state occurs in the database once a custom message has been deleted
+		set_theme_mod( 'coil_learn_more_button_link', '' );
+		// Testing removal of a deprecated message
+		set_theme_mod( self::$id['fully_gated_excerpt_message'], 'Fully gated excerpt' );
 
-		$this->assertSame( true, $padlock_setting );
-	}
-
-	/**
-	 * Testing if the padlock icon setting is retrieved correctly from the wp_options table.
-	 *
-	 * @return void
-	 */
-	public function test_if_the_padlock_display_setting_is_retrieved_successfully() :  void {
-
-		$padlock_display = [ 'coil_title_padlock' => false ];
-		update_option( 'coil_exclusive_settings_group', $padlock_display );
-
-		$padlock_setting = Admin\get_exlusive_post_setting( 'coil_title_padlock' );
-
-		$this->assertSame( false, $padlock_setting );
-
-		$padlock_display = [ 'coil_title_padlock' => true ];
-		update_option( 'coil_exclusive_settings_group', $padlock_display );
-
-		$padlock_setting = Admin\get_exlusive_post_setting( 'coil_title_padlock' );
-
-		$this->assertSame( true, $padlock_setting );
-	}
-
-	/**
-	 * Testing if the donation bar footer shows by default.
-	 *
-	 * @return void
-	 */
-	public function test_if_default_donation_bar_display_is_enabled() :  void {
-
-		// Database defaults must first be setup
+		// Transferrng settings to the wp_options table
 		Settings\maybe_update_database();
-		$default_donation_bar_display = Admin\get_coil_button_setting( 'coil_show_donation_bar' );
 
-		$this->assertSame( true, $default_donation_bar_display );
+		// Creating an array of the messages that were retrieved from the wp_options table.
+		$message = [
+			self::$id['paywall_message'] => Admin\get_paywall_text_settings_or_default( self::$id['paywall_message'] ),
+			self::$id['button_text']     => Admin\get_paywall_text_settings_or_default( self::$id['button_text'] ),
+			self::$id['button_link']     => Admin\get_paywall_text_settings_or_default( self::$id['button_link'] ),
+		];
+
+		// Checking that all messages that were retrieved are correct
+		$this->assertSame( 'Fully gated', $message[ self::$id['paywall_message'] ] );
+		$this->assertSame( 'Learn More', $message[ self::$id['button_text'] ] );
+		$this->assertSame( 'https://coil.com/', $message[ self::$id['button_link'] ] );
+
+		// Checking that the theme_mod messages have been removed
+		$this->assertFalse( get_theme_mod( 'coil_unable_to_verify_message' ) );
+		$this->assertFalse( get_theme_mod( 'coil_voluntary_donation_message' ) );
+		$this->assertFalse( get_theme_mod( 'coil_verifying_status_message' ) );
+		$this->assertFalse( get_theme_mod( 'coil_unsupported_message' ) );
+		$this->assertFalse( get_theme_mod( 'coil_partial_gating_message' ) );
+		$this->assertFalse( get_theme_mod( 'coil_learn_more_button_text' ) );
+		$this->assertFalse( get_theme_mod( 'coil_learn_more_button_link' ) );
+		$this->assertFalse( get_theme_mod( self::$id['fully_gated_excerpt_message'] ) );
+
 	}
 
 	/**
-	 * Testing if the donation bar display setting is retrieved correctly from the wp_options table.
+	 * Testing if a user has custom messages which they saved in the customizer
+	 * and custom messages saved in the settings panel that they are migrated successfully to the wp_options table
 	 *
 	 * @return void
 	 */
-	public function test_if_the_donation_bar_display_setting_is_retrieved_successfully() :  void {
+	public function test_transfer_of_messages_from_customizer_when_messages_also_exist_in_settings_panel() :  void {
 
-		$donation_bar_display = [ 'coil_show_donation_bar' => false ];
-		update_option( 'coil_button_settings_group', $donation_bar_display );
+		// Adding custom messages to the database from the settings panel
+		$settings_panel_messages = [
+			self::$id['button_text'] => 'Button text',
+		];
+		update_option( 'coil_exclusive_settings_group', $settings_panel_messages );
 
-		$donation_bar_settings = Admin\get_coil_button_setting( 'coil_show_donation_bar' );
+		// Adding custom messages to the theme_mod
+		set_theme_mod( 'coil_unable_to_verify_message', 'Unable to verify' );
+		set_theme_mod( 'coil_verifying_status_message', 'Loading content' );
+		// Variable name was changed from coil_unsupported_message to fully_gated
+		set_theme_mod( 'coil_unsupported_message', 'Fully gated' );
+		set_theme_mod( 'coil_learn_more_button_text', 'Learn More' );
+		// Leaving one option set to an empty string becasue this state occurs in the database once a custom message has been deleted
+		set_theme_mod( 'coil_learn_more_button_link', '' );
+		// Testing removal of a deprecated message
+		set_theme_mod( 'coil_partially_gated_excerpt_message', 'Partially gated excerpt' );
 
-		$this->assertSame( false, $donation_bar_settings );
+		// Transferrng settings to the wp_options table
+		Settings\maybe_update_database();
 
-		$donation_bar_display = [ 'coil_show_donation_bar' => true ];
-		update_option( 'coil_button_settings_group', $donation_bar_display );
+		// Creating an array of the messages that were retrieved from the wp_options table.
+		$message = [
+			self::$id['paywall_message'] => Admin\get_paywall_text_settings_or_default( self::$id['paywall_message'] ),
+			self::$id['button_text']     => Admin\get_paywall_text_settings_or_default( self::$id['button_text'] ),
+			self::$id['button_link']     => Admin\get_paywall_text_settings_or_default( self::$id['button_link'] ),
+		];
 
-		$donation_bar_settings = Admin\get_coil_button_setting( 'coil_show_donation_bar' );
+		// Checking that all messages that were retrieved are correct
+		$this->assertSame( 'Fully gated', $message[ self::$id['paywall_message'] ] );
+		$this->assertSame( 'Learn More', $message[ self::$id['button_text'] ] );
+		$this->assertSame( 'https://coil.com/', $message[ self::$id['button_link'] ] );
 
-		$this->assertSame( true, $donation_bar_settings );
+		// Checking that the theme_mod messages have been removed
+		$this->assertFalse( get_theme_mod( 'coil_unable_to_verify_message' ) );
+		$this->assertFalse( get_theme_mod( 'coil_voluntary_donation_message' ) );
+		$this->assertFalse( get_theme_mod( 'coil_verifying_status_message' ) );
+		$this->assertFalse( get_theme_mod( 'coil_unsupported_message' ) );
+		$this->assertFalse( get_theme_mod( 'coil_partial_gating_message' ) );
+		$this->assertFalse( get_theme_mod( 'coil_learn_more_button_text' ) );
+		$this->assertFalse( get_theme_mod( 'coil_learn_more_button_link' ) );
+		$this->assertFalse( get_theme_mod( 'coil_partially_gated_excerpt_message' ) );
 	}
 
 	/**
@@ -203,110 +242,5 @@ class Test_Appearance_Settings extends WP_UnitTestCase {
 		// Checking that the theme_mod appearance settings have been removed
 		$this->assertFalse( get_theme_mod( 'coil_show_donation_bar' ) );
 		$this->assertFalse( get_theme_mod( 'coil_title_padlock' ) );
-	}
-
-	/**
-	 * Testing if the CTA box's default color theme is set to 'light'.
-	 *
-	 * @return void
-	 */
-	public function test_if_default_message_theme_is_light() {
-
-		$theme_setting = Admin\get_paywall_appearance_setting( 'coil_message_color_theme' );
-
-		$this->assertSame( 'light', $theme_setting );
-	}
-
-	/**
-	 * Testing if the CTA box's default color theme is retrieved correctly from the wp_options table.
-	 *
-	 * @return void
-	 */
-	public function test_if_the_color_theme_setting_is_retrieved_successfully() {
-
-		$dark_color_theme = [ 'coil_message_color_theme' => 'dark' ];
-		update_option( 'coil_exclusive_settings_group', $dark_color_theme );
-
-		$retrieved_color_theme = Admin\get_paywall_appearance_setting( 'coil_message_color_theme' );
-
-		$this->assertSame( $dark_color_theme['coil_message_color_theme'], $retrieved_color_theme );
-
-		$light_color_theme = [ 'coil_message_color_theme' => 'light' ];
-		update_option( 'coil_exclusive_settings_group', $light_color_theme );
-
-		$retrieved_color_theme = Admin\get_paywall_appearance_setting( 'coil_message_color_theme' );
-
-		$this->assertSame( $light_color_theme['coil_message_color_theme'], $retrieved_color_theme );
-
-	}
-
-	/**
-	 * Testing if the CTA box's default font is set to false.
-	 *
-	 * @return void
-	 */
-	public function test_if_default_theme_font_is_false() {
-
-		$default_font = Admin\get_inherited_font_setting( 'coil_message_font' );
-
-		$this->assertSame( false, $default_font );
-	}
-
-	/**
-	 * Testing if the CTA box's font selection is retrieved correctly from the wp_options table.
-	 *
-	 * @return void
-	 */
-	public function test_if_the_theme_font_setting_is_retrieved_successfully() {
-
-		$default_font = [ 'coil_message_font' => false ];
-		update_option( 'coil_exclusive_settings_group', $default_font );
-
-		$retrieved_font = Admin\get_inherited_font_setting( 'coil_message_font' );
-
-		$this->assertSame( $default_font['coil_message_font'], $retrieved_font );
-
-		$theme_based_font = [ 'coil_message_font' => true ];
-		update_option( 'coil_exclusive_settings_group', $theme_based_font );
-
-		$retrieved_color_theme = Admin\get_inherited_font_setting( 'coil_message_font' );
-
-		$this->assertSame( $theme_based_font['coil_message_font'], $retrieved_color_theme );
-
-	}
-
-	/**
-	 * Testing if the CTA box's Coil branding selection is set to false.
-	 *
-	 * @return void
-	 */
-	public function test_if_default_message_branding_option_is_false() {
-
-		$branding_setting = Admin\get_paywall_appearance_setting( 'coil_message_branding' );
-
-		$this->assertSame( 'coil_logo', $branding_setting );
-	}
-
-	/**
-	 * Testing if the CTA box's Coil branding selection is retrieved correctly from the wp_options table.
-	 *
-	 * @return void
-	 */
-	public function test_if_the_message_branding_option_is_retrieved_successfully() {
-
-		$branding_unchecked = [ 'coil_message_branding' => false ];
-		update_option( 'coil_exclusive_settings_group', $branding_unchecked );
-
-		$retrieved_branding = Admin\get_paywall_appearance_setting( 'coil_message_branding' );
-
-		$this->assertSame( $branding_unchecked['coil_message_branding'], $retrieved_branding );
-
-		$branding_checked = [ 'coil_message_branding' => true ];
-		update_option( 'coil_exclusive_settings_group', $branding_checked );
-
-		$retrieved_branding = Admin\get_paywall_appearance_setting( 'coil_message_branding' );
-
-		$this->assertSame( $branding_checked['coil_message_branding'], $retrieved_branding );
-
 	}
 }
