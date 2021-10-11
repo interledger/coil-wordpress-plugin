@@ -19,6 +19,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 	 * @var \WP_Post[] message ID's.
 	*/
 	protected static $id = [
+		'unverified'                      => 'coil_unable_to_verify_message',
 		'pending'                         => 'coil_verifying_status_message',
 		'paywall_title'                   => 'coil_paywall_title',
 		'paywall_message'                 => 'coil_paywall_message',
@@ -101,11 +102,11 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 			// Leaving one option set to an empty string becasue this state occurs in the database once a custom message has been deleted
 			self::$id['button_link']     => '',
 		];
-		update_option( 'coil_messaging_settings_group', $custom_message );
+		update_option( 'coil_exclusive_settings_group', $custom_message );
 
 		// Creating an array of the messages that were retrieved
 		$message = [
-			self::$id['paywall_title'] => Admin\get_paywall_text_settings_or_default( self::$id['paywall_title'] ),
+			self::$id['paywall_title']   => Admin\get_paywall_text_settings_or_default( self::$id['paywall_title'] ),
 			self::$id['paywall_message'] => Admin\get_paywall_text_settings_or_default( self::$id['paywall_message'] ),
 			self::$id['button_text']     => Admin\get_paywall_text_settings_or_default( self::$id['button_text'] ),
 			self::$id['button_link']     => Admin\get_paywall_text_settings_or_default( self::$id['button_link'] ),
@@ -137,7 +138,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		set_theme_mod( self::$id['fully_gated_excerpt_message'], 'Fully gated excerpt' );
 
 		// Transferrng settings to the wp_options table
-		Settings\transfer_customizer_message_settings();
+		Settings\maybe_update_database();
 
 		// Creating an array of the messages that were retrieved from the wp_options table.
 		$message = [
@@ -189,7 +190,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		set_theme_mod( self::$id['partially_gated_excerpt_message'], 'Partially gated excerpt' );
 
 		// Transferrng settings to the wp_options table
-		Settings\transfer_customizer_message_settings();
+		Settings\maybe_update_database();
 
 		// Creating an array of the messages that were retrieved from the wp_options table.
 		$message = [

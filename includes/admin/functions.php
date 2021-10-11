@@ -710,5 +710,4 @@ function get_set_message_fields( $field_id ) {
 		case 'coil_verifying_status_message':
 			return __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' );
 	}
-
 }

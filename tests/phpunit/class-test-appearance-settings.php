@@ -54,6 +54,8 @@ class Test_Appearance_Settings extends WP_UnitTestCase {
 	 */
 	public function test_if_default_donation_bar_display_is_enabled() :  void {
 
+		// Database defaults must first be setup
+		Settings\maybe_update_database();
 		$default_appearance_settings = Admin\get_floating_button_setting( 'coil_show_donation_bar' );
 
 		$this->assertSame( true, $default_appearance_settings );
@@ -95,7 +97,7 @@ class Test_Appearance_Settings extends WP_UnitTestCase {
 		set_theme_mod( 'coil_title_padlock', false );
 
 		// Transferrng settings to the wp_options table
-		Settings\transfer_customizer_appearance_settings();
+		Settings\maybe_update_database();
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
@@ -125,7 +127,7 @@ class Test_Appearance_Settings extends WP_UnitTestCase {
 		set_theme_mod( 'coil_title_padlock', true );
 
 		// Transferrng settings to the wp_options table
-		Settings\transfer_customizer_appearance_settings();
+		Settings\maybe_update_database();
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
@@ -156,7 +158,7 @@ class Test_Appearance_Settings extends WP_UnitTestCase {
 		set_theme_mod( 'coil_title_padlock', false );
 
 		// Transferrng settings to the wp_options table
-		Settings\transfer_customizer_appearance_settings();
+		Settings\maybe_update_database();
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
@@ -186,7 +188,7 @@ class Test_Appearance_Settings extends WP_UnitTestCase {
 		add_option( 'coil_exclusive_settings_group', ['coil_title_padlock' => false] );
 
 		// Transferrng settings to the wp_options table
-		Settings\transfer_customizer_appearance_settings();
+		Settings\maybe_update_database();
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
