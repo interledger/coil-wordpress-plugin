@@ -706,7 +706,6 @@ function get_coil_button_setting( $field_id ) {
 		} else {
 			$value = $coil_button_settings[ $field_id ];
 		}
-		$value = isset( $coil_button_settings[ $field_id ] ) ? $coil_button_settings[ $field_id ] : false;
 	}
 	return $value;
 }
