@@ -83,7 +83,7 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 		$settings_panel_messages = [
 			self::$id['button_text'] => 'Button text',
 		];
-		update_option( 'coil_exclusive_settings_group', $settings_panel_messages );
+		add_option( 'coil_exclusive_settings_group', $settings_panel_messages );
 
 		// Adding custom messages to the theme_mod
 		set_theme_mod( 'coil_unable_to_verify_message', 'Unable to verify' );
