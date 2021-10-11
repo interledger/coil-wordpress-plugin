@@ -19,15 +19,11 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 	 * @var \WP_Post[] message ID's.
 	*/
 	protected static $id = [
-		'unverified'                      => 'coil_unable_to_verify_message',
-		'pending'                         => 'coil_verifying_status_message',
-		'paywall_title'                   => 'coil_paywall_title',
-		'paywall_message'                 => 'coil_paywall_message',
-		'partially_gated'                 => 'coil_paywall_message',
-		'button_text'                     => 'coil_paywall_button_text',
-		'button_link'                     => 'coil_paywall_button_link',
-		'fully_gated_excerpt_message'     => 'coil_fully_gated_excerpt_message',
-		'partially_gated_excerpt_message' => 'coil_partially_gated_excerpt_message',
+		'paywall_title'               => 'coil_paywall_title',
+		'paywall_message'             => 'coil_paywall_message',
+		'button_text'                 => 'coil_paywall_button_text',
+		'button_link'                 => 'coil_paywall_button_link',
+		'fully_gated_excerpt_message' => 'coil_fully_gated_excerpt_message',
 	];
 
 	/**
@@ -127,13 +123,13 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 	public function test_transfer_of_messages_from_customizer() :  void {
 
 		// Adding custom messages to the theme_mod
-		set_theme_mod( self::$id['unverified'], 'Unable to verify' );
-		set_theme_mod( self::$id['pending'], 'Loading content' );
+		set_theme_mod( 'coil_unable_to_verify_message', 'Unable to verify' );
+		set_theme_mod( 'coil_verifying_status_message', 'Loading content' );
 		// Variable name was changed from coil_unsupported_message to fully_gated
 		set_theme_mod( 'coil_unsupported_message', 'Fully gated' );
-		set_theme_mod( self::$id['button_text'], 'Learn More' );
+		set_theme_mod( 'coil_learn_more_button_text', 'Learn More' );
 		// Leaving one option set to an empty string becasue this state occurs in the database once a custom message has been deleted
-		set_theme_mod( self::$id['button_link'], '' );
+		set_theme_mod( 'coil_learn_more_button_link', '' );
 		// Testing removal of a deprecated message
 		set_theme_mod( self::$id['fully_gated_excerpt_message'], 'Fully gated excerpt' );
 
@@ -153,13 +149,13 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		$this->assertSame( 'https://coil.com/', $message[ self::$id['button_link'] ] );
 
 		// Checking that the theme_mod messages have been removed
-		$this->assertFalse( get_theme_mod( self::$id['unverified'] ) );
+		$this->assertFalse( get_theme_mod( 'coil_unable_to_verify_message' ) );
 		$this->assertFalse( get_theme_mod( 'coil_voluntary_donation_message' ) );
-		$this->assertFalse( get_theme_mod( self::$id['pending'] ) );
-		$this->assertFalse( get_theme_mod( self::$id['paywall_message'] ) );
-		$this->assertFalse( get_theme_mod( self::$id['partially_gated'] ) );
-		$this->assertFalse( get_theme_mod( self::$id['button_text'] ) );
-		$this->assertFalse( get_theme_mod( self::$id['button_link'] ) );
+		$this->assertFalse( get_theme_mod( 'coil_verifying_status_message' ) );
+		$this->assertFalse( get_theme_mod( 'coil_unsupported_message' ) );
+		$this->assertFalse( get_theme_mod( 'coil_partial_gating_message' ) );
+		$this->assertFalse( get_theme_mod( 'coil_learn_more_button_text' ) );
+		$this->assertFalse( get_theme_mod( 'coil_learn_more_button_link' ) );
 		$this->assertFalse( get_theme_mod( self::$id['fully_gated_excerpt_message'] ) );
 
 	}
@@ -179,15 +175,15 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		update_option( 'coil_exclusive_settings_group', $settings_panel_messages );
 
 		// Adding custom messages to the theme_mod
-		set_theme_mod( self::$id['unverified'], 'Unable to verify' );
-		set_theme_mod( self::$id['pending'], 'Loading content' );
+		set_theme_mod( 'coil_unable_to_verify_message', 'Unable to verify' );
+		set_theme_mod( 'coil_verifying_status_message', 'Loading content' );
 		// Variable name was changed from coil_unsupported_message to fully_gated
 		set_theme_mod( 'coil_unsupported_message', 'Fully gated' );
-		set_theme_mod( self::$id['button_text'], 'Learn More' );
+		set_theme_mod( 'coil_learn_more_button_text', 'Learn More' );
 		// Leaving one option set to an empty string becasue this state occurs in the database once a custom message has been deleted
-		set_theme_mod( self::$id['button_link'], '' );
+		set_theme_mod( 'coil_learn_more_button_link', '' );
 		// Testing removal of a deprecated message
-		set_theme_mod( self::$id['partially_gated_excerpt_message'], 'Partially gated excerpt' );
+		set_theme_mod( 'coil_partially_gated_excerpt_message', 'Partially gated excerpt' );
 
 		// Transferrng settings to the wp_options table
 		Settings\maybe_update_database();
@@ -205,13 +201,13 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 		$this->assertSame( 'https://coil.com/', $message[ self::$id['button_link'] ] );
 
 		// Checking that the theme_mod messages have been removed
-		$this->assertFalse( get_theme_mod( self::$id['unverified'] ) );
+		$this->assertFalse( get_theme_mod( 'coil_unable_to_verify_message' ) );
 		$this->assertFalse( get_theme_mod( 'coil_voluntary_donation_message' ) );
-		$this->assertFalse( get_theme_mod( self::$id['pending'] ) );
-		$this->assertFalse( get_theme_mod( self::$id['paywall_message'] ) );
-		$this->assertFalse( get_theme_mod( self::$id['partially_gated'] ) );
-		$this->assertFalse( get_theme_mod( self::$id['button_text'] ) );
-		$this->assertFalse( get_theme_mod( self::$id['button_link'] ) );
-		$this->assertFalse( get_theme_mod( self::$id['partially_gated_excerpt_message'] ) );
+		$this->assertFalse( get_theme_mod( 'coil_verifying_status_message' ) );
+		$this->assertFalse( get_theme_mod( 'coil_unsupported_message' ) );
+		$this->assertFalse( get_theme_mod( 'coil_partial_gating_message' ) );
+		$this->assertFalse( get_theme_mod( 'coil_learn_more_button_text' ) );
+		$this->assertFalse( get_theme_mod( 'coil_learn_more_button_link' ) );
+		$this->assertFalse( get_theme_mod( 'coil_partially_gated_excerpt_message' ) );
 	}
 }

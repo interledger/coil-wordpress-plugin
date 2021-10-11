@@ -1361,7 +1361,7 @@ function maybe_load_database_defaults() {
 
 	if ( $coil_button_settings === 'absent' ) {
 		// Donation bar default is true
-		$coil_button_settings = ['coil_show_donation_bar' => true];
+		$coil_button_settings = [ 'coil_show_donation_bar' => true ];
 		add_option( 'coil_button_settings_group', $coil_button_settings );
 	}
 }
@@ -1471,12 +1471,12 @@ function transfer_customizer_appearance_settings() {
 	// The padlock display setting is now in the coil_exclusive_settings_group
 	if ( get_theme_mod( $coil_title_padlock, 'null' ) !== 'null' ) {
 		$existing_padlock_setting                   = get_option( 'coil_exclusive_settings_group', [] );
-		$new_padlock_settings['coil_title_padlock'] = get_theme_mod( $coil_title_padlock, true );
+		$new_padlock_settings['coil_title_padlock'] = get_theme_mod( $coil_title_padlock );
 		remove_theme_mod( $coil_title_padlock );
 		if ( false !== $existing_padlock_setting ) {
 			update_option( 'coil_exclusive_settings_group', array_merge( $existing_padlock_setting, $new_padlock_settings ) );
 		} else {
-			update_option( 'coil_exclusive_settings_group', $new_padlock_settings );
+			add_option( 'coil_exclusive_settings_group', $new_padlock_settings );
 		}
 	}
 
@@ -1484,7 +1484,7 @@ function transfer_customizer_appearance_settings() {
 	// The donation bar has been deprecated and a Coil button is taking its place instead.
 	if ( get_theme_mod( $coil_show_donation_bar, 'null' ) !== 'null' ) {
 		$existing_donation_bar_setting                   = get_option( 'coil_button_settings_group', [] );
-		$new_donation_bar_settings['coil_title_padlock'] = get_theme_mod( $coil_show_donation_bar, true );
+		$new_donation_bar_settings['coil_title_padlock'] = get_theme_mod( $coil_show_donation_bar );
 		remove_theme_mod( $coil_show_donation_bar );
 		if ( false !== $existing_donation_bar_setting ) {
 			update_option( 'coil_button_settings_group', array_merge( $existing_donation_bar_setting, $new_donation_bar_settings ) );
@@ -1505,14 +1505,14 @@ function transfer_customizer_appearance_settings() {
 function transfer_version_1_9_panel_settings() {
 
 	// Retrieve all current option groups from the database
-	$welcome_settings         = get_option( 'coil_welcome_settings_group', 'absent' );
-	$general_settings         = get_option( 'coil_general_settings_group', 'absent' );
-	$exclusive_settings       = get_option( 'coil_exclusive_settings_group', 'absent' );
+	$welcome_settings     = get_option( 'coil_welcome_settings_group', 'absent' );
+	$general_settings     = get_option( 'coil_general_settings_group', 'absent' );
+	$exclusive_settings   = get_option( 'coil_exclusive_settings_group', 'absent' );
 	$coil_button_settings = get_option( 'coil_button_settings_group', 'absent' );
 
-	$new_welcome_settings         = [];
-	$new_general_settings         = [];
-	$new_exclusive_settings       = [];
+	$new_welcome_settings     = [];
+	$new_general_settings     = [];
+	$new_exclusive_settings   = [];
 	$new_coil_button_settings = [];
 
 	$global_settings = get_option( 'coil_global_settings_group', 'absent' );

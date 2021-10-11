@@ -281,8 +281,8 @@ class Test_Appearance_Settings extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_if_default_message_branding_option_is_false() {
-	
-	$branding_setting = Admin\get_paywall_appearance_setting( 'coil_message_branding' );
+
+		$branding_setting = Admin\get_paywall_appearance_setting( 'coil_message_branding' );
 
 		$this->assertSame( 'coil_logo', $branding_setting );
 	}
