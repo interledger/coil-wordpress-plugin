@@ -1489,10 +1489,11 @@ function transfer_customizer_appearance_settings() {
 		if ( false !== $existing_donation_bar_setting ) {
 			update_option( 'coil_button_settings_group', array_merge( $existing_donation_bar_setting, $new_donation_bar_settings ) );
 		} else {
-			update_option( 'coil_button_settings_group', $new_donation_bar_settings );
+			add_option( 'coil_button_settings_group', $new_donation_bar_settings );
 		}
 	}
 }
+
 /**
  * Translate settings in version 1.9
  *

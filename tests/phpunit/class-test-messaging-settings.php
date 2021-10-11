@@ -50,7 +50,7 @@ class Test_Messaging_Settings extends WP_UnitTestCase {
 
 		// Creating an array of the message defaults that were retrieved
 		$retrieved_messages = [
-			self::$id['paywall_title']   => Admin\get_paywall_text_settings_or_default( self::$id['paywall_message'] ),
+			self::$id['paywall_title']   => Admin\get_paywall_text_settings_or_default( self::$id['paywall_title'] ),
 			self::$id['paywall_message'] => Admin\get_paywall_text_settings_or_default( self::$id['paywall_message'] ),
 			self::$id['button_text']     => Admin\get_paywall_text_settings_or_default( self::$id['button_text'] ),
 			self::$id['button_link']     => Admin\get_paywall_text_settings_or_default( self::$id['button_link'] ),
