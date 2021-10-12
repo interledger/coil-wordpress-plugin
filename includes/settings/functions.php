@@ -519,7 +519,7 @@ function coil_settings_monetization_render_callback() {
 		printf(
 			'<p class="%s">%s</p>',
 			esc_attr( 'description' ),
-			esc_html__( 'You can override these settings in the Category, Tag and Post menus.', 'coil-web-monetization' )
+			esc_html__( 'You can override these settings in the Category, Tag, Page and Post menus.', 'coil-web-monetization' )
 		);
 
 	?>
@@ -755,7 +755,7 @@ function coil_settings_post_visibility_render_callback() {
 	<div class="coil tab-styling">
 	<?php
 		echo '<h1>' . esc_html__( 'Visibility Settings', 'coil-web-monetization' ) . '</h1>';
-		echo '<p>' . esc_html_e( 'Create defaults to set specific post types to be publicly visible, or only exclusively available to Coil members. These defaults can be overridden by configuring visibility against individual pages and posts, or against your categories and taxonomies.', 'coil-web-monetization' ) . '</p>';
+		echo '<p>' . esc_html_e( 'Select whether you want to designate posts and pages as \'Exclusive\' by default', 'coil-web-monetization' ) . '</p>';
 		printf(
 			'<p>%1$s<a href="%2$s">%3$s</a>%4$s</p>',
 			esc_html( 'Post types can only be marked as exclusive if they are also marked as monetized under ', 'coil-web-monetization' ),
@@ -763,7 +763,7 @@ function coil_settings_post_visibility_render_callback() {
 			esc_html( 'General Settings', 'coil-web-monetization' ),
 			'.'
 		);
-
+		
 		// Using a function to generate the table with the global visibility radio button options.
 		$group             = 'coil_exclusive_settings_group';
 		$columns           = Admin\get_visibility_types();
@@ -771,6 +771,12 @@ function coil_settings_post_visibility_render_callback() {
 		$suffix            = 'visibility';
 		$exclusive_options = Admin\get_exclusive_settings();
 		render_generic_post_type_table( $group, $columns, $input_type, $suffix, $exclusive_options );
+
+		printf(
+			'<p class="%s">%s</p>',
+			esc_attr( 'description' ),
+			esc_html__( 'You can override these settings in the Category, Tag, Page and Post menus.', 'coil-web-monetization' )
+		);
 	?>
 	</div>
 	<?php
@@ -830,7 +836,7 @@ function coil_settings_css_selector_render_callback() {
 
 		printf(
 			/* translators: 1) HTML link open tag, 2) HTML link close tag, 3) HTML link open tag, 4) HTML link close tag. */
-			esc_html__( 'Enter the CSS selectors used in your theme that could include gated content. Most themes use the pre-filled CSS selectors. (%1$sLearn more%2$s)', 'coil-web-monetization' ),
+			esc_html__( 'Enter the CSS selectors set by your theme that could include gated content. Most themes use the pre-filled CSS selectors. (%1$sLearn more%2$s)', 'coil-web-monetization' ),
 			sprintf( '<a href="%s" target="_blank">', esc_url( 'https://help.coil.com/docs/monetize/content/wp-faq-troubleshooting#everyoneno-one-can-see-my-monetized-content-why' ) ),
 			'</a>'
 		);
@@ -882,7 +888,7 @@ function coil_paywall_appearance_text_field_settings_render_callback( $field_nam
 	);
 
 	if ( $field_name === 'coil_paywall_button_link' ) {
-		echo '<p>' . __( 'If you have an affiliate link add it here.', 'coil-web-monetization' ) . '</p>';
+		echo '<p class="description">' . __( 'If you have an affiliate link add it here.', 'coil-web-monetization' ) . '</p>';
 	}
 }
 
