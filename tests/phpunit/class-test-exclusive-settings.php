@@ -12,17 +12,16 @@ use WP_UnitTestCase;
  */
 class Test_Exclusive_Settings extends WP_UnitTestCase {
 
-	/*/**
+	/**
 	 *
 	 * @var array
 	 * @var \WP_Post[] message ID's.
 	*/
 	protected static $id = [
-		'paywall_title'               => 'coil_paywall_title',
-		'paywall_message'             => 'coil_paywall_message',
-		'button_text'                 => 'coil_paywall_button_text',
-		'button_link'                 => 'coil_paywall_button_link',
-		'fully_gated_excerpt_message' => 'coil_fully_gated_excerpt_message',
+		'paywall_title'   => 'coil_paywall_title',
+		'paywall_message' => 'coil_paywall_message',
+		'button_text'     => 'coil_paywall_button_text',
+		'button_link'     => 'coil_paywall_button_link',
 	];
 
 	/**
@@ -35,7 +34,7 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 		// Ensuring no custom messages are present in the database
 		delete_option( 'coil_exclusive_settings_group' );
 
-		// Creating an array of the message defaults that were retrieved
+		// Creating an array of the message defaults
 		$defaults = [
 			self::$id['paywall_title']   => 'Keep Reading with Coil',
 			self::$id['paywall_message'] => 'We partnered with Coil to offer exclusive content. Access this and other great content with a Coil membership.',
@@ -114,7 +113,7 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 		$this->assertSame( 'https://coil.com/', $message[ self::$id['button_link'] ] );
 	}
 
-		/**
+	/**
 	 * Testing if the CTA box's default color theme is set to 'light'.
 	 *
 	 * @return void
@@ -127,7 +126,7 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing if the CTA box's default color theme is retrieved correctly from the wp_options table.
+	 * Testing if the CTA box's color theme is retrieved correctly from the wp_options table.
 	 *
 	 * @return void
 	 */
@@ -150,11 +149,11 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing if the CTA box's Coil branding selection is set to false.
+	 * Testing if the CTA box's branding selection defaults to show the Coil logo.
 	 *
 	 * @return void
 	 */
-	public function test_if_default_message_branding_option_is_false() {
+	public function test_if_default_message_branding_option_is_coil_logo() {
 
 		$branding_setting = Admin\get_paywall_appearance_setting( 'coil_message_branding' );
 
@@ -162,38 +161,39 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing if the CTA box's Coil branding selection is retrieved correctly from the wp_options table.
+	 * Testing if the CTA box's branding selection is retrieved correctly from the wp_options table.
 	 *
 	 * @return void
 	 */
 	public function test_if_the_message_branding_option_is_retrieved_successfully() {
 
-		$branding_unchecked = [ 'coil_message_branding' => false ];
-		update_option( 'coil_exclusive_settings_group', $branding_unchecked );
+		$branding_state = [ 'coil_message_branding' => 'site_logo' ];
+		update_option( 'coil_exclusive_settings_group', $branding_state );
 
 		$retrieved_branding = Admin\get_paywall_appearance_setting( 'coil_message_branding' );
 
-		$this->assertSame( $branding_unchecked['coil_message_branding'], $retrieved_branding );
+		$this->assertSame( $branding_state['coil_message_branding'], $retrieved_branding );
 
-		$branding_checked = [ 'coil_message_branding' => true ];
-		update_option( 'coil_exclusive_settings_group', $branding_checked );
+		$branding_state = [ 'coil_message_branding' => 'no_logo' ];
+		update_option( 'coil_exclusive_settings_group', $branding_state );
 
 		$retrieved_branding = Admin\get_paywall_appearance_setting( 'coil_message_branding' );
 
-		$this->assertSame( $branding_checked['coil_message_branding'], $retrieved_branding );
+		$this->assertSame( $branding_state['coil_message_branding'], $retrieved_branding );
 
 	}
 
 	/**
-	 * Testing if the CTA box's default font is set to false.
+	 * Testing if the CTA box defaults to the plugin's font rather than inheriting the theme's font.
+	 * The font value should be set to false.
 	 *
 	 * @return void
 	 */
 	public function test_if_default_theme_font_is_false() {
 
-		$default_font = Admin\get_inherited_font_setting( 'coil_message_font' );
+		$theme_based_font = Admin\get_inherited_font_setting( 'coil_message_font' );
 
-		$this->assertSame( false, $default_font );
+		$this->assertSame( false, $theme_based_font );
 	}
 
 	/**
@@ -203,19 +203,19 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 	 */
 	public function test_if_the_theme_font_setting_is_retrieved_successfully() {
 
-		$default_font = [ 'coil_message_font' => false ];
-		update_option( 'coil_exclusive_settings_group', $default_font );
+		$theme_based_font = [ 'coil_message_font' => false ];
+		update_option( 'coil_exclusive_settings_group', $theme_based_font );
 
 		$retrieved_font = Admin\get_inherited_font_setting( 'coil_message_font' );
 
-		$this->assertSame( $default_font['coil_message_font'], $retrieved_font );
+		$this->assertSame( $theme_based_font['coil_message_font'], $retrieved_font );
 
 		$theme_based_font = [ 'coil_message_font' => true ];
 		update_option( 'coil_exclusive_settings_group', $theme_based_font );
 
-		$retrieved_color_theme = Admin\get_inherited_font_setting( 'coil_message_font' );
+		$retrieved_font = Admin\get_inherited_font_setting( 'coil_message_font' );
 
-		$this->assertSame( $theme_based_font['coil_message_font'], $retrieved_color_theme );
+		$this->assertSame( $theme_based_font['coil_message_font'], $retrieved_font );
 
 	}
 
@@ -260,7 +260,9 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 	 */
 	public function test_if_default_content_container_is_retrieved_successfully() :  void {
 
-		$this->assertSame( '.content-area .entry-content', Admin\get_css_selector( 'coil_content_container' ) );
+		$css_selector = Admin\get_css_selector( 'coil_content_container' );
+
+		$this->assertSame( '.content-area .entry-content', $css_selector );
 	}
 
 	/**

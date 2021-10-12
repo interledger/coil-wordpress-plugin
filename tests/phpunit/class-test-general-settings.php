@@ -20,9 +20,9 @@ class Test_General_Settings extends WP_UnitTestCase {
 	 */
 	public function test_if_default_payment_pointer_is_an_empty_string() :  void {
 
-		$default_payment_ponter_setting = Coil\get_payment_pointer();
+		$default_payment_pointer_setting = Coil\get_payment_pointer();
 
-		$this->assertSame( '', $default_payment_ponter_setting );
+		$this->assertSame( '', $default_payment_pointer_setting );
 	}
 
 	/**
