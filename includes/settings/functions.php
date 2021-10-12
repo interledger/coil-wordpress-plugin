@@ -358,7 +358,7 @@ function coil_settings_welcome_render_callback() {
 			);
 		?>
 
-		<div style="padding-top: 15px;">
+		<div style="padding-top: 10px;">
 		<?php
 
 			echo '<h2>' . esc_html__( 'Monetization', 'coil-web-monetization' ) . '</h2>';
@@ -367,7 +367,7 @@ function coil_settings_welcome_render_callback() {
 		?>
 		</div>
 
-		<div style="padding-top: 15px;">
+		<div style="padding-top: 10px;">
 		<?php
 			echo '<h2>' . esc_html__( 'Exclusive Content', 'coil-web-monetization' ) . '</h2>';
 
@@ -380,7 +380,7 @@ function coil_settings_welcome_render_callback() {
 		?>
 		</div>
 
-		<div style="padding-top: 15px;">
+		<div style="padding-top: 10px;">
 		<?php
 			echo '<h2>' . esc_html__( 'Coil Button', 'coil-web-monetization' ) . '</h2>';
 
