@@ -69,8 +69,7 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 			self::$id['button_text']     => 'Learn More',
 			self::$id['button_link']     => 'https://https://help.coil.com/docs/dev/web-monetization/index.html',
 		];
-		delete_option( 'coil_exclusive_settings_group' );
-		add_option( 'coil_exclusive_settings_group', $custom_message );
+		update_option( 'coil_exclusive_settings_group', $custom_message );
 
 		// Creating an array of the messages that were retrieved
 		$retrieved_message = [
@@ -98,8 +97,7 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 			// Leaving one option set to an empty string becasue this state occurs in the database once a custom message has been deleted
 			self::$id['button_link']     => '',
 		];
-		delete_option( 'coil_exclusive_settings_group' );
-		add_option( 'coil_exclusive_settings_group', $custom_message );
+		update_option( 'coil_exclusive_settings_group', $custom_message );
 
 		// Creating an array of the messages that were retrieved
 		$message = [

@@ -84,7 +84,7 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 			self::$id['paywall_title'] => 'Paywall Title',
 			self::$id['button_text']   => 'Button text',
 		];
-		add_option( 'coil_exclusive_settings_group', $settings_panel_messages );
+		update_option( 'coil_exclusive_settings_group', $settings_panel_messages );
 
 		// Adding custom messages to the theme_mod
 		set_theme_mod( 'coil_unable_to_verify_message', 'Unable to verify' );
@@ -226,8 +226,7 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 	public function test_transfer_of_appearance_settings_from_customizer_where_settings_have_been_saved_in_both_locations() :  void {
 
 		// Adding custom appearance settings to the database and theme_mod
-		delete_option( 'coil_exclusive_settings_group' );
-		add_option( 'coil_exclusive_settings_group', [ 'coil_title_padlock' => false ] );
+		update_option( 'coil_exclusive_settings_group', [ 'coil_title_padlock' => false ] );
 		set_theme_mod( 'coil_show_donation_bar', false );
 
 		// Transferrng settings to the wp_options table
