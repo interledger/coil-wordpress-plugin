@@ -1,63 +1,52 @@
-describe('Padlock test', () => {
+describe( 'Padlock test', () => {
+	beforeEach( () => {
+		cy.logInToWordPress( 'admin', 'password' );
+		cy.resetSite();
+	} );
 
-	beforeEach(() => {
-		cy.logInToWordPress('admin', 'password');
-	})
+	it( 'Checks if a padlock appears when enabled', () => {
+		togglePadlock( 'uncheck' );
 
-	it('Checks if a padlock appears when enabled', () => {
-		cy.server()
-		cy.route({method: 'POST', url: '/wp-admin/admin-ajax.php'}).as('settingsSubmitted')
-
-		togglePadlock('check');
-
-		cy.visit('/coil-members-only/')
+		cy.visit( '/coil-members-only/' );
 		cy
-			.get('.entry-title > .emoji')
-			.should('have.attr', 'alt', '🔒')
+			.get( '.entry-title > .emoji' )
+			.should( 'not.exist' );
 
-		togglePadlock('uncheck');
+		togglePadlock( 'check' );
 
-		cy.visit('/coil-members-only/')
+		cy.visit( '/coil-members-only/' );
 		cy
-			.get('.entry-title > .emoji')
-			.should('not.exist')
-	})
-})
+			.get( '.entry-title > .emoji' )
+			.should( 'exist' );
+	} );
+} );
 
 /**
  * Checks or unchecks the display padlock option
  *
- * @param {('check'|'uncheck')} checkboxState
+ * @param {('check'|'uncheck')} checkboxState state for the padlock display
  */
-function togglePadlock(checkboxState) {
-	cy.visit('/wp-admin/customize.php')
+function togglePadlock( checkboxState ) {
+	cy.visit( '/wp-admin/admin.php?page=coil_settings' );
 
-	cy
-		.contains('Coil Web Monetization')
+	cy.get( '.nav-tab-wrapper > #coil-appearance-settings' )
+		.contains( 'Appearance' )
 		.click();
 
-	cy
-		.get('#accordion-section-coil_customizer_section_options')
-		.click();
-
-	switch(checkboxState) {
+	switch ( checkboxState ) {
 		case 'check':
 			cy
-				.get('#_customize-input-coil_title_padlock')
-				.click()
+				.get( '#display_padlock_id' )
 				.check();
 			break;
 		case 'uncheck':
 			cy
-				.get('#_customize-input-coil_title_padlock')
-				.click()
+				.get( '#display_padlock_id' )
 				.uncheck();
 			break;
 	}
 
 	cy
-		.get('#save')
-		.click({force: true});
-
-	cy.wait('@settingsSubmitted')
+		.get( '#submit' )
+		.click( { force: true } );
 }
