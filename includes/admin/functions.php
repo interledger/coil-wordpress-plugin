@@ -447,6 +447,9 @@ function get_exclusive_settings(): array {
 	$defaults = [ 'coil_content_container' => '.content-area .entry-content' ];
 
 	$exclusive_options = get_option( 'coil_exclusive_settings_group', [] );
+	if ( empty ($exclusive_options === [] ) ) {
+		$exclusive_options = [ 'coil_content_container' => '.content-area .entry-content' ];
+	}
 	if ( ! isset( $exclusive_options['coil_content_container'] ) ) {
 		$exclusive_options['coil_content_container'] = $defaults['coil_content_container'];
 	}

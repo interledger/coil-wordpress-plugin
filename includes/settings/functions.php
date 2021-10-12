@@ -1440,9 +1440,9 @@ function transfer_customizer_message_settings() {
 		remove_theme_mod( $coil_learn_more_button_link );
 	}
 
-	$existing_options = get_option( 'coil_exclusive_settings_group', 'absent' );
+	$existing_options = get_option( 'coil_exclusive_settings_group', [] );
 
-	if ( $existing_options !== 'absent' ) {
+	if ( $existing_options !== [] ) {
 		update_option( 'coil_exclusive_settings_group', array_merge( $existing_options, $messaging_settings ) );
 	} else {
 		add_option( 'coil_exclusive_settings_group', $messaging_settings );
@@ -1470,10 +1470,10 @@ function transfer_customizer_appearance_settings() {
 
 	// The padlock display setting is now in the coil_exclusive_settings_group
 	if ( get_theme_mod( $coil_title_padlock, 'absent' ) !== 'absent' ) {
-		$existing_padlock_settings                  = get_option( 'coil_exclusive_settings_group', 'absent' );
+		$existing_padlock_settings                  = get_option( 'coil_exclusive_settings_group', [] );
 		$new_padlock_settings['coil_title_padlock'] = get_theme_mod( $coil_title_padlock );
 		remove_theme_mod( $coil_title_padlock );
-		if ( 'absent' !== $existing_padlock_settings ) {
+		if ( [] !== $existing_padlock_settings ) {
 			update_option( 'coil_exclusive_settings_group', array_merge( $existing_padlock_settings, $new_padlock_settings ) );
 		} else {
 			add_option( 'coil_exclusive_settings_group', $new_padlock_settings );
@@ -1483,10 +1483,10 @@ function transfer_customizer_appearance_settings() {
 	// The donation bar display setting is now in the coil_button_settings_group.
 	// The donation bar has been deprecated and a Coil button is taking its place instead.
 	if ( get_theme_mod( $coil_show_donation_bar, 'absent' ) !== 'absent' ) {
-		$existing_donation_bar_setting                       = get_option( 'coil_button_settings_group', 'absent' );
+		$existing_donation_bar_setting                       = get_option( 'coil_button_settings_group', [] );
 		$new_donation_bar_settings['coil_show_donation_bar'] = get_theme_mod( $coil_show_donation_bar );
 		remove_theme_mod( $coil_show_donation_bar );
-		if ( 'absent' !== $existing_donation_bar_setting ) {
+		if ( [] !== $existing_donation_bar_setting ) {
 			update_option( 'coil_button_settings_group', array_merge( $existing_donation_bar_setting, $new_donation_bar_settings ) );
 		} else {
 			add_option( 'coil_button_settings_group', $new_donation_bar_settings );
