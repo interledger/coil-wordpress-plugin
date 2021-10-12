@@ -74,7 +74,7 @@ function register_admin_content_settings() {
 		__NAMESPACE__ . '\coil_settings_payment_pointer_render_callback',
 		'coil_payment_pointer_section'
 	);
-	
+
 	// ==== Global Monetization Defaults
 	add_settings_section(
 		'coil_monetization_section',
@@ -204,7 +204,7 @@ function coil_general_settings_group_validation( $general_settings ) : array {
 
 	foreach ( $general_settings as $id => $value ) {
 
-		if( $id === 'coil_payment_pointer' ) {
+		if ( $id === 'coil_payment_pointer' ) {
 			$general_settings[ $id ] = sanitize_text_field( $general_settings[ $id ] );
 		} else {
 			$post_type = $id;
@@ -763,7 +763,7 @@ function coil_settings_post_visibility_render_callback() {
 			esc_html( 'General Settings', 'coil-web-monetization' ),
 			'.'
 		);
-		
+
 		// Using a function to generate the table with the global visibility radio button options.
 		$group             = 'coil_exclusive_settings_group';
 		$columns           = Admin\get_visibility_types();

@@ -407,7 +407,7 @@ function get_payment_pointer_setting() {
 
 	$settings = get_general_settings();
 
-	return isset( $settings[ 'coil_payment_pointer' ] ) ? $settings[ 'coil_payment_pointer' ] : '';
+	return isset( $settings['coil_payment_pointer'] ) ? $settings['coil_payment_pointer'] : '';
 }
 
 /**
