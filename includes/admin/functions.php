@@ -382,24 +382,6 @@ function get_valid_taxonomies() : array {
 }
 
 /**
- * Retrieve the Welcome settings using a key from the welcome
- * settings group (serialized).
- *
- * @param string $setting_id The named key in the wp_options serialized array.
- * @return string
- */
-function get_welcome_setting( $setting_id ) {
-
-	$options = get_option( 'coil_welcome_settings_group', [] );
-
-	if ( $setting_id === 'coil_payment_pointer' ) {
-		return ( ! empty( $options[ $setting_id ] ) ) ? $options[ $setting_id ] : '';
-	}
-
-	return '';
-}
-
-/**
  * Get whatever settings are stored in the plugin as the default
  * content monetization settings (post, page, cpt etc).
  *
@@ -413,6 +395,19 @@ function get_general_settings() : array {
 	}
 
 	return [];
+}
+
+/**
+ * Retrieve the payment pointer using a key from the general
+ * settings group (serialized).
+ *
+ * @return string
+ */
+function get_payment_pointer_setting() {
+
+	$settings = get_general_settings();
+
+	return isset( $settings[ 'coil_payment_pointer' ] ) ? $settings[ 'coil_payment_pointer' ] : '';
 }
 
 /**

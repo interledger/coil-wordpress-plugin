@@ -49,7 +49,7 @@ function register_admin_content_settings() {
 	register_setting(
 		'coil_welcome_settings_group',
 		'coil_welcome_settings_group',
-		__NAMESPACE__ . '\coil_welcome_group_validation'
+		false
 	);
 
 	// ==== Welcome Note, Payment Pointer and Guide
@@ -67,6 +67,14 @@ function register_admin_content_settings() {
 		__NAMESPACE__ . '\coil_general_settings_group_validation'
 	);
 
+	// ==== Payment Pointer
+	add_settings_section(
+		'coil_payment_pointer_section',
+		false,
+		__NAMESPACE__ . '\coil_settings_payment_pointer_render_callback',
+		'coil_payment_pointer_section'
+	);
+	
 	// ==== Global Monetization Defaults
 	add_settings_section(
 		'coil_monetization_section',
@@ -175,36 +183,14 @@ function register_admin_content_settings() {
  * ------------------------------------------------------------------------ */
 
 /**
- * Allow the payment pointer text input in the welcome section to
- * be properly validated.
- *
- * @param array $welcome_settings The posted text input field with the payment pointer.
- * @return array
- */
-function coil_welcome_group_validation( $welcome_settings ) : array {
-
-	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
-		return [];
-	}
-
-	return array_map(
-		function( $welcome_settings_input ) {
-
-			return sanitize_text_field( $welcome_settings_input );
-		},
-		(array) $welcome_settings
-	);
-}
-
-/**
  * Allow the radio button options,
  * that set the global monetization defaults,
  * to be properly validated
  *
- * @param array $monetization_settings The posted radio options from the General Settings section
+ * @param array $general_settings The posted radio options from the General Settings section
  * @return array
  */
-function coil_general_settings_group_validation( $monetization_settings ) : array {
+function coil_general_settings_group_validation( $general_settings ) : array {
 
 	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
 		return [];
@@ -216,20 +202,25 @@ function coil_general_settings_group_validation( $monetization_settings ) : arra
 	// Retrieves the exclusive settings to get the post type visibility defaults
 	$exclusive_settings = Admin\get_exclusive_settings();
 
-	foreach ( $monetization_settings as $post_type => $monetization_status ) {
+	foreach ( $general_settings as $id => $value ) {
 
-		// The default value is monetized
-		$monetization_settings[ $post_type ] = in_array( $monetization_status, $valid_options, true ) ? sanitize_key( $monetization_status ) : $post_monetization_default;
-		// Ensures that a post cannot default to be Not Monetized and Exclusive
-		// Changing the array key suffix so that it becomes a visibility setting key instead of a monetization setting key
-		$visibility_setting_key = str_replace( '_monetization', '_visibility', $post_type );
-		if ( $monetization_settings[ $post_type ] === 'not-monetized' && $exclusive_settings[ $visibility_setting_key ] === 'exclusive' ) {
-			$exclusive_settings [ $visibility_setting_key ] = 'public';
-			update_option( 'coil_exclusive_settings_group', $exclusive_settings );
+		if( $id === 'coil_payment_pointer' ) {
+			$general_settings[ $id ] = sanitize_text_field( $general_settings[ $id ] );
+		} else {
+			$post_type = $id;
+			// The default value is monetized
+			$general_settings[ $post_type ] = in_array( $value, $valid_options, true ) ? sanitize_key( $value ) : $post_monetization_default;
+			// Ensures that a post cannot default to be Not Monetized and Exclusive
+			// Changing the array key suffix so that it becomes a visibility setting key instead of a monetization setting key
+			$visibility_setting_key = str_replace( '_monetization', '_visibility', $post_type );
+			if ( $general_settings[ $post_type ] === 'not-monetized' && $exclusive_settings[ $visibility_setting_key ] === 'exclusive' ) {
+				$exclusive_settings [ $visibility_setting_key ] = 'public';
+				update_option( 'coil_exclusive_settings_group', $exclusive_settings );
+			}
 		}
 	}
 
-	return $monetization_settings;
+	return $general_settings;
 }
 
 /**
@@ -359,87 +350,45 @@ function coil_button_settings_group_validation( $coil_button_settings ): array {
 function coil_settings_welcome_render_callback() {
 	?>
 	<div class="coil tab-styling">
-		<div class="coil tab-section">
 		<?php
 
 			printf(
 				'<h1>%1$s</h1>',
-				esc_html__( 'Thank you for using Coil', 'coil-web-monetization' )
+				esc_html__( 'About the Coil Plugin', 'coil-web-monetization' )
 			);
+		?>
+
+		<div style="padding-top: 15px;">
+		<?php
+
+			echo '<h2>' . esc_html__( 'Monetization', 'coil-web-monetization' ) . '</h2>';
+
+			echo '<p>' . esc_html__( 'The Coil WordPress Plugin lets you enable Web Monetization on your website. With Web Monetization, you automatically receive streaming payments whenever Coil Members visit your site.', 'coil-web-monetization' ) . '</p>';
 		?>
 		</div>
 
-		<div class="coil tab-section">
+		<div style="padding-top: 15px;">
 		<?php
+			echo '<h2>' . esc_html__( 'Exclusive Content', 'coil-web-monetization' ) . '</h2>';
 
-			// Render the payment pointer input field.
+			echo '<p>' . esc_html__( 'Offer exclusive content to Coil Members as a perk for them supporting you.', 'coil-web-monetization' ) . '</p>';
 			printf(
-				'<h1>%1$s</h1>',
-				esc_html__( 'Payment Pointer', 'coil-web-monetization' )
-			);
-
-			echo '<p>' . esc_html__( 'Enter the payment pointer assigned by your digital wallet provider.', 'coil-web-monetization' ) . '</p>';
-			printf(
-				'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" />',
-				esc_attr( 'wide-input' ),
-				esc_attr( 'text' ),
-				esc_attr( 'coil_welcome_settings_group[coil_payment_pointer]' ),
-				esc_attr( 'coil_payment_pointer' ),
-				esc_attr( Admin\get_welcome_setting( 'coil_payment_pointer' ) ),
-				esc_attr( '$wallet.example.com/alice' )
-			);
-
-			echo '<p class="' . esc_attr( 'description' ) . '">' . esc_html__( 'Don\'t have a digital wallet or know your payment pointer?', 'coil-web-monetization' ) . '</p>';
-
-			printf(
-				'<br><a href="%s" target="%s" class="%s">%s</a>',
-				esc_url( 'https://webmonetization.org/docs/ilp-wallets' ),
-				esc_attr( '_blank' ),
-				esc_attr( 'button button-large' ),
-				esc_html__( 'Learn more about digital wallets and payment pointers', 'coil-web-monetization' )
-			);
-
-			submit_button();
-
-		?>
-		</div>
-
-		<div class="coil tab-section">
-		<?php
-
-			echo '<h1>' . esc_html__( 'Monetize Your Content', 'coil-web-monetization' ) . '</h1>';
-
-			echo '<p>' . esc_html__( 'Enable content to receive streaming payments from Coil members.', 'coil-web-monetization' ) . '</p>';
-			printf(
-				'<a class="button button-large" href="%s">%s</a>',
-				esc_url( admin_url( 'admin.php?page=coil_settings&tab=general_settings', COIL__FILE__ ) ),
-				esc_html__( 'Setup Monetization', 'coil-web-monetization' )
-			);
-		?>
-		</div>
-
-		<div class="coil tab-section">
-		<?php
-			echo '<h1>' . esc_html__( 'Make Your Content Exclusive', 'coil-web-monetization' ) . '</h1>';
-
-			echo '<p>' . esc_html__( 'Set whether content is publicly available or only accessible for Coil members.', 'coil-web-monetization' ) . '</p>';
-			printf(
-				'<a class="button button-large" href="%s">%s</a>',
+				'<a class="button button-primary" href="%s">%s</a>',
 				esc_url( admin_url( 'admin.php?page=coil_settings&tab=exclusive_settings', COIL__FILE__ ) ),
-				esc_html__( 'Setup Exclusivity', 'coil-web-monetization' )
+				esc_html__( 'Enable Exclusive Content', 'coil-web-monetization' )
 			);
 		?>
 		</div>
 
-		<div class="coil tab-section">
+		<div style="padding-top: 15px;">
 		<?php
-			echo '<h1>' . esc_html__( 'Promote Coil', 'coil-web-monetization' ) . '</h1>';
+			echo '<h2>' . esc_html__( 'Coil Button', 'coil-web-monetization' ) . '</h2>';
 
-			echo '<p>' . esc_html__( 'Promote Coil to your members via a Coil support button.', 'coil-web-monetization' ) . '</p>';
+			echo '<p>' . esc_html__( 'Show that you accept support from Coil Members by displaying a Coil button on your page.', 'coil-web-monetization' ) . '</p>';
 			printf(
-				'<a class="button button-large" href="%s">%s</a>',
+				'<a class="button button-primary" href="%s">%s</a>',
 				esc_url( admin_url( 'admin.php?page=coil_settings&tab=coil_button', COIL__FILE__ ) ),
-				esc_html__( 'Setup Coil Button', 'coil-web-monetization' )
+				esc_html__( 'Add Coil Button', 'coil-web-monetization' )
 			);
 		?>
 		</div>
@@ -507,6 +456,45 @@ function coil_settings_sidebar_render_callback() {
 }
 
 /**
+ * Renders the output of the payment pointer input field.
+ *
+ * @return void
+ */
+function coil_settings_payment_pointer_render_callback() {
+	?>
+	<div class="coil tab-styling">
+	<?php
+		printf(
+			'<h1>%1$s</h1>',
+			esc_html__( 'Payment Pointer', 'coil-web-monetization' )
+		);
+
+		echo '<p>' . esc_html__( 'Enter your digital wallet\'s payment pointer to receive payments', 'coil-web-monetization' ) . '</p>';
+		printf(
+			'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" />',
+			esc_attr( 'wide-input' ),
+			esc_attr( 'text' ),
+			esc_attr( 'coil_general_settings_group[coil_payment_pointer]' ),
+			esc_attr( 'coil_payment_pointer' ),
+			esc_attr( Admin\get_payment_pointer_setting( 'coil_payment_pointer' ) ),
+			esc_attr( '$wallet.example.com/alice' )
+		);
+
+		printf(
+			'<p class="%s">%s<a href="%s" target="%s" >%s</a></p>',
+			esc_attr( 'description' ),
+			esc_html__( 'Don\'t have a digital wallet or know your payment pointer? ', 'coil-web-monetization' ),
+			esc_url( 'https://webmonetization.org/docs/ilp-wallets' ),
+			esc_attr( '_blank' ),
+			esc_html__( 'Learn more', 'coil-web-monetization' )
+		);
+
+	?>
+	</div>
+	<?php
+}
+
+/**
  * Renders the output of the global monetization default settings
  * showing radio buttons based on the post types available in WordPress.
  *
@@ -518,7 +506,7 @@ function coil_settings_monetization_render_callback() {
 	<?php
 		echo '<h1>' . esc_html__( 'Monetization Settings', 'coil-web-monetization' ) . '</h1>';
 
-		echo '<p>' . esc_html_e( 'Create defaults to enable or disable monetization for specific post types. When monetization is enabled, Coil members can stream micropayments to you as they enjoy your content. These defaults can be overridden by configuring monetization against individual pages and posts, or against your categories and taxonomies.', 'coil-web-monetization' ) . '</p>';
+		echo '<p>' . esc_html_e( 'Manage monetization for specific post types', 'coil-web-monetization' ) . '</p>';
 
 		// Using a function to generate the table with the global monetization radio button options.
 		$group                = 'coil_general_settings_group';
@@ -527,6 +515,13 @@ function coil_settings_monetization_render_callback() {
 		$suffix               = 'monetization';
 		$monetization_options = Admin\get_general_settings();
 		render_generic_post_type_table( $group, $columns, $input_type, $suffix, $monetization_options );
+
+		printf(
+			'<p class="%s">%s</p>',
+			esc_attr( 'description' ),
+			esc_html__( 'You can override these settings in the Category, Tag and Post menus.', 'coil-web-monetization' )
+		);
+
 	?>
 	</div>
 	<?php
@@ -936,7 +931,7 @@ function admin_welcome_notice() {
 		return;
 	}
 
-	$payment_pointer_id = Admin\get_welcome_setting( 'coil_payment_pointer' );
+	$payment_pointer_id = Admin\get_payment_pointer_setting();
 	$notice_dismissed   = get_user_meta( $current_user->ID, 'coil-welcome-notice-dismissed', true );
 
 	if ( $payment_pointer_id || $notice_dismissed === 'true' ) {
@@ -989,7 +984,7 @@ function admin_no_payment_pointer_notice() {
 		return;
 	}
 
-	$payment_pointer_id = Admin\get_welcome_setting( 'coil_payment_pointer' );
+	$payment_pointer_id = Admin\get_payment_pointer_setting();
 
 	if ( $payment_pointer_id ) {
 		return;
@@ -1132,6 +1127,7 @@ function render_coil_settings_screen() : void {
 					break;
 				case 'general_settings':
 					settings_fields( 'coil_general_settings_group' );
+					do_settings_sections( 'coil_payment_pointer_section' );
 					do_settings_sections( 'coil_monetization_section' );
 					submit_button();
 					break;
@@ -1505,12 +1501,10 @@ function transfer_customizer_appearance_settings() {
 function transfer_version_1_9_panel_settings() {
 
 	// Retrieve all current option groups from the database
-	$welcome_settings     = get_option( 'coil_welcome_settings_group', 'absent' );
 	$general_settings     = get_option( 'coil_general_settings_group', 'absent' );
 	$exclusive_settings   = get_option( 'coil_exclusive_settings_group', 'absent' );
 	$coil_button_settings = get_option( 'coil_button_settings_group', 'absent' );
 
-	$new_welcome_settings     = [];
 	$new_general_settings     = [];
 	$new_exclusive_settings   = [];
 	$new_coil_button_settings = [];
@@ -1518,7 +1512,7 @@ function transfer_version_1_9_panel_settings() {
 	$global_settings = get_option( 'coil_global_settings_group', 'absent' );
 	if ( $global_settings !== 'absent' ) {
 		if ( isset( $global_settings['coil_payment_pointer_id'] ) ) {
-			$new_welcome_settings['coil_payment_pointer'] = $global_settings['coil_payment_pointer_id'];
+			$new_general_settings['coil_payment_pointer'] = $global_settings['coil_payment_pointer_id'];
 		}
 		if ( isset( $global_settings['coil_content_container'] ) ) {
 			$new_exclusive_settings['coil_content_container'] = $global_settings['coil_content_container'];
@@ -1584,34 +1578,15 @@ function transfer_version_1_9_panel_settings() {
 	}
 
 	// Update all option groups
-	if ( $new_welcome_settings !== [] ) {
-		if ( $welcome_settings === 'absent' ) {
-			add_option( 'coil_welcome_settings_group', $new_welcome_settings );
-		} else {
-			update_option( 'coil_welcome_settings_group', array_merge( $welcome_settings, $new_welcome_settings ) );
-		}
-	}
 	if ( $new_general_settings !== [] ) {
-		if ( $general_settings === 'absent' ) {
-			add_option( 'coil_general_settings_group', $new_general_settings );
-		} else {
-			update_option( 'coil_general_settings_group', array_merge( $general_settings, $new_general_settings ) );
-		}
+		update_option( 'coil_general_settings_group', array_merge( $general_settings, $new_general_settings ) );
 	}
 
 	if ( $new_exclusive_settings !== [] ) {
-		if ( $exclusive_settings === 'absent' ) {
-			add_option( 'coil_exclusive_settings_group', $new_exclusive_settings );
-		} else {
-			update_option( 'coil_exclusive_settings_group', array_merge( $exclusive_settings, $new_exclusive_settings ) );
-		}
+		update_option( 'coil_exclusive_settings_group', array_merge( $exclusive_settings, $new_exclusive_settings ) );
 	}
 
 	if ( $new_coil_button_settings !== [] ) {
-		if ( $coil_button_settings === 'absent' ) {
-			add_option( 'coil_button_settings_group', $new_coil_button_settings );
-		} else {
-			update_option( 'coil_button_settings_group', array_merge( $coil_button_settings, $new_coil_button_settings ) );
-		}
+		update_option( 'coil_button_settings_group', array_merge( $coil_button_settings, $new_coil_button_settings ) );
 	}
 }

@@ -279,7 +279,7 @@ function add_body_class( $classes ) : array {
 		return $classes;
 	}
 
-	$payment_pointer_id = Admin\get_welcome_setting( 'coil_payment_pointer' );
+	$payment_pointer_id = Admin\get_payment_pointer_setting();
 
 	if ( Gating\is_content_monetized( get_queried_object_id() ) ) {
 		$classes[] = 'monetization-not-initialized';
@@ -342,7 +342,7 @@ function print_meta_tag() : void {
 function get_payment_pointer() : string {
 
 	// Fetch the global payment pointer
-	$global_payment_pointer_id = Admin\get_welcome_setting( 'coil_payment_pointer' );
+	$global_payment_pointer_id = Admin\get_payment_pointer_setting();
 
 	// If payment pointer is set on the user, use that instead of the global payment pointer.
 	$payment_pointer_id = User\maybe_output_user_payment_pointer( $global_payment_pointer_id );
