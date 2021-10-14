@@ -5,7 +5,7 @@
 		const activeTabID = $( '.nav-tab-wrapper a.nav-tab-active' ).attr( 'id' );
 
 		// Welcome notice
-		if ( activeTabID === 'coil-global-settings' ) {
+		if ( activeTabID === 'coil-welcome-settings' ) {
 			const $welcomeNoticeDismissButton = $( '.coil-welcome-notice .notice-dismiss' );
 
 			// No welcome notice on this screen.
@@ -30,7 +30,7 @@
 		}
 
 		// No payment pointer
-		if ( activeTabID === 'coil-global-settings' ) {
+		if ( activeTabID === 'coil-general-settings' ) {
 			const noPaymentPointerNotice = $( '.coil-no-payment-pointer-notice' );
 			if ( noPaymentPointerNotice.length > 0 ) {
 				noPaymentPointerNotice.hide();
