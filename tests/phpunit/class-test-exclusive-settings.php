@@ -5,7 +5,9 @@
 namespace Coil\Tests;
 
 use Coil\Admin;
+use Coil\Gating;
 use WP_UnitTestCase;
+use WP_UnitTest_Factory;
 
 /**
  * Testing the exclusive settings.
@@ -23,6 +25,37 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 		'button_text'     => 'coil_paywall_button_text',
 		'button_link'     => 'coil_paywall_button_link',
 	];
+
+	/**
+	 * Basic post for testing with.
+	 *
+	 * @var \WP_Post[] Standard post objects.
+	 */
+	protected static $example_post = null;
+
+	/**
+	 * Create fake data before tests run.
+	 *
+	 * @param WP_UnitTest_Factory $factory Helper that creates fake data.
+	 *
+	 * @return void
+	 */
+	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) : void {
+
+		self::$example_post = $factory->post->create_and_get();
+	}
+
+	/**
+	 * Delete fake data after tests run.
+	 *
+	 * @return void
+	 */
+	public static function wpTearDownAfterClass() : void {
+
+		wp_delete_post( self::$example_post->ID, true );
+
+		$example_post = null;
+	}
 
 	/**
 	 * Check that message defaults can be retrieved successfully.
@@ -251,6 +284,43 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 		$padlock_setting = Admin\get_exlusive_post_setting( 'coil_title_padlock' );
 
 		$this->assertSame( true, $padlock_setting );
+	}
+
+	/**
+	 * Testing if the excerpt display default is false.
+	 *
+	 * @return void
+	 */
+	public function test_if_default_excerpt_display_is_false() {
+
+		$excerpt_display = Gating\get_excerpt_gating( self::$example_post->ID );
+
+		$this->assertSame( false, $excerpt_display );
+	}
+
+	/**
+	 * Testing if the excerpt display setting is retrieved correctly from the wp_options table.
+	 *
+	 * @return void
+	 */
+	public function test_if_excerpt_display_setting_is_retrieved_successfully() {
+
+		// Testing case when excerpt display is set to true
+		$set_excerpt_display = [ 'post_excerpt' => true ];
+		update_option( 'coil_exclusive_settings_group', $set_excerpt_display );
+
+		$retrieved_excerpt_display = Gating\get_excerpt_gating( self::$example_post->ID );
+
+		$this->assertSame( true, $retrieved_excerpt_display );
+
+		// Testing case when excerpt display is set to false
+		$set_excerpt_display = [ 'post_excerpt' => false ];
+		update_option( 'coil_exclusive_settings_group', $set_excerpt_display );
+
+		$retrieved_excerpt_display = Gating\get_excerpt_gating( self::$example_post->ID );
+
+		$this->assertSame( false, $retrieved_excerpt_display );
+
 	}
 
 	/**
