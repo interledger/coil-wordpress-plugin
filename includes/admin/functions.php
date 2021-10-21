@@ -643,7 +643,7 @@ function get_post_visibility_default() {
 }
 
 /**
-* Returns the default excerpt dialay for all post types which is to not diplay.
+* Returns the default excerpt display for all post types. The default is to not display.
 *
 * @return boolean
 */
@@ -692,7 +692,7 @@ function get_coil_button_settings() : array {
  */
 function get_coil_button_setting( $field_id ) {
 	$coil_button_settings = get_coil_button_settings();
-	if ( $field_id === 'coil_show_donation_bar' ) {
+	if ( $field_id === 'coil_show_promotion_bar' ) {
 		$value = isset( $coil_button_settings[ $field_id ] ) ? $coil_button_settings[ $field_id ] : false;
 	}
 	return $value;

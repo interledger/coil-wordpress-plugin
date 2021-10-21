@@ -329,7 +329,7 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
  * @return array
  */
 function coil_button_settings_group_validation( $coil_button_settings ): array {
-	$checkbox_fields = [ 'coil_show_donation_bar' ];
+	$checkbox_fields = [ 'coil_show_promotion_bar' ];
 
 	foreach ( $checkbox_fields as $field_name ) {
 		$coil_button_settings[ $field_name ] = isset( $coil_button_settings[ $field_name ] ) ? true : false;
@@ -893,7 +893,7 @@ function coil_paywall_appearance_text_field_settings_render_callback( $field_nam
 }
 
 /**
- * Renders the output of the show donation bar footer checkbox
+ * Renders the output of the show Coil Promotion Bar footer checkbox
  * @return void
  */
 function coil_settings_promotion_bar_render_callback() {
@@ -903,19 +903,19 @@ function coil_settings_promotion_bar_render_callback() {
 	 * any settings stored in the database. If the
 	 * input status is not set, default to checked
 	 */
-	$checked_input_value = Admin\get_coil_button_setting( 'coil_show_donation_bar' );
+	$checked_input_value = Admin\get_coil_button_setting( 'coil_show_promotion_bar' );
 
 	printf(
 		'<input type="%s" name="%s" id="%s" "%s">',
 		esc_attr( 'checkbox' ),
-		esc_attr( 'coil_button_settings_group[coil_show_donation_bar]' ),
-		esc_attr( 'coil_show_donation_bar' ),
+		esc_attr( 'coil_button_settings_group[coil_show_promotion_bar]' ),
+		esc_attr( 'coil_show_promotion_bar' ),
 		checked( 1, $checked_input_value, false )
 	);
 
 	printf(
 		'<label for="%s">%s</label>',
-		esc_attr( 'coil_show_donation_bar' ),
+		esc_attr( 'coil_show_promotion_bar' ),
 		esc_html_e( 'Show the support creator message in a footer bar on posts that are monetized and publicly visible.', 'coil-web-monetization' )
 	);
 }
@@ -1362,7 +1362,7 @@ function maybe_load_database_defaults() {
 
 	if ( $coil_button_settings === 'absent' ) {
 		// Donation bar default is true
-		$coil_button_settings = [ 'coil_show_donation_bar' => true ];
+		$coil_button_settings = [ 'coil_show_promotion_bar' => true ];
 		add_option( 'coil_button_settings_group', $coil_button_settings );
 	}
 }
@@ -1481,11 +1481,11 @@ function transfer_customizer_appearance_settings() {
 		}
 	}
 
-	// The donation bar display setting is now in the coil_button_settings_group.
-	// The donation bar has been deprecated and a Coil button is taking its place instead.
+	// The promotion bar display setting is now in the coil_button_settings_group.
+	// The promotion bar has been deprecated and a Coil button is taking its place instead.
 	if ( get_theme_mod( $coil_show_donation_bar, 'absent' ) !== 'absent' ) {
-		$existing_donation_bar_setting                       = get_option( 'coil_button_settings_group', [] );
-		$new_donation_bar_settings['coil_show_donation_bar'] = get_theme_mod( $coil_show_donation_bar );
+		$existing_donation_bar_setting                        = get_option( 'coil_button_settings_group', [] );
+		$new_donation_bar_settings['coil_show_promotion_bar'] = get_theme_mod( $coil_show_donation_bar );
 		remove_theme_mod( $coil_show_donation_bar );
 		if ( [] !== $existing_donation_bar_setting ) {
 			update_option( 'coil_button_settings_group', array_merge( $existing_donation_bar_setting, $new_donation_bar_settings ) );
@@ -1577,7 +1577,7 @@ function transfer_version_1_9_panel_settings() {
 			$new_exclusive_settings['coil_title_padlock'] = $appearance_settings['coil_title_padlock'];
 		}
 		if ( isset( $appearance_settings['coil_show_promotion_bar'] ) ) {
-			$new_coil_button_settings['coil_show_donation_bar'] = $appearance_settings['coil_show_promotion_bar'];
+			$new_coil_button_settings['coil_show_promotion_bar'] = $appearance_settings['coil_show_promotion_bar'];
 		}
 		delete_option( 'coil_appearance_settings_group' );
 	}

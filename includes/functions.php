@@ -138,6 +138,15 @@ function load_block_editor_assets() : void {
 		false
 	);
 
+	$monetization_settings = get_option( 'coil_exclusive_settings_group' );
+	$monetization_default  = isset( $monetization_settings[ get_current_screen()->post_type . '_monetization' ] ) ? $monetization_settings[ get_current_screen()->post_type . '_monetization' ] : 'default';
+
+	wp_localize_script(
+		'coil-editor',
+		'coilEditorParams',
+		[ 'monetizationDefault' => $monetization_default ]
+	);
+
 	// Load JS i18n, requires WP 5.0+.
 	if ( ! function_exists( 'wp_set_script_translations' ) ) {
 		return;
@@ -197,7 +206,7 @@ function load_full_assets() : void {
 			'paywall_message'         => Admin\get_paywall_text_settings_or_default( 'coil_paywall_message' ),
 			'paywall_button_text'     => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_text' ),
 			'paywall_button_link'     => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_link' ),
-			'show_donation_bar'       => Admin\get_coil_button_setting( 'coil_show_donation_bar' ),
+			'show_promotion_bar'      => Admin\get_coil_button_setting( 'coil_show_promotion_bar' ),
 			'post_excerpt'            => get_the_excerpt(),
 			'coil_message_branding'   => Admin\get_paywall_appearance_setting( 'coil_message_branding' ),
 			'site_logo'               => $site_logo,

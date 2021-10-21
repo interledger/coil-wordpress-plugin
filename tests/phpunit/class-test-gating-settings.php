@@ -182,7 +182,7 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		];
 
 		foreach ( $gating_options as $global_gating ) {
-			update_option( 'coil_content_settings_posts_group', $global_gating );
+			update_option( 'coil_exclusive_settings_group', $global_gating );
 
 			$global_default = Gating\get_global_posts_gating();
 
@@ -203,7 +203,7 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 
 		// Set the global default monetization for posts 'gate-all' which will define the post's gating status at this point
 		$gating_settings = [ 'post' => 'gate-all' ];
-		update_option( 'coil_content_settings_posts_group', $gating_settings );
+		update_option( 'coil_exclusive_settings_group', $gating_settings );
 
 		$gating_status = Gating\get_content_gating( $post_obj->ID );
 
@@ -245,7 +245,7 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		// Checking that changing the global default doesn't change the post's monetization status becasue it has been set at post-level
 		// Set the global default monetization for posts 'no'.
 		$gating_settings = [ 'post' => 'no' ];
-		update_option( 'coil_content_settings_posts_group', $gating_settings );
+		update_option( 'coil_exclusive_settings_group', $gating_settings );
 
 		$gating_status = Gating\get_content_gating( $post_obj->ID );
 

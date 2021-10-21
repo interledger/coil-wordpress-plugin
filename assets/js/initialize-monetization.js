@@ -8,8 +8,8 @@
 
 	const contentContainer = coilParams.content_container,
 		paywallTitle = coilParams.paywall_title,
-		paywallMessage = coilParams.paywall_message,
 		loadingContent = coilParams.loading_content,
+		paywallMessage = coilParams.paywall_message,
 		postExcerpt = coilParams.post_excerpt,
 		adminMissingIdNotice = coilParams.admin_missing_id_notice,
 		paywallButtonText = coilParams.paywall_button_text,
@@ -18,7 +18,7 @@
 		siteLogo = coilParams.site_logo,
 		coilLogo = coilParams.coil_logo,
 		coilLogoWhite = coilParams.coil_logo_white,
-		showDonationBar = Boolean( coilParams.show_donation_bar ), // Cast to boolean - wp_localize_script forces string values.
+		showPromotionBar = Boolean( coilParams.show_promotion_bar ), // Cast to boolean - wp_localize_script forces string values.
 		exclusiveMessageTheme = coilParams.exclusive_message_theme,
 		fontSelection = Boolean( coilParams.font_selection );
 
@@ -138,7 +138,7 @@
 	/**
 	 * @param {String} message from coilParams.
 	 * @return {object} Overlay "Split Content" blocks with a message when set to
-	 * Only Show Paying Viewers. This will display if the browser is
+	 * Only Show Coil Members. This will display if the browser is
 	 * not compatible or verified.
 	 */
 	function showSplitContentMessage( message ) {
@@ -188,19 +188,21 @@
 		return jQuery( 'p.coil-post-excerpt' ).remove();
 	}
 
-	function removeDonationBar() {
+	function removePromotionBar() {
 		return $( 'div' ).remove( '.coil-banner-message-container' );
 	}
 
 	/**
-	 * @return {bool} Helper function to determine if the content is "Monetized and Public"
+	 * @return {bool} Helper function to determine if the content has
+	 * monetization enabled and is visible to everyone
 	 */
 	function isMonetizedAndPublic() {
 		return document.body.classList.contains( 'coil-no-gating' );
 	}
 
 	/**
-	 * @return {bool} Helper function to determine if the content is "Coil Members Only"
+	 * @return {bool} Helper function to determine if the content has
+	 * monetization enabled and is visable to Coil members only
 	 */
 	function isSubscribersOnly() {
 		return document.body.classList.contains( 'coil-gate-all' );
@@ -222,7 +224,7 @@
 	}
 
 	/**
-	 * @return {bool} Helper function to determine if the content is "Split Content"
+	 * @return {bool} Helper function to determine if the content is "Split"
 	 */
 	function isSplitContent() {
 		return document.body.classList.contains( 'coil-gate-tagged-blocks' );
@@ -268,7 +270,7 @@
 
 				showContentContainer();
 
-				if ( showDonationBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+				if ( showPromotionBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 					$( 'body' ).append( showBannerMessage() );
 					addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 				}
@@ -368,14 +370,14 @@
 
 			showContentContainer();
 
-			if ( showDonationBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+			if ( showPromotionBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 				$( 'body' ).append( showBannerMessage() );
 				addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 			}
 		} else if ( isMonetizedAndPublic() ) {
-			// Content is monetized and public but no extension found.
+			// Content has monetization enabled and visible for everyone but no extension found.
 
-			if ( showDonationBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+			if ( showPromotionBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 				$( 'body' ).append( showBannerMessage() );
 				addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 			}
@@ -434,7 +436,7 @@
 			setTimeout( function() {
 				showVerificationFailureMessage();
 			}, 5000 );
-		} else if ( showDonationBar && monetizationNotInitialized() && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+		} else if ( showPromotionBar && monetizationNotInitialized() && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 			$( 'body' ).append( showBannerMessage() );
 			addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 		}
@@ -471,7 +473,7 @@
 					showVerificationFailureMessage();
 				} else if ( isMonetizedAndPublic() ) {
 					// Content is monetized and public but extension is stopped.
-					if ( showDonationBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
+					if ( showPromotionBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
 						$( 'body' ).append( showBannerMessage() );
 						addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 					}
@@ -504,8 +506,8 @@
 			$( 'div.coil-post-excerpt' ).remove(); // Remove post excerpt.
 		}
 
-		if ( showDonationBar ) {
-			removeDonationBar();
+		if ( showPromotionBar ) {
+			removePromotionBar();
 		}
 
 		// Show embedded content.
