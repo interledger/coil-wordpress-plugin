@@ -349,11 +349,11 @@ function coil_button_settings_group_validation( $coil_button_settings ): array {
  */
 function coil_settings_welcome_render_callback() {
 	?>
-	<div class="coil tab-styling">
+	<div class="tab-styling">
 		<?php
 
 			printf(
-				'<h1>%1$s</h1>',
+				'<h3>%1$s</h3>',
 				esc_html__( 'About the Coil Plugin', 'coil-web-monetization' )
 			);
 		?>
@@ -404,53 +404,55 @@ function coil_settings_welcome_render_callback() {
 function coil_settings_sidebar_render_callback() {
 
 	?>
-	<div class="coil settings-sidebar">
-		<header>
-			<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-				<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-					<g id="help-wheel" fill="#EE8249" fill-rule="nonzero">
-						<path d="M11,21.5 C9.073,21.5 7.186,20.97 5.545,19.969 C5.545,19.969 5.531,19.96 5.524,19.956 C4.112,19.09 2.908,17.885 2.042,16.473 C2.038,16.467 2.031,16.455 2.031,16.455 C1.03,14.813 0.5,12.927 0.5,11 C0.5,9.073 1.03,7.187 2.031,5.545 C2.031,5.545 2.042,5.528 2.047,5.52 C3.978,2.377 7.325,0.5 11,0.5 C14.677,0.5 18.024,2.378 19.955,5.523 C19.96,5.53 19.969,5.545 19.969,5.545 C20.97,7.186 21.5,9.073 21.5,11 C21.5,12.927 20.97,14.814 19.969,16.455 C19.969,16.455 19.962,16.466 19.959,16.471 C19.092,17.886 17.886,19.093 16.47,19.96 C16.465,19.963 16.455,19.97 16.455,19.97 C14.814,20.97 12.927,21.5 11,21.5 Z M7.123,19.12 C8.328,19.697 9.658,20 11,20 C12.342,20 13.672,19.697 14.877,19.12 L11.25,15.493 C11.164,15.498 11.081,15.5 11,15.5 C10.919,15.5 10.837,15.498 10.751,15.492 L7.123,19.12 Z M3.668,16.211 C4.254,17.034 4.966,17.746 5.789,18.333 L9.063,15.06 C8.136,14.616 7.385,13.865 6.941,12.938 L3.668,16.211 Z M16.211,18.332 C17.035,17.746 17.746,17.034 18.333,16.21 L15.059,12.937 C14.615,13.863 13.864,14.614 12.938,15.058 L16.211,18.332 Z M19.12,14.877 C19.697,13.672 20,12.342 20,11 C20,9.658 19.697,8.328 19.12,7.123 L15.493,10.75 C15.498,10.836 15.5,10.919 15.5,11 C15.5,11.082 15.498,11.165 15.492,11.251 L19.12,14.877 Z M2.88,7.123 C2.303,8.328 2,9.658 2,11 C2,12.342 2.303,13.672 2.88,14.877 L6.508,11.25 C6.503,11.164 6.5,11.081 6.5,11 C6.5,10.919 6.503,10.836 6.508,10.75 L2.88,7.123 Z M11,8 C9.346,8 8,9.346 8,11 C8,12.654 9.346,14 11,14 C12.654,14 14,12.654 14,11 C14,9.346 12.654,8 11,8 Z M6.941,9.063 C7.385,8.137 8.136,7.385 9.062,6.942 L5.789,3.668 C4.965,4.254 4.254,4.966 3.668,5.789 L6.941,9.063 Z M12.938,6.941 C13.864,7.385 14.615,8.136 15.059,9.062 L18.332,5.789 C17.746,4.966 17.034,4.254 16.211,3.668 L12.938,6.941 Z M10.75,6.508 C10.836,6.503 10.919,6.5 11,6.5 C11.081,6.5 11.164,6.503 11.25,6.508 L14.878,2.881 C13.672,2.303 12.342,2 11,2 C9.658,2 8.328,2.303 7.122,2.88 L10.75,6.508 Z" id="Shape"></path>
+	<div class="settings-sidebar">
+		<div class="settings-sidebar-body">
+			<header>
+				<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+					<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+						<g id="help-wheel" fill="#EE8249" fill-rule="nonzero">
+							<path d="M11,21.5 C9.073,21.5 7.186,20.97 5.545,19.969 C5.545,19.969 5.531,19.96 5.524,19.956 C4.112,19.09 2.908,17.885 2.042,16.473 C2.038,16.467 2.031,16.455 2.031,16.455 C1.03,14.813 0.5,12.927 0.5,11 C0.5,9.073 1.03,7.187 2.031,5.545 C2.031,5.545 2.042,5.528 2.047,5.52 C3.978,2.377 7.325,0.5 11,0.5 C14.677,0.5 18.024,2.378 19.955,5.523 C19.96,5.53 19.969,5.545 19.969,5.545 C20.97,7.186 21.5,9.073 21.5,11 C21.5,12.927 20.97,14.814 19.969,16.455 C19.969,16.455 19.962,16.466 19.959,16.471 C19.092,17.886 17.886,19.093 16.47,19.96 C16.465,19.963 16.455,19.97 16.455,19.97 C14.814,20.97 12.927,21.5 11,21.5 Z M7.123,19.12 C8.328,19.697 9.658,20 11,20 C12.342,20 13.672,19.697 14.877,19.12 L11.25,15.493 C11.164,15.498 11.081,15.5 11,15.5 C10.919,15.5 10.837,15.498 10.751,15.492 L7.123,19.12 Z M3.668,16.211 C4.254,17.034 4.966,17.746 5.789,18.333 L9.063,15.06 C8.136,14.616 7.385,13.865 6.941,12.938 L3.668,16.211 Z M16.211,18.332 C17.035,17.746 17.746,17.034 18.333,16.21 L15.059,12.937 C14.615,13.863 13.864,14.614 12.938,15.058 L16.211,18.332 Z M19.12,14.877 C19.697,13.672 20,12.342 20,11 C20,9.658 19.697,8.328 19.12,7.123 L15.493,10.75 C15.498,10.836 15.5,10.919 15.5,11 C15.5,11.082 15.498,11.165 15.492,11.251 L19.12,14.877 Z M2.88,7.123 C2.303,8.328 2,9.658 2,11 C2,12.342 2.303,13.672 2.88,14.877 L6.508,11.25 C6.503,11.164 6.5,11.081 6.5,11 C6.5,10.919 6.503,10.836 6.508,10.75 L2.88,7.123 Z M11,8 C9.346,8 8,9.346 8,11 C8,12.654 9.346,14 11,14 C12.654,14 14,12.654 14,11 C14,9.346 12.654,8 11,8 Z M6.941,9.063 C7.385,8.137 8.136,7.385 9.062,6.942 L5.789,3.668 C4.965,4.254 4.254,4.966 3.668,5.789 L6.941,9.063 Z M12.938,6.941 C13.864,7.385 14.615,8.136 15.059,9.062 L18.332,5.789 C17.746,4.966 17.034,4.254 16.211,3.668 L12.938,6.941 Z M10.75,6.508 C10.836,6.503 10.919,6.5 11,6.5 C11.081,6.5 11.164,6.503 11.25,6.508 L14.878,2.881 C13.672,2.303 12.342,2 11,2 C9.658,2 8.328,2.303 7.122,2.88 L10.75,6.508 Z" id="Shape"></path>
+						</g>
 					</g>
-				</g>
-			</svg>
+				</svg>
 
-			<h3><?php esc_html_e( 'Useful links &amp; how to guides', 'coil-web-monetization' ); ?></h3>
-		</header>
-		<section>
-			<ul>
-			<?php
-				printf(
-					'<li><a target="_blank" href="%1$s">%2$s</a></li>',
-					esc_url( 'https://help.coil.com/docs/monetize/content/wp-overview/' ),
-					esc_html__( 'How to configure the Coil plugin', 'coil-web-monetization' )
-				);
+				<h3><?php esc_html_e( 'Useful links &amp; how to guides', 'coil-web-monetization' ); ?></h3>
+			</header>
+			<section>
+				<ul>
+					<?php
+					printf(
+							'<li><a target="_blank" href="%1$s">%2$s</a></li>',
+							esc_url( 'https://help.coil.com/docs/monetize/content/wp-overview/' ),
+							esc_html__( 'How to configure the Coil plugin', 'coil-web-monetization' )
+					);
 
-				printf(
-					'<li><a target="_blank" href="%1$s">%2$s</a></li>',
-					esc_url( 'https://help.coil.com/docs/monetize/content/wp-faq-troubleshooting' ),
-					esc_html__( 'FAQs and Troubleshooting', 'coil-web-monetization' )
-				);
+					printf(
+							'<li><a target="_blank" href="%1$s">%2$s</a></li>',
+							esc_url( 'https://help.coil.com/docs/monetize/content/wp-faq-troubleshooting' ),
+							esc_html__( 'FAQs and Troubleshooting', 'coil-web-monetization' )
+					);
 
-				printf(
-					'<li><a target="_blank" href="%1$s">%2$s</a></li>',
-					esc_url( 'https://help.coil.com/docs/general-info/intro-to-coil/' ),
-					esc_html__( 'About Coil and Web Monetization', 'coil-web-monetization' )
-				);
+					printf(
+							'<li><a target="_blank" href="%1$s">%2$s</a></li>',
+							esc_url( 'https://help.coil.com/docs/general-info/intro-to-coil/' ),
+							esc_html__( 'About Coil and Web Monetization', 'coil-web-monetization' )
+					);
 
-				printf(
-					'<li><a target="_blank" href="%1$s">%2$s</a></li>',
-					esc_url( 'https://webmonetization.org/docs/ilp-wallets' ),
-					esc_html__( 'Digital wallets and payment pointers', 'coil-web-monetization' )
-				);
+					printf(
+							'<li><a target="_blank" href="%1$s">%2$s</a></li>',
+							esc_url( 'https://webmonetization.org/docs/ilp-wallets' ),
+							esc_html__( 'Digital wallets and payment pointers', 'coil-web-monetization' )
+					);
 
-				printf(
-					'<li><a target="_blank" href="%1$s">%2$s</a></li>',
-					esc_url( 'https://help.coil.com/docs/monetize/get-creator-account/' ),
-					esc_html__( 'Get a free Coil creator account', 'coil-web-monetization' )
-				);
-			?>
-			</ul>
-		</section>
+					printf(
+							'<li><a target="_blank" href="%1$s">%2$s</a></li>',
+							esc_url( 'https://help.coil.com/docs/monetize/get-creator-account/' ),
+							esc_html__( 'Get a free Coil creator account', 'coil-web-monetization' )
+					);
+					?>
+				</ul>
+			</section>
+		</div>
 	</div>
 	<?php
 }
@@ -462,10 +464,10 @@ function coil_settings_sidebar_render_callback() {
  */
 function coil_settings_payment_pointer_render_callback() {
 	?>
-	<div class="coil tab-styling">
+	<div class="tab-styling">
 	<?php
 		printf(
-			'<h1>%1$s</h1>',
+			'<h3>%1$s</h3>',
 			esc_html__( 'Payment Pointer', 'coil-web-monetization' )
 		);
 
@@ -502,9 +504,9 @@ function coil_settings_payment_pointer_render_callback() {
  */
 function coil_settings_monetization_render_callback() {
 	?>
-	<div class="coil tab-styling">
+	<div class="tab-styling">
 	<?php
-		echo '<h1>' . esc_html__( 'Monetization Settings', 'coil-web-monetization' ) . '</h1>';
+		echo '<h3>' . esc_html__( 'Monetization Settings', 'coil-web-monetization' ) . '</h3>';
 
 		echo '<p>' . esc_html_e( 'Manage monetization for specific post types', 'coil-web-monetization' ) . '</p>';
 
@@ -535,35 +537,59 @@ function coil_settings_monetization_render_callback() {
  */
 function coil_settings_paywall_render_callback() {
 	?>
-	<div class="coil tab-styling">
+	<div class="tab-styling">
 	<?php
-		echo '<h1>' . esc_html__( 'Paywall Appearance', 'coil-web-monetization' ) . '</h1>';
+		echo '<h3>' . esc_html__( 'Paywall Appearance', 'coil-web-monetization' ) . '</h3>';
 		echo '<p>' . esc_html_e( 'This paywall replaces the post content for users without an active Coil Membership, when access is set to exclusive.', 'coil-web-monetization' ) . '</p>';
+		echo '<div class="coil-row">';
+			echo '<div class="coil-column-7">';
+				// Renders the textfield for each paywall text field input.
+				$text_fields = [
+						[
+							'id' => 'coil_paywall_title',
+							'type' => 'text'
+						],
+						[
+							'id' => 'coil_paywall_message',
+							'type' => 'textarea'
+						],
+						[
+							'id' => 'coil_paywall_button_text',
+							'type' => 'text'
+						],
+						[
+							'id' => 'coil_paywall_button_link',
+							'type' => 'text'
+						],
+				];
 
-		// Renders the textfield for each paywall text field input.
-		$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
-	foreach ( $text_fields as $field_name ) {
-		coil_paywall_appearance_text_field_settings_render_callback( $field_name );
-	}
+				foreach ( $text_fields as $field_name => $field_props ) {
+					coil_paywall_appearance_text_field_settings_render_callback( $field_props[ 'id' ], $field_props[ 'type' ] );
+				}
 
-		// Renders the color theme radio buttons
-		echo '<br><h3>' . esc_html__( 'Color Theme', 'coil-web-monetization' ) . '</h3>';
-		paywall_theme_render_callback();
+				// Renders the color theme radio buttons
+				echo '<h4>' . esc_html__( 'Color Theme', 'coil-web-monetization' ) . '</h4>';
+				paywall_theme_render_callback();
 
-		// Renders the branding selection box
-		echo '<br><h3>' . esc_html__( 'Branding', 'coil-web-monetization' ) . '</h3>';
-		printf(
-			'<select name="%s" id="%s">',
-			esc_attr( 'coil_exclusive_settings_group[coil_message_branding]' ),
-			esc_attr( 'coil_branding' )
-		);
+				// Renders the branding selection box
+				echo '<h4>' . esc_html__( 'Branding', 'coil-web-monetization' ) . '</h4>';
 
-		// Defaults to the Coil logo
-		$branding_selected_input = Admin\get_paywall_appearance_setting( 'coil_message_branding' );
+				// Defaults to the Coil logo
+				$branding_selected_input = Admin\get_paywall_appearance_setting( 'coil_message_branding' );
 
-		paywall_branding_render_callback();
-
-		echo '</select><br>';
+				paywall_branding_render_callback();
+			echo '</div>';
+			echo '<div class="coil-column-5">';
+				echo '<h4>' . esc_html__( 'Preview', 'coil-web-monetization' ) . '</h4>';
+				echo '<div class=" coil-preview">';
+					echo '<div class="coil-paywall-container">';
+						echo '<h3 class="coil-paywall-heading">Keep Reading with Coil</h3>';
+						echo '<p class="coil-paywall-body">We use Coil to offer exclusive content. Access this and other great content with a Coil Membership.</p>';
+						echo '<a class="coil-paywall-cta">Become a Coil Member</a>';
+					echo '</div>';
+				echo '</div>';
+			echo '</div>';
+		echo '</div>';
 	?>
 
 	<script type="text/javascript">
@@ -571,7 +597,7 @@ function coil_settings_paywall_render_callback() {
 	</script>
 	<?php
 		// Renders the font checkbox
-		echo '<br><h3>' . esc_html__( 'Font Style', 'coil-web-monetization' ) . '</h3>';
+		echo '<h4>' . esc_html__( 'Font Style', 'coil-web-monetization' ) . '</h4>';
 		paywall_font_render_callback();
 
 	?>
@@ -634,6 +660,12 @@ function paywall_theme_render_callback() {
  */
 function paywall_branding_render_callback() {
 	printf(
+			'<select name="%s" id="%s">',
+			esc_attr( 'coil_exclusive_settings_group[coil_message_branding]' ),
+			esc_attr( 'coil_branding' )
+	);
+
+	printf(
 		'<option value="%s">%s</option>',
 		esc_attr( 'coil_logo' ),
 		esc_attr( 'Show Coil logo' )
@@ -650,6 +682,8 @@ function paywall_branding_render_callback() {
 		esc_attr( 'no_logo' ),
 		esc_attr( 'Show no logo' )
 	);
+
+	echo '</select>';
 }
 
 /**
@@ -694,9 +728,9 @@ function paywall_font_render_callback() {
 function coil_settings_exclusive_post_render_callback() {
 
 	?>
-	<div class="coil tab-styling">
+	<div class="tab-styling">
 	<?php
-		echo '<h1>' . esc_html__( 'Exclusive Post Appearance', 'coil-web-monetization' ) . '</h1>';
+		echo '<h3>' . esc_html__( 'Exclusive Post Appearance', 'coil-web-monetization' ) . '</h3>';
 		echo '<p>' . esc_html_e( 'Customize the appearance for exclusive posts on archive pages.', 'coil-web-monetization' ) . '</p>';
 
 		// Renders the padlock display checkbox
@@ -752,9 +786,9 @@ function coil_padlock_display_checkbox_render_callback() {
  */
 function coil_settings_post_visibility_render_callback() {
 	?>
-	<div class="coil tab-styling">
+	<div class="tab-styling">
 	<?php
-		echo '<h1>' . esc_html__( 'Visibility Settings', 'coil-web-monetization' ) . '</h1>';
+		echo '<h3>' . esc_html__( 'Visibility Settings', 'coil-web-monetization' ) . '</h3>';
 		echo '<p>' . esc_html_e( 'Select whether you want to designate posts and pages as \'Exclusive\' by default', 'coil-web-monetization' ) . '</p>';
 		printf(
 			'<p>%1$s<a href="%2$s">%3$s</a>%4$s</p>',
@@ -791,9 +825,9 @@ function coil_settings_post_visibility_render_callback() {
 function coil_settings_excerpt_display_render_callback() {
 
 	?>
-	<div class="coil tab-styling">
+	<div class="tab-styling">
 	<?php
-		echo '<h1>' . esc_html__( 'Excerpt Settings', 'coil-web-monetization' ) . '</h1>';
+		echo '<h3>' . esc_html__( 'Excerpt Settings', 'coil-web-monetization' ) . '</h3>';
 		echo '<p>' . esc_html_e( 'Use the settings below to select whether to show a short excerpt for any pages, posts, or other content types you choose to gate access to. Support for displaying an excerpt may depend on your particular theme and setup of WordPress.', 'coil-web-monetization' ) . '</p>';
 
 		// Using a function to generate the table with the post type excerpt checkboxes.
@@ -816,9 +850,9 @@ function coil_settings_excerpt_display_render_callback() {
 function coil_settings_css_selector_render_callback() {
 
 	?>
-	<div class="coil tab-styling">
+	<div class="tab-styling">
 	<?php
-		echo '<h1>' . esc_html__( 'CSS Selector', 'coil-web-monetization' ) . '</h1>';
+		echo '<h3>' . esc_html__( 'CSS Selector', 'coil-web-monetization' ) . '</h3>';
 
 		$exclusive_settings = Admin\get_exclusive_settings();
 
@@ -851,7 +885,7 @@ function coil_settings_css_selector_render_callback() {
  * Renders the output of the content messaging customization setting
  * @return void
  */
-function coil_paywall_appearance_text_field_settings_render_callback( $field_name ) {
+function coil_paywall_appearance_text_field_settings_render_callback( $field_name, $field_type = 'text' ) {
 
 	switch ( $field_name ) {
 		case 'coil_paywall_title':
@@ -873,19 +907,31 @@ function coil_paywall_appearance_text_field_settings_render_callback( $field_nam
 
 	if ( '' !== $heading ) {
 		?>
-		<h3><?php echo esc_html( $heading ); ?></h3>
+		<h4><?php echo esc_html( $heading ); ?></h4>
 		<?php
 	}
 
 	// Print <textarea> containing the setting value
-	printf(
-		'<textarea class="%s" name="%s" id="%s" placeholder="%s">%s</textarea>',
-		esc_attr( 'wide-input' ),
-		esc_attr( 'coil_exclusive_settings_group[' . $field_name . ']' ),
-		esc_attr( $field_name ),
-		esc_attr( Admin\get_paywall_appearance_setting( $field_name, true ) ),
-		esc_attr( Admin\get_paywall_appearance_setting( $field_name ) )
-	);
+	if( 'textarea' !== $field_type ) {
+		printf(
+				'<input type="%s" class="%s" name="%s" id="%s" placeholder="%s" value="%s" />',
+				$field_type,
+				esc_attr( 'wide-input' ),
+				esc_attr( 'coil_exclusive_settings_group[' . $field_name . ']' ),
+				esc_attr( $field_name ),
+				esc_attr( Admin\get_paywall_appearance_setting( $field_name, true ) ),
+				esc_attr( Admin\get_paywall_appearance_setting( $field_name ) )
+		);
+	} else {
+		printf(
+				'<textarea class="%s" name="%s" id="%s" placeholder="%s">%s</textarea>',
+				esc_attr( 'wide-input' ),
+				esc_attr( 'coil_exclusive_settings_group[' . $field_name . ']' ),
+				esc_attr( $field_name ),
+				esc_attr( Admin\get_paywall_appearance_setting( $field_name, true ) ),
+				esc_attr( Admin\get_paywall_appearance_setting( $field_name ) )
+		);
+	}
 
 	if ( $field_name === 'coil_paywall_button_link' ) {
 		echo '<p class="description">' . __( 'If you have an affiliate link add it here.', 'coil-web-monetization' ) . '</p>';
@@ -1127,32 +1173,40 @@ function render_coil_settings_screen() : void {
 			switch ( $active_tab ) {
 				case 'welcome':
 					coil_settings_sidebar_render_callback();
-					settings_fields( 'coil_welcome_settings_group' );
-					do_settings_sections( 'coil_welcome_section' );
+					echo '<div class="settings-main has-sidebar">';
+						settings_fields( 'coil_welcome_settings_group' );
+						do_settings_sections( 'coil_welcome_section' );
+					echo '</div>';
 					break;
 				case 'general_settings':
-					settings_fields( 'coil_general_settings_group' );
-					do_settings_sections( 'coil_payment_pointer_section' );
-					do_settings_sections( 'coil_monetization_section' );
-					submit_button();
+					echo '<div class="settings-main">';
+						settings_fields( 'coil_general_settings_group' );
+						do_settings_sections( 'coil_payment_pointer_section' );
+						do_settings_sections( 'coil_monetization_section' );
+						submit_button();
+					echo '</div>';
 					break;
 				case 'exclusive_settings':
-					settings_fields( 'coil_exclusive_settings_group' );
-					// do_settings_sections( 'coil_enable_exclusive_section' );
-					do_settings_sections( 'coil_paywall_section' );
-					do_settings_sections( 'coil_exclusive_post_section' );
-					do_settings_sections( 'coil_post_visibility_section' );
-					do_settings_sections( 'coil_excerpt_display_section' );
-					do_settings_sections( 'coil_css_selector_section' );
-					submit_button();
+					echo '<div class="settings-main">';
+						settings_fields( 'coil_exclusive_settings_group' );
+						// do_settings_sections( 'coil_enable_exclusive_section' );
+						do_settings_sections( 'coil_paywall_section' );
+						do_settings_sections( 'coil_exclusive_post_section' );
+						do_settings_sections( 'coil_post_visibility_section' );
+						do_settings_sections( 'coil_excerpt_display_section' );
+						do_settings_sections( 'coil_css_selector_section' );
+						submit_button();
+					echo '</div>';
 					break;
 				case 'coil_button':
-					settings_fields( 'coil_button_settings_group' );
-					do_settings_sections( 'coil_promotion_bar_section' );
-					// 	do_settings_sections( 'coil_enable_button_section' );
-					// 	do_settings_sections( 'coil_button_section' );
-					// 	do_settings_sections( 'coil_button_visibility_section' );
-					submit_button();
+					echo '<div class="settings-main">';
+						settings_fields( 'coil_button_settings_group' );
+						do_settings_sections( 'coil_promotion_bar_section' );
+						// 	do_settings_sections( 'coil_enable_button_section' );
+						// 	do_settings_sections( 'coil_button_section' );
+						// 	do_settings_sections( 'coil_button_visibility_section' );
+						submit_button();
+					echo '</div>';
 					break;
 			}
 			?>
