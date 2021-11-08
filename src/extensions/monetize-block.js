@@ -141,7 +141,7 @@ function addAttributes( settings ) {
 
 /**
  * Override the default edit UI to include a new block inspector control for
- * assigning monetization, if the block supports it.
+ * assigning monetization and visibility options, if the block supports it.
  *
  * @param  {function|Component} BlockEdit Original component.
  * @return {string} Wrapped component.

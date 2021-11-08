@@ -15,7 +15,20 @@ function register_content_meta() : void {
 
 	register_meta(
 		'post',
-		'_coil_monetize_post_status',
+		'_coil_monetization_post_status',
+		[
+			'auth_callback' => function() {
+				return current_user_can( 'edit_posts' );
+			},
+			'show_in_rest'  => true,
+			'single'        => true,
+			'type'          => 'string',
+		]
+	);
+
+	register_meta(
+		'post',
+		'_coil_visibility_post_status',
 		[
 			'auth_callback' => function() {
 				return current_user_can( 'edit_posts' );
@@ -173,6 +186,7 @@ function maybe_restrict_content( string $content ) : string {
 	return apply_filters( 'coil_maybe_restrict_content', $public_content, $content, $coil_status );
 }
 
+// TODO: remove
 /**
  * Get the gating type for the specified post.
  *
@@ -354,6 +368,7 @@ function get_global_posts_gating() : array {
 	return [];
 }
 
+// TODO: remove
 /**
  * Set the gating type for the specified post.
  *
@@ -406,3 +421,120 @@ function is_content_monetized( $post_id ) : bool {
 	$coil_status = get_content_gating( $post_id );
 	return ( $coil_status === 'no' ) ? false : true;
 }
+
+function is_monetization_and_visibility_compatible() {
+
+	if ( get_monetization_setting() === 'not-monetized' && get_visibility_setting() === 'exclusive' ) {
+		return false;
+	}
+	return true;
+
+}
+
+/**
+ * Get the monetization type for the specified post.
+ *
+ * @param integer $post_id The post to check.
+ *
+ * @return string Either "monetized" (default) or "not-monetized".
+ */
+function get_post_monetization( $post_id ) : string {
+
+	$post_id      = (int) $post_id;
+	$monetization = get_post_meta( $post_id, '_coil_monetization_post_status', true );
+
+	if ( empty( $monetization ) ) {
+		$monetization = 'default';
+	}
+
+	return $monetization;
+}
+
+/**
+ * Get the visibility type for the specified post.
+ *
+ * @param integer $post_id The post to check.
+ *
+ * @return string Either "public" (default) or "exclusive".
+ */
+function get_post_visibility( $post_id ) : string {
+
+	$post_id    = (int) $post_id;
+	$visibility = get_post_meta( $post_id, '_coil_visibility_post_status', true );
+
+	if ( empty( $visibility ) ) {
+		$visibility = 'default';
+	}
+
+	return $visibility;
+}
+
+/**
+ * Set the monetization status for the specified post.
+ *
+ * @param integer $post_id    The post to set gating for.
+ * @param string $post_monetization Either "default", "not-monetized", or "monetized".
+ *
+ * @return void
+ */
+function set_post_monetization( $post_id, string $post_monetization ) : void {
+
+	$post_id = (int) $post_id;
+
+	$valid_monetization_options = Admin\get_monetization_types();
+	if ( ! in_array( $post_monetization, $valid_monetization_options, true ) ) {
+		$post_monetization = 'default';
+	}
+
+	update_post_meta( $post_id, '_coil_monetization_post_status', $post_monetization );
+}
+
+/**
+ * Set the visibility status for the specified post.
+ *
+ * @param integer $post_id    The post to set gating for.
+ * @param string $post_visibility Either "default", "public", or "exclusive".
+ *
+ * @return void
+ */
+function set_post_visibility( $post_id, string $post_visibility ) : void {
+
+	$post_id = (int) $post_id;
+
+	$valid_visibility_options = Admin\get_visibility_types();
+	if ( ! in_array( $post_visibility, $valid_visibility_options, true ) ) {
+		$post_visibility = 'default';
+	}
+
+	update_post_meta( $post_id, '_coil_visibility_status', $post_visibility );
+}
+
+// TODO finish these functions and place in correct files
+// function have_padlock() {
+
+// }
+
+// function add_monetization_and_visibility_classes() {
+
+// }
+
+// function restrict_exclusive_content() {
+
+// }
+
+// function render_metaboxes() {
+// 	if ( is_monetization_and_visibility_compatible() ) {
+// 		set_monetization();
+// 		set_visibility();
+// 	} else {
+// 		// set_monetization to true
+// 		// set_visibility to public
+// 	}
+// }
+
+// function get_monetization_and_visibility_setting_wording( $show_default = false ) : array {
+
+// 	$settings = [ 'Use Default', 'Disabled', 'Enabled & Public', 'Enabled & Exclusive' ];
+
+// 	return $settings;
+// }

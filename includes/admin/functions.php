@@ -126,13 +126,19 @@ function maybe_save_post_metabox( int $post_id ) : void {
 		return;
 	}
 
-	$post_gating = sanitize_text_field( $_REQUEST['coil_monetize_post_status'] ?? '' );
+	$post_monetization = sanitize_text_field( $_REQUEST['coil_monetization_post_status'] ?? '' );
+	$post_visibility   = sanitize_text_field( $_REQUEST['coil_visibility_post_status'] ?? '' );
 
-	if ( $post_gating ) {
-		Gating\set_post_gating( $post_id, $post_gating );
+	if ( $post_monetization || $post_visibility ) {
+		Gating\set_post_monetization( $post_id, $post_monetization );
+		Gating\set_post_visibility( $post_id, $post_visibility );
 	} else {
-		delete_post_meta( $post_id, '_coil_monetize_post_status' );
+		delete_post_meta( $post_id, '_coil_monetization_post_status' );
+		delete_post_meta( $post_id, '_coil_visibility_post_status' );
 	}
+
+	// Remove deprecated post meta
+	delete_post_meta( $post_id, '_coil_monetize_post_status' );
 }
 
 /**
