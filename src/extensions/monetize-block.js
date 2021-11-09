@@ -329,18 +329,18 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 		},
 		updateSelectValue: ( value ) => {
 			// This the reverse of updateMetaValueOnSelect where we compare the value Selected and update the radio button values
-			if ( 'gate-all' === value || 'no-gating' === value || 'gate-tagged-blocks' === value ) {
-				return 'enabled';
+			if ( 'exclusive' === value || 'public' === value || 'gate-tagged-blocks' === value ) {
+				return 'monetized';
 			} else if ( 'no' === value ) {
-				return 'disabled';
+				return 'not-monetized';
 			}
 			return 'default';
 		},
 		updateMetaValueOnSelect: ( value ) => {
 			let metaValue = 'no';
 
-			if ( 'enabled' === value ) {
-				metaValue = coilEditorParams.monetizationDefault === 'gate-all' ? 'gate-all' : 'no-gating'; // eslint-disable-line no-undef
+			if ( 'monetized' === value ) {
+				metaValue = coilEditorParams.visibilityDefault === 'exclusive' ? 'exclusive' : 'public'; // eslint-disable-line no-undef
 			} else if ( 'default' === value ) {
 				metaValue = 'default';
 			}
@@ -375,8 +375,8 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 				onChange={ ( value ) => props.updateMetaValueOnSelect( value ) }
 				options={ [
 					{ value: 'default', label: 'Default (' + props.defaultLabel + ')' },
-					{ value: 'enabled', label: 'Enabled' },
-					{ value: 'disabled', label: 'Disabled' },
+					{ value: 'monetized', label: 'Enabled' },
+					{ value: 'not-monetized', label: 'Disabled' },
 				] }
 			/>
 		</div>
@@ -390,11 +390,11 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 					[
 						{
 							label: __( 'Everyone', 'coil-web-monetization' ),
-							value: 'no-gating',
+							value: 'public',
 						},
 						{
 							label: __( 'Coil Members Only', 'coil-web-monetization' ),
-							value: 'gate-all',
+							value: 'exclusive',
 						},
 						{
 							label: __( 'Split', 'coil-web-monetization' ),
