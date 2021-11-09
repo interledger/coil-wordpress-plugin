@@ -766,7 +766,7 @@ function coil_settings_post_visibility_render_callback() {
 
 		// Using a function to generate the table with the global visibility radio button options.
 		$group             = 'coil_exclusive_settings_group';
-		$columns           = [ 'Keep public', 'Make exclusive' ];
+		$columns           = Admin\get_visibility_types();
 		$input_type        = 'radio';
 		$suffix            = 'visibility';
 		$exclusive_options = Admin\get_exclusive_settings();

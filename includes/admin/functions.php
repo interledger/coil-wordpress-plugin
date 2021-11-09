@@ -165,7 +165,7 @@ function maybe_save_term_meta( int $term_id, int $tt_id, $taxonomy ) : void {
 	if ( $term_gating ) {
 		Gating\set_term_gating( $term_id, $term_gating );
 	} else {
-		delete_term_monetization_meta( $term_id );
+		delete_term_monetization_and_gating_meta( $term_id );
 	}
 
 }
@@ -176,12 +176,13 @@ function maybe_save_term_meta( int $term_id, int $tt_id, $taxonomy ) : void {
  * @param int $term The term id.
  * @return void
  */
-function delete_term_monetization_meta( $term_id ) {
+function delete_term_monetization_and_gating_meta( $term_id ) {
 
 	if ( empty( $term_id ) ) {
 		return;
 	}
-	delete_term_meta( $term_id, '_coil_monetize_term_status' );
+	delete_term_meta( $term_id, '_coil_monetization_term_status' );
+	delete_term_meta( $term_id, '_coil_visibility_term_status' );
 }
 
 /**
@@ -631,8 +632,8 @@ function get_exclusive_post_defaults(): array {
 function get_visibility_types() : array {
 
 	$visibility_types = [
-		'public'    => 'Public',
-		'exclusive' => 'Exclusive',
+		'public'    => 'Keep public',
+		'exclusive' => 'Make exclusive',
 	];
 
 	return $visibility_types;

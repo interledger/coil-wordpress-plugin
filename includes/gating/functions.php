@@ -84,18 +84,33 @@ function get_monetization_setting_types( $show_default = false ) : array {
 }
 
 /**
- * Declare all the valid gating slugs used as a reference
+ * Declare all the valid monetization slugs used as a reference
  * before the particular option is saved in the database.
  *
- * @return array An array of valid gating slug types.
+ * @return array An array of valid monetization slug types.
  */
-function get_valid_gating_types() {
+function get_valid_monetization_types() {
 
 	$valid = [
-		'gate-all', // Monetization is enabled and content is visable to Coil members only.
-		'gate-tagged-blocks', // split content.
-		'no', // Monetization is disabled.
-		'no-gating', // Monetization is enabled and visable to everyone.
+		'monetized', // Monetization is enabled.
+		'not-monetized', // Monetization is disabled.
+		'default', // Whatever is set on the post to revert back.
+	];
+	return $valid;
+}
+
+/**
+ * Declare all the valid visibility slugs used as a reference
+ * before the particular option is saved in the database.
+ *
+ * @return array An array of valid visibility slug types.
+ */
+function get_valid_visibility_types() {
+
+	$valid = [
+		'public', // visable to everyone.
+		'exclusive', // visable to Coil members only.
+		'split', // split content.
 		'default', // Whatever is set on the post to revert back.
 	];
 	return $valid;
@@ -341,7 +356,7 @@ function get_content_gating( $post_id ) : string {
 			$post = get_post( $post_id );
 
 			// Get the post type from what is saved in global options
-			$global_gating_settings = get_global_posts_gating();
+			$global_gating_settings = Admin\get_exclusive_settings();
 
 			if ( ! empty( $global_gating_settings ) && ! empty( $post ) && isset( $global_gating_settings[ $post->post_type ] ) ) {
 				$content_gating = $global_gating_settings[ $post->post_type ];
@@ -350,22 +365,6 @@ function get_content_gating( $post_id ) : string {
 	}
 
 	return $content_gating;
-}
-
-/**
- * Get whatever settings are stored in the plugin as the default
- * content gating settings (post, page, cpt etc).
- *
- * @return array Setting stored in options, or blank array.
- */
-function get_global_posts_gating() : array {
-
-	$global_settings = get_option( 'coil_exclusive_settings_group', [] );
-	if ( ! empty( $global_settings ) ) {
-		return $global_settings;
-	}
-
-	return [];
 }
 
 // TODO: remove
@@ -381,7 +380,7 @@ function set_post_gating( $post_id, string $gating_type ) : void {
 
 	$post_id = (int) $post_id;
 
-	$valid_gating_types = get_valid_gating_types();
+	$valid_gating_types = get_valid_monetization_types();
 	if ( ! in_array( $gating_type, $valid_gating_types, true ) ) {
 		return;
 	}
@@ -390,23 +389,43 @@ function set_post_gating( $post_id, string $gating_type ) : void {
 }
 
 /**
- * Set the gating type for the specified term.
+ * Set the monetization type for the specified term.
  *
- * @param integer $term_id    The term to set gating for.
- * @param string $gating_type Either "default", "no", "no-gating", "gate-all", "gate-tagged-blocks".
+ * @param integer $term_id    The term to set monetization for.
+ * @param string $monetization_setting Either "default", "not-monetized", or "monetized".
  *
  * @return void
  */
-function set_term_gating( $term_id, string $gating_type ) : void {
+function set_term_monetization( $term_id, string $monetization_setting ) : void {
 
 	$term_id = (int) $term_id;
 
-	$valid_gating_types = get_valid_gating_types();
-	if ( ! in_array( $gating_type, $valid_gating_types, true ) ) {
+	$valid_monetization_types = get_valid_monetization_types();
+	if ( ! in_array( $monetization_setting, $valid_monetization_types, true ) ) {
 		return;
 	}
 
-	update_term_meta( $term_id, '_coil_monetize_term_status', $gating_type );
+	update_term_meta( $term_id, '_coil_monetization_term_status', $monetization_setting );
+}
+
+/**
+ * Set the visibility type for the specified term.
+ *
+ * @param integer $term_id    The term to set visibility for.
+ * @param string $visibility_setting Either "default", "public", or "exclusive".
+ *
+ * @return void
+ */
+function set_term_visibility( $term_id, string $visibility_setting ) : void {
+
+	$term_id = (int) $term_id;
+
+	$valid_visibility_types = get_valid_visibility_types();
+	if ( ! in_array( $visibility_setting, $valid_visibility_types, true ) ) {
+		return;
+	}
+
+	update_term_meta( $term_id, '_coil_visibility_term_status', $visibility_setting );
 }
 
 /**
@@ -501,7 +520,7 @@ function set_post_visibility( $post_id, string $post_visibility ) : void {
 
 	$post_id = (int) $post_id;
 
-	$valid_visibility_options = Admin\get_visibility_types();
+	$valid_visibility_options = array_keys( Admin\get_visibility_types() );
 	if ( ! in_array( $post_visibility, $valid_visibility_options, true ) ) {
 		$post_visibility = 'default';
 	}

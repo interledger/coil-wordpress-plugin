@@ -56,7 +56,7 @@ function init_plugin() : void {
 	// Term meta.
 	add_action( 'edit_term', __NAMESPACE__ . '\Admin\maybe_save_term_meta', 10, 3 );
 	add_action( 'create_term', __NAMESPACE__ . '\Admin\maybe_save_term_meta', 10, 3 );
-	add_action( 'delete_term', __NAMESPACE__ . '\Admin\delete_term_monetization_meta' );
+	add_action( 'delete_term', __NAMESPACE__ . '\Admin\delete_term_monetization_and_gating_meta' );
 	add_term_edit_save_form_meta_actions();
 
 	// Customizer settings.
