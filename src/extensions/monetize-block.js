@@ -354,12 +354,13 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 	};
 } )( withSelect( ( select, props ) => {
 	const meta = select( 'core/editor' ).getEditedPostAttribute( 'meta' );
-	let defaultLabel = __( 'Enabled & Exclusive' );
+	// Displays the global default in brackets in the dropdown box
+	let defaultLabel = __( 'Enabled & Public' );
 
-	if ( 'no' === coilEditorParams.monetizationDefault ) { // eslint-disable-line no-undef
+	if ( 'not-monetized' === coilEditorParams.monetizationDefault ) { // eslint-disable-line no-undef
 		defaultLabel = __( 'Disabled' );
-	} else if ( 'no-gating' === coilEditorParams.monetizationDefault ) { // eslint-disable-line no-undef
-		defaultLabel = __( 'Enabled & Public' );
+	} else if ( 'exclusive' === coilEditorParams.visibilityDefault ) { // eslint-disable-line no-undef
+		defaultLabel = __( 'Enabled & Exclusive' );
 	}
 	return {
 		[ props.metaFieldName ]: meta && meta._coil_monetize_post_status,

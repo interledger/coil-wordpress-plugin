@@ -138,13 +138,18 @@ function load_block_editor_assets() : void {
 		false
 	);
 
-	$monetization_settings = get_option( 'coil_exclusive_settings_group' );
+	$monetization_settings = get_option( 'coil_general_settings_group' );
 	$monetization_default  = isset( $monetization_settings[ get_current_screen()->post_type . '_monetization' ] ) ? $monetization_settings[ get_current_screen()->post_type . '_monetization' ] : 'default';
+	$visibility_settings   = get_option( 'coil_exclusive_settings_group' );
+	$visibility_default    = isset( $visibility_settings[ get_current_screen()->post_type . '_visibility' ] ) ? $visibility_settings[ get_current_screen()->post_type . '_visibility' ] : 'default';
 
 	wp_localize_script(
 		'coil-editor',
 		'coilEditorParams',
-		[ 'monetizationDefault' => $monetization_default ]
+		[
+			'monetizationDefault' => $monetization_default,
+			'visibilityDefault'   => $visibility_default,
+		]
 	);
 
 	// Load JS i18n, requires WP 5.0+.
