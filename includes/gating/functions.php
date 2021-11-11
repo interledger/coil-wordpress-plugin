@@ -260,7 +260,7 @@ function get_excerpt_gating( $post_id ) : bool {
  *
  * @param integer $term_id The term_id to check.
  *
- * @return string Either "default" (default), "not-monetized", or "nmonetized".
+ * @return string Either "default" (default), "not-monetized", or "monetized".
  */
 function get_term_monetization( $term_id ) {
 
@@ -278,7 +278,7 @@ function get_term_monetization( $term_id ) {
  *
  * @param integer $term_id The term_id to check.
  *
- * @return string Either "default" (default), "not-monetized", or "nmonetized".
+ * @return string Either "default" (default), "not-monetized", or "monetized".
  */
 function get_term_visibility( $term_id ) {
 
@@ -557,7 +557,7 @@ function set_post_visibility( $post_id, string $post_visibility ) : void {
 		$post_visibility = 'default';
 	}
 
-	update_post_meta( $post_id, '_coil_visibility_status', $post_visibility );
+	update_post_meta( $post_id, '_coil_visibility_post_status', $post_visibility );
 }
 
 // TODO finish these functions and place in correct files

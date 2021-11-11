@@ -126,8 +126,8 @@ function maybe_save_post_metabox( int $post_id ) : void {
 		return;
 	}
 
-	$post_monetization = sanitize_text_field( $_REQUEST['coil_monetization_post_status'] ?? '' );
-	$post_visibility   = sanitize_text_field( $_REQUEST['coil_visibility_post_status'] ?? '' );
+	$post_monetization = sanitize_text_field( $_REQUEST['_coil_monetization_post_status'] ?? '' );
+	$post_visibility   = sanitize_text_field( $_REQUEST['_coil_visibility_post_status'] ?? '' );
 
 	if ( $post_monetization || $post_visibility ) {
 		Gating\set_post_monetization( $post_id, $post_monetization );
@@ -161,8 +161,8 @@ function maybe_save_term_meta( int $term_id, int $tt_id, $taxonomy ) : void {
 	check_admin_referer( 'coil_term_gating_nonce_action', 'term_gating_nonce' );
 
 	// TODO: these are returning '' when they shouldn't be
-	$term_monetization = sanitize_text_field( $_REQUEST['coil_monetization_term_status'] ?? '' );
-	$term_visibity     = sanitize_text_field( $_REQUEST['coil_visibility_term_status'] ?? '' );
+	$term_monetization = sanitize_text_field( $_REQUEST['_coil_monetization_term_status'] ?? '' );
+	$term_visibity     = sanitize_text_field( $_REQUEST['_coil_visibility_term_status'] ?? '' );
 
 	if ( $term_monetization ) {
 		Gating\set_term_monetization( $term_id, $term_monetization );

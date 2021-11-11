@@ -1183,13 +1183,23 @@ function coil_add_term_custom_meta( $term ) {
 	}
 
 	// Retrieve the monetization and visibility saved on the term.
-	$monetization  = Gating\get_term_monetization( $term->term_id );
-	$visibility    = Gating\get_term_visibility( $term->term_id );
-	$default_value = '';
+	$monetization = Gating\get_term_monetization( $term->term_id );
+	if ( $monetization === 'default' ) {
+		$general_settings = Admin\get_general_settings();
+		$monetization     = isset( $general_settings['post_monetization'] ) ? $general_settings['post_monetization'] : 'monetized';
+	}
+	$visibility = Gating\get_term_visibility( $term->term_id );
+	if ( $visibility === 'default' ) {
+		$exclusive_settings = Admin\get_exclusive_settings();
+		$visibility         = isset( $exclusive_settings['post_visibility'] ) ? $exclusive_settings['post_visibility'] : 'public';
+	}
+	// TODO: Fix the default wording
 	if ( $monetization === 'not-monetized' ) {
 		$default_value = 'Disabled';
-	} else {
-		$default_value = $visibility === 'exclusive' ? 'Enabled & exclusive' : 'Enabled & public';
+	} elseif ( $visibility === 'exclusive' ) {
+		$default_value = 'Enabled & exclusive';
+	} elseif ( $visibility === 'public' ) {
+		$default_value = 'Enabled & public';
 	}
 
 	// Get post defaults from wp_options table
@@ -1202,15 +1212,14 @@ function coil_add_term_custom_meta( $term ) {
 
 	?>
 
-	<div id="coil-dropdown">
-		<label for="monetization-status">Select a monetization status</label><br>
-		<select name="monetization-status" id="monetization-dropdown">
-			<option name="coil_monetization_term_status" id="webmo-default" value="default">Default</option>
-			<option name="coil_monetization_term_status" value="monetized"><?php esc_html_e( 'Enabled', 'coil-web-monetization' ); ?></option>
-			<option name="coil_monetization_term_status" value="not-monetized"><?php esc_html_e( 'Disabled', 'coil-web-monetization' ); ?></option>
-		</select><br>
-		<br>
-	</div>
+	<div id="coil_dropdown">
+		<label for="_coil_monetization_term_status"><?php esc_html_e( 'Select a monetization status', 'coil-web-monetization' ); ?></label><br>
+		<select name="_coil_monetization_term_status" id="monetization_dropdown">
+			<option value="default"><?php echo esc_html_e( 'Default (', 'coil-web-monetization' ) . esc_html_e( $default_value, 'coil-web-monetization' ) . esc_html_e( ')', 'coil-web-monetization' ); ?></option>
+			<option value="monetized"><?php esc_html_e( 'Enabled', 'coil-web-monetization' ); ?></option>
+			<option value="not-monetized"><?php esc_html_e( 'Disabled', 'coil-web-monetization' ); ?></option>
+		</select>
+	</div><br>
 
 	<div id="coil-radio-selection" style="display: none">
 		<tr class="form-field">
@@ -1223,9 +1232,7 @@ function coil_add_term_custom_meta( $term ) {
 				foreach ( $visibility_options as $setting_key => $setting_value ) {
 
 					$checked_input = false;
-					if ( $setting_key === $default_post_visibility ) {
-						$checked_input = 'checked="true"';
-					} elseif ( ! empty( $visibility ) ) {
+					if ( ! empty( $visibility ) ) {
 						$checked_input = checked( $setting_key, $visibility, false );
 					}
 					?>
@@ -1233,7 +1240,7 @@ function coil_add_term_custom_meta( $term ) {
 					<?php
 					printf(
 						'<input type="radio" name="%s" id="%s" value="%s"%s />%s',
-						esc_attr( 'coil_visibility_term_status' ),
+						esc_attr( '_coil_visibility_term_status' ),
 						esc_attr( $setting_key ),
 						esc_attr( $setting_key ),
 						$checked_input,
@@ -1267,8 +1274,8 @@ function coil_add_term_custom_meta( $term ) {
 			}
 		}
 
-		document.getElementById("monetization-dropdown").addEventListener("click", function () {
-			if (document.getElementById("monetization-dropdown").value === 'monetized') {
+		document.getElementById("monetization_dropdown").addEventListener("click", function () {
+			if (document.getElementById("monetization_dropdown").value === 'monetized') {
 				displayRadioOptions();
 			} else {
 				hideRadioOptions();
