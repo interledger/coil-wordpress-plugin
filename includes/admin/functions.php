@@ -160,10 +160,18 @@ function maybe_save_term_meta( int $term_id, int $tt_id, $taxonomy ) : void {
 	// Check the nonce.
 	check_admin_referer( 'coil_term_gating_nonce_action', 'term_gating_nonce' );
 
-	$term_gating = sanitize_text_field( $_REQUEST['coil_monetize_term_status'] ?? '' );
+	// TODO: these are returning '' when they shouldn't be
+	$term_monetization = sanitize_text_field( $_REQUEST['coil_monetization_term_status'] ?? '' );
+	$term_visibity     = sanitize_text_field( $_REQUEST['coil_visibility_term_status'] ?? '' );
 
-	if ( $term_gating ) {
-		Gating\set_term_gating( $term_id, $term_gating );
+	if ( $term_monetization ) {
+		Gating\set_term_monetization( $term_id, $term_monetization );
+	} else {
+		delete_term_monetization_and_gating_meta( $term_id );
+	}
+
+	if ( $term_visibity ) {
+		Gating\set_term_visibility( $term_id, $term_visibity );
 	} else {
 		delete_term_monetization_and_gating_meta( $term_id );
 	}
@@ -183,6 +191,8 @@ function delete_term_monetization_and_gating_meta( $term_id ) {
 	}
 	delete_term_meta( $term_id, '_coil_monetization_term_status' );
 	delete_term_meta( $term_id, '_coil_visibility_term_status' );
+	// Deleted deprecated term meta
+	delete_term_meta( $term_id, '_coil_monetizatize_term_status' );
 }
 
 /**

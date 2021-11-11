@@ -49,7 +49,21 @@ function register_term_meta() {
 
 	register_meta(
 		'term',
-		'_coil_monetize_term_status',
+		'_coil_monetization_term_status',
+		[
+			'auth_callback' => function() {
+
+				return current_user_can( 'edit_posts' );
+			},
+			'show_in_rest'  => true,
+			'single'        => true,
+			'type'          => 'string',
+		]
+	);
+
+	register_meta(
+		'term',
+		'_coil_visibility_term_status',
 		[
 			'auth_callback' => function() {
 
@@ -242,21 +256,39 @@ function get_excerpt_gating( $post_id ) : bool {
 
 
 /**
- * Get the gating type for the specified term.
+ * Get the monetization type for the specified term.
  *
  * @param integer $term_id The term_id to check.
  *
- * @return string Either "default" (default), "no", "no-gating", "gate-all".
+ * @return string Either "default" (default), "not-monetized", or "nmonetized".
  */
-function get_term_gating( $term_id ) {
+function get_term_monetization( $term_id ) {
 
-	$term_id     = (int) $term_id;
-	$term_gating = get_term_meta( $term_id, '_coil_monetize_term_status', true );
+	$term_id           = (int) $term_id;
+	$term_monetization = get_term_meta( $term_id, '_coil_monetization_term_status', true );
 
-	if ( empty( $term_gating ) ) {
-		$term_gating = 'default';
+	if ( empty( $term_monetization ) ) {
+		$term_monetization = 'default';
 	}
-	return $term_gating;
+	return $term_monetization;
+}
+
+/**
+ * Get the visibility type for the specified term.
+ *
+ * @param integer $term_id The term_id to check.
+ *
+ * @return string Either "default" (default), "not-monetized", or "nmonetized".
+ */
+function get_term_visibility( $term_id ) {
+
+	$term_id         = (int) $term_id;
+	$term_visibility = get_term_meta( $term_id, '_coil_visibility_term_status', true );
+
+	if ( empty( $term_visibility ) ) {
+		$term_visibility = 'default';
+	}
+	return $term_visibility;
 }
 
 /**

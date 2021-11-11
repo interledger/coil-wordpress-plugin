@@ -1171,97 +1171,111 @@ function render_coil_settings_screen() : void {
  */
 function coil_add_term_custom_meta( $term ) {
 
-	// Get gating options.
-	$gating_options = Gating\get_monetization_setting_types( true );
-	if ( empty( $gating_options ) || ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
+	// Get monetization and visibility options.
+	$monetization_options = Admin\get_monetization_types();
+	$visibility_options   = [
+		'public'    => 'Everyone',
+		'exclusive' => 'Coil Members Only',
+	];
+
+	if ( empty( $monetization_options || visibility_options ) || ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
 		return;
 	}
 
-	// Retrieve the gating saved on the term.
-	$gating = Gating\get_term_gating( $term->term_id );
+	// Retrieve the monetization and visibility saved on the term.
+	$monetization  = Gating\get_term_monetization( $term->term_id );
+	$visibility    = Gating\get_term_visibility( $term->term_id );
+	$default_value = '';
+	if ( $monetization === 'not-monetized' ) {
+		$default_value = 'Disabled';
+	} else {
+		$default_value = $visibility === 'exclusive' ? 'Enabled & exclusive' : 'Enabled & public';
+	}
+
+	// Get post defaults from wp_options table
+	$exclusive_settings      = Admin\get_exclusive_settings();
+	$default_post_visibility = ! empty( $exclusive_settings ) && isset( $exclusive_settings['post_visibility'] ) ? $exclusive_settings['post_visibility'] : 'public';
+	$general_settings        = Admin\get_general_settings();
+	if ( ! empty( $general_settings ) && isset( $general_settings['post'] ) ) {
+		$default_post_monetization = $general_settings['post'];
+	}
 
 	?>
-	<tr class="form-field">
-		<th scope="row">
-			<label><?php esc_html_e( 'Coil Web Monetization', 'coil-web-monetization' ); ?></label>
-		</th>
-		<td>
-			<fieldset id="coil-category-settings">
-			<?php
-			foreach ( $gating_options as $setting_key => $setting_value ) {
 
-				$checked_input = false;
-				if ( $setting_key === 'default' ) {
-					$checked_input = 'checked="true"';
-				} elseif ( ! empty( $gating ) ) {
-					$checked_input = checked( $setting_key, $gating, false );
+	<div id="coil-dropdown">
+		<label for="monetization-status">Select a monetization status</label><br>
+		<select name="monetization-status" id="monetization-dropdown">
+			<option name="coil_monetization_term_status" id="webmo-default" value="default">Default</option>
+			<option name="coil_monetization_term_status" value="monetized"><?php esc_html_e( 'Enabled', 'coil-web-monetization' ); ?></option>
+			<option name="coil_monetization_term_status" value="not-monetized"><?php esc_html_e( 'Disabled', 'coil-web-monetization' ); ?></option>
+		</select><br>
+		<br>
+	</div>
+
+	<div id="coil-radio-selection" style="display: none">
+		<tr class="form-field">
+			<th scope="row">
+				<label><?php esc_html_e( 'Who can access this content?', 'coil-web-monetization' ); ?></label>
+			</th>
+			<td>
+				<fieldset id="coil-category-settings">
+				<?php
+				foreach ( $visibility_options as $setting_key => $setting_value ) {
+
+					$checked_input = false;
+					if ( $setting_key === $default_post_visibility ) {
+						$checked_input = 'checked="true"';
+					} elseif ( ! empty( $visibility ) ) {
+						$checked_input = checked( $setting_key, $visibility, false );
+					}
+					?>
+					<label for="<?php echo esc_attr( $setting_key ); ?>">
+					<?php
+					printf(
+						'<input type="radio" name="%s" id="%s" value="%s"%s />%s',
+						esc_attr( 'coil_visibility_term_status' ),
+						esc_attr( $setting_key ),
+						esc_attr( $setting_key ),
+						$checked_input,
+						esc_attr( $setting_value )
+					);
+					?>
+					</label><br>
+					<?php
 				}
 				?>
-				<label for="<?php echo esc_attr( $setting_key ); ?>">
-				<?php
-				printf(
-					'<input type="radio" name="%s" id="%s" value="%s"%s />%s',
-					esc_attr( 'coil_monetize_term_status' ),
-					esc_attr( $setting_key ),
-					esc_attr( $setting_key ),
-					$checked_input,
-					esc_attr( $setting_value )
-				);
-				?>
-				</label><br>
-				<?php
-			}
-			?>
-			</fieldset>
-		</td>
-	</tr>
-
-	<?php
-	wp_nonce_field( 'coil_term_gating_nonce_action', 'term_gating_nonce' );
-}
-
-/**
- * Add a set of gating controls to the "Edit Term" screen, i.e.
- * when editing an existing term.
- *
- * @return void
- */
-function coil_edit_term_custom_meta() {
-
-	// Get gating options.
-	$gating_options = Gating\get_monetization_setting_types( true );
-	if ( empty( $gating_options ) || ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
-		return;
-	}
-	?>
-	<div class="form-field">
-		<h2><?php esc_html_e( 'Coil Web Monetization', 'coil-web-monetization' ); ?></h2>
-		<fieldset id="coil-category-settings">
-		<?php
-		foreach ( $gating_options as $setting_key => $setting_value ) {
-			$checked_input = false;
-			if ( $setting_key === 'default' ) {
-				$checked_input = 'checked="true"';
-			}
-			?>
-			<label for="<?php echo esc_attr( $setting_key ); ?>">
-			<?php
-			printf(
-				'<input type="radio" name="%s" id="%s" value="%s"%s />%s',
-				esc_attr( 'coil_monetize_term_status' ),
-				esc_attr( $setting_key ),
-				esc_attr( $setting_key ),
-				$checked_input,
-				esc_attr( $setting_value )
-			);
-			?>
-			</label>
-			<?php
-		}
-		?>
-		<br>
-		</fieldset>
+				</fieldset>
+			</td>
+		</tr>
 	</div>
+
+	<script>
+		// TODO: NB When save info - or create meta field first check if enabled, then check radio button vallue, otherwise don't consider it!
+		// TODO: Still need to get appropriate default text in
+
+		function displayRadioOptions() {
+			var radioButtons = document.getElementById("coil-radio-selection");
+			if (radioButtons.style.display === "none") {
+				radioButtons.style.display = "block";
+			}
+		}
+
+		function hideRadioOptions() {
+			var radioButtons = document.getElementById("coil-radio-selection");
+			if (radioButtons.style.display === "block") {
+				radioButtons.style.display = "none";
+			}
+		}
+
+		document.getElementById("monetization-dropdown").addEventListener("click", function () {
+			if (document.getElementById("monetization-dropdown").value === 'monetized') {
+				displayRadioOptions();
+			} else {
+				hideRadioOptions();
+			}
+		});
+
+	</script>
 
 	<?php
 	wp_nonce_field( 'coil_term_gating_nonce_action', 'term_gating_nonce' );
