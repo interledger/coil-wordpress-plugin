@@ -69,8 +69,6 @@ function init_plugin() : void {
 	add_filter( 'option_coil_payment_pointer', __NAMESPACE__ . '\User\maybe_output_user_payment_pointer' );
 
 	// Metaboxes.
-	add_action( 'load-post.php', __NAMESPACE__ . '\Admin\load_metaboxes' );
-	add_action( 'load-post-new.php', __NAMESPACE__ . '\Admin\load_metaboxes' );
 	add_action( 'save_post', __NAMESPACE__ . '\Admin\maybe_save_post_metabox' );
 
 	// Modal messaging
@@ -298,8 +296,10 @@ function add_body_class( $classes ) : array {
 	if ( Gating\is_content_monetized( get_queried_object_id() ) ) {
 		$classes[] = 'monetization-not-initialized';
 
-		$coil_status = Gating\get_content_gating( get_queried_object_id() );
-		$classes[]   = sanitize_html_class( 'coil-' . $coil_status );
+		$coil_monetization_status = Gating\get_content_monetization( get_queried_object_id() );
+		$classes[]                = sanitize_html_class( 'coil-' . $coil_monetization_status );
+		$coil_visibility_status   = Gating\get_content_visibility( get_queried_object_id() );
+		$classes[]                = sanitize_html_class( 'coil-' . $coil_visibility_status );
 
 		if ( ! empty( $payment_pointer_id ) ) {
 			$classes[] = ( Gating\get_excerpt_gating( get_queried_object_id() ) ) ? 'coil-show-excerpt' : 'coil-hide-excerpt';
@@ -384,7 +384,7 @@ function add_term_edit_save_form_meta_actions() {
 		foreach ( $valid_taxonomies as $taxonomy ) {
 			if ( taxonomy_exists( $taxonomy ) ) {
 				$actions[] = add_action( esc_attr( $taxonomy ) . '_add_form_fields', __NAMESPACE__ . '\Settings\coil_add_term_custom_meta', 10, 2 );
-				$actions[] = add_action( esc_attr( $taxonomy ) . '_edit_form_fields', __NAMESPACE__ . '\Settings\coil_add_term_custom_meta', 10, 2 );
+				$actions[] = add_action( esc_attr( $taxonomy ) . '_edit_form_fields', __NAMESPACE__ . '\Settings\coil_edit_term_custom_meta', 10, 2 );
 			}
 		}
 	}

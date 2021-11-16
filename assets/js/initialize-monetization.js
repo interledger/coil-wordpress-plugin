@@ -197,7 +197,9 @@
 	 * monetization enabled and is visible to everyone
 	 */
 	function isMonetizedAndPublic() {
-		return document.body.classList.contains( 'coil-no-gating' );
+		const isMonetized = document.body.classList.contains( 'coil-monetized' );
+		const isPublic = document.body.classList.contains( 'coil-public' );
+		return isMonetized && isPublic;
 	}
 
 	/**
@@ -205,7 +207,7 @@
 	 * monetization enabled and is visable to Coil members only
 	 */
 	function isSubscribersOnly() {
-		return document.body.classList.contains( 'coil-gate-all' );
+		return document.body.classList.contains( 'coil-exclusive' );
 	}
 
 	/**
@@ -227,7 +229,9 @@
 	 * @return {bool} Helper function to determine if the content is "Split"
 	 */
 	function isSplitContent() {
-		return document.body.classList.contains( 'coil-gate-tagged-blocks' );
+		const isMonetized = document.body.classList.contains( 'coil-monetized' );
+		const isSplit = document.body.classList.contains( 'coil-gate-tagged-blocks' );
+		return isMonetized && isSplit;
 	}
 
 	/**

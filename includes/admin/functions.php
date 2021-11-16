@@ -12,100 +12,6 @@ use const Coil\COIL__FILE__;
 use const Coil\PLUGIN_VERSION;
 
 /**
- * Customise the environment where we want to show the Coil metabox.
- *
- * @return void
- */
-function load_metaboxes() : void {
-
-	add_action( 'add_meta_boxes', __NAMESPACE__ . '\add_metabox' );
-}
-
-/**
- * Add metabox to the content editing screen.
- *
- * @return void
- */
-function add_metabox() : void {
-
-	$show_metabox = false;
-
-	if ( ! function_exists( '\use_block_editor_for_post' ) ) {
-		// Show if Gutenberg not active.
-		$show_metabox = true;
-	} elseif ( ! \use_block_editor_for_post( $GLOBALS['post'] ) ) {
-		// Show if post is NOT using Gutenberg.
-		$show_metabox = true;
-	} elseif ( version_compare( $GLOBALS['wp_version'], '5.3', '<' ) ) {
-		// Show if using incompatible version of Gutenberg (`wp.editPost.PluginDocumentSettingPanel`).
-		$show_metabox = true;
-	}
-
-	if ( ! $show_metabox ) {
-		return;
-	}
-
-	add_meta_box(
-		'coil',
-		__( 'Coil Web Monetization', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\render_coil_metabox',
-		Coil\get_supported_post_types(),
-		'side',
-		'high'
-	);
-}
-
-/**
- * Render the Coil metabox.
- *
- * @return void
- */
-function render_coil_metabox() : void {
-
-	global $post;
-
-	// Explicitly use the post gating option to render whatever is saved on this post,
-	// instead of what is saved globally. This is used to output the correct meta box
-	// option.
-	$post_gating   = Gating\get_post_gating( absint( $post->ID ) );
-	$use_gutenberg = function_exists( '\use_block_editor_for_post' ) && use_block_editor_for_post( $post );
-	$settings      = Gating\get_monetization_setting_types( true );
-
-	if ( $use_gutenberg ) {
-		// This is used if WP < 5.3 (in some cases, without the Gutenberg plugin).
-		$settings['gate-tagged-blocks'] = esc_html__( 'Split Content', 'coil-web-monetization' );
-	}
-
-	do_action( 'coil_before_render_metabox', $settings );
-	?>
-
-	<fieldset>
-		<legend>
-			<?php
-			if ( $use_gutenberg ) {
-				esc_html_e( 'Set the type of monetization for the article. Note: If "Split Content" selected, you will need to save the article and reload the editor to view the options at block level.', 'coil-web-monetization' );
-			} else {
-				esc_html_e( 'Set the type of monetization for the article.', 'coil-web-monetization' );
-			}
-			?>
-		</legend>
-
-		<?php foreach ( $settings as $option => $name ) : ?>
-			<label for="<?php echo esc_attr( $option ); ?>">
-				<input type="radio" name="coil_monetize_post_status" id="<?php echo esc_attr( $option ); ?>" value="<?php echo esc_attr( $option ); ?>" <?php checked( $post_gating, $option ); ?>/>
-				<?php echo esc_html( $name ); ?>
-				<br />
-			</label>
-		<?php endforeach; ?>
-	</fieldset>
-
-	<?php
-	wp_nonce_field( 'coil_metabox_nonce_action', 'coil_metabox_nonce' );
-
-	do_action( 'coil_after_render_metabox' );
-}
-
-/**
  * Maybe save the Coil metabox data on content save.
  *
  * @param int $post_id The ID of the post being saved.
@@ -160,7 +66,6 @@ function maybe_save_term_meta( int $term_id, int $tt_id, $taxonomy ) : void {
 	// Check the nonce.
 	check_admin_referer( 'coil_term_gating_nonce_action', 'term_gating_nonce' );
 
-	// TODO: these are returning '' when they shouldn't be
 	$term_monetization = sanitize_text_field( $_REQUEST['_coil_monetization_term_status'] ?? '' );
 	$term_visibity     = sanitize_text_field( $_REQUEST['_coil_visibility_term_status'] ?? '' );
 

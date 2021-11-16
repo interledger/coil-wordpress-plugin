@@ -20,111 +20,14 @@ const { PanelBody, RadioControl, SelectControl } = wp.components;
 const { registerPlugin } = wp.plugins;
 const { PluginDocumentSettingPanel } = wp.editPost; // WP >= 5.3.
 
-// // Allow only specific blocks to use the extension attribute. - Disabled for now!
-// const allowedBlocks = [
-// 	'core/paragraph',
-// 	'core/heading',
-// 	'core/image',
-// 	'core/gallery',
-// 	'core/verse',
-// 	'core/spacer',
-// 	'core/subhead',
-// 	'core/preformatted',
-// 	'core/code',
-// 	'core/cover',
-// 	'core/group',
-// 	'core/columns',
-// 	'core/media-text',
-// 	'core/pullquote',
-// 	'core/quote',
-// 	'core/button',
-// 	'core/list',
-// 	'core/separator',
-// 	'core/text-columns',
-// 	'core/video',
-// 	'core/audio',
-// 	'core-embed',
-// 	'core-embed/youtube',
-// 	'core-embed/twitter',
-// 	'core-embed/facebook',
-// 	'core-embed/instagram',
-// 	'core-embed/wordpress',
-// 	'core-embed/soundcloud',
-// 	'core-embed/spotify',
-// 	'core-embed/flickr',
-// 	'core-embed/vimeo',
-// 	'core-embed/animoto',
-// 	'core-embed/cloudup',
-// 	'core-embed/collegehumor',
-// 	'core-embed/crowdsignal',
-// 	'core-embed/dailymotion',
-// 	'core-embed/hulu',
-// 	'core-embed/imgur',
-// 	'core-embed/issuu',
-// 	'core-embed/kickstarter',
-// 	'core-embed/meetup-com',
-// 	'core-embed/mixcloud',
-// 	'core-embed/reddit',
-// 	'core-embed/reverbnation',
-// 	'core-embed/screencast',
-// 	'core-embed/scribd',
-// 	'core-embed/slideshare',
-// 	'core-embed/smugmug',
-// 	'core-embed/speaker-deck',
-// 	'core-embed/ted',
-// 	'core-embed/tumblr',
-// 	'core-embed/videopress',
-// 	'core-embed/wordpress-tv',
-// 	'core-embed/amazon-kindle',
-// ];
-
-// // Restrict the blocks the extension attribute can not be applied to. - Disabled for now!
-// const restrictedBlocks = [
-// 	'core/block',
-// 	'core/freeform',
-// 	'core/shortcode',
-// 	'core/template',
-// 	'core/nextpage',
-// ];
-
-// - Disabled for now!
-// /**
-//  * Is the block allowed to support monetization.
-//  *
-//  * @param {string} name The name of the block.
-//  */
-// function allowedBlockTypes( name ) {
-// 	return allowedBlocks.includes( name );
-// }
-
-// - Disabled for now!
-// /**
-//  * Is the block not allowed to support monetization.
-//  *
-//  * @param {string} name The name of the block.
-//  */
-// function restrictedBlockTypes( name ) {
-// 	return restrictedBlocks.includes( name );
-// }
-
 /**
-/**
- * Adds our attributes for our monetization data and restrict to allowed blocks.
- *
- * @param  {Object} settings Settings for the block.
- * @return {Object} settings Modified settings.
- */
+ /**
+  * Adds our attributes for our monetization data and restrict to allowed blocks.
+  *
+  * @param  {Object} settings Settings for the block.
+  * @return {Object} settings Modified settings.
+  */
 function addAttributes( settings ) {
-	// If this block is not allowed to use the extension attribute then move on to the next. - Disabled for now!
-	/*if ( ! restrictedBlockTypes( settings.name ) ) {
-		return settings;
-	}*/
-
-	// Check if this block is allowed to use the extension attribute. - Disabled for now!
-	/*if ( ! allowedBlockTypes( settings.name ) ) {
-		return settings;
-	}*/
-
 	// Check if object exists for old Gutenberg version compatibility.
 	// Set default to "always-show" for all currently added blocks and new blocks added.
 	if ( typeof settings.attributes !== 'undefined' ) {
@@ -135,13 +38,12 @@ function addAttributes( settings ) {
 			},
 		} );
 	}
-
 	return settings;
 }
 
 /**
  * Override the default edit UI to include a new block inspector control for
- * assigning monetization and visibility options, if the block supports it.
+ * assigning monetization, if the block supports it.
  *
  * @param  {function|Component} BlockEdit Original component.
  * @return {string} Wrapped component.
@@ -157,22 +59,19 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 			isSelected,
 		} = props;
 
-		const {
-			monetizeBlockDisplay,
-		} = attributes;
+		const { monetizeBlockDisplay } = attributes;
 
 		// Fetch the post meta.
 		const meta = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' );
 
-		// If the block is not supported then don't show the inspector.
-		/*if ( ! allowedBlockTypes( props.name ) || ! restrictedBlockTypes( props.name ) || ! props.isSelected ) {
-			return <BlockEdit { ...props } />;
-		}*/
-
 		// Only show inspector options if set for block level monetization.
 		showInspector = false;
 		if ( typeof meta !== 'undefined' ) {
-			if ( typeof meta._coil_monetize_post_status === 'undefined' || ( typeof meta._coil_monetize_post_status !== 'undefined' && meta._coil_monetize_post_status === 'gate-tagged-blocks' ) ) {
+			if (
+				typeof meta._coil_visibility_post_status === 'undefined' ||
+				( typeof meta._coil_visibility_post_status !== 'undefined' &&
+					meta._coil_visibility_post_status === 'gate-tagged-blocks' )
+			) {
 				showInspector = true;
 			}
 		}
@@ -180,7 +79,7 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 		return (
 			<Fragment>
 				<BlockEdit { ...props } />
-				{ isSelected && showInspector &&
+				{ isSelected && showInspector && (
 					<InspectorControls>
 						<PanelBody
 							title={ __( 'Coil Web Monetization' ) }
@@ -188,30 +87,32 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 							className="coil-panel"
 						>
 							<RadioControl
-								label={ __( 'Set the block\'s visibility.', 'coil-web-monetization' ) }
+								label={ __(
+									'Set the block\'s visibility.',
+									'coil-web-monetization'
+								) }
 								selected={ monetizeBlockDisplay }
-								options={
-									[
-										{
-											label: __( 'Always Show' ),
-											value: 'always-show',
-										},
-										{
-											label: __( 'Only Show Coil Members' ),
-											value: 'show-monetize-users',
-										},
-										{
-											label: __( 'Hide For Coil Members' ),
-											value: 'hide-monetize-users',
-										},
-									]
+								options={ [
+									{
+										label: __( 'Always Show' ),
+										value: 'always-show',
+									},
+									{
+										label: __( 'Only Show Coil Members' ),
+										value: 'show-monetize-users',
+									},
+									{
+										label: __( 'Hide For Coil Members' ),
+										value: 'hide-monetize-users',
+									},
+								] }
+								onChange={ ( value ) =>
+									setAttributes( { monetizeBlockDisplay: value } )
 								}
-								onChange={ ( value ) => setAttributes( { monetizeBlockDisplay: value } ) }
 							/>
-
 						</PanelBody>
 					</InspectorControls>
-				}
+				) }
 			</Fragment>
 		);
 	};
@@ -226,24 +127,18 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
  * @return {Object} extraProps Filtered props applied to save element.
  */
 function applyExtraClass( extraProps, blockType, attributes ) {
-	const {
-		monetizeBlockDisplay,
-	} = attributes;
-
-	// If this block is not allowed to use the extension attribute then move on to the next. - Disabled for now!
-	/*if ( ! restrictedBlockTypes( blockType.name ) ) {
-		return extraProps;
-	}*/
-
-	// Check if this block is allowed to use the extension attribute. - Disabled for now!
-	/*if ( ! allowedBlockTypes( blockType.name ) ) {
-		return extraProps;
-	}*/
+	const { monetizeBlockDisplay } = attributes;
 
 	// Check if object exists for old Gutenberg version compatibility.
 	// Add class only when monetizeBlockDisplay is set and is not always show.
-	if ( typeof monetizeBlockDisplay !== 'undefined' && monetizeBlockDisplay !== 'always-show' ) {
-		extraProps.className = classnames( extraProps.className, 'coil-' + monetizeBlockDisplay );
+	if (
+		typeof monetizeBlockDisplay !== 'undefined' &&
+		monetizeBlockDisplay !== 'always-show'
+	) {
+		extraProps.className = classnames(
+			extraProps.className,
+			'coil-' + monetizeBlockDisplay
+		);
 	}
 
 	return extraProps;
@@ -258,18 +153,19 @@ const wrapperClass = createHigherOrderComponent( ( BlockListBlock ) => {
 		let customData = {};
 		let allowBlockIdentity = false; // Note: Boolean value is in reverse.
 
-		const {
-			attributes,
-		} = props;
+		const { attributes } = props;
 
-		const {
-			monetizeBlockDisplay,
-		} = attributes;
+		const { monetizeBlockDisplay } = attributes;
 
 		// Fetch the post meta.
 		const meta = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' );
 
-		if ( ! meta || typeof meta._coil_monetize_post_status === 'undefined' || ( typeof meta._coil_monetize_post_status !== 'undefined' && meta._coil_monetize_post_status === 'gate-tagged-blocks' ) ) {
+		if (
+			! meta ||
+			typeof meta._coil_visibility_post_status === 'undefined' ||
+			( typeof meta._coil_visibility_post_status !== 'undefined' &&
+				meta._coil_visibility_post_status === 'gate-tagged-blocks' )
+		) {
 			allowBlockIdentity = true;
 		} else {
 			allowBlockIdentity = false;
@@ -285,19 +181,25 @@ const wrapperClass = createHigherOrderComponent( ( BlockListBlock ) => {
 		};
 
 		// Apply custom block wrapper class if monetization is set at the document level and block level.
-		if ( typeof monetizeBlockDisplay !== 'undefined' && monetizeBlockDisplay !== 'always-show' && allowBlockIdentity ) {
-			return <BlockListBlock { ...props } className={ 'coil-' + monetizeBlockDisplay } wrapperProps={ wrapperProps } />;
+		if (
+			typeof monetizeBlockDisplay !== 'undefined' &&
+			monetizeBlockDisplay !== 'always-show' &&
+			allowBlockIdentity
+		) {
+			return (
+				<BlockListBlock
+					{ ...props }
+					className={ 'coil-' + monetizeBlockDisplay }
+					wrapperProps={ wrapperProps }
+				/>
+			);
 		}
 		return <BlockListBlock { ...props } />;
 	};
 }, 'wrapperClass' );
 
 // Add filters
-addFilter(
-	'blocks.registerBlockType',
-	'coil/addAttributes',
-	addAttributes
-);
+addFilter( 'blocks.registerBlockType', 'coil/addAttributes', addAttributes );
 
 addFilter(
 	'editor.BlockEdit',
@@ -311,11 +213,7 @@ addFilter(
 	applyExtraClass
 );
 
-addFilter(
-	'editor.BlockListBlock',
-	'coil/wrapperClass',
-	wrapperClass
-);
+addFilter( 'editor.BlockListBlock', 'coil/wrapperClass', wrapperClass );
 
 // Post Monetization Fields
 const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
@@ -323,71 +221,72 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 		updateMetaValue: ( value ) => {
 			dispatch( 'core/editor' ).editPost( {
 				meta: {
-					[ props.metaFieldName ]: value,
+					[ props.visibilityMetaFieldName ]: value,
 				},
 			} );
 		},
 		updateSelectValue: ( value ) => {
-			// This the reverse of updateMetaValueOnSelect where we compare the value Selected and update the radio button values
-			if ( 'exclusive' === value || 'public' === value || 'gate-tagged-blocks' === value ) {
+			// This the reverse of updateSelectMetaValue where we compare the value Selected and update the radio button values
+			if (
+				'exclusive' === value ||
+				'public' === value ||
+				'gate-tagged-blocks' === value
+			) {
 				return 'monetized';
-			} else if ( 'no' === value ) {
+			} else if ( 'not-monetized' === value ) {
 				return 'not-monetized';
 			}
 			return 'default';
 		},
-		updateMetaValueOnSelect: ( value ) => {
-			let metaValue = 'no';
-
-			if ( 'monetized' === value ) {
-				metaValue = coilEditorParams.visibilityDefault === 'exclusive' ? 'exclusive' : 'public'; // eslint-disable-line no-undef
-			} else if ( 'default' === value ) {
-				metaValue = 'default';
-			}
-
+		// This is the monetization value
+		updateSelectMetaValue: ( value ) => {
 			dispatch( 'core/editor' ).editPost( {
 				meta: {
-					[ props.metaFieldName ]: metaValue,
+					[ props.monetizationMetaFieldName ]: value,
 				},
 			} );
 		},
 	};
-} )( withSelect( ( select, props ) => {
-	const meta = select( 'core/editor' ).getEditedPostAttribute( 'meta' );
-	// Displays the global default in brackets in the dropdown box
-	let defaultLabel = __( 'Enabled & Public' );
+} )(
+	withSelect( ( select, props ) => {
+		const meta = select( 'core/editor' ).getEditedPostAttribute( 'meta' );
+		let defaultLabel = __( 'Enabled & Exclusive' );
 
-	if ( 'not-monetized' === coilEditorParams.monetizationDefault ) { // eslint-disable-line no-undef
-		defaultLabel = __( 'Disabled' );
-	} else if ( 'exclusive' === coilEditorParams.visibilityDefault ) { // eslint-disable-line no-undef
-		defaultLabel = __( 'Enabled & Exclusive' );
-	}
-	return {
-		[ props.metaFieldName ]: meta && meta._coil_monetize_post_status,
-		defaultLabel: defaultLabel,
-	};
-} )( ( props ) => (
-	<div>
+		if ( 'not-monetized' === coilEditorParams.monetizationDefault ) { // eslint-disable-line no-undef
+			defaultLabel = __( 'Disabled' );
+		} else if ( 'public' === coilEditorParams.visibilityDefault ) { // eslint-disable-line no-undef
+			defaultLabel = __( 'Enabled & Public' );
+		}
+
+		return {
+			[ props.monetizationMetaFieldName ]: meta && meta._coil_monetization_post_status,
+			[ props.visibilityMetaFieldName ]: meta && meta._coil_visibility_post_status,
+			defaultLabel: defaultLabel,
+		};
+	} )( ( props ) => (
 		<div>
-			<SelectControl
-				label={ __( 'Select a monetization status', 'coil-web-monetization' ) }
-				value={ props.updateSelectValue( props[ props.metaFieldName ] ) }
-				onChange={ ( value ) => props.updateMetaValueOnSelect( value ) }
-				options={ [
-					{ value: 'default', label: 'Default (' + props.defaultLabel + ')' },
-					{ value: 'monetized', label: 'Enabled' },
-					{ value: 'not-monetized', label: 'Disabled' },
-				] }
-			/>
-		</div>
-		<div
-			className={ `coil-post-monetization-level ${ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : 'default' }` }
-		>
-			<RadioControl
-				label={ __( 'Who can access this content?', 'coil-web-monetization' ) }
-				selected={ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : 'default' }
-				options={
-					[
+			<div>
+				<SelectControl
+					label={ __( 'Select a monetization status', 'coil-web-monetization' ) }
+					value={ props.updateSelectValue( props[ props.monetizationMetaFieldName ] ) }
+					onChange={ ( value ) => props.updateSelectMetaValue( value ) }
+					options={ [
+						{ value: 'default', label: 'Default (' + props.defaultLabel + ')' },
+						{ value: 'monetized', label: 'Enabled' },
+						{ value: 'not-monetized', label: 'Disabled' },
+					] }
+				/>
+			</div>
+			<div
+				className={ `coil-post-monetization-level ${ props[ props.monetizationMetaFieldName ] ? props[ props.monetizationMetaFieldName ] : 'default'
+				}` }
+			>
+				<RadioControl
+					label={ __( 'Who can access this content?', 'coil-web-monetization' ) }
+					selected={
+						props[ props.visibilityMetaFieldName ] ? props[ props.visibilityMetaFieldName ] : 'default'
+					}
+					options={ [
 						{
 							label: __( 'Everyone', 'coil-web-monetization' ),
 							value: 'public',
@@ -400,13 +299,13 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 							label: __( 'Split', 'coil-web-monetization' ),
 							value: 'gate-tagged-blocks',
 						},
-					]
-				}
-				onChange={ ( value ) => props.updateMetaValue( value ) }
-			/>
+					] }
+					onChange={ ( value ) => props.updateMetaValue( value ) }
+				/>
+			</div>
 		</div>
-	</div>
-) ) );
+	) )
+);
 
 // WP >= 5.3 only - register the panel.
 if ( PluginDocumentSettingPanel ) {
@@ -419,7 +318,7 @@ if ( PluginDocumentSettingPanel ) {
 					initialOpen={ false }
 					className="coil-document-panel"
 				>
-					<PostMonetizationFields metaFieldName="_coil_monetize_post_status" />
+					<PostMonetizationFields monetizationMetaFieldName="_coil_monetization_post_status" visibilityMetaFieldName="_coil_visibility_post_status" />
 				</PluginDocumentSettingPanel>
 			);
 		},

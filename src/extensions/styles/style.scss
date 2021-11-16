@@ -1,5 +1,5 @@
 // Monetization not initialized.
-body.monetization-not-initialized:not( .coil-no-gating ) {
+body.monetization-not-initialized:not( .coil-monetized.coil-public ) {
 
 	*.coil-show-monetize-users {
 		display: block;
@@ -40,7 +40,7 @@ body.monetization-not-initialized:not( .coil-no-gating ) {
 }
 
 // Monetization initialized.
-body.monetization-initialized:not( .coil-no-gating ) {
+body.monetization-initialized:not( .coil-monetized.coil-public ) {
 	*.coil-hide-monetize-users {
 		display: none;
 	}
@@ -49,9 +49,9 @@ body.monetization-initialized:not( .coil-no-gating ) {
 // Coil Browser Extension not found or...
 // Coil Payment Pointer ID not found.
 // Only content that is set to show for all will show.
-body.coil-extension-not-found:not( .coil-no-gating ),
-body.coil-missing-id:not( .coil-no-gating ),
-body.monetization-not-initialized.coil-gate-tagged-blocks:not( .coil-no-gating ) {
+body.coil-extension-not-found:not( .coil-monetized.coil-public ),
+body.coil-missing-id:not( .coil-monetized.coil-public ),
+body.monetization-not-initialized.coil-gate-tagged-blocks:not( .coil-monetized.coil-public ) {
 
 	*.coil-hide-monetize-users {
 		display: none;

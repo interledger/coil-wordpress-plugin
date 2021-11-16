@@ -77,27 +77,6 @@ function register_term_meta() {
 }
 
 /**
- * Store the monetization options.
- *
- * @param bool $show_default Whether or not to show the default option.
- * @return array
- */
-function get_monetization_setting_types( $show_default = false ) : array {
-
-	$settings = [];
-
-	if ( true === $show_default ) {
-		$settings['default'] = esc_html__( 'Use Default', 'coil-web-monetization' );
-	}
-
-	$settings['no']        = esc_html__( 'Disabled', 'coil-web-monetization' );
-	$settings['no-gating'] = esc_html__( 'Enabled & Public', 'coil-web-monetization' );
-	$settings['gate-all']  = esc_html__( 'Enabled & Exclusive', 'coil-web-monetization' );
-
-	return $settings;
-}
-
-/**
  * Declare all the valid monetization slugs used as a reference
  * before the particular option is saved in the database.
  *
@@ -124,7 +103,7 @@ function get_valid_visibility_types() {
 	$valid = [
 		'public', // visable to everyone.
 		'exclusive', // visable to Coil members only.
-		'split', // split content.
+		'gate-tagged-blocks', // split content.
 		'default', // Whatever is set on the post to revert back.
 	];
 	return $valid;
@@ -154,8 +133,8 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 		return $title;
 	}
 
-	$status = get_content_gating( $id );
-	if ( $status !== 'gate-all' ) {
+	$status = get_content_visibility( $id );
+	if ( $status !== 'exclusive' ) {
 		return $title;
 	}
 
@@ -170,7 +149,7 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 
 /**
  * Maybe restrict (gate) visibility of the post content on archive pages, home pages, and feeds.
- * If the post is gated then no excerpt will show unless one has been set explicitly.
+ * If the post is exclusive then no excerpt will show unless one has been set explicitly.
  *
  * @param string $content Post content.
  *
@@ -183,13 +162,13 @@ function maybe_restrict_content( string $content ) : string {
 		return $content;
 	}
 
-	$coil_status     = get_content_gating( get_the_ID() );
-	$post_obj        = get_post( get_the_ID() );
-	$content_excerpt = $post_obj->post_excerpt;
-	$public_content  = '';
+	$coil_visibility_status = get_content_visibility( get_the_ID() );
+	$post_obj               = get_post( get_the_ID() );
+	$content_excerpt        = $post_obj->post_excerpt;
+	$public_content         = '';
 
-	switch ( $coil_status ) {
-		case 'gate-all':
+	switch ( $coil_visibility_status ) {
+		case 'exclusive':
 		case 'gate-tagged-blocks':
 			// Restrict all / some excerpt content based on gating settings.
 			if ( get_excerpt_gating( get_queried_object_id() ) ) {
@@ -202,37 +181,16 @@ function maybe_restrict_content( string $content ) : string {
 
 		/**
 		 * case 'default': doesn't exist in this context because the last possible
-		 * saved option will be 'no', after a post has fallen back to the taxonomy
+		 * saved option will be 'public', after a post has fallen back to the taxonomy
 		 * and then the default post options.
 		 */
-		case 'no':
-		case 'no-gating':
+		case 'public':
 		default:
 			$public_content = $content;
 			break;
 	}
 
-	return apply_filters( 'coil_maybe_restrict_content', $public_content, $content, $coil_status );
-}
-
-// TODO: remove
-/**
- * Get the gating type for the specified post.
- *
- * @param integer $post_id The post to check.
- *
- * @return string Either "no-gating" (default), "no-gating", "gate-all", "gate-tagged-blocks".
- */
-function get_post_gating( $post_id ) : string {
-
-	$post_id = (int) $post_id;
-	$gating  = get_post_meta( $post_id, '_coil_monetize_post_status', true );
-
-	if ( empty( $gating ) ) {
-		$gating = 'default';
-	}
-
-	return $gating;
+	return apply_filters( 'coil_maybe_restrict_content', $public_content, $content, $coil_visibility_status );
 }
 
 /**
@@ -292,15 +250,14 @@ function get_term_visibility( $term_id ) {
 }
 
 /**
- * Get any terms attached to the post and return their gating status,
- * ranked by priority order.
+ * Get any terms attached to the post and return their highest monetization status.
  *
- * @return string Gating type.
+ * @return string Monetization status.
  */
-function get_taxonomy_term_gating( $post_id ) {
+function get_taxonomy_term_monetization( $post_id ) {
 
-	$post_id      = (int) $post_id;
-	$term_default = 'default';
+	$post_id                 = (int) $post_id;
+	$final_term_monetization = 'default';
 
 	$valid_taxonomies = Admin\get_valid_taxonomies();
 
@@ -313,73 +270,100 @@ function get_taxonomy_term_gating( $post_id ) {
 		]
 	);
 
-	// 2) Do these terms have gating?
-	$term_gating_options = [];
+	// 2) Has a monetization status been attached to this taxonomy?
 	if ( ! is_wp_error( $post_terms ) && ! empty( $post_terms ) ) {
 
 		foreach ( $post_terms as $term_id ) {
 
-			$post_term_gating = get_term_gating( $term_id );
-			if ( ! in_array( $post_term_gating, $term_gating_options, true ) ) {
-				$term_gating_options[] = $post_term_gating;
+			$post_term_monetization = get_term_monetization( $term_id );
+			// Monetized is the highest form, if this occurs simply break out of loop and return.
+			if ( $post_term_monetization === 'monetized' ) {
+				$final_term_monetization = $post_term_monetization;
+				break;
+				// If a term's monetization has been set then save it - in contrast to it being 'default'.
+				// Don't break yet, keep checking for a monetized state.
+			} elseif ( $post_term_monetization === 'not-monetized' ) {
+				$final_term_monetization = $post_term_monetization;
 			}
 		}
 	}
 
-	if ( empty( $term_gating_options ) ) {
-		return $term_default;
-	}
-
-	// 3) If terms have gating, rank by priority.
-	if ( in_array( 'gate-all', $term_gating_options, true ) ) {
-
-		// Priority 1 - Monetization is enabled and visable to Coil members only.
-		return 'gate-all';
-
-	} elseif ( in_array( 'no-gating', $term_gating_options, true ) ) {
-
-		// Priority 2 - Monetization is enabled and visable to everyone.
-		return 'no-gating';
-
-	} elseif ( in_array( 'no', $term_gating_options, true ) ) {
-
-		// Priority 3 - Monetization is disabled.
-		return 'no';
-
-	} else {
-		return $term_default;
-	}
+	// $final_term_monetization will be 'default' if no term had a set monetization meta field.
+	return $final_term_monetization;
 }
 
 /**
- * Return the single source of truth for post gating based on the fallback
- * options if the post gating selection is 'default'. E.g.
+ * Get any terms attached to the post and return their strictness visibility status.
+ *
+ * @return string Visibility status.
+ */
+function get_taxonomy_term_visibility( $post_id ) {
+
+	$post_id               = (int) $post_id;
+	$final_term_visibility = 'default';
+
+	$valid_taxonomies = Admin\get_valid_taxonomies();
+
+	// 1) Get any terms assigned to the post.
+	$post_terms = wp_get_post_terms(
+		$post_id,
+		$valid_taxonomies,
+		[
+			'fields' => 'ids',
+		]
+	);
+
+	// 2) Has a monetization status been attached to this taxonomy?
+	if ( ! is_wp_error( $post_terms ) && ! empty( $post_terms ) ) {
+
+		foreach ( $post_terms as $term_id ) {
+
+			$post_term_visibility = get_term_visibility( $term_id );
+			// Exclusive is the strictest form, if this occurs simply break out of loop and return.
+			if ( $post_term_visibility === 'exclusive' ) {
+				$final_term_visibility = $post_term_visibility;
+				break;
+				// If a term's visibility has been set then save it - in contrast to it being 'default'.
+				// Don't break yet, keep checking for an exclusive state.
+			} elseif ( $post_term_visibility === 'public' || $post_term_visibility === 'gate-tagged-blocks' ) {
+				$final_term_visibility = $post_term_visibility;
+			}
+		}
+	}
+
+	// $final_term_visibility will be 'default' if no term had a set visibility meta field.
+	return $final_term_visibility;
+}
+
+/**
+ * Return the single source of truth for post monetization based on the fallback
+ * options if the post monetization selection is 'default'. E.g.
  * If return value of each function is default, move onto the next function,
  * otherwise return immediately.
  *
  * @param integer $post_id
- * @return string $content_gating Gating slug type.
+ * @return string $content_monetization Monetization slug type.
  */
-function get_content_gating( $post_id ) : string {
+function get_content_monetization( $post_id ) : string {
 
-	$post_id     = (int) $post_id;
-	$post_gating = get_post_gating( $post_id );
+	$post_id           = (int) $post_id;
+	$post_monetization = get_post_monetization( $post_id );
 
 	// Set a default monetization value.
-	$content_gating = 'no-gating';
+	$content_monetization = Admin\get_monetization_default();
 
 	// Hierarchy 1 - Check what is set on the post.
-	if ( 'default' !== $post_gating ) {
+	if ( 'default' !== $post_monetization ) {
 
-		$content_gating = $post_gating; // Honour what is set on the post.
+		$content_monetization = $post_monetization; // Honour what is set on the post.
 
 	} else {
 
 		// Hierarchy 2 - Check what is set on the taxonomy.
-		$taxonomy_gating = get_taxonomy_term_gating( $post_id );
-		if ( 'default' !== $taxonomy_gating ) {
+		$taxonomy_monetization = get_taxonomy_term_monetization( $post_id );
+		if ( 'default' !== $taxonomy_monetization ) {
 
-			$content_gating = $taxonomy_gating; // Honour what is set on the taxonomy.
+			$content_monetization = $taxonomy_monetization; // Honour what is set on the taxonomy.
 
 		} else {
 
@@ -388,36 +372,63 @@ function get_content_gating( $post_id ) : string {
 			$post = get_post( $post_id );
 
 			// Get the post type from what is saved in global options
-			$global_gating_settings = Admin\get_exclusive_settings();
+			$general_settings = Admin\get_exclusive_settings();
 
-			if ( ! empty( $global_gating_settings ) && ! empty( $post ) && isset( $global_gating_settings[ $post->post_type ] ) ) {
-				$content_gating = $global_gating_settings[ $post->post_type ];
+			if ( ! empty( $general_settings ) && ! empty( $post ) && isset( $general_settings[ $post->post_type ] ) ) {
+				$content_monetization = $general_settings[ $post->post_type ];
 			}
 		}
 	}
 
-	return $content_gating;
+	return $content_monetization;
 }
 
-// TODO: remove
 /**
- * Set the gating type for the specified post.
+ * Return the single source of truth for post visibility based on the fallback
+ * options if the post visibility selection is 'default'. E.g.
+ * If return value of each function is default, move onto the next function,
+ * otherwise return immediately.
  *
- * @param integer $post_id    The post to set gating for.
- * @param string $gating_type Either "default", "no", "no-gating", "gate-all", "gate-tagged-blocks".
- *
- * @return void
+ * @param integer $post_id
+ * @return string $content_visibility Visibility slug type.
  */
-function set_post_gating( $post_id, string $gating_type ) : void {
+function get_content_visibility( $post_id ) : string {
 
-	$post_id = (int) $post_id;
+	$post_id         = (int) $post_id;
+	$post_visibility = get_post_visibility( $post_id );
 
-	$valid_gating_types = get_valid_monetization_types();
-	if ( ! in_array( $gating_type, $valid_gating_types, true ) ) {
-		return;
+	// Set a default visibility value.
+	$content_visibility = Admin\get_post_visibility_default();
+
+	// Hierarchy 1 - Check what is set on the post.
+	if ( 'default' !== $post_visibility ) {
+
+		$content_visibility = $post_visibility; // Honour what is set on the post.
+
+	} else {
+
+		// Hierarchy 2 - Check what is set on the taxonomy.
+		$taxonomy_visibility = get_taxonomy_term_visibility( $post_id );
+		if ( 'default' !== $taxonomy_visibility ) {
+
+			$content_visibility = $taxonomy_visibility; // Honour what is set on the taxonomy.
+
+		} else {
+
+			// Hierarchy 3 - Check what is set in the global default.
+			// Get the post type for this post to check against what is set for default.
+			$post = get_post( $post_id );
+
+			// Get the post type from what is saved in global options
+			$exclusive_settings = Admin\get_exclusive_settings();
+
+			if ( ! empty( $exclusive_settings ) && ! empty( $post ) && isset( $exclusive_settings[ $post->post_type ] ) ) {
+				$content_visibility = $exclusive_settings[ $post->post_type ];
+			}
+		}
 	}
 
-	update_post_meta( $post_id, '_coil_monetize_post_status', $gating_type );
+	return $content_visibility;
 }
 
 /**
@@ -462,15 +473,15 @@ function set_term_visibility( $term_id, string $visibility_setting ) : void {
 
 /**
  * New function to determine if the content is monetized
- * based on the output of get_content_gating.
+ * based on the output of get_content_monetization.
  *
  * @param int $post_id
  * @return boolean
  */
 function is_content_monetized( $post_id ) : bool {
 
-	$coil_status = get_content_gating( $post_id );
-	return ( $coil_status === 'no' ) ? false : true;
+	$monetization_status = get_content_monetization( $post_id );
+	return ( $monetization_status === 'not-monetized' ) ? false : true;
 }
 
 function is_monetization_and_visibility_compatible() {
@@ -559,33 +570,3 @@ function set_post_visibility( $post_id, string $post_visibility ) : void {
 
 	update_post_meta( $post_id, '_coil_visibility_post_status', $post_visibility );
 }
-
-// TODO finish these functions and place in correct files
-// function have_padlock() {
-
-// }
-
-// function add_monetization_and_visibility_classes() {
-
-// }
-
-// function restrict_exclusive_content() {
-
-// }
-
-// function render_metaboxes() {
-// 	if ( is_monetization_and_visibility_compatible() ) {
-// 		set_monetization();
-// 		set_visibility();
-// 	} else {
-// 		// set_monetization to true
-// 		// set_visibility to public
-// 	}
-// }
-
-// function get_monetization_and_visibility_setting_wording( $show_default = false ) : array {
-
-// 	$settings = [ 'Use Default', 'Disabled', 'Enabled & Public', 'Enabled & Exclusive' ];
-
-// 	return $settings;
-// }

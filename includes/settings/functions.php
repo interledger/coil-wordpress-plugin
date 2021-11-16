@@ -1193,7 +1193,7 @@ function coil_add_term_custom_meta( $term ) {
 		$exclusive_settings = Admin\get_exclusive_settings();
 		$visibility         = isset( $exclusive_settings['post_visibility'] ) ? $exclusive_settings['post_visibility'] : 'public';
 	}
-	// TODO: Fix the default wording
+	// TODO: Fix the default wording linting complaint
 	if ( $monetization === 'not-monetized' ) {
 		$default_value = 'Disabled';
 	} elseif ( $visibility === 'exclusive' ) {
@@ -1215,7 +1215,7 @@ function coil_add_term_custom_meta( $term ) {
 	<div id="coil_dropdown">
 		<label for="_coil_monetization_term_status"><?php esc_html_e( 'Select a monetization status', 'coil-web-monetization' ); ?></label><br>
 		<select name="_coil_monetization_term_status" id="monetization_dropdown">
-			<option value="default"><?php echo esc_html_e( 'Default (', 'coil-web-monetization' ) . esc_html_e( $default_value, 'coil-web-monetization' ) . esc_html_e( ')', 'coil-web-monetization' ); ?></option>
+			<option value="default"><?php echo esc_html( 'Default (', 'coil-web-monetization' ) . esc_html( $default_value, 'coil-web-monetization' ) . esc_html( ')', 'coil-web-monetization' ); ?></option>
 			<option value="monetized"><?php esc_html_e( 'Enabled', 'coil-web-monetization' ); ?></option>
 			<option value="not-monetized"><?php esc_html_e( 'Disabled', 'coil-web-monetization' ); ?></option>
 		</select>
@@ -1257,13 +1257,136 @@ function coil_add_term_custom_meta( $term ) {
 	</div>
 
 	<script>
-		// TODO: NB When save info - or create meta field first check if enabled, then check radio button vallue, otherwise don't consider it!
-		// TODO: Still need to get appropriate default text in
 
 		function displayRadioOptions() {
 			var radioButtons = document.getElementById("coil-radio-selection");
 			if (radioButtons.style.display === "none") {
 				radioButtons.style.display = "block";
+			}
+		}
+
+		function hideRadioOptions() {
+			var radioButtons = document.getElementById("coil-radio-selection");
+			if (radioButtons.style.display === "block") {
+				radioButtons.style.display = "none";
+			}
+		}
+
+		document.getElementById("monetization_dropdown").addEventListener("click", function () {
+			if (document.getElementById("monetization_dropdown").value === 'monetized') {
+				displayRadioOptions();
+			} else {
+				hideRadioOptions();
+			}
+		});
+
+	</script>
+
+	<?php
+	wp_nonce_field( 'coil_term_gating_nonce_action', 'term_gating_nonce' );
+}
+
+/**
+ * Add a set of gating controls to the "Add Term" screen i.e.
+ * when creating a brand new term.
+ *
+ * @param WP_Term_Object $term
+ * @return void
+ */
+function coil_edit_term_custom_meta( $term ) {
+
+	// Get monetization and visibility options.
+	$monetization_options = Admin\get_monetization_types();
+	$visibility_options   = [
+		'public'    => 'Everyone',
+		'exclusive' => 'Coil Members Only',
+	];
+
+	if ( empty( $monetization_options || visibility_options ) || ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
+		return;
+	}
+
+	// Retrieve the monetization and visibility saved on the term.
+	$monetization = Gating\get_term_monetization( $term->term_id );
+	if ( $monetization === 'default' ) {
+		$general_settings = Admin\get_general_settings();
+		$monetization     = isset( $general_settings['post_monetization'] ) ? $general_settings['post_monetization'] : 'monetized';
+	}
+	$visibility = Gating\get_term_visibility( $term->term_id );
+	if ( $visibility === 'default' ) {
+		$exclusive_settings = Admin\get_exclusive_settings();
+		$visibility         = isset( $exclusive_settings['post_visibility'] ) ? $exclusive_settings['post_visibility'] : 'public';
+	}
+	// TODO: Fix the default wording linting complaint
+	if ( $monetization === 'not-monetized' ) {
+		$default_value = 'Disabled';
+	} elseif ( $visibility === 'exclusive' ) {
+		$default_value = 'Enabled & exclusive';
+	} elseif ( $visibility === 'public' ) {
+		$default_value = 'Enabled & public';
+	}
+
+	// Get post defaults from wp_options table
+	$exclusive_settings      = Admin\get_exclusive_settings();
+	$default_post_visibility = ! empty( $exclusive_settings ) && isset( $exclusive_settings['post_visibility'] ) ? $exclusive_settings['post_visibility'] : 'public';
+	$general_settings        = Admin\get_general_settings();
+	if ( ! empty( $general_settings ) && isset( $general_settings['post'] ) ) {
+		$default_post_monetization = $general_settings['post'];
+	}
+
+	?>
+	<tr class="form-field">
+		<th>
+			<?php esc_html_e( 'Select a monetization status', 'coil-web-monetization' ); ?>
+		</th>
+		<td id="coil_dropdown">
+			<select name="_coil_monetization_term_status" id="monetization_dropdown">
+				<option value="default"><?php echo esc_html( 'Default (', 'coil-web-monetization' ) . esc_html( $default_value, 'coil-web-monetization' ) . esc_html( ')', 'coil-web-monetization' ); ?></option>
+				<option value="monetized"><?php esc_html_e( 'Enabled', 'coil-web-monetization' ); ?></option>
+				<option value="not-monetized"><?php esc_html_e( 'Disabled', 'coil-web-monetization' ); ?></option>
+			</select>
+			<br>
+		</td>
+	</tr>
+	<tr class="form-field" id="coil-radio-selection" style="display: none">
+		<th scope="row">
+			<label><?php esc_html_e( 'Who can access this content?', 'coil-web-monetization' ); ?></label>
+		</th>
+		<td>
+			<fieldset id="coil-category-settings">
+			<?php
+			foreach ( $visibility_options as $setting_key => $setting_value ) {
+
+				$checked_input = false;
+				if ( ! empty( $visibility ) ) {
+					$checked_input = checked( $setting_key, $visibility, false );
+				}
+				?>
+				<label for="<?php echo esc_attr( $setting_key ); ?>">
+				<?php
+				printf(
+					'<input type="radio" name="%s" id="%s" value="%s"%s />%s',
+					esc_attr( '_coil_visibility_term_status' ),
+					esc_attr( $setting_key ),
+					esc_attr( $setting_key ),
+					$checked_input,
+					esc_attr( $setting_value )
+				);
+				?>
+				</label><br>
+				<?php
+			}
+			?>
+			</fieldset>
+		</td>
+	</tr>
+
+	<script>
+
+		function displayRadioOptions() {
+			var radioButtons = document.getElementById("coil-radio-selection");
+			if (radioButtons.style.display === "none") {
+				radioButtons.removeAttribute("style");
 			}
 		}
 
