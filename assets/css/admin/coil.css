@@ -103,44 +103,56 @@
       padding: 15px; }
       .coil form .settings-main .tab-styling h3 {
         font-size: 17px;
-        margin-top: 0px; }
+        margin-top: 0; }
       .coil form .settings-main .tab-styling h4 {
         font-size: 14px;
-        margin: 15px 0px 10px 0px; }
+        margin: 15px 0 10px; }
       .coil form .settings-main .tab-styling .coil-preview {
         align-items: center;
         background: #f1f1f1;
         border: 1px solid #ccc;
         border-radius: 3px;
         display: flex;
-        padding: 15px;
-        justify-content: center; }
+        height: calc( 100% - 80px);
+        justify-content: center;
+        padding: 15px; }
         .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container {
-          background: #FFFFFF;
-          border: 1px solid #CCCCCC;
-          box-sizing: border-box;
+          background: #fff;
+          border: 1px solid #ccc;
           border-radius: 6px;
+          box-sizing: border-box;
           padding: 15px;
           text-align: center;
           /**
 						** TODO: Update this by cleaning it up according to the available fonts etc
 						**/ }
+          .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container[data-theme="dark"] {
+            background: #444; }
+            .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container[data-theme="dark"] h3, .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container[data-theme="dark"] p {
+              color: #fff; }
+            .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container[data-theme="dark"] a {
+              background: #fff;
+              color: #444; }
+          .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container .coil-paywall-image {
+            max-width: 120px; }
+            .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container .coil-paywall-image.no_logo {
+              display: none; }
           .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container .coil-paywall-heading {
+            font-size: 24px;
             font-style: normal;
             font-weight: 600;
-            font-size: 24px;
             line-height: 29px;
-            margin-bottom: 0px;
+            margin-bottom: 0;
             text-align: center; }
           .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container .coil-paywall-body {
-            color: #32373C;
+            color: #32373c;
+            font-size: 13px;
             font-style: normal;
             font-weight: 400;
-            font-size: 13px;
             line-height: 16px;
             text-align: center; }
           .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container .coil-paywall-cta {
-            background: #000000;
+            background: #000;
             border-radius: 3px;
             color: #fff;
             display: block;
@@ -178,6 +190,7 @@
 .coil p {
   max-width: 660px; }
 
+.coil select,
 .coil input[type='text'],
 .coil textarea {
   background: #fff;
@@ -188,6 +201,55 @@
 
 .coil textarea {
   min-height: 90px; }
+
+.coil label.coil-clear-left {
+  clear: left;
+  margin-top: 15px;
+  display: block; }
+
+.coil label.coil-checkbox {
+  display: block;
+  float: right;
+  height: 20px;
+  margin-left: -35px;
+  margin-top: -35px;
+  width: 95px; }
+
+.coil label.coil-checkbox input {
+  display: none; }
+
+.coil label.coil-checkbox span {
+  background: #c1c5cd;
+  border-radius: 25px;
+  display: block;
+  float: right;
+  height: 20px;
+  position: relative;
+  width: 35px; }
+
+.coil label.coil-checkbox input + span:after {
+  background: #fff;
+  border-radius: 18px;
+  content: '';
+  display: block;
+  height: 16px;
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 16px; }
+
+.coil label.coil-checkbox input:checked + span {
+  background: #4fa3d5; }
+
+.coil label.coil-checkbox input:checked + span:after {
+  left: unset;
+  right: 2px; }
+
+.coil label.coil-checkbox input + span + i:before {
+  content: 'Disabled'; }
+
+.coil label.coil-checkbox input:checked + span + i:before {
+  content: 'Enabled'; }
 
 @media only screen and (max-width: 768px) {
   .coil.plugin-header .nav-tab {

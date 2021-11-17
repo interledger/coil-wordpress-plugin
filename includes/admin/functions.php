@@ -256,16 +256,22 @@ function load_admin_assets() : void {
 		'toplevel_page_coil',
 		'toplevel_page_coil_settings',
 	];
-
 	if ( ! in_array( $screen->id, $load_on_screens, true ) ) {
 		return;
 	}
+
+	$site_logo = get_custom_logo();
 
 	$suffix       = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 	$admin_params = apply_filters(
 		'coil_admin_js_params',
 		[
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'site_logo_url' => ( ! empty( $site_logo ) ? $site_logo : false ),
+			'coil_logo_url' => [
+					'light' => plugin_dir_url( dirname( __DIR__ ) ) . 'assets/images/coil-icn-black.svg',
+					'dark' => plugin_dir_url( dirname( __DIR__ ) ) . 'assets/images/coil-icn-white.svg',
+			]
 		]
 	);
 
@@ -506,7 +512,7 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
 	if ( in_array( $field_id, $text_fields, true ) ) {
 
 		// The default is returned as a placeholder or as a coil_js_ui_messages field when no custom input has been provided
-		if ( $use_text_default ) {
+		if ( $use_text_default && empty( $exclusive_options[ $field_id ] ) ) {
 			return $text_defaults[ $field_id ];
 		} else {
 			return ( ! empty( $exclusive_options[ $field_id ] ) ) ? $exclusive_options[ $field_id ] : '';
