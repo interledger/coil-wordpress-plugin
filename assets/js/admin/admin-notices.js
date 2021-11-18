@@ -41,54 +41,54 @@
 		}
 	}
 
-	$(document).on('keyup', '#coil_paywall_title', function(){
-		$( '.coil-paywall-heading' ).text( $(this).val() );
-	});
+	$( document ).on( 'keyup', '#coil_paywall_title', function() {
+		$( '.coil-paywall-heading' ).text( $( this ).val() );
+	} );
 
-	$(document).on('keyup', '#coil_paywall_message', function(){
-		$( '.coil-paywall-body' ).text( $(this).val() );
-	});
+	$( document ).on( 'keyup', '#coil_paywall_message', function() {
+		$( '.coil-paywall-body' ).text( $( this ).val() );
+	} );
 
-	$(document).on('keyup', '#coil_paywall_button_text', function(){
-		$( '.coil-paywall-cta' ).text( $(this).val() );
-	});
+	$( document ).on( 'keyup', '#coil_paywall_button_text', function() {
+		$( '.coil-paywall-cta' ).text( $( this ).val() );
+	} );
 
-	$(document).on('change', 'input[name="coil_exclusive_settings_group[coil_message_color_theme]"]', function(){
-		let coilTheme = $(this).val(),
+	$( document ).on( 'change', 'input[name="coil_exclusive_settings_group[coil_message_color_theme]"]', function() {
+		const coilTheme = $( this ).val(),
 			logoSetting = $( '#coil_branding' ).val();
 
-		$( '.coil-paywall-container' ).attr( 'data-theme',coilTheme  );
+		let logoSrc = '';
 
-		if( logoSetting == 'coil_logo' ) {
-			if( 'light' == coilTheme )
+		$( '.coil-paywall-container' ).attr( 'data-theme', coilTheme );
+
+		if ( logoSetting === 'coil_logo' ) {
+			if ( 'light' === coilTheme ) {
 				logoSrc = coilAdminParams.coil_logo_url.light;
-			else
+			} else {
 				logoSrc = coilAdminParams.coil_logo_url.dark;
-
-			$( '.coil-paywall-image' ).attr('src', logoSrc );
+			}
+			$( '.coil-paywall-image' ).attr( 'src', logoSrc );
 		}
-	});
+	} );
 
-	$(document).on('change', '#coil_branding', function(){
-		let logoSetting = $(this).val(),
-			coilTheme = $('[name="coil_exclusive_settings_group[coil_message_color_theme]:checked"]').val(),
-			logoSrc = '';
+	$( document ).on( 'change', '#coil_branding', function() {
+		const logoSetting = $( this ).val(),
+			coilTheme = $( '[name="coil_exclusive_settings_group[coil_message_color_theme]:checked"]' ).val();
 
-		$( '.coil-paywall-image' ).removeClass( 'no_logo site_logo coil_logo').addClass( logoSetting );
+		let logoSrc = '';
 
-		if( logoSetting == 'coil_logo' ) {
-			if( 'light' == coilTheme )
+		$( '.coil-paywall-image' ).removeClass( 'no_logo site_logo coil_logo' ).addClass( logoSetting );
+
+		if ( logoSetting === 'coil_logo' ) {
+			if ( 'light' === coilTheme ) {
 				logoSrc = coilAdminParams.coil_logo_url.light;
-			else
+			} else {
 				logoSrc = coilAdminParams.coil_logo_url.dark;
-
-			console.log(logoSrc);
-
-		} else if( logo_val == 'site_logo' ){
+			}
+		} else if ( logoSetting === 'site_logo' ) {
 			logoSrc = coilAdminParams.site_logo_url;
 		}
 
-		$( '.coil-paywall-image' ).attr('src', logoSrc );
-	});
-
+		$( '.coil-paywall-image' ).attr( 'src', logoSrc );
+	} );
 }( jQuery ) );

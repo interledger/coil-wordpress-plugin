@@ -164,17 +164,17 @@
 						padding: 15px;
 						text-align: center;
 
-					  	&[data-theme="dark"] {
+						&[data-theme='dark'] {
 							background: #444;
 
-								h3, p {
-								  color: #fff;
-								}
+							h3, p {
+								color: #fff;
+							}
 
-								a {
-								  background: #fff;
-								  color: #444;
-								}
+							a {
+								background: #fff;
+								color: #444;
+							}
 						}
 
 						/**
@@ -184,7 +184,7 @@
 							max-width: 120px;
 
 							&.no_logo {
-							  display: none;
+								display: none;
 							}
 						}
 
@@ -270,7 +270,7 @@
 		max-width: 660px;
 	}
 
-  	select,
+	select,
 	input[type='text'],
 	textarea {
 
@@ -285,11 +285,12 @@
 		min-height: 90px;
 	}
 
-  	label.coil-clear-left {
-	  clear: left;
-	  margin-top: 15px;
-	  display: block;
+	label.coil-clear-left {
+		clear: left;
+		display: block;
+		margin-top: 15px;
 	}
+
 	label.coil-checkbox {
 		display: block;
 		float: right;
@@ -299,8 +300,8 @@
 		width: 95px;
 	}
 
-	label.coil-checkbox input{
-	  	display: none;
+	label.coil-checkbox input {
+		display: none;
 	}
 
 	label.coil-checkbox span {
@@ -313,33 +314,33 @@
 		width: 35px;
 	}
 
-	label.coil-checkbox input + span:after{
+	label.coil-checkbox input + span::after {
 		background: #fff;
 		border-radius: 18px;
 		content: '';
 		display: block;
 		height: 16px;
-		position: absolute;
 		left: 2px;
+		position: absolute;
 		top: 2px;
 		width: 16px;
 	}
 
 	label.coil-checkbox input:checked + span {
-	  	background: #4fa3d5;
+		background: #4fa3d5;
 	}
 
-	label.coil-checkbox input:checked + span:after {
+	label.coil-checkbox input:checked + span::after {
 		left: unset;
 		right: 2px;
 	}
 
-	label.coil-checkbox input + span + i:before {
-	  	content: 'Disabled';
+	label.coil-checkbox input + span + i::before {
+		content: 'Disabled';
 	}
 
-	label.coil-checkbox input:checked + span + i:before {
-	  	content: 'Enabled';
+	label.coil-checkbox input:checked + span + i::before {
+		content: 'Enabled';
 	}
 
 	@media only screen and (max-width: $message_mobile_breakpoint) {
