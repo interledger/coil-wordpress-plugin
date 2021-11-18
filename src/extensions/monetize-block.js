@@ -122,11 +122,10 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
  * Add custom element class in save element.
  *
  * @param  {Object} extraProps Additional props applied to save element.
- * @param  {Object} blockType  Block type.
  * @param  {Object} attributes Current block attributes.
  * @return {Object} extraProps Filtered props applied to save element.
  */
-function applyExtraClass( extraProps, blockType, attributes ) {
+function applyExtraClass( extraProps, attributes ) {
 	const { monetizeBlockDisplay } = attributes;
 
 	// Check if object exists for old Gutenberg version compatibility.
@@ -218,31 +217,22 @@ addFilter( 'editor.BlockListBlock', 'coil/wrapperClass', wrapperClass );
 // Post Monetization Fields
 const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 	return {
-		updateMetaValue: ( value ) => {
+		updateVisibilityMetaValue: ( value ) => {
 			dispatch( 'core/editor' ).editPost( {
 				meta: {
 					[ props.visibilityMetaFieldName ]: value,
 				},
 			} );
 		},
-		updateSelectValue: ( value ) => {
-			// This the reverse of updateSelectMetaValue where we compare the value Selected and update the radio button values
-			if (
-				'exclusive' === value ||
-				'public' === value ||
-				'gate-tagged-blocks' === value
-			) {
-				return 'monetized';
-			} else if ( 'not-monetized' === value ) {
-				return 'not-monetized';
-			}
-			return 'default';
-		},
-		// This is the monetization value
-		updateSelectMetaValue: ( value ) => {
+		// When the monetization status is selected the visibility status must remain compatible.
+		// When monetization is disabled visibility must be public.
+		// When monetization is default, visibility must also be on default (radio buttons should not appear).
+		// If Enabled is selected, then visibility will be default until that is overwritten by the radio button selection.
+		updateMonetizationMetaValue: ( value ) => {
 			dispatch( 'core/editor' ).editPost( {
 				meta: {
 					[ props.monetizationMetaFieldName ]: value,
+					[ props.visibilityMetaFieldName ]: value === 'not-monetized' ? 'public' : 'default',
 				},
 			} );
 		},
@@ -268,8 +258,8 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 			<div>
 				<SelectControl
 					label={ __( 'Select a monetization status', 'coil-web-monetization' ) }
-					value={ props.updateSelectValue( props[ props.monetizationMetaFieldName ] ) }
-					onChange={ ( value ) => props.updateSelectMetaValue( value ) }
+					value={ props[ props.monetizationMetaFieldName ] ? props[ props.monetizationMetaFieldName ] : 'default' }
+					onChange={ ( value ) => props.updateMonetizationMetaValue( value ) }
 					options={ [
 						{ value: 'default', label: 'Default (' + props.defaultLabel + ')' },
 						{ value: 'monetized', label: 'Enabled' },
@@ -300,7 +290,7 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 							value: 'gate-tagged-blocks',
 						},
 					] }
-					onChange={ ( value ) => props.updateMetaValue( value ) }
+					onChange={ ( value ) => props.updateVisibilityMetaValue( value ) }
 				/>
 			</div>
 		</div>
