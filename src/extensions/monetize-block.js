@@ -274,7 +274,7 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 				<RadioControl
 					label={ __( 'Who can access this content?', 'coil-web-monetization' ) }
 					selected={
-						props[ props.visibilityMetaFieldName ] ? props[ props.visibilityMetaFieldName ] : 'default'
+						props[ props.visibilityMetaFieldName ] && props[ props.visibilityMetaFieldName ] !== 'default' ? props[ props.visibilityMetaFieldName ] : coilEditorParams.visibilityDefault // eslint-disable-line no-undef
 					}
 					options={ [
 						{
