@@ -53,7 +53,6 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 		let showInspector = false;
 
 		const {
-			// name, - Disabled for now!
 			attributes,
 			setAttributes,
 			isSelected,
