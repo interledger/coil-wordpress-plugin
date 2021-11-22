@@ -4,8 +4,8 @@
  */
 namespace Coil\Tests;
 
+use Coil;
 use Coil\Admin;
-use Coil\Settings;
 use WP_UnitTestCase;
 
 /**
@@ -45,7 +45,7 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 		set_theme_mod( self::$id['fully_gated_excerpt_message'], 'Fully gated excerpt' );
 
 		// Transferrng settings to the wp_options table
-		Settings\maybe_update_database();
+		Coil\maybe_update_database();
 
 		// Creating an array of the messages that were retrieved from the wp_options table.
 		$message = [
@@ -98,7 +98,7 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 		set_theme_mod( 'coil_partially_gated_excerpt_message', 'Partially gated excerpt' );
 
 		// Transferrng settings to the wp_options table
-		Settings\maybe_update_database();
+		Coil\maybe_update_database();
 
 		// Creating an array of the messages that were retrieved from the wp_options table.
 		$message = [
@@ -139,7 +139,7 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 		set_theme_mod( 'coil_title_padlock', false );
 
 		// Transferrng settings to the wp_options table
-		Settings\maybe_update_database();
+		Coil\maybe_update_database();
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
@@ -169,7 +169,7 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 		set_theme_mod( 'coil_title_padlock', true );
 
 		// Transferrng settings to the wp_options table
-		Settings\maybe_update_database();
+		Coil\maybe_update_database();
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
@@ -200,7 +200,7 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 		set_theme_mod( 'coil_title_padlock', false );
 
 		// Transferrng settings to the wp_options table
-		Settings\maybe_update_database();
+		Coil\maybe_update_database();
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
@@ -230,7 +230,7 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 		set_theme_mod( 'coil_show_donation_bar', false );
 
 		// Transferrng settings to the wp_options table
-		Settings\maybe_update_database();
+		Coil\maybe_update_database();
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [

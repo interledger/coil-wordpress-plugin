@@ -596,11 +596,7 @@ function get_css_selector( $field_name ) {
  */
 function get_coil_button_settings() : array {
 
-	$coil_button_settings = get_option( 'coil_button_settings_group', 'absent' );
-	if ( 'absent' === $coil_button_settings ) {
-		$coil_button_settings = [];
-	}
-
+	$coil_button_settings = get_option( 'coil_button_settings_group', [] );
 	return $coil_button_settings;
 }
 
@@ -611,6 +607,7 @@ function get_coil_button_settings() : array {
  */
 function get_coil_button_setting( $field_id ) {
 	$coil_button_settings = get_coil_button_settings();
+	$value                = false;
 	if ( $field_id === 'coil_show_promotion_bar' ) {
 		$value = isset( $coil_button_settings[ $field_id ] ) ? $coil_button_settings[ $field_id ] : false;
 	}

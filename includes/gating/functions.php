@@ -316,6 +316,9 @@ function get_taxonomy_term_visibility( $post_id ) {
 	// 2) Has a monetization status been attached to this taxonomy?
 	if ( ! is_wp_error( $post_terms ) && ! empty( $post_terms ) ) {
 
+		// $final_term_visibility will be 'default' if no term had a set visibility meta field.
+		$final_term_visibility = 'default';
+
 		foreach ( $post_terms as $term_id ) {
 
 			$post_term_visibility = get_term_visibility( $term_id );
@@ -325,12 +328,11 @@ function get_taxonomy_term_visibility( $post_id ) {
 				break;
 				// If a term's visibility has been set then save it - in contrast to it being 'default'.
 				// Don't break yet, keep checking for an exclusive state.
+			} elseif ( $post_term_visibility === 'public' ) {
+				$final_term_visibility = $post_term_visibility;
 			}
-			$final_term_visibility = $post_term_visibility;
 		}
 	}
-
-	// $final_term_visibility will be 'default' if no term had a set visibility meta field.
 	return $final_term_visibility;
 }
 
@@ -373,8 +375,8 @@ function get_content_monetization( $post_id ) : string {
 			// Get the post type from what is saved in global options
 			$general_settings = Admin\get_exclusive_settings();
 
-			if ( ! empty( $general_settings ) && ! empty( $post ) && isset( $general_settings[ $post->post_type ] ) ) {
-				$content_monetization = $general_settings[ $post->post_type ];
+			if ( ! empty( $general_settings ) && ! empty( $post ) && isset( $general_settings[ $post->post_type . '_monetization' ] ) ) {
+				$content_monetization = $general_settings[ $post->post_type . '_monetization' ];
 			}
 		}
 	}
@@ -421,8 +423,8 @@ function get_content_visibility( $post_id ) : string {
 			// Get the post type from what is saved in global options
 			$exclusive_settings = Admin\get_exclusive_settings();
 
-			if ( ! empty( $exclusive_settings ) && ! empty( $post ) && isset( $exclusive_settings[ $post->post_type ] ) ) {
-				$content_visibility = $exclusive_settings[ $post->post_type ];
+			if ( ! empty( $exclusive_settings ) && ! empty( $post ) && isset( $exclusive_settings[ $post->post_type . '_visibility' ] ) ) {
+				$content_visibility = $exclusive_settings[ $post->post_type . '_visibility' ];
 			}
 		}
 	}

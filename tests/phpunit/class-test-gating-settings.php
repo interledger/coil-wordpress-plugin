@@ -23,7 +23,27 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 	 *
 	 * @var \WP_Post[] Standard post objects.
 	 */
-	protected static $basic_posts = [];
+	protected static $basic_posts        = [];
+	protected static $monetization_types = [
+		[
+			'monetization' => 'not-monetized',
+			'name'         => 'Disabled',
+		],
+		[
+			'monetization' => 'monetized',
+			'name'         => 'Enabled',
+		],
+	];
+	protected static $visibility_types   = [
+		[
+			'visibility' => 'public',
+			'name'       => 'Public',
+		],
+		[
+			'visibility' => 'excluisve',
+			'name'       => 'Exclusive',
+		],
+	];
 
 	/**
 	 * Create fake data before tests run.
@@ -35,14 +55,35 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) : void {
 
 		self::$basic_posts = [
-			'no'                 => $factory->post->create_and_get(),
-			'no-gating'          => $factory->post->create_and_get(),
-			'gate-all'           => $factory->post->create_and_get(),
-			'gate-tagged-blocks' => $factory->post->create_and_get(),
+			[
+				'post'         => $factory->post->create_and_get(),
+				'title'        => 'Disabled',
+				'monetization' => 'not-monetized',
+				'visibility'   => 'public',
+			],
+			[
+				'post'         => $factory->post->create_and_get(),
+				'title'        => 'Enabled & public',
+				'monetization' => 'monetized',
+				'visibility'   => 'public',
+			],
+			[
+				'post'         => $factory->post->create_and_get(),
+				'title'        => 'Enabled & exclusive',
+				'monetization' => 'monetized',
+				'visibility'   => 'excluisve',
+			],
+			[
+				'post'         => $factory->post->create_and_get(),
+				'title'        => 'Split',
+				'monetization' => 'monetized',
+				'visibility'   => 'gate-tagged-blocks',
+			],
 		];
 
-		foreach ( self::$basic_posts as $gating_type => $post_obj ) {
-			Gating\set_post_gating( $post_obj->ID, $gating_type );
+		foreach ( self::$basic_posts as $post_array ) {
+			Gating\set_post_monetization( $post_array['post']->ID, $post_array['monetization'] );
+			Gating\set_post_visibility( $post_array['post']->ID, $post_array['visibility'] );
 		}
 	}
 
@@ -53,8 +94,8 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 	 */
 	public static function wpTearDownAfterClass() : void {
 
-		foreach ( self::$basic_posts as $_ => $post_obj ) {
-			wp_delete_post( $post_obj->ID, true );
+		foreach ( self::$basic_posts as $_ => $post_array ) {
+			wp_delete_post( $post_array['post']->ID, true );
 		}
 
 		self::$basic_posts = [];
@@ -65,21 +106,21 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_padlock_added_to_title_when_enabled_and_gated() :  void {
+	public function test_padlock_added_to_title_when_enabled() :  void {
 
 		// Ensuring the padlock display setting has been enabled
-		$options                       = get_option( 'coil_exclusive_settings_group', [] );
-		$options['coil_title_padlock'] = true;
-		update_option( 'coil_exclusive_settings_group', $options );
+		$settings                       = get_option( 'coil_exclusive_settings_group', [] );
+		$settings['coil_title_padlock'] = true;
+		update_option( 'coil_exclusive_settings_group', $settings );
 
-		foreach ( self::$basic_posts as $gating => $post_obj ) {
-			$post_title           = 'Post Title';
-			$post_obj->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_obj->ID );
-			if ( $gating === 'gate-all' ) {
+		foreach ( self::$basic_posts as $post_array ) {
+			$post_title                     = $post_array['title'];
+			$post_array['post']->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_array['post']->ID );
+			if ( $post_array['visibility'] === 'exclusive' ) {
 				$post_title = '🔒 ' . $post_title;
 			}
 
-			$final_post_title = $post_obj->post_title;
+			$final_post_title = $post_array['post']->post_title;
 
 			$this->assertSame( $post_title, $final_post_title );
 		}
@@ -93,105 +134,104 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 	public function test_padlock_not_added_to_title_when_disabled() :  void {
 
 		// Ensuring the padlock display setting has been disabled
-		$options                       = get_option( 'coil_appearance_settings_group', [] );
-		$options['coil_title_padlock'] = false;
-		update_option( 'coil_appearance_settings_group', $options );
+		$settings                       = get_option( 'coil_exclusive_settings_group', [] );
+		$settings['coil_title_padlock'] = false;
+		update_option( 'coil_exclusive_settings_group', $settings );
 
-		foreach ( self::$basic_posts as $gating => $post_obj ) {
-			$post_title           = 'Post Title';
-			$post_obj->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_obj->ID );
+		foreach ( self::$basic_posts as $post_array ) {
+			$post_title                     = $post_array['title'];
+			$post_array['post']->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_array['post']->ID );
 
-			$final_post_title = $post_obj->post_title;
+			$final_post_title = $post_array['post']->post_title;
 
 			$this->assertSame( $post_title, $final_post_title );
 		}
 	}
 
 	/**
-	 * Tests taxonomy gating by creating a category and checking the correct gating value is returned.
+	 * Tests taxonomy monetization meta field by creating a category and checking the correct monetization value is returned.
 	 *
 	 * @return void
 	 */
-	public function test_setting_and_getting_category_taxonomy_term_gating() :  void {
+	public function test_setting_and_getting_category_taxonomy_term_monetization() :  void {
 
-		$category = [
-			'No Monetization'      => 'no',
-			'Monetized and Public' => 'no-gating',
-			'Fully Gated'          => 'gate-all',
-		];
-
-		foreach ( $category as $category_name => $gating_type ) {
-			wp_create_category( $category_name );
-			Gating\set_term_gating( get_cat_ID( $category_name ), $gating_type );
+		foreach ( self::$monetization_types as $category_info ) {
+			wp_create_category( $category_info['name'] );
+			Gating\set_term_monetization( get_cat_ID( $category_info['name'] ), $category_info['monetization'] );
 			$post_obj = self::factory()->post->create_and_get();
-			wp_set_post_categories( $post_obj->ID, get_cat_ID( $category_name ), false );
+			wp_set_post_categories( $post_obj->ID, get_cat_ID( $category_info['name'] ), false );
 
-			$taxonomy_gating = Gating\get_taxonomy_term_gating( $post_obj->ID );
+			$taxonomy_monetization = Gating\get_taxonomy_term_monetization( $post_obj->ID );
 
-			$this->assertSame( $gating_type, $taxonomy_gating );
+			$this->assertSame( $category_info['monetization'], $taxonomy_monetization );
 		}
 	}
 
 	/**
-	 * Tests taxonomy gating by creating a tag and checking the correct gating value is returned.
+	 * Tests taxonomy visibility meta field by creating a category and checking the correct visibility value is returned.
 	 *
 	 * @return void
 	 */
-	public function test_setting_and_getting_tag_taxonomy_term_gating() :  void {
+	public function test_setting_and_getting_category_taxonomy_term_visibility() :  void {
 
-		$tags = [
-			'No Monetization'      => 'no',
-			'Monetized and Public' => 'no-gating',
-			'Fully Gated'          => 'gate-all',
-		];
+		foreach ( self::$visibility_types as $category_info ) {
+			wp_create_category( $category_info['name'] );
+			Gating\set_term_visibility( get_cat_ID( $category_info['name'] ), $category_info['visibility'] );
+			$post_obj = self::factory()->post->create_and_get();
+			wp_set_post_categories( $post_obj->ID, get_cat_ID( $category_info['name'] ), false );
 
-		foreach ( $tags as $tag_name => $gating_type ) {
-			wp_create_tag( $tag_name );
-			$tag    = get_term_by( 'name', $tag_name, 'post_tag' );
+			$taxonomy_visibility = Gating\get_taxonomy_term_visibility( $post_obj->ID );
+
+			$this->assertSame( $category_info['visibility'], $taxonomy_visibility );
+		}
+	}
+
+	/**
+	 * Tests taxonomy monetization meta field by creating a tag and checking the correct monetization value is returned.
+	 *
+	 * @return void
+	 */
+	public function test_setting_and_getting_tag_taxonomy_term_monetization() :  void {
+
+		foreach ( self::$monetization_types as $tag_info ) {
+			wp_create_tag( $tag_info['name'] );
+			$tag    = get_term_by( 'name', $tag_info['name'], 'post_tag' );
 			$tag_id = $tag->term_id;
-			Gating\set_term_gating( $tag_id, $gating_type );
+			Gating\set_term_monetization( $tag_id, $tag_info['monetization'] );
 			$post_obj = self::factory()->post->create_and_get();
-			wp_set_post_tags( $post_obj->ID, $tag_name, false );
+			wp_set_post_tags( $post_obj->ID, $tag_info['name'], false );
 
-			$taxonomy_gating = Gating\get_taxonomy_term_gating( $post_obj->ID );
+			$taxonomy_monetization = Gating\get_taxonomy_term_monetization( $post_obj->ID );
 
-			$this->assertSame( $gating_type, $taxonomy_gating );
+			$this->assertSame( $tag_info['monetization'], $taxonomy_monetization );
 		}
+
 	}
 
 	/**
-	 * Tests if the correct global default gating settings can be correctly retrieved.
+	 * Tests taxonomy visibility meta field by creating a tag and checking the correct visibility value is returned.
 	 *
 	 * @return void
 	 */
-	public function test_retrieving_default_global_gating_settings() :  void {
+	public function test_setting_and_getting_tag_taxonomy_term_visibility() :  void {
 
-		$gating_options = [
-			[
-				'post' => 'no',
-				'page' => 'no',
-			],
-			[
-				'post' => 'no-gating',
-				'page' => 'no-gating',
-			],
-			[
-				'post' => 'gate-all',
-				'page' => 'gate-all',
-			],
-		];
+		foreach ( self::$visibility_types as $tag_info ) {
+			wp_create_tag( $tag_info['name'] );
+			$tag    = get_term_by( 'name', $tag_info['name'], 'post_tag' );
+			$tag_id = $tag->term_id;
+			Gating\set_term_visibility( $tag_id, $tag_info['visibility'] );
+			$post_obj = self::factory()->post->create_and_get();
+			wp_set_post_tags( $post_obj->ID, $tag_info['name'], false );
 
-		foreach ( $gating_options as $global_gating ) {
-			update_option( 'coil_exclusive_settings_group', $global_gating );
+			$taxonomy_visibility = Gating\get_taxonomy_term_visibility( $post_obj->ID );
 
-			$global_default = Gating\get_global_posts_gating();
-
-			$this->assertSame( $global_gating, $global_default );
+			$this->assertSame( $tag_info['visibility'], $taxonomy_visibility );
 		}
+
 	}
 
 	/**
-	 * Tests if the correct gating value retrieved when a specific post is returned
+	 * Tests if the correct monetization value retrieved when a specific post is returned
 	 * in cases that consider the combination of global, taxonomy or post monetization settings that have been used.
 	 *
 	 * @return void
@@ -201,66 +241,86 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		// Create a post
 		$post_obj = self::factory()->post->create_and_get();
 
-		// Set the global default monetization for posts 'gate-all' which will define the post's gating status at this point
-		$gating_settings = [ 'post' => 'gate-all' ];
-		update_option( 'coil_exclusive_settings_group', $gating_settings );
+		// Set the global default monetization and visibility for posts to monetized and exclusive which will define the post's status at this point
+		$monetization_settings = [ 'post_monetization' => 'monetized' ];
+		update_option( 'coil_general_settings_group', $monetization_settings );
+		$visibility_settings = [ 'post_visibility' => 'exclusive' ];
+		update_option( 'coil_exclusive_settings_group', $visibility_settings );
 
-		$gating_status = Gating\get_content_gating( $post_obj->ID );
+		$monetization_status = Gating\get_content_monetization( $post_obj->ID );
+		$visibility_status   = Gating\get_content_visibility( $post_obj->ID );
 
-		$this->assertSame( 'gate-all', $gating_status );
+		$this->assertSame( 'monetized', $monetization_status );
+		$this->assertSame( 'exclusive', $visibility_status );
 
-		// Add a category to the post which has the monetization status 'no'.
-		// This status will override the default and become the new monetization status of the post.
+		// Add a category to the post which has monetization disabled.
+		// This status will override the default and become the new status of the post.
 		$category_name = 'Monetization Disabled Category';
 		wp_create_category( $category_name );
-		Gating\set_term_gating( get_cat_ID( $category_name ), 'no' );
+		Gating\set_term_monetization( get_cat_ID( $category_name ), 'not-monetized' );
+		Gating\set_term_visibility( get_cat_ID( $category_name ), 'public' );
 		wp_set_post_categories( $post_obj->ID, get_cat_ID( $category_name ), false );
 
-		$gating_status = Gating\get_content_gating( $post_obj->ID );
+		$monetization_status = Gating\get_content_monetization( $post_obj->ID );
+		$visibility_status   = Gating\get_content_visibility( $post_obj->ID );
 
-		$this->assertSame( 'no', $gating_status );
+		$this->assertSame( 'not-monetized', $monetization_status );
+		$this->assertSame( 'public', $visibility_status );
 
-		// Add a tag to the post which has the monetization status 'gate-all'.
-		// This status will override the category's status because it has a stricter monetization status
-		// and will become the new monetization status of the post.
-		$tag_name = 'Fully Gated Tag';
+		// Add a tag to the post which is monetized and exclusive'.
+		// This status will override the category's status because it is stricter
+		// and will become the new status of the post.
+		$tag_name = 'Exclusive Tag';
 		wp_create_tag( $tag_name );
 		$tag    = get_term_by( 'name', $tag_name, 'post_tag' );
 		$tag_id = $tag->term_id;
-		Gating\set_term_gating( $tag_id, 'gate-all' );
+		Gating\set_term_monetization( $tag_id, 'monetized' );
+		Gating\set_term_visibility( $tag_id, 'exclusive' );
 		wp_set_post_tags( $post_obj->ID, $tag_name, false );
 
-		$gating_status = Gating\get_content_gating( $post_obj->ID );
+		$monetization_status = Gating\get_content_monetization( $post_obj->ID );
+		$visibility_status   = Gating\get_content_visibility( $post_obj->ID );
 
-		$this->assertSame( 'gate-all', $gating_status );
+		$this->assertSame( 'monetized', $monetization_status );
+		$this->assertSame( 'exclusive', $visibility_status );
 
-		// Add a post-level monetization status with the value 'no-gating'.
-		// This status will override the default and become the new monetization status of the post.
-		Gating\set_post_gating( $post_obj->ID, 'no-gating' );
+		// Add a post-level status with monetization enabled and public visibility.
+		// This status has the highest priority and will become the new status of the post.
+		Gating\set_post_monetization( $post_obj->ID, 'monetized' );
+		Gating\set_post_visibility( $post_obj->ID, 'public' );
 
-		$gating_status = Gating\get_content_gating( $post_obj->ID );
+		$monetization_status = Gating\get_content_monetization( $post_obj->ID );
+		$visibility_status   = Gating\get_content_visibility( $post_obj->ID );
 
-		$this->assertSame( 'no-gating', $gating_status );
+		$this->assertSame( 'monetized', $monetization_status );
+		$this->assertSame( 'public', $visibility_status );
 
-		// Checking that changing the global default doesn't change the post's monetization status becasue it has been set at post-level
+		// Checking that changing the global defaults doesn't change the post's status.
 		// Set the global default monetization for posts 'no'.
-		$gating_settings = [ 'post' => 'no' ];
-		update_option( 'coil_exclusive_settings_group', $gating_settings );
+		$monetization_settings = [ 'post_monetization' => 'not-monetized' ];
+		update_option( 'coil_general_settings_group', $monetization_settings );
+		$visibility_settings = [ 'post_visibility' => 'public' ];
+		update_option( 'coil_exclusive_settings_group', $visibility_settings );
 
-		$gating_status = Gating\get_content_gating( $post_obj->ID );
+		$monetization_status = Gating\get_content_monetization( $post_obj->ID );
+		$visibility_status   = Gating\get_content_visibility( $post_obj->ID );
 
-		$this->assertNotSame( 'no', $gating_status );
+		$this->assertSame( 'monetized', $monetization_status );
+		$this->assertSame( 'public', $visibility_status );
 
-		// Checking that changing the category's monetization status doesn't change the post's monetization status becasue it has been set at post-level
-		// Set the global default monetization for posts 'gate-all'.
-		$category_name = 'Fully Gated Category';
+		// Checking that changing the category's status doesn't change the post's status.
+		// Set the global default for posts to be exclusive.
+		$category_name = 'Exclusive Category';
 		wp_create_category( $category_name );
-		Gating\set_term_gating( get_cat_ID( $category_name ), 'gate-all' );
+		Gating\set_term_monetization( get_cat_ID( $category_name ), 'monetized' );
+		Gating\set_term_visibility( get_cat_ID( $category_name ), 'exclusive' );
 		wp_set_post_categories( $post_obj->ID, get_cat_ID( $category_name ), false );
 
-		$gating_status = Gating\get_content_gating( $post_obj->ID );
+		$monetization_status = Gating\get_content_monetization( $post_obj->ID );
+		$visibility_status   = Gating\get_content_visibility( $post_obj->ID );
 
-		$this->assertNotSame( 'gate-all', $gating_status );
+		$this->assertSame( 'monetized', $monetization_status );
+		$this->assertSame( 'public', $visibility_status );
 
 	}
 }
