@@ -1193,7 +1193,7 @@ function coil_add_term_custom_meta( $term ) {
 		$exclusive_settings = Admin\get_exclusive_settings();
 		$visibility         = isset( $exclusive_settings['post_visibility'] ) ? $exclusive_settings['post_visibility'] : 'public';
 	}
-	// TODO: Fix the default wording linting complaint
+
 	if ( $monetization === 'not-monetized' ) {
 		$default_value = 'Disabled';
 	} elseif ( $visibility === 'exclusive' ) {
@@ -1317,7 +1317,7 @@ function coil_edit_term_custom_meta( $term ) {
 		$exclusive_settings = Admin\get_exclusive_settings();
 		$visibility         = isset( $exclusive_settings['post_visibility'] ) ? $exclusive_settings['post_visibility'] : 'public';
 	}
-	// TODO: Fix the default wording linting complaint
+
 	if ( $monetization === 'not-monetized' ) {
 		$default_value = 'Disabled';
 	} elseif ( $visibility === 'exclusive' ) {

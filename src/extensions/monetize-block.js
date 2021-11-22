@@ -228,10 +228,16 @@ const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
 		// When monetization is default, visibility must also be on default (radio buttons should not appear).
 		// If Enabled is selected, then visibility will be default until that is overwritten by the radio button selection.
 		updateMonetizationMetaValue: ( value ) => {
+			let visibility = 'public';
+			if ( value === 'default' ) {
+				visibility = 'default';
+			} else if ( value === 'monetized' ) {
+				visibility = coilEditorParams.visibilityDefault; // eslint-disable-line no-undef
+			}
 			dispatch( 'core/editor' ).editPost( {
 				meta: {
 					[ props.monetizationMetaFieldName ]: value,
-					[ props.visibilityMetaFieldName ]: value === 'not-monetized' ? 'public' : 'default',
+					[ props.visibilityMetaFieldName ]: visibility,
 				},
 			} );
 		},
