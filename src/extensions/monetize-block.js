@@ -211,8 +211,8 @@ addFilter(
 
 addFilter( 'editor.BlockListBlock', 'coil/wrapperClass', wrapperClass );
 
-// Post Monetization Fields
-const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
+// Post monetization and visibility meta fields
+const PostMetaFields = withDispatch( ( dispatch, props ) => {
 	return {
 		updateVisibilityMetaValue: ( value ) => {
 			dispatch( 'core/editor' ).editPost( {
@@ -311,7 +311,7 @@ if ( PluginDocumentSettingPanel ) {
 					initialOpen={ false }
 					className="coil-document-panel"
 				>
-					<PostMonetizationFields monetizationMetaFieldName="_coil_monetization_post_status" visibilityMetaFieldName="_coil_visibility_post_status" />
+					<PostMetaFields monetizationMetaFieldName="_coil_monetization_post_status" visibilityMetaFieldName="_coil_visibility_post_status" />
 				</PluginDocumentSettingPanel>
 			);
 		},
