@@ -42,9 +42,6 @@ function maybe_save_post_metabox( int $post_id ) : void {
 		delete_post_meta( $post_id, '_coil_monetization_post_status' );
 		delete_post_meta( $post_id, '_coil_visibility_post_status' );
 	}
-
-	// Remove deprecated post meta
-	delete_post_meta( $post_id, '_coil_monetize_post_status' );
 }
 
 /**

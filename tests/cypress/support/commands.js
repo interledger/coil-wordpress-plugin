@@ -100,7 +100,7 @@ Cypress.Commands.add( 'stopWebMonetization', () => {
  */
 Cypress.Commands.add( 'resetSite', () => {
 	// Removes all custom data from the database
-	cy.exec( 'wp db query \'DELETE FROM wp_options WHERE option_name IN ("coil_welcome_settings_group", "coil_general_settings_group", "coil_exclusive_settings_group", "coil_button_settings_group");\' --allow-root' );
+	cy.exec( 'wp db query \'DELETE FROM wp_options WHERE option_name IN ( "coil_general_settings_group", "coil_exclusive_settings_group", "coil_button_settings_group");\' --allow-root' );
 	cy.exec( 'wp db query \'DELETE FROM wp_postmeta;\' --allow-root' );
 	cy.exec( 'wp db query \'DELETE FROM wp_posts;\' --allow-root' );
 

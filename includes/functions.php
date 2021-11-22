@@ -8,6 +8,7 @@ namespace Coil;
 
 use \Coil\Admin;
 use \Coil\Gating;
+use \Coil\Transfers;
 use \Coil\User;
 
 /**
@@ -51,7 +52,7 @@ function init_plugin() : void {
 	add_action( 'admin_notices', __NAMESPACE__ . '\Settings\admin_welcome_notice' );
 	add_action( 'admin_notices', __NAMESPACE__ . '\Settings\admin_no_payment_pointer_notice' );
 	add_action( 'wp_ajax_dismiss_welcome_notice', __NAMESPACE__ . '\Settings\dismiss_welcome_notice' );
-	add_action( 'init', __NAMESPACE__ . '\Settings\maybe_update_database' );
+	add_action( 'init', __NAMESPACE__ . '\maybe_update_database' );
 
 	// Term meta.
 	add_action( 'edit_term', __NAMESPACE__ . '\Admin\maybe_save_term_meta', 10, 3 );
@@ -294,6 +295,9 @@ function add_body_class( $classes ) : array {
 
 	$payment_pointer_id = Admin\get_payment_pointer_setting();
 
+	// Transfer old post meta into new format
+	Transfers\update_post_meta( get_queried_object_id() );
+
 	if ( Gating\is_content_monetized( get_queried_object_id() ) ) {
 		$classes[] = 'monetization-not-initialized';
 
@@ -349,6 +353,25 @@ function print_meta_tag() : void {
 	}
 }
 
+/**
+ * Ensures the database is in the correct state.
+ * This involves entering group options if they don't exist so that neccessary default values are correctly stored.
+ * It also involves migrating data if it is stored in a deprecated option group or in the customizer.
+ *
+ * @return void
+ */
+function maybe_update_database() {
+	// maybe_load_database_defaults function must be called first becasue it loads neccessary defaults but only if the option group is empty.
+	// The transfer functions will override the defaults that were loaded if neccessary.
+	Transfers\maybe_load_database_defaults();
+
+	// Transfer settings saved in the customizer
+	Transfers\transfer_customizer_message_settings();
+	Transfers\transfer_customizer_appearance_settings();
+
+	// Transfer settings saved in version 1.9 of the plugin where deprecated option groups are being used in the wp_options table
+	Transfers\transfer_version_1_9_panel_settings();
+}
 /**
  * Get the filterable payment pointer meta option from the database.
  *
