@@ -68,8 +68,7 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 		if ( typeof meta !== 'undefined' ) {
 			if (
 				typeof meta._coil_visibility_post_status === 'undefined' ||
-				( typeof meta._coil_visibility_post_status !== 'undefined' &&
-					meta._coil_visibility_post_status === 'gate-tagged-blocks' )
+				meta._coil_visibility_post_status === 'gate-tagged-blocks'
 			) {
 				showInspector = true;
 			}
@@ -161,8 +160,7 @@ const wrapperClass = createHigherOrderComponent( ( BlockListBlock ) => {
 		if (
 			! meta ||
 			typeof meta._coil_visibility_post_status === 'undefined' ||
-			( typeof meta._coil_visibility_post_status !== 'undefined' &&
-				meta._coil_visibility_post_status === 'gate-tagged-blocks' )
+			meta._coil_visibility_post_status === 'gate-tagged-blocks'
 		) {
 			allowBlockIdentity = true;
 		} else {
