@@ -325,9 +325,8 @@ function get_taxonomy_term_visibility( $post_id ) {
 				break;
 				// If a term's visibility has been set then save it - in contrast to it being 'default'.
 				// Don't break yet, keep checking for an exclusive state.
-			} elseif ( $post_term_visibility === 'public' || $post_term_visibility === 'gate-tagged-blocks' ) {
-				$final_term_visibility = $post_term_visibility;
 			}
+			$final_term_visibility = $post_term_visibility;
 		}
 	}
 
