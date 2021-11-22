@@ -118,12 +118,14 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 
 /**
  * Add custom element class in save element.
+ * Even though blockType is not used if it is removed the additional classes are not added on the paragraph level
  *
  * @param  {Object} extraProps Additional props applied to save element.
+ * @param  {Object} blockType  Block type.
  * @param  {Object} attributes Current block attributes.
  * @return {Object} extraProps Filtered props applied to save element.
  */
-function applyExtraClass( extraProps, attributes ) {
+function applyExtraClass( extraProps, blockType, attributes ) {
 	const { monetizeBlockDisplay } = attributes;
 
 	// Check if object exists for old Gutenberg version compatibility.
