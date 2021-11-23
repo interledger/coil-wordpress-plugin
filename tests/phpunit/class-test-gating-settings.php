@@ -40,7 +40,7 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 			'name'       => 'Public',
 		],
 		[
-			'visibility' => 'excluisve',
+			'visibility' => 'exclusive',
 			'name'       => 'Exclusive',
 		],
 	];
@@ -71,7 +71,7 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 				'post'         => $factory->post->create_and_get(),
 				'title'        => 'Enabled & exclusive',
 				'monetization' => 'monetized',
-				'visibility'   => 'excluisve',
+				'visibility'   => 'exclusive',
 			],
 			[
 				'post'         => $factory->post->create_and_get(),

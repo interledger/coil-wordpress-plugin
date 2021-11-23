@@ -288,7 +288,6 @@ function get_taxonomy_term_monetization( $post_id ) {
 		}
 	}
 
-	// $final_term_monetization will be 'default' if no term had a set monetization meta field.
 	return $final_term_monetization;
 }
 
@@ -315,9 +314,6 @@ function get_taxonomy_term_visibility( $post_id ) {
 
 	// 2) Has a monetization status been attached to this taxonomy?
 	if ( ! is_wp_error( $post_terms ) && ! empty( $post_terms ) ) {
-
-		// $final_term_visibility will be 'default' if no term had a set visibility meta field.
-		$final_term_visibility = 'default';
 
 		foreach ( $post_terms as $term_id ) {
 
