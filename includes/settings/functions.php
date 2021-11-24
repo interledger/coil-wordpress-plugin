@@ -1162,6 +1162,14 @@ function render_coil_settings_screen() : void {
 	<?php
 }
 
+function coil_add_term_custom_meta( $term ) {
+	coil_term_custom_meta( 'add', $term );
+}
+
+function coil_edit_term_custom_meta( $term ) {
+	coil_term_custom_meta( 'edit', $term );
+}
+
 /**
  * Add monetization and visibility controls to the "Add Term" and "Edit Term" screens.
  * The functions differ slightly in structure due to html requirements of the different screens.
