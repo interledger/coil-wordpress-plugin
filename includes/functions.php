@@ -407,8 +407,22 @@ function add_term_edit_save_form_meta_actions() {
 	if ( is_array( $valid_taxonomies ) && ! empty( $valid_taxonomies ) ) {
 		foreach ( $valid_taxonomies as $taxonomy ) {
 			if ( taxonomy_exists( $taxonomy ) ) {
-				$actions[] = add_action( esc_attr( $taxonomy ) . '_add_form_fields', __NAMESPACE__ . '\Settings\coil_add_term_custom_meta', 10, 2 );
-				$actions[] = add_action( esc_attr( $taxonomy ) . '_edit_form_fields', __NAMESPACE__ . '\Settings\coil_edit_term_custom_meta', 10, 2 );
+				$actions[] = add_action(
+					esc_attr( $taxonomy ) . '_add_form_fields',
+					function() use ( $args ) {
+						Settings\coil_term_custom_meta( 'add', $term );
+					},
+					10,
+					2
+				);
+				$actions[] = add_action(
+					esc_attr( $taxonomy ) . '_edit_form_fields',
+					function() use ( $args ) {
+						Settings\coil_term_custom_meta( 'edit', $term );
+					},
+					10,
+					2
+				);
 			}
 		}
 	}
