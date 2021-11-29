@@ -1210,8 +1210,8 @@ function coil_term_custom_meta( $action, $term ) {
 
 	// Retrieve the monetization and visibility meta saved on the term.
 	// If these meta fields are empty they return 'default'.
-	$term_monetization = Gating\get_term_monetization( $term->term_id );
-	$term_visibility   = Gating\get_term_visibility( $term->term_id );
+	$term_monetization = Gating\get_term_status( $term->term_id, '_coil_monetization_term_status' );
+	$term_visibility   = Gating\get_term_status( $term->term_id, '_coil_visibility_term_status' );
 	if ( $term_visibility === 'default' ) {
 		$term_visibility = $default_visibility;
 	}

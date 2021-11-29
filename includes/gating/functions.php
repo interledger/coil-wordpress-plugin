@@ -214,39 +214,22 @@ function get_excerpt_gating( $post_id ) : bool {
 
 
 /**
- * Get the monetization type for the specified term.
+ * Get the monetization / visibility status for the specified term.
  *
  * @param integer $term_id The term_id to check.
+ * @param string $meta_key { '_coil_monetization_term_status' | '_coil_visibility_term_status' }
  *
- * @return string Either "default" (default), "not-monetized", or "monetized".
+ * @return string Either "default" (default), or the applicable status.
  */
-function get_term_monetization( $term_id ) {
+function get_term_status( $term_id, $meta_key ) {
 
-	$term_id           = (int) $term_id;
-	$term_monetization = get_term_meta( $term_id, '_coil_monetization_term_status', true );
+	$term_id     = (int) $term_id;
+	$term_status = get_term_meta( $term_id, $meta_key, true );
 
-	if ( empty( $term_monetization ) ) {
-		$term_monetization = 'default';
+	if ( empty( $term_status ) ) {
+		$term_status = 'default';
 	}
-	return $term_monetization;
-}
-
-/**
- * Get the visibility type for the specified term.
- *
- * @param integer $term_id The term_id to check.
- *
- * @return string Either "default" (default), "not-monetized", or "monetized".
- */
-function get_term_visibility( $term_id ) {
-
-	$term_id         = (int) $term_id;
-	$term_visibility = get_term_meta( $term_id, '_coil_visibility_term_status', true );
-
-	if ( empty( $term_visibility ) ) {
-		$term_visibility = 'default';
-	}
-	return $term_visibility;
+	return $term_status;
 }
 
 /**
@@ -275,7 +258,7 @@ function get_taxonomy_term_monetization( $post_id ) {
 
 		foreach ( $post_terms as $term_id ) {
 
-			$post_term_monetization = get_term_monetization( $term_id );
+			$post_term_monetization = get_term_status( $term_id, '_coil_monetization_term_status' );
 			// Monetized is the highest form, if this occurs simply break out of loop and return.
 			if ( $post_term_monetization === 'monetized' ) {
 				$final_term_monetization = $post_term_monetization;
@@ -317,7 +300,7 @@ function get_taxonomy_term_visibility( $post_id ) {
 
 		foreach ( $post_terms as $term_id ) {
 
-			$post_term_visibility = get_term_visibility( $term_id );
+			$post_term_visibility = get_term_status( $term_id, '_coil_visibility_term_status' );
 			// Exclusive is the strictest form, if this occurs simply break out of loop and return.
 			if ( $post_term_visibility === 'exclusive' ) {
 				$final_term_visibility = $post_term_visibility;
