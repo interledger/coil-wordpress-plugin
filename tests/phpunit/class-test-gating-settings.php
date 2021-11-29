@@ -157,7 +157,7 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 
 		foreach ( self::$monetization_types as $category_info ) {
 			wp_create_category( $category_info['name'] );
-			Gating\set_term_monetization( get_cat_ID( $category_info['name'] ), $category_info['monetization'] );
+			Gating\set_term_status( get_cat_ID( $category_info['name'] ), '_coil_monetization_term_status', $category_info['monetization'] );
 			$post_obj = self::factory()->post->create_and_get();
 			wp_set_post_categories( $post_obj->ID, get_cat_ID( $category_info['name'] ), false );
 
@@ -176,7 +176,7 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 
 		foreach ( self::$visibility_types as $category_info ) {
 			wp_create_category( $category_info['name'] );
-			Gating\set_term_visibility( get_cat_ID( $category_info['name'] ), $category_info['visibility'] );
+			Gating\set_term_status( get_cat_ID( $category_info['name'] ), '_coil_visibility_term_status', $category_info['visibility'] );
 			$post_obj = self::factory()->post->create_and_get();
 			wp_set_post_categories( $post_obj->ID, get_cat_ID( $category_info['name'] ), false );
 
@@ -197,7 +197,7 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 			wp_create_tag( $tag_info['name'] );
 			$tag    = get_term_by( 'name', $tag_info['name'], 'post_tag' );
 			$tag_id = $tag->term_id;
-			Gating\set_term_monetization( $tag_id, $tag_info['monetization'] );
+			Gating\set_term_status( $tag_id, '_coil_monetization_term_status', $tag_info['monetization'] );
 			$post_obj = self::factory()->post->create_and_get();
 			wp_set_post_tags( $post_obj->ID, $tag_info['name'], false );
 
@@ -219,7 +219,7 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 			wp_create_tag( $tag_info['name'] );
 			$tag    = get_term_by( 'name', $tag_info['name'], 'post_tag' );
 			$tag_id = $tag->term_id;
-			Gating\set_term_visibility( $tag_id, $tag_info['visibility'] );
+			Gating\set_term_status( $tag_id, '_coil_visibility_term_status', $tag_info['visibility'] );
 			$post_obj = self::factory()->post->create_and_get();
 			wp_set_post_tags( $post_obj->ID, $tag_info['name'], false );
 
@@ -257,8 +257,8 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		// This status will override the default and become the new status of the post.
 		$category_name = 'Monetization Disabled Category';
 		wp_create_category( $category_name );
-		Gating\set_term_monetization( get_cat_ID( $category_name ), 'not-monetized' );
-		Gating\set_term_visibility( get_cat_ID( $category_name ), 'public' );
+		Gating\set_term_status( get_cat_ID( $category_name ), '_coil_monetization_term_status', 'not-monetized' );
+		Gating\set_term_status( get_cat_ID( $category_name ), '_coil_visibility_term_status', 'public' );
 		wp_set_post_categories( $post_obj->ID, get_cat_ID( $category_name ), false );
 
 		$monetization_status = Gating\get_content_status( $post_obj->ID, 'monetization' );
@@ -274,8 +274,8 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		wp_create_tag( $tag_name );
 		$tag    = get_term_by( 'name', $tag_name, 'post_tag' );
 		$tag_id = $tag->term_id;
-		Gating\set_term_monetization( $tag_id, 'monetized' );
-		Gating\set_term_visibility( $tag_id, 'exclusive' );
+		Gating\set_term_status( $tag_id, '_coil_monetization_term_status', 'monetized' );
+		Gating\set_term_status( $tag_id, '_coil_visibility_term_status', 'exclusive' );
 		wp_set_post_tags( $post_obj->ID, $tag_name, false );
 
 		$monetization_status = Gating\get_content_status( $post_obj->ID, 'monetization' );
@@ -312,8 +312,8 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		// Set the global default for posts to be exclusive.
 		$category_name = 'Exclusive Category';
 		wp_create_category( $category_name );
-		Gating\set_term_monetization( get_cat_ID( $category_name ), 'monetized' );
-		Gating\set_term_visibility( get_cat_ID( $category_name ), 'exclusive' );
+		Gating\set_term_status( get_cat_ID( $category_name ), '_coil_monetization_term_status', 'monetized' );
+		Gating\set_term_status( get_cat_ID( $category_name ), '_coil_visibility_term_status', 'exclusive' );
 		wp_set_post_categories( $post_obj->ID, get_cat_ID( $category_name ), false );
 
 		$monetization_status = Gating\get_content_status( $post_obj->ID, 'monetization' );

@@ -67,13 +67,13 @@ function maybe_save_term_meta( int $term_id, int $tt_id, $taxonomy ) : void {
 	$term_visibity     = sanitize_text_field( $_REQUEST['_coil_visibility_term_status'] ?? '' );
 
 	if ( $term_monetization ) {
-		Gating\set_term_monetization( $term_id, $term_monetization );
+		Gating\set_term_status( $term_id, '_coil_monetization_term_status', $term_monetization );
 	} else {
 		delete_term_coil_status_meta( $term_id );
 	}
 
 	if ( $term_visibity ) {
-		Gating\set_term_visibility( $term_id, $term_visibity );
+		Gating\set_term_status( $term_id, '_coil_visibility_term_status', $term_visibity );
 	} else {
 		delete_term_coil_status_meta( $term_id );
 	}

@@ -359,43 +359,31 @@ function get_content_status( $post_id, $status_type ) : string {
 }
 
 /**
- * Set the monetization type for the specified term.
+ * Set the monetization / visibility status for the specified term.
  *
- * @param integer $term_id    The term to set monetization for.
- * @param string $monetization_setting Either "default", "not-monetized", or "monetized".
- *
- * @return void
- */
-function set_term_monetization( $term_id, string $monetization_setting ) : void {
-
-	$term_id = (int) $term_id;
-
-	$valid_monetization_types = get_valid_monetization_types();
-	if ( ! in_array( $monetization_setting, $valid_monetization_types, true ) ) {
-		return;
-	}
-
-	update_term_meta( $term_id, '_coil_monetization_term_status', $monetization_setting );
-}
-
-/**
- * Set the visibility type for the specified term.
- *
- * @param integer $term_id    The term to set visibility for.
- * @param string $visibility_setting Either "default", "public", or "exclusive".
+ * @param integer $term_id  The term to set the status for.
+ * @param string $meta_key  { '_coil_monetization_term_status' | '_coil_visibility_term_status' }
+ * @param string $status    Either "default", "not-monetized", or "monetized".
  *
  * @return void
  */
-function set_term_visibility( $term_id, string $visibility_setting ) : void {
+function set_term_status( $term_id, string $meta_key, string $status ) : void {
 
 	$term_id = (int) $term_id;
 
-	$valid_visibility_types = get_valid_visibility_types();
-	if ( ! in_array( $visibility_setting, $valid_visibility_types, true ) ) {
+	if ( $meta_key === '_coil_monetization_term_status' ) {
+		$valid_status_options = get_valid_monetization_types();
+	} elseif ( $meta_key === '_coil_visibility_term_status' ) {
+		$valid_status_options = get_valid_visibility_types();
+	} else {
+		// Invalid meta key.
+		return;
+	}
+	if ( ! in_array( $status, $valid_status_options, true ) ) {
 		return;
 	}
 
-	update_term_meta( $term_id, '_coil_visibility_term_status', $visibility_setting );
+	update_term_meta( $term_id, $meta_key, $status );
 }
 
 /**
@@ -463,7 +451,7 @@ function set_post_status( $post_id, string $meta_key, string $post_status ) : vo
 		$valid_status_options = get_valid_visibility_types();
 	} else {
 		// Unrecognised meta key.
-		$valid_status_options = [];
+		return;
 	}
 
 	if ( ! in_array( $post_status, $valid_status_options, true ) ) {
