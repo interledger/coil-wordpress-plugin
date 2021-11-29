@@ -161,7 +161,7 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 			$post_obj = self::factory()->post->create_and_get();
 			wp_set_post_categories( $post_obj->ID, get_cat_ID( $category_info['name'] ), false );
 
-			$taxonomy_monetization = Gating\get_taxonomy_term_monetization( $post_obj->ID );
+			$taxonomy_monetization = Gating\get_taxonomy_term_status( $post_obj->ID, '_coil_monetization_term_status' );
 
 			$this->assertSame( $category_info['monetization'], $taxonomy_monetization );
 		}
@@ -180,7 +180,7 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 			$post_obj = self::factory()->post->create_and_get();
 			wp_set_post_categories( $post_obj->ID, get_cat_ID( $category_info['name'] ), false );
 
-			$taxonomy_visibility = Gating\get_taxonomy_term_visibility( $post_obj->ID );
+			$taxonomy_visibility = Gating\get_taxonomy_term_status( $post_obj->ID, '_coil_visibility_term_status' );
 
 			$this->assertSame( $category_info['visibility'], $taxonomy_visibility );
 		}
@@ -201,7 +201,7 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 			$post_obj = self::factory()->post->create_and_get();
 			wp_set_post_tags( $post_obj->ID, $tag_info['name'], false );
 
-			$taxonomy_monetization = Gating\get_taxonomy_term_monetization( $post_obj->ID );
+			$taxonomy_monetization = Gating\get_taxonomy_term_status( $post_obj->ID, '_coil_monetization_term_status' );
 
 			$this->assertSame( $tag_info['monetization'], $taxonomy_monetization );
 		}
@@ -223,7 +223,7 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 			$post_obj = self::factory()->post->create_and_get();
 			wp_set_post_tags( $post_obj->ID, $tag_info['name'], false );
 
-			$taxonomy_visibility = Gating\get_taxonomy_term_visibility( $post_obj->ID );
+			$taxonomy_visibility = Gating\get_taxonomy_term_status( $post_obj->ID, '_coil_visibility_term_status' );
 
 			$this->assertSame( $tag_info['visibility'], $taxonomy_visibility );
 		}

@@ -233,14 +233,15 @@ function get_term_status( $term_id, $meta_key ) {
 }
 
 /**
- * Get any terms attached to the post and return their highest monetization status.
+ * Get any terms attached to the post and return their highest monetization / visibility status.
  *
- * @return string Monetization status.
+ * @param string $meta_key { '_coil_monetization_term_status' | '_coil_visibility_term_status' }
+ * @return string Coil status.
  */
-function get_taxonomy_term_monetization( $post_id ) {
+function get_taxonomy_term_status( $post_id, $meta_key ) {
 
-	$post_id                 = (int) $post_id;
-	$final_term_monetization = 'default';
+	$post_id           = (int) $post_id;
+	$final_term_status = 'default';
 
 	$valid_taxonomies = Admin\get_valid_taxonomies();
 
@@ -253,66 +254,35 @@ function get_taxonomy_term_monetization( $post_id ) {
 		]
 	);
 
-	// 2) Has a monetization status been attached to this taxonomy?
+	// 2) Has a Coil status been attached to this taxonomy?
 	if ( ! is_wp_error( $post_terms ) && ! empty( $post_terms ) ) {
+
+		// Specifies the highest status possible
+		if ( $meta_key === '_coil_monetization_term_status' ) {
+			$highest_status = 'monetized';
+		} elseif ( $meta_key === '_coil_visibility_term_status' ) {
+			$highest_status = 'exclusive';
+		} else {
+			// Invalid meta key was used.
+			return '';
+		}
 
 		foreach ( $post_terms as $term_id ) {
 
-			$post_term_monetization = get_term_status( $term_id, '_coil_monetization_term_status' );
-			// Monetized is the highest form, if this occurs simply break out of loop and return.
-			if ( $post_term_monetization === 'monetized' ) {
-				$final_term_monetization = $post_term_monetization;
+			$post_term_status = get_term_status( $term_id, $meta_key );
+			// If a term is assigned the highest status simply break out of loop and return.
+			if ( $post_term_status === $highest_status ) {
+				$final_term_status = $post_term_status;
 				break;
-				// If a term's monetization has been set then save it - in contrast to it being 'default'.
-				// Don't break yet, keep checking for a monetized state.
-			} elseif ( $post_term_monetization === 'not-monetized' ) {
-				$final_term_monetization = $post_term_monetization;
+				// If a term's status has been set then save it - in contrast to it being 'default'.
+				// Don't break yet, keep checking for a higher state.
+			} elseif ( $post_term_status !== 'default' ) {
+				$final_term_status = $post_term_status;
 			}
 		}
 	}
 
-	return $final_term_monetization;
-}
-
-/**
- * Get any terms attached to the post and return their strictness visibility status.
- *
- * @return string Visibility status.
- */
-function get_taxonomy_term_visibility( $post_id ) {
-
-	$post_id               = (int) $post_id;
-	$final_term_visibility = 'default';
-
-	$valid_taxonomies = Admin\get_valid_taxonomies();
-
-	// 1) Get any terms assigned to the post.
-	$post_terms = wp_get_post_terms(
-		$post_id,
-		$valid_taxonomies,
-		[
-			'fields' => 'ids',
-		]
-	);
-
-	// 2) Has a monetization status been attached to this taxonomy?
-	if ( ! is_wp_error( $post_terms ) && ! empty( $post_terms ) ) {
-
-		foreach ( $post_terms as $term_id ) {
-
-			$post_term_visibility = get_term_status( $term_id, '_coil_visibility_term_status' );
-			// Exclusive is the strictest form, if this occurs simply break out of loop and return.
-			if ( $post_term_visibility === 'exclusive' ) {
-				$final_term_visibility = $post_term_visibility;
-				break;
-				// If a term's visibility has been set then save it - in contrast to it being 'default'.
-				// Don't break yet, keep checking for an exclusive state.
-			} elseif ( $post_term_visibility === 'public' ) {
-				$final_term_visibility = $post_term_visibility;
-			}
-		}
-	}
-	return $final_term_visibility;
+	return $final_term_status;
 }
 
 /**
@@ -354,9 +324,9 @@ function get_content_status( $post_id, $status_type ) : string {
 
 		// Hierarchy 2 - Check what is set on the taxonomy.
 		if ( $status_type === 'monetization' ) {
-			$term_status = get_taxonomy_term_monetization( $post_id );
+			$term_status = get_taxonomy_term_status( $post_id, '_coil_monetization_term_status' );
 		} elseif ( $status_type === 'visibility' ) {
-			$term_status = get_taxonomy_term_visibility( $post_id );
+			$term_status = get_taxonomy_term_status( $post_id, '_coil_visibility_term_status' );
 		}
 
 		if ( 'default' !== $term_status ) {
