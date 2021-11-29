@@ -311,9 +311,9 @@ function get_content_status( $post_id, $status_type ) : string {
 
 	// Hierarchy 1 - Check what is set on the post.
 	if ( $status_type === 'monetization' ) {
-		$post_status = get_post_monetization( $post_id );
+		$post_status = get_post_status( $post_id, 'monetization' );
 	} elseif ( $status_type === 'visibility' ) {
-		$post_status = get_post_visibility( $post_id );
+		$post_status = get_post_status( $post_id, 'visibility' );
 	}
 
 	if ( 'default' !== $post_status ) {
@@ -421,41 +421,27 @@ function is_monetization_and_visibility_compatible() {
 }
 
 /**
- * Get the monetization type for the specified post.
+ * Get the monetization / visibility status for the specified post.
  *
  * @param integer $post_id The post to check.
+ * @param string $status_type
  *
- * @return string Either "monetized" (default) or "not-monetized".
+ * @return string Coil status.
  */
-function get_post_monetization( $post_id ) : string {
+function get_post_status( $post_id, $status_type ) : string {
 
-	$post_id      = (int) $post_id;
-	$monetization = get_post_meta( $post_id, '_coil_monetization_post_status', true );
-
-	if ( empty( $monetization ) ) {
-		$monetization = 'default';
+	$post_id = (int) $post_id;
+	if ( $status_type === 'monetization' ) {
+		$status = get_post_meta( $post_id, '_coil_monetization_post_status', true );
+	} elseif ( $status_type === 'visibility' ) {
+		$status = get_post_meta( $post_id, '_coil_visibility_post_status', true );
 	}
 
-	return $monetization;
-}
-
-/**
- * Get the visibility type for the specified post.
- *
- * @param integer $post_id The post to check.
- *
- * @return string Either "public" (default) or "exclusive".
- */
-function get_post_visibility( $post_id ) : string {
-
-	$post_id    = (int) $post_id;
-	$visibility = get_post_meta( $post_id, '_coil_visibility_post_status', true );
-
-	if ( empty( $visibility ) ) {
-		$visibility = 'default';
+	if ( empty( $status ) ) {
+		$status = 'default';
 	}
 
-	return $visibility;
+	return $status;
 }
 
 /**
