@@ -36,8 +36,8 @@ function maybe_save_post_metabox( int $post_id ) : void {
 	$post_visibility   = sanitize_text_field( $_REQUEST['_coil_visibility_post_status'] ?? '' );
 
 	if ( $post_monetization || $post_visibility ) {
-		Gating\set_post_monetization( $post_id, $post_monetization );
-		Gating\set_post_visibility( $post_id, $post_visibility );
+		Gating\set_post_status( $post_id, '_coil_monetization_post_status', $post_monetization );
+		Gating\set_post_status( $post_id, '_coil_visibility_post_status', $post_visibility );
 	} else {
 		delete_post_meta( $post_id, '_coil_monetization_post_status' );
 		delete_post_meta( $post_id, '_coil_visibility_post_status' );

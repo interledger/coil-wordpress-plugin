@@ -82,8 +82,8 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		];
 
 		foreach ( self::$basic_posts as $post_array ) {
-			Gating\set_post_monetization( $post_array['post']->ID, $post_array['monetization'] );
-			Gating\set_post_visibility( $post_array['post']->ID, $post_array['visibility'] );
+			Gating\set_post_status( $post_array['post']->ID, '_coil_monetization_post_status', $post_array['monetization'] );
+			Gating\set_post_status( $post_array['post']->ID, '_coil_visibility_post_status', $post_array['visibility'] );
 		}
 	}
 
@@ -286,8 +286,8 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 
 		// Add a post-level status with monetization enabled and public visibility.
 		// This status has the highest priority and will become the new status of the post.
-		Gating\set_post_monetization( $post_obj->ID, 'monetized' );
-		Gating\set_post_visibility( $post_obj->ID, 'public' );
+		Gating\set_post_status( $post_obj->ID, '_coil_monetization_post_status', 'monetized' );
+		Gating\set_post_status( $post_obj->ID, '_coil_visibility_post_status', 'public' );
 
 		$monetization_status = Gating\get_content_status( $post_obj->ID, 'monetization' );
 		$visibility_status   = Gating\get_content_status( $post_obj->ID, 'visibility' );

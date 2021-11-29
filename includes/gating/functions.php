@@ -445,41 +445,30 @@ function get_post_status( $post_id, $status_type ) : string {
 }
 
 /**
- * Set the monetization status for the specified post.
+ * Set the monetization / visibility status for the specified post.
  *
- * @param integer $post_id    The post to set gating for.
- * @param string $post_monetization Either "default", "not-monetized", or "monetized".
- *
- * @return void
- */
-function set_post_monetization( $post_id, string $post_monetization ) : void {
-
-	$post_id = (int) $post_id;
-
-	$valid_monetization_options = Admin\get_monetization_types();
-	if ( ! in_array( $post_monetization, $valid_monetization_options, true ) ) {
-		$post_monetization = 'default';
-	}
-
-	update_post_meta( $post_id, '_coil_monetization_post_status', $post_monetization );
-}
-
-/**
- * Set the visibility status for the specified post.
- *
- * @param integer $post_id    The post to set gating for.
- * @param string $post_visibility Either "default", "public", or "exclusive".
+ * @param integer $post_id The post to set gating for.
+ * @param string $meta_key { '_coil_monetization_post_status' | '_coil_visibility_post_status' }
+ * @param string $post_status Coil status.
  *
  * @return void
  */
-function set_post_visibility( $post_id, string $post_visibility ) : void {
+function set_post_status( $post_id, string $meta_key, string $post_status ) : void {
 
 	$post_id = (int) $post_id;
 
-	$valid_visibility_options = array_keys( Admin\get_visibility_types() );
-	if ( ! in_array( $post_visibility, $valid_visibility_options, true ) ) {
-		$post_visibility = 'default';
+	if ( $meta_key === '_coil_monetization_post_status' ) {
+		$valid_status_options = get_valid_monetization_types();
+	} elseif ( $meta_key === '_coil_visibility_post_status' ) {
+		$valid_status_options = get_valid_visibility_types();
+	} else {
+		// Unrecognised meta key.
+		$valid_status_options = [];
 	}
 
-	update_post_meta( $post_id, '_coil_visibility_post_status', $post_visibility );
+	if ( ! in_array( $post_status, $valid_status_options, true ) ) {
+		$post_status = 'default';
+	}
+
+	update_post_meta( $post_id, $meta_key, $post_status );
 }
