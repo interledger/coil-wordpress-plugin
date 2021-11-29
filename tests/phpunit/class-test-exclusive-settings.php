@@ -330,7 +330,7 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 	 */
 	public function test_if_default_content_container_is_retrieved_successfully() :  void {
 
-		$css_selector = Admin\get_css_selector( 'coil_content_container' );
+		$css_selector = Admin\get_css_selector();
 
 		$this->assertSame( '.content-area .entry-content', $css_selector );
 	}
@@ -345,7 +345,7 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 		$content_container = [ 'coil_content_container' => '.content-area .entry-content, .post-story' ];
 		update_option( 'coil_exclusive_settings_group', $content_container );
 
-		$retrieved_content_container = Admin\get_css_selector( 'coil_content_container' );
+		$retrieved_content_container = Admin\get_css_selector();
 
 		$this->assertSame( $content_container['coil_content_container'], $retrieved_content_container );
 	}

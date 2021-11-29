@@ -573,20 +573,15 @@ function get_excerpt_display_default() {
 
 /**
  * Retrieve the CSS selector setting settings.
- * @param string $field_name
  * @return string Setting stored in options.
  */
-function get_css_selector( $field_name ) {
+function get_css_selector() {
 
-	if ( $field_name === 'coil_content_container' ) {
-		$exclusive_options = get_exclusive_settings();
-		if ( empty( $exclusive_options ['coil_content_container'] ) ) {
-			return '.content-area .entry-content';
-		} else {
-			return $exclusive_options ['coil_content_container'];
-		}
+	$exclusive_options = get_exclusive_settings();
+	if ( empty( $exclusive_options ['coil_content_container'] ) ) {
+		return '.content-area .entry-content';
 	} else {
-		return '';
+		return $exclusive_options ['coil_content_container'];
 	}
 }
 

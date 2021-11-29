@@ -205,7 +205,7 @@ function load_full_assets() : void {
 	$strings = apply_filters(
 		'coil_js_ui_messages',
 		[
-			'content_container'       => Admin\get_css_selector( 'coil_content_container' ),
+			'content_container'       => Admin\get_css_selector(),
 			'paywall_title'           => Admin\get_paywall_text_settings_or_default( 'coil_paywall_title' ),
 			'loading_content'         => Admin\get_set_message_fields( 'coil_verifying_status_message' ),
 			'paywall_message'         => Admin\get_paywall_text_settings_or_default( 'coil_paywall_message' ),
