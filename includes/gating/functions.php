@@ -133,7 +133,7 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 		return $title;
 	}
 
-	$status = get_content_visibility( $id );
+	$status = get_content_status( $id, 'visibility' );
 	if ( $status !== 'exclusive' ) {
 		return $title;
 	}
@@ -162,7 +162,7 @@ function maybe_restrict_content( string $content ) : string {
 		return $content;
 	}
 
-	$coil_visibility_status = get_content_visibility( get_the_ID() );
+	$coil_visibility_status = get_content_status( get_the_ID(), 'visibility' );
 	$post_obj               = get_post( get_the_ID() );
 	$content_excerpt        = $post_obj->post_excerpt;
 	$public_content         = '';
@@ -333,34 +333,52 @@ function get_taxonomy_term_visibility( $post_id ) {
 }
 
 /**
- * Return the single source of truth for post monetization based on the fallback
- * options if the post monetization selection is 'default'. E.g.
- * If return value of each function is default, move onto the next function,
+ * Return the single source of truth for post monetization & visibility
+ * status based on the fallback options  * if the post status selection is 'default'.
+ * E.g. If return value of each function is default, move onto the next function,
  * otherwise return immediately.
  *
  * @param integer $post_id
- * @return string $content_monetization Monetization slug type.
+ * @param string $status_type {'monetization' | 'visibility'}
+ * @return string $content_status Monetization or visibility status slug.
  */
-function get_content_monetization( $post_id ) : string {
+function get_content_status( $post_id, $status_type ) : string {
 
-	$post_id           = (int) $post_id;
-	$post_monetization = get_post_monetization( $post_id );
+	$post_id = (int) $post_id;
 
-	// Set a default monetization value.
-	$content_monetization = Admin\get_monetization_default();
+	// Set a default value in case nothing has been set on the post or in the database.
+	if ( $status_type === 'monetization' ) {
+		$content_status = Admin\get_monetization_default();
+	} elseif ( $status_type === 'visibility' ) {
+		$content_status = Admin\get_visibility_default();
+	} else {
+		// Return if an unrecognised status type is being used
+		return '';
+	}
 
 	// Hierarchy 1 - Check what is set on the post.
-	if ( 'default' !== $post_monetization ) {
+	if ( $status_type === 'monetization' ) {
+		$post_status = get_post_monetization( $post_id );
+	} elseif ( $status_type === 'visibility' ) {
+		$post_status = get_post_visibility( $post_id );
+	}
 
-		$content_monetization = $post_monetization; // Honour what is set on the post.
+	if ( 'default' !== $post_status ) {
+
+		$content_status = $post_status; // Honour what is set on the post.
 
 	} else {
 
 		// Hierarchy 2 - Check what is set on the taxonomy.
-		$taxonomy_monetization = get_taxonomy_term_monetization( $post_id );
-		if ( 'default' !== $taxonomy_monetization ) {
+		if ( $status_type === 'monetization' ) {
+			$term_status = get_taxonomy_term_monetization( $post_id );
+		} elseif ( $status_type === 'visibility' ) {
+			$term_status = get_taxonomy_term_visibility( $post_id );
+		}
 
-			$content_monetization = $taxonomy_monetization; // Honour what is set on the taxonomy.
+		if ( 'default' !== $term_status ) {
+
+			$content_status = $term_status; // Honour what is set on the taxonomy.
 
 		} else {
 
@@ -368,64 +386,23 @@ function get_content_monetization( $post_id ) : string {
 			// Get the post type for this post to check against what is set for default.
 			$post = get_post( $post_id );
 
-			// Get the post type from what is saved in global options
-			$general_settings = Admin\get_exclusive_settings();
-
-			if ( ! empty( $general_settings ) && ! empty( $post ) && isset( $general_settings[ $post->post_type . '_monetization' ] ) ) {
-				$content_monetization = $general_settings[ $post->post_type . '_monetization' ];
+			if ( $status_type === 'monetization' ) {
+				// Get the post type from what is saved in the global options
+				$general_settings = Admin\get_general_settings();
+				if ( ! empty( $general_settings ) && ! empty( $post ) && isset( $general_settings[ $post->post_type . '_monetization' ] ) ) {
+					$content_status = $general_settings[ $post->post_type . '_monetization' ];
+				}
+			} elseif ( $status_type === 'visibility' ) {
+				// Get the post type from what is saved in the exclusive options
+				$exclusive_settings = Admin\get_exclusive_settings();
+				if ( ! empty( $exclusive_settings ) && ! empty( $post ) && isset( $exclusive_settings[ $post->post_type . '_visibility' ] ) ) {
+					$content_status = $exclusive_settings[ $post->post_type . '_visibility' ];
+				}
 			}
 		}
 	}
 
-	return $content_monetization;
-}
-
-/**
- * Return the single source of truth for post visibility based on the fallback
- * options if the post visibility selection is 'default'. E.g.
- * If return value of each function is default, move onto the next function,
- * otherwise return immediately.
- *
- * @param integer $post_id
- * @return string $content_visibility Visibility slug type.
- */
-function get_content_visibility( $post_id ) : string {
-
-	$post_id         = (int) $post_id;
-	$post_visibility = get_post_visibility( $post_id );
-
-	// Set a default visibility value.
-	$content_visibility = Admin\get_post_visibility_default();
-
-	// Hierarchy 1 - Check what is set on the post.
-	if ( 'default' !== $post_visibility ) {
-
-		$content_visibility = $post_visibility; // Honour what is set on the post.
-
-	} else {
-
-		// Hierarchy 2 - Check what is set on the taxonomy.
-		$taxonomy_visibility = get_taxonomy_term_visibility( $post_id );
-		if ( 'default' !== $taxonomy_visibility ) {
-
-			$content_visibility = $taxonomy_visibility; // Honour what is set on the taxonomy.
-
-		} else {
-
-			// Hierarchy 3 - Check what is set in the global default.
-			// Get the post type for this post to check against what is set for default.
-			$post = get_post( $post_id );
-
-			// Get the post type from what is saved in global options
-			$exclusive_settings = Admin\get_exclusive_settings();
-
-			if ( ! empty( $exclusive_settings ) && ! empty( $post ) && isset( $exclusive_settings[ $post->post_type . '_visibility' ] ) ) {
-				$content_visibility = $exclusive_settings[ $post->post_type . '_visibility' ];
-			}
-		}
-	}
-
-	return $content_visibility;
+	return $content_status;
 }
 
 /**
@@ -470,14 +447,14 @@ function set_term_visibility( $term_id, string $visibility_setting ) : void {
 
 /**
  * New function to determine if the content is monetized
- * based on the output of get_content_monetization.
+ * based on the output of get_content_status.
  *
  * @param int $post_id
  * @return boolean
  */
 function is_content_monetized( $post_id ) : bool {
 
-	$monetization_status = get_content_monetization( $post_id );
+	$monetization_status = get_content_status( $post_id, 'monetization' );
 	return ( $monetization_status === 'not-monetized' ) ? false : true;
 }
 

@@ -69,13 +69,13 @@ function maybe_save_term_meta( int $term_id, int $tt_id, $taxonomy ) : void {
 	if ( $term_monetization ) {
 		Gating\set_term_monetization( $term_id, $term_monetization );
 	} else {
-		delete_term_monetization_and_gating_meta( $term_id );
+		delete_term_coil_status_meta( $term_id );
 	}
 
 	if ( $term_visibity ) {
 		Gating\set_term_visibility( $term_id, $term_visibity );
 	} else {
-		delete_term_monetization_and_gating_meta( $term_id );
+		delete_term_coil_status_meta( $term_id );
 	}
 
 }
@@ -86,7 +86,7 @@ function maybe_save_term_meta( int $term_id, int $tt_id, $taxonomy ) : void {
  * @param int $term The term id.
  * @return void
  */
-function delete_term_monetization_and_gating_meta( $term_id ) {
+function delete_term_coil_status_meta( $term_id ) {
 
 	if ( empty( $term_id ) ) {
 		return;
@@ -556,7 +556,7 @@ function get_visibility_types() : array {
  *
  * @return string
  */
-function get_post_visibility_default() {
+function get_visibility_default() {
 
 	return 'public';
 }

@@ -57,7 +57,7 @@ function init_plugin() : void {
 	// Term meta.
 	add_action( 'edit_term', __NAMESPACE__ . '\Admin\maybe_save_term_meta', 10, 3 );
 	add_action( 'create_term', __NAMESPACE__ . '\Admin\maybe_save_term_meta', 10, 3 );
-	add_action( 'delete_term', __NAMESPACE__ . '\Admin\delete_term_monetization_and_gating_meta' );
+	add_action( 'delete_term', __NAMESPACE__ . '\Admin\delete_term_coil_status_meta' );
 	add_term_edit_save_form_meta_actions();
 
 	// Customizer settings.
@@ -301,9 +301,9 @@ function add_body_class( $classes ) : array {
 	if ( Gating\is_content_monetized( get_queried_object_id() ) ) {
 		$classes[] = 'monetization-not-initialized';
 
-		$coil_monetization_status = Gating\get_content_monetization( get_queried_object_id() );
+		$coil_monetization_status = Gating\get_content_status( get_queried_object_id(), 'monetization' );
 		$classes[]                = sanitize_html_class( 'coil-' . $coil_monetization_status );
-		$coil_visibility_status   = Gating\get_content_visibility( get_queried_object_id() );
+		$coil_visibility_status   = Gating\get_content_status( get_queried_object_id(), 'visibility' );
 		$classes[]                = sanitize_html_class( 'coil-' . $coil_visibility_status );
 
 		if ( ! empty( $payment_pointer_id ) ) {

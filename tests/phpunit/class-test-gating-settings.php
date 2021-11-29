@@ -247,8 +247,8 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		$visibility_settings = [ 'post_visibility' => 'exclusive' ];
 		update_option( 'coil_exclusive_settings_group', $visibility_settings );
 
-		$monetization_status = Gating\get_content_monetization( $post_obj->ID );
-		$visibility_status   = Gating\get_content_visibility( $post_obj->ID );
+		$monetization_status = Gating\get_content_status( $post_obj->ID, 'monetization' );
+		$visibility_status   = Gating\get_content_status( $post_obj->ID, 'visibility' );
 
 		$this->assertSame( 'monetized', $monetization_status );
 		$this->assertSame( 'exclusive', $visibility_status );
@@ -261,8 +261,8 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		Gating\set_term_visibility( get_cat_ID( $category_name ), 'public' );
 		wp_set_post_categories( $post_obj->ID, get_cat_ID( $category_name ), false );
 
-		$monetization_status = Gating\get_content_monetization( $post_obj->ID );
-		$visibility_status   = Gating\get_content_visibility( $post_obj->ID );
+		$monetization_status = Gating\get_content_status( $post_obj->ID, 'monetization' );
+		$visibility_status   = Gating\get_content_status( $post_obj->ID, 'visibility' );
 
 		$this->assertSame( 'not-monetized', $monetization_status );
 		$this->assertSame( 'public', $visibility_status );
@@ -278,8 +278,8 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		Gating\set_term_visibility( $tag_id, 'exclusive' );
 		wp_set_post_tags( $post_obj->ID, $tag_name, false );
 
-		$monetization_status = Gating\get_content_monetization( $post_obj->ID );
-		$visibility_status   = Gating\get_content_visibility( $post_obj->ID );
+		$monetization_status = Gating\get_content_status( $post_obj->ID, 'monetization' );
+		$visibility_status   = Gating\get_content_status( $post_obj->ID, 'visibility' );
 
 		$this->assertSame( 'monetized', $monetization_status );
 		$this->assertSame( 'exclusive', $visibility_status );
@@ -289,8 +289,8 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		Gating\set_post_monetization( $post_obj->ID, 'monetized' );
 		Gating\set_post_visibility( $post_obj->ID, 'public' );
 
-		$monetization_status = Gating\get_content_monetization( $post_obj->ID );
-		$visibility_status   = Gating\get_content_visibility( $post_obj->ID );
+		$monetization_status = Gating\get_content_status( $post_obj->ID, 'monetization' );
+		$visibility_status   = Gating\get_content_status( $post_obj->ID, 'visibility' );
 
 		$this->assertSame( 'monetized', $monetization_status );
 		$this->assertSame( 'public', $visibility_status );
@@ -302,8 +302,8 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		$visibility_settings = [ 'post_visibility' => 'public' ];
 		update_option( 'coil_exclusive_settings_group', $visibility_settings );
 
-		$monetization_status = Gating\get_content_monetization( $post_obj->ID );
-		$visibility_status   = Gating\get_content_visibility( $post_obj->ID );
+		$monetization_status = Gating\get_content_status( $post_obj->ID, 'monetization' );
+		$visibility_status   = Gating\get_content_status( $post_obj->ID, 'visibility' );
 
 		$this->assertSame( 'monetized', $monetization_status );
 		$this->assertSame( 'public', $visibility_status );
@@ -316,8 +316,8 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		Gating\set_term_visibility( get_cat_ID( $category_name ), 'exclusive' );
 		wp_set_post_categories( $post_obj->ID, get_cat_ID( $category_name ), false );
 
-		$monetization_status = Gating\get_content_monetization( $post_obj->ID );
-		$visibility_status   = Gating\get_content_visibility( $post_obj->ID );
+		$monetization_status = Gating\get_content_status( $post_obj->ID, 'monetization' );
+		$visibility_status   = Gating\get_content_status( $post_obj->ID, 'visibility' );
 
 		$this->assertSame( 'monetized', $monetization_status );
 		$this->assertSame( 'public', $visibility_status );

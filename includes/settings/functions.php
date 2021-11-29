@@ -240,7 +240,7 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 	// Defaults if setting fields are empty
 	$post_monetization_default = Admin\get_monetization_default();
 	$paywall_defaults          = Admin\get_paywall_appearance_defaults();
-	$post_visibility_default   = Admin\get_post_visibility_default();
+	$post_visibility_default   = Admin\get_visibility_default();
 
 	// Monetization defaults are needed to check that the 'exclusive' and 'not-monetized' defaults are never set on a post type
 	$post_monetization_settings = Admin\get_general_settings();
