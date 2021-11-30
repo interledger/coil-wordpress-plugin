@@ -2,23 +2,159 @@
  * Site setting / option tests.
  */
 
-describe( 'Tag Settings', function() {
+ describe( 'Tag Settings', function() {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
 		cy.resetSite();
 	} );
 
+	it( 'checks that Coil tag settings are rendered correctly on the "Add Term" screen', function() {
+		cy.visit( '/wp-admin/edit-tags.php?taxonomy=post_tag' );
+
+		// Create a tag
+		cy.get( '#tag-name' ).type( 'demotag' );
+		cy.get( '#tag-slug' ).type( 'demotagslug' );
+
+		// The Default setting should be selected in the dropdown and the radio options should not be present
+		cy.get( '#monetization_dropdown' ).invoke('val').should('eq', 'default');
+		cy.get('#monetization_dropdown').find('option:selected').should('have.text', 'Default (Enabled & public)');
+		cy.get('#coil-radio-selection').should('have.attr', 'style', 'display: none');
+
+		// When "Enabled" is selected the radio options should appear with "Everyone" selected
+		cy.get( '#monetization_dropdown' ).select('Enabled');
+		cy.get('#coil-radio-selection').should('not.have.attr', 'style', 'display: none');
+		cy.get( '#public' ).should( 'be.checked' );
+		// Check that changing the radio option value won
+
+		// When "Disabled" is selected the radio options should disappear
+		cy.get( '#monetization_dropdown' ).select('Disabled');
+		cy.get('#coil-radio-selection').should('have.attr', 'style', 'display: none');
+
+		// When "Enabled" is selected the radio options should appear with "Everyone" selected again
+		cy.get( '#monetization_dropdown' ).select('Enabled');
+		cy.get('#coil-radio-selection').should('not.have.attr', 'style', 'display: none');
+		cy.get( '#public' ).should( 'be.checked' );
+
+		// When "Default" is selected the radio options should disappear again
+		cy.get( '#monetization_dropdown' ).select('Default (Enabled & public)');
+		cy.get('#coil-radio-selection').should('have.attr', 'style', 'display: none');
+
+		// TODO: 
+		//INSERT INTO wp_options (option_name, option_value) VALUES ("coil_general_settings_group", 'a:1:{s:17:"post_monetization";s:13:"not-monetized";}');
+		// Change the default post status to "Disabled"
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=general_settings' );
+		cy.get( '#post_monetization_not-monetized' ).click();
+		cy.get( '#submit' ).click();
+
+		cy.visit( '/wp-admin/edit-tags.php?taxonomy=post_tag' );
+
+		// Create a tag
+		cy.get( '#tag-name' ).type( 'demotag' );
+		cy.get( '#tag-slug' ).type( 'demotagslug' );
+
+		// "Default (Disabled)" should now be the default text
+		cy.get( '#monetization_dropdown' ).invoke('val').should('eq', 'default');
+		cy.get('#monetization_dropdown').find('option:selected').should('have.text', 'Default (Disabled)');
+		cy.get('#coil-radio-selection').should('have.attr', 'style', 'display: none');
+
+		// Change the default post status to monetized and exclusive
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=general_settings' );
+		cy.get( '#post_monetization_monetized' ).click();
+		cy.get( '#submit' ).click();
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );
+		cy.get( '#post_visibility_exclusive' ).click();
+		cy.get( '#submit' ).click();
+
+		cy.visit( '/wp-admin/edit-tags.php?taxonomy=post_tag' );
+
+		// Create a tag
+		cy.get( '#tag-name' ).type( 'demotag' );
+		cy.get( '#tag-slug' ).type( 'demotagslug' );
+
+		// "Default (Enabled & exclusive)" should now be the default text
+		cy.get( '#monetization_dropdown' ).invoke('val').should('eq', 'default');
+		cy.get('#monetization_dropdown').find('option:selected').should('have.text', 'Default (Enabled & exclusive)');
+		cy.get('#coil-radio-selection').should('have.attr', 'style', 'display: none');
+
+		// Change the default post status back to monetized and public
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=general_settings' );
+		cy.get( '#post_monetization_monetized' ).click();
+		cy.get( '#submit' ).click();
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );
+		cy.get( '#post_visibility_public' ).click();
+		cy.get( '#submit' ).click();
+	
+		cy.visit( '/wp-admin/edit-tags.php?taxonomy=post_tag' );
+
+		// Create a tag
+		cy.get( '#tag-name' ).type( 'demotag' );
+		cy.get( '#tag-slug' ).type( 'demotagslug' );
+
+		// "Default (Enabled & public)" should now be the default text
+		cy.get( '#monetization_dropdown' ).invoke('val').should('eq', 'default');
+		cy.get('#monetization_dropdown').find('option:selected').should('have.text', 'Default (Enabled & public)');
+		cy.get('#coil-radio-selection').should('have.attr', 'style', 'display: none');
+
+	} );
+
+	it( 'checks that Coil tag settings are rendered correctly on the "Edit Term" screen', function() {
+		cy.visit( '/wp-admin/edit-tags.php?taxonomy=post_tag' );
+
+		// Create a tag
+		cy.get( '#tag-name' ).type( 'demotag' );
+		cy.get( '#tag-slug' ).type( 'demotagslug' );
+
+		// Leave it set to "Default"
+		cy.get( '#submit' ).click();
+
+		// Re-open and edit the tag to check the correct status is selected
+		const editTag =
+			'.row-actions span.edit a[aria-label="Edit “demotag”"]';
+		cy.get( editTag ).then( ( $element ) => {
+			$element[ 0 ].click();
+		} );
+
+		// Re-open and edit the tag to check the correct status is selected and change it to "Disabled".
+		cy.visit( '/wp-admin/edit-tags.php?taxonomy=post_tag' );
+		cy.get( editTag ).then( ( $element ) => {
+			$element[ 0 ].click();
+		} );
+
+		// The Default setting should be selected in the dropdown and the radio options should not be present
+		cy.get( '#monetization_dropdown' ).invoke('val').should('eq', 'default');
+		cy.get('#monetization_dropdown').find('option:selected').should('have.text', 'Default (Enabled & public)');
+		cy.get('#coil-radio-selection').should('have.attr', 'style', 'display: none');
+
+		// When "Enabled" is selected the radio options should appear with "Everyone" selected
+		cy.get( '#monetization_dropdown' ).select('Enabled');
+		cy.get('#coil-radio-selection').should('not.have.attr', 'style', 'display: none');
+		cy.get( '#public' ).should( 'be.checked' );
+		// Check that changing the radio option value won
+
+		// When "Disabled" is selected the radio options should disappear
+		cy.get( '#monetization_dropdown' ).select('Disabled');
+		cy.get('#coil-radio-selection').should('have.attr', 'style', 'display: none');
+
+		// When "Enabled" is selected the radio options should appear with "Everyone" selected again
+		cy.get( '#monetization_dropdown' ).select('Enabled');
+		cy.get('#coil-radio-selection').should('not.have.attr', 'style', 'display: none');
+		cy.get( '#public' ).should( 'be.checked' );
+
+		// When "Default" is selected the radio options should disappear again
+		cy.get( '#monetization_dropdown' ).select('Default (Enabled & public)');
+		cy.get('#coil-radio-selection').should('have.attr', 'style', 'display: none');
+	} );
+
 	it( 'checks that Coil tag settings can be updated', function() {
 		cy.visit( '/wp-admin/edit-tags.php?taxonomy=post_tag' );
 
-		/*
+		/* TODO: Remove - all taxonomies deleted before each test once database issues resolved.
 		 * This is a workaround for WordPress hiding the Quick Actions row.
 		 *
 		 * Read https://docs.cypress.io/guides/core-concepts/conditional-testing.html#Element-existence
 		 * before using this pattern anywhere else.
 		 */
-		const deleteTag =
-			'.row-actions span.delete a[aria-label="Delete “demotag”"]';
+		const deleteTag = '.row-actions span.delete a[aria-label="Delete “demotag”"]';
 		cy.get( 'body' ).then( ( $body ) => {
 			if ( $body.find( deleteTag ).length ) {
 				cy.get( deleteTag ).click( { force: true } );
@@ -29,40 +165,38 @@ describe( 'Tag Settings', function() {
 		cy.get( '#tag-name' ).type( 'demotag' );
 		cy.get( '#tag-slug' ).type( 'demotagslug' );
 
-		// Make the tag "fully gated"
-		cy.get( '#coil-category-settings > label[for="gate-all"]' ).click();
+		// Make the tag monetized and exclusive
+		cy.get( '#monetization_dropdown' ).select('Enabled');
+		cy.get( '#exclusive' ).click();
 		cy.get( '#submit' ).click();
 
-		// Re-open and edit the tag to check the correct "gate-all" label is still applied and change it to "no-gating"
+		// Re-open and edit the tag to check the correct status is selected and change it to monetized and public.
 		const editTag =
 			'.row-actions span.edit a[aria-label="Edit “demotag”"]';
 		cy.get( editTag ).then( ( $element ) => {
 			$element[ 0 ].click();
 		} );
-		cy.get( '#coil-category-settings > label[for="gate-all"] input' ).should(
-			'be.checked',
-		);
-		cy.get( '#coil-category-settings > label[for="no-gating"] input' ).click();
+		cy.get( '#monetization_dropdown' ).invoke('val').should('eq', 'monetized');
+		cy.get( '#exclusive' ).should( 'be.checked' );
+		cy.get( '#coil-visibility-settings > label[for="public"] input' ).click();
 		cy.get( '.button' ).click();
 
-		// Re-open and edit the tag to check the correct "no-gating" label is still applied and change it to "no"
+		// Re-open and edit the tag to check the correct status is selected and change it to "Disabled".
 		cy.visit( '/wp-admin/edit-tags.php?taxonomy=post_tag' );
 		cy.get( editTag ).then( ( $element ) => {
 			$element[ 0 ].click();
 		} );
-		cy.get( '#coil-category-settings > label[for="no-gating"] input' ).should(
-			'be.checked',
-		);
-		cy.get( '#coil-category-settings > label[for="no"] input' ).click();
+		cy.get( '#monetization_dropdown' ).invoke('val').should('eq', 'monetized');
+		cy.get( '#public' ).should( 'be.checked' );
+		cy.get( '#monetization_dropdown' ).select('Disabled');
 		cy.get( '.button' ).click();
 
-		// Re-open and edit the tag to check the correct "no" label is still applied
+		// Re-open and edit the tag to check the correct status is selected
 		cy.visit( '/wp-admin/edit-tags.php?taxonomy=post_tag' );
 		cy.get( editTag ).then( ( $element ) => {
 			$element[ 0 ].click();
 		} );
-		cy.get( '#coil-category-settings > label[for="no"] input' ).should(
-			'be.checked',
-		);
+		cy.get( '#monetization_dropdown' ).invoke('val').should('eq', 'not-monetized');
+		cy.get('#coil-radio-selection').should('have.attr', 'style', 'display: none');
 	} );
 } );

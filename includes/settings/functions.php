@@ -1233,7 +1233,7 @@ function coil_term_custom_meta( $action, $term ) {
 
 	?>
 
-	<select name="_coil_monetization_term_status" id="monetization_dropdown">
+	<select name="_coil_monetization_term_status" id="monetization_dropdown" onchange="handleRadioOptionsDisplay()">
 		<?php
 		foreach ( $monetization_options as $setting_key => $setting_value ) {
 
@@ -1280,7 +1280,7 @@ function coil_term_custom_meta( $action, $term ) {
 			<label><?php esc_html_e( 'Who can access this content?', 'coil-web-monetization' ); ?></label>
 		</th>
 		<td>
-			<fieldset id="coil-category-settings">
+			<fieldset id="coil-visibility-settings">
 			<?php
 			foreach ( $visibility_options as $setting_key => $setting_value ) {
 
@@ -1315,23 +1315,16 @@ function coil_term_custom_meta( $action, $term ) {
 
 	<script>
 
-	function displayRadioOptions() {
+	function handleRadioOptionsDisplay() {
 		var radioButtons = document.getElementById("coil-radio-selection");
-		radioButtons.removeAttribute("style");
-	}
-
-	function hideRadioOptions() {
-		var radioButtons = document.getElementById("coil-radio-selection");
-		radioButtons.setAttribute("style", "display: none" );
-	}
-
-	document.getElementById("monetization_dropdown").addEventListener("click", function () {
 		if (document.getElementById("monetization_dropdown").value === 'monetized') {
-			displayRadioOptions();
+			radioButtons.removeAttribute("style");
 		} else {
-			hideRadioOptions();
+			radioButtons.setAttribute("style", "display: none" );
 		}
-	});
+	}
+
+	handleRadioOptionsDisplay();
 
 	</script>
 
