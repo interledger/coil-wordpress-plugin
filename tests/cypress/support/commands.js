@@ -99,12 +99,12 @@ Cypress.Commands.add( 'stopWebMonetization', () => {
  * If any extra Coil customizations are added they must be added to the delete query.
  */
 Cypress.Commands.add( 'resetSite', () => {
-	// // Removes all custom data from the database
-	// cy.exec( 'wp db query \'DELETE FROM wp_options WHERE option_name IN ( "coil_general_settings_group", "coil_exclusive_settings_group", "coil_button_settings_group");\' --allow-root' );
-	// cy.exec( 'wp db query \'DELETE FROM wp_postmeta;\' --allow-root' );
-	// cy.exec( 'wp db query \'DELETE FROM wp_posts;\' --allow-root' );
-	// cy.exec( 'wp db query \'DELETE FROM wp_termmeta;\' --allow-root' );
-	// cy.exec( 'wp db query \'DELETE FROM wp_terms;\' --allow-root' );
+	// Removes all custom data from the database
+	cy.exec( 'wp db query \'DELETE FROM wp_options WHERE option_name IN ( "coil_general_settings_group", "coil_exclusive_settings_group", "coil_button_settings_group");\' --allow-root' );
+	cy.exec( 'wp db query \'DELETE FROM wp_postmeta;\' --allow-root' );
+	cy.exec( 'wp db query \'DELETE FROM wp_posts;\' --allow-root' );
+	cy.exec( 'wp db query \'DELETE FROM wp_termmeta;\' --allow-root' );
+	cy.exec( 'wp db query \'DELETE FROM wp_terms;\' --allow-root' );
 
 	// Adds site data back into the database
 	cy.exec( 'wp import cypress/fixtures/coil-automation-CI.xml --authors=create  --allow-root' );
