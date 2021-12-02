@@ -1,4 +1,4 @@
-describe( 'Padlock test', () => {
+describe( 'Exclusive post appearance test', () => {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
 		cy.resetSite();
@@ -27,21 +27,19 @@ describe( 'Padlock test', () => {
  * @param {('check'|'uncheck')} checkboxState state for the padlock display
  */
 function togglePadlock( checkboxState ) {
-	cy.visit( '/wp-admin/admin.php?page=coil_settings' );
-
-	cy.get( '.nav-tab-wrapper > #coil-appearance-settings' )
-		.contains( 'Appearance' )
-		.click();
+	cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );
 
 	switch ( checkboxState ) {
 		case 'check':
 			cy
-				.get( '#display_padlock_id' )
+				.get( '#coil_title_padlock' )
+				.click()
 				.check();
 			break;
 		case 'uncheck':
 			cy
-				.get( '#display_padlock_id' )
+				.get( '#coil_title_padlock' )
+				.click()
 				.uncheck();
 			break;
 	}
