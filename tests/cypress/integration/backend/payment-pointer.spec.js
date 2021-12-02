@@ -9,12 +9,8 @@ describe( 'Plugin Settings Panel', function() {
 	} );
 
 	it( 'Check warning pops up if payment pointer is empty', function( ) {
-		cy.get( '#adminmenu' )
-			.find( 'div.wp-menu-name' )
-			.contains( 'Coil' )
-			.click();
 
-		cy.get( '#coil-general-settings' ).click();
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=general_settings' )
 
 		cy.get( '#coil_payment_pointer' )
 			.click()
@@ -24,15 +20,11 @@ describe( 'Plugin Settings Panel', function() {
 	} );
 
 	it( 'check that the payment pointer can be set', function() {
-		cy.get( '#adminmenu' )
-			.find( 'div.wp-menu-name' )
-			.contains( 'Coil' )
-			.click();
 
-		cy.get( '#coil-global-settings' ).click();
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=general_settings' )
 
 		const paymentPointer = 'https://example.com/' + Math.random().toString( 36 ) + '/.well-known/pay';
-		cy.get( '#coil_payment_pointer_id' ).as( 'paymentPointerField' );
+		cy.get( '#coil_payment_pointer' ).as( 'paymentPointerField' );
 		cy.get( '@paymentPointerField' )
 			.click()
 			.clear()
@@ -48,42 +40,5 @@ describe( 'Plugin Settings Panel', function() {
 		// The Hello World post is set to the default settings with monetization enabled and full visibility
 		cy.visit( '/hello-world/' );
 		cy.get( 'head meta[name="monetization"]' ).should( 'have.attr', 'content', paymentPointer );
-	} );
-
-	it( 'Check warning pops up if CSS selector is empty', function( ) {
-		cy.get( '#adminmenu' )
-			.find( 'div.wp-menu-name' )
-			.contains( 'Coil' )
-			.click();
-
-		cy.get( '#coil-global-settings' ).click();
-
-		cy.get( '#coil_content_container' )
-			.click()
-			.clear();
-		cy.get( '#submit' ).click();
-		cy.get( '#coil_content_container' ).invoke( 'prop', 'validationMessage' ).should( 'equal', 'Please fill out this field.' );
-		cy.get( '.notice-success' ).should( 'not.exist' );
-	} );
-
-	it( 'check that the CSS selectors can be set and changed', function() {
-		cy.get( '#adminmenu' )
-			.find( 'div.wp-menu-name' )
-			.contains( 'Coil' )
-			.click();
-
-		cy.get( '#coil-global-settings' ).click();
-
-		const cssSelector = '.content-area .post-content';
-		cy.get( '#coil_content_container' ).as( 'cssSelectorField' );
-		cy.get( '@cssSelectorField' )
-			.click()
-			.clear()
-			.type( cssSelector );
-		cy.get( '#submit' ).click();
-
-		// Settings page is reloaded.
-		cy.get( '@cssSelectorField' ).should( 'have.value', cssSelector );
-		cy.get( '.notice' ).should( 'have.class', 'notice-success' );
 	} );
 } );
