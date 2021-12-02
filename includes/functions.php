@@ -325,7 +325,7 @@ function add_body_class( $classes ) : array {
 }
 
 /**
- * Print the monetisation tag to <head>.
+ * Print the monetization tag to <head>.
  *
  * @return void
  */
