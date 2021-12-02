@@ -8,10 +8,6 @@ describe('Coil options panel', function () {
 	})
 
 	it('checks that the donation bar be can be enabled/disabled', function() {
-		cy.server();
-		cy
-			.route({method: 'POST', url: '/wp-admin/admin-ajax.php'})
-			.as('settingsSubmitted');
 
 		toggleDonationBar('uncheck');
 		cy.visit('/monetized-and-public/');
@@ -26,7 +22,7 @@ describe('Coil options panel', function () {
 			.should('be.visible');
 	});
 
-	it('Checks that you can dissmiss the donation bar as a WM enabled user', () => {
+	it('Checks that the donation bar is not shown as a WM enabled user', () => {
 		cy.visit('/monetized-and-public/');
 
 		cy.startWebMonetization();
@@ -65,30 +61,21 @@ describe('Coil options panel', function () {
  * @param {('check'|'uncheck')} checkboxState
  */
 function toggleDonationBar(checkboxState) {
-	cy.visit('/wp-admin/customize.php')
-
-	cy.get('h3.accordion-section-title')
-		.contains('Coil Web Monetization')
-		.click()
-
-	cy.get('#accordion-section-coil_customizer_section_options')
-		.click();
+	cy.visit('/wp-admin/admin.php?page=coil_settings&tab=coil_button')
 
 	switch (checkboxState) {
 		case 'check':
-			cy.get('#_customize-input-coil_show_donation_bar')
+			cy.get('#coil_show_promotion_bar')
 				.click()
 				.check();
 			break;
 		case 'uncheck':
-			cy.get('#_customize-input-coil_show_donation_bar')
+			cy.get('#coil_show_promotion_bar')
 				.click()
 				.uncheck();
 			break;
 	}
 
-	cy.get('#save')
+	cy.get('#submit')
 		.click({force: true});
-
-	cy.wait('@settingsSubmitted')
 }
