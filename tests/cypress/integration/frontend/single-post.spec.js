@@ -1,23 +1,14 @@
 /**
  * Site setting / option tests.
  */
-const paymentPointer = 'https://example.com/' + Math.random().toString( 36 ) + '/.well-known/pay';
+// This is the payment pointer that is set during the rest function.
+const paymentPointer = 'https://example.com/.well-known/pay';
 
 // Most of these tests assume you have the test posts loaded in your WordPress.
 describe( 'Single Posts', function() {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
 		cy.resetSite();
-		cy.visit( '/wp-admin/admin.php?page=coil_settings' );
-
-		// Make sure a payment pointer is set.
-		cy.get( '#coil-global-settings' ).click();
-		cy.get( '#coil_payment_pointer_id' ).as( 'paymentPointerField' );
-		cy.get( '@paymentPointerField' )
-			.click()
-			.clear()
-			.type( paymentPointer );
-		cy.get( '#submit' ).click();
 	} );
 
 	it( 'check that the payment pointer is printed when viewing a single post.', function() {
