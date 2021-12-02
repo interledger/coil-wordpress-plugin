@@ -505,8 +505,9 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
 
 	$text_defaults  = get_paywall_text_defaults();
 	$style_defaults = get_paywall_appearance_defaults();
+	$exclusive_defaults = get_exclusive_post_defaults();
 
-	$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
+	$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link', 'coil_padlock_icon_position', 'coil_padlock_icon_style' ];
 
 	// Text inputs can be empty strings, in which the placeholder text will display or the default text will be returned.
 	if ( in_array( $field_id, $text_fields, true ) ) {
@@ -525,12 +526,21 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
 			$setting_value = $style_defaults[ $field_id ];
 		}
 		return $setting_value;
-	} elseif ( $field_id === 'coil_message_branding' ) {
+	} elseif ( $field_id === 'coil_padlock_icon_position' ) {
 		// Default is Coil logo
 		if ( isset( $exclusive_options[ $field_id ] ) ) {
 			$setting_value = $exclusive_options[ $field_id ];
 		} else {
-			$setting_value = $style_defaults[ $field_id ];
+			$setting_value = $exclusive_defaults[ $field_id ];
+		}
+		return $setting_value;
+
+	} elseif ( $field_id === 'coil_padlock_icon_style' ) {
+		// Default is Coil logo
+		if ( isset( $exclusive_options[ $field_id ] ) ) {
+			$setting_value = $exclusive_options[ $field_id ];
+		} else {
+			$setting_value = $exclusive_defaults[ $field_id ];
 		}
 		return $setting_value;
 	}
@@ -557,6 +567,26 @@ function get_paywall_branding_options() {
 	return $branding_choices;
 }
 
+
+/**
+ * @return array Valid padlock positions.
+ */
+function get_padlock_title_icon_position_options() {
+
+	$positions = [ 'before', 'after' ];
+
+	return $positions;
+}
+
+/**
+ * @return array Valid padlock icon styles.
+ */
+function get_padlock_title_icon_style_options() {
+
+	$icon_styles = [ 'lock', 'coin_icon', 'bonus', 'exclusive' ];
+
+	return $icon_styles;
+}
 /**
  * Retrieve the inherited font paywall appearance setting
  * using its key from coil_exclusive_settings_group (serialized).
@@ -620,7 +650,11 @@ function get_exlusive_post_setting( $field_id ): bool {
  * @return array
  */
 function get_exclusive_post_defaults(): array {
-	$exclusive_post_defaults = [ 'coil_title_padlock' => true ];
+	$exclusive_post_defaults = [
+		'coil_title_padlock' => true,
+		'coil_padlock_icon_position' => 'before',
+		'coil_padlock_icon_style' => 'lock',
+	];
 
 	return $exclusive_post_defaults;
 }

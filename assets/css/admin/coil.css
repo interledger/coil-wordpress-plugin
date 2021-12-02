@@ -107,6 +107,10 @@
       .coil form .settings-main .tab-styling h4 {
         font-size: 14px;
         margin: 15px 0 10px; }
+      .coil form .settings-main .tab-styling .coil-radio-group label {
+        margin-left: 5px; }
+      .coil form .settings-main .tab-styling .coil-radio-group label:first-child {
+        margin-left: 0; }
       .coil form .settings-main .tab-styling .coil-preview {
         align-items: center;
         background: #f1f1f1;
@@ -115,7 +119,32 @@
         display: flex;
         height: calc( 100% - 80px);
         justify-content: center;
+        min-height: 350px;
         padding: 15px; }
+        .coil form .settings-main .tab-styling .coil-preview .coil-title-preview-container {
+          display: flex;
+          flex-direction: column;
+          width: 156px; }
+          .coil form .settings-main .tab-styling .coil-preview .coil-title-preview-container .coil-title-preview-row {
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 4px; }
+            .coil form .settings-main .tab-styling .coil-preview .coil-title-preview-container .coil-title-preview-row .coil-padlock-icon {
+              display: flex; }
+            .coil form .settings-main .tab-styling .coil-preview .coil-title-preview-container .coil-title-preview-row .coil-title-preview-bar {
+              background: #c4c4c4;
+              border-radius: 3px; }
+              .coil form .settings-main .tab-styling .coil-preview .coil-title-preview-container .coil-title-preview-row .coil-title-preview-bar.title {
+                height: 17px;
+                justify-self: flex-end;
+                margin-left: 6px;
+                width: 100%; }
+              .coil form .settings-main .tab-styling .coil-preview .coil-title-preview-container .coil-title-preview-row .coil-title-preview-bar.sub-title {
+                height: 7px;
+                margin-bottom: 8px; }
+              .coil form .settings-main .tab-styling .coil-preview .coil-title-preview-container .coil-title-preview-row .coil-title-preview-bar.body {
+                height: 9px; }
         .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container {
           background: #fff;
           border: 1px solid #ccc;
@@ -126,11 +155,11 @@
           /**
 						** TODO: Update this by cleaning it up according to the available fonts etc
 						**/ }
-          .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container[data-theme="dark"] {
+          .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container[data-theme='dark'] {
             background: #444; }
-            .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container[data-theme="dark"] h3, .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container[data-theme="dark"] p {
+            .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container[data-theme='dark'] h3, .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container[data-theme='dark'] p {
               color: #fff; }
-            .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container[data-theme="dark"] a {
+            .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container[data-theme='dark'] a {
               background: #fff;
               color: #444; }
           .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container .coil-paywall-image {
@@ -204,8 +233,8 @@
 
 .coil label.coil-clear-left {
   clear: left;
-  margin-top: 15px;
-  display: block; }
+  display: block;
+  margin-top: 15px; }
 
 .coil label.coil-checkbox {
   display: block;
@@ -227,28 +256,28 @@
   position: relative;
   width: 35px; }
 
-.coil label.coil-checkbox input + span:after {
+.coil label.coil-checkbox input + span::after {
   background: #fff;
   border-radius: 18px;
   content: '';
   display: block;
   height: 16px;
-  position: absolute;
   left: 2px;
+  position: absolute;
   top: 2px;
   width: 16px; }
 
 .coil label.coil-checkbox input:checked + span {
   background: #4fa3d5; }
 
-.coil label.coil-checkbox input:checked + span:after {
+.coil label.coil-checkbox input:checked + span::after {
   left: unset;
   right: 2px; }
 
-.coil label.coil-checkbox input + span + i:before {
+.coil label.coil-checkbox input + span + i::before {
   content: 'Disabled'; }
 
-.coil label.coil-checkbox input:checked + span + i:before {
+.coil label.coil-checkbox input:checked + span + i::before {
   content: 'Enabled'; }
 
 @media only screen and (max-width: 768px) {

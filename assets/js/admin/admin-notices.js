@@ -91,4 +91,12 @@
 
 		$( '.coil-paywall-image' ).attr( 'src', logoSrc );
 	} );
+
+	$( document ).on( 'change', 'input[name="coil_exclusive_settings_group[coil_padlock_icon_style]"]', function() {
+		const $thisInput = $( this ),
+			$padlockIcon = $( '.coil-title-preview-container .coil-padlock-icon' ),
+			$selectedSvg = $thisInput.siblings( 'svg' ).clone();
+
+		$padlockIcon.html( $selectedSvg );
+	} );
 }( jQuery ) );
