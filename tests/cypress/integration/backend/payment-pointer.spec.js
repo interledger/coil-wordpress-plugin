@@ -1,5 +1,3 @@
-// Need to add tests for the rest of the settings panel
-
 /**
  * Site setting / option tests.
  */
@@ -8,16 +6,6 @@ describe( 'Plugin Settings Panel', function() {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
 		cy.resetSite();
-	} );
-
-	it( 'check that admin users can access the plugins settings screen', function() {
-		cy.visit( '/wp-admin/' );
-		cy.get( '#adminmenu' )
-			.find( 'div.wp-menu-name' )
-			.contains( 'Coil' )
-			.click();
-
-		cy.get( 'div.plugin-branding > .plugin-branding' ).should( 'contain', 'Coil Web Monetization' );
 	} );
 
 	it( 'Check warning pops up if payment pointer is empty', function( ) {
