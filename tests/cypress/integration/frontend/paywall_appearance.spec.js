@@ -40,6 +40,32 @@ describe( 'Fully restricted posts', () => {
 			.click();
 
 		checkPaywallText( paywallTitle, paywallMessage, paywallButtonText, paywallButtonLink );
+
+		// If you delete custom text it reverts to the defaults
+		const defaultTitle = 'Keep Reading with Coil';
+		const defaultMessage = 'We partnered with Coil to offer exclusive content. Access this and other great content with a Coil membership.';
+		const defaultButtonText = 'Become a Coil Member';
+		const defaultButtonLink = 'https://coil.com/';
+		
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );
+
+		cy
+			.get( '#coil_paywall_title' )
+			.clear()
+		cy
+			.get( '#coil_paywall_message' )
+			.clear()
+		cy
+			.get( '#coil_paywall_button_text' )
+			.clear()
+		cy
+			.get( '#coil_paywall_button_link' )
+			.clear()
+		cy
+			.get( '#submit' )
+			.click();
+
+		checkPaywallText( defaultTitle, defaultMessage, defaultButtonText, defaultButtonLink );
 	} );
 
 	// TODO fix startWebMonetization 
