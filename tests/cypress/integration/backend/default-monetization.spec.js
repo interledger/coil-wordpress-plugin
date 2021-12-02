@@ -4,26 +4,26 @@ describe( 'Default monetization settings for pages and posts', () => {
 		cy.resetSite();
 	} );
 
-	it( 'Checks that the default is preset to enabled and public', () => {
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=monetization_settings' );
+	it( 'Checks that the default monetization is preset to enabled', () => {
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=general_settings' );
 		cy
-			.get( '#post_no-gating' )
+			.get( '#post_monetization_monetized' )
 			.should( 'be.checked' );
 
 		cy
-			.get( '#page_no-gating' )
+			.get( '#page_monetization_monetized' )
 			.should( 'be.checked' );
 	} );
 
 	it( 'Checks that the default can be set to different values which reflect correctly in the frontend', () => {
 		// Disable monetization on pages and posts
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=monetization_settings' );
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=general_settings' );
 		cy
-			.get( '#post_no' )
+			.get( '#post_monetization_not-monetized' )
 			.check();
 
 		cy
-			.get( '#page_no' )
+			.get( '#page_monetization_not-monetized' )
 			.check();
 		cy
 			.get( '#submit' )
@@ -35,33 +35,14 @@ describe( 'Default monetization settings for pages and posts', () => {
 		cy.visit( '/default-monetization-page/' );
 		cy.get( 'head meta[name="monetization"]' ).should( 'not.exist' );
 
-		// Set the monetization on pages and posts to enabled and public
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=monetization_settings' );
+		// Set the monetization on pages and posts to enabled
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=general_settings' );
 		cy
-			.get( '#post_no-gating' )
+			.get( '#post_monetization_monetized' )
 			.check();
 
 		cy
-			.get( '#page_no-gating' )
-			.check();
-		cy
-			.get( '#submit' )
-			.click();
-
-		// Check that the correct body class has been added.
-		cy.visit( '/default-monetization-post/' );
-		cy.get( 'body' ).should( 'have.class', 'coil-no-gating' );
-		cy.visit( '/default-monetization-page/' );
-		cy.get( 'body' ).should( 'have.class', 'coil-no-gating' );
-
-		// Set the monetization on pages and posts to enabled and exclusive
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=monetization_settings' );
-		cy
-			.get( '#post_gate-all' )
-			.check();
-
-		cy
-			.get( '#page_gate-all' )
+			.get( '#page_monetization_monetized' )
 			.check();
 		cy
 			.get( '#submit' )
@@ -69,8 +50,57 @@ describe( 'Default monetization settings for pages and posts', () => {
 
 		// Check that the correct body class has been added.
 		cy.visit( '/default-monetization-post/' );
-		cy.get( 'body' ).should( 'have.class', 'coil-gate-all' );
+		cy.get( 'head meta[name="monetization"]' ).should( 'exist' );
+		cy.get( 'body' ).should( 'have.class', 'coil-monetized' );
 		cy.visit( '/default-monetization-page/' );
-		cy.get( 'body' ).should( 'have.class', 'coil-gate-all' );
+		cy.get( 'head meta[name="monetization"]' ).should( 'exist' );
+		cy.get( 'body' ).should( 'have.class', 'coil-monetized' );
+	} );
+
+	it( 'Checks that when monetization is disabled that visibility is forced to be public', () => {
+		// Make content on pages and posts exclusive
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );
+		cy
+			.get( '#post_visibility_exclusive' )
+			.check();
+
+		cy
+			.get( '#page_visibility_exclusive' )
+			.check();
+		cy
+			.get( '#submit' )
+			.click();
+
+		// Disable monetization on pages and posts
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=general_settings' );
+		cy
+			.get( '#post_monetization_not-monetized' )
+			.check();
+
+		cy
+			.get( '#page_monetization_not-monetized' )
+			.check();
+		cy
+			.get( '#submit' )
+			.click();
+
+		// Check that the visibility defaults have been changed to public
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );
+		cy
+			.get( '#post_visibility_public' )
+			.should( 'be.checked' );
+
+		cy
+			.get( '#page_visibility_public' )
+			.should( 'be.checked' );
+
+		// Check there is no monetization meta tag when monetization is diasabled
+		// and that the coil-exclusive class wasn't added
+		cy.visit( '/default-monetization-post/' );
+		cy.get( 'head meta[name="monetization"]' ).should( 'not.exist' );
+		cy.get( 'body' ).should( 'not.have.class', 'coil-exclusive' );
+		cy.visit( '/default-monetization-page/' );
+		cy.get( 'head meta[name="monetization"]' ).should( 'not.exist' );
+		cy.get( 'body' ).should( 'not.have.class', 'coil-exclusive' );
 	} );
 } );
