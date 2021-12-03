@@ -46,12 +46,6 @@ Cypress.Commands.add( 'logInToWordPress', ( username, password ) => {
 Cypress.Commands.add( 'startWebMonetization', () => {
 	cy.window().then( ( window ) => {
 		startMonetization( window );
-
-		cy
-			.reload()
-			.then( () => {
-				startMonetization( window );
-			} );
 	} );
 } );
 

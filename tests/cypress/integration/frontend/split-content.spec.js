@@ -40,6 +40,8 @@ describe( 'Check visibility of content blocks for WM-enabled users', () => {
 		cy.resetSite();
 		cy.visit( '/block-visibility/' );
 		cy.startWebMonetization();
+		cy.visit( '/block-visibility/' );
+		cy.startWebMonetization();
 	} );
 
 	afterEach( () => {

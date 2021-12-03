@@ -69,21 +69,22 @@ describe( 'Fully restricted posts', () => {
 	} );
 
 	// TODO fix startWebMonetization 
-	// it( 'Checks that a VM enabled user can view monetized content', () => {
-	// 	cy.visit( '/coil-members-only/' );
+	it.only( 'Checks that a VM enabled user can view monetized content', () => {
+		cy.visit( '/coil-members-only/' );
+		cy.startWebMonetization();
+		cy.visit( '/coil-members-only/' );
+		cy.startWebMonetization();
 		
-	// 	cy.startWebMonetization();
-		
-		// cy
-		// 	.contains( 'This is a test post for the Coil Members Only state.' )
-		// 	.should( 'be.visible' );
+		cy
+			.contains( 'This is a test post for the Coil Members Only state.' )
+			.should( 'be.visible' );
 
-		// cy
-		// 	.get( '.coil-message-inner' )
-		// 	.should( 'not.exist' );
+		cy
+			.get( '.coil-message-inner' )
+			.should( 'not.exist' );
 
-	// 	cy.stopWebMonetization();
-	// } );
+		cy.stopWebMonetization();
+	} );
 } );
 
 /**
