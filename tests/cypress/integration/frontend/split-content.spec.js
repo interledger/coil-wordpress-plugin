@@ -34,6 +34,7 @@ describe( 'Visibility of content blocks for non WM-enabled users', () => {
 	} );
 } );
 
+// TODO: fix startWebMonetization
 describe( 'Check visibility of content blocks for WM-enabled users', () => {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
