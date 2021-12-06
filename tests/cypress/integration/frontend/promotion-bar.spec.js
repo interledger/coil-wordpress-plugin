@@ -21,7 +21,8 @@ describe( 'Promotion bar', function() {
 
 	it('Checks that the promotion bar is not shown as a WM enabled user', () => {
 		cy.visit( '/monetized-and-public/' );
-
+		cy.startWebMonetization();
+		cy.visit( '/monetized-and-public/' );
 		cy.startWebMonetization();
 
 		cy

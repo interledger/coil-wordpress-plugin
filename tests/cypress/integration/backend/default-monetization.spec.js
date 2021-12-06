@@ -30,9 +30,9 @@ describe( 'Default monetization settings for pages and posts', () => {
 			.click();
 
 		// Check there is no monetization meta tag when monetization is diasabled.
-		cy.visit( '/default-monetization-post/' );
+		cy.visit( '/default-status-post/' );
 		cy.get( 'head meta[name="monetization"]' ).should( 'not.exist' );
-		cy.visit( '/default-monetization-page/' );
+		cy.visit( '/default-status-page/' );
 		cy.get( 'head meta[name="monetization"]' ).should( 'not.exist' );
 
 		// Set the monetization on pages and posts to enabled
@@ -49,10 +49,10 @@ describe( 'Default monetization settings for pages and posts', () => {
 			.click();
 
 		// Check that the correct body class has been added.
-		cy.visit( '/default-monetization-post/' );
+		cy.visit( '/default-status-post/' );
 		cy.get( 'head meta[name="monetization"]' ).should( 'exist' );
 		cy.get( 'body' ).should( 'have.class', 'coil-monetized' );
-		cy.visit( '/default-monetization-page/' );
+		cy.visit( '/default-status-page/' );
 		cy.get( 'head meta[name="monetization"]' ).should( 'exist' );
 		cy.get( 'body' ).should( 'have.class', 'coil-monetized' );
 	} );
@@ -96,10 +96,10 @@ describe( 'Default monetization settings for pages and posts', () => {
 
 		// Check there is no monetization meta tag when monetization is diasabled
 		// and that the coil-exclusive class wasn't added
-		cy.visit( '/default-monetization-post/' );
+		cy.visit( '/default-status-post/' );
 		cy.get( 'head meta[name="monetization"]' ).should( 'not.exist' );
 		cy.get( 'body' ).should( 'not.have.class', 'coil-exclusive' );
-		cy.visit( '/default-monetization-page/' );
+		cy.visit( '/default-status-page/' );
 		cy.get( 'head meta[name="monetization"]' ).should( 'not.exist' );
 		cy.get( 'body' ).should( 'not.have.class', 'coil-exclusive' );
 	} );

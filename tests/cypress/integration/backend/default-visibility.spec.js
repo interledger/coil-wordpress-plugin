@@ -30,10 +30,10 @@ describe( 'Default  visibility settings for pages and posts', () => {
 			.click();
 
 		// Check that the correct body class has been added.
-		cy.visit( '/default-monetization-post/' );
+		cy.visit( '/default-status-post/' );
 		cy.get( 'body' ).should( 'have.class', 'coil-exclusive' );
 		cy.get( 'body' ).should( 'have.class', 'coil-monetized' );
-		cy.visit( '/default-monetization-page/' );
+		cy.visit( '/default-status-page/' );
 		cy.get( 'body' ).should( 'have.class', 'coil-exclusive' );
 		cy.get( 'body' ).should( 'have.class', 'coil-monetized' );
 
@@ -52,10 +52,10 @@ describe( 'Default  visibility settings for pages and posts', () => {
 			.click();
 
 		// Check that the correct body class has been added.
-		cy.visit( '/default-monetization-post/' );
+		cy.visit( '/default-status-post/' );
 		cy.get( 'body' ).should( 'have.class', 'coil-public' );
 		cy.get( 'body' ).should( 'have.class', 'coil-monetized' );
-		cy.visit( '/default-monetization-page/' );
+		cy.visit( '/default-status-page/' );
 		cy.get( 'body' ).should( 'have.class', 'coil-public' );
 		cy.get( 'body' ).should( 'have.class', 'coil-monetized' );
 	} );
@@ -99,11 +99,11 @@ describe( 'Default  visibility settings for pages and posts', () => {
 
 		// Check there is a monetization meta tag because monetization should be enabled
 		// and that the coil-exclusive class should be added
-		cy.visit( '/default-monetization-post/' );
+		cy.visit( '/default-status-post/' );
 		cy.get( 'head meta[name="monetization"]' ).should( 'exist' );
 		cy.get( 'body' ).should( 'have.class', 'coil-exclusive' );
 		cy.get( 'body' ).should( 'have.class', 'coil-monetized' );
-		cy.visit( '/default-monetization-page/' );
+		cy.visit( '/default-status-page/' );
 		cy.get( 'head meta[name="monetization"]' ).should( 'exist' );
 		cy.get( 'body' ).should( 'have.class', 'coil-exclusive' );
 		cy.get( 'body' ).should( 'have.class', 'coil-monetized' );
