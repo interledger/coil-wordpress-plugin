@@ -33,6 +33,10 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 			'monetization' => 'monetized',
 			'name'         => 'Enabled',
 		],
+		[
+			'monetization' => 'default',
+			'name'         => 'Default',
+		],
 	];
 	protected static $visibility_types   = [
 		[
@@ -42,6 +46,10 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		[
 			'visibility' => 'exclusive',
 			'name'       => 'Exclusive',
+		],
+		[
+			'visibility' => 'default',
+			'name'       => 'Default',
 		],
 	];
 
@@ -79,6 +87,12 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 				'monetization' => 'monetized',
 				'visibility'   => 'gate-tagged-blocks',
 			],
+			[
+				'post'         => $factory->post->create_and_get(),
+				'title'        => 'Default',
+				'monetization' => 'default',
+				'visibility'   => 'default',
+			],
 		];
 
 		foreach ( self::$basic_posts as $post_array ) {
@@ -99,6 +113,24 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 		}
 
 		self::$basic_posts = [];
+	}
+
+	/**
+	 * Check that the post status was correctly set and can be correctly retrieved.
+	 *
+	 * @return void
+	 */
+	public function test_set_and_get_post_status() :  void {
+
+		// Post status was set up in the wpSetUpBeforeClass function.
+
+		foreach ( self::$basic_posts as $post_array ) {
+			$retrieved_monetization_status = Gating\get_post_status( $post_array['post']->ID, 'monetization' );
+			$retrieved_visibility_status   = Gating\get_post_status( $post_array['post']->ID, 'visibility' );
+
+			$this->assertSame( $post_array['monetization'], $retrieved_monetization_status );
+			$this->assertSame( $post_array['visibility'], $retrieved_visibility_status );
+		}
 	}
 
 	/**
@@ -236,7 +268,7 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_retrieving_content_gating() :  void {
+	public function test_retrieving_content_status() :  void {
 
 		// Create a post
 		$post_obj = self::factory()->post->create_and_get();
@@ -321,6 +353,5 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 
 		$this->assertSame( 'monetized', $monetization_status );
 		$this->assertSame( 'public', $visibility_status );
-
 	}
 }
