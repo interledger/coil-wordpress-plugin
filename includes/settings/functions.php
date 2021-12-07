@@ -1233,8 +1233,11 @@ function coil_term_custom_meta( $action, $term ) {
 
 	?>
 
-	<select name="_coil_monetization_term_status" id="monetization_dropdown" onchange="handleRadioOptionsDisplay()">
 		<?php
+		printf(
+			'<select name="_coil_monetization_term_status" id="monetization_dropdown" onchange="handleRadioOptionsDisplay(\'%s\')">',
+			esc_attr( $term_visibility )
+		);
 		foreach ( $monetization_options as $setting_key => $setting_value ) {
 
 			$selected_input = '';
@@ -1315,16 +1318,20 @@ function coil_term_custom_meta( $action, $term ) {
 
 	<script>
 
-	function handleRadioOptionsDisplay() {
+	function handleRadioOptionsDisplay( element ) {
 		var radioButtons = document.getElementById("coil-radio-selection");
 		if (document.getElementById("monetization_dropdown").value === 'monetized') {
 			radioButtons.removeAttribute("style");
+			// Checks the button associated with the default visibility value rather than just the last button that had been selected.
+			if (element !== '' ) {
+				document.getElementById(element).checked = true;
+			}
 		} else {
 			radioButtons.setAttribute("style", "display: none" );
 		}
 	}
 
-	handleRadioOptionsDisplay();
+	handleRadioOptionsDisplay('');
 
 	</script>
 
