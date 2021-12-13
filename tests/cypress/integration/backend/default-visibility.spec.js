@@ -62,17 +62,20 @@ describe( 'Default  visibility settings for pages and posts', () => {
 
 	it( 'Checks that when visibility is set to exclusive that monetization is forced to be enabled', () => {
 		// Disable monetization on pages and posts
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=general_settings' );
-		cy
-			.get( '#post_monetization_not-monetized' )
-			.check();
-
-		cy
-			.get( '#page_monetization_not-monetized' )
-			.check();
-		cy
-			.get( '#submit' )
-			.click();
+		cy.addSetting("coil_general_settings_group", [
+			{
+				"key": "coil_payment_pointer",
+				"value": "https:\/\/example.com\/.well-known\/pay"
+			},
+			{
+				"key": "post_monetization",
+				"value": "not-monetized"
+			},
+			{
+				"key": "page_monetization",
+				"value": "not-monetized"
+			}
+		]);
 			
 		// Make content on pages and posts exclusive
 		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );

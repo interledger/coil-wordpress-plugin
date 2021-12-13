@@ -8,7 +8,7 @@ describe( 'Category Settings', function() {
 		cy.resetSite();
 	} );
 
-	it( 'checks that Coil category settings are rendered correctly on the "Add Term" screen', function() {
+	it.only( 'checks that Coil category settings are rendered correctly on the "Add Term" screen', function() {
 		cy.visit( '/wp-admin/edit-tags.php?taxonomy=category' );
 
 		// Create a category
@@ -16,16 +16,18 @@ describe( 'Category Settings', function() {
 		cy.get( '#tag-slug' ).type( 'democategoryslug' );
 
 		// The Default setting should be selected in the dropdown and the radio options should not be present
-		checkMenuDefaultText('Enabled & public')
+		checkMenuDefaultText('Enabled & public');
 
 		// Checks that the radio buttons display or hide depending on the dropdown menu selection
-		checkDisplayBehavior()
+		checkDisplayBehavior();
 
-		// TODO use database directly rather:
 		// Change the default post status to "Disabled" and check it is refelected as "Default (Disabled)" in the monetization dropdown menu.
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=general_settings' );
-		cy.get( '#post_monetization_not-monetized' ).click();
-		cy.get( '#submit' ).click();
+		cy.addSetting("coil_general_settings_group", [
+			{
+				"key": "post_monetization",
+				"value": "not-monetized"
+			}
+		]);
 
 		cy.visit( '/wp-admin/edit-tags.php?taxonomy=category' );
 
@@ -34,15 +36,21 @@ describe( 'Category Settings', function() {
 		cy.get( '#tag-slug' ).type( 'democategoryslug' );
 
 		// "Default (Disabled)" should now be the default text
-		checkMenuDefaultText('Disabled')
+		checkMenuDefaultText('Disabled');
 
 		// Change the default post status to monetized and exclusive
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=general_settings' );
-		cy.get( '#post_monetization_monetized' ).click();
-		cy.get( '#submit' ).click();
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );
-		cy.get( '#post_visibility_exclusive' ).click();
-		cy.get( '#submit' ).click();
+		cy.addSetting("coil_general_settings_group", [
+			{
+				"key": "post_monetization",
+				"value": "monetized"
+			}
+		]);
+		cy.addSetting("coil_exclusive_settings_group", [
+			{
+				"key": "post_visibility",
+				"value": "exclusive"
+			}
+		]);
 
 		cy.visit( '/wp-admin/edit-tags.php?taxonomy=category' );
 
@@ -51,7 +59,7 @@ describe( 'Category Settings', function() {
 		cy.get( '#tag-slug' ).type( 'democategoryslug' );
 
 		// "Default (Enabled & exclusive)" should now be the default text
-		checkMenuDefaultText('Enabled & exclusive')
+		checkMenuDefaultText('Enabled & exclusive');
 
 	} );
 
@@ -79,10 +87,10 @@ describe( 'Category Settings', function() {
 		} );
 
 		// The Default setting should be selected in the dropdown and the radio options should not be present
-		checkMenuDefaultText('Enabled & public')
+		checkMenuDefaultText('Enabled & public');
 
 		// Checks that the radio buttons display or hide depending on the dropdown menu selection
-		checkDisplayBehavior()
+		checkDisplayBehavior();
 	} );
 
 	it( 'checks that Coil category settings can be updated', function() {

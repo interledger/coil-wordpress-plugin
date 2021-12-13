@@ -21,12 +21,13 @@
 		// Checks that the radio buttons display or hide depending on the dropdown menu selection
 		checkDisplayBehavior()
 
-		// TODO: 
-		//INSERT INTO wp_options (option_name, option_value) VALUES ("coil_general_settings_group", 'a:1:{s:17:"post_monetization";s:13:"not-monetized";}');
-		// Change the default post status to "Disabled"
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=general_settings' );
-		cy.get( '#post_monetization_not-monetized' ).click();
-		cy.get( '#submit' ).click();
+		// Change the default post status to "Disabled" and check it is refelected as "Default (Disabled)" in the monetization dropdown menu.
+		cy.addSetting("coil_general_settings_group", [
+			{
+				"key": "post_monetization",
+				"value": "not-monetized"
+			}
+		]);
 
 		cy.visit( '/wp-admin/edit-tags.php?taxonomy=post_tag' );
 
@@ -38,12 +39,18 @@
 		checkMenuDefaultText('Disabled')
 
 		// Change the default post status to monetized and exclusive
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=general_settings' );
-		cy.get( '#post_monetization_monetized' ).click();
-		cy.get( '#submit' ).click();
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );
-		cy.get( '#post_visibility_exclusive' ).click();
-		cy.get( '#submit' ).click();
+		cy.addSetting("coil_general_settings_group", [
+			{
+				"key": "post_monetization",
+				"value": "monetized"
+			}
+		]);
+		cy.addSetting("coil_exclusive_settings_group", [
+			{
+				"key": "post_visibility",
+				"value": "exclusive"
+			}
+		]);
 
 		cy.visit( '/wp-admin/edit-tags.php?taxonomy=post_tag' );
 

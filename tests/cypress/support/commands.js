@@ -87,6 +87,29 @@ Cypress.Commands.add( 'stopWebMonetization', () => {
 } );
 
 /**
+ * Inserts settings into the wp_options table in the database
+ * This function only supports strings
+ *
+ * @param optionName The name of the settings group
+ * @param settings The data to be inserted in the form of an array of objects which have key and value properties.
+ */
+Cypress.Commands.add('addSetting', (optionName, settings) => {
+	cy.exec( 'wp db query \'DELETE FROM wp_options WHERE option_name IN ("' + optionName + '");\' --allow-root' );
+	let numItems = settings.length;
+	let optionString = 'a:' + numItems + ':{';
+	for ( let i = 0; i < numItems; i++ ) {
+		let keyLength = settings[i].key.length;
+		let valueLength = settings[i].value.length;
+		optionString += 's:' + keyLength + ':\\\"' + settings[i].key + '\\\";'; 
+		optionString += 's:' + valueLength + ':\\\"' + settings[i].value + '\\\";'; 
+	}
+	optionString += '}';
+
+	cy.exec( 'wp db query \'INSERT INTO wp_options (option_name, option_value) VALUES ( \"' + optionName + '\", \"' + optionString + '\");\' --allow-root' );
+
+});
+
+/**
  * Reset site to original state.
  * All post and post meta data is removed and restored from the xml file.
  * Custom data stored in the database is individually named to be removed from the database.
@@ -99,17 +122,11 @@ Cypress.Commands.add( 'resetSite', () => {
 	cy.exec( 'wp db query \'DELETE FROM wp_posts;\' --allow-root' );
 	cy.exec( 'wp db query \'DELETE FROM wp_termmeta;\' --allow-root' );
 	cy.exec( 'wp db query \'DELETE FROM wp_terms;\' --allow-root' );
+	// Adds a payment pointer in
+	cy.exec( 'wp db query \'INSERT INTO wp_options (option_name, option_value) VALUES ( \"coil_general_settings_group\", \"a:1:{s:20:\\\"coil_payment_pointer\\\";s:35:\\\"https:\/\/example.com\/.well-known\/pay\\\";}\");\' --allow-root' );
 
 	// Adds site data back into the database
 	cy.exec( 'wp import cypress/fixtures/coil-automation-CI.xml --authors=create  --allow-root' );
 	cy.exec( 'wp rewrite structure \'/%postname%/\' --allow-root' );
 
-	// Adds a payment pointer in
-	cy.visit( '/wp-admin/admin.php?page=coil_settings' );
-	cy.get( '#coil-general-settings' ).click();
-	cy.get( '#coil_payment_pointer' )
-		.click()
-		.clear()
-		.type( 'https://example.com/.well-known/pay' );
-	cy.get( '#submit' ).click();
 } );
