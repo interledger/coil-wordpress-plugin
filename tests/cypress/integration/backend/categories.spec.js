@@ -16,7 +16,7 @@ describe( 'Category Settings', function() {
 		cy.get( '#tag-slug' ).type( 'democategoryslug' );
 
 		// The Default setting should be selected in the dropdown and the radio options should not be present
-		checkMenuDefaultText('Enabled & public');
+		checkMenuDefaultText('Enabled & Public');
 
 		// Checks that the radio buttons display or hide depending on the dropdown menu selection
 		checkDisplayBehavior();
@@ -58,8 +58,8 @@ describe( 'Category Settings', function() {
 		cy.get( '#tag-name' ).type( 'democategory' );
 		cy.get( '#tag-slug' ).type( 'democategoryslug' );
 
-		// "Default (Enabled & exclusive)" should now be the default text
-		checkMenuDefaultText('Enabled & exclusive');
+		// "Default (Enabled & Exclusive)" should now be the default text
+		checkMenuDefaultText('Enabled & Exclusive');
 
 	} );
 
@@ -87,7 +87,7 @@ describe( 'Category Settings', function() {
 		} );
 
 		// The Default setting should be selected in the dropdown and the radio options should not be present
-		checkMenuDefaultText('Enabled & public');
+		checkMenuDefaultText('Enabled & Public');
 
 		// Checks that the radio buttons display or hide depending on the dropdown menu selection
 		checkDisplayBehavior();
@@ -148,7 +148,7 @@ describe( 'Category Settings', function() {
 		['Enabled', 'public'],
 		['Disabled', ''],
 		['Enabled', 'public'],
-		['Default (Enabled & public)', '']
+		['Default (Enabled & Public)', '']
 	];
 	settings.forEach((option)=>{
 		cy.get( '#monetization_dropdown' ).select(option[0]);
@@ -162,7 +162,7 @@ describe( 'Category Settings', function() {
 }
 
 /**
- * Checks the rendering of the monetization dropdown menu
+ * Checks the default of the monetization dropdown menu
  *
  * @param defaultStatus This is the text that should appear in the dropdown menu in brackets next to "Default".
  */

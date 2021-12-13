@@ -71,13 +71,13 @@ class Test_Gating_Settings extends WP_UnitTestCase {
 			],
 			[
 				'post'         => $factory->post->create_and_get(),
-				'title'        => 'Enabled & public',
+				'title'        => 'Enabled & Public',
 				'monetization' => 'monetized',
 				'visibility'   => 'public',
 			],
 			[
 				'post'         => $factory->post->create_and_get(),
-				'title'        => 'Enabled & exclusive',
+				'title'        => 'Enabled & Exclusive',
 				'monetization' => 'monetized',
 				'visibility'   => 'exclusive',
 			],

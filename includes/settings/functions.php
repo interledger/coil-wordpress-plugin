@@ -1203,9 +1203,9 @@ function coil_term_custom_meta( $action, $term ) {
 	if ( $default_monetization === 'not-monetized' ) {
 		$default_value = 'Disabled';
 	} elseif ( $default_visibility === 'exclusive' ) {
-		$default_value = 'Enabled & exclusive';
+		$default_value = 'Enabled & Exclusive';
 	} else {
-		$default_value = 'Enabled & public';
+		$default_value = 'Enabled & Public';
 	}
 
 	// Retrieve the monetization and visibility meta saved on the term.
