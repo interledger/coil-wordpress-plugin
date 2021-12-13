@@ -243,11 +243,6 @@
 				$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( fullyGated ) );
 
 				showContentContainer();
-
-				if ( showPromotionBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-					$( 'body' ).append( showBannerMessage( promotionBar ) );
-					addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
-				}
 			} else {
 				// No tagged blocks.
 				document.body.classList.add( 'show-fw-message' );
@@ -339,11 +334,6 @@
 			$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( partialGating ) );
 
 			showContentContainer();
-
-			if ( showPromotionBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-				$( 'body' ).append( showBannerMessage( promotionBar ) );
-				addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
-			}
 		} else if ( isMonetizedAndPublic() ) {
 			// Content has monetization enabled and visible for everyone but no extension found.
 
