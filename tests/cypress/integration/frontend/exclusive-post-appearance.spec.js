@@ -14,6 +14,7 @@ describe( 'Exclusive post appearance test', () => {
 
 		togglePadlock( 'check' );
 
+		// This test works in Circle CI where it recognizes the emoji but not always when run locally.
 		cy.visit( '/coil-members-only/' );
 		cy
 			.get( '.entry-title > .emoji' )
