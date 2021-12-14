@@ -1166,23 +1166,39 @@ function render_coil_settings_screen() : void {
 	<?php
 }
 
+/**
+ * Add Coil status controls to the "Add Term" screen.
+ *
+ * @param WP_Term_Object $term
+ * @return void
+ */
 function coil_add_term_custom_meta( $term ) {
 	coil_term_custom_meta( 'add', $term );
 }
 
+/**
+ * Add Coil status controls to the "Edit Term" screen.
+ *
+ * @param WP_Term_Object $term
+ * @return void
+ */
 function coil_edit_term_custom_meta( $term ) {
 	coil_term_custom_meta( 'edit', $term );
 }
 
 /**
- * Add monetization and visibility controls to the "Add Term" and "Edit Term" screens.
- * The functions differ slightly in structure due to html requirements of the different screens.
+ * Add Coil status controls to the "Add Term" and "Edit Term" screens.
+ * The functions differ slightly in structure due to the html requirements of the different screens.
  *
  * @param String $action {'add' | 'edit'}
  * @param WP_Term_Object $term
  * @return void
  */
 function coil_term_custom_meta( $action, $term ) {
+
+	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
+		return;
+	}
 
 	// Get monetization and visibility options.
 	$monetization_options = [
@@ -1194,10 +1210,6 @@ function coil_term_custom_meta( $action, $term ) {
 		'public'    => 'Everyone',
 		'exclusive' => 'Coil Members Only',
 	];
-
-	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
-		return;
-	}
 
 	// Retrieve the post's default Coil status
 	$general_settings     = Admin\get_general_settings();
@@ -1216,6 +1228,7 @@ function coil_term_custom_meta( $action, $term ) {
 	// If these meta fields are empty they return 'default'.
 	$term_monetization = Gating\get_term_status( $term->term_id, '_coil_monetization_term_status' );
 	$term_visibility   = Gating\get_term_status( $term->term_id, '_coil_visibility_term_status' );
+	// There is no 'default' button for visibility so if it is set to default then select the option that it is defaulting to in the exclusive settings group.
 	if ( $term_visibility === 'default' ) {
 		$term_visibility = $default_visibility;
 	}
@@ -1252,7 +1265,7 @@ function coil_term_custom_meta( $action, $term ) {
 				<label for="<?php echo esc_attr( $setting_key ); ?>">
 				<?php
 				if ( $setting_key === 'default' ) {
-					$setting_value = esc_html( 'Default (', 'coil-web-monetization' ) . esc_html( $default_value, 'coil-web-monetization' ) . esc_html( ')', 'coil-web-monetization' );
+					$setting_value = esc_html( 'Default (' . $default_value . ')', 'coil-web-monetization' );
 				}
 				printf(
 					'<option value="%s"%s>%s</option>',
@@ -1321,20 +1334,28 @@ function coil_term_custom_meta( $action, $term ) {
 	?>
 
 	<script>
-
+	/**
+	 *
+	 * Ensures the appropriate visibility radio button is selected.
+	 * @param {String} The visibility status slug
+	 * @return {void}
+	 */
 	function handleRadioOptionsDisplay( element ) {
 		var radioButtons = document.getElementById("coil-radio-selection");
 		if (document.getElementById("monetization_dropdown").value === 'monetized') {
+			// If monetization is enabled then the visibility options should appear
 			radioButtons.removeAttribute("style");
 			// Checks the button associated with the default visibility value rather than just the last button that had been selected.
 			if (element !== '' ) {
 				document.getElementById(element).checked = true;
 			}
 		} else {
+			// If monetization is not enabled then the visibility options should disappear
 			radioButtons.setAttribute("style", "display: none" );
 		}
 	}
 
+	// For the edit screen this function is called so that the radio buttons are hidden or displayed based on the existing settings.
 	handleRadioOptionsDisplay('');
 
 	</script>
