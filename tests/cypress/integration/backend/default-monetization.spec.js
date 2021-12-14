@@ -59,16 +59,16 @@ describe( 'Default monetization settings for pages and posts', () => {
 
 	it( 'Checks that when monetization is disabled that visibility is forced to be public', () => {
 		// Make content on pages and posts exclusive
-		cy.addSetting("coil_exclusive_settings_group", [
+		cy.addSetting( 'coil_exclusive_settings_group', [
 			{
-				"key": "post_visibility",
-				"value": "exclusive"
+				key: 'post_visibility',
+				value: 'exclusive',
 			},
 			{
-				"key": "page_visibility",
-				"value": "exclusive"
-			}
-		]);
+				key: 'page_visibility',
+				value: 'exclusive',
+			},
+		] );
 
 		// Disable monetization on pages and posts
 		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=general_settings' );

@@ -87,7 +87,7 @@ const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
 							<RadioControl
 								label={ __(
 									'Set the block\'s visibility.',
-									'coil-web-monetization'
+									'coil-web-monetization',
 								) }
 								selected={ monetizeBlockDisplay }
 								options={ [
@@ -136,7 +136,7 @@ function applyExtraClass( extraProps, blockType, attributes ) {
 	) {
 		extraProps.className = classnames(
 			extraProps.className,
-			'coil-' + monetizeBlockDisplay
+			'coil-' + monetizeBlockDisplay,
 		);
 	}
 
@@ -202,13 +202,13 @@ addFilter( 'blocks.registerBlockType', 'coil/addAttributes', addAttributes );
 addFilter(
 	'editor.BlockEdit',
 	'coil/monetizeBlockControls',
-	monetizeBlockControls
+	monetizeBlockControls,
 );
 
 addFilter(
 	'blocks.getSaveContent.extraProps',
 	'coil/applyExtraClass',
-	applyExtraClass
+	applyExtraClass,
 );
 
 addFilter( 'editor.BlockListBlock', 'coil/wrapperClass', wrapperClass );
@@ -299,7 +299,7 @@ const PostMetaFields = withDispatch( ( dispatch, props ) => {
 				/>
 			</div>
 		</div>
-	) )
+	) ),
 );
 
 // WP >= 5.3 only - register the panel.

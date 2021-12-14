@@ -9,8 +9,7 @@ describe( 'Plugin Settings Panel', function() {
 	} );
 
 	it( 'Check warning pops up if payment pointer is empty', function( ) {
-
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=general_settings' )
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=general_settings' );
 
 		cy.get( '#coil_payment_pointer' )
 			.click()
@@ -20,8 +19,7 @@ describe( 'Plugin Settings Panel', function() {
 	} );
 
 	it( 'check that the payment pointer can be set', function() {
-
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=general_settings' )
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=general_settings' );
 
 		const paymentPointer = 'https://example.com/' + Math.random().toString( 36 ) + '/.well-known/pay';
 		cy.get( '#coil_payment_pointer' ).as( 'paymentPointerField' );

@@ -9,7 +9,7 @@ describe( 'Plugin Settings Panel', function() {
 	} );
 
 	it( 'Check warning pops up if CSS selector is empty', function( ) {
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' )
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );
 
 		cy.get( '#coil_content_container' )
 			.click()
@@ -20,8 +20,7 @@ describe( 'Plugin Settings Panel', function() {
 	} );
 
 	it( 'check that the CSS selectors can be set and changed', function() {
-		
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' )
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );
 
 		const cssSelector = '.content-area .post-content';
 		cy.get( '#coil_content_container' ).as( 'cssSelectorField' );

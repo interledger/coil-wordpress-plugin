@@ -12,7 +12,6 @@ describe( 'Tests for visibility settings in editor', () => {
 	} );
 
 	it( 'Checks that visibility settings of a post can be changed in Gutenberg', () => {
-
 		const monetizationDropDown = '#inspector-select-control-1';
 		const monetizationAndVisibilityCombinations = [
 			{
@@ -64,67 +63,67 @@ describe( 'Tests for visibility settings in editor', () => {
 
 		// Initially Default text should be Enabled & Public
 		cy
-			.get(monetizationDropDown)
-			.find('option:selected')
-			.should('have.text', 'Default (Enabled & Public)');
+			.get( monetizationDropDown )
+			.find( 'option:selected' )
+			.should( 'have.text', 'Default (Enabled & Public)' );
 
 		// Change the default post status to monetized and exclusive
-		cy.addSetting("coil_general_settings_group", [
+		cy.addSetting( 'coil_general_settings_group', [
 			{
-				"key": "post_monetization",
-				"value": "monetized"
-			}
-		]);
-		cy.addSetting("coil_exclusive_settings_group", [
+				key: 'post_monetization',
+				value: 'monetized',
+			},
+		] );
+		cy.addSetting( 'coil_exclusive_settings_group', [
 			{
-				"key": "post_visibility",
-				"value": "exclusive"
-			}
-		]);
+				key: 'post_visibility',
+				value: 'exclusive',
+			},
+		] );
 		cy.visit( '/wp-admin/post.php?post=1&action=edit' );
 
 		// Default text should be Enabled & Exclusive
 		cy
-			.get(monetizationDropDown)
-			.find('option:selected')
-			.should('have.text', 'Default (Enabled & Exclusive)');
+			.get( monetizationDropDown )
+			.find( 'option:selected' )
+			.should( 'have.text', 'Default (Enabled & Exclusive)' );
 
 		// Change the default post status to disabled
-		cy.addSetting("coil_general_settings_group", [
+		cy.addSetting( 'coil_general_settings_group', [
 			{
-				"key": "post_monetization",
-				"value": "not-monetized"
-			}
-		]);
+				key: 'post_monetization',
+				value: 'not-monetized',
+			},
+		] );
 
 		cy.visit( '/wp-admin/post.php?post=1&action=edit' );
 
 		// Default text should be Disabled
 		cy
-			.get(monetizationDropDown)
-			.find('option:selected')
-			.should('have.text', 'Default (Disabled)');
+			.get( monetizationDropDown )
+			.find( 'option:selected' )
+			.should( 'have.text', 'Default (Disabled)' );
 
 		// Change the default post status to monetized and public
-		cy.addSetting("coil_general_settings_group", [
+		cy.addSetting( 'coil_general_settings_group', [
 			{
-				"key": "post_monetization",
-				"value": "monetized"
-			}
-		]);
-		cy.addSetting("coil_exclusive_settings_group", [
+				key: 'post_monetization',
+				value: 'monetized',
+			},
+		] );
+		cy.addSetting( 'coil_exclusive_settings_group', [
 			{
-				"key": "post_visibility",
-				"value": "public"
-			}
-		]);
+				key: 'post_visibility',
+				value: 'public',
+			},
+		] );
 
 		cy.visit( '/wp-admin/post.php?post=1&action=edit' );
 
 		// Default text should be Enabled & Public
 		cy
-			.get(monetizationDropDown)
-			.find('option:selected')
-			.should('have.text', 'Default (Enabled & Public)');
-	});
+			.get( monetizationDropDown )
+			.find( 'option:selected' )
+			.should( 'have.text', 'Default (Enabled & Public)' );
+	} );
 } );

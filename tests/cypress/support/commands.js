@@ -46,6 +46,12 @@ Cypress.Commands.add( 'logInToWordPress', ( username, password ) => {
 Cypress.Commands.add( 'startWebMonetization', () => {
 	cy.window().then( ( window ) => {
 		startMonetization( window );
+
+		cy
+			.reload()
+			.then( () => {
+				startMonetization( window );
+			} );
 	} );
 } );
 
@@ -90,24 +96,23 @@ Cypress.Commands.add( 'stopWebMonetization', () => {
  * Inserts settings into the wp_options table in the database
  * This function only supports strings
  *
- * @param optionName The name of the settings group
- * @param settings The data to be inserted in the form of an array of objects which have key and value properties.
+ * @param {String} optionName The name of the settings group
+ * @param {Array} settings The data to be inserted in the form of an array of objects which have key and value properties.
  */
-Cypress.Commands.add('addSetting', (optionName, settings) => {
+Cypress.Commands.add( 'addSetting', ( optionName, settings ) => {
 	cy.exec( 'wp db query \'DELETE FROM wp_options WHERE option_name IN ("' + optionName + '");\' --allow-root' );
-	let numItems = settings.length;
+	const numItems = settings.length;
 	let optionString = 'a:' + numItems + ':{';
 	for ( let i = 0; i < numItems; i++ ) {
-		let keyLength = settings[i].key.length;
-		let valueLength = settings[i].value.length;
-		optionString += 's:' + keyLength + ':\\\"' + settings[i].key + '\\\";'; 
-		optionString += 's:' + valueLength + ':\\\"' + settings[i].value + '\\\";'; 
+		const keyLength = settings[ i ].key.length;
+		const valueLength = settings[ i ].value.length;
+		optionString += 's:' + keyLength + ':\\\"' + settings[ i ].key + '\\\";';
+		optionString += 's:' + valueLength + ':\\\"' + settings[ i ].value + '\\\";';
 	}
 	optionString += '}';
 
 	cy.exec( 'wp db query \'INSERT INTO wp_options (option_name, option_value) VALUES ( \"' + optionName + '\", \"' + optionString + '\");\' --allow-root' );
-
-});
+} );
 
 /**
  * Reset site to original state.
@@ -128,5 +133,4 @@ Cypress.Commands.add( 'resetSite', () => {
 	// Adds site data back into the database
 	cy.exec( 'wp import cypress/fixtures/coil-automation-CI.xml --authors=create  --allow-root' );
 	cy.exec( 'wp rewrite structure \'/%postname%/\' --allow-root' );
-
 } );

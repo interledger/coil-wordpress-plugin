@@ -1,7 +1,7 @@
 {
 	"baseUrl": "http://coil-plugin.local/",
 	"projectId": "k91yo3",
-	"video": false,
+	"video": true,
 	"videoUploadOnPasses": false,
 	"viewportWidth": 1920,
 	"viewportHeight": 1080,
