@@ -293,7 +293,7 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 	 */
 	public function test_if_default_excerpt_display_is_false() {
 
-		$excerpt_display = Gating\get_excerpt_gating( self::$example_post->ID );
+		$excerpt_display = Gating\is_excerpt_visible( self::$example_post->ID );
 
 		$this->assertSame( false, $excerpt_display );
 	}
@@ -309,7 +309,7 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 		$set_excerpt_display = [ 'post_excerpt' => true ];
 		update_option( 'coil_exclusive_settings_group', $set_excerpt_display );
 
-		$retrieved_excerpt_display = Gating\get_excerpt_gating( self::$example_post->ID );
+		$retrieved_excerpt_display = Gating\is_excerpt_visible( self::$example_post->ID );
 
 		$this->assertSame( true, $retrieved_excerpt_display );
 
@@ -317,7 +317,7 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 		$set_excerpt_display = [ 'post_excerpt' => false ];
 		update_option( 'coil_exclusive_settings_group', $set_excerpt_display );
 
-		$retrieved_excerpt_display = Gating\get_excerpt_gating( self::$example_post->ID );
+		$retrieved_excerpt_display = Gating\is_excerpt_visible( self::$example_post->ID );
 
 		$this->assertSame( false, $retrieved_excerpt_display );
 

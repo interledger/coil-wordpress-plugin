@@ -309,7 +309,7 @@ function add_body_class( $classes ) : array {
 		$classes[]                = sanitize_html_class( 'coil-' . $coil_visibility_status );
 
 		if ( ! empty( $payment_pointer_id ) ) {
-			$classes[] = ( Gating\get_excerpt_gating( get_queried_object_id() ) ) ? 'coil-show-excerpt' : 'coil-hide-excerpt';
+			$classes[] = ( Gating\is_excerpt_visible( get_queried_object_id() ) ) ? 'coil-show-excerpt' : 'coil-hide-excerpt';
 		} else {
 			// Error: payment pointer ID is missing.
 			$classes[] = 'coil-missing-id';
@@ -397,7 +397,7 @@ function get_payment_pointer() : string {
 
 /**
  * Generate actions for every taxonomy to handle the output
- * of the gating options for the term add/edit forms.
+ * of the monetization and visibility options for the term add/edit forms.
  *
  * @return array $actions Array of WordPress actions.
  */

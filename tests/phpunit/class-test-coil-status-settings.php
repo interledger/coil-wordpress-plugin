@@ -11,15 +11,10 @@ use WP_UnitTest_Factory;
 /**
  * Gating tests.
  */
-class Test_Gating_Settings extends WP_UnitTestCase {
+class Test_Coil_Status_Settings extends WP_UnitTestCase {
 
 	/**
 	 * Basic posts for testing with.
-	 *
-	 * These have:
-	 *
-	 * - No post type-specific gating.
-	 * - No taxonomy-specific gating.
 	 *
 	 * @var \WP_Post[] Standard post objects.
 	 */

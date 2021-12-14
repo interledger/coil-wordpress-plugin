@@ -406,14 +406,14 @@
 
 			$( 'body' ).trigger( 'coil-missing-id' );
 		} else if ( ! isMonetizedAndPublic() ) {
-			// Verify monetization only if we are gating or partially gating content.
-			// If post is gated then show verification message after excerpt.
+			// Verify monetization only if there is exclusive content.
+			// If post is exclusive then show verification message after excerpt.
 			if ( isSubscribersOnly() ) {
 				if ( isExcerptEnabled() ) {
-					// Subscriber gating and no post excerpt...Verifying extension.
+					// Exclusive content and no post excerpt...Verifying extension.
 					document.querySelector( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
 				} else {
-					// Subscriber gating and has post excerpt...Verifying extension.
+					// Exclusive content and has post excerpt...Verifying extension.
 					$( 'p.coil-post-excerpt' ).after( showMonetizationMessage( loadingContent, '' ) );
 				}
 			} else {

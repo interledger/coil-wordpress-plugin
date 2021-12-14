@@ -170,8 +170,8 @@ function maybe_restrict_content( string $content ) : string {
 	switch ( $coil_visibility_status ) {
 		case 'exclusive':
 		case 'gate-tagged-blocks':
-			// Restrict all / some excerpt content based on gating settings.
-			if ( get_excerpt_gating( get_queried_object_id() ) ) {
+			// Restrict all / some excerpt content based on visibility settings.
+			if ( is_excerpt_visible( get_queried_object_id() ) ) {
 				$public_content .= sprintf(
 					'<p>%s</p>',
 					$content_excerpt
@@ -199,7 +199,7 @@ function maybe_restrict_content( string $content ) : string {
  * @param integer $post_id The post to check.
  * @return bool true show excerpt, false hide excerpt.
  */
-function get_excerpt_gating( $post_id ) : bool {
+function is_excerpt_visible( $post_id ) : bool {
 
 	$post_id   = (int) $post_id;
 	$post_type = get_post_type( $post_id );
@@ -435,9 +435,9 @@ function get_post_status( $post_id, $status_type ) : string {
 /**
  * Set the monetization / visibility status for the specified post.
  *
- * @param integer $post_id The post to set gating for.
+ * @param integer $post_id The post to set status for.
  * @param string $meta_key { '_coil_monetization_post_status' | '_coil_visibility_post_status' }
- * @param string $post_status Coil status.
+ * @param string $post_status Coil status (monetization and visibility settings).
  *
  * @return void
  */

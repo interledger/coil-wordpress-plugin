@@ -83,7 +83,7 @@ describe( 'Tests for block-level visibility settings in the editor', () => {
 
 /**
  * Opens the Coil panel in the editor so that monetization and visibility can be set
- *  @param {String} visibilityState specifies the gating type
+ *  @param {String} visibilityState specifies the visibility type
  */
 function openCoilPanel( visibilityState ) {
 	cy

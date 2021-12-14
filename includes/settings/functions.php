@@ -1008,7 +1008,7 @@ function admin_no_payment_pointer_notice() {
 		<img width="48" height="48" class="coil-no-payment-pointer-notice__icon" src="<?php echo esc_url( plugins_url( 'assets/images/web-mon-icon.svg', COIL__FILE__ ) ); ?>" alt="<?php esc_attr_e( 'Coil', 'coil-web-monetization' ); ?>" />
 		<div class="coil-no-payment-pointer-notice__content">
 			<h3><?php esc_html_e( 'Warning', 'coil-web-monetization' ); ?></h3>
-			<p><?php esc_html_e( 'You haven\'t entered a payment pointer. A payment pointer is required to receive payments and for content gating to be recognized.', 'coil-web-monetization' ); ?></p>
+			<p><?php esc_html_e( 'You haven\'t entered a payment pointer. A payment pointer is required to receive payments and for exclusive content to be recognized.', 'coil-web-monetization' ); ?></p>
 		</div>
 	</div>
 	<?php
@@ -1195,7 +1195,7 @@ function coil_term_custom_meta( $action, $term ) {
 		return;
 	}
 
-	// Retrieve the post's default gating
+	// Retrieve the post's default Coil status
 	$general_settings     = Admin\get_general_settings();
 	$default_monetization = isset( $general_settings['post_monetization'] ) ? $general_settings['post_monetization'] : 'monetized';
 	$exclusive_settings   = Admin\get_exclusive_settings();
