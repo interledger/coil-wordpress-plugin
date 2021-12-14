@@ -351,7 +351,7 @@ function get_content_status( $post_id, $status_type ) : string {
 }
 
 /**
- * Set the monetization / visibility status for the specified term.
+ * Set the Coil status for the specified term.
  * If the status that is passed in is invalid a default will be used in its place.
  * It's better to pass in a safe default than risk an incompatible state.
  *
@@ -388,16 +388,7 @@ function set_term_status( $term_id, string $meta_key, string $status ) : void {
 function is_content_monetized( $post_id ) : bool {
 
 	$monetization_status = get_content_status( $post_id, 'monetization' );
-	return ( $monetization_status === 'not-monetized' ) ? false : true;
-}
-
-function is_monetization_and_visibility_compatible() {
-
-	if ( get_monetization_setting() === 'not-monetized' && get_visibility_setting() === 'exclusive' ) {
-		return false;
-	}
-	return true;
-
+	return ( $monetization_status === 'monetized' ) ? true : false;
 }
 
 /**
