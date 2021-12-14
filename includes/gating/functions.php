@@ -214,7 +214,7 @@ function is_excerpt_visible( $post_id ) : bool {
 
 
 /**
- * Get the monetization / visibility status for the specified term.
+ * Get the Coil status for the specified term.
  *
  * @param integer $term_id The term_id to check.
  * @param string $meta_key { '_coil_monetization_term_status' | '_coil_visibility_term_status' }
@@ -233,7 +233,7 @@ function get_term_status( $term_id, $meta_key ) {
 }
 
 /**
- * Get any terms attached to the post and return their highest monetization / visibility status.
+ * Get any terms attached to the post and return their highest priority Coil status.
  *
  * @param string $meta_key { '_coil_monetization_term_status' | '_coil_visibility_term_status' }
  * @return string Coil status.
@@ -264,7 +264,7 @@ function get_taxonomy_term_status( $post_id, $meta_key ) {
 			$priority_state = 'exclusive';
 		} else {
 			// Invalid meta key was used.
-			// Returns default because then the term status won't be considered in determining the content status
+			// Returns default because then the term status won't be considered in determining the content status.
 			return $final_term_status;
 		}
 
@@ -392,7 +392,7 @@ function is_content_monetized( $post_id ) : bool {
 }
 
 /**
- * Get the monetization / visibility status for the specified post.
+ * Get the Coil status for the specified post.
  *
  * @param integer $post_id The post to check.
  * @param string $status_type
@@ -409,6 +409,7 @@ function get_post_status( $post_id, $status_type ) : string {
 	}
 
 	if ( empty( $status ) ) {
+		// Returns default because then the post status won't be considered in determining the content status.
 		$status = 'default';
 	}
 
@@ -416,7 +417,7 @@ function get_post_status( $post_id, $status_type ) : string {
 }
 
 /**
- * Set the monetization / visibility status for the specified post.
+ * Set the Coil status for the specified post.
  *
  * @param integer $post_id The post to set status for.
  * @param string $meta_key { '_coil_monetization_post_status' | '_coil_visibility_post_status' }
