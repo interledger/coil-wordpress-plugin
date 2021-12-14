@@ -216,6 +216,7 @@ addFilter( 'editor.BlockListBlock', 'coil/wrapperClass', wrapperClass );
 // Post monetization and visibility meta fields
 const PostMetaFields = withDispatch( ( dispatch, props ) => {
 	return {
+		// Updates the visibility meta value when a visibility radio button is selected.
 		updateVisibilityMetaValue: ( value ) => {
 			dispatch( 'core/editor' ).editPost( {
 				meta: {
@@ -223,11 +224,12 @@ const PostMetaFields = withDispatch( ( dispatch, props ) => {
 				},
 			} );
 		},
+		// Updates the monetization and visibility meta values when an option is selected from the monetization dropdown menu.
 		// When the monetization status is selected the visibility status must remain compatible.
 		// When monetization is disabled visibility must be public.
 		// When monetization is default, visibility must also be on default (radio buttons should not appear).
 		// If Enabled is selected, then visibility will be default until that is overwritten by the radio button selection.
-		updateMonetizationMetaValue: ( value ) => {
+		updateMetaValues: ( value ) => {
 			let visibility = 'public';
 			if ( value === 'default' ) {
 				visibility = 'default';
@@ -264,7 +266,7 @@ const PostMetaFields = withDispatch( ( dispatch, props ) => {
 				<SelectControl
 					label={ __( 'Select a monetization status', 'coil-web-monetization' ) }
 					value={ props[ props.monetizationMetaFieldName ] ? props[ props.monetizationMetaFieldName ] : 'default' }
-					onChange={ ( value ) => props.updateMonetizationMetaValue( value ) }
+					onChange={ ( value ) => props.updateMetaValues( value ) }
 					options={ [
 						{ value: 'default', label: 'Default (' + props.defaultLabel + ')' },
 						{ value: 'monetized', label: 'Enabled' },
