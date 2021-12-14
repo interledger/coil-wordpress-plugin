@@ -218,7 +218,7 @@ function load_full_assets() : void {
 			'coil_logo'               => $coil_logo,
 			'coil_logo_white'         => $coil_logo_white,
 			'exclusive_message_theme' => Admin\get_paywall_appearance_setting( 'coil_message_color_theme' ),
-			'font_selection'          => Admin\get_inherited_font_setting( 'coil_message_font' ),
+			'font_selection'          => Admin\get_paywall_appearance_setting( 'coil_message_font' ),
 
 			/* translators: 1 + 2) HTML link tags (to the Coil settings page). */
 			'admin_missing_id_notice' => sprintf( __( 'This post is monetized but you have not set your payment pointer ID in the %1$sCoil settings page%2$s. Only content set to show for all visitors will show.', 'coil-web-monetization' ), '<a href="' . admin_url( 'admin.php?page=coil' ) . '">', '</a>' ),

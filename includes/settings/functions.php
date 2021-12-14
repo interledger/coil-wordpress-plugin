@@ -661,7 +661,7 @@ function paywall_branding_render_callback() {
 function paywall_font_render_callback() {
 
 	$font_id = 'coil_message_font';
-	$value   = Admin\get_inherited_font_setting( $font_id );
+	$value   = Admin\get_paywall_appearance_setting( $font_id );
 
 	if ( $value === true ) {
 		$checked_input = 'checked="checked"';

@@ -224,7 +224,7 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 	 */
 	public function test_if_default_theme_font_is_false() {
 
-		$theme_based_font = Admin\get_inherited_font_setting( 'coil_message_font' );
+		$theme_based_font = Admin\get_paywall_appearance_setting( 'coil_message_font' );
 
 		$this->assertSame( false, $theme_based_font );
 	}
@@ -239,14 +239,14 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 		$theme_based_font = [ 'coil_message_font' => false ];
 		update_option( 'coil_exclusive_settings_group', $theme_based_font );
 
-		$retrieved_font = Admin\get_inherited_font_setting( 'coil_message_font' );
+		$retrieved_font = Admin\get_paywall_appearance_setting( 'coil_message_font' );
 
 		$this->assertSame( $theme_based_font['coil_message_font'], $retrieved_font );
 
 		$theme_based_font = [ 'coil_message_font' => true ];
 		update_option( 'coil_exclusive_settings_group', $theme_based_font );
 
-		$retrieved_font = Admin\get_inherited_font_setting( 'coil_message_font' );
+		$retrieved_font = Admin\get_paywall_appearance_setting( 'coil_message_font' );
 
 		$this->assertSame( $theme_based_font['coil_message_font'], $retrieved_font );
 

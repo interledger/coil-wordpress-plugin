@@ -411,30 +411,22 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
 
 	$exclusive_options = get_exclusive_settings();
 
-	$text_defaults  = get_paywall_text_defaults();
 	$style_defaults = get_paywall_appearance_defaults();
 
-	$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
+	$text_fields    = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
+	$paywall_styles = [ 'coil_message_color_theme', 'coil_message_branding', 'coil_message_font' ];
 
 	// Text inputs can be empty strings, in which the placeholder text will display or the default text will be returned.
 	if ( in_array( $field_id, $text_fields, true ) ) {
 
 		// The default is returned as a placeholder or as a coil_js_ui_messages field when no custom input has been provided
 		if ( $use_text_default ) {
+			$text_defaults = get_paywall_text_defaults();
 			return $text_defaults[ $field_id ];
 		} else {
 			return ( ! empty( $exclusive_options[ $field_id ] ) ) ? $exclusive_options[ $field_id ] : '';
 		}
-	} elseif ( $field_id === 'coil_message_color_theme' ) {
-		// Default is the light theme
-		if ( isset( $exclusive_options[ $field_id ] ) ) {
-			$setting_value = $exclusive_options[ $field_id ];
-		} else {
-			$setting_value = $style_defaults[ $field_id ];
-		}
-		return $setting_value;
-	} elseif ( $field_id === 'coil_message_branding' ) {
-		// Default is Coil logo
+	} elseif ( in_array( $field_id, $paywall_styles, true ) ) {
 		if ( isset( $exclusive_options[ $field_id ] ) ) {
 			$setting_value = $exclusive_options[ $field_id ];
 		} else {
@@ -463,29 +455,6 @@ function get_paywall_branding_options() {
 	$branding_choices = [ 'site_logo', 'coil_logo', 'no_logo' ];
 
 	return $branding_choices;
-}
-
-/**
- * Retrieve the inherited font paywall appearance setting
- * using its key from coil_exclusive_settings_group (serialized).
- * This is a separate function from the rest of the paywall appearance settings because it returns a boolean.
- *
- * @param string $field_id The named key in the wp_options serialized array.
- * @return string
- */
-function get_inherited_font_setting( $field_id ) {
-
-	$exclusive_options = get_exclusive_settings();
-	if ( $field_id === 'coil_message_font' ) {
-		if ( isset( $exclusive_options[ $field_id ] ) ) {
-			$setting_value = $exclusive_options[ $field_id ];
-		} else {
-			$setting_value = false;
-		}
-		return $setting_value;
-	}
-
-	return false;
 }
 
 /**
