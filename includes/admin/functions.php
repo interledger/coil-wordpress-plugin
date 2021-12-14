@@ -572,10 +572,3 @@ function get_coil_button_setting( $field_id ) {
 	}
 	return $value;
 }
-
-function get_set_message_fields( $field_id ) {
-	switch ( $field_id ) {
-		case 'coil_verifying_status_message':
-			return __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' );
-	}
-}
