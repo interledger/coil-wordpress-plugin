@@ -86,14 +86,14 @@
 	.coil-welcome-notice,
 	.coil-no-payment-pointer-notice {
 		align-items: center;
-		border-left: 4px solid #EE8249;
+		border-left: 4px solid #ee8249;
 		border-radius: 3px;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: nowrap;
 		margin-bottom: 20px;
 		margin-top: 20px;
-	  	max-width: calc( 820px - 3px );
+		max-width: calc( 820px - 3px );
 		padding: 20px;
 	}
 
@@ -186,8 +186,8 @@
 							flex-direction: row;
 							margin-bottom: 4px;
 
-						  	.coil-padlock-icon {
-							  display: flex;
+							.coil-padlock-icon {
+								display: flex;
 							}
 
 							.coil-title-preview-bar {
