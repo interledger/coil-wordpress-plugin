@@ -221,7 +221,6 @@ function coil_general_settings_group_validation( $general_settings ) : array {
 		$final_settings[ $monetization_setting_key ] = isset( $general_settings[ $monetization_setting_key ] ) && in_array( $general_settings[ $monetization_setting_key ], $valid_options, true ) ? sanitize_key( $general_settings[ $monetization_setting_key ] ) : $post_monetization_default;
 
 		// Ensures that a post cannot default to be Not Monetized and Exclusive
-
 		if ( $final_settings[ $monetization_setting_key ] === 'not-monetized' && isset( $exclusive_settings[ $visibility_setting_key ] ) && $exclusive_settings[ $visibility_setting_key ] === 'exclusive' ) {
 			$exclusive_settings [ $visibility_setting_key ] = 'public';
 			update_option( 'coil_exclusive_settings_group', $exclusive_settings );
@@ -245,42 +244,36 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 		return [];
 	}
 
-	// Defaults if setting fields are empty
-	$post_monetization_default = Admin\get_monetization_default();
-	$paywall_defaults          = Admin\get_paywall_appearance_defaults();
-	$post_visibility_default   = Admin\get_visibility_default();
+	$final_settings = [];
 
+	// Posts default to being publicly visible
+	$post_visibility_default = Admin\get_visibility_default();
 	// Monetization defaults are needed to check that the 'exclusive' and 'not-monetized' defaults are never set globally on one post type
 	$post_monetization_settings = Admin\get_general_settings();
 	// Valid visibility options are public or exclusive
-	$valid_visibility_options = array_keys( Admin\get_visibility_types() );
+	$valid_options = array_keys( Admin\get_visibility_types() );
 	// A list of valid post types
 	$post_type_options = Coil\get_supported_post_types( 'objects' );
 
 	// Loops through each post type to validate post visibility defaults and excerpt display settings
 	foreach ( $post_type_options as $post_type ) {
-
 		// Validates default post visibility settings
 		// Sets the keys for the post visibility and post monetization settings
-		$visibility_setting_key   = $post_type->name . '_visibility';
 		$monetization_setting_key = $post_type->name . '_monetization';
-		// The default monetization setting is monetized
-		$monetization_setting = ! empty( $post_monetization_settings[ $monetization_setting_key ] ) ? $post_monetization_settings[ $monetization_setting_key ] : $post_monetization_default;
-		// The default value is public
-		$visibility_setting = ! empty( $exclusive_settings[ $visibility_setting_key ] ) && in_array( $exclusive_settings[ $visibility_setting_key ], $valid_visibility_options, true ) ? sanitize_key( $exclusive_settings[ $visibility_setting_key ] ) : $post_visibility_default;
+		$visibility_setting_key   = $post_type->name . '_visibility';
 
-		// Ensures that a post cannot default to be 'not-monetized' and 'exclusive'
-		if ( $visibility_setting === 'exclusive' && $monetization_setting === 'not-monetized' ) {
-			$post_monetization_settings[ $monetization_setting_key ] = 'monetized';
+		// The default value is public
+		$final_settings[ $visibility_setting_key ] = isset( $exclusive_settings[ $visibility_setting_key ] ) && in_array( $exclusive_settings[ $visibility_setting_key ], $valid_options, true ) ? sanitize_key( $exclusive_settings[ $visibility_setting_key ] ) : $post_visibility_default;
+
+		// Ensures that a post cannot default to be Not Monetized and Exclusive
+		if ( $final_settings[ $visibility_setting_key ] === 'exclusive' && isset( $post_monetization_settings[ $monetization_setting_key ] ) && $post_monetization_settings[ $monetization_setting_key ] === 'not-monetized' ) {
+			$post_monetization_settings [ $monetization_setting_key ] = 'monetized';
 			update_option( 'coil_general_settings_group', $post_monetization_settings );
 		}
 
-		$exclusive_settings[ $visibility_setting_key ] = $visibility_setting;
-
-		// Validates excerpt display settings.
-		$excerpt_setting_key                        = $post_type->name . '_excerpt';
-		$excerpt_setting                            = isset( $exclusive_settings[ $excerpt_setting_key ] ) ? true : false;
-		$exclusive_settings[ $excerpt_setting_key ] = $excerpt_setting;
+		// Validates excerpt display settings
+		$excerpt_setting_key                    = $post_type->name . '_excerpt';
+		$final_settings[ $excerpt_setting_key ] = isset( $exclusive_settings[ $excerpt_setting_key ] ) ? true : false;
 
 	}
 
@@ -296,28 +289,30 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 	foreach ( $text_fields as $field_name ) {
 
 		if ( $field_name === 'coil_paywall_button_link' ) {
-			$exclusive_settings[ $field_name ] = ( isset( $exclusive_settings[ $field_name ] ) ) ? esc_url_raw( $exclusive_settings[ $field_name ] ) : '';
+			$final_settings[ $field_name ] = ( isset( $exclusive_settings[ $field_name ] ) ) ? esc_url_raw( $exclusive_settings[ $field_name ] ) : '';
 		} else {
 			// If no CSS selector is set then the default value must be used
-			if ( $field_name === 'coil_content_container' && $exclusive_settings[ $field_name ] === '' ) {
-				$exclusive_settings[ $field_name ] = '.content-area .entry-content';
+			if ( $field_name === 'coil_content_container' && ( ! isset( $exclusive_settings[ $field_name ] ) || $exclusive_settings[ $field_name ] === '' ) ) {
+				$final_settings[ $field_name ] = '.content-area .entry-content';
 			} else {
-				$exclusive_settings[ $field_name ] = ( isset( $exclusive_settings[ $field_name ] ) ) ? sanitize_text_field( $exclusive_settings[ $field_name ] ) : '';
+				$final_settings[ $field_name ] = ( isset( $exclusive_settings[ $field_name ] ) ) ? sanitize_text_field( $exclusive_settings[ $field_name ] ) : '';
 			}
 		}
 	}
+
+	$paywall_defaults = Admin\get_paywall_appearance_defaults();
 
 	// Theme validation
 	$valid_color_choices  = Admin\get_theme_color_types();
 	$coil_theme_color_key = 'coil_message_color_theme';
 
-	$exclusive_settings[ $coil_theme_color_key ] = isset( $exclusive_settings[ $coil_theme_color_key ] ) && in_array( $exclusive_settings[ $coil_theme_color_key ], $valid_color_choices, true ) ? sanitize_key( $exclusive_settings[ $coil_theme_color_key ] ) : $paywall_defaults[ $coil_theme_color_key ];
+	$final_settings[ $coil_theme_color_key ] = isset( $exclusive_settings[ $coil_theme_color_key ] ) && in_array( $exclusive_settings[ $coil_theme_color_key ], $valid_color_choices, true ) ? sanitize_key( $exclusive_settings[ $coil_theme_color_key ] ) : $paywall_defaults[ $coil_theme_color_key ];
 
 	// Branding validation
 	$valid_branding_choices = Admin\get_paywall_branding_options();
 	$message_branding_key   = 'coil_message_branding';
 
-	$exclusive_settings[ $message_branding_key ] = isset( $exclusive_settings[ $message_branding_key ] ) && in_array( $exclusive_settings[ $message_branding_key ], $valid_branding_choices, true ) ? sanitize_key( $exclusive_settings[ $message_branding_key ] ) : $paywall_defaults[ $message_branding_key ];
+	$final_settings[ $message_branding_key ] = isset( $exclusive_settings[ $message_branding_key ] ) && in_array( $exclusive_settings[ $message_branding_key ], $valid_branding_choices, true ) ? sanitize_key( $exclusive_settings[ $message_branding_key ] ) : $paywall_defaults[ $message_branding_key ];
 
 	// Validates all checkbox input fields
 	$checkbox_fields = [
@@ -326,9 +321,9 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 	];
 
 	foreach ( $checkbox_fields as $field_name ) {
-		$exclusive_settings[ $field_name ] = isset( $exclusive_settings[ $field_name ] ) ? true : false;
+		$final_settings[ $field_name ] = isset( $exclusive_settings[ $field_name ] ) ? true : false;
 	}
-	return $exclusive_settings;
+	return $final_settings;
 }
 
 /**
