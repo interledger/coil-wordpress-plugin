@@ -327,18 +327,19 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 }
 
 /**
- * Validates the checkbox that cntrols the display of the Promotion Bar.
+ * Validates the checkbox that controls the display of the Promotion Bar.
  *
  * @param array $coil_button_settings The checkbox input field.
  * @return array
  */
 function coil_button_settings_group_validation( $coil_button_settings ): array {
+	$final_settings  = [];
 	$checkbox_fields = [ 'coil_show_promotion_bar' ];
 
 	foreach ( $checkbox_fields as $field_name ) {
-		$coil_button_settings[ $field_name ] = isset( $coil_button_settings[ $field_name ] ) ? true : false;
+		$final_settings[ $field_name ] = isset( $coil_button_settings[ $field_name ] ) ? true : false;
 	}
-	return $coil_button_settings;
+	return $final_settings;
 }
 
 /* ------------------------------------------------------------------------ *
