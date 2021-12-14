@@ -360,10 +360,12 @@ function get_content_status( $post_id, $status_type ) : string {
 
 /**
  * Set the monetization / visibility status for the specified term.
+ * If the status that is passed in is invalid a default will be used in its place.
+ * It's better to pass in a safe default than risk an incompatible state.
  *
  * @param integer $term_id  The term to set the status for.
  * @param string $meta_key  { '_coil_monetization_term_status' | '_coil_visibility_term_status' }
- * @param string $status    Either "default", "not-monetized", or "monetized".
+ * @param string $status    Monetization or visibility state.
  *
  * @return void
  */
@@ -373,16 +375,14 @@ function set_term_status( $term_id, string $meta_key, string $status ) : void {
 
 	if ( $meta_key === '_coil_monetization_term_status' ) {
 		$valid_status_options = get_valid_monetization_types();
+		$status               = in_array( $status, $valid_status_options, true ) ? $status : Admin\get_monetization_default();
 	} elseif ( $meta_key === '_coil_visibility_term_status' ) {
 		$valid_status_options = get_valid_visibility_types();
+		$status               = in_array( $status, $valid_status_options, true ) ? $status : Admin\get_visibility_default();
 	} else {
 		// Invalid meta key.
 		return;
 	}
-	if ( ! in_array( $status, $valid_status_options, true ) ) {
-		return;
-	}
-
 	update_term_meta( $term_id, $meta_key, $status );
 }
 
