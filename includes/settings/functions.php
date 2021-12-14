@@ -1170,18 +1170,16 @@ function admin_welcome_notice() {
 	?>
 
 	<div class="notice is-dismissible coil-welcome-notice">
-		<img width="48" height="48" class="coil-welcome-notice__icon" src="<?php echo esc_url( plugins_url( 'assets/images/web-mon-icon.svg', COIL__FILE__ ) ); ?>" alt="<?php esc_attr_e( 'Coil', 'coil-web-monetization' ); ?>" />
 		<div class="coil-welcome-notice__content">
 			<h3><?php esc_html_e( 'Welcome to Coil Web Monetization for WordPress', 'coil-web-monetization' ); ?></h3>
+			<p><?php esc_html_e( 'To start using the plugin add your payment pointer in the Monetization tab.', 'coil-web-monetization' ); ?></p>
 			<p>
-			<?php
-			printf(
-				/* translators: 1) HTML link open tag, 2) HTML link close tag */
-				esc_html__( 'To start using Web Monetization please set up your %1$spayment pointer%2$s.', 'coil-web-monetization' ),
-				sprintf( '<a href="%1$s">', esc_url( '?page=coil_settings&tab=general_settings' ) ),
-				'</a>'
-			);
-			?>
+				<?php echo sprintf(
+						'<a class="%1$s" href="%2$s">%3$s</a>',
+				 	'button button-primary',
+				 	esc_url( '?page=coil_settings&tab=general_settings' ),
+				 	esc_html( 'Add Payment Pointer', 'coil-web-monetization' )
+				); ?>
 			</p>
 		</div>
 	</div>
