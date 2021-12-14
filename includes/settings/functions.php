@@ -183,8 +183,8 @@ function register_admin_content_settings() {
  * ------------------------------------------------------------------------ */
 
 /**
- * Allow the radio button options,
- * that set the global monetization defaults,
+ * Validates the payment pointer and
+ * the radio button options, that set the global monetization defaults,
  * to be properly validated
  *
  * @param array $general_settings The posted radio options from the General Settings section
@@ -196,31 +196,39 @@ function coil_general_settings_group_validation( $general_settings ) : array {
 		return [];
 	}
 
+	$final_settings        = [];
+	$general_settings_keys = array_keys( $general_settings );
+
 	$post_monetization_default = Admin\get_monetization_default();
 	// A list of valid monetization types (monetized or not-monetized)
 	$valid_options = array_keys( Admin\get_monetization_types() );
 	// Retrieves the exclusive settings to get the post type visibility defaults
 	$exclusive_settings = Admin\get_exclusive_settings();
 
-	foreach ( $general_settings as $id => $value ) {
+	// Validate the payment pointer
+	if ( in_array( 'coil_payment_pointer', $general_settings_keys, true ) ) {
+		$final_settings['coil_payment_pointer'] = sanitize_text_field( $general_settings['coil_payment_pointer'] );
+	}
 
-		if ( $id === 'coil_payment_pointer' ) {
-			$general_settings[ $id ] = sanitize_text_field( $general_settings[ $id ] );
-		} else {
-			$post_type = $id;
-			// The default value is monetized
-			$general_settings[ $post_type ] = in_array( $value, $valid_options, true ) ? sanitize_key( $value ) : $post_monetization_default;
-			// Ensures that a post cannot default to be Not Monetized and Exclusive
-			// Changing the array key suffix so that it becomes a visibility setting key instead of a monetization setting key
-			$visibility_setting_key = str_replace( '_monetization', '_visibility', $post_type );
-			if ( $general_settings[ $post_type ] === 'not-monetized' && $exclusive_settings[ $visibility_setting_key ] === 'exclusive' ) {
-				$exclusive_settings [ $visibility_setting_key ] = 'public';
-				update_option( 'coil_exclusive_settings_group', $exclusive_settings );
-			}
+	// Validate the monetization defaults
+	$post_type_options = Coil\get_supported_post_types( 'objects' );
+	foreach ( $post_type_options as $post_type ) {
+		// Sets the keys for the post visibility and post monetization settings
+		$monetization_setting_key = $post_type->name . '_monetization';
+		$visibility_setting_key   = $post_type->name . '_visibility';
+
+		// The default value is monetized
+		$final_settings[ $monetization_setting_key ] = isset( $general_settings[ $monetization_setting_key ] ) && in_array( $general_settings[ $monetization_setting_key ], $valid_options, true ) ? sanitize_key( $general_settings[ $monetization_setting_key ] ) : $post_monetization_default;
+
+		// Ensures that a post cannot default to be Not Monetized and Exclusive
+
+		if ( $final_settings[ $monetization_setting_key ] === 'not-monetized' && isset( $exclusive_settings[ $visibility_setting_key ] ) && $exclusive_settings[ $visibility_setting_key ] === 'exclusive' ) {
+			$exclusive_settings [ $visibility_setting_key ] = 'public';
+			update_option( 'coil_exclusive_settings_group', $exclusive_settings );
 		}
 	}
 
-	return $general_settings;
+	return $final_settings;
 }
 
 /**
@@ -242,7 +250,7 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 	$paywall_defaults          = Admin\get_paywall_appearance_defaults();
 	$post_visibility_default   = Admin\get_visibility_default();
 
-	// Monetization defaults are needed to check that the 'exclusive' and 'not-monetized' defaults are never set on a post type
+	// Monetization defaults are needed to check that the 'exclusive' and 'not-monetized' defaults are never set globally on one post type
 	$post_monetization_settings = Admin\get_general_settings();
 	// Valid visibility options are public or exclusive
 	$valid_visibility_options = array_keys( Admin\get_visibility_types() );
