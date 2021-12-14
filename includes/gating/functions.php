@@ -294,28 +294,26 @@ function get_taxonomy_term_status( $post_id, $meta_key ) {
  *
  * @param integer $post_id
  * @param string $status_type {'monetization' | 'visibility'}
- * @return string $content_status Monetization or visibility status slug.
+ * @return string $content_status Coil status slug.
  */
 function get_content_status( $post_id, $status_type ) : string {
 
 	$post_id = (int) $post_id;
 
-	// Set a default value in case nothing has been set on the post or in the database.
+	// Set a metakey and a default value in case nothing has been set on the post or in the database.
 	if ( $status_type === 'monetization' ) {
 		$content_status = Admin\get_monetization_default();
+		$meta_key       = '_coil_monetization_term_status';
 	} elseif ( $status_type === 'visibility' ) {
 		$content_status = Admin\get_visibility_default();
+		$meta_key       = '_coil_visibility_term_status';
 	} else {
 		// Return if an unrecognised status type is being used
 		return '';
 	}
 
 	// Hierarchy 1 - Check what is set on the post.
-	if ( $status_type === 'monetization' ) {
-		$post_status = get_post_status( $post_id, 'monetization' );
-	} elseif ( $status_type === 'visibility' ) {
-		$post_status = get_post_status( $post_id, 'visibility' );
-	}
+	$post_status = get_post_status( $post_id, $status_type );
 
 	if ( 'default' !== $post_status ) {
 
@@ -324,11 +322,7 @@ function get_content_status( $post_id, $status_type ) : string {
 	} else {
 
 		// Hierarchy 2 - Check what is set on the taxonomy.
-		if ( $status_type === 'monetization' ) {
-			$term_status = get_taxonomy_term_status( $post_id, '_coil_monetization_term_status' );
-		} elseif ( $status_type === 'visibility' ) {
-			$term_status = get_taxonomy_term_status( $post_id, '_coil_visibility_term_status' );
-		}
+		$term_status = get_taxonomy_term_status( $post_id, $meta_key );
 
 		if ( 'default' !== $term_status ) {
 
@@ -341,17 +335,14 @@ function get_content_status( $post_id, $status_type ) : string {
 			$post = get_post( $post_id );
 
 			if ( $status_type === 'monetization' ) {
-				// Get the post type from what is saved in the global options
-				$general_settings = Admin\get_general_settings();
-				if ( ! empty( $general_settings ) && ! empty( $post ) && isset( $general_settings[ $post->post_type . '_monetization' ] ) ) {
-					$content_status = $general_settings[ $post->post_type . '_monetization' ];
-				}
+				// Get the post type from what is saved in the general options
+				$settings = Admin\get_general_settings();
 			} elseif ( $status_type === 'visibility' ) {
 				// Get the post type from what is saved in the exclusive options
-				$exclusive_settings = Admin\get_exclusive_settings();
-				if ( ! empty( $exclusive_settings ) && ! empty( $post ) && isset( $exclusive_settings[ $post->post_type . '_visibility' ] ) ) {
-					$content_status = $exclusive_settings[ $post->post_type . '_visibility' ];
-				}
+				$settings = Admin\get_exclusive_settings();
+			}
+			if ( ! empty( $settings ) && ! empty( $post ) && isset( $settings[ $post->post_type . '_' . $status_type ] ) ) {
+				$content_status = $settings[ $post->post_type . '_' . $status_type ];
 			}
 		}
 	}
