@@ -259,19 +259,20 @@ function get_taxonomy_term_status( $post_id, $meta_key ) {
 
 		// Specifies the highest status possible
 		if ( $meta_key === '_coil_monetization_term_status' ) {
-			$highest_status = 'monetized';
+			$priority_state = 'monetized';
 		} elseif ( $meta_key === '_coil_visibility_term_status' ) {
-			$highest_status = 'exclusive';
+			$priority_state = 'exclusive';
 		} else {
 			// Invalid meta key was used.
-			return '';
+			// Returns default because then the term status won't be considered in determining the content status
+			return $final_term_status;
 		}
 
 		foreach ( $post_terms as $term_id ) {
 
 			$post_term_status = get_term_status( $term_id, $meta_key );
 			// If a term is assigned the highest status simply break out of loop and return.
-			if ( $post_term_status === $highest_status ) {
+			if ( $post_term_status === $priority_state ) {
 				$final_term_status = $post_term_status;
 				break;
 				// If a term's status has been set then save it - in contrast to it being 'default'.
