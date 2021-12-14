@@ -44,6 +44,9 @@ body.coil-show-admin-notice .monetize-msg {
   background-color: #fa8072;
   padding: 0.5em 0; }
 
+body.coil-gate-tagged-blocks:not(.coil-extension-not-found) .coil-show-monetize-users {
+  display: none; }
+
 .monetize-msg {
   left: calc( 50% - 50vw);
   max-width: 100vw;

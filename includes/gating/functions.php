@@ -101,8 +101,8 @@ function get_valid_monetization_types() {
 function get_valid_visibility_types() {
 
 	$valid = [
-		'public', // visable to everyone.
-		'exclusive', // visable to Coil members only.
+		'public', // visible to everyone.
+		'exclusive', // visible to Coil members only.
 		'gate-tagged-blocks', // split content.
 		'default', // Whatever is set on the post to revert back.
 	];
