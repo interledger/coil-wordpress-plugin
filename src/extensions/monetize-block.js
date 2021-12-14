@@ -245,12 +245,12 @@ const PostMetaFields = withDispatch( ( dispatch, props ) => {
 } )(
 	withSelect( ( select, props ) => {
 		const meta = select( 'core/editor' ).getEditedPostAttribute( 'meta' );
-		let defaultLabel = __( 'Enabled & Exclusive' );
+		let defaultLabel = __( 'Enabled & Public' );
 
 		if ( 'not-monetized' === coilEditorParams.monetizationDefault ) { // eslint-disable-line no-undef
 			defaultLabel = __( 'Disabled' );
-		} else if ( 'public' === coilEditorParams.visibilityDefault ) { // eslint-disable-line no-undef
-			defaultLabel = __( 'Enabled & Public' );
+		} else if ( 'exclusive' === coilEditorParams.visibilityDefault ) { // eslint-disable-line no-undef
+			defaultLabel = __( 'Enabled & Exclusive' );
 		}
 
 		return {

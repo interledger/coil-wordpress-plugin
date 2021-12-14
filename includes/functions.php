@@ -138,9 +138,10 @@ function load_block_editor_assets() : void {
 	);
 
 	$monetization_settings = get_option( 'coil_general_settings_group' );
-	$monetization_default  = isset( $monetization_settings[ get_current_screen()->post_type . '_monetization' ] ) ? $monetization_settings[ get_current_screen()->post_type . '_monetization' ] : 'default';
-	$visibility_settings   = get_option( 'coil_exclusive_settings_group' );
-	// If nothing has been saved in the wp_options table then visibility should default to public.
+	// If nothing is set in the wp_options table then the Coil Web Monetization menus will open showing the monetization dropdown "Default" element.
+	$monetization_default = isset( $monetization_settings[ get_current_screen()->post_type . '_monetization' ] ) ? $monetization_settings[ get_current_screen()->post_type . '_monetization' ] : 'default';
+	$visibility_settings  = get_option( 'coil_exclusive_settings_group' );
+	// If nothing has been saved in the wp_options table then visibility should default to public (In the menu visibility has no 'default' option).
 	$visibility_default = isset( $visibility_settings[ get_current_screen()->post_type . '_visibility' ] ) ? $visibility_settings[ get_current_screen()->post_type . '_visibility' ] : 'public';
 
 	wp_localize_script(
