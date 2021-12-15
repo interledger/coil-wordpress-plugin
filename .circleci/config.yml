@@ -122,8 +122,8 @@ workflows:
   version: 2
   test:
     jobs:
-      # - js_scss_linting
-      # - php_testing
-      - cypress_tests
-          # requires:
-          #   - php_testing
+      - js_scss_linting
+      - php_testing
+      - cypress_tests:
+          requires:
+            - php_testing
