@@ -7,35 +7,35 @@ describe( 'Check visibility of content blocks', () => {
 		cy.visit( '/block-visibility/' );
 	} );
 
-	it( 'Check visibility of content blocks when viewed by WM-enabled users', () => {
-		cy.startWebMonetization();
+	// it( 'Check visibility of content blocks when viewed by WM-enabled users', () => {
+	// 	cy.startWebMonetization();
 
-		// Exclusive block should be visible
-		cy.contains( 'This block is only visible to Coil members.' );
+	// 	// Exclusive block should be visible
+	// 	cy.contains( 'This block is only visible to Coil members.' );
 
-		// Paywall should not exist
-		cy
-			.get( '.coil-split-content-message' )
-			.should( 'not.exist' );
+	// 	// Paywall should not exist
+	// 	cy
+	// 		.get( '.coil-split-content-message' )
+	// 		.should( 'not.exist' );
 
-		// Public block should be visible
-		cy
-			.contains( 'This block is public.' )
-			.should( 'not.contain', paywallMessage )
-			.should( 'be.visible' );
+	// 	// Public block should be visible
+	// 	cy
+	// 		.contains( 'This block is public.' )
+	// 		.should( 'not.contain', paywallMessage )
+	// 		.should( 'be.visible' );
 
-		cy
-			.get( 'img' )
-			.invoke( 'text' )
-			.should( 'not.contain', paywallMessage );
+	// 	cy
+	// 		.get( 'img' )
+	// 		.invoke( 'text' )
+	// 		.should( 'not.contain', paywallMessage );
 
-		// This block should be hidden for Coil members
-		cy
-			.get( '.coil-hide-monetize-users' )
-			.should( 'not.be.visible' );
+	// 	// This block should be hidden for Coil members
+	// 	cy
+	// 		.get( '.coil-hide-monetize-users' )
+	// 		.should( 'not.be.visible' );
 
-		cy.stopWebMonetization();
-	} );
+	// 	cy.stopWebMonetization();
+	// } );
 } );
 
 describe( 'Visibility of content blocks for non WM-enabled users', () => {
@@ -59,10 +59,10 @@ describe( 'Visibility of content blocks for non WM-enabled users', () => {
 			.should( 'be.visible' );
 	} );
 
-	it( 'Check visibility of content blocks hidden from WM-enabled users', () => {
-		cy
-			.contains( 'This block is hidden for Coil members.' )
-			.should( 'not.contain', paywallMessage )
-			.should( 'be.visible' );
-	} );
+	// it( 'Check visibility of content blocks hidden from WM-enabled users', () => {
+	// 	cy
+	// 		.contains( 'This block is hidden for Coil members.' )
+	// 		.should( 'not.contain', paywallMessage )
+	// 		.should( 'be.visible' );
+	// } );
 } );
