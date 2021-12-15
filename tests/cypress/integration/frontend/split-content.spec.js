@@ -11,11 +11,12 @@ describe( 'Check visibility of content blocks', () => {
 		cy.startWebMonetization();
 
 		// Exclusive block should be visible
+		cy.contains( 'This block is only visible to Coil members.' );
+
+		// Paywall should not exist
 		cy
-			.get( '.coil-show-monetize-users' )
-			.invoke( 'text' )
-			.should( 'not.contain', paywallMessage )
-			.should( 'contain', 'This block is only visible to Coil members.' );
+			.get( '.coil-split-content-message' )
+			.should( 'not.exist' );
 
 		// Public block should be visible
 		cy

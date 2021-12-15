@@ -265,6 +265,7 @@
 			} else if ( isSplitContent() ) {
 				// Split content and unable to verify hidden content.
 				$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( paywallMessage ) );
+				$( '.coil-show-monetize-users' ).css( 'display', 'block' );
 
 				showContentContainer();
 			} else {
