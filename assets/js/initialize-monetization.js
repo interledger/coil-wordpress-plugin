@@ -591,7 +591,7 @@
 	 * Init.
 	 */
 	$( document ).ready( function() {
-		document.addEventListener( 'coilstart', bootstrapCoil ); // For Cypress.
+		document.addEventListener( 'coilstart', monetizationStartListener ); // For Cypress.
 		bootstrapCoil();
 	} );
 }( jQuery ) );
