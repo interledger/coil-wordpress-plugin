@@ -1,13 +1,16 @@
-describe( 'Fully restricted posts', () => {
+describe( 'Fully restricted posts for WM-enabled users', () => {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
 		cy.resetSite();
+		cy.visit( '/coil-members-only/' );
+		cy.startWebMonetization();
+	} );
+
+	afterEach( () => {
+		cy.stopWebMonetization();
 	} );
 
 	it( 'Checks that a WM enabled user can view monetized content', () => {
-		cy.visit( '/coil-members-only/' );
-		cy.startWebMonetization();
-
 		cy
 			.contains( 'This is a test post for the Coil Members Only state.' )
 			.should( 'be.visible' );
@@ -15,8 +18,13 @@ describe( 'Fully restricted posts', () => {
 		cy
 			.get( '.coil-message-inner' )
 			.should( 'not.exist' );
+	} );
+} );
 
-		cy.stopWebMonetization();
+describe( 'Fully restricted posts for non WM-enabled users', () => {
+	beforeEach( () => {
+		cy.logInToWordPress( 'admin', 'password' );
+		cy.resetSite();
 	} );
 
 	it( 'Checks default wording on exclusive post block', () => {

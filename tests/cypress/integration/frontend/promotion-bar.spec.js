@@ -1,18 +1,26 @@
-describe( 'Promotion bar', function() {
+describe( 'Promotion bar for WM-enabled users', function() {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
 		cy.resetSite();
+		cy.visit( '/monetized-and-public/' );
+		cy.startWebMonetization();
+	} );
+
+	afterEach( () => {
+		cy.stopWebMonetization();
 	} );
 
 	it( 'Checks that the promotion bar is not shown as a WM enabled user', () => {
-		cy.visit( '/monetized-and-public/' );
-		cy.startWebMonetization();
-
 		cy
 			.get( '.banner-message-inner' )
 			.should( 'not.exist' );
+	} );
+} );
 
-		cy.stopWebMonetization();
+describe( 'Promotion bar for non WM-enabled users', function() {
+	beforeEach( () => {
+		cy.logInToWordPress( 'admin', 'password' );
+		cy.resetSite();
 	} );
 
 	it( 'checks that the promotion bar be can be enabled/disabled', function() {

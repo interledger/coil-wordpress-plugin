@@ -1,13 +1,16 @@
-describe( 'Check visibility of content blocks', () => {
+describe( 'Visibility of content blocks for WM-enabled users', () => {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
 		cy.resetSite();
 		cy.visit( '/block-visibility/' );
+		cy.startWebMonetization();
+	} );
+
+	afterEach( () => {
+		cy.stopWebMonetization();
 	} );
 
 	it( 'Check visibility of content blocks when viewed by WM-enabled users', () => {
-		cy.startWebMonetization();
-
 		// Exclusive block should be visible
 		cy
 			.contains( 'This block is only visible to Coil members.' )
@@ -29,8 +32,6 @@ describe( 'Check visibility of content blocks', () => {
 			.invoke( 'css', 'display' )
 			.should( 'equal', 'none' )
 			.should( 'not.be.visible' );
-
-		cy.stopWebMonetization();
 	} );
 } );
 
