@@ -44,15 +44,10 @@ Cypress.Commands.add( 'logInToWordPress', ( username, password ) => {
  * Mock and start a (fake) web monetization session.
  */
 Cypress.Commands.add( 'startWebMonetization', () => {
-	cy.window().then( window => {
-		window.Cypress.monetized = true;
-	} ).then( () => {
-		cy.reload();
-	} ).then( () => {
-		cy
-			.document()
-			.trigger( 'coilstart' );
-	} );
+	window.Cypress.monetized = true;
+	cy
+		.document()
+		.trigger( 'coilstart' );
 } );
 
 /**
