@@ -1,3 +1,7 @@
+/**
+ * Viewing split content.
+*/
+
 describe( 'Visibility of content blocks for WM-enabled users', () => {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );

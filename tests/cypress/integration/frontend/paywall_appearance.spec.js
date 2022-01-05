@@ -1,3 +1,7 @@
+/**
+ * Paywall settings.
+*/
+
 describe( 'Fully restricted posts for WM-enabled users', () => {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );

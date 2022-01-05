@@ -1,3 +1,7 @@
+/**
+ * Promotion bar settings.
+*/
+
 describe( 'Promotion bar for WM-enabled users', function() {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
