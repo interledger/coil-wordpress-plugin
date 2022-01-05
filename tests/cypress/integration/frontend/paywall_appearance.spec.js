@@ -9,10 +9,6 @@ describe( 'Fully restricted posts', () => {
 		cy.startWebMonetization();
 
 		cy
-			.get( 'body' )
-			.should( 'have.class', 'monetization-initialized' );
-
-		cy
 			.contains( 'This is a test post for the Coil Members Only state.' )
 			.should( 'be.visible' );
 

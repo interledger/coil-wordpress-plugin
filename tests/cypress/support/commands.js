@@ -52,6 +52,10 @@ Cypress.Commands.add( 'startWebMonetization', () => {
 		cy
 			.document()
 			.trigger( 'coilstart' );
+	} ).then( () => {
+		cy
+			.get( 'body' )
+			.should( 'have.class', 'monetization-initialized' );
 	} );
 } );
 

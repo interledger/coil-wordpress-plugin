@@ -8,10 +8,6 @@ describe( 'Check visibility of content blocks', () => {
 	it( 'Check visibility of content blocks when viewed by WM-enabled users', () => {
 		cy.startWebMonetization();
 
-		cy
-			.get( 'body' )
-			.should( 'have.class', 'monetization-initialized' );
-
 		// Exclusive block should be visible
 		cy
 			.contains( 'This block is only visible to Coil members.' )
