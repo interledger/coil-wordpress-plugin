@@ -10,10 +10,6 @@ describe( 'Check visibility of content blocks', () => {
 	it( 'Check visibility of content blocks when viewed by WM-enabled users', () => {
 		cy.startWebMonetization();
 
-		cy
-			.get( 'body' )
-			.should( 'have.class', 'monetization-initialized' );
-
 		// Exclusive block should be visible
 		cy.contains( 'This block is only visible to Coil members.' );
 
@@ -36,6 +32,8 @@ describe( 'Check visibility of content blocks', () => {
 		// This block should be hidden for Coil members
 		cy
 			.get( '.coil-hide-monetize-users' )
+			.invoke( 'css', 'display' )
+			.should( 'equal', 'none' )
 			.should( 'not.be.visible' );
 
 		cy.stopWebMonetization();
@@ -63,10 +61,10 @@ describe( 'Visibility of content blocks for non WM-enabled users', () => {
 			.should( 'be.visible' );
 	} );
 
-	// it( 'Check visibility of content blocks hidden from WM-enabled users', () => {
-	// 	cy
-	// 		.contains( 'This block is hidden for Coil members.' )
-	// 		.should( 'not.contain', paywallMessage )
-	// 		.should( 'be.visible' );
-	// } );
+	it( 'Check visibility of content blocks hidden from WM-enabled users', () => {
+		cy
+			.contains( 'This block is hidden for Coil members.' )
+			.should( 'not.contain', paywallMessage )
+			.should( 'be.visible' );
+	} );
 } );
