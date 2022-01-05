@@ -48,19 +48,13 @@ Cypress.Commands.add( 'startWebMonetization', () => {
 		window.Cypress.monetized = true;
 	} ).then( () => {
 		cy.reload();
-		cy.wait( 600 ); // Ensure the bootstrap function has add the event listener
+		cy.wait( 500 ); // Ensure the bootstrap function has add the event listener
 	} ).then( () => {
-		cy
-			.document()
-			.should( 'exist' );
 		cy
 			.document()
 			.trigger( 'coilstart' );
 	} ).then( () => {
-		cy.wait( 600 ); // Ensure the monetizationStartListener function has started to run
-		cy
-			.get( 'body' )
-			.should( 'have.class', 'monetization-initialized' );
+		cy.wait( 500 ); // Ensure the monetizationStartListener function has run before the tests begin
 	} );
 } );
 
