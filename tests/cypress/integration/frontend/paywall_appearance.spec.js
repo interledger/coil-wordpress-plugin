@@ -5,6 +5,35 @@ describe( 'Fully restricted posts', () => {
 	} );
 
 	it( 'Checks that a WM enabled user can view monetized content', () => {
+		cy.visit( '/block-visibility/' );
+		cy.startWebMonetization();
+
+		cy
+			.get( 'body' )
+			.should( 'have.class', 'monetization-initialized' );
+
+		// Exclusive block should be visible
+		cy
+			.contains( 'This block is only visible to Coil members.' )
+			.should( 'be.visible' );
+
+		// Paywall should not exist
+		cy
+			.get( '.coil-split-content-message' )
+			.should( 'not.exist' );
+
+		// Public block should be visible
+		cy
+			.contains( 'This block is public.' )
+			.should( 'be.visible' );
+
+		// This block should be hidden for Coil members
+		cy
+			.get( '.coil-hide-monetize-users' )
+			.invoke( 'css', 'display' )
+			.should( 'equal', 'none' )
+			.should( 'not.be.visible' );
+
 		cy.visit( '/coil-members-only/' );
 		cy.startWebMonetization();
 
