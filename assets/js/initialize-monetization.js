@@ -492,7 +492,7 @@
 		} else if ( isSplitContent() ) {
 			$( '.coil-show-monetize-users' ).removeClass( 'coil-show-monetize-users' );
 			$( '.coil-split-content-message' ).remove();
-			$( '.coil-hide-monetize-users' ).css( 'display', 'none' );
+			$( '*.coil-hide-monetize-users' ).css( 'display', 'none' );
 		}
 
 		showContentContainer();

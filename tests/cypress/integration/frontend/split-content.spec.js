@@ -1,5 +1,3 @@
-const paywallMessage = 'We partnered with Coil to offer exclusive content. Access this and other great content with a Coil membership.';
-
 describe( 'Check visibility of content blocks', () => {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
@@ -10,8 +8,14 @@ describe( 'Check visibility of content blocks', () => {
 	it( 'Check visibility of content blocks when viewed by WM-enabled users', () => {
 		cy.startWebMonetization();
 
+		cy
+			.get( 'body' )
+			.should( 'have.class', 'monetization-initialized' );
+
 		// Exclusive block should be visible
-		cy.contains( 'This block is only visible to Coil members.' );
+		cy
+			.contains( 'This block is only visible to Coil members.' )
+			.should( 'be.visible' );
 
 		// Paywall should not exist
 		cy
@@ -21,13 +25,7 @@ describe( 'Check visibility of content blocks', () => {
 		// Public block should be visible
 		cy
 			.contains( 'This block is public.' )
-			.should( 'not.contain', paywallMessage )
 			.should( 'be.visible' );
-
-		cy
-			.get( 'img' )
-			.invoke( 'text' )
-			.should( 'not.contain', paywallMessage );
 
 		// This block should be hidden for Coil members
 		cy
@@ -51,20 +49,18 @@ describe( 'Visibility of content blocks for non WM-enabled users', () => {
 		cy
 			.get( '.coil-show-monetize-users' )
 			.invoke( 'text' )
-			.should( 'contain', paywallMessage );
+			.should( 'contain', 'We partnered with Coil to offer exclusive content. Access this and other great content with a Coil membership.' );
 	} );
 
 	it( 'Check visibility of content blocks shown to non WM-enabled users', () => {
 		cy
 			.contains( 'This block is public.' )
-			.should( 'not.contain', paywallMessage )
 			.should( 'be.visible' );
 	} );
 
 	it( 'Check visibility of content blocks hidden from WM-enabled users', () => {
 		cy
 			.contains( 'This block is hidden for Coil members.' )
-			.should( 'not.contain', paywallMessage )
 			.should( 'be.visible' );
 	} );
 } );
