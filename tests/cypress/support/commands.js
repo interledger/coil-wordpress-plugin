@@ -53,8 +53,6 @@ Cypress.Commands.add( 'startWebMonetization', () => {
 		cy
 			.document()
 			.trigger( 'coilstart' );
-	} ).then( () => {
-		cy.wait( 500 ); // Ensure the monetizationStartListener function has run before the tests begin
 	} );
 } );
 
