@@ -1,8 +1,23 @@
-// Monetization not initialized.
-body.monetization-not-initialized:not( .coil-no-gating ) {
+// Monetization initialized.
+body.monetization-initialized:not( .coil-monetized.coil-public ) {
+	*.coil-hide-monetize-users {
+		display: none;
+	}
+}
+
+// Coil Browser Extension not found or...
+// Coil Payment Pointer ID not found.
+// Only content that is set to show for all will show.
+body.coil-extension-not-found:not( .coil-monetized.coil-public ),
+body.coil-missing-id:not( .coil-monetized.coil-public ),
+body.monetization-not-initialized.coil-gate-tagged-blocks:not( .coil-monetized.coil-public ) {
+
+	*.coil-hide-monetize-users {
+		display: block;
+	}
 
 	*.coil-show-monetize-users {
-		display: block;
+		padding: 50px;
 		position: relative;
 
 		&::before {
@@ -15,51 +30,6 @@ body.monetization-not-initialized:not( .coil-no-gating ) {
 			z-index: 1;
 		}
 
-		&::after {
-			align-items: center;
-			background: #fff;
-			bottom: 0;
-			color: #000;
-			content: ' ';
-			cursor: pointer;
-			display: flex;
-			height: inherit;
-			justify-content: center;
-			left: 0;
-			opacity: 0.8;
-			position: absolute;
-			right: 0;
-			text-align: center;
-			text-transform: uppercase;
-			top: 0;
-			white-space: nowrap;
-			width: inherit;
-			z-index: 100;
-		}
-	}
-}
-
-// Monetization initialized.
-body.monetization-initialized:not( .coil-no-gating ) {
-	*.coil-hide-monetize-users {
-		display: none;
-	}
-}
-
-// Coil Browser Extension not found or...
-// Coil Payment Pointer ID not found.
-// Only content that is set to show for all will show.
-body.coil-extension-not-found:not( .coil-no-gating ),
-body.coil-missing-id:not( .coil-no-gating ),
-body.monetization-not-initialized.coil-gate-tagged-blocks:not( .coil-no-gating ) {
-
-	*.coil-hide-monetize-users {
-		display: block;
-	}
-
-	*.coil-show-monetize-users {
-		padding: 50px;
-		position: relative;
 		&::after {
 			align-items: center;
 			background: none;

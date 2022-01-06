@@ -12,100 +12,6 @@ use const Coil\COIL__FILE__;
 use const Coil\PLUGIN_VERSION;
 
 /**
- * Customise the environment where we want to show the Coil metabox.
- *
- * @return void
- */
-function load_metaboxes() : void {
-
-	add_action( 'add_meta_boxes', __NAMESPACE__ . '\add_metabox' );
-}
-
-/**
- * Add metabox to the content editing screen.
- *
- * @return void
- */
-function add_metabox() : void {
-
-	$show_metabox = false;
-
-	if ( ! function_exists( '\use_block_editor_for_post' ) ) {
-		// Show if Gutenberg not active.
-		$show_metabox = true;
-	} elseif ( ! \use_block_editor_for_post( $GLOBALS['post'] ) ) {
-		// Show if post is NOT using Gutenberg.
-		$show_metabox = true;
-	} elseif ( version_compare( $GLOBALS['wp_version'], '5.3', '<' ) ) {
-		// Show if using incompatible version of Gutenberg (`wp.editPost.PluginDocumentSettingPanel`).
-		$show_metabox = true;
-	}
-
-	if ( ! $show_metabox ) {
-		return;
-	}
-
-	add_meta_box(
-		'coil',
-		__( 'Coil Web Monetization', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\render_coil_metabox',
-		Coil\get_supported_post_types(),
-		'side',
-		'high'
-	);
-}
-
-/**
- * Render the Coil metabox.
- *
- * @return void
- */
-function render_coil_metabox() : void {
-
-	global $post;
-
-	// Explicitly use the post gating option to render whatever is saved on this post,
-	// instead of what is saved globally. This is used to output the correct meta box
-	// option.
-	$post_gating   = Gating\get_post_gating( absint( $post->ID ) );
-	$use_gutenberg = function_exists( '\use_block_editor_for_post' ) && use_block_editor_for_post( $post );
-	$settings      = Gating\get_monetization_setting_types( true );
-
-	if ( $use_gutenberg ) {
-		// This is used if WP < 5.3 (in some cases, without the Gutenberg plugin).
-		$settings['gate-tagged-blocks'] = esc_html__( 'Split Content', 'coil-web-monetization' );
-	}
-
-	do_action( 'coil_before_render_metabox', $settings );
-	?>
-
-	<fieldset>
-		<legend>
-			<?php
-			if ( $use_gutenberg ) {
-				esc_html_e( 'Set the type of monetization for the article. Note: If "Split Content" selected, you will need to save the article and reload the editor to view the options at block level.', 'coil-web-monetization' );
-			} else {
-				esc_html_e( 'Set the type of monetization for the article.', 'coil-web-monetization' );
-			}
-			?>
-		</legend>
-
-		<?php foreach ( $settings as $option => $name ) : ?>
-			<label for="<?php echo esc_attr( $option ); ?>">
-				<input type="radio" name="coil_monetize_post_status" id="<?php echo esc_attr( $option ); ?>" value="<?php echo esc_attr( $option ); ?>" <?php checked( $post_gating, $option ); ?>/>
-				<?php echo esc_html( $name ); ?>
-				<br />
-			</label>
-		<?php endforeach; ?>
-	</fieldset>
-
-	<?php
-	wp_nonce_field( 'coil_metabox_nonce_action', 'coil_metabox_nonce' );
-
-	do_action( 'coil_after_render_metabox' );
-}
-
-/**
  * Maybe save the Coil metabox data on content save.
  *
  * @param int $post_id The ID of the post being saved.
@@ -126,12 +32,15 @@ function maybe_save_post_metabox( int $post_id ) : void {
 		return;
 	}
 
-	$post_gating = sanitize_text_field( $_REQUEST['coil_monetize_post_status'] ?? '' );
+	$post_monetization = sanitize_text_field( $_REQUEST['_coil_monetization_post_status'] ?? '' );
+	$post_visibility   = sanitize_text_field( $_REQUEST['_coil_visibility_post_status'] ?? '' );
 
-	if ( $post_gating ) {
-		Gating\set_post_gating( $post_id, $post_gating );
+	if ( $post_monetization || $post_visibility ) {
+		Gating\set_post_status( $post_id, '_coil_monetization_post_status', $post_monetization );
+		Gating\set_post_status( $post_id, '_coil_visibility_post_status', $post_visibility );
 	} else {
-		delete_post_meta( $post_id, '_coil_monetize_post_status' );
+		delete_post_meta( $post_id, '_coil_monetization_post_status' );
+		delete_post_meta( $post_id, '_coil_visibility_post_status' );
 	}
 }
 
@@ -154,12 +63,14 @@ function maybe_save_term_meta( int $term_id, int $tt_id, $taxonomy ) : void {
 	// Check the nonce.
 	check_admin_referer( 'coil_term_gating_nonce_action', 'term_gating_nonce' );
 
-	$term_gating = sanitize_text_field( $_REQUEST['coil_monetize_term_status'] ?? '' );
+	$term_monetization = sanitize_text_field( $_REQUEST['_coil_monetization_term_status'] ?? '' );
+	$term_visibity     = sanitize_text_field( $_REQUEST['_coil_visibility_term_status'] ?? '' );
 
-	if ( $term_gating ) {
-		Gating\set_term_gating( $term_id, $term_gating );
+	if ( $term_monetization && $term_visibity ) {
+		Gating\set_term_status( $term_id, '_coil_monetization_term_status', $term_monetization );
+		Gating\set_term_status( $term_id, '_coil_visibility_term_status', $term_visibity );
 	} else {
-		delete_term_monetization_meta( $term_id );
+		delete_term_coil_status_meta( $term_id );
 	}
 
 }
@@ -170,12 +81,15 @@ function maybe_save_term_meta( int $term_id, int $tt_id, $taxonomy ) : void {
  * @param int $term The term id.
  * @return void
  */
-function delete_term_monetization_meta( $term_id ) {
+function delete_term_coil_status_meta( $term_id ) {
 
 	if ( empty( $term_id ) ) {
 		return;
 	}
-	delete_term_meta( $term_id, '_coil_monetize_term_status' );
+	delete_term_meta( $term_id, '_coil_monetization_term_status' );
+	delete_term_meta( $term_id, '_coil_visibility_term_status' );
+	// Deleted deprecated term meta
+	delete_term_meta( $term_id, '_coil_monetizatize_term_status' );
 }
 
 /**
@@ -300,6 +214,7 @@ function load_admin_assets() : void {
  * to the Coil Settings panel.
  *
  * @param \WP_Customize_Manager $wp_customize WordPress Customizer object.
+ * @return void
  */
 function add_redirect_customizer_section( $wp_customize ) : void {
 
@@ -325,12 +240,12 @@ function add_redirect_customizer_section( $wp_customize ) : void {
 	);
 
 	$description  = '<p>' . sprintf(
-		__( 'Message customization settings have been moved to the ', 'coil-web-monetization' ) . '<a href="%s">' . __( 'Message Settings tab', 'coil-web-monetization' ) . '</a>' . '.',
-		esc_url( admin_url( 'admin.php?page=coil_settings&tab=messaging_settings', COIL__FILE__ ) )
+		__( 'Message customization and post visibility settings have moved to the ', 'coil-web-monetization' ) . '<a href="%s">' . __( 'Exclusive Content tab', 'coil-web-monetization' ) . '</a>' . '.',
+		esc_url( admin_url( 'admin.php?page=coil_settings&tab=exclusive_settings', COIL__FILE__ ) )
 	) . '</p>';
 	$description .= '<p>' . sprintf(
-		__( 'Monetization options have been moved to the ', 'coil-web-monetization' ) . '<a href="%s">' . __( 'Monetization Settings tab', 'coil-web-monetization' ) . '</a>' . '.',
-		esc_url( admin_url( 'admin.php?page=coil_settings&tab=monetization_settings', COIL__FILE__ ) )
+		__( 'Monetization options have been moved to the ', 'coil-web-monetization' ) . '<a href="%s">' . __( 'General Settings tab', 'coil-web-monetization' ) . '</a>' . '.',
+		esc_url( admin_url( 'admin.php?page=coil_settings&tab=general_settings', COIL__FILE__ ) )
 	) . '</p>';
 
 	$wp_customize->add_control(
@@ -381,107 +296,279 @@ function get_valid_taxonomies() : array {
 }
 
 /**
- * Retrieve the global content settings using a key from the global
- * settings group (serialized).
+ * Get whatever settings are stored in the plugin as the default
+ * content monetization settings (post, page, cpt etc).
  *
- * @param string $setting_id The named key in the wp_options serialized array.
- * @return string
+ * @return array Setting stored in options, or blank array.
  */
-function get_global_settings( $setting_id ) {
+function get_general_settings() : array {
 
-	// Set up defaults.
-	$defaults = [
-		'coil_payment_pointer_id' => '',
-		'coil_content_container'  => '.content-area .entry-content',
-	];
-
-	$options = get_option( 'coil_global_settings_group', [] );
-
-	return ( ! empty( $options[ $setting_id ] ) ) ? $options[ $setting_id ] : $defaults[ $setting_id ];
-}
-
-/**
- * Retrieve the messaging settings using a key from the messaging
- * or return a default value for the setting
- *
- * @param string $field_id The named key in the wp_options serialized array.
- * @return string $setting_value The value of the setting after checking the default
- */
-
-function get_messaging_setting_or_default( $setting_id ) {
-
-	// Check if the setting exists, if not load the default
-	if ( '' === get_messaging_setting( $setting_id ) ) {
-		$setting_value = get_messaging_setting( $setting_id, true );
-	} else {
-		$setting_value = get_messaging_setting( $setting_id );
+	$general_settings = get_option( 'coil_general_settings_group', [] );
+	if ( ! empty( $general_settings ) ) {
+		return $general_settings;
 	}
 
-	return $setting_value;
+	return [];
 }
 
 /**
- * Retrieve the messaging settings and their defaults
+ * Retrieve the payment pointer using a key from the general
+ * settings group (serialized).
  *
- * @return array Add the messaging settings and their default values
+ * @return string
  */
+function get_payment_pointer_setting() {
 
-function get_messaging_defaults() {
+	$settings = get_general_settings();
+
+	return isset( $settings['coil_payment_pointer'] ) ? $settings['coil_payment_pointer'] : '';
+}
+
+/**
+ * @return array Valid monetization states - Monetized or Not Monetized.
+ */
+function get_monetization_types() {
+
+	$monetization_types = [
+		'monetized'     => 'Monetized',
+		'not-monetized' => 'Not Monetized',
+	];
+
+	return $monetization_types;
+}
+
+/**
+ * Returns the single default 'monetized'.
+ *
+ * @return string
+ */
+function get_monetization_default() {
+	return 'monetized';
+}
+
+/**
+ * Retrieve the Exclusive Content settings.
+ * @return array Setting stored in options.
+ */
+function get_exclusive_settings(): array {
+
+	// Set up defaults.
+	$defaults = [ 'coil_content_container' => '.content-area .entry-content' ];
+
+	$exclusive_options = get_option( 'coil_exclusive_settings_group', [] );
+	if ( empty( $exclusive_options ) ) {
+		$exclusive_options = [ 'coil_content_container' => '.content-area .entry-content' ];
+	}
+	if ( ! isset( $exclusive_options['coil_content_container'] ) ) {
+		$exclusive_options['coil_content_container'] = $defaults['coil_content_container'];
+	}
+
+	return $exclusive_options;
+}
+
+/**
+ * Retrieve the paywall text field defaults
+ * This includes the title, message, button text and button link
+ *
+ * @return array Text field default values
+ */
+function get_paywall_text_defaults() {
 
 	// Set up defaults.
 	return [
-		'coil_fully_gated_content_message'     => __( 'Unlock exclusive content with Coil. Need a Coil account?', 'coil-web-monetization' ),
-		'coil_partially_gated_content_message' => __( 'To keep reading, join Coil and install the browser extension. Visit coil.com for more information.', 'coil-web-monetization' ),
-		'coil_verifying_status_message'        => __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' ),
-		'coil_promotion_bar_message'           => __( 'This site is monetized using Coil. If you enjoy the content, consider supporting us by signing up for a Coil Membership. Here\'s how…', 'coil-web-monetization' ),
-		'coil_learn_more_button_text'          => __( 'Get Coil to access', 'coil-web-monetization' ),
-		'coil_learn_more_button_link'          => 'https://coil.com/',
+		'coil_paywall_title'       => __( 'Keep Reading with Coil', 'coil-web-monetization' ),
+		'coil_paywall_message'     => __( 'We partnered with Coil to offer exclusive content. Access this and other great content with a Coil membership.', 'coil-web-monetization' ),
+		'coil_paywall_button_text' => __( 'Become a Coil Member', 'coil-web-monetization' ),
+		'coil_paywall_button_link' => __( 'https://coil.com/', 'coil-web-monetization' ),
+	];
+}
+
+/**
+ * Retrieve the paywall text fields.
+ * If a value has been set then return it, otherwise return the default.
+ * This includes the title, message, button text and button link
+ *
+ * @return string Text field value
+ */
+function get_paywall_text_settings_or_default( $field_id ) {
+	$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
+	if ( in_array( $field_id, $text_fields, true ) ) {
+		$value = get_paywall_appearance_setting( $field_id ) === '' ? get_paywall_appearance_setting( $field_id, true ) : get_paywall_appearance_setting( $field_id );
+		return $value;
+	}
+	return '';
+}
+
+/**
+ * Retrieve the paywall appearance settings
+ * using a key from coil_exclusive_settings_group (serialized).
+ *
+ * @param string $field_id The named key in the wp_options serialized array.
+ * @param bool $default set to either return the text field default if the text field item is empty or to return an empty string.
+ * @return string
+ */
+function get_paywall_appearance_setting( $field_id, $use_text_default = false ) {
+
+	$exclusive_options = get_exclusive_settings();
+
+	$style_defaults = get_paywall_appearance_defaults();
+
+	$text_fields    = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
+	$paywall_styles = [ 'coil_message_color_theme', 'coil_message_branding', 'coil_message_font' ];
+
+	// Text inputs can be empty strings, in which the placeholder text will display or the default text will be returned.
+	if ( in_array( $field_id, $text_fields, true ) ) {
+
+		// The default is returned as a placeholder or as a coil_js_ui_messages field when no custom input has been provided
+		if ( $use_text_default ) {
+			$text_defaults = get_paywall_text_defaults();
+			return $text_defaults[ $field_id ];
+		} else {
+			return ( ! empty( $exclusive_options[ $field_id ] ) ) ? $exclusive_options[ $field_id ] : '';
+		}
+	} elseif ( in_array( $field_id, $paywall_styles, true ) ) {
+		if ( isset( $exclusive_options[ $field_id ] ) ) {
+			$setting_value = $exclusive_options[ $field_id ];
+		} else {
+			$setting_value = $style_defaults[ $field_id ];
+		}
+		return $setting_value;
+	}
+	return null;
+}
+
+/**
+ * @return array Valid colour theme states
+ */
+function get_theme_color_types() {
+
+	$theme_colors = [ 'light', 'dark' ];
+
+	return $theme_colors;
+}
+
+/**
+ * @return array Valid branding options.
+ */
+function get_paywall_branding_options() {
+
+	$branding_choices = [ 'site_logo', 'coil_logo', 'no_logo' ];
+
+	return $branding_choices;
+}
+
+/**
+ * Returns the paywall appearance settings for all fields that are not text based.
+ * This includes the color theme, branding choice, and font style.
+ *
+ * @return array
+ */
+function get_paywall_appearance_defaults(): array {
+	$paywall_appearance_defaults = [
+		'coil_message_color_theme' => 'light',
+		'coil_message_branding'    => 'coil_logo',
+		'coil_message_font'        => false,
 	];
 
-}
-
-
-/**
- * Retrieve the messaging settings using a key from the messaging
- * settings group (serialized).
- *
- * @param string $field_id The named key in the wp_options serialized array.
- * @return string
- */
-
-function get_messaging_setting( $field_id, $default = false ) {
-
-	$defaults = get_messaging_defaults();
-
-	$options = get_option( 'coil_messaging_settings_group', [] );
-
-	// The default is returned as a placeholder or as a coil_js_ui_messages field when no custom input has been provided
-	if ( $default ) {
-		return $defaults[ $field_id ];
-	}
-
-	return ( ! empty( $options[ $field_id ] ) ) ? $options[ $field_id ] : '';
+	return $paywall_appearance_defaults;
 }
 
 /**
- * Retrieve the padlock and Coil Promotion Bar display settings
- * using a key from coil_appearance_settings_group (serialized).
+ * Retrieve the exclusive post appearance settings
+ * using a key from coil_exclusive_settings_group (serialized).
  *
  * @param string $field_id The named key in the wp_options serialized array.
+ * @return bool
+ */
+function get_exlusive_post_setting( $field_id ): bool {
+
+	$exclusive_options = get_exclusive_settings();
+
+	if ( $field_id === 'coil_title_padlock' ) {
+		$setting_value = isset( $exclusive_options[ $field_id ] ) ? $exclusive_options[ $field_id ] : false;
+		return $setting_value;
+	}
+	return false;
+}
+
+/**
+ * Returns the padlock default as true.
+ *
+ * @return array
+ */
+function get_exclusive_post_defaults(): array {
+	$exclusive_post_defaults = [ 'coil_title_padlock' => true ];
+
+	return $exclusive_post_defaults;
+}
+
+/**
+ * @return array Valid visibility states - Public or Exclusive.
+ */
+function get_visibility_types() : array {
+
+	$visibility_types = [
+		'public'    => 'Keep public',
+		'exclusive' => 'Make exclusive',
+	];
+
+	return $visibility_types;
+}
+
+/**
+ * Returns the visibility default which is 'public' for all post types.
+ *
  * @return string
  */
-function get_appearance_settings( $field_id ) {
+function get_visibility_default() {
 
-	$options                  = get_option( 'coil_appearance_settings_group', [] );
-	$display_setting_id_array = [ 'coil_title_padlock', 'coil_show_promotion_bar' ];
+	return 'public';
+}
 
-	if ( in_array( $field_id, $display_setting_id_array, true ) ) {
-		// Default is checked
-		if ( ! isset( $options[ $field_id ] ) ) {
-			$setting_value = true;
-		} else {
-			$setting_value = $options[ $field_id ];
-		}
+/**
+* Returns the default excerpt display for all post types. The default is to not display.
+*
+* @return boolean
+*/
+function get_excerpt_display_default() {
+
+	return false;
+}
+
+/**
+ * Retrieve the CSS selector setting settings.
+ * @return string Setting stored in options.
+ */
+function get_css_selector() {
+
+	$exclusive_options = get_exclusive_settings();
+	if ( empty( $exclusive_options ['coil_content_container'] ) ) {
+		return '.content-area .entry-content';
+	} else {
+		return $exclusive_options ['coil_content_container'];
 	}
-	return $setting_value;
+}
+
+/**
+ * Retrieve the Coil Button settings.
+ * @return array Setting stored in options.
+ */
+function get_coil_button_settings() : array {
+
+	$coil_button_settings = get_option( 'coil_button_settings_group', [] );
+	return $coil_button_settings;
+}
+
+/**
+ * Retrieve the checkbox value for whether or not to display the Promotion Bar.
+ * @param string $field_name
+ * @return string Setting stored in options.
+ */
+function get_coil_button_setting( $field_id ) {
+	$coil_button_settings = get_coil_button_settings();
+	$value                = false;
+	if ( $field_id === 'coil_show_promotion_bar' ) {
+		$value = isset( $coil_button_settings[ $field_id ] ) ? $coil_button_settings[ $field_id ] : false;
+	}
+	return $value;
 }

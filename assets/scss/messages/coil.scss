@@ -2,11 +2,11 @@
 @import '../variables';
 @import 'fonts';
 
-body.coil-gate-all.coil-extension-not-found.show-fw-message,
+body.coil-exclusive.coil-extension-not-found.show-fw-message,
 body.coil-missing-id.coil-extension-not-found.show-fw-message,
-body.monetization-not-initialized.coil-gate-all.show-fw-message,
-body.coil-gate-all.coil-extension-not-found.show-excerpt-message,
-body.monetization-not-initialized.coil-gate-all.show-excerpt-message,
+body.monetization-not-initialized.coil-exclusive.show-fw-message,
+body.coil-exclusive.coil-extension-not-found.show-excerpt-message,
+body.monetization-not-initialized.coil-exclusive.show-excerpt-message,
 body.monetization-not-initialized.coil-missing-id.show-fw-message {
 
 	.coil-message-container {
@@ -19,7 +19,7 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 			background: $message_background_colour;
 			border: 1px solid $message_border_colour;
 			border-radius: $message_border_radius;
-			padding: $message_spacing_baseline * 3;
+			padding: $message_spacing_baseline * 4;
 		}
 
 		a.custom-logo-link {
@@ -87,33 +87,40 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 				}
 			}
 		}
+	}
 
-		.coil-message-footer {
-			border-top: 1px solid $message_border_colour;
-			padding-top: $message_spacing_baseline * 2;
+	// Changes to implement dark theme
+	.coil-message-container.coil-dark-theme {
 
-			@media only screen and (min-width: $message_desktop_breakpoint) {
-				padding-top: $message_spacing_baseline * 4;
-			}
+		.coil-message-inner {
+			background: $black-000;
+			color: $message_background_colour;
+			opacity: 0.9;
+		}
 
-			.coil-footer-content {
-				font-size: 12px;
-				line-height: 17px;
-				margin: 0 auto;
-				max-width: 720px;
+		.coil-message-header {
+			a.coil-message-button {
+				background-color: $message_background_colour;
+				color: $message_font_colour;
 
-				@media only screen and (min-width: $message_desktop_breakpoint) {
-					font-size: 14px;
-					line-height: 22px;
+				&:hover {
+					background-color: $message_content_conceal_colour_dark_theme;
 				}
 			}
 		}
 	}
+
+	// Changes to implement theme font selection
+	.coil-message-container.coil-inherit-theme-font {
+
+		font-family: inherit;
+	}
+
 }
 
 // Scenario 2
-body.monetization-not-initialized.coil-gate-all.show-excerpt-message,
-body.coil-gate-all.coil-extension-not-found.show-excerpt-message {
+body.monetization-not-initialized.coil-exclusive.show-excerpt-message,
+body.coil-exclusive.coil-extension-not-found.show-excerpt-message {
 
 	.coil-message-container {
 		display: block !important;
