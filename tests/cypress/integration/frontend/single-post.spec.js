@@ -1,6 +1,7 @@
 /**
- * Site setting / option tests.
- */
+ * Interacting with posts as a non WM-enabled user.
+*/
+
 // This is the payment pointer that is set during the rest function.
 const paymentPointer = 'https://example.com/.well-known/pay';
 

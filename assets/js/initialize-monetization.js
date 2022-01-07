@@ -492,6 +492,7 @@
 		} else if ( isSplitContent() ) {
 			$( '.coil-show-monetize-users' ).removeClass( 'coil-show-monetize-users' );
 			$( '.coil-split-content-message' ).remove();
+			$( '*.coil-hide-monetize-users' ).css( 'display', 'none' );
 		}
 
 		showContentContainer();
@@ -591,7 +592,7 @@
 	 * Init.
 	 */
 	$( document ).ready( function() {
-		document.addEventListener( 'coilstart', bootstrapCoil ); // For Cypress.
+		document.addEventListener( 'coilstart', monetizationStartListener ); // For Cypress.
 		bootstrapCoil();
 	} );
 }( jQuery ) );
