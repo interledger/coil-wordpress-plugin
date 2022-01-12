@@ -12,100 +12,6 @@ use const Coil\COIL__FILE__;
 use const Coil\PLUGIN_VERSION;
 
 /**
- * Customise the environment where we want to show the Coil metabox.
- *
- * @return void
- */
-function load_metaboxes() : void {
-
-	add_action( 'add_meta_boxes', __NAMESPACE__ . '\add_metabox' );
-}
-
-/**
- * Add metabox to the content editing screen.
- *
- * @return void
- */
-function add_metabox() : void {
-
-	$show_metabox = false;
-
-	if ( ! function_exists( '\use_block_editor_for_post' ) ) {
-		// Show if Gutenberg not active.
-		$show_metabox = true;
-	} elseif ( ! \use_block_editor_for_post( $GLOBALS['post'] ) ) {
-		// Show if post is NOT using Gutenberg.
-		$show_metabox = true;
-	} elseif ( version_compare( $GLOBALS['wp_version'], '5.3', '<' ) ) {
-		// Show if using incompatible version of Gutenberg (`wp.editPost.PluginDocumentSettingPanel`).
-		$show_metabox = true;
-	}
-
-	if ( ! $show_metabox ) {
-		return;
-	}
-
-	add_meta_box(
-		'coil',
-		__( 'Coil Web Monetization', 'coil-web-monetization' ),
-		__NAMESPACE__ . '\render_coil_metabox',
-		Coil\get_supported_post_types(),
-		'side',
-		'high'
-	);
-}
-
-/**
- * Render the Coil metabox.
- *
- * @return void
- */
-function render_coil_metabox() : void {
-
-	global $post;
-
-	// Explicitly use the post gating option to render whatever is saved on this post,
-	// instead of what is saved globally. This is used to output the correct meta box
-	// option.
-	$post_gating   = Gating\get_post_gating( absint( $post->ID ) );
-	$use_gutenberg = function_exists( '\use_block_editor_for_post' ) && use_block_editor_for_post( $post );
-	$settings      = Gating\get_monetization_setting_types( true );
-
-	if ( $use_gutenberg ) {
-		// This is used if WP < 5.3 (in some cases, without the Gutenberg plugin).
-		$settings['gate-tagged-blocks'] = esc_html__( 'Split Content', 'coil-web-monetization' );
-	}
-
-	do_action( 'coil_before_render_metabox', $settings );
-	?>
-
-	<fieldset>
-		<legend>
-			<?php
-			if ( $use_gutenberg ) {
-				esc_html_e( 'Set the type of monetization for the article. Note: If "Split Content" selected, you will need to save the article and reload the editor to view the options at block level.', 'coil-web-monetization' );
-			} else {
-				esc_html_e( 'Set the type of monetization for the article.', 'coil-web-monetization' );
-			}
-			?>
-		</legend>
-
-		<?php foreach ( $settings as $option => $name ) : ?>
-			<label for="<?php echo esc_attr( $option ); ?>">
-				<input type="radio" name="coil_monetize_post_status" id="<?php echo esc_attr( $option ); ?>" value="<?php echo esc_attr( $option ); ?>" <?php checked( $post_gating, $option ); ?>/>
-				<?php echo esc_html( $name ); ?>
-				<br />
-			</label>
-		<?php endforeach; ?>
-	</fieldset>
-
-	<?php
-	wp_nonce_field( 'coil_metabox_nonce_action', 'coil_metabox_nonce' );
-
-	do_action( 'coil_after_render_metabox' );
-}
-
-/**
  * Maybe save the Coil metabox data on content save.
  *
  * @param int $post_id The ID of the post being saved.
@@ -126,12 +32,15 @@ function maybe_save_post_metabox( int $post_id ) : void {
 		return;
 	}
 
-	$post_gating = sanitize_text_field( $_REQUEST['coil_monetize_post_status'] ?? '' );
+	$post_monetization = sanitize_text_field( $_REQUEST['_coil_monetization_post_status'] ?? '' );
+	$post_visibility   = sanitize_text_field( $_REQUEST['_coil_visibility_post_status'] ?? '' );
 
-	if ( $post_gating ) {
-		Gating\set_post_gating( $post_id, $post_gating );
+	if ( $post_monetization || $post_visibility ) {
+		Gating\set_post_status( $post_id, '_coil_monetization_post_status', $post_monetization );
+		Gating\set_post_status( $post_id, '_coil_visibility_post_status', $post_visibility );
 	} else {
-		delete_post_meta( $post_id, '_coil_monetize_post_status' );
+		delete_post_meta( $post_id, '_coil_monetization_post_status' );
+		delete_post_meta( $post_id, '_coil_visibility_post_status' );
 	}
 }
 
@@ -154,12 +63,14 @@ function maybe_save_term_meta( int $term_id, int $tt_id, $taxonomy ) : void {
 	// Check the nonce.
 	check_admin_referer( 'coil_term_gating_nonce_action', 'term_gating_nonce' );
 
-	$term_gating = sanitize_text_field( $_REQUEST['coil_monetize_term_status'] ?? '' );
+	$term_monetization = sanitize_text_field( $_REQUEST['_coil_monetization_term_status'] ?? '' );
+	$term_visibity     = sanitize_text_field( $_REQUEST['_coil_visibility_term_status'] ?? '' );
 
-	if ( $term_gating ) {
-		Gating\set_term_gating( $term_id, $term_gating );
+	if ( $term_monetization && $term_visibity ) {
+		Gating\set_term_status( $term_id, '_coil_monetization_term_status', $term_monetization );
+		Gating\set_term_status( $term_id, '_coil_visibility_term_status', $term_visibity );
 	} else {
-		delete_term_monetization_meta( $term_id );
+		delete_term_coil_status_meta( $term_id );
 	}
 
 }
@@ -170,12 +81,15 @@ function maybe_save_term_meta( int $term_id, int $tt_id, $taxonomy ) : void {
  * @param int $term The term id.
  * @return void
  */
-function delete_term_monetization_meta( $term_id ) {
+function delete_term_coil_status_meta( $term_id ) {
 
 	if ( empty( $term_id ) ) {
 		return;
 	}
-	delete_term_meta( $term_id, '_coil_monetize_term_status' );
+	delete_term_meta( $term_id, '_coil_monetization_term_status' );
+	delete_term_meta( $term_id, '_coil_visibility_term_status' );
+	// Deleted deprecated term meta
+	delete_term_meta( $term_id, '_coil_monetizatize_term_status' );
 }
 
 /**
@@ -502,12 +416,21 @@ function get_paywall_text_settings_or_default( $field_id ) {
 function get_paywall_appearance_setting( $field_id, $use_text_default = false ) {
 
 	$exclusive_options = get_exclusive_settings();
-
-	$text_defaults  = get_paywall_text_defaults();
 	$style_defaults = get_paywall_appearance_defaults();
 	$exclusive_defaults = get_exclusive_post_defaults();
 
-	$text_fields = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link', 'coil_padlock_icon_position', 'coil_padlock_icon_style' ];
+	$text_fields    = [
+		'coil_paywall_title',
+		'coil_paywall_message',
+		'coil_paywall_button_text',
+		'coil_paywall_button_link'
+	];
+	
+	$paywall_styles = [
+		'coil_message_color_theme',
+		'coil_message_branding',
+		'coil_message_font'
+	];
 
 	// Text inputs can be empty strings, in which the placeholder text will display or the default text will be returned.
 	if ( in_array( $field_id, $text_fields, true ) ) {
@@ -518,6 +441,7 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
 		} else {
 			return ( ! empty( $exclusive_options[ $field_id ] ) ) ? $exclusive_options[ $field_id ] : '';
 		}
+
 	} elseif ( $field_id === 'coil_message_color_theme' ) {
 		// Default is the light theme
 		if ( isset( $exclusive_options[ $field_id ] ) ) {
@@ -526,7 +450,8 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
 			$setting_value = $style_defaults[ $field_id ];
 		}
 		return $setting_value;
-	} elseif ( $field_id === 'coil_padlock_icon_position' ) {
+
+	} elseif ( $field_id === 'coil_padlock_icon_style' ) {
 		// Default is Coil logo
 		if ( isset( $exclusive_options[ $field_id ] ) ) {
 			$setting_value = $exclusive_options[ $field_id ];
@@ -534,9 +459,7 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
 			$setting_value = $exclusive_defaults[ $field_id ];
 		}
 		return $setting_value;
-
-	} elseif ( $field_id === 'coil_padlock_icon_style' ) {
-		// Default is Coil logo
+	} elseif ( in_array( $field_id, $paywall_styles, true ) ) {
 		if ( isset( $exclusive_options[ $field_id ] ) ) {
 			$setting_value = $exclusive_options[ $field_id ];
 		} else {
@@ -587,29 +510,6 @@ function get_padlock_title_icon_style_options() {
 
 	return $icon_styles;
 }
-/**
- * Retrieve the inherited font paywall appearance setting
- * using its key from coil_exclusive_settings_group (serialized).
- * This is a separate function from the rest of the paywall appearance settings because it returns a boolean.
- *
- * @param string $field_id The named key in the wp_options serialized array.
- * @return string
- */
-function get_inherited_font_setting( $field_id ) {
-
-	$exclusive_options = get_exclusive_settings();
-	if ( $field_id === 'coil_message_font' ) {
-		if ( isset( $exclusive_options[ $field_id ] ) ) {
-			$setting_value = $exclusive_options[ $field_id ];
-		} else {
-			$setting_value = false;
-		}
-		return $setting_value;
-	}
-
-	return false;
-}
-
 /**
  * Returns the paywall appearance settings for all fields that are not text based.
  * This includes the color theme, branding choice, and font style.
@@ -665,8 +565,8 @@ function get_exclusive_post_defaults(): array {
 function get_visibility_types() : array {
 
 	$visibility_types = [
-		'public'    => 'Public',
-		'exclusive' => 'Exclusive',
+		'public'    => 'Keep public',
+		'exclusive' => 'Make exclusive',
 	];
 
 	return $visibility_types;
@@ -677,7 +577,7 @@ function get_visibility_types() : array {
  *
  * @return string
  */
-function get_post_visibility_default() {
+function get_visibility_default() {
 
 	return 'public';
 }
@@ -694,20 +594,15 @@ function get_excerpt_display_default() {
 
 /**
  * Retrieve the CSS selector setting settings.
- * @param string $field_name
  * @return string Setting stored in options.
  */
-function get_css_selector( $field_name ) {
+function get_css_selector() {
 
-	if ( $field_name === 'coil_content_container' ) {
-		$exclusive_options = get_exclusive_settings();
-		if ( empty( $exclusive_options ['coil_content_container'] ) ) {
-			return '.content-area .entry-content';
-		} else {
-			return $exclusive_options ['coil_content_container'];
-		}
+	$exclusive_options = get_exclusive_settings();
+	if ( empty( $exclusive_options ['coil_content_container'] ) ) {
+		return '.content-area .entry-content';
 	} else {
-		return '';
+		return $exclusive_options ['coil_content_container'];
 	}
 }
 
@@ -717,11 +612,7 @@ function get_css_selector( $field_name ) {
  */
 function get_coil_button_settings() : array {
 
-	$coil_button_settings = get_option( 'coil_button_settings_group', 'absent' );
-	if ( 'absent' === $coil_button_settings ) {
-		$coil_button_settings = [];
-	}
-
+	$coil_button_settings = get_option( 'coil_button_settings_group', [] );
 	return $coil_button_settings;
 }
 
@@ -732,15 +623,9 @@ function get_coil_button_settings() : array {
  */
 function get_coil_button_setting( $field_id ) {
 	$coil_button_settings = get_coil_button_settings();
+	$value                = false;
 	if ( $field_id === 'coil_show_promotion_bar' ) {
 		$value = isset( $coil_button_settings[ $field_id ] ) ? $coil_button_settings[ $field_id ] : false;
 	}
 	return $value;
-}
-
-function get_set_message_fields( $field_id ) {
-	switch ( $field_id ) {
-		case 'coil_verifying_status_message':
-			return __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' );
-	}
 }

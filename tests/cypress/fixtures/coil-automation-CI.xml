@@ -16,7 +16,7 @@
 <!-- 7. WordPress will then import each of the posts, pages, comments, categories, etc. -->
 <!--    contained in this file into your site. -->
 
-	<!-- generator="WordPress/5.8" created="2021-09-07 13:17" -->
+	<!-- generator="WordPress/5.8.2" created="2021-12-06 11:08" -->
 <rss version="2.0"
 	xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
 	xmlns:content="http://purl.org/rss/1.0/modules/content/"
@@ -26,10 +26,10 @@
 >
 
 <channel>
-	<title>cypress site data</title>
+	<title>coil</title>
 	<link>http://127.0.0.1:80</link>
 	<description>Just another WordPress site</description>
-	<pubDate>Tue, 07 Sep 2021 13:17:05 +0000</pubDate>
+	<pubDate>Mon, 06 Dec 2021 11:08:53 +0000</pubDate>
 	<language>en-US</language>
 	<wp:wxr_version>1.2</wp:wxr_version>
 	<wp:base_site_url>http://127.0.0.1:80</wp:base_site_url>
@@ -44,28 +44,19 @@
 		<wp:cat_name><![CDATA[Uncategorized]]></wp:cat_name>
 	</wp:category>
 				<wp:term>
-		<wp:term_id>2</wp:term_id>
-		<wp:term_taxonomy><![CDATA[nav_menu]]></wp:term_taxonomy>
-		<wp:term_slug><![CDATA[primary]]></wp:term_slug>
-		<wp:term_parent><![CDATA[]]></wp:term_parent>
-		<wp:term_name><![CDATA[primary]]></wp:term_name>
-	</wp:term>
-		<wp:term>
 		<wp:term_id>1</wp:term_id>
 		<wp:term_taxonomy><![CDATA[category]]></wp:term_taxonomy>
 		<wp:term_slug><![CDATA[uncategorized]]></wp:term_slug>
 		<wp:term_parent><![CDATA[]]></wp:term_parent>
 		<wp:term_name><![CDATA[Uncategorized]]></wp:term_name>
 	</wp:term>
-			<wp:term><wp:term_id>2</wp:term_id><wp:term_taxonomy>nav_menu</wp:term_taxonomy><wp:term_slug><![CDATA[primary]]></wp:term_slug><wp:term_name><![CDATA[primary]]></wp:term_name>
-</wp:term>
-
-	<generator>https://wordpress.org/?v=5.8</generator>
+		
+	<generator>https://wordpress.org/?v=5.8.2</generator>
 
 		<item>
 		<title><![CDATA[Hello world!]]></title>
 		<link>http://127.0.0.1:80/hello-world/</link>
-		<pubDate>Wed, 01 Sep 2021 09:21:26 +0000</pubDate>
+		<pubDate>Mon, 06 Dec 2021 10:46:16 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
 		<guid isPermaLink="false">http://127.0.0.1:80/?p=1</guid>
 		<description></description>
@@ -74,10 +65,10 @@
 <!-- /wp:paragraph -->]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
 		<wp:post_id>1</wp:post_id>
-		<wp:post_date><![CDATA[2021-09-01 09:21:26]]></wp:post_date>
-		<wp:post_date_gmt><![CDATA[2021-09-01 09:21:26]]></wp:post_date_gmt>
-		<wp:post_modified><![CDATA[2021-09-01 09:21:26]]></wp:post_modified>
-		<wp:post_modified_gmt><![CDATA[2021-09-01 09:21:26]]></wp:post_modified_gmt>
+		<wp:post_date><![CDATA[2021-12-06 10:46:16]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2021-12-06 10:46:16]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2021-12-06 10:46:16]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2021-12-06 10:46:16]]></wp:post_modified_gmt>
 		<wp:comment_status><![CDATA[open]]></wp:comment_status>
 		<wp:ping_status><![CDATA[open]]></wp:ping_status>
 		<wp:post_name><![CDATA[hello-world]]></wp:post_name>
@@ -94,8 +85,8 @@
 			<wp:comment_author_email><![CDATA[wapuu@wordpress.example]]></wp:comment_author_email>
 			<wp:comment_author_url>https://wordpress.org/</wp:comment_author_url>
 			<wp:comment_author_IP><![CDATA[]]></wp:comment_author_IP>
-			<wp:comment_date><![CDATA[2021-09-01 09:21:26]]></wp:comment_date>
-			<wp:comment_date_gmt><![CDATA[2021-09-01 09:21:26]]></wp:comment_date_gmt>
+			<wp:comment_date><![CDATA[2021-12-06 10:46:16]]></wp:comment_date>
+			<wp:comment_date_gmt><![CDATA[2021-12-06 10:46:16]]></wp:comment_date_gmt>
 			<wp:comment_content><![CDATA[Hi, this is a comment.
 To get started with moderating, editing, and deleting comments, please visit the Comments screen in the dashboard.
 Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:comment_content>
@@ -106,85 +97,11 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 							</wp:comment>
 					</item>
 					<item>
-		<title><![CDATA[Sample Page]]></title>
-		<link>http://127.0.0.1:80/sample-page/</link>
-		<pubDate>Wed, 01 Sep 2021 09:21:26 +0000</pubDate>
-		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?page_id=2</guid>
-		<description></description>
-		<content:encoded><![CDATA[<!-- wp:paragraph -->
-<p>This is an example page. It's different from a blog post because it will stay in one place and will show up in your site navigation (in most themes). Most people start with an About page that introduces them to potential site visitors. It might say something like this:</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:quote -->
-<blockquote class="wp-block-quote"><p>Hi there! I'm a bike messenger by day, aspiring actor by night, and this is my website. I live in Los Angeles, have a great dog named Jack, and I like pi&#241;a coladas. (And gettin' caught in the rain.)</p></blockquote>
-<!-- /wp:quote -->
-
-<!-- wp:paragraph -->
-<p>...or something like this:</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:quote -->
-<blockquote class="wp-block-quote"><p>The XYZ Doohickey Company was founded in 1971, and has been providing quality doohickeys to the public ever since. Located in Gotham City, XYZ employs over 2,000 people and does all kinds of awesome things for the Gotham community.</p></blockquote>
-<!-- /wp:quote -->
-
-<!-- wp:paragraph -->
-<p>As a new WordPress user, you should go to <a href="http://127.0.0.1:80/wp-admin/">your dashboard</a> to delete this page and create new pages for your content. Have fun!</p>
-<!-- /wp:paragraph -->]]></content:encoded>
-		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
-		<wp:post_id>2</wp:post_id>
-		<wp:post_date><![CDATA[2021-09-01 09:21:26]]></wp:post_date>
-		<wp:post_date_gmt><![CDATA[2021-09-01 09:21:26]]></wp:post_date_gmt>
-		<wp:post_modified><![CDATA[2021-09-01 09:21:26]]></wp:post_modified>
-		<wp:post_modified_gmt><![CDATA[2021-09-01 09:21:26]]></wp:post_modified_gmt>
-		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
-		<wp:ping_status><![CDATA[open]]></wp:ping_status>
-		<wp:post_name><![CDATA[sample-page]]></wp:post_name>
-		<wp:status><![CDATA[publish]]></wp:status>
-		<wp:post_parent>0</wp:post_parent>
-		<wp:menu_order>0</wp:menu_order>
-		<wp:post_type><![CDATA[page]]></wp:post_type>
-		<wp:post_password><![CDATA[]]></wp:post_password>
-		<wp:is_sticky>0</wp:is_sticky>
-														<wp:postmeta>
-		<wp:meta_key><![CDATA[_wp_page_template]]></wp:meta_key>
-		<wp:meta_value><![CDATA[default]]></wp:meta_value>
-		</wp:postmeta>
-							</item>
-					<item>
-		<title><![CDATA[Privacy Policy]]></title>
-		<link>http://127.0.0.1:80/?page_id=3</link>
-		<pubDate>Wed, 01 Sep 2021 09:21:26 +0000</pubDate>
-		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?page_id=3</guid>
-		<description></description>
-		<content:encoded><![CDATA[<!-- wp:heading --><h2>Who we are</h2><!-- /wp:heading --><!-- wp:paragraph --><p><strong class="privacy-policy-tutorial">Suggested text: </strong>Our website address is: http://127.0.0.1:80.</p><!-- /wp:paragraph --><!-- wp:heading --><h2>Comments</h2><!-- /wp:heading --><!-- wp:paragraph --><p><strong class="privacy-policy-tutorial">Suggested text: </strong>When visitors leave comments on the site we collect the data shown in the comments form, and also the visitor&#8217;s IP address and browser user agent string to help spam detection.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>An anonymized string created from your email address (also called a hash) may be provided to the Gravatar service to see if you are using it. The Gravatar service privacy policy is available here: https://automattic.com/privacy/. After approval of your comment, your profile picture is visible to the public in the context of your comment.</p><!-- /wp:paragraph --><!-- wp:heading --><h2>Media</h2><!-- /wp:heading --><!-- wp:paragraph --><p><strong class="privacy-policy-tutorial">Suggested text: </strong>If you upload images to the website, you should avoid uploading images with embedded location data (EXIF GPS) included. Visitors to the website can download and extract any location data from images on the website.</p><!-- /wp:paragraph --><!-- wp:heading --><h2>Cookies</h2><!-- /wp:heading --><!-- wp:paragraph --><p><strong class="privacy-policy-tutorial">Suggested text: </strong>If you leave a comment on our site you may opt-in to saving your name, email address and website in cookies. These are for your convenience so that you do not have to fill in your details again when you leave another comment. These cookies will last for one year.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>If you visit our login page, we will set a temporary cookie to determine if your browser accepts cookies. This cookie contains no personal data and is discarded when you close your browser.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>When you log in, we will also set up several cookies to save your login information and your screen display choices. Login cookies last for two days, and screen options cookies last for a year. If you select &quot;Remember Me&quot;, your login will persist for two weeks. If you log out of your account, the login cookies will be removed.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>If you edit or publish an article, an additional cookie will be saved in your browser. This cookie includes no personal data and simply indicates the post ID of the article you just edited. It expires after 1 day.</p><!-- /wp:paragraph --><!-- wp:heading --><h2>Embedded content from other websites</h2><!-- /wp:heading --><!-- wp:paragraph --><p><strong class="privacy-policy-tutorial">Suggested text: </strong>Articles on this site may include embedded content (e.g. videos, images, articles, etc.). Embedded content from other websites behaves in the exact same way as if the visitor has visited the other website.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>These websites may collect data about you, use cookies, embed additional third-party tracking, and monitor your interaction with that embedded content, including tracking your interaction with the embedded content if you have an account and are logged in to that website.</p><!-- /wp:paragraph --><!-- wp:heading --><h2>Who we share your data with</h2><!-- /wp:heading --><!-- wp:paragraph --><p><strong class="privacy-policy-tutorial">Suggested text: </strong>If you request a password reset, your IP address will be included in the reset email.</p><!-- /wp:paragraph --><!-- wp:heading --><h2>How long we retain your data</h2><!-- /wp:heading --><!-- wp:paragraph --><p><strong class="privacy-policy-tutorial">Suggested text: </strong>If you leave a comment, the comment and its metadata are retained indefinitely. This is so we can recognize and approve any follow-up comments automatically instead of holding them in a moderation queue.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>For users that register on our website (if any), we also store the personal information they provide in their user profile. All users can see, edit, or delete their personal information at any time (except they cannot change their username). Website administrators can also see and edit that information.</p><!-- /wp:paragraph --><!-- wp:heading --><h2>What rights you have over your data</h2><!-- /wp:heading --><!-- wp:paragraph --><p><strong class="privacy-policy-tutorial">Suggested text: </strong>If you have an account on this site, or have left comments, you can request to receive an exported file of the personal data we hold about you, including any data you have provided to us. You can also request that we erase any personal data we hold about you. This does not include any data we are obliged to keep for administrative, legal, or security purposes.</p><!-- /wp:paragraph --><!-- wp:heading --><h2>Where we send your data</h2><!-- /wp:heading --><!-- wp:paragraph --><p><strong class="privacy-policy-tutorial">Suggested text: </strong>Visitor comments may be checked through an automated spam detection service.</p><!-- /wp:paragraph -->]]></content:encoded>
-		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
-		<wp:post_id>3</wp:post_id>
-		<wp:post_date><![CDATA[2021-09-01 09:21:26]]></wp:post_date>
-		<wp:post_date_gmt><![CDATA[2021-09-01 09:21:26]]></wp:post_date_gmt>
-		<wp:post_modified><![CDATA[2021-09-01 09:21:26]]></wp:post_modified>
-		<wp:post_modified_gmt><![CDATA[2021-09-01 09:21:26]]></wp:post_modified_gmt>
-		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
-		<wp:ping_status><![CDATA[open]]></wp:ping_status>
-		<wp:post_name><![CDATA[privacy-policy]]></wp:post_name>
-		<wp:status><![CDATA[draft]]></wp:status>
-		<wp:post_parent>0</wp:post_parent>
-		<wp:menu_order>0</wp:menu_order>
-		<wp:post_type><![CDATA[page]]></wp:post_type>
-		<wp:post_password><![CDATA[]]></wp:post_password>
-		<wp:is_sticky>0</wp:is_sticky>
-														<wp:postmeta>
-		<wp:meta_key><![CDATA[_wp_page_template]]></wp:meta_key>
-		<wp:meta_value><![CDATA[default]]></wp:meta_value>
-		</wp:postmeta>
-							</item>
-					<item>
 		<title><![CDATA[Block Visibility]]></title>
 		<link>http://127.0.0.1:80/block-visibility/</link>
-		<pubDate>Wed, 01 Sep 2021 09:34:27 +0000</pubDate>
+		<pubDate>Mon, 06 Dec 2021 10:58:30 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?p=5</guid>
+		<guid isPermaLink="false">http://127.0.0.1:80/?p=6</guid>
 		<description></description>
 		<content:encoded><![CDATA[<!-- wp:paragraph -->
 <p>This block is public.</p>
@@ -196,17 +113,13 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 
 <!-- wp:paragraph {"monetizeBlockDisplay":"show-monetize-users"} -->
 <p class="coil-show-monetize-users">This block is only visible to Coil members.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:image -->
-<figure class="wp-block-image"><img src="http://sarahjones.co.za/wp-content/uploads/2021/07/PC161780-scaled.jpg" alt=""/></figure>
-<!-- /wp:image -->]]></content:encoded>
+<!-- /wp:paragraph -->]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
-		<wp:post_id>5</wp:post_id>
-		<wp:post_date><![CDATA[2021-09-01 09:34:27]]></wp:post_date>
-		<wp:post_date_gmt><![CDATA[2021-09-01 09:34:27]]></wp:post_date_gmt>
-		<wp:post_modified><![CDATA[2021-09-07 10:08:36]]></wp:post_modified>
-		<wp:post_modified_gmt><![CDATA[2021-09-07 10:08:36]]></wp:post_modified_gmt>
+		<wp:post_id>6</wp:post_id>
+		<wp:post_date><![CDATA[2021-12-06 10:58:30]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2021-12-06 10:58:30]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2021-12-06 10:58:30]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2021-12-06 10:58:30]]></wp:post_modified_gmt>
 		<wp:comment_status><![CDATA[open]]></wp:comment_status>
 		<wp:ping_status><![CDATA[open]]></wp:ping_status>
 		<wp:post_name><![CDATA[block-visibility]]></wp:post_name>
@@ -218,16 +131,20 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 		<wp:is_sticky>0</wp:is_sticky>
 										<category domain="category" nicename="uncategorized"><![CDATA[Uncategorized]]></category>
 						<wp:postmeta>
-		<wp:meta_key><![CDATA[_coil_monetize_post_status]]></wp:meta_key>
+		<wp:meta_key><![CDATA[_coil_monetization_post_status]]></wp:meta_key>
+		<wp:meta_value><![CDATA[monetized]]></wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key><![CDATA[_coil_visibility_post_status]]></wp:meta_key>
 		<wp:meta_value><![CDATA[gate-tagged-blocks]]></wp:meta_value>
 		</wp:postmeta>
 							</item>
 					<item>
 		<title><![CDATA[No Monetization]]></title>
 		<link>http://127.0.0.1:80/no-monetization/</link>
-		<pubDate>Wed, 01 Sep 2021 09:35:18 +0000</pubDate>
+		<pubDate>Mon, 06 Dec 2021 10:59:00 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?p=7</guid>
+		<guid isPermaLink="false">http://127.0.0.1:80/?p=8</guid>
 		<description></description>
 		<content:encoded><![CDATA[<!-- wp:paragraph -->
 <p>Everything is visible in this post with no monetization.</p>
@@ -237,11 +154,11 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus ornare suspendisse sed nisi lacus. Vel eros donec ac odio tempor orci dapibus. Cras pulvinar mattis nunc sed blandit libero volutpat sed cras. Nulla aliquet enim tortor at auctor urna nunc id. Nisi scelerisque eu ultrices vitae. Faucibus scelerisque eleifend donec pretium vulputate sapien nec sagittis. Sed faucibus turpis in eu mi bibendum neque. Sapien faucibus et molestie ac feugiat sed lectus vestibulum. Fusce id velit ut tortor pretium. Sit amet mauris commodo quis. Ridiculus mus mauris vitae ultricies leo integer malesuada nunc. Nascetur ridiculus mus mauris vitae ultricies leo. Malesuada fames ac turpis egestas maecenas pharetra.</p>
 <!-- /wp:paragraph -->]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
-		<wp:post_id>7</wp:post_id>
-		<wp:post_date><![CDATA[2021-09-01 09:35:18]]></wp:post_date>
-		<wp:post_date_gmt><![CDATA[2021-09-01 09:35:18]]></wp:post_date_gmt>
-		<wp:post_modified><![CDATA[2021-09-07 10:08:02]]></wp:post_modified>
-		<wp:post_modified_gmt><![CDATA[2021-09-07 10:08:02]]></wp:post_modified_gmt>
+		<wp:post_id>8</wp:post_id>
+		<wp:post_date><![CDATA[2021-12-06 10:59:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2021-12-06 10:59:00]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2021-12-06 10:59:00]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2021-12-06 10:59:00]]></wp:post_modified_gmt>
 		<wp:comment_status><![CDATA[open]]></wp:comment_status>
 		<wp:ping_status><![CDATA[open]]></wp:ping_status>
 		<wp:post_name><![CDATA[no-monetization]]></wp:post_name>
@@ -253,30 +170,34 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 		<wp:is_sticky>0</wp:is_sticky>
 										<category domain="category" nicename="uncategorized"><![CDATA[Uncategorized]]></category>
 						<wp:postmeta>
-		<wp:meta_key><![CDATA[_coil_monetize_post_status]]></wp:meta_key>
-		<wp:meta_value><![CDATA[no]]></wp:meta_value>
+		<wp:meta_key><![CDATA[_coil_monetization_post_status]]></wp:meta_key>
+		<wp:meta_value><![CDATA[not-monetized]]></wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key><![CDATA[_coil_visibility_post_status]]></wp:meta_key>
+		<wp:meta_value><![CDATA[public]]></wp:meta_value>
 		</wp:postmeta>
 							</item>
 					<item>
 		<title><![CDATA[Coil Members Only]]></title>
 		<link>http://127.0.0.1:80/coil-members-only/</link>
-		<pubDate>Wed, 01 Sep 2021 09:37:56 +0000</pubDate>
+		<pubDate>Mon, 06 Dec 2021 10:59:33 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?p=9</guid>
+		<guid isPermaLink="false">http://127.0.0.1:80/?p=10</guid>
 		<description></description>
 		<content:encoded><![CDATA[<!-- wp:paragraph -->
-<p><meta http-equiv="content-type" content="text/html; charset=utf-8">This is a test post for the Coil Members Only state.</p>
+<p>This is a test post for the Coil Members Only state.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Netus et malesuada fames ac turpis egestas. Vitae elementum curabitur vitae nunc sed. Dictum varius duis at consectetur lorem. Donec et odio pellentesque diam volutpat commodo sed egestas egestas. Ut eu sem integer vitae justo eget magna. Feugiat nisl pretium fusce id velit ut tortor. Ut etiam sit amet nisl purus in mollis. Cursus sit amet dictum sit amet justo. Massa tincidunt dui ut ornare lectus sit amet. Quis ipsum suspendisse ultrices gravida dictum. Placerat vestibulum lectus mauris ultrices eros in. Ut diam quam nulla porttitor. Lobortis feugiat vivamus at augue eget arcu dictum varius duis.</p>
 <!-- /wp:paragraph -->]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
-		<wp:post_id>9</wp:post_id>
-		<wp:post_date><![CDATA[2021-09-01 09:37:56]]></wp:post_date>
-		<wp:post_date_gmt><![CDATA[2021-09-01 09:37:56]]></wp:post_date_gmt>
-		<wp:post_modified><![CDATA[2021-09-07 10:07:52]]></wp:post_modified>
-		<wp:post_modified_gmt><![CDATA[2021-09-07 10:07:52]]></wp:post_modified_gmt>
+		<wp:post_id>10</wp:post_id>
+		<wp:post_date><![CDATA[2021-12-06 10:59:33]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2021-12-06 10:59:33]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2021-12-06 10:59:33]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2021-12-06 10:59:33]]></wp:post_modified_gmt>
 		<wp:comment_status><![CDATA[open]]></wp:comment_status>
 		<wp:ping_status><![CDATA[open]]></wp:ping_status>
 		<wp:post_name><![CDATA[coil-members-only]]></wp:post_name>
@@ -288,30 +209,34 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 		<wp:is_sticky>0</wp:is_sticky>
 										<category domain="category" nicename="uncategorized"><![CDATA[Uncategorized]]></category>
 						<wp:postmeta>
-		<wp:meta_key><![CDATA[_coil_monetize_post_status]]></wp:meta_key>
-		<wp:meta_value><![CDATA[gate-all]]></wp:meta_value>
+		<wp:meta_key><![CDATA[_coil_monetization_post_status]]></wp:meta_key>
+		<wp:meta_value><![CDATA[monetized]]></wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key><![CDATA[_coil_visibility_post_status]]></wp:meta_key>
+		<wp:meta_value><![CDATA[exclusive]]></wp:meta_value>
 		</wp:postmeta>
 							</item>
 					<item>
 		<title><![CDATA[Excerpt Post]]></title>
 		<link>http://127.0.0.1:80/excerpt-post/</link>
-		<pubDate>Wed, 01 Sep 2021 09:39:13 +0000</pubDate>
+		<pubDate>Mon, 06 Dec 2021 11:00:00 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?p=11</guid>
+		<guid isPermaLink="false">http://127.0.0.1:80/?p=12</guid>
 		<description></description>
 		<content:encoded><![CDATA[<!-- wp:paragraph -->
-<p><meta http-equiv="content-type" content="text/html; charset=utf-8">This content should be visible as an excerpt.</p>
+<p>This content should be visible as an excerpt.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis imperdiet massa tincidunt nunc pulvinar sapien et ligula. Nibh mauris cursus mattis molestie a iaculis at erat. Dictum non consectetur a erat nam. Volutpat blandit aliquam etiam erat velit scelerisque in dictum non. Sodales ut etiam sit amet nisl purus in mollis. Hac habitasse platea dictumst quisque sagittis purus. Odio ut enim blandit volutpat maecenas volutpat blandit. Eu turpis egestas pretium aenean pharetra magna ac placerat vestibulum. At quis risus sed vulputate odio ut. In tellus integer feugiat scelerisque varius morbi. Aenean pharetra magna ac placerat vestibulum lectus mauris ultrices eros.</p>
 <!-- /wp:paragraph -->]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
-		<wp:post_id>11</wp:post_id>
-		<wp:post_date><![CDATA[2021-09-01 09:39:13]]></wp:post_date>
-		<wp:post_date_gmt><![CDATA[2021-09-01 09:39:13]]></wp:post_date_gmt>
-		<wp:post_modified><![CDATA[2021-09-07 10:07:37]]></wp:post_modified>
-		<wp:post_modified_gmt><![CDATA[2021-09-07 10:07:37]]></wp:post_modified_gmt>
+		<wp:post_id>12</wp:post_id>
+		<wp:post_date><![CDATA[2021-12-06 11:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2021-12-06 11:00:00]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2021-12-06 11:00:00]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2021-12-06 11:00:00]]></wp:post_modified_gmt>
 		<wp:comment_status><![CDATA[open]]></wp:comment_status>
 		<wp:ping_status><![CDATA[open]]></wp:ping_status>
 		<wp:post_name><![CDATA[excerpt-post]]></wp:post_name>
@@ -323,60 +248,30 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 		<wp:is_sticky>0</wp:is_sticky>
 										<category domain="category" nicename="uncategorized"><![CDATA[Uncategorized]]></category>
 						<wp:postmeta>
-		<wp:meta_key><![CDATA[_coil_monetize_post_status]]></wp:meta_key>
-		<wp:meta_value><![CDATA[gate-all]]></wp:meta_value>
+		<wp:meta_key><![CDATA[_coil_monetization_post_status]]></wp:meta_key>
+		<wp:meta_value><![CDATA[monetized]]></wp:meta_value>
 		</wp:postmeta>
-							</item>
-					<item>
-		<title><![CDATA[Excerpt Page]]></title>
-		<link>http://127.0.0.1:80/excerpt-page/</link>
-		<pubDate>Wed, 01 Sep 2021 09:40:03 +0000</pubDate>
-		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?page_id=13</guid>
-		<description></description>
-		<content:encoded><![CDATA[<!-- wp:paragraph -->
-<p>This content should be visible as an excerpt.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut consequat semper viverra nam libero justo laoreet sit. Interdum consectetur libero id faucibus nisl tincidunt eget nullam non. Maecenas ultricies mi eget mauris pharetra et ultrices neque ornare. Nullam ac tortor vitae purus faucibus. Porta lorem mollis aliquam ut porttitor leo a. Vel turpis nunc eget lorem. Bibendum ut tristique et egestas quis ipsum suspendisse ultrices. Sed euismod nisi porta lorem mollis aliquam. Amet consectetur adipiscing elit duis tristique sollicitudin. Et molestie ac feugiat sed lectus vestibulum mattis. Feugiat scelerisque varius morbi enim. Odio ut sem nulla pharetra.</p>
-<!-- /wp:paragraph -->]]></content:encoded>
-		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
-		<wp:post_id>13</wp:post_id>
-		<wp:post_date><![CDATA[2021-09-01 09:40:03]]></wp:post_date>
-		<wp:post_date_gmt><![CDATA[2021-09-01 09:40:03]]></wp:post_date_gmt>
-		<wp:post_modified><![CDATA[2021-09-07 10:10:11]]></wp:post_modified>
-		<wp:post_modified_gmt><![CDATA[2021-09-07 10:10:11]]></wp:post_modified_gmt>
-		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
-		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
-		<wp:post_name><![CDATA[excerpt-page]]></wp:post_name>
-		<wp:status><![CDATA[publish]]></wp:status>
-		<wp:post_parent>0</wp:post_parent>
-		<wp:menu_order>0</wp:menu_order>
-		<wp:post_type><![CDATA[page]]></wp:post_type>
-		<wp:post_password><![CDATA[]]></wp:post_password>
-		<wp:is_sticky>0</wp:is_sticky>
-														<wp:postmeta>
-		<wp:meta_key><![CDATA[_coil_monetize_post_status]]></wp:meta_key>
-		<wp:meta_value><![CDATA[gate-all]]></wp:meta_value>
+							<wp:postmeta>
+		<wp:meta_key><![CDATA[_coil_visibility_post_status]]></wp:meta_key>
+		<wp:meta_value><![CDATA[exclusive]]></wp:meta_value>
 		</wp:postmeta>
 							</item>
 					<item>
 		<title><![CDATA[Monetized and Public]]></title>
 		<link>http://127.0.0.1:80/monetized-and-public/</link>
-		<pubDate>Wed, 01 Sep 2021 09:41:14 +0000</pubDate>
+		<pubDate>Mon, 06 Dec 2021 11:01:06 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?p=15</guid>
+		<guid isPermaLink="false">http://127.0.0.1:80/?p=14</guid>
 		<description></description>
 		<content:encoded><![CDATA[<!-- wp:paragraph -->
-<p><meta http-equiv="content-type" content="text/html; charset=utf-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 <!-- /wp:paragraph -->]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
-		<wp:post_id>15</wp:post_id>
-		<wp:post_date><![CDATA[2021-09-01 09:41:14]]></wp:post_date>
-		<wp:post_date_gmt><![CDATA[2021-09-01 09:41:14]]></wp:post_date_gmt>
-		<wp:post_modified><![CDATA[2021-09-07 10:07:09]]></wp:post_modified>
-		<wp:post_modified_gmt><![CDATA[2021-09-07 10:07:09]]></wp:post_modified_gmt>
+		<wp:post_id>14</wp:post_id>
+		<wp:post_date><![CDATA[2021-12-06 11:01:06]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2021-12-06 11:01:06]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2021-12-06 11:01:06]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2021-12-06 11:01:06]]></wp:post_modified_gmt>
 		<wp:comment_status><![CDATA[open]]></wp:comment_status>
 		<wp:ping_status><![CDATA[open]]></wp:ping_status>
 		<wp:post_name><![CDATA[monetized-and-public]]></wp:post_name>
@@ -388,46 +283,20 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 		<wp:is_sticky>0</wp:is_sticky>
 										<category domain="category" nicename="uncategorized"><![CDATA[Uncategorized]]></category>
 						<wp:postmeta>
-		<wp:meta_key><![CDATA[_coil_monetize_post_status]]></wp:meta_key>
-		<wp:meta_value><![CDATA[no-gating]]></wp:meta_value>
+		<wp:meta_key><![CDATA[_coil_monetization_post_status]]></wp:meta_key>
+		<wp:meta_value><![CDATA[monetized]]></wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key><![CDATA[_coil_visibility_post_status]]></wp:meta_key>
+		<wp:meta_value><![CDATA[public]]></wp:meta_value>
 		</wp:postmeta>
 							</item>
 					<item>
-		<title><![CDATA[Default Monetization Page]]></title>
-		<link>http://127.0.0.1:80/default-monetization-page/</link>
-		<pubDate>Tue, 07 Sep 2021 08:42:09 +0000</pubDate>
+		<title><![CDATA[Default Status Post]]></title>
+		<link>http://127.0.0.1:80/default-status-post/</link>
+		<pubDate>Mon, 06 Dec 2021 11:01:34 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?page_id=18</guid>
-		<description></description>
-		<content:encoded><![CDATA[<!-- wp:paragraph -->
-<p><meta http-equiv="content-type" content="text/html; charset=utf-8">This page reflects the default monetization state.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Imperdiet dui accumsan sit amet nulla. Dui nunc mattis enim ut tellus elementum sagittis vitae. Viverra justo nec ultrices dui sapien eget mi proin sed. Consequat id porta nibh venenatis cras. Risus viverra adipiscing at in tellus integer. Elementum facilisis leo vel fringilla est. Sed nisi lacus sed viverra tellus in hac. Sit amet porttitor eget dolor morbi. Ut morbi tincidunt augue interdum velit. Non diam phasellus vestibulum lorem sed risus ultricies. Diam vulputate ut pharetra sit amet aliquam id diam maecenas. Dignissim diam quis enim lobortis scelerisque fermentum. Turpis egestas integer eget aliquet. Laoreet id donec ultrices tincidunt arcu non sodales neque sodales.</p>
-<!-- /wp:paragraph -->]]></content:encoded>
-		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
-		<wp:post_id>18</wp:post_id>
-		<wp:post_date><![CDATA[2021-09-07 08:42:09]]></wp:post_date>
-		<wp:post_date_gmt><![CDATA[2021-09-07 08:42:09]]></wp:post_date_gmt>
-		<wp:post_modified><![CDATA[2021-09-07 10:09:31]]></wp:post_modified>
-		<wp:post_modified_gmt><![CDATA[2021-09-07 10:09:31]]></wp:post_modified_gmt>
-		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
-		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
-		<wp:post_name><![CDATA[default-monetization-page]]></wp:post_name>
-		<wp:status><![CDATA[publish]]></wp:status>
-		<wp:post_parent>0</wp:post_parent>
-		<wp:menu_order>0</wp:menu_order>
-		<wp:post_type><![CDATA[page]]></wp:post_type>
-		<wp:post_password><![CDATA[]]></wp:post_password>
-		<wp:is_sticky>0</wp:is_sticky>
-														</item>
-					<item>
-		<title><![CDATA[Default Monetization Post]]></title>
-		<link>http://127.0.0.1:80/default-monetization-post/</link>
-		<pubDate>Tue, 07 Sep 2021 08:42:48 +0000</pubDate>
-		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?p=20</guid>
+		<guid isPermaLink="false">http://127.0.0.1:80/?p=16</guid>
 		<description></description>
 		<content:encoded><![CDATA[<!-- wp:paragraph -->
 <p>This post reflects the default monetization state.</p>
@@ -437,14 +306,14 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nunc pulvinar sapien et ligula. Auctor elit sed vulputate mi sit amet mauris commodo quis. Tortor at risus viverra adipiscing at. Urna cursus eget nunc scelerisque viverra mauris in aliquam sem. Ut ornare lectus sit amet. Mi sit amet mauris commodo quis imperdiet massa tincidunt nunc. Diam sollicitudin tempor id eu nisl nunc mi. Tempus urna et pharetra pharetra massa. Integer feugiat scelerisque varius morbi enim nunc faucibus. Nunc id cursus metus aliquam eleifend mi in nulla. Justo nec ultrices dui sapien eget. Nunc sed blandit libero volutpat sed. Lobortis feugiat vivamus at augue eget arcu dictum varius duis. In hac habitasse platea dictumst vestibulum rhoncus.</p>
 <!-- /wp:paragraph -->]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
-		<wp:post_id>20</wp:post_id>
-		<wp:post_date><![CDATA[2021-09-07 08:42:48]]></wp:post_date>
-		<wp:post_date_gmt><![CDATA[2021-09-07 08:42:48]]></wp:post_date_gmt>
-		<wp:post_modified><![CDATA[2021-09-07 10:06:07]]></wp:post_modified>
-		<wp:post_modified_gmt><![CDATA[2021-09-07 10:06:07]]></wp:post_modified_gmt>
+		<wp:post_id>16</wp:post_id>
+		<wp:post_date><![CDATA[2021-12-06 11:01:34]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2021-12-06 11:01:34]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2021-12-06 11:01:34]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2021-12-06 11:01:34]]></wp:post_modified_gmt>
 		<wp:comment_status><![CDATA[open]]></wp:comment_status>
 		<wp:ping_status><![CDATA[open]]></wp:ping_status>
-		<wp:post_name><![CDATA[default-monetization-post]]></wp:post_name>
+		<wp:post_name><![CDATA[default-status-post]]></wp:post_name>
 		<wp:status><![CDATA[publish]]></wp:status>
 		<wp:post_parent>0</wp:post_parent>
 		<wp:menu_order>0</wp:menu_order>
@@ -454,133 +323,19 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 										<category domain="category" nicename="uncategorized"><![CDATA[Uncategorized]]></category>
 						</item>
 					<item>
-		<title><![CDATA[]]></title>
-		<link>http://127.0.0.1:80/23/</link>
-		<pubDate>Tue, 07 Sep 2021 08:44:17 +0000</pubDate>
-		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/23/</guid>
-		<description></description>
-		<content:encoded><![CDATA[ ]]></content:encoded>
-		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
-		<wp:post_id>23</wp:post_id>
-		<wp:post_date><![CDATA[2021-09-07 08:44:17]]></wp:post_date>
-		<wp:post_date_gmt><![CDATA[2021-09-07 08:44:17]]></wp:post_date_gmt>
-		<wp:post_modified><![CDATA[2021-09-07 08:44:17]]></wp:post_modified>
-		<wp:post_modified_gmt><![CDATA[2021-09-07 08:44:17]]></wp:post_modified_gmt>
-		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
-		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
-		<wp:post_name><![CDATA[23]]></wp:post_name>
-		<wp:status><![CDATA[publish]]></wp:status>
-		<wp:post_parent>0</wp:post_parent>
-		<wp:menu_order>1</wp:menu_order>
-		<wp:post_type><![CDATA[nav_menu_item]]></wp:post_type>
-		<wp:post_password><![CDATA[]]></wp:post_password>
-		<wp:is_sticky>0</wp:is_sticky>
-										<category domain="nav_menu" nicename="primary"><![CDATA[primary]]></category>
-						<wp:postmeta>
-		<wp:meta_key><![CDATA[_menu_item_type]]></wp:meta_key>
-		<wp:meta_value><![CDATA[post_type]]></wp:meta_value>
-		</wp:postmeta>
-							<wp:postmeta>
-		<wp:meta_key><![CDATA[_menu_item_menu_item_parent]]></wp:meta_key>
-		<wp:meta_value><![CDATA[0]]></wp:meta_value>
-		</wp:postmeta>
-							<wp:postmeta>
-		<wp:meta_key><![CDATA[_menu_item_object_id]]></wp:meta_key>
-		<wp:meta_value><![CDATA[18]]></wp:meta_value>
-		</wp:postmeta>
-							<wp:postmeta>
-		<wp:meta_key><![CDATA[_menu_item_object]]></wp:meta_key>
-		<wp:meta_value><![CDATA[page]]></wp:meta_value>
-		</wp:postmeta>
-							<wp:postmeta>
-		<wp:meta_key><![CDATA[_menu_item_target]]></wp:meta_key>
-		<wp:meta_value><![CDATA[]]></wp:meta_value>
-		</wp:postmeta>
-							<wp:postmeta>
-		<wp:meta_key><![CDATA[_menu_item_classes]]></wp:meta_key>
-		<wp:meta_value><![CDATA[a:1:{i:0;s:0:"";}]]></wp:meta_value>
-		</wp:postmeta>
-							<wp:postmeta>
-		<wp:meta_key><![CDATA[_menu_item_xfn]]></wp:meta_key>
-		<wp:meta_value><![CDATA[]]></wp:meta_value>
-		</wp:postmeta>
-							<wp:postmeta>
-		<wp:meta_key><![CDATA[_menu_item_url]]></wp:meta_key>
-		<wp:meta_value><![CDATA[]]></wp:meta_value>
-		</wp:postmeta>
-							</item>
-					<item>
-		<title><![CDATA[]]></title>
-		<link>http://127.0.0.1:80/24/</link>
-		<pubDate>Tue, 07 Sep 2021 08:44:17 +0000</pubDate>
-		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/24/</guid>
-		<description></description>
-		<content:encoded><![CDATA[ ]]></content:encoded>
-		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
-		<wp:post_id>24</wp:post_id>
-		<wp:post_date><![CDATA[2021-09-07 08:44:17]]></wp:post_date>
-		<wp:post_date_gmt><![CDATA[2021-09-07 08:44:17]]></wp:post_date_gmt>
-		<wp:post_modified><![CDATA[2021-09-07 08:44:17]]></wp:post_modified>
-		<wp:post_modified_gmt><![CDATA[2021-09-07 08:44:17]]></wp:post_modified_gmt>
-		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
-		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
-		<wp:post_name><![CDATA[24]]></wp:post_name>
-		<wp:status><![CDATA[publish]]></wp:status>
-		<wp:post_parent>0</wp:post_parent>
-		<wp:menu_order>2</wp:menu_order>
-		<wp:post_type><![CDATA[nav_menu_item]]></wp:post_type>
-		<wp:post_password><![CDATA[]]></wp:post_password>
-		<wp:is_sticky>0</wp:is_sticky>
-										<category domain="nav_menu" nicename="primary"><![CDATA[primary]]></category>
-						<wp:postmeta>
-		<wp:meta_key><![CDATA[_menu_item_type]]></wp:meta_key>
-		<wp:meta_value><![CDATA[post_type]]></wp:meta_value>
-		</wp:postmeta>
-							<wp:postmeta>
-		<wp:meta_key><![CDATA[_menu_item_menu_item_parent]]></wp:meta_key>
-		<wp:meta_value><![CDATA[0]]></wp:meta_value>
-		</wp:postmeta>
-							<wp:postmeta>
-		<wp:meta_key><![CDATA[_menu_item_object_id]]></wp:meta_key>
-		<wp:meta_value><![CDATA[13]]></wp:meta_value>
-		</wp:postmeta>
-							<wp:postmeta>
-		<wp:meta_key><![CDATA[_menu_item_object]]></wp:meta_key>
-		<wp:meta_value><![CDATA[page]]></wp:meta_value>
-		</wp:postmeta>
-							<wp:postmeta>
-		<wp:meta_key><![CDATA[_menu_item_target]]></wp:meta_key>
-		<wp:meta_value><![CDATA[]]></wp:meta_value>
-		</wp:postmeta>
-							<wp:postmeta>
-		<wp:meta_key><![CDATA[_menu_item_classes]]></wp:meta_key>
-		<wp:meta_value><![CDATA[a:1:{i:0;s:0:"";}]]></wp:meta_value>
-		</wp:postmeta>
-							<wp:postmeta>
-		<wp:meta_key><![CDATA[_menu_item_xfn]]></wp:meta_key>
-		<wp:meta_value><![CDATA[]]></wp:meta_value>
-		</wp:postmeta>
-							<wp:postmeta>
-		<wp:meta_key><![CDATA[_menu_item_url]]></wp:meta_key>
-		<wp:meta_value><![CDATA[]]></wp:meta_value>
-		</wp:postmeta>
-							</item>
-					<item>
 		<title><![CDATA[Post Visibility]]></title>
 		<link>http://127.0.0.1:80/post-visibility/</link>
-		<pubDate>Tue, 07 Sep 2021 13:16:43 +0000</pubDate>
+		<pubDate>Mon, 06 Dec 2021 11:01:51 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?p=37</guid>
+		<guid isPermaLink="false">http://127.0.0.1:80/?p=18</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
-		<wp:post_id>37</wp:post_id>
-		<wp:post_date><![CDATA[2021-09-07 13:16:43]]></wp:post_date>
-		<wp:post_date_gmt><![CDATA[2021-09-07 13:16:43]]></wp:post_date_gmt>
-		<wp:post_modified><![CDATA[2021-09-07 13:16:43]]></wp:post_modified>
-		<wp:post_modified_gmt><![CDATA[2021-09-07 13:16:43]]></wp:post_modified_gmt>
+		<wp:post_id>18</wp:post_id>
+		<wp:post_date><![CDATA[2021-12-06 11:01:51]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2021-12-06 11:01:51]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2021-12-06 11:01:51]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2021-12-06 11:01:51]]></wp:post_modified_gmt>
 		<wp:comment_status><![CDATA[open]]></wp:comment_status>
 		<wp:ping_status><![CDATA[open]]></wp:ping_status>
 		<wp:post_name><![CDATA[post-visibility]]></wp:post_name>
@@ -592,6 +347,249 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 		<wp:is_sticky>0</wp:is_sticky>
 										<category domain="category" nicename="uncategorized"><![CDATA[Uncategorized]]></category>
 						</item>
+					<item>
+		<title><![CDATA[Block Visibility Page]]></title>
+		<link>http://127.0.0.1:80/block-visibility-page/</link>
+		<pubDate>Mon, 06 Dec 2021 11:02:57 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<guid isPermaLink="false">http://127.0.0.1:80/?page_id=22</guid>
+		<description></description>
+		<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p id="block-37194f9d-bf3d-4c32-863e-dd0465f9cedb"><br>This block is public.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph {"monetizeBlockDisplay":"hide-monetize-users"} -->
+<p class="coil-hide-monetize-users" id="block-88973b5e-750d-4e33-a053-53f5d3e53409">This block is hidden for Coil members.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph {"monetizeBlockDisplay":"show-monetize-users"} -->
+<p class="coil-show-monetize-users" id="block-d0361585-4aa9-4860-a8d3-246321521d7b">This block is only visible to Coil members.</p>
+<!-- /wp:paragraph -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>22</wp:post_id>
+		<wp:post_date><![CDATA[2021-12-06 11:02:57]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2021-12-06 11:02:57]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2021-12-06 11:02:57]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2021-12-06 11:02:57]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[block-visibility-page]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[page]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+														<wp:postmeta>
+		<wp:meta_key><![CDATA[_coil_monetization_post_status]]></wp:meta_key>
+		<wp:meta_value><![CDATA[monetized]]></wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key><![CDATA[_coil_visibility_post_status]]></wp:meta_key>
+		<wp:meta_value><![CDATA[gate-tagged-blocks]]></wp:meta_value>
+		</wp:postmeta>
+							</item>
+					<item>
+		<title><![CDATA[No Monetization Page]]></title>
+		<link>http://127.0.0.1:80/no-monetization-page/</link>
+		<pubDate>Mon, 06 Dec 2021 11:03:21 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<guid isPermaLink="false">http://127.0.0.1:80/?page_id=24</guid>
+		<description></description>
+		<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>Everything is visible in this post with no monetization.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus ornare suspendisse sed nisi lacus. Vel eros donec ac odio tempor orci dapibus. Cras pulvinar mattis nunc sed blandit libero volutpat sed cras. Nulla aliquet enim tortor at auctor urna nunc id. Nisi scelerisque eu ultrices vitae. Faucibus scelerisque eleifend donec pretium vulputate sapien nec sagittis. Sed faucibus turpis in eu mi bibendum neque. Sapien faucibus et molestie ac feugiat sed lectus vestibulum. Fusce id velit ut tortor pretium. Sit amet mauris commodo quis. Ridiculus mus mauris vitae ultricies leo integer malesuada nunc. Nascetur ridiculus mus mauris vitae ultricies leo. Malesuada fames ac turpis egestas maecenas pharetra.</p>
+<!-- /wp:paragraph -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>24</wp:post_id>
+		<wp:post_date><![CDATA[2021-12-06 11:03:21]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2021-12-06 11:03:21]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2021-12-06 11:03:21]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2021-12-06 11:03:21]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[no-monetization-page]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[page]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+														<wp:postmeta>
+		<wp:meta_key><![CDATA[_coil_monetization_post_status]]></wp:meta_key>
+		<wp:meta_value><![CDATA[not-monetized]]></wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key><![CDATA[_coil_visibility_post_status]]></wp:meta_key>
+		<wp:meta_value><![CDATA[public]]></wp:meta_value>
+		</wp:postmeta>
+							</item>
+					<item>
+		<title><![CDATA[Coil Members Only Page]]></title>
+		<link>http://127.0.0.1:80/coil-members-only-page/</link>
+		<pubDate>Mon, 06 Dec 2021 11:03:45 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<guid isPermaLink="false">http://127.0.0.1:80/?page_id=26</guid>
+		<description></description>
+		<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>This is a test post for the Coil Members Only state.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Netus et malesuada fames ac turpis egestas. Vitae elementum curabitur vitae nunc sed. Dictum varius duis at consectetur lorem. Donec et odio pellentesque diam volutpat commodo sed egestas egestas. Ut eu sem integer vitae justo eget magna. Feugiat nisl pretium fusce id velit ut tortor. Ut etiam sit amet nisl purus in mollis. Cursus sit amet dictum sit amet justo. Massa tincidunt dui ut ornare lectus sit amet. Quis ipsum suspendisse ultrices gravida dictum. Placerat vestibulum lectus mauris ultrices eros in. Ut diam quam nulla porttitor. Lobortis feugiat vivamus at augue eget arcu dictum varius duis.</p>
+<!-- /wp:paragraph -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>26</wp:post_id>
+		<wp:post_date><![CDATA[2021-12-06 11:03:45]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2021-12-06 11:03:45]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2021-12-06 11:03:45]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2021-12-06 11:03:45]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[coil-members-only-page]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[page]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+														<wp:postmeta>
+		<wp:meta_key><![CDATA[_coil_monetization_post_status]]></wp:meta_key>
+		<wp:meta_value><![CDATA[monetized]]></wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key><![CDATA[_coil_visibility_post_status]]></wp:meta_key>
+		<wp:meta_value><![CDATA[exclusive]]></wp:meta_value>
+		</wp:postmeta>
+							</item>
+					<item>
+		<title><![CDATA[Excerpt Page]]></title>
+		<link>http://127.0.0.1:80/excerpt-page/</link>
+		<pubDate>Mon, 06 Dec 2021 11:04:10 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<guid isPermaLink="false">http://127.0.0.1:80/?page_id=28</guid>
+		<description></description>
+		<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>This content should be visible as an excerpt.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis imperdiet massa tincidunt nunc pulvinar sapien et ligula. Nibh mauris cursus mattis molestie a iaculis at erat. Dictum non consectetur a erat nam. Volutpat blandit aliquam etiam erat velit scelerisque in dictum non. Sodales ut etiam sit amet nisl purus in mollis. Hac habitasse platea dictumst quisque sagittis purus. Odio ut enim blandit volutpat maecenas volutpat blandit. Eu turpis egestas pretium aenean pharetra magna ac placerat vestibulum. At quis risus sed vulputate odio ut. In tellus integer feugiat scelerisque varius morbi. Aenean pharetra magna ac placerat vestibulum lectus mauris ultrices eros.</p>
+<!-- /wp:paragraph -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>28</wp:post_id>
+		<wp:post_date><![CDATA[2021-12-06 11:04:10]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2021-12-06 11:04:10]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2021-12-06 11:04:10]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2021-12-06 11:04:10]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[excerpt-page]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[page]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+														<wp:postmeta>
+		<wp:meta_key><![CDATA[_coil_monetization_post_status]]></wp:meta_key>
+		<wp:meta_value><![CDATA[monetized]]></wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key><![CDATA[_coil_visibility_post_status]]></wp:meta_key>
+		<wp:meta_value><![CDATA[exclusive]]></wp:meta_value>
+		</wp:postmeta>
+							</item>
+					<item>
+		<title><![CDATA[Monetized and Public Page]]></title>
+		<link>http://127.0.0.1:80/monetized-and-public-page/</link>
+		<pubDate>Mon, 06 Dec 2021 11:04:34 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<guid isPermaLink="false">http://127.0.0.1:80/?page_id=30</guid>
+		<description></description>
+		<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<!-- /wp:paragraph -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>30</wp:post_id>
+		<wp:post_date><![CDATA[2021-12-06 11:04:34]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2021-12-06 11:04:34]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2021-12-06 11:04:34]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2021-12-06 11:04:34]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[monetized-and-public-page]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[page]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+														<wp:postmeta>
+		<wp:meta_key><![CDATA[_coil_monetization_post_status]]></wp:meta_key>
+		<wp:meta_value><![CDATA[monetized]]></wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key><![CDATA[_coil_visibility_post_status]]></wp:meta_key>
+		<wp:meta_value><![CDATA[public]]></wp:meta_value>
+		</wp:postmeta>
+							</item>
+					<item>
+		<title><![CDATA[Default Status Page]]></title>
+		<link>http://127.0.0.1:80/default-status-page/</link>
+		<pubDate>Mon, 06 Dec 2021 11:05:32 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<guid isPermaLink="false">http://127.0.0.1:80/?page_id=32</guid>
+		<description></description>
+		<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>This page reflects the default Coil settings for monetization and visibility.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nunc pulvinar sapien et ligula. Auctor elit sed vulputate mi sit amet mauris commodo quis. Tortor at risus viverra adipiscing at. Urna cursus eget nunc scelerisque viverra mauris in aliquam sem. Ut ornare lectus sit amet. Mi sit amet mauris commodo quis imperdiet massa tincidunt nunc. Diam sollicitudin tempor id eu nisl nunc mi. Tempus urna et pharetra pharetra massa. Integer feugiat scelerisque varius morbi enim nunc faucibus. Nunc id cursus metus aliquam eleifend mi in nulla. Justo nec ultrices dui sapien eget. Nunc sed blandit libero volutpat sed. Lobortis feugiat vivamus at augue eget arcu dictum varius duis. In hac habitasse platea dictumst vestibulum rhoncus.</p>
+<!-- /wp:paragraph -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>32</wp:post_id>
+		<wp:post_date><![CDATA[2021-12-06 11:05:32]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2021-12-06 11:05:32]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2021-12-06 11:05:32]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2021-12-06 11:05:32]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[default-status-page]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[page]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+														</item>
+					<item>
+		<title><![CDATA[Page Visibility]]></title>
+		<link>http://127.0.0.1:80/page-visibility/</link>
+		<pubDate>Mon, 06 Dec 2021 11:08:00 +0000</pubDate>
+		<dc:creator><![CDATA[admin]]></dc:creator>
+		<guid isPermaLink="false">http://127.0.0.1:80/?page_id=34</guid>
+		<description></description>
+		<content:encoded><![CDATA[]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>34</wp:post_id>
+		<wp:post_date><![CDATA[2021-12-06 11:08:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2021-12-06 11:08:00]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2021-12-06 11:08:00]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2021-12-06 11:08:00]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[page-visibility]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[page]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+														</item>
 				</channel>
 </rss>
-	

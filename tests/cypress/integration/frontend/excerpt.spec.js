@@ -55,11 +55,11 @@ describe( 'Excerpt behaviour for pages', () => {
 function setExcerptVisibility( state, postType ) {
 	let checkboxID;
 	if ( postType === 'post' ) {
-		checkboxID = '#post_display_excerpt';
+		checkboxID = '#post_excerpt';
 	} else if ( postType === 'page' ) {
-		checkboxID = '#page_display_excerpt';
+		checkboxID = '#page_excerpt';
 	}
-	cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=excerpt_settings' );
+	cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );
 	switch ( state ) {
 		case true:
 			cy

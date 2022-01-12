@@ -27,12 +27,13 @@
 		"start": "cgb-scripts start",
 		"build": "cgb-scripts build",
 		"eject": "cgb-scripts eject",
-		"cypress:open": "cypress open --project tests",
-		"cypress:run": "cypress run --project tests"
+		"cypress:open": "cypress open --project ./tests",
+		"cypress:run": "cypress run --project ./tests"
 	},
 	"devDependencies": {
 		"cypress": "^5.4.0",
-		"grunt": "^1.4.0",
+		"eslint-plugin-cypress": "^2.11.3",
+		"grunt": "^1.4.1",
 		"grunt-checktextdomain": "~1.0.1",
 		"grunt-contrib-clean": "~2.0.0",
 		"grunt-contrib-compress": "^1.6.0",
@@ -57,6 +58,6 @@
 	"dependencies": {
 		"cgb-scripts": "1.21.0",
 		"classnames": "^2.2.6",
-		"grunt-cli": "*"
+		"grunt-cli": "^1.4.3"
 	}
 }

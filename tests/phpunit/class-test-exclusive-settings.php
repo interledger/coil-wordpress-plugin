@@ -224,7 +224,7 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 	 */
 	public function test_if_default_theme_font_is_false() {
 
-		$theme_based_font = Admin\get_inherited_font_setting( 'coil_message_font' );
+		$theme_based_font = Admin\get_paywall_appearance_setting( 'coil_message_font' );
 
 		$this->assertSame( false, $theme_based_font );
 	}
@@ -239,14 +239,14 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 		$theme_based_font = [ 'coil_message_font' => false ];
 		update_option( 'coil_exclusive_settings_group', $theme_based_font );
 
-		$retrieved_font = Admin\get_inherited_font_setting( 'coil_message_font' );
+		$retrieved_font = Admin\get_paywall_appearance_setting( 'coil_message_font' );
 
 		$this->assertSame( $theme_based_font['coil_message_font'], $retrieved_font );
 
 		$theme_based_font = [ 'coil_message_font' => true ];
 		update_option( 'coil_exclusive_settings_group', $theme_based_font );
 
-		$retrieved_font = Admin\get_inherited_font_setting( 'coil_message_font' );
+		$retrieved_font = Admin\get_paywall_appearance_setting( 'coil_message_font' );
 
 		$this->assertSame( $theme_based_font['coil_message_font'], $retrieved_font );
 
@@ -293,7 +293,7 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 	 */
 	public function test_if_default_excerpt_display_is_false() {
 
-		$excerpt_display = Gating\get_excerpt_gating( self::$example_post->ID );
+		$excerpt_display = Gating\is_excerpt_visible( self::$example_post->ID );
 
 		$this->assertSame( false, $excerpt_display );
 	}
@@ -309,7 +309,7 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 		$set_excerpt_display = [ 'post_excerpt' => true ];
 		update_option( 'coil_exclusive_settings_group', $set_excerpt_display );
 
-		$retrieved_excerpt_display = Gating\get_excerpt_gating( self::$example_post->ID );
+		$retrieved_excerpt_display = Gating\is_excerpt_visible( self::$example_post->ID );
 
 		$this->assertSame( true, $retrieved_excerpt_display );
 
@@ -317,7 +317,7 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 		$set_excerpt_display = [ 'post_excerpt' => false ];
 		update_option( 'coil_exclusive_settings_group', $set_excerpt_display );
 
-		$retrieved_excerpt_display = Gating\get_excerpt_gating( self::$example_post->ID );
+		$retrieved_excerpt_display = Gating\is_excerpt_visible( self::$example_post->ID );
 
 		$this->assertSame( false, $retrieved_excerpt_display );
 
@@ -330,7 +330,7 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 	 */
 	public function test_if_default_content_container_is_retrieved_successfully() :  void {
 
-		$css_selector = Admin\get_css_selector( 'coil_content_container' );
+		$css_selector = Admin\get_css_selector();
 
 		$this->assertSame( '.content-area .entry-content', $css_selector );
 	}
@@ -345,7 +345,7 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 		$content_container = [ 'coil_content_container' => '.content-area .entry-content, .post-story' ];
 		update_option( 'coil_exclusive_settings_group', $content_container );
 
-		$retrieved_content_container = Admin\get_css_selector( 'coil_content_container' );
+		$retrieved_content_container = Admin\get_css_selector();
 
 		$this->assertSame( $content_container['coil_content_container'], $retrieved_content_container );
 	}

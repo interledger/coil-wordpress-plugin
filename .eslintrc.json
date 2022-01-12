@@ -4,15 +4,14 @@
 	"extends": [
 		"wordpress",
 		"plugin:react/recommended",
-		"plugin:jsx-a11y/recommended",
-		"plugin:jest/recommended"
+		"plugin:jsx-a11y/recommended"
 	],
 	"env": {
 		"browser": false,
 		"es6": true,
 		"node": true,
 		"mocha": true,
-		"jest/globals": true
+		"cypress/globals": true
 	},
 	"parserOptions": {
 		"sourceType": "module",
@@ -27,7 +26,7 @@
 		"window": true,
 		"document": true
 	},
-	"plugins": ["react", "jsx-a11y", "jest"],
+	"plugins": ["react", "jsx-a11y", "cypress"],
 	"settings": {
 		// Tell eslint-plugin-react which version of React is in use. Current as of WordPress 5.1.
 		"react": {
@@ -44,6 +43,10 @@
 		"comma-style": "error",
 		"computed-property-spacing": ["error", "always"],
 		"constructor-super": "error",
+		"cypress/no-assigning-return-values": "error",
+		"cypress/no-unnecessary-waiting": "error",
+		"cypress/assertion-before-screenshot": "warn",
+		"cypress/no-async-tests": "error",
 		"dot-notation": "error",
 		"eol-last": "error",
 		"eqeqeq": "error",

@@ -8,6 +8,7 @@ namespace Coil;
 
 use \Coil\Admin;
 use \Coil\Gating;
+use \Coil\Transfers;
 use \Coil\User;
 
 /**
@@ -51,12 +52,12 @@ function init_plugin() : void {
 	add_action( 'admin_notices', __NAMESPACE__ . '\Settings\admin_welcome_notice' );
 	add_action( 'admin_notices', __NAMESPACE__ . '\Settings\admin_no_payment_pointer_notice' );
 	add_action( 'wp_ajax_dismiss_welcome_notice', __NAMESPACE__ . '\Settings\dismiss_welcome_notice' );
-	add_action( 'init', __NAMESPACE__ . '\Settings\maybe_update_database' );
+	add_action( 'init', __NAMESPACE__ . '\maybe_update_database' );
 
 	// Term meta.
 	add_action( 'edit_term', __NAMESPACE__ . '\Admin\maybe_save_term_meta', 10, 3 );
 	add_action( 'create_term', __NAMESPACE__ . '\Admin\maybe_save_term_meta', 10, 3 );
-	add_action( 'delete_term', __NAMESPACE__ . '\Admin\delete_term_monetization_meta' );
+	add_action( 'delete_term', __NAMESPACE__ . '\Admin\delete_term_coil_status_meta' );
 	add_term_edit_save_form_meta_actions();
 
 	// Customizer settings.
@@ -69,8 +70,6 @@ function init_plugin() : void {
 	add_filter( 'option_coil_payment_pointer', __NAMESPACE__ . '\User\maybe_output_user_payment_pointer' );
 
 	// Metaboxes.
-	add_action( 'load-post.php', __NAMESPACE__ . '\Admin\load_metaboxes' );
-	add_action( 'load-post-new.php', __NAMESPACE__ . '\Admin\load_metaboxes' );
 	add_action( 'save_post', __NAMESPACE__ . '\Admin\maybe_save_post_metabox' );
 
 	// Modal messaging
@@ -138,13 +137,20 @@ function load_block_editor_assets() : void {
 		false
 	);
 
-	$monetization_settings = get_option( 'coil_exclusive_settings_group' );
-	$monetization_default  = isset( $monetization_settings[ get_current_screen()->post_type . '_monetization' ] ) ? $monetization_settings[ get_current_screen()->post_type . '_monetization' ] : 'default';
+	$monetization_settings = get_option( 'coil_general_settings_group' );
+	// If nothing is set in the wp_options table then the Coil Web Monetization menus will open showing the monetization dropdown "Default" element.
+	$monetization_default = isset( $monetization_settings[ get_current_screen()->post_type . '_monetization' ] ) ? $monetization_settings[ get_current_screen()->post_type . '_monetization' ] : 'default';
+	$visibility_settings  = get_option( 'coil_exclusive_settings_group' );
+	// If nothing has been saved in the wp_options table then visibility should default to public (In the menu visibility has no 'default' option).
+	$visibility_default = isset( $visibility_settings[ get_current_screen()->post_type . '_visibility' ] ) ? $visibility_settings[ get_current_screen()->post_type . '_visibility' ] : 'public';
 
 	wp_localize_script(
 		'coil-editor',
 		'coilEditorParams',
-		[ 'monetizationDefault' => $monetization_default ]
+		[
+			'monetizationDefault' => $monetization_default,
+			'visibilityDefault'   => $visibility_default,
+		]
 	);
 
 	// Load JS i18n, requires WP 5.0+.
@@ -200,9 +206,9 @@ function load_full_assets() : void {
 	$strings = apply_filters(
 		'coil_js_ui_messages',
 		[
-			'content_container'       => Admin\get_css_selector( 'coil_content_container' ),
+			'content_container'       => Admin\get_css_selector(),
 			'paywall_title'           => Admin\get_paywall_text_settings_or_default( 'coil_paywall_title' ),
-			'loading_content'         => Admin\get_set_message_fields( 'coil_verifying_status_message' ),
+			'loading_content'         => __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' ),
 			'paywall_message'         => Admin\get_paywall_text_settings_or_default( 'coil_paywall_message' ),
 			'paywall_button_text'     => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_text' ),
 			'paywall_button_link'     => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_link' ),
@@ -213,7 +219,7 @@ function load_full_assets() : void {
 			'coil_logo'               => $coil_logo,
 			'coil_logo_white'         => $coil_logo_white,
 			'exclusive_message_theme' => Admin\get_paywall_appearance_setting( 'coil_message_color_theme' ),
-			'font_selection'          => Admin\get_inherited_font_setting( 'coil_message_font' ),
+			'font_selection'          => Admin\get_paywall_appearance_setting( 'coil_message_font' ),
 
 			/* translators: 1 + 2) HTML link tags (to the Coil settings page). */
 			'admin_missing_id_notice' => sprintf( __( 'This post is monetized but you have not set your payment pointer ID in the %1$sCoil settings page%2$s. Only content set to show for all visitors will show.', 'coil-web-monetization' ), '<a href="' . admin_url( 'admin.php?page=coil' ) . '">', '</a>' ),
@@ -290,14 +296,21 @@ function add_body_class( $classes ) : array {
 
 	$payment_pointer_id = Admin\get_payment_pointer_setting();
 
+	// Transfer old post meta into new format
+	Transfers\update_post_meta( get_queried_object_id() );
+
+	// If content is not monetized then the coil-exclusive class cannot be added to the content.
+	// This is an additional check to ensure that the incompatible not-monetized and exclusive state cannot be reached.
 	if ( Gating\is_content_monetized( get_queried_object_id() ) ) {
 		$classes[] = 'monetization-not-initialized';
 
-		$coil_status = Gating\get_content_gating( get_queried_object_id() );
-		$classes[]   = sanitize_html_class( 'coil-' . $coil_status );
+		$coil_monetization_status = Gating\get_content_status( get_queried_object_id(), 'monetization' );
+		$classes[]                = sanitize_html_class( 'coil-' . $coil_monetization_status );
+		$coil_visibility_status   = Gating\get_content_status( get_queried_object_id(), 'visibility' );
+		$classes[]                = sanitize_html_class( 'coil-' . $coil_visibility_status );
 
 		if ( ! empty( $payment_pointer_id ) ) {
-			$classes[] = ( Gating\get_excerpt_gating( get_queried_object_id() ) ) ? 'coil-show-excerpt' : 'coil-hide-excerpt';
+			$classes[] = ( Gating\is_excerpt_visible( get_queried_object_id() ) ) ? 'coil-show-excerpt' : 'coil-hide-excerpt';
 		} else {
 			// Error: payment pointer ID is missing.
 			$classes[] = 'coil-missing-id';
@@ -313,7 +326,7 @@ function add_body_class( $classes ) : array {
 }
 
 /**
- * Print the monetisation tag to <head>.
+ * Print the monetization tag to <head>.
  *
  * @return void
  */
@@ -344,6 +357,25 @@ function print_meta_tag() : void {
 }
 
 /**
+ * Ensures the database is in the correct state.
+ * This involves entering group options if they don't exist so that neccessary default values are correctly stored.
+ * It also involves migrating data if it is stored in a deprecated option group or in the customizer.
+ *
+ * @return void
+ */
+function maybe_update_database() {
+	// maybe_load_database_defaults function must be called first becasue it loads neccessary defaults but only if the option group is empty.
+	// The transfer functions will override the defaults that were loaded if neccessary.
+	Transfers\maybe_load_database_defaults();
+
+	// Transfer settings saved in the customizer
+	Transfers\transfer_customizer_message_settings();
+	Transfers\transfer_customizer_appearance_settings();
+
+	// Transfer settings saved in version 1.9 of the plugin where deprecated option groups are being used in the wp_options table
+	Transfers\transfer_version_1_9_panel_settings();
+}
+/**
  * Get the filterable payment pointer meta option from the database.
  *
  * @return string
@@ -366,7 +398,7 @@ function get_payment_pointer() : string {
 
 /**
  * Generate actions for every taxonomy to handle the output
- * of the gating options for the term add/edit forms.
+ * of the monetization and visibility options for the term add/edit forms.
  *
  * @return array $actions Array of WordPress actions.
  */
@@ -378,8 +410,8 @@ function add_term_edit_save_form_meta_actions() {
 	if ( is_array( $valid_taxonomies ) && ! empty( $valid_taxonomies ) ) {
 		foreach ( $valid_taxonomies as $taxonomy ) {
 			if ( taxonomy_exists( $taxonomy ) ) {
-				$actions[] = add_action( esc_attr( $taxonomy ) . '_edit_form_fields', __NAMESPACE__ . '\Settings\coil_add_term_custom_meta', 10, 2 );
-				$actions[] = add_action( esc_attr( $taxonomy ) . '_add_form_fields', __NAMESPACE__ . '\Settings\coil_edit_term_custom_meta', 10, 2 );
+				$actions[] = add_action( esc_attr( $taxonomy ) . '_add_form_fields', __NAMESPACE__ . '\Settings\coil_add_term_custom_meta', 10, 2 );
+				$actions[] = add_action( esc_attr( $taxonomy ) . '_edit_form_fields', __NAMESPACE__ . '\Settings\coil_edit_term_custom_meta', 10, 2 );
 			}
 		}
 	}

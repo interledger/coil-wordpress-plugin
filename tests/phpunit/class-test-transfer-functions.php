@@ -4,8 +4,8 @@
  */
 namespace Coil\Tests;
 
+use Coil;
 use Coil\Admin;
-use Coil\Settings;
 use WP_UnitTestCase;
 
 /**
@@ -45,7 +45,7 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 		set_theme_mod( self::$id['fully_gated_excerpt_message'], 'Fully gated excerpt' );
 
 		// Transferrng settings to the wp_options table
-		Settings\maybe_update_database();
+		Coil\maybe_update_database();
 
 		// Creating an array of the messages that were retrieved from the wp_options table.
 		$message = [
@@ -98,7 +98,7 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 		set_theme_mod( 'coil_partially_gated_excerpt_message', 'Partially gated excerpt' );
 
 		// Transferrng settings to the wp_options table
-		Settings\maybe_update_database();
+		Coil\maybe_update_database();
 
 		// Creating an array of the messages that were retrieved from the wp_options table.
 		$message = [
@@ -139,7 +139,7 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 		set_theme_mod( 'coil_title_padlock', false );
 
 		// Transferrng settings to the wp_options table
-		Settings\maybe_update_database();
+		Coil\maybe_update_database();
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
@@ -169,7 +169,7 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 		set_theme_mod( 'coil_title_padlock', true );
 
 		// Transferrng settings to the wp_options table
-		Settings\maybe_update_database();
+		Coil\maybe_update_database();
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
@@ -200,7 +200,7 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 		set_theme_mod( 'coil_title_padlock', false );
 
 		// Transferrng settings to the wp_options table
-		Settings\maybe_update_database();
+		Coil\maybe_update_database();
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
@@ -230,7 +230,7 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 		set_theme_mod( 'coil_show_donation_bar', false );
 
 		// Transferrng settings to the wp_options table
-		Settings\maybe_update_database();
+		Coil\maybe_update_database();
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
@@ -246,4 +246,170 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 		$this->assertFalse( get_theme_mod( 'coil_show_donation_bar' ) );
 		$this->assertFalse( get_theme_mod( 'coil_title_padlock' ) );
 	}
+
+	/**
+	 * Testing migration of messages stored in coil_messaging_settings_group.
+	 *
+	 * @return void
+	 */
+	public function test_transfer_of_coil_message_settings_group() :  void {
+
+		// Messages saved in the deprecated option group
+		$original_messages = [
+			'coil_fully_gated_content_message' => 'Fully gated',
+			'coil_learn_more_button_text'      => 'Learn more',
+			'coil_learn_more_button_link'      => 'coil.com',
+		];
+		update_option( 'coil_messaging_settings_group', $original_messages );
+
+		// Transferrng settings
+		Coil\maybe_update_database();
+
+		// Creating an array of the messages that were retrieved.
+		$retrieved_messages = [
+			'coil_paywall_message'     => Admin\get_paywall_text_settings_or_default( 'coil_paywall_message' ),
+			'coil_paywall_button_text' => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_text' ),
+			'coil_paywall_button_link' => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_link' ),
+		];
+
+		// Checking that all messages that were retrieved are correct
+		$this->assertSame( $original_messages['coil_fully_gated_content_message'], $retrieved_messages['coil_paywall_message'] );
+		$this->assertSame( $original_messages['coil_learn_more_button_text'], $retrieved_messages['coil_paywall_button_text'] );
+		$this->assertSame( $original_messages['coil_learn_more_button_link'], $retrieved_messages['coil_paywall_button_link'] );
+
+		// Checking that the coil_messaging_settings_group option group has been removed
+		$this->assertFalse( get_option( 'coil_messaging_settings_group' ) );
+	}
+
+	/**
+	 * Testing migration of payment pointer and CSS selector stored in coil_global_settings_group.
+	 *
+	 * @return void
+	 */
+	public function test_transfer_of_coil_global_settings_group() :  void {
+
+		// Settings saved in the deprecated option group
+		$original_settings = [
+			'coil_payment_pointer_id' => 'Fully gated',
+			'coil_content_container'  => 'Learn more',
+		];
+		update_option( 'coil_global_settings_group', $original_settings );
+
+		// Transferrng settings
+		Coil\maybe_update_database();
+
+		// Creating an array of the settings that were retrieved.
+		$retrieved_settings = [
+			'coil_payment_pointer_id' => Admin\get_payment_pointer_setting(),
+			'coil_content_container'  => Admin\get_css_selector(),
+		];
+
+		// Checking that all settings that were retrieved are correct
+		$this->assertSame( $original_settings['coil_payment_pointer_id'], $retrieved_settings['coil_payment_pointer_id'] );
+		$this->assertSame( $original_settings['coil_content_container'], $retrieved_settings['coil_content_container'] );
+
+		// Checking that the coil_global_settings_group option group has been removed
+		$this->assertFalse( get_option( 'coil_global_settings_group' ) );
+	}
+
+	/**
+	 * Testing migration of monetization & visibility settings stored in coil_content_settings_posts_group.
+	 *
+	 * @return void
+	 */
+	public function test_transfer_of_coil_content_settings_posts_group() :  void {
+
+		// Settings saved in the deprecated option group
+		$original_settings = [
+			'post' => 'gate-all',
+			'page' => 'no',
+		];
+		update_option( 'coil_content_settings_posts_group', $original_settings );
+
+		// Transferrng settings
+		Coil\maybe_update_database();
+
+		// Retrieved settings
+		$exclusive_settings = Admin\get_exclusive_settings();
+		$general_settings   = Admin\get_general_settings();
+
+		// Retrieved statuses
+		$post_monetization = $general_settings['post_monetization'];
+		$post_visibility   = $exclusive_settings['post_visibility'];
+		$page_monetization = $general_settings['page_monetization'];
+		$page_visibility   = $exclusive_settings['page_visibility'];
+
+		// Checking that all settings that were retrieved are correct
+		$this->assertSame( 'monetized', $post_monetization );
+		$this->assertSame( 'exclusive', $post_visibility );
+		$this->assertSame( 'not-monetized', $page_monetization );
+		$this->assertSame( 'public', $page_visibility );
+
+		// Checking that the coil_content_settings_posts_group option group has been removed
+		$this->assertFalse( get_option( 'coil_content_settings_posts_group' ) );
+	}
+
+	/**
+	 * Testing migration of excerpt display settings stored in coil_content_settings_excerpt_group.
+	 *
+	 * @return void
+	 */
+	public function test_transfer_of_coil_content_settings_excerpt_group() :  void {
+
+		// Settings saved in the deprecated option group
+		$original_settings = [
+			'post' => true,
+			'page' => false,
+		];
+		update_option( 'coil_content_settings_excerpt_group', $original_settings );
+
+		// Transferrng settings
+		Coil\maybe_update_database();
+
+		// Creating an array of the settings that were retrieved.
+		$exclusive_options  = Admin\get_exclusive_settings();
+		$retrieved_settings = [
+			'post_excerpt' => $exclusive_options['post_excerpt'],
+			'page_excerpt' => $exclusive_options['page_excerpt'],
+		];
+
+		// Checking that all settings that were retrieved are correct
+		$this->assertSame( $original_settings['post'], $retrieved_settings['post_excerpt'] );
+		$this->assertSame( $original_settings['page'], $retrieved_settings['page_excerpt'] );
+
+		// Checking that the coil_content_settings_excerpt_group option group has been removed
+		$this->assertFalse( get_option( 'coil_content_settings_excerpt_group' ) );
+	}
+
+	/**
+	 * Testing migration of appearance settings stored in coil_appearance_settings_group.
+	 *
+	 * @return void
+	 */
+	public function test_transfer_of_coil_appearance_settings_group() :  void {
+
+		// Settings saved in the deprecated option group
+		$original_settings = [
+			'coil_show_promotion_bar' => true,
+			'coil_title_padlock'      => false,
+		];
+		update_option( 'coil_appearance_settings_group', $original_settings );
+
+		// Transferrng settings
+		Coil\maybe_update_database();
+
+		// Creating an array of the settings that were retrieved.
+		$retrieved_settings = [
+			'coil_show_promotion_bar' => Admin\get_coil_button_setting( 'coil_show_promotion_bar' ),
+			'coil_title_padlock'      => Admin\get_exlusive_post_setting( 'coil_title_padlock' ),
+		];
+
+		// Checking that all settings that were retrieved are correct
+		$this->assertSame( $original_settings['coil_show_promotion_bar'], $retrieved_settings['coil_show_promotion_bar'] );
+		$this->assertSame( $original_settings['coil_title_padlock'], $retrieved_settings['coil_title_padlock'] );
+
+		// Checking that the coil_appearance_settings_group option group has been removed
+		$this->assertFalse( get_option( 'coil_appearance_settings_group' ) );
+	}
+
 }

@@ -97,7 +97,7 @@ First release.
 
 * Enhancement - Updated handling of excerpts for monetized posts in the post archive. The default excerpt is now blank unless a custom excerpt has been written.
 * Enhancement - A warning pop up has been added when a user saves their Global Settings and the payment pointer field is empty.
-* Enhancement - The padlock icon has been completely removed from split content page / post titles and will only appear when entire pages / posts have monetization enabled and are only visable to Coil members.
+* Enhancement - The padlock icon has been completely removed from split content page / post titles and will only appear when entire pages / posts have monetization enabled and are only visible to Coil members.
 
 * Tweak - Minimum supported PHP version is now version 7.2.
 * Tweak - The gradient effect on the CTA boxes that block exclusive content for users without an active Coil Membership has been replaced with a solid border instead.
@@ -118,7 +118,7 @@ First release.
 * Enhancement - A sidebar has been added throughout the settings panel with help, FAQ and documentation links.
 * Enhancement - All customization features have been consolidated into the Coil settings panel (including message, button text and link, and padlock and Coil Promotion Bar display customization).
 * Enhancement - The wording explaining message customizations has been simplified for easier reading.
-* Enhancement - The wording describing monetization settings has been adjusted. The new description distinguishes between monetization being enabled or disabled. If it is enabled users can select who the content is visable to: everyone (previously Monetized and Public), Coil members only or split.
+* Enhancement - The wording describing monetization settings has been adjusted. The new description distinguishes between monetization being enabled or disabled. If it is enabled users can select who the content is visible to: everyone (previously Monetized and Public), Coil members only or split.
 * Enhancement - When creating posts / pages the monetization options have been made easier to understand. A simple Enabled / Disabled selector has been added with extra options for fine tuning the monetization level.
 * Enhancement - When creating posts / pgaes the default monetization setting is listed next to "Default" so there is no need to remember what it was set to.
 * Enhancement - The new default monetization setting for pages and posts is now enabled and visible to everyone instead of having monetization disabled by default.

@@ -116,15 +116,13 @@
 	}
 
 	/**
-	 * @param {String} message from coilParams.
 	 * @return {object} Output a slim banner message.
 	 */
-	function showBannerMessage( message ) {
+	function showBannerMessage() {
 		const modalContainer = document.createElement( 'div' );
 		modalContainer.classList.add( 'coil-banner-message-container' );
 
 		const modalData = {
-			content: message,
 			button: {
 				text: paywallButtonText,
 				href: paywallButtonLink,
@@ -197,15 +195,17 @@
 	 * monetization enabled and is visible to everyone
 	 */
 	function isMonetizedAndPublic() {
-		return document.body.classList.contains( 'coil-no-gating' );
+		const isMonetized = document.body.classList.contains( 'coil-monetized' );
+		const isPublic = document.body.classList.contains( 'coil-public' );
+		return isMonetized && isPublic;
 	}
 
 	/**
 	 * @return {bool} Helper function to determine if the content has
-	 * monetization enabled and is visable to Coil members only
+	 * monetization enabled and is visible to Coil members only
 	 */
 	function isSubscribersOnly() {
-		return document.body.classList.contains( 'coil-gate-all' );
+		return document.body.classList.contains( 'coil-exclusive' );
 	}
 
 	/**
@@ -227,7 +227,9 @@
 	 * @return {bool} Helper function to determine if the content is "Split"
 	 */
 	function isSplitContent() {
-		return document.body.classList.contains( 'coil-gate-tagged-blocks' );
+		const isMonetized = document.body.classList.contains( 'coil-monetized' );
+		const isSplit = document.body.classList.contains( 'coil-gate-tagged-blocks' );
+		return isMonetized && isSplit;
 	}
 
 	/**
@@ -263,17 +265,9 @@
 			} else if ( isSplitContent() ) {
 				// Split content and unable to verify hidden content.
 				$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( paywallMessage ) );
-
-				// Show non-Coil-members content.
-				// Removing class means blocks revert to their *original* display values.
-				$( '.coil-hide-monetize-users' ).removeClass( 'coil-hide-monetize-users' );
+				$( '.coil-show-monetize-users' ).css( 'display', 'block' );
 
 				showContentContainer();
-
-				if ( showPromotionBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-					$( 'body' ).append( showBannerMessage() );
-					addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
-				}
 			} else {
 				// No tagged blocks.
 				document.body.classList.add( 'show-fw-message' );
@@ -364,16 +358,7 @@
 			// Split content with no extension found.
 			$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( paywallMessage ) );
 
-			// Show non-coil-members content.
-			// Removing class means blocks revert to their *original* display values.
-			$( '.coil-hide-monetize-users' ).removeClass( 'coil-hide-monetize-users' );
-
 			showContentContainer();
-
-			if ( showPromotionBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-				$( 'body' ).append( showBannerMessage() );
-				addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
-			}
 		} else if ( isMonetizedAndPublic() ) {
 			// Content has monetization enabled and visible for everyone but no extension found.
 
@@ -412,28 +397,22 @@
 
 			$( 'body' ).trigger( 'coil-missing-id' );
 		} else if ( ! isMonetizedAndPublic() ) {
-			// Verify monetization only if we are gating or partially gating content.
-			// If post is gated then show verification message after excerpt.
-			if ( isSubscribersOnly() ) {
-				if ( isExcerptEnabled() ) {
-					// Subscriber gating and no post excerpt...Verifying extension.
-					document.querySelector( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
-				} else {
-					// Subscriber gating and has post excerpt...Verifying extension.
-					$( 'p.coil-post-excerpt' ).after( showMonetizationMessage( loadingContent, '' ) );
-				}
+			// Verify monetization only if there is exclusive content.
+			// If post is exclusive then show verification message after excerpt.
+			if ( isSubscribersOnly() && isExcerptEnabled() ) {
+				$( contentContainer ).before( getContentExcerpt() );
+				$( contentContainer ).after( showMonetizationMessage( loadingContent, '' ) );
 			} else {
 				document.querySelector( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
 			}
 
 			// Update message if browser extension is verifying user.
 			setTimeout( function() {
-				hideContentExcerpt();
 				messageWrapper.html( loadingContent );
 			}, 2000 );
-
 			// Update message if browser extension is unable to verify user.
 			setTimeout( function() {
+				hideContentExcerpt();
 				showVerificationFailureMessage();
 			}, 5000 );
 		} else if ( showPromotionBar && monetizationNotInitialized() && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
@@ -491,24 +470,31 @@
 	 */
 	function monetizationStartListener( event ) {
 		monetizationStartEventOccurred = true;
-		if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
-			showContentContainer();
-			document.body.classList.remove( 'show-fw-message' );
-			if ( isExcerptEnabled() ) {
-				hideContentExcerpt();
-			}
+
+		if ( document.body.classList.contains( 'show-fw-message' ) ) {
+			$( 'body' ).removeClass( 'show-fw-message' );
 		}
 
 		$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'monetization-initialized' ); // Update body class to show content.
 		messageWrapper.remove(); // Remove status message.
 
-		if ( ! isExcerptEnabled() ) {
-			$( 'div.coil-post-excerpt' ).remove(); // Remove post excerpt.
+		if ( isExcerptEnabled() ) {
+			$( 'p.coil-post-excerpt' ).remove(); // Remove post excerpt.
 		}
 
 		if ( showPromotionBar ) {
 			removePromotionBar();
 		}
+
+		// Removes exclusive messages
+		if ( isSubscribersOnly() ) {
+			$( '.entry-content.coil-message-container' ).remove();
+		} else if ( isSplitContent() ) {
+			$( '.coil-show-monetize-users' ).removeClass( 'coil-show-monetize-users' );
+			$( '.coil-split-content-message' ).remove();
+		}
+
+		showContentContainer();
 
 		// Show embedded content.
 		document.querySelectorAll( 'iframe, object, video' ).forEach( function( embed ) {
@@ -529,8 +515,6 @@
 		// Monetization is verified, remove any messages
 		if ( $( 'p.monetize-msg' ).length > 0 ) {
 			$( 'p.monetize-msg' ).remove();
-			hideContentExcerpt();
-			showContentContainer();
 		}
 
 		// Manually triggering resize to ensure elements get sized corretly after the verification proccess has been completed and they are no longer hidden.

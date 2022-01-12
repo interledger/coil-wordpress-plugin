@@ -1,7 +1,18 @@
-describe( 'Prmotion bar', function() {
+describe( 'Promotion bar', function() {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
 		cy.resetSite();
+	} );
+
+	it( 'Checks that the promotion bar is not shown as a WM enabled user', () => {
+		cy.visit( '/monetized-and-public/' );
+		cy.startWebMonetization();
+
+		cy
+			.get( '.banner-message-inner' )
+			.should( 'not.exist' );
+
+		cy.stopWebMonetization();
 	} );
 
 	it( 'checks that the promotion bar be can be enabled/disabled', function() {
@@ -16,18 +27,6 @@ describe( 'Prmotion bar', function() {
 		cy
 			.get( '.banner-message-inner' )
 			.should( 'be.visible' );
-	} );
-
-	it( 'Checks that you are not shown the promotion bar as a WM enabled user', () => {
-		cy.visit( '/monetized-and-public/' );
-
-		cy.startWebMonetization();
-
-		cy
-			.get( '.banner-message-inner' )
-			.should( 'not.exist' );
-
-		cy.stopWebMonetization();
 	} );
 
 	it( 'Checks that you can dissmiss the promotion bar as a WM disabled user', () => {
@@ -54,30 +53,24 @@ describe( 'Prmotion bar', function() {
 /**
  * Set the state of the Coil Promotion Bar option.
  *
- * @param {('check'|'uncheck')} checkboxState that the promotion bar should be set to
+ * @param {String} checkboxState either check or uncheck
  */
 function togglePromotionBar( checkboxState ) {
-	cy.visit( '/wp-admin/admin.php?page=coil_settings' );
-
-	cy.get( '.nav-tab-wrapper > #coil-appearance-settings' )
-		.contains( 'Appearance' )
-		.click();
+	cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=coil_button' );
 
 	switch ( checkboxState ) {
 		case 'check':
-			cy.get( '#display_promotion_bar' )
+			cy.get( '#coil_show_promotion_bar' )
+				.click()
 				.check();
 			break;
 		case 'uncheck':
-			cy.get( '#display_promotion_bar' )
+			cy.get( '#coil_show_promotion_bar' )
+				.click()
 				.uncheck();
 			break;
 	}
 
 	cy.get( '#submit' )
 		.click( { force: true } );
-
-	cy
-		.get( '.notice-success' )
-		.should( 'exist' );
 }

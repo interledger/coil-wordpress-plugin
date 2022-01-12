@@ -2,11 +2,11 @@
 @import '../variables';
 @import 'fonts';
 
-body.coil-gate-all.coil-extension-not-found.show-fw-message,
+body.coil-exclusive.coil-extension-not-found.show-fw-message,
 body.coil-missing-id.coil-extension-not-found.show-fw-message,
-body.monetization-not-initialized.coil-gate-all.show-fw-message,
-body.coil-gate-all.coil-extension-not-found.show-excerpt-message,
-body.monetization-not-initialized.coil-gate-all.show-excerpt-message,
+body.monetization-not-initialized.coil-exclusive.show-fw-message,
+body.coil-exclusive.coil-extension-not-found.show-excerpt-message,
+body.monetization-not-initialized.coil-exclusive.show-excerpt-message,
 body.monetization-not-initialized.coil-missing-id.show-fw-message {
 
 	.coil-message-container {
@@ -119,8 +119,8 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 }
 
 // Scenario 2
-body.monetization-not-initialized.coil-gate-all.show-excerpt-message,
-body.coil-gate-all.coil-extension-not-found.show-excerpt-message {
+body.monetization-not-initialized.coil-exclusive.show-excerpt-message,
+body.coil-exclusive.coil-extension-not-found.show-excerpt-message {
 
 	.coil-message-container {
 		display: block !important;
