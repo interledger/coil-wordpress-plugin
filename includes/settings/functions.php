@@ -247,11 +247,14 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 	$final_settings = [];
 
 	// Posts default to being publicly visible
-	$post_visibility_default = Admin\get_visibility_default();
+	$post_visibility_default = Admin\get_post_visibility_default();
+
 	// Monetization defaults are needed to check that the 'exclusive' and 'not-monetized' defaults are never set globally on one post type
 	$post_monetization_settings = Admin\get_general_settings();
+
 	// Valid visibility options are public or exclusive
 	$valid_options = array_keys( Admin\get_visibility_types() );
+
 	// A list of valid post types
 	$post_type_options = Coil\get_supported_post_types( 'objects' );
 
