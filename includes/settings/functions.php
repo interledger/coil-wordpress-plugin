@@ -641,7 +641,7 @@ function get_paywall_theme_logo() {
 
 	switch ( $logo_setting ) {
 		case 'coil_logo':
-			$logo_url = plugin_dir_url( __FILE__ ) . 'assets/images/coil-icn-' . $coil_logo_type . '.svg';
+			$logo_url = plugin_dir_url( dirname( __DIR__ ) ) . 'assets/images/coil-icn-' . $coil_logo_type . '.svg';
 			break;
 		case 'site_logo':
 			$logo_url = ( ! empty( $site_logo ) ? $site_logo : false );
