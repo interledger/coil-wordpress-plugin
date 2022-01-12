@@ -180,12 +180,12 @@ function load_admin_assets() : void {
 	$admin_params = apply_filters(
 		'coil_admin_js_params',
 		[
-			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'ajax_url'      => admin_url( 'admin-ajax.php' ),
 			'site_logo_url' => ( ! empty( $site_logo ) ? $site_logo : false ),
 			'coil_logo_url' => [
-					'light' => plugin_dir_url( dirname( __DIR__ ) ) . 'assets/images/coil-icn-black.svg',
-					'dark' => plugin_dir_url( dirname( __DIR__ ) ) . 'assets/images/coil-icn-white.svg',
-			]
+				'light' => plugin_dir_url( dirname( __DIR__ ) ) . 'assets/images/coil-icn-black.svg',
+				'dark'  => plugin_dir_url( dirname( __DIR__ ) ) . 'assets/images/coil-icn-white.svg',
+			],
 		]
 	);
 
@@ -415,21 +415,21 @@ function get_paywall_text_settings_or_default( $field_id ) {
  */
 function get_paywall_appearance_setting( $field_id, $use_text_default = false ) {
 
-	$exclusive_options = get_exclusive_settings();
-	$style_defaults = get_paywall_appearance_defaults();
+	$exclusive_options  = get_exclusive_settings();
+	$style_defaults     = get_paywall_appearance_defaults();
 	$exclusive_defaults = get_exclusive_post_defaults();
 
-	$text_fields    = [
+	$text_fields = [
 		'coil_paywall_title',
 		'coil_paywall_message',
 		'coil_paywall_button_text',
-		'coil_paywall_button_link'
+		'coil_paywall_button_link',
 	];
-	
+
 	$paywall_styles = [
 		'coil_message_color_theme',
 		'coil_message_branding',
-		'coil_message_font'
+		'coil_message_font',
 	];
 
 	// Text inputs can be empty strings, in which the placeholder text will display or the default text will be returned.
@@ -441,7 +441,6 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
 		} else {
 			return ( ! empty( $exclusive_options[ $field_id ] ) ) ? $exclusive_options[ $field_id ] : '';
 		}
-
 	} elseif ( $field_id === 'coil_message_color_theme' ) {
 		// Default is the light theme
 		if ( isset( $exclusive_options[ $field_id ] ) ) {
@@ -574,9 +573,9 @@ function get_exlusive_post_setting( $field_id ): bool {
  */
 function get_exclusive_post_defaults(): array {
 	$exclusive_post_defaults = [
-		'coil_title_padlock' => true,
+		'coil_title_padlock'         => true,
 		'coil_padlock_icon_position' => 'before',
-		'coil_padlock_icon_style' => 'lock',
+		'coil_padlock_icon_style'    => 'lock',
 	];
 
 	return $exclusive_post_defaults;

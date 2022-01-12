@@ -61,7 +61,7 @@
 .coil .coil-welcome-notice,
 .coil .coil-no-payment-pointer-notice {
   align-items: center;
-  border-left: 4px solid #EE8249;
+  border-left: 4px solid #ee8249;
   border-radius: 3px;
   display: flex;
   flex-direction: row;
