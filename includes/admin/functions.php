@@ -511,6 +511,29 @@ function get_padlock_title_icon_style_options() {
 	return $icon_styles;
 }
 /**
+ * Retrieve the inherited font paywall appearance setting
+ * using its key from coil_exclusive_settings_group (serialized).
+ * This is a separate function from the rest of the paywall appearance settings because it returns a boolean.
+ *
+ * @param string $field_id The named key in the wp_options serialized array.
+ * @return string
+ */
+function get_inherited_font_setting( $field_id ) {
+
+	$exclusive_options = get_exclusive_settings();
+	if ( $field_id === 'coil_message_font' ) {
+		if ( isset( $exclusive_options[ $field_id ] ) ) {
+			$setting_value = $exclusive_options[ $field_id ];
+		} else {
+			$setting_value = false;
+		}
+		return $setting_value;
+	}
+
+	return false;
+}
+
+/**
  * Returns the paywall appearance settings for all fields that are not text based.
  * This includes the color theme, branding choice, and font style.
  *
@@ -565,8 +588,8 @@ function get_exclusive_post_defaults(): array {
 function get_visibility_types() : array {
 
 	$visibility_types = [
-		'public'    => 'Keep public',
-		'exclusive' => 'Make exclusive',
+		'public'    => 'Public',
+		'exclusive' => 'Exclusive',
 	];
 
 	return $visibility_types;
@@ -577,7 +600,7 @@ function get_visibility_types() : array {
  *
  * @return string
  */
-function get_visibility_default() {
+function get_post_visibility_default() {
 
 	return 'public';
 }
@@ -594,15 +617,20 @@ function get_excerpt_display_default() {
 
 /**
  * Retrieve the CSS selector setting settings.
+ * @param string $field_name
  * @return string Setting stored in options.
  */
-function get_css_selector() {
+function get_css_selector( $field_name ) {
 
-	$exclusive_options = get_exclusive_settings();
-	if ( empty( $exclusive_options ['coil_content_container'] ) ) {
-		return '.content-area .entry-content';
+	if ( $field_name === 'coil_content_container' ) {
+		$exclusive_options = get_exclusive_settings();
+		if ( empty( $exclusive_options ['coil_content_container'] ) ) {
+			return '.content-area .entry-content';
+		} else {
+			return $exclusive_options ['coil_content_container'];
+		}
 	} else {
-		return $exclusive_options ['coil_content_container'];
+		return '';
 	}
 }
 
@@ -612,7 +640,11 @@ function get_css_selector() {
  */
 function get_coil_button_settings() : array {
 
-	$coil_button_settings = get_option( 'coil_button_settings_group', [] );
+	$coil_button_settings = get_option( 'coil_button_settings_group', 'absent' );
+	if ( 'absent' === $coil_button_settings ) {
+		$coil_button_settings = [];
+	}
+
 	return $coil_button_settings;
 }
 
@@ -623,9 +655,15 @@ function get_coil_button_settings() : array {
  */
 function get_coil_button_setting( $field_id ) {
 	$coil_button_settings = get_coil_button_settings();
-	$value                = false;
 	if ( $field_id === 'coil_show_promotion_bar' ) {
 		$value = isset( $coil_button_settings[ $field_id ] ) ? $coil_button_settings[ $field_id ] : false;
 	}
 	return $value;
+}
+
+function get_set_message_fields( $field_id ) {
+	switch ( $field_id ) {
+		case 'coil_verifying_status_message':
+			return __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' );
+	}
 }
