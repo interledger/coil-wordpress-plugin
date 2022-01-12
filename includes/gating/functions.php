@@ -305,7 +305,7 @@ function get_content_status( $post_id, $status_type ) : string {
 		$content_status = Admin\get_monetization_default();
 		$meta_key       = '_coil_monetization_term_status';
 	} elseif ( $status_type === 'visibility' ) {
-		$content_status = Admin\get_visibility_default();
+		$content_status = Admin\get_post_visibility_default();
 		$meta_key       = '_coil_visibility_term_status';
 	} else {
 		// Return if an unrecognised status type is being used
@@ -370,7 +370,7 @@ function set_term_status( $term_id, string $meta_key, string $status ) : void {
 		$status               = in_array( $status, $valid_status_options, true ) ? $status : Admin\get_monetization_default();
 	} elseif ( $meta_key === '_coil_visibility_term_status' ) {
 		$valid_status_options = get_valid_visibility_types();
-		$status               = in_array( $status, $valid_status_options, true ) ? $status : Admin\get_visibility_default();
+		$status               = in_array( $status, $valid_status_options, true ) ? $status : Admin\get_post_visibility_default();
 	} else {
 		// Invalid meta key.
 		return;
