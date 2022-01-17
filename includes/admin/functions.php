@@ -415,56 +415,30 @@ function get_paywall_text_settings_or_default( $field_id ) {
  */
 function get_paywall_appearance_setting( $field_id, $use_text_default = false ) {
 
-	$exclusive_options  = get_exclusive_settings();
-	$style_defaults     = get_paywall_appearance_defaults();
-	$exclusive_defaults = get_exclusive_post_defaults();
+	$exclusive_options = get_exclusive_settings();
 
-	$text_fields = [
-		'coil_paywall_title',
-		'coil_paywall_message',
-		'coil_paywall_button_text',
-		'coil_paywall_button_link',
-	];
-
-	$paywall_styles = [
-		'coil_message_color_theme',
-		'coil_message_branding',
-		'coil_message_font',
-	];
+	$text_fields    = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
+	$paywall_styles = [ 'coil_message_color_theme', 'coil_message_branding', 'coil_message_font' ];
 
 	// Text inputs can be empty strings, in which the placeholder text will display or the default text will be returned.
 	if ( in_array( $field_id, $text_fields, true ) ) {
 
 		// The default is returned as a placeholder or as a coil_js_ui_messages field when no custom input has been provided
 		if ( $use_text_default && empty( $exclusive_options[ $field_id ] ) ) {
+			$text_defaults = get_paywall_text_defaults();
 			return $text_defaults[ $field_id ];
 		} else {
 			return ( ! empty( $exclusive_options[ $field_id ] ) ) ? $exclusive_options[ $field_id ] : '';
 		}
-	} elseif ( $field_id === 'coil_message_color_theme' ) {
-		// Default is the light theme
-		if ( isset( $exclusive_options[ $field_id ] ) ) {
-			$setting_value = $exclusive_options[ $field_id ];
-		} else {
-			$setting_value = $style_defaults[ $field_id ];
-		}
-		return $setting_value;
-
-	} elseif ( $field_id === 'coil_padlock_icon_style' ) {
-		// Default is Coil logo
-		if ( isset( $exclusive_options[ $field_id ] ) ) {
-			$setting_value = $exclusive_options[ $field_id ];
-		} else {
-			$setting_value = $exclusive_defaults[ $field_id ];
-		}
-		return $setting_value;
 	} elseif ( in_array( $field_id, $paywall_styles, true ) ) {
 		if ( isset( $exclusive_options[ $field_id ] ) ) {
 			$setting_value = $exclusive_options[ $field_id ];
 		} else {
-			$setting_value = $exclusive_defaults[ $field_id ];
+			$style_defaults = get_paywall_appearance_defaults();
+			$setting_value  = $style_defaults[ $field_id ];
 		}
 		return $setting_value;
+
 	}
 	return null;
 }
@@ -510,29 +484,6 @@ function get_padlock_title_icon_style_options() {
 	return $icon_styles;
 }
 /**
- * Retrieve the inherited font paywall appearance setting
- * using its key from coil_exclusive_settings_group (serialized).
- * This is a separate function from the rest of the paywall appearance settings because it returns a boolean.
- *
- * @param string $field_id The named key in the wp_options serialized array.
- * @return string
- */
-function get_inherited_font_setting( $field_id ) {
-
-	$exclusive_options = get_exclusive_settings();
-	if ( $field_id === 'coil_message_font' ) {
-		if ( isset( $exclusive_options[ $field_id ] ) ) {
-			$setting_value = $exclusive_options[ $field_id ];
-		} else {
-			$setting_value = false;
-		}
-		return $setting_value;
-	}
-
-	return false;
-}
-
-/**
  * Returns the paywall appearance settings for all fields that are not text based.
  * This includes the color theme, branding choice, and font style.
  *
@@ -553,14 +504,20 @@ function get_paywall_appearance_defaults(): array {
  * using a key from coil_exclusive_settings_group (serialized).
  *
  * @param string $field_id The named key in the wp_options serialized array.
- * @return bool
+ * @return string
  */
-function get_exlusive_post_setting( $field_id ): bool {
+function get_exlusive_post_setting( $field_id ) {
 
-	$exclusive_options = get_exclusive_settings();
+	$padloack_settings = [ 'coil_padlock_icon_position', 'coil_padlock_icon_style' ];
+
+	$exclusive_options  = get_exclusive_settings();
+	$exclusive_defaults = get_exclusive_post_defaults();
 
 	if ( $field_id === 'coil_title_padlock' ) {
 		$setting_value = isset( $exclusive_options[ $field_id ] ) ? $exclusive_options[ $field_id ] : false;
+		return $setting_value;
+	} elseif ( in_array( $field_id, $padloack_settings, true ) ) {
+		$setting_value = isset( $exclusive_options[ $field_id ] ) ? $exclusive_options[ $field_id ] : $exclusive_defaults[ $field_id ];
 		return $setting_value;
 	}
 	return false;
@@ -587,8 +544,8 @@ function get_exclusive_post_defaults(): array {
 function get_visibility_types() : array {
 
 	$visibility_types = [
-		'public'    => 'Public',
-		'exclusive' => 'Exclusive',
+		'public'    => 'Keep public',
+		'exclusive' => 'Make exclusive',
 	];
 
 	return $visibility_types;
@@ -599,7 +556,7 @@ function get_visibility_types() : array {
  *
  * @return string
  */
-function get_post_visibility_default() {
+function get_visibility_default() {
 
 	return 'public';
 }
@@ -616,20 +573,15 @@ function get_excerpt_display_default() {
 
 /**
  * Retrieve the CSS selector setting settings.
- * @param string $field_name
  * @return string Setting stored in options.
  */
-function get_css_selector( $field_name ) {
+function get_css_selector() {
 
-	if ( $field_name === 'coil_content_container' ) {
-		$exclusive_options = get_exclusive_settings();
-		if ( empty( $exclusive_options ['coil_content_container'] ) ) {
-			return '.content-area .entry-content';
-		} else {
-			return $exclusive_options ['coil_content_container'];
-		}
+	$exclusive_options = get_exclusive_settings();
+	if ( empty( $exclusive_options ['coil_content_container'] ) ) {
+		return '.content-area .entry-content';
 	} else {
-		return '';
+		return $exclusive_options ['coil_content_container'];
 	}
 }
 
@@ -639,11 +591,7 @@ function get_css_selector( $field_name ) {
  */
 function get_coil_button_settings() : array {
 
-	$coil_button_settings = get_option( 'coil_button_settings_group', 'absent' );
-	if ( 'absent' === $coil_button_settings ) {
-		$coil_button_settings = [];
-	}
-
+	$coil_button_settings = get_option( 'coil_button_settings_group', [] );
 	return $coil_button_settings;
 }
 
@@ -654,15 +602,9 @@ function get_coil_button_settings() : array {
  */
 function get_coil_button_setting( $field_id ) {
 	$coil_button_settings = get_coil_button_settings();
+	$value                = false;
 	if ( $field_id === 'coil_show_promotion_bar' ) {
 		$value = isset( $coil_button_settings[ $field_id ] ) ? $coil_button_settings[ $field_id ] : false;
 	}
 	return $value;
-}
-
-function get_set_message_fields( $field_id ) {
-	switch ( $field_id ) {
-		case 'coil_verifying_status_message':
-			return __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' );
-	}
 }
