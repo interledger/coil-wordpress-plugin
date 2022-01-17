@@ -635,11 +635,11 @@ function get_paywall_theme_logo() {
 
 	$site_logo = get_custom_logo();
 
-	$coil_logo_type = ( Admin\get_paywall_appearance_setting( 'coil_paywall_theme' ) === 'light' ? 'black' : 'white' );
+	$coil_logo_type = ( Admin\get_paywall_appearance_setting( 'coil_message_color_theme' ) === 'light' ? 'black' : 'white' );
 
 	switch ( $logo_setting ) {
 		case 'coil_logo':
-			$logo_url = plugin_dir_url( __FILE__ ) . 'assets/images/coil-icn-' . $coil_logo_type . '.svg';
+			$logo_url = plugin_dir_url( COIL__FILE__ ) . 'assets/images/coil-icn-' . $coil_logo_type . '.svg';
 			break;
 		case 'site_logo':
 			$logo_url = ( ! empty( $site_logo ) ? $site_logo : false );
