@@ -138,11 +138,21 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 		return $title;
 	}
 
-	$post_title = sprintf(
-		/* translators: %s: Gated post title. */
-		__( '🔒 %s', 'coil-web-monetization' ),
-		$title
-	);
+	$padlock_location = Admin\get_exlusive_post_setting( 'coil_padlock_icon_position' );
+
+	if ( $padlock_location === 'after' ) {
+		$post_title = sprintf(
+			/* translators: %s: Gated post title. */
+			__( '%s 🔒', 'coil-web-monetization' ),
+			$title
+		);
+	} else {
+		$post_title = sprintf(
+			/* translators: %s: Gated post title. */
+			__( '🔒 %s', 'coil-web-monetization' ),
+			$title
+		);
+	}
 
 	return apply_filters( 'coil_maybe_add_padlock_to_title', $post_title, $title, $id );
 }
