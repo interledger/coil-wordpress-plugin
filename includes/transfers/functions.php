@@ -49,7 +49,7 @@ function maybe_load_database_defaults() {
 		$exclusive_post_settings     = Admin\get_exclusive_post_defaults();
 
 		// Visibility default is 'public'
-		$post_visibility_default = Admin\get_post_visibility_default();
+		$post_visibility_default = Admin\get_visibility_default();
 		// Excerpt display default is false
 		$excerpt_display_default = Admin\get_excerpt_display_default();
 
