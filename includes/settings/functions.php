@@ -1428,19 +1428,6 @@ function coil_term_custom_meta( $action, $term ) {
 		'exclusive' => 'Coil Members Only',
 	];
 
-	// Retrieve the post's default Coil status
-	$general_settings     = Admin\get_general_settings();
-	$default_monetization = isset( $general_settings['post_monetization'] ) ? $general_settings['post_monetization'] : 'monetized';
-	$exclusive_settings   = Admin\get_exclusive_settings();
-	$default_visibility   = isset( $exclusive_settings['post_visibility'] ) ? $exclusive_settings['post_visibility'] : 'public';
-	if ( $default_monetization === 'not-monetized' ) {
-		$default_value = 'Disabled';
-	} elseif ( $default_visibility === 'exclusive' ) {
-		$default_value = 'Enabled & Exclusive';
-	} else {
-		$default_value = 'Enabled & Public';
-	}
-
 	// Retrieve the monetization and visibility meta saved on the term.
 	// If these meta fields are empty they return 'default'.
 	$term_monetization = Gating\get_term_status( $term->term_id, '_coil_monetization_term_status' );
@@ -1448,7 +1435,7 @@ function coil_term_custom_meta( $action, $term ) {
 
 	// There is no 'default' button for visibility so if it is set to default then select the option that it is defaulting to in the exclusive settings group.
 	if ( $term_visibility === 'default' ) {
-		$term_visibility = $default_visibility;
+		$term_visibility = Admin\get_visibility_default();
 	}
 
 	if ( $action === 'add' ) {
@@ -1474,7 +1461,7 @@ function coil_term_custom_meta( $action, $term ) {
 				'<option value="%s"%s>%s</option>',
 				esc_attr( $setting_key ),
 				selected( $setting_key, $term_monetization ),
-				$setting_key === 'default' ? esc_html( 'Default (' . $default_value . ')', 'coil-web-monetization' ) : $setting_value
+				$setting_key === 'default' ? esc_html( 'Default', 'coil-web-monetization' ) : $setting_value
 			);
 		}
 		?>
