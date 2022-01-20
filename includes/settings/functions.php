@@ -1474,44 +1474,23 @@ function coil_term_custom_meta( $action, $term ) {
 		</th>
 		<td id="coil_dropdown">
 		<?php
-	}
+	} ?>
 
-	?>
-
-		<?php
-		printf(
-			'<select name="_coil_monetization_term_status" id="monetization_dropdown" onchange="handleRadioOptionsDisplay(\'%s\')">',
-			esc_attr( $term_visibility )
-		);
-		foreach ( $monetization_options as $setting_key => $setting_value ) {
-
-			$selected_input = '';
-			if ( $setting_key === $term_monetization ) {
-				$selected_input = 'selected';
-			}
-			?>
-				<label for="<?php echo esc_attr( $setting_key ); ?>">
-				<?php
-				if ( $setting_key === 'default' ) {
-					$setting_value = esc_html( 'Default (' . $default_value . ')', 'coil-web-monetization' );
-				}
-				printf(
-					'<option value="%s"%s>%s</option>',
-					esc_attr( $setting_key ),
-					$selected_input,
-					esc_attr( $setting_value )
-				);
-				?>
-				</label><br>
-			<?php
-		}
-		?>
+	<select name="_coil_monetization_term_status" id="monetization_dropdown" onchange="javascript: handleRadioOptionsDisplay('<?php echo esc_attr( $term_visibility ); ?>')">
+		<?php foreach ( $monetization_options as $setting_key => $setting_value ) {
+			printf(
+				'<option value="%s"%s>%s</option>',
+				esc_attr( $setting_key ),
+				selected ( $setting_key, $term_monetization ),
+				$setting_key === 'default' ? esc_html( 'Default (' . $default_value . ')', 'coil-web-monetization' ) : $setting_value
+			);
+		} ?>
 	</select>
 	<?php
 	if ( $action === 'add' ) {
 		?>
 		</div><br>
-		<div id="coil-radio-selection" style="display: none">
+		<div id="coil-radio-selection" style="display: none;">
 			<tr class="form-field">
 		<?php
 	} else {
@@ -1523,35 +1502,25 @@ function coil_term_custom_meta( $action, $term ) {
 		<?php
 	}
 	?>
-
 		<th scope="row">
 			<label><?php esc_html_e( 'Who can access this content?', 'coil-web-monetization' ); ?></label>
 		</th>
 		<td>
 			<fieldset id="coil-visibility-settings">
-			<?php
-			foreach ( $visibility_options as $setting_key => $setting_value ) {
-
-				$checked_input = false;
-				if ( ! empty( $term_visibility ) ) {
-					$checked_input = checked( $setting_key, $term_visibility, false );
-				}
-				?>
-				<label for="<?php echo esc_attr( $setting_key ); ?>">
-				<?php
-				printf(
-					'<input type="radio" name="%s" id="%s" value="%s"%s />%s',
-					esc_attr( '_coil_visibility_term_status' ),
-					esc_attr( $setting_key ),
-					esc_attr( $setting_key ),
-					$checked_input,
-					esc_attr( $setting_value )
-				);
-				?>
-				</label><br>
-				<?php
-			}
-			?>
+				<?php foreach ( $visibility_options as $setting_key => $setting_value ) : ?>
+					<label for="<?php echo esc_attr( $setting_key ); ?>">
+						<?php
+						printf(
+							'<input type="radio" name="%s" id="%s" value="%s"%s />%s',
+							esc_attr( '_coil_visibility_term_status' ),
+							esc_attr( $setting_key ),
+							esc_attr( $setting_key ),
+							! empty( $term_visibility ) ? checked( $setting_key, $term_visibility, false ) : '',
+							esc_attr( $setting_value )
+						);
+						?>
+					</label>
+				<?php endforeach; ?>
 			</fieldset>
 		</td>
 	</tr>
@@ -1562,30 +1531,29 @@ function coil_term_custom_meta( $action, $term ) {
 	?>
 
 	<script>
-	/**
-	 *
-	 * Ensures the appropriate visibility radio button is selected.
-	 * @param {String} The visibility status slug
-	 * @return {void}
-	 */
-	function handleRadioOptionsDisplay( element ) {
-		var radioButtons = document.getElementById("coil-radio-selection");
-		if (document.getElementById("monetization_dropdown").value === 'monetized') {
-			// If monetization is enabled then the visibility options should appear
-			radioButtons.removeAttribute("style");
-			// Checks the button associated with the default visibility value rather than just the last button that had been selected.
-			if (element !== '' ) {
-				document.getElementById(element).checked = true;
+		/**
+		 *
+		 * Ensures the appropriate visibility radio button is selected.
+		 * @param {String} The visibility status slug
+		 * @return {void}
+		 */
+		function handleRadioOptionsDisplay( element ) {
+			var radioButtons = document.getElementById("coil-radio-selection");
+			if (document.getElementById("monetization_dropdown").value === 'monetized') {
+				// If monetization is enabled then the visibility options should appear
+				radioButtons.removeAttribute("style");
+				// Checks the button associated with the default visibility value rather than just the last button that had been selected.
+				if (element !== '' ) {
+					document.getElementById(element).checked = true;
+				}
+			} else {
+				// If monetization is not enabled then the visibility options should disappear
+				radioButtons.setAttribute("style", "display: none" );
 			}
-		} else {
-			// If monetization is not enabled then the visibility options should disappear
-			radioButtons.setAttribute("style", "display: none" );
 		}
-	}
 
-	// For the edit screen this function is called so that the radio buttons are hidden or displayed based on the existing settings.
-	handleRadioOptionsDisplay('');
-
+		// For the edit screen this function is called so that the radio buttons are hidden or displayed based on the existing settings.
+		handleRadioOptionsDisplay('');
 	</script>
 
 	<?php
