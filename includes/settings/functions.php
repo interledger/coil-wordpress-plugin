@@ -1445,6 +1445,7 @@ function coil_term_custom_meta( $action, $term ) {
 	// If these meta fields are empty they return 'default'.
 	$term_monetization = Gating\get_term_status( $term->term_id, '_coil_monetization_term_status' );
 	$term_visibility   = Gating\get_term_status( $term->term_id, '_coil_visibility_term_status' );
+
 	// There is no 'default' button for visibility so if it is set to default then select the option that it is defaulting to in the exclusive settings group.
 	if ( $term_visibility === 'default' ) {
 		$term_visibility = $default_visibility;
@@ -1478,52 +1479,55 @@ function coil_term_custom_meta( $action, $term ) {
 		}
 		?>
 	</select>
-
 	<?php
+	// Use the output buffer to set the content for the visibility settings
+	ob_start();
+	foreach ( $visibility_options as $setting_key => $setting_value ) :
+		?>
+		<label for="<?php echo esc_attr( $setting_key ); ?>">
+			<?php
+			printf(
+				'<input type="radio" name="%s" id="%s" value="%s"%s />%s',
+				esc_attr( '_coil_visibility_term_status' ),
+				esc_attr( $setting_key ),
+				esc_attr( $setting_key ),
+				! empty( $term_visibility ) ? checked( $setting_key, $term_visibility, false ) : '',
+				esc_attr( $setting_value )
+			);
+			?>
+		</label>
+		<?php
+	endforeach;
+	$visibility_options = ob_get_contents();
+	ob_end_clean();
+
 	if ( $action === 'add' ) {
 		?>
-		</div><br>
+		</div>
+		<br />
 		<div id="coil-radio-selection" style="display: none;">
-			<tr class="form-field">
+			<label><?php esc_html_e( 'Who can access this content?', 'coil-web-monetization' ); ?></label>
+			<fieldset id="coil-visibility-settings">
+				<?php echo $visibility_options; ?>
+			</fieldset>
+		</div>
 		<?php
 	} else {
 		?>
-		<br>
-			</td>
 		</tr>
 		<tr class="form-field" id="coil-radio-selection" style="display: none">
+			<th scope="row">
+				<label><?php esc_html_e( 'Who can access this content?', 'coil-web-monetization' ); ?></label>
+			</th>
+			<td>
+				<fieldset id="coil-visibility-settings">
+					<?php echo $visibility_options; ?>
+				</fieldset>
+			</td>
+		</tr>
 		<?php
 	}
 	?>
-		<th scope="row">
-			<label><?php esc_html_e( 'Who can access this content?', 'coil-web-monetization' ); ?></label>
-		</th>
-		<td>
-			<fieldset id="coil-visibility-settings">
-				<?php foreach ( $visibility_options as $setting_key => $setting_value ) : ?>
-
-					<label for="<?php echo esc_attr( $setting_key ); ?>">
-						<?php
-						printf(
-							'<input type="radio" name="%s" id="%s" value="%s"%s />%s',
-							esc_attr( '_coil_visibility_term_status' ),
-							esc_attr( $setting_key ),
-							esc_attr( $setting_key ),
-							! empty( $term_visibility ) ? checked( $setting_key, $term_visibility, false ) : '',
-							esc_attr( $setting_value )
-						);
-						?>
-					</label>
-				<?php endforeach; ?>
-			</fieldset>
-		</td>
-	</tr>
-	<?php
-	if ( $action === 'add' ) {
-		echo '</div>';
-	}
-	?>
-
 	<script>
 		/**
 		 *
