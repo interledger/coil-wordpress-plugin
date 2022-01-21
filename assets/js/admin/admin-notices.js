@@ -47,15 +47,27 @@
 	}
 
 	$( document ).on( 'keyup', '#coil_paywall_title', function() {
-		$( '.coil-paywall-heading' ).text( $( this ).val() );
+		if ( $( this ).val() !== '' ) {
+			$( '.coil-paywall-heading' ).text( $( this ).val() );
+		} else {
+			$( '.coil-paywall-heading' ).text( $( this ).attr( 'placeholder' ) );
+		}
 	} );
 
 	$( document ).on( 'keyup', '#coil_paywall_message', function() {
-		$( '.coil-paywall-body' ).text( $( this ).val() );
+		if ( $( this ).val() !== '' ) {
+			$( '.coil-paywall-body' ).text( $( this ).val() );
+		} else {
+			$( '.coil-paywall-body' ).text( $( this ).attr( 'placeholder' ) );
+		}
 	} );
 
 	$( document ).on( 'keyup', '#coil_paywall_button_text', function() {
-		$( '.coil-paywall-cta' ).text( $( this ).val() );
+		if ( $( this ).val() !== '' ) {
+			$( '.coil-paywall-cta' ).text( $( this ).val() );
+		} else {
+			$( '.coil-paywall-cta' ).text( $( this ).attr( 'placeholder' ) );
+		}
 	} );
 
 	$( document ).on( 'change', 'input[name="coil_exclusive_settings_group[coil_message_color_theme]"]', function() {

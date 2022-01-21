@@ -1056,6 +1056,7 @@ function coil_settings_css_selector_render_callback() {
  * @return void
 */
 function coil_paywall_appearance_text_field_settings_render_callback( $field_name, $field_type = 'text' ) {
+	$defaults = Admin\get_paywall_text_defaults();
 
 	switch ( $field_name ) {
 		case 'coil_paywall_title':
@@ -1089,7 +1090,7 @@ function coil_paywall_appearance_text_field_settings_render_callback( $field_nam
 			esc_attr( 'wide-input' ),
 			esc_attr( 'coil_exclusive_settings_group[' . $field_name . ']' ),
 			esc_attr( $field_name ),
-			esc_attr( Admin\get_paywall_appearance_setting( $field_name, true ) ),
+			esc_attr( $defaults[ $field_name ] ),
 			esc_attr( Admin\get_paywall_appearance_setting( $field_name ) )
 		);
 	} else {
@@ -1098,7 +1099,7 @@ function coil_paywall_appearance_text_field_settings_render_callback( $field_nam
 			esc_attr( 'wide-input' ),
 			esc_attr( 'coil_exclusive_settings_group[' . $field_name . ']' ),
 			esc_attr( $field_name ),
-			esc_attr( Admin\get_paywall_appearance_setting( $field_name, true ) ),
+			esc_attr( $defaults[ $field_name ] ),
 			esc_attr( Admin\get_paywall_appearance_setting( $field_name ) )
 		);
 	}
