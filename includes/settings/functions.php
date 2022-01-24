@@ -90,13 +90,13 @@ function register_admin_content_settings() {
 		__NAMESPACE__ . '\coil_exclusive_settings_group_validation'
 	);
 
-	// // ==== Enable / Disable
-	// add_settings_section(
-	// 	'coil_enable_exclusive_section',
-	// 	false,
-	// 	__NAMESPACE__ . '\coil_settings_enable_exclusive_toggel_render_callback',
-	// 	'coil_enable_exclusive_section'
-	// );
+	// ==== Enable / Disable
+	add_settings_section(
+		'coil_enable_exclusive_section',
+		false,
+		__NAMESPACE__ . '\coil_settings_enable_exclusive_toggel_render_callback',
+		'coil_enable_exclusive_section'
+	);
 
 	// ==== Paywall Appearance
 	add_settings_section(
@@ -335,6 +335,7 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 	$checkbox_fields = [
 		'coil_message_font',
 		'coil_title_padlock',
+		'coil_exclusive_toggel',
 	];
 
 	foreach ( $checkbox_fields as $field_name ) {
@@ -551,17 +552,40 @@ function coil_settings_monetization_render_callback() {
  *
  * @return void
 */
-function coil_settings_paywall_render_callback() {
+function coil_settings_enable_exclusive_toggel_render_callback() {
 	?>
 	<div class="tab-styling">
 		<?php echo '<h2>' . esc_html__( 'Exclusive Content', 'coil-web-monetization' ) . '</h2>'; ?>
 		<?php echo '<p>' . esc_html_e( 'Only Coil Members using the Coil extension or supported browsers can access exclusive content.', 'coil-web-monetization' ) . '</p>'; ?>
-		<label class="coil-checkbox" for="coil-exclusive-content">
-			<input type="checkbox" name="coil_exclusive_content" id="coil-exclusive-content" />
-			<span></span>
-			<i></i>
-		</label>
+			<?php
+			$exclusive_toggel_id = 'coil_exclusive_toggel';
+			$value               = Admin\get_exclusive_content_toggel_setting();
+
+			if ( $value === true ) {
+				$checked_input = 'checked="checked"';
+			} else {
+				$checked_input = '';
+			}
+			echo sprintf(
+				'<label class="coil-checkbox" for="%1$s"><input type="%2$s" name="%3$s" id="%1$s" %4$s /><span></span><i></i></label>',
+				esc_attr( $exclusive_toggel_id ),
+				esc_attr( 'checkbox' ),
+				esc_attr( 'coil_exclusive_settings_group[' . $exclusive_toggel_id . ']' ),
+				$checked_input
+			);
+			?>
 	</div>
+	<?php
+}
+
+/**
+ * Renders the output of the paywall appearance settings.
+ * This includes custom messages, color theme, branding, and font options.
+ *
+ * @return void
+*/
+function coil_settings_paywall_render_callback() {
+	?>
 	<div class="tab-styling">
 		<?php
 		echo '<h3>' . esc_html__( 'Paywall Appearance', 'coil-web-monetization' ) . '</h3>';
@@ -1361,7 +1385,7 @@ function render_coil_settings_screen() : void {
 				case 'exclusive_settings':
 					echo '<div class="settings-main">';
 					settings_fields( 'coil_exclusive_settings_group' );
-					// do_settings_sections( 'coil_enable_exclusive_section' );
+					do_settings_sections( 'coil_enable_exclusive_section' );
 					do_settings_sections( 'coil_paywall_section' );
 					do_settings_sections( 'coil_exclusive_post_section' );
 					do_settings_sections( 'coil_post_visibility_section' );

@@ -373,6 +373,17 @@ function get_exclusive_settings(): array {
 }
 
 /**
+ * Retrieve the exclusive content toggel setting
+ *
+ * @return bool setting stored in options
+ */
+function get_exclusive_content_toggel_setting() {
+	$exclusive_options   = get_exclusive_settings();
+	$exclusive_toggel_id = 'coil_exclusive_toggel';
+	return isset( $exclusive_options[ $exclusive_toggel_id ] ) ? $exclusive_options[ $exclusive_toggel_id ] : false;
+}
+
+/**
  * Retrieve the paywall text field defaults
  * This includes the title, message, button text and button link
  *
