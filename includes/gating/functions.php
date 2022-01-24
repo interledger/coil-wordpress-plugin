@@ -134,7 +134,7 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 	}
 
 	$status = get_content_status( $id, 'visibility' );
-	if ( $status !== 'exclusive' ) {
+	if ( $status !== 'exclusive' || ! Admin\is_exclusive_content_enabled() ) {
 		return $title;
 	}
 
@@ -169,6 +169,11 @@ function maybe_restrict_content( string $content ) : string {
 
 	// Plugins can call the `the_content` filter outside of the post loop.
 	if ( is_singular() || ! get_the_ID() ) {
+		return $content;
+	}
+
+	// If exclusive content has been disabled then nothing will be restricted
+	if ( ! Admin\is_exclusive_content_enabled() ) {
 		return $content;
 	}
 

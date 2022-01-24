@@ -559,7 +559,7 @@ function coil_settings_enable_exclusive_toggel_render_callback() {
 		<?php echo '<p>' . esc_html_e( 'Only Coil Members using the Coil extension or supported browsers can access exclusive content.', 'coil-web-monetization' ) . '</p>'; ?>
 			<?php
 			$exclusive_toggel_id = 'coil_exclusive_toggel';
-			$value               = Admin\get_exclusive_content_toggel_setting();
+			$value               = Admin\is_exclusive_content_enabled();
 
 			if ( $value === true ) {
 				$checked_input = 'checked="checked"';

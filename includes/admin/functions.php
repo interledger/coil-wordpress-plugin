@@ -377,7 +377,7 @@ function get_exclusive_settings(): array {
  *
  * @return bool setting stored in options
  */
-function get_exclusive_content_toggel_setting() {
+function is_exclusive_content_enabled() {
 	$exclusive_options   = get_exclusive_settings();
 	$exclusive_toggel_id = 'coil_exclusive_toggel';
 	return isset( $exclusive_options[ $exclusive_toggel_id ] ) ? $exclusive_options[ $exclusive_toggel_id ] : false;

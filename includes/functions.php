@@ -299,9 +299,10 @@ function add_body_class( $classes ) : array {
 	// Transfer old post meta into new format
 	Transfers\update_post_meta( get_queried_object_id() );
 
-	// If content is not monetized then the coil-exclusive class cannot be added to the content.
+	// If content is not monetized, or exclusive content has been disabled,
+	// then the coil-exclusive class cannot be added to the content.
 	// This is an additional check to ensure that the incompatible not-monetized and exclusive state cannot be reached.
-	if ( Gating\is_content_monetized( get_queried_object_id() ) ) {
+	if ( Gating\is_content_monetized( get_queried_object_id() ) && Admin\is_exclusive_content_enabled() ) {
 		$classes[] = 'monetization-not-initialized';
 
 		$coil_monetization_status = Gating\get_content_status( get_queried_object_id(), 'monetization' );
