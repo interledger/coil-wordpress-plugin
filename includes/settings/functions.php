@@ -94,7 +94,7 @@ function register_admin_content_settings() {
 	add_settings_section(
 		'coil_enable_exclusive_section',
 		false,
-		__NAMESPACE__ . '\coil_settings_enable_exclusive_toggel_render_callback',
+		__NAMESPACE__ . '\coil_settings_enable_exclusive_toggle_render_callback',
 		'coil_enable_exclusive_section'
 	);
 
@@ -149,7 +149,7 @@ function register_admin_content_settings() {
 	// add_settings_section(
 	// 	'coil_enable_button_section',
 	// 	false,
-	// 	__NAMESPACE__ . '\coil_settings_enable_coil_button_toggel_render_callback',
+	// 	__NAMESPACE__ . '\coil_settings_enable_coil_button_toggle_render_callback',
 	// 	'coil_enable_button_section'
 	// );
 
@@ -335,7 +335,7 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 	$checkbox_fields = [
 		'coil_message_font',
 		'coil_title_padlock',
-		'coil_exclusive_toggel',
+		'coil_exclusive_toggle',
 	];
 
 	foreach ( $checkbox_fields as $field_name ) {
@@ -552,13 +552,13 @@ function coil_settings_monetization_render_callback() {
  *
  * @return void
 */
-function coil_settings_enable_exclusive_toggel_render_callback() {
+function coil_settings_enable_exclusive_toggle_render_callback() {
 	?>
 	<div class="tab-styling">
 		<?php echo '<h2>' . esc_html__( 'Exclusive Content', 'coil-web-monetization' ) . '</h2>'; ?>
 		<?php echo '<p>' . esc_html_e( 'Only Coil Members using the Coil extension or supported browsers can access exclusive content.', 'coil-web-monetization' ) . '</p>'; ?>
 			<?php
-			$exclusive_toggel_id = 'coil_exclusive_toggel';
+			$exclusive_toggle_id = 'coil_exclusive_toggle';
 			$value               = Admin\is_exclusive_content_enabled();
 
 			if ( $value === true ) {
@@ -567,10 +567,11 @@ function coil_settings_enable_exclusive_toggel_render_callback() {
 				$checked_input = '';
 			}
 			echo sprintf(
-				'<label class="coil-checkbox" for="%1$s"><input type="%2$s" name="%3$s" id="%1$s" %4$s /><span></span><i></i></label>',
-				esc_attr( $exclusive_toggel_id ),
+				'<label class="coil-checkbox" for="%1$s"><input type="%2$s" name="%3$s" id="%1$s" value="%4$b" %5$s /><span></span><i></i></label>',
+				esc_attr( $exclusive_toggle_id ),
 				esc_attr( 'checkbox' ),
-				esc_attr( 'coil_exclusive_settings_group[' . $exclusive_toggel_id . ']' ),
+				esc_attr( 'coil_exclusive_settings_group[' . $exclusive_toggle_id . ']' ),
+				$value,
 				$checked_input
 			);
 			?>
@@ -586,7 +587,7 @@ function coil_settings_enable_exclusive_toggel_render_callback() {
 */
 function coil_settings_paywall_render_callback() {
 	?>
-	<div class="tab-styling">
+	<div class="tab-styling exclusive-content">
 		<?php
 		echo '<h3>' . esc_html__( 'Paywall Appearance', 'coil-web-monetization' ) . '</h3>';
 		echo '<p>' . esc_html_e( 'This paywall replaces the post content for users without an active Coil Membership, when access is set to exclusive.', 'coil-web-monetization' ) . '</p>';
@@ -786,7 +787,7 @@ function paywall_font_render_callback() {
 function coil_settings_exclusive_post_render_callback() {
 
 	?>
-	<div class="tab-styling">
+	<div class="tab-styling exclusive-content">
 		<?php
 		echo '<h3>' . esc_html__( 'Exclusive Post Appearance', 'coil-web-monetization' ) . '</h3>';
 		echo '<p>' . esc_html_e( 'Customize the appearance for exclusive posts on archive pages.', 'coil-web-monetization' ) . '</p>';
@@ -983,7 +984,7 @@ function get_padlock_icon_styles() {
 */
 function coil_settings_post_visibility_render_callback() {
 	?>
-	<div class="tab-styling">
+	<div class="tab-styling exclusive-content">
 		<?php
 		echo '<h3>' . esc_html__( 'Visibility Settings', 'coil-web-monetization' ) . '</h3>';
 		echo '<p>' . esc_html_e( 'Select whether you want to designate posts and pages as \'Exclusive\' by default', 'coil-web-monetization' ) . '</p>';
@@ -1022,7 +1023,7 @@ function coil_settings_post_visibility_render_callback() {
 function coil_settings_excerpt_display_render_callback() {
 
 	?>
-	<div class="tab-styling">
+	<div class="tab-styling exclusive-content">
 		<?php
 		echo '<h3>' . esc_html__( 'Excerpt Settings', 'coil-web-monetization' ) . '</h3>';
 		echo '<p>' . esc_html_e( 'Use the settings below to select whether to show a short excerpt for any pages, posts, or other content types you choose to gate access to. Support for displaying an excerpt may depend on your particular theme and setup of WordPress.', 'coil-web-monetization' ) . '</p>';
@@ -1047,7 +1048,7 @@ function coil_settings_excerpt_display_render_callback() {
 function coil_settings_css_selector_render_callback() {
 
 	?>
-	<div class="tab-styling">
+	<div class="tab-styling exclusive-content">
 		<?php
 		echo '<h3>' . esc_html__( 'CSS Selector', 'coil-web-monetization' ) . '</h3>';
 
