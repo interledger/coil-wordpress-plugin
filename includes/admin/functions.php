@@ -170,16 +170,22 @@ function load_admin_assets() : void {
 		'toplevel_page_coil',
 		'toplevel_page_coil_settings',
 	];
-
 	if ( ! in_array( $screen->id, $load_on_screens, true ) ) {
 		return;
 	}
+
+	$site_logo = get_custom_logo();
 
 	$suffix       = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 	$admin_params = apply_filters(
 		'coil_admin_js_params',
 		[
-			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'ajax_url'      => admin_url( 'admin-ajax.php' ),
+			'site_logo_url' => ( ! empty( $site_logo ) ? $site_logo : false ),
+			'coil_logo_url' => [
+				'light' => plugin_dir_url( dirname( __DIR__ ) ) . 'assets/images/coil-icn-black.svg',
+				'dark'  => plugin_dir_url( dirname( __DIR__ ) ) . 'assets/images/coil-icn-white.svg',
+			],
 		]
 	);
 
@@ -411,8 +417,6 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
 
 	$exclusive_options = get_exclusive_settings();
 
-	$style_defaults = get_paywall_appearance_defaults();
-
 	$text_fields    = [ 'coil_paywall_title', 'coil_paywall_message', 'coil_paywall_button_text', 'coil_paywall_button_link' ];
 	$paywall_styles = [ 'coil_message_color_theme', 'coil_message_branding', 'coil_message_font' ];
 
@@ -420,7 +424,7 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
 	if ( in_array( $field_id, $text_fields, true ) ) {
 
 		// The default is returned as a placeholder or as a coil_js_ui_messages field when no custom input has been provided
-		if ( $use_text_default ) {
+		if ( $use_text_default && empty( $exclusive_options[ $field_id ] ) ) {
 			$text_defaults = get_paywall_text_defaults();
 			return $text_defaults[ $field_id ];
 		} else {
@@ -430,9 +434,11 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
 		if ( isset( $exclusive_options[ $field_id ] ) ) {
 			$setting_value = $exclusive_options[ $field_id ];
 		} else {
-			$setting_value = $style_defaults[ $field_id ];
+			$style_defaults = get_paywall_appearance_defaults();
+			$setting_value  = $style_defaults[ $field_id ];
 		}
 		return $setting_value;
+
 	}
 	return null;
 }
@@ -457,6 +463,26 @@ function get_paywall_branding_options() {
 	return $branding_choices;
 }
 
+
+/**
+ * @return array Valid padlock positions.
+ */
+function get_padlock_title_icon_position_options() {
+
+	$positions = [ 'before', 'after' ];
+
+	return $positions;
+}
+
+/**
+ * @return array Valid padlock icon styles.
+ */
+function get_padlock_title_icon_style_options() {
+
+	$icon_styles = [ 'lock', 'coin_icon', 'bonus', 'exclusive' ];
+
+	return $icon_styles;
+}
 /**
  * Returns the paywall appearance settings for all fields that are not text based.
  * This includes the color theme, branding choice, and font style.
@@ -478,14 +504,20 @@ function get_paywall_appearance_defaults(): array {
  * using a key from coil_exclusive_settings_group (serialized).
  *
  * @param string $field_id The named key in the wp_options serialized array.
- * @return bool
+ * @return string
  */
-function get_exlusive_post_setting( $field_id ): bool {
+function get_exlusive_post_setting( $field_id ) {
 
-	$exclusive_options = get_exclusive_settings();
+	$padloack_settings = [ 'coil_padlock_icon_position', 'coil_padlock_icon_style' ];
+
+	$exclusive_options  = get_exclusive_settings();
+	$exclusive_defaults = get_exclusive_post_defaults();
 
 	if ( $field_id === 'coil_title_padlock' ) {
 		$setting_value = isset( $exclusive_options[ $field_id ] ) ? $exclusive_options[ $field_id ] : false;
+		return $setting_value;
+	} elseif ( in_array( $field_id, $padloack_settings, true ) ) {
+		$setting_value = isset( $exclusive_options[ $field_id ] ) ? $exclusive_options[ $field_id ] : $exclusive_defaults[ $field_id ];
 		return $setting_value;
 	}
 	return false;
@@ -497,7 +529,11 @@ function get_exlusive_post_setting( $field_id ): bool {
  * @return array
  */
 function get_exclusive_post_defaults(): array {
-	$exclusive_post_defaults = [ 'coil_title_padlock' => true ];
+	$exclusive_post_defaults = [
+		'coil_title_padlock'         => true,
+		'coil_padlock_icon_position' => 'before',
+		'coil_padlock_icon_style'    => 'lock',
+	];
 
 	return $exclusive_post_defaults;
 }
@@ -565,10 +601,12 @@ function get_coil_button_settings() : array {
  * @return string Setting stored in options.
  */
 function get_coil_button_setting( $field_id ) {
+
 	$coil_button_settings = get_coil_button_settings();
 	$value                = false;
 	if ( $field_id === 'coil_show_promotion_bar' ) {
 		$value = isset( $coil_button_settings[ $field_id ] ) ? $coil_button_settings[ $field_id ] : false;
 	}
+
 	return $value;
 }

@@ -176,6 +176,33 @@ class Test_Coil_Status_Settings extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Check that post titles can have padlock set to the end of the title instead of the beginning.
+	 *
+	 * @return void
+	 */
+	public function test_padlock_location_can_be_changed() :  void {
+
+		// Set the padlock to display after the title
+		$settings                               = get_option( 'coil_exclusive_settings_group', [] );
+		$settings['coil_padlock_icon_position'] = 'after';
+		$settings['coil_title_padlock']         = true;
+		update_option( 'coil_exclusive_settings_group', $settings );
+
+		foreach ( self::$basic_posts as $post_array ) {
+			$post_title                     = $post_array['title'];
+			$post_array['post']->post_title = Gating\maybe_add_padlock_to_title( $post_title, $post_array['post']->ID );
+
+			if ( $post_array['visibility'] === 'exclusive' ) {
+				$post_title = $post_title . ' 🔒';
+			}
+
+			$final_post_title = $post_array['post']->post_title;
+
+			$this->assertSame( $post_title, $final_post_title );
+		}
+	}
+
+	/**
 	 * Tests taxonomy monetization meta field by creating a category and checking the correct monetization value is returned.
 	 *
 	 * @return void
