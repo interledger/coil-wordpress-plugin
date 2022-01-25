@@ -555,7 +555,7 @@ function coil_settings_monetization_render_callback() {
 function coil_settings_enable_exclusive_toggle_render_callback() {
 	?>
 	<div class="tab-styling">
-		<?php echo '<h2>' . esc_html__( 'Exclusive Content', 'coil-web-monetization' ) . '</h2>'; ?>
+		<?php echo '<h3>' . esc_html__( 'Exclusive Content', 'coil-web-monetization' ) . '</h2>'; ?>
 		<?php echo '<p>' . esc_html_e( 'Only Coil Members using the Coil extension or supported browsers can access exclusive content.', 'coil-web-monetization' ) . '</p>'; ?>
 			<?php
 			$exclusive_toggle_id = 'coil_exclusive_toggle';
