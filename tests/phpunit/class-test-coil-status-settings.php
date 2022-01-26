@@ -308,7 +308,7 @@ class Test_Coil_Status_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Tests if the correct monetization value retrieved when a specific post is returned
+	 * Tests if the correct monetization and visibility values are retrieved when a specific post is returned
 	 * in cases that consider the combination of global, taxonomy or post monetization settings that have been used.
 	 *
 	 * @return void

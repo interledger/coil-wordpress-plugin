@@ -302,10 +302,11 @@ function get_taxonomy_term_status( $post_id, $meta_key ) {
 }
 
 /**
- * Return the single source of truth for post monetization & visibility
- * status based on the fallback options  * if the post status selection is 'default'.
- * E.g. If return value of each function is default, move onto the next function,
+ * Return the post monetization & visibility status
+ * based on the global defaults, taxonomies, and post metafields.
+ * If return value of each function is default, move onto the next function,
  * otherwise return immediately.
+ * Note: even if the content's visibility status is 'exclusive' this can still be disabled on a gloabl level.
  *
  * @param integer $post_id
  * @param string $status_type {'monetization' | 'visibility'}
