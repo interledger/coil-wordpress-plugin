@@ -16,50 +16,11 @@ describe( 'Tag Settings', function() {
 		cy.get( '#tag-slug' ).type( 'demotagslug' );
 
 		// The Default setting should be selected in the dropdown and the radio options should not be present
-		checkMenuDefaultText( 'Enabled & Public' );
+		cy.get( '#monetization_dropdown' ).invoke( 'val' ).should( 'eq', 'default' );
+		cy.get( '#monetization_dropdown' ).find( 'option:selected' ).should( 'have.text', 'Default' );
 
 		// Checks that the radio buttons display or hide depending on the dropdown menu selection
 		checkDisplayBehavior();
-
-		// Change the default post status to "Disabled" and check it is refelected as "Default (Disabled)" in the monetization dropdown menu.
-		cy.addSetting( 'coil_general_settings_group', [
-			{
-				key: 'post_monetization',
-				value: 'not-monetized',
-			},
-		] );
-
-		cy.visit( '/wp-admin/edit-tags.php?taxonomy=post_tag' );
-
-		// Create a tag
-		cy.get( '#tag-name' ).type( 'demotag' );
-		cy.get( '#tag-slug' ).type( 'demotagslug' );
-
-		// "Default (Disabled)" should now be the default text
-		checkMenuDefaultText( 'Disabled' );
-
-		// Change the default post status to monetized and exclusive
-		cy.addSetting( 'coil_general_settings_group', [
-			{
-				key: 'post_monetization',
-				value: 'monetized',
-			},
-		] );
-		cy.addSetting( 'coil_exclusive_settings_group', [
-			{
-				key: 'post_visibility',
-				value: 'exclusive',
-			},
-		] );
-
-		cy.visit( '/wp-admin/edit-tags.php?taxonomy=post_tag' );
-
-		// Create a tag
-		cy.get( '#tag-name' ).type( 'demotag' );
-		cy.get( '#tag-slug' ).type( 'demotagslug' );
-
-		// "Default (Enabled & Exclusive)" should now be the default text
-		checkMenuDefaultText( 'Enabled & Exclusive' );
 	} );
 
 	it( 'checks that Coil tag settings are rendered correctly on the "Edit Term" screen', function() {
@@ -86,7 +47,8 @@ describe( 'Tag Settings', function() {
 		} );
 
 		// The Default setting should be selected in the dropdown and the radio options should not be present
-		checkMenuDefaultText( 'Enabled & Public' );
+		cy.get( '#monetization_dropdown' ).invoke( 'val' ).should( 'eq', 'default' );
+		cy.get( '#monetization_dropdown' ).find( 'option:selected' ).should( 'have.text', 'Default' );
 
 		// Checks that the radio buttons display or hide depending on the dropdown menu selection
 		checkDisplayBehavior();
@@ -147,7 +109,7 @@ function checkDisplayBehavior() {
 		[ 'Enabled', 'public' ],
 		[ 'Disabled', '' ],
 		[ 'Enabled', 'public' ],
-		[ 'Default (Enabled & Public)', '' ],
+		[ 'Default', '' ],
 	];
 	settings.forEach( ( option )=>{
 		cy.get( '#monetization_dropdown' ).select( option[ 0 ] );
@@ -158,14 +120,4 @@ function checkDisplayBehavior() {
 			cy.get( '#coil-radio-selection' ).should( 'have.attr', 'style', 'display: none' );
 		}
 	} );
-}
-
-/**
- * Checks the default of the monetization dropdown menu
- *
- * @param {String} defaultStatus This is the text that should appear in the dropdown menu in brackets next to "Default".
- */
-function checkMenuDefaultText( defaultStatus ) {
-	cy.get( '#monetization_dropdown' ).invoke( 'val' ).should( 'eq', 'default' );
-	cy.get( '#monetization_dropdown' ).find( 'option:selected' ).should( 'have.text', 'Default (' + defaultStatus + ')' );
 }

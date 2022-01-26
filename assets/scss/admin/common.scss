@@ -3,7 +3,6 @@
 }
 
 .coil {
-
 	&.plugin-header {
 		margin-bottom: 20px;
 	}
@@ -15,7 +14,6 @@
 		box-shadow: 0 2px 30px $shadow;
 		color: $black;
 		margin: 20px auto 80px;
-		max-width: 692px;
 		text-align: left;
 		width: calc(100% - 20px);
 
@@ -88,12 +86,14 @@
 	.coil-welcome-notice,
 	.coil-no-payment-pointer-notice {
 		align-items: center;
-		border-left-width: 1px; // Core notice style override.
+		border-left: 4px solid #ee8249;
+		border-radius: 3px;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: nowrap;
 		margin-bottom: 20px;
 		margin-top: 20px;
+		max-width: calc( 820px - 3px );
 		padding: 20px;
 	}
 
@@ -118,58 +118,207 @@
 	}
 
 	form {
-		float: left;
+		display: flex;
+		flex-direction: row-reverse;
+		justify-content: start;
 
-		width: 70%;
-	}
+		.settings-main {
+			max-width: 790px;
+			width: 100%;
 
-	.tab-styling {
-		background: #fff;
-		border: 1px solid #d5d5d5;
-		border-radius: 4px;
-		margin-bottom: 20px;
-		padding: 15px;
-		width: 70%;
-	}
-
-	.settings-sidebar {
-		background: #fff;
-		border: 1px solid #d5d5d5;
-		border-radius: 4px;
-		display: block;
-		float: right;
-
-		width: 25%;
-
-		header {
-
-			border-bottom: 1px solid #dedede;
-			margin-bottom: 0;
-			padding: 15px;
-
-			svg {
-				float: left;
-				margin-right: 6px;
-				margin-top: -2px;
+			&.has-sidebar {
+				max-width: 580px;
+				width: 70%;
 			}
 
-			h3 {
-				margin: 0;
+			.tab-styling {
+				background: #fff;
+				border: 1px solid #d5d5d5;
+				border-radius: 4px;
+				margin-bottom: 20px;
+				padding: 15px;
+
+				h3 {
+					font-size: 17px;
+					margin-top: 0;
+				}
+
+				h4 {
+					font-size: 14px;
+					margin: 15px 0 10px;
+				}
+
+				.coil-radio-group {
+					align-items: center;
+					display: flex;
+					flex-direction: row;
+
+					label {
+						align-items: center;
+						display: flex;
+						padding-right: 10px;
+					}
+
+					label:first-child {
+						margin-left: 0;
+					}
+				}
+
+				.coil-preview {
+					align-items: center;
+					background: #f1f1f1;
+					border: 1px solid #ccc;
+					border-radius: 3px;
+					display: flex;
+					height: calc( 100% - 80px );
+					justify-content: center;
+					min-height: 350px;
+					padding: 15px;
+
+					.coil-title-preview-container {
+						display: flex;
+						flex-direction: column;
+						width: 156px;
+
+						.coil-title-preview-row {
+							align-items: center;
+							display: flex;
+							flex-direction: row;
+							margin-bottom: 4px;
+
+							.coil-padlock-icon {
+								display: flex;
+							}
+
+							.coil-title-preview-bar {
+								background: #c4c4c4;
+								border-radius: 3px;
+								&.title {
+									height: 17px;
+									justify-self: flex-end;
+									margin-left: 6px;
+									width: 100%;
+								}
+
+								&.sub-title {
+									height: 7px;
+									margin-bottom: 8px;
+								}
+
+								&.body {
+									height: 9px;
+								}
+							}
+						}
+					}
+
+					.coil-paywall-container {
+						background: #fff;
+						border: 1px solid #ccc;
+						border-radius: 6px;
+						box-sizing: border-box;
+						padding: 15px;
+						text-align: center;
+
+						&[data-theme='dark'] {
+							background: #444;
+
+							h3, p {
+								color: #fff;
+							}
+
+							a {
+								background: #fff;
+								color: #444;
+							}
+						}
+
+						/**
+						** TODO: Update this by cleaning it up according to the available fonts etc
+						**/
+						.coil-paywall-image {
+							max-width: 120px;
+
+							&.no_logo {
+								display: none;
+							}
+						}
+
+						.coil-paywall-heading {
+							font-size: 24px;
+							font-style: normal;
+							font-weight: 600;
+							line-height: 29px;
+							margin-bottom: 0;
+							text-align: center;
+						}
+
+						.coil-paywall-body {
+							color: #32373c;
+							font-size: 13px;
+							font-style: normal;
+							font-weight: 400;
+							line-height: 16px;
+							text-align: center;
+						}
+
+						.coil-paywall-cta {
+							background: #000;
+							border-radius: 3px;
+							color: #fff;
+							display: block;
+							margin: auto;
+							margin-top: 15px;
+							padding: 12px;
+							width: 164px;
+						}
+					}
+				}
 			}
 		}
-		section {
 
-			padding: 15px;
+		.settings-sidebar {
+			border-radius: 4px;
+			margin-left: 30px;
+			max-width: 30%;
 
-			ul {
+			.settings-sidebar-body {
+				background: #fff;
+				border: 1px solid #d5d5d5;
+				border-radius: 3px;
 
-				list-style: disc;
-				margin-left: 20px;
-				margin-top: 0;
+				header {
+					border-bottom: 1px solid #dedede;
+					margin-bottom: 0;
+					padding: 15px;
 
-				a {
-					text-decoration: none;
+					svg {
+						float: left;
+						margin-right: 6px;
+						margin-top: -2px;
+					}
+
+					h3 {
+						font-size: 15px;
+						margin: 0;
+					}
 				}
+
+				section {
+					padding: 15px;
+
+					ul {
+
+						list-style: disc;
+						margin-left: 20px;
+						margin-top: 0;
+
+						a {
+							text-decoration: none;
+						}
+					}
+				}
+
 			}
 		}
 	}
@@ -178,6 +327,7 @@
 		max-width: 660px;
 	}
 
+	select,
 	input[type='text'],
 	textarea {
 
@@ -188,8 +338,71 @@
 		width: 90%;
 	}
 
+	input[type='radio'] {
+		margin: 0;
+		margin-right: 5px;
+	}
+
 	textarea {
 		min-height: 90px;
+	}
+
+	label.coil-clear-left {
+		clear: left;
+		display: block;
+		margin-top: 15px;
+	}
+
+	label.coil-checkbox {
+		display: block;
+		float: right;
+		height: 20px;
+		margin-left: -35px;
+		margin-top: -35px;
+		width: 95px;
+	}
+
+	label.coil-checkbox input {
+		display: none;
+	}
+
+	label.coil-checkbox span {
+		background: #c1c5cd;
+		border-radius: 25px;
+		display: block;
+		float: right;
+		height: 20px;
+		position: relative;
+		width: 35px;
+	}
+
+	label.coil-checkbox input + span::after {
+		background: #fff;
+		border-radius: 18px;
+		content: '';
+		display: block;
+		height: 16px;
+		left: 2px;
+		position: absolute;
+		top: 2px;
+		width: 16px;
+	}
+
+	label.coil-checkbox input:checked + span {
+		background: #4fa3d5;
+	}
+
+	label.coil-checkbox input:checked + span::after {
+		left: unset;
+		right: 2px;
+	}
+
+	label.coil-checkbox input + span + i::before {
+		content: 'Disabled';
+	}
+
+	label.coil-checkbox input:checked + span + i::before {
+		content: 'Enabled';
 	}
 
 	@media only screen and (max-width: $message_mobile_breakpoint) {
