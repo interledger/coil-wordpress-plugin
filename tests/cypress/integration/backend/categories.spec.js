@@ -1,6 +1,6 @@
 /**
- * Site setting / option tests.
- */
+ * Setting the Coil status on a category.
+*/
 
 describe( 'Category Settings', function() {
 	beforeEach( () => {

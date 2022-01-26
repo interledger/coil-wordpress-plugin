@@ -1,3 +1,7 @@
+/**
+ * Exclusive post settings.
+*/
+
 describe( 'Exclusive post appearance test', () => {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );

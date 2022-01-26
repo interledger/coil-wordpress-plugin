@@ -1,6 +1,6 @@
 /**
- * Site setting / option tests.
- */
+ * Welcome settings tab.
+*/
 
 describe( 'Plugin Settings Panel', function() {
 	beforeEach( () => {

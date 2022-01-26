@@ -1,3 +1,7 @@
+/**
+ * Coil menu in the post editor.
+*/
+
 describe( 'Tests for visibility settings in editor', () => {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
