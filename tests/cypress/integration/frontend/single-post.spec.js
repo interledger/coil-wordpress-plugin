@@ -51,6 +51,12 @@ describe( 'Single Posts', function() {
 
 		cy.visit( '/coil-members-only/' );
 
+		// Post should be public
+		cy
+			.get( 'body' )
+			.should( 'have.class', 'coil-public' )
+			.should( 'have.class', 'coil-monetized' );
+
 		// Content should be visible.
 		cy
 			.contains( 'This is a test post for the Coil Members Only state.' )
