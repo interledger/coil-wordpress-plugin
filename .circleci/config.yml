@@ -86,7 +86,7 @@ jobs:
           name: Installing WordPress
           command: |
               apt install -y libzip-dev zip && docker-php-ext-install zip
-              wp core download --allow-root
+              wp core download --version=5.8 --allow-root
               mv /coil-wordpress-plugin /var/www/html/wp-content/plugins
       - run:
           name: Adjusting the wp-config.php and vars.php files appropriately for the context
