@@ -17,10 +17,13 @@ describe( 'Exclusive content on / off toggle', () => {
 
 	it( 'Checks that exclusive settings are shown or hidden according to exclusive content setting', () => {
 		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );
+
+		// By default exclusive content is enabled.
 		cy
 			.get( '.exclusive-content' )
 			.should( 'be.visible' );
 
+		// Disable exclusive content and check that the other exclusive content settings are hidden.
 		cy
 			.get( '.coil-checkbox' )
 			.click();
@@ -29,6 +32,7 @@ describe( 'Exclusive content on / off toggle', () => {
 			.get( '.exclusive-content' )
 			.should( 'not.be.visible' );
 
+		// Enabling exclusive content should reveal the other exclusive content settings.
 		cy
 			.get( '.coil-checkbox' )
 			.click();

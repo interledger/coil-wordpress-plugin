@@ -42,4 +42,27 @@ describe( 'Single Posts', function() {
 		// "This content is for members only".
 		cy.get( '.coil-message-container' ).should( 'be.visible' );
 	} );
+
+	it( 'check that content is visible when exclusive content has been disabled.', function() {
+		// Ensure exclusive content is disabled
+		const optionString = 'a:1:{s:21:\\\"coil_exclusive_toggle\\\";b:0;}';
+		cy.exec( 'wp db query \'DELETE FROM wp_options WHERE option_name IN ("coil_exclusive_settings_group");\' --allow-root' );
+		cy.exec( 'wp db query \'INSERT INTO wp_options (option_name, option_value) VALUES ( \"coil_exclusive_settings_group\", \"' + optionString + '\");\' --allow-root' );
+
+		cy.visit( '/coil-members-only/' );
+
+		// Content should be visible.
+		cy
+			.contains( 'This is a test post for the Coil Members Only state.' )
+			.should( 'be.visible' );
+
+		cy
+			.get( '.coil-message-inner' )
+			.should( 'not.exist' );
+
+		// Promotion bar should be visible.
+		cy
+			.get( '.banner-message-inner' )
+			.should( 'be.visible' );
+	} );
 } );

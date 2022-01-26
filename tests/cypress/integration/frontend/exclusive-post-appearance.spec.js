@@ -20,6 +20,20 @@ describe( 'Exclusive post appearance test', () => {
 			.get( '.entry-title > .emoji' )
 			.should( 'exist' );
 	} );
+
+	it( 'check that no padlock is added when exclusive content has been disabled.', function() {
+		// Ensure exclusive content is disabled and the padlock display is enabled
+		const optionString = 'a:2:{s:21:\\\"coil_exclusive_toggle\\\";b:0;s:18:\\\"coil_title_padlock\\\";b:1;}';
+		cy.exec( 'wp db query \'DELETE FROM wp_options WHERE option_name IN ("coil_exclusive_settings_group");\' --allow-root' );
+		cy.exec( 'wp db query \'INSERT INTO wp_options (option_name, option_value) VALUES ( \"coil_exclusive_settings_group\", \"' + optionString + '\");\' --allow-root' );
+
+		cy.visit( '/coil-members-only/' );
+
+		// Even though the padlock is enabled it should not be displayed.
+		cy
+			.get( '.entry-title > .emoji' )
+			.should( 'not.exist' );
+	} );
 } );
 
 /**
