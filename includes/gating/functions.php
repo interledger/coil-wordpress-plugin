@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace Coil\Gating;
 
 use Coil\Admin;
+use Coil\Settings;
 
 /**
  * Register post/user meta.
@@ -121,11 +122,12 @@ function get_valid_visibility_types() {
  */
 function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 
+
 	// If no explicit post ID passed, try to grab implicit one
 	$id = ( empty( $id ) ? get_the_ID() : $id );
 
 	// No post ID found. Assume no padlock.
-	if ( empty( $id ) ) {
+	if ( empty( $id ) || ( !is_single() && !is_archive() ) ) {
 		return $title;
 	}
 
@@ -133,24 +135,29 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 		return $title;
 	}
 
+
 	$status = get_content_status( $id, 'visibility' );
 	if ( $status !== 'exclusive' ) {
 		return $title;
 	}
 
+	$padlock_icon_styles = Settings\get_padlock_icon_styles();
+	$padlock_icon = Admin\get_exlusive_post_setting( 'coil_padlock_icon_style', 'lock' );
 	$padlock_location = Admin\get_exlusive_post_setting( 'coil_padlock_icon_position' );
 
 	if ( $padlock_location === 'after' ) {
 		$post_title = sprintf(
 			/* translators: %s: Gated post title. */
-			__( '%s 🔒', 'coil-web-monetization' ),
-			$title
+			__( '%s %s', 'coil-web-monetization' ),
+			$title,
+			$padlock_icon_styles[$padlock_icon],
 		);
 	} else {
 		$post_title = sprintf(
 			/* translators: %s: Gated post title. */
-			__( '🔒 %s', 'coil-web-monetization' ),
-			$title
+			__( '%s %s', 'coil-web-monetization' ),
+			$padlock_icon_styles[$padlock_icon],
+			$title,
 		);
 	}
 

@@ -479,7 +479,7 @@ function get_padlock_title_icon_position_options() {
  */
 function get_padlock_title_icon_style_options() {
 
-	$icon_styles = [ 'lock', 'coin_icon', 'bonus', 'exclusive' ];
+	$icon_styles = [ 'lock', 'coil_icon', 'bonus', 'exclusive' ];
 
 	return $icon_styles;
 }
