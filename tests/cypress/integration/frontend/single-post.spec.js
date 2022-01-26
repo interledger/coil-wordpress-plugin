@@ -51,7 +51,7 @@ describe( 'Single Posts', function() {
 
 		cy.visit( '/coil-members-only/' );
 
-		// Post should be public
+		// Post should be monetized and public.
 		cy
 			.get( 'body' )
 			.should( 'have.class', 'coil-public' )
