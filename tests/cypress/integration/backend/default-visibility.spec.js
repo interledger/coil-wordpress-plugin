@@ -1,3 +1,7 @@
+/**
+ * Setting default visibility statuses.
+*/
+
 describe( 'Default  visibility settings for pages and posts', () => {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );

@@ -1,6 +1,6 @@
 /**
- * Site setting / option tests.
- */
+ * Payment pointer tests.
+*/
 
 describe( 'Plugin Settings Panel', function() {
 	beforeEach( () => {

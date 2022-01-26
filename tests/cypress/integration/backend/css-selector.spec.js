@@ -1,6 +1,6 @@
 /**
- * Site setting / option tests.
- */
+ * CSS selector tests.
+*/
 
 describe( 'Plugin Settings Panel', function() {
 	beforeEach( () => {
