@@ -193,6 +193,7 @@
 							.coil-title-preview-bar {
 								background: #c4c4c4;
 								border-radius: 3px;
+
 								&.title {
 									height: 17px;
 									justify-self: flex-end;
@@ -207,6 +208,20 @@
 
 								&.body {
 									height: 9px;
+								}
+							}
+						}
+
+						&[data-padlock-position='after'] {
+							.coil-title-preview-row {
+								&.coil-title-padlock-row {
+									flex-direction: row-reverse;
+									.coil-title-preview-bar {
+										&.title {
+											margin-left: 0;
+											margin-right: 6px;
+										}
+									}
 								}
 							}
 						}
