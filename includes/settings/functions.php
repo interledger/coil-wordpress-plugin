@@ -791,8 +791,8 @@ function coil_settings_exclusive_post_render_callback() {
 			<div class="coil-column-5">
 				<?php echo '<h4>' . esc_html__( 'Preview', 'coil-web-monetization' ) . '</h4>'; ?>
 				<div class="coil-preview">
-					<div class="coil-title-preview-container">
-						<div class="coil-title-preview-row">
+					<div class="coil-title-preview-container"  data-padlock-position="<?php echo esc_attr( Admin\get_exlusive_post_setting( 'coil_padlock_icon_position' ) ); ?>">
+						<div class="coil-title-preview-row coil-title-padlock-row">
 							<span class="coil-padlock-icon">
 								<?php echo $padlock_icon_styles[ $padlock_icon ]; ?>
 							</span>
