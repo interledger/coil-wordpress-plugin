@@ -1,3 +1,7 @@
+/**
+ * Excerpt display settings.
+*/
+
 describe( 'Excerpt behaviour for posts', () => {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );

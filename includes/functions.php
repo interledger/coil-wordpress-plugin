@@ -276,8 +276,10 @@ function load_messaging_assets() : void {
  */
 function load_plugin_templates() : void {
 
-	require_once plugin_dir_path( __FILE__ ) . '../templates/messages/subscriber-only-message.php';
-	require_once plugin_dir_path( __FILE__ ) . '../templates/messages/split-content-message.php';
+	if ( Admin\is_exclusive_content_enabled() ) {
+		require_once plugin_dir_path( __FILE__ ) . '../templates/messages/subscriber-only-message.php';
+		require_once plugin_dir_path( __FILE__ ) . '../templates/messages/split-content-message.php';
+	}
 	require_once plugin_dir_path( __FILE__ ) . '../templates/messages/banner-message.php';
 }
 
@@ -294,23 +296,31 @@ function add_body_class( $classes ) : array {
 		return $classes;
 	}
 
-	$payment_pointer_id = Admin\get_payment_pointer_setting();
+	$payment_pointer_id        = Admin\get_payment_pointer_setting();
+	$exclusive_content_enabled = Admin\is_exclusive_content_enabled();
 
 	// Transfer old post meta into new format
 	Transfers\update_post_meta( get_queried_object_id() );
 
-	// If content is not monetized then the coil-exclusive class cannot be added to the content.
+	// If content is not monetized, or exclusive content has been disabled,
+	// then the coil-exclusive class cannot be added to the content.
 	// This is an additional check to ensure that the incompatible not-monetized and exclusive state cannot be reached.
 	if ( Gating\is_content_monetized( get_queried_object_id() ) ) {
 		$classes[] = 'monetization-not-initialized';
 
 		$coil_monetization_status = Gating\get_content_status( get_queried_object_id(), 'monetization' );
 		$classes[]                = sanitize_html_class( 'coil-' . $coil_monetization_status );
-		$coil_visibility_status   = Gating\get_content_status( get_queried_object_id(), 'visibility' );
-		$classes[]                = sanitize_html_class( 'coil-' . $coil_visibility_status );
+		if ( ! $exclusive_content_enabled ) {
+			$coil_visibility_status = 'public';
+		} else {
+			$coil_visibility_status = Gating\get_content_status( get_queried_object_id(), 'visibility' );
+		}
+		$classes[] = sanitize_html_class( 'coil-' . $coil_visibility_status );
 
 		if ( ! empty( $payment_pointer_id ) ) {
-			$classes[] = ( Gating\is_excerpt_visible( get_queried_object_id() ) ) ? 'coil-show-excerpt' : 'coil-hide-excerpt';
+			if ( $exclusive_content_enabled ) {
+				$classes[] = ( Gating\is_excerpt_visible( get_queried_object_id() ) ) ? 'coil-show-excerpt' : 'coil-hide-excerpt';
+			}
 		} else {
 			// Error: payment pointer ID is missing.
 			$classes[] = 'coil-missing-id';

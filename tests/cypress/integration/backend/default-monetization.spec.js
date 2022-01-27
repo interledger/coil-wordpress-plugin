@@ -1,3 +1,7 @@
+/**
+ * Setting default monetization statuses.
+*/
+
 describe( 'Default monetization settings for pages and posts', () => {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );

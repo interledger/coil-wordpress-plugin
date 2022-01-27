@@ -1,3 +1,7 @@
+/**
+ * Setting split content blocks in the editor.
+*/
+
 describe( 'Tests for block-level visibility settings in the editor', () => {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );

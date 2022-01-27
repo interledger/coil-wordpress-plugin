@@ -44,39 +44,17 @@ Cypress.Commands.add( 'logInToWordPress', ( username, password ) => {
  * Mock and start a (fake) web monetization session.
  */
 Cypress.Commands.add( 'startWebMonetization', () => {
-	cy.window().then( ( window ) => {
-		startMonetization( window );
-
+	cy.window().then( window => {
+		window.Cypress.monetized = true;
+	} ).then( () => {
+		cy.reload();
+		cy.wait( 500 ); // Ensure the bootstrap function has add the event listener
+	} ).then( () => {
 		cy
-			.reload()
-			.then( () => {
-				startMonetization( window );
-			} );
+			.document()
+			.trigger( 'coilstart' );
 	} );
 } );
-
-/**
- * Mock and start a (fake) web monetization session.
- *
- * @param {object} window that is simulating the browser
- */
-function startMonetization( window ) {
-	const doc = window.document;
-
-	// Shim the Web Monetization API: https://webmonetization.org/specification.html
-	if ( ! doc.monetization ) {
-		doc.monetization = doc.createElement( 'div' );
-	}
-	doc.monetization.state = 'started';
-
-	// Re-init Coil.
-	doc.dispatchEvent( new Event( 'coilstart' ) );
-
-	window.Cypress.monetized = true;
-
-	// Trigger the "user has paid $$$" event.
-	doc.monetization.dispatchEvent( new Event( 'monetizationstart' ) );
-}
 
 /**
  * Stops fake monetization session. Must be ran after you are done testing
@@ -84,11 +62,7 @@ function startMonetization( window ) {
  */
 Cypress.Commands.add( 'stopWebMonetization', () => {
 	cy.window().then( window => {
-		const doc = window.document;
-		doc.monetization.state = 'stopped';
 		window.Cypress.monetized = false;
-		// Re-init Coil.
-		doc.dispatchEvent( new Event( 'coilstart' ) );
 	} );
 } );
 

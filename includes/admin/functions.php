@@ -373,6 +373,17 @@ function get_exclusive_settings(): array {
 }
 
 /**
+ * Retrieve the exclusive content toggle setting
+ *
+ * @return bool setting stored in options
+ */
+function is_exclusive_content_enabled() {
+	$exclusive_options   = get_exclusive_settings();
+	$exclusive_toggle_id = 'coil_exclusive_toggle';
+	return isset( $exclusive_options[ $exclusive_toggle_id ] ) ? $exclusive_options[ $exclusive_toggle_id ] : false;
+}
+
+/**
  * Retrieve the paywall text field defaults
  * This includes the title, message, button text and button link
  *

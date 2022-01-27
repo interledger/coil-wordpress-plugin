@@ -58,6 +58,44 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Testing if the exclusive content on / off toggle defaults to true.
+	 *
+	 * @return void
+	 */
+	public function test_if_default_exclusive_content_is_true() {
+
+		$exclusive_content_enabled = Admin\is_exclusive_content_enabled();
+
+		$this->assertSame( true, $exclusive_content_enabled );
+	}
+
+	/**
+	 * Testing if the exclusive content on / off toggle setting is retrieved successfully.
+	 *
+	 * @return void
+	 */
+	public function test_if_default_exclusive_content_toggle_is_retrieved_successfully() {
+
+		// Ensuring exclusive content has been disabled
+		$settings                          = get_option( 'coil_exclusive_settings_group', [] );
+		$settings['coil_exclusive_toggle'] = false;
+		update_option( 'coil_exclusive_settings_group', $settings );
+
+		$exclusive_content_enabled = Admin\is_exclusive_content_enabled();
+
+		$this->assertSame( false, $exclusive_content_enabled );
+
+		// Ensuring exclusive content has been enabled
+		$settings                          = get_option( 'coil_exclusive_settings_group', [] );
+		$settings['coil_exclusive_toggle'] = true;
+		update_option( 'coil_exclusive_settings_group', $settings );
+
+		$exclusive_content_enabled = Admin\is_exclusive_content_enabled();
+
+		$this->assertSame( true, $exclusive_content_enabled );
+	}
+
+	/**
 	 * Check that message defaults can be retrieved successfully.
 	 *
 	 * @return void
