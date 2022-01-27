@@ -126,7 +126,12 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 	$id = ( empty( $id ) ? get_the_ID() : $id );
 
 	// No post ID found. Assume no padlock.
-	if ( empty( $id ) || ( ! is_single() && ! is_archive() ) ) {
+	if ( empty( $id ) ) {
+		return $title;
+	}
+
+	// Do not show the padlock on the menu items
+	if( !in_the_loop() && !is_singular() ){
 		return $title;
 	}
 
