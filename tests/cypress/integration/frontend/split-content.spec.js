@@ -2,6 +2,8 @@
  * Viewing split content.
 */
 
+const paywallMessage = 'We partnered with Coil to offer exclusive content. Access this and other great content with a Coil membership';
+
 describe( 'Visibility of content blocks for WM-enabled users', () => {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
@@ -62,6 +64,45 @@ describe( 'Visibility of content blocks for non WM-enabled users', () => {
 	it( 'Check visibility of content blocks hidden from WM-enabled users', () => {
 		cy
 			.contains( 'This block is hidden for Coil members.' )
+			.should( 'not.contain', paywallMessage )
+			.should( 'be.visible' );
+	} );
+
+	it( 'Check visibility of split content when exclusive content has been disabled', () => {
+		// Ensure exclusive content is disabled
+		const optionString = 'a:1:{s:21:\\\"coil_exclusive_toggle\\\";b:0;}';
+		cy.exec( 'wp db query \'DELETE FROM wp_options WHERE option_name IN ("coil_exclusive_settings_group");\' --allow-root' );
+		cy.exec( 'wp db query \'INSERT INTO wp_options (option_name, option_value) VALUES ( \"coil_exclusive_settings_group\", \"' + optionString + '\");\' --allow-root' );
+		cy.reload();
+
+		// Post should be monetized and public.
+		cy
+			.get( 'body' )
+			.should( 'have.class', 'coil-public' )
+			.should( 'have.class', 'coil-monetized' );
+
+		// All block should be visible
+		cy
+			.contains( 'This block is only visible to Coil members.' )
+			.should( 'be.visible' );
+
+		cy
+			.contains( 'This block is public.' )
+			.should( 'not.contain', paywallMessage )
+			.should( 'be.visible' );
+
+		cy
+			.contains( 'This block is hidden for Coil members.' )
+			.should( 'be.visible' );
+
+		// Paywall should not exist
+		cy
+			.get( '.coil-split-content-message' )
+			.should( 'not.exist' );
+
+		// Promotion bar should be visible.
+		cy
+			.get( '.banner-message-inner' )
 			.should( 'be.visible' );
 	} );
 } );

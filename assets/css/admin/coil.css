@@ -197,6 +197,8 @@
             margin-top: 15px;
             padding: 12px;
             width: 164px; }
+    .coil form .settings-main .exclusive-content {
+      display: none; }
   .coil form .settings-sidebar {
     border-radius: 4px;
     margin-left: 30px;

@@ -134,7 +134,7 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 	}
 
 	$status = get_content_status( $id, 'visibility' );
-	if ( $status !== 'exclusive' ) {
+	if ( $status !== 'exclusive' || ! Admin\is_exclusive_content_enabled() ) {
 		return $title;
 	}
 
@@ -169,6 +169,11 @@ function maybe_restrict_content( string $content ) : string {
 
 	// Plugins can call the `the_content` filter outside of the post loop.
 	if ( is_singular() || ! get_the_ID() ) {
+		return $content;
+	}
+
+	// If exclusive content has been disabled then nothing will be restricted
+	if ( ! Admin\is_exclusive_content_enabled() ) {
 		return $content;
 	}
 
@@ -297,10 +302,11 @@ function get_taxonomy_term_status( $post_id, $meta_key ) {
 }
 
 /**
- * Return the single source of truth for post monetization & visibility
- * status based on the fallback options  * if the post status selection is 'default'.
- * E.g. If return value of each function is default, move onto the next function,
+ * Return the post monetization & visibility status
+ * based on the global defaults, taxonomies, and post metafields.
+ * If return value of each function is default, move onto the next function,
  * otherwise return immediately.
+ * Note: even if the content's visibility status is 'exclusive' this can still be disabled on a gloabl level.
  *
  * @param integer $post_id
  * @param string $status_type {'monetization' | 'visibility'}

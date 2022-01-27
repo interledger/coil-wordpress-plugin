@@ -33,6 +33,16 @@
 		} );
 	}
 
+	// Exclusive Content tab
+	if ( activeTabID === 'coil-exclusive-settings' ) {
+		const exclusiveContentEnabled = $( 'input[name="coil_exclusive_settings_group[coil_exclusive_toggle]"]' ).is( ':checked' );
+		if ( exclusiveContentEnabled ) {
+			$( '*.exclusive-content' ).show();
+		} else {
+			$( '*.exclusive-content' ).hide();
+		}
+	}
+
 	// No payment pointer
 	if ( activeTabID === 'coil-general-settings' ) {
 		const noPaymentPointerNotice = $( '.coil-no-payment-pointer-notice' );
@@ -45,6 +55,10 @@
 			}
 		}
 	}
+
+	$( document ).on( 'change', 'input[name="coil_exclusive_settings_group[coil_exclusive_toggle]"]', function() {
+		$( '.exclusive-content' ).toggle();
+	} );
 
 	$( document ).on( 'keyup', '#coil_paywall_title', function() {
 		if ( $( this ).val() !== '' ) {
