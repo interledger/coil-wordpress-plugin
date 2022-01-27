@@ -57,6 +57,8 @@ function maybe_load_database_defaults() {
 		$excerpt_display_settings = [];
 		$post_type_options        = Coil\get_supported_post_types( 'objects' );
 
+		$excerpt_display_settings['coil_exclusive_toggle'] = true;
+
 		// Set post visibility and excerpt display default for each post type
 		foreach ( $post_type_options as $post_type ) {
 			$post_visibility_settings[ $post_type->name . '_visibility' ] = $post_visibility_default;
