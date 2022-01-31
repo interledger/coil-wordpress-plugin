@@ -222,7 +222,7 @@ function coil_general_settings_group_validation( $general_settings ) : array {
 
 		// Ensures that a post cannot default to be Not Monetized and Exclusive
 		if ( $final_settings[ $monetization_setting_key ] === 'not-monetized' && isset( $exclusive_settings[ $visibility_setting_key ] ) && $exclusive_settings[ $visibility_setting_key ] === 'exclusive' ) {
-			$exclusive_settings [ $visibility_setting_key ] = 'public';
+			$exclusive_settings [ $visibility_setting_key ] = Admin\get_visibility_default();
 			update_option( 'coil_exclusive_settings_group', $exclusive_settings );
 		}
 	}
