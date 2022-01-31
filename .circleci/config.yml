@@ -117,7 +117,7 @@ jobs:
             bash install.sh
             groupadd --gid 1000 node && useradd --uid 1000 --gid node -G sudo --shell /bin/bash --create-home node
             cd /var/www/html/wp-content/plugins/coil-wordpress-plugin
-            source ~/.nvm/nvm.sh && nvm install 12 && nvm use 12 && nvm install-latest-npm && npm install cypress && npx cypress run --project ./tests --config baseUrl="http://127.0.0.1:80/" --record --key=$CYPRESS_PROJECT_KEY
+            source ~/.nvm/nvm.sh && nvm install 12 && nvm use 12 && nvm install npm@8.3.2 && npm install cypress && npx cypress run --project ./tests --config baseUrl="http://127.0.0.1:80/" --record --key=$CYPRESS_PROJECT_KEY
 workflows:
   version: 2
   test:
