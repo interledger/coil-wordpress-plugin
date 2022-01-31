@@ -142,7 +142,7 @@ function load_block_editor_assets() : void {
 	$monetization_default = isset( $monetization_settings[ get_current_screen()->post_type . '_monetization' ] ) ? $monetization_settings[ get_current_screen()->post_type . '_monetization' ] : 'default';
 	$visibility_settings  = get_option( 'coil_exclusive_settings_group' );
 	// If nothing has been saved in the wp_options table then visibility should default to public (In the menu visibility has no 'default' option).
-	$visibility_default = isset( $visibility_settings[ get_current_screen()->post_type . '_visibility' ] ) ? $visibility_settings[ get_current_screen()->post_type . '_visibility' ] : 'public';
+	$visibility_default = isset( $visibility_settings[ get_current_screen()->post_type . '_visibility' ] ) ? $visibility_settings[ get_current_screen()->post_type . '_visibility' ] : Admin\get_visibility_default();
 
 	wp_localize_script(
 		'coil-editor',
@@ -311,7 +311,7 @@ function add_body_class( $classes ) : array {
 		$coil_monetization_status = Gating\get_content_status( get_queried_object_id(), 'monetization' );
 		$classes[]                = sanitize_html_class( 'coil-' . $coil_monetization_status );
 		if ( ! $exclusive_content_enabled ) {
-			$coil_visibility_status = 'public';
+			$coil_visibility_status = Admin\get_visibility_default();
 		} else {
 			$coil_visibility_status = Gating\get_content_status( get_queried_object_id(), 'visibility' );
 		}

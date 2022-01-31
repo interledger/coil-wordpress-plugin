@@ -64,9 +64,16 @@ function maybe_save_term_meta( int $term_id, int $tt_id, $taxonomy ) : void {
 	check_admin_referer( 'coil_term_gating_nonce_action', 'term_gating_nonce' );
 
 	$term_monetization = sanitize_text_field( $_REQUEST['_coil_monetization_term_status'] ?? '' );
-	$term_visibity     = sanitize_text_field( $_REQUEST['_coil_visibility_term_status'] ?? '' );
 
-	if ( $term_monetization && $term_visibity ) {
+	if ( $term_monetization !== '' ) {
+		switch ( $term_monetization ) {
+			case 'monetized':
+				$term_visibity = sanitize_text_field( $_REQUEST['_coil_visibility_term_status'] ?? get_visibility_default() );
+				break;
+			default:
+				$term_visibity = get_visibility_default();
+				break;
+		}
 		Gating\set_term_status( $term_id, '_coil_monetization_term_status', $term_monetization );
 		Gating\set_term_status( $term_id, '_coil_visibility_term_status', $term_visibity );
 	} else {
