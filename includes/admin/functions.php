@@ -33,9 +33,16 @@ function maybe_save_post_metabox( int $post_id ) : void {
 	}
 
 	$post_monetization = sanitize_text_field( $_REQUEST['_coil_monetization_post_status'] ?? '' );
-	$post_visibility   = sanitize_text_field( $_REQUEST['_coil_visibility_post_status'] ?? '' );
 
-	if ( $post_monetization || $post_visibility ) {
+	if ( $post_monetization !== '' ) {
+		switch ( $post_monetization ) {
+			case 'monetized':
+				$post_visibility = sanitize_text_field( $_REQUEST['_coil_visibility_post_status'] ?? get_visibility_default() );
+				break;
+			default:
+				$post_visibility = get_visibility_default();
+				break;
+		}
 		Gating\set_post_status( $post_id, '_coil_monetization_post_status', $post_monetization );
 		Gating\set_post_status( $post_id, '_coil_visibility_post_status', $post_visibility );
 	} else {
