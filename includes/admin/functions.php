@@ -194,12 +194,16 @@ function load_admin_assets() : void {
 	$admin_params = apply_filters(
 		'coil_admin_js_params',
 		[
-			'ajax_url'      => admin_url( 'admin-ajax.php' ),
-			'site_logo_url' => ( ! empty( $site_logo ) ? $site_logo : false ),
-			'coil_logo_url' => [
+			'ajax_url'                 => admin_url( 'admin-ajax.php' ),
+			'site_logo_url'            => ( ! empty( $site_logo ) ? $site_logo : false ),
+			'coil_logo_url'            => [
 				'light' => plugin_dir_url( dirname( __DIR__ ) ) . 'assets/images/coil-icn-black.svg',
 				'dark'  => plugin_dir_url( dirname( __DIR__ ) ) . 'assets/images/coil-icn-white.svg',
 			],
+			'not_monetized_post_types' => get_post_types_with_status( 'monetization', 'not-monetized' ),
+			'exclusive_post_types'     => get_post_types_with_status( 'visibility', 'exclusive' ),
+			'general_modal_msg'        => __( 'Removing monetization from [...] will make them public.', 'coil-web-monetization' ),
+			'exclusive_modal_msg'      => __( 'Making [...] exclusive will also monetize them.', 'coil-web-monetization' ),
 		]
 	);
 
@@ -634,4 +638,44 @@ function get_coil_button_setting( $field_id ) {
 	}
 
 	return $value;
+}
+
+/**
+ * Create an array of the supported post types names.
+ *
+ * @return array
+ */
+function get_post_type_names() {
+	$post_types = Coil\get_supported_post_types( 'objects' );
+	$type_names = [];
+	foreach ( $post_types as $post_type ) {
+		array_push( $type_names, $post_type->name );
+	}
+	return $type_names;
+}
+
+/**
+ * Create an array that names all post types with a particular default status.
+ *
+ * @param string $status_type Either monetization or visibility status type
+ * @param string $status The Coil status being filtered for. E.g. 'exclusive'
+ * @return array
+ */
+function get_post_types_with_status( $status_type, $status ) {
+	$settings = [];
+	if ( $status_type === 'monetization' ) {
+		$settings = get_general_settings();
+	} elseif ( $status_type === 'visibility' ) {
+		$settings = get_exclusive_settings();
+	}
+
+	$possible_post_types   = get_post_type_names();
+	$applicable_post_types = [];
+	foreach ( $settings as $key => $value ) {
+		$id = str_replace( '_' . $status_type, '', $key );
+		if ( in_array( $id, $possible_post_types, true ) && $value === $status ) {
+			array_push( $applicable_post_types, $id );
+		}
+	}
+	return $applicable_post_types;
 }

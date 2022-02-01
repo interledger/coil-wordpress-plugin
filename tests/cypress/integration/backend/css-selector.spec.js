@@ -15,7 +15,7 @@ describe( 'Plugin Settings Panel', function() {
 			.click()
 			.clear();
 		cy.get( '#submit' ).click();
-		cy.get( '#coil_content_container' ).invoke( 'prop', 'validationMessage' ).should( 'equal', 'Please fill out this field.' );
+		cy.get( '#coil_content_container' ).invoke( 'prop', 'validationMessage' ).should( 'match', /Please fill ((in)|(out)) this field./ );
 		cy.get( '.notice-success' ).should( 'not.exist' );
 	} );
 
