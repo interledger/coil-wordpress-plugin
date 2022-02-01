@@ -57,7 +57,7 @@ function maybe_load_database_defaults() {
 		$excerpt_display_settings = [];
 		$post_type_options        = Coil\get_supported_post_types( 'objects' );
 
-		$excerpt_display_settings['coil_exclusive_toggle'] = true;
+		$exclusive_toggle_settings['coil_exclusive_toggle'] = Admin\get_exclusive_content_enabled_default();
 
 		// Set post visibility and excerpt display default for each post type
 		foreach ( $post_type_options as $post_type ) {
@@ -66,7 +66,7 @@ function maybe_load_database_defaults() {
 		}
 
 		// Merges all the sections together and updates the option group in the database.
-		$new_exclusive_settings = array_merge( $paywall_appearance_settings, $exclusive_post_settings, $post_visibility_settings, $excerpt_display_settings );
+		$new_exclusive_settings = array_merge( $paywall_appearance_settings, $exclusive_post_settings, $post_visibility_settings, $excerpt_display_settings, $exclusive_toggle_settings );
 		add_option( 'coil_exclusive_settings_group', $new_exclusive_settings );
 	}
 

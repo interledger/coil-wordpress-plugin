@@ -391,7 +391,16 @@ function get_exclusive_settings(): array {
 function is_exclusive_content_enabled() {
 	$exclusive_options   = get_exclusive_settings();
 	$exclusive_toggle_id = 'coil_exclusive_toggle';
-	return isset( $exclusive_options[ $exclusive_toggle_id ] ) ? $exclusive_options[ $exclusive_toggle_id ] : false;
+	return isset( $exclusive_options[ $exclusive_toggle_id ] ) ? $exclusive_options[ $exclusive_toggle_id ] : get_exclusive_content_enabled_default();
+}
+
+/**
+ * Provides the exclusive content toggle setting default
+ *
+ * @return bool The default is true
+ */
+function get_exclusive_content_enabled_default() {
+	return true;
 }
 
 /**
