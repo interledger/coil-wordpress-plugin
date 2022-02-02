@@ -354,7 +354,7 @@ function coil_button_settings_group_validation( $coil_button_settings ): array {
 	$checkbox_fields = [ 'coil_show_promotion_bar' ];
 
 	foreach ( $checkbox_fields as $field_name ) {
-		$final_settings[ $field_name ] = isset( $coil_button_settings[ $field_name ] ) ? true : false;
+		$final_settings[ $field_name ] = isset( $coil_button_settings[ $field_name ] ) && ( $coil_button_settings[ $field_name ] === 'on' || $coil_button_settings[ $field_name ] === true ) ? true : false;
 	}
 	return $final_settings;
 }
@@ -566,7 +566,7 @@ function coil_settings_enable_exclusive_toggle_render_callback() {
 				$checked_input = '';
 			}
 			echo sprintf(
-				'<label class="coil-checkbox" for="%1$s"><input type="%2$s" name="%3$s" id="%1$s"" %4$s /><span></span><i></i></label>',
+				'<label class="coil-checkbox" for="%1$s"><input type="%2$s" name="%3$s" id="%1$s" %4$s /><span></span><i></i></label>',
 				esc_attr( $exclusive_toggle_id ),
 				esc_attr( 'checkbox' ),
 				esc_attr( 'coil_exclusive_settings_group[' . $exclusive_toggle_id . ']' ),
