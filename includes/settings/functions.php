@@ -222,7 +222,7 @@ function coil_general_settings_group_validation( $general_settings ) : array {
 
 		// Ensures that a post cannot default to be Not Monetized and Exclusive
 		if ( $final_settings[ $monetization_setting_key ] === 'not-monetized' && isset( $exclusive_settings[ $visibility_setting_key ] ) && $exclusive_settings[ $visibility_setting_key ] === 'exclusive' ) {
-			$exclusive_settings [ $visibility_setting_key ] = 'public';
+			$exclusive_settings [ $visibility_setting_key ] = Admin\get_visibility_default();
 			update_option( 'coil_exclusive_settings_group', $exclusive_settings );
 		}
 	}
@@ -277,8 +277,7 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 
 		// Validates excerpt display settings
 		$excerpt_setting_key                    = $post_type->name . '_excerpt';
-		$final_settings[ $excerpt_setting_key ] = isset( $exclusive_settings[ $excerpt_setting_key ] ) ? true : false;
-
+		$final_settings[ $excerpt_setting_key ] = isset( $exclusive_settings[ $excerpt_setting_key ] ) && ( $exclusive_settings[ $excerpt_setting_key ] === 'on' || $exclusive_settings[ $excerpt_setting_key ] === true ) ? true : false;
 	}
 
 	// Validates all text input fields
@@ -333,13 +332,13 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 
 	// Validates all checkbox input fields
 	$checkbox_fields = [
-		'coil_message_font',
-		'coil_title_padlock',
-		'coil_exclusive_toggle',
+		'coil_message_font'     => Admin\get_paywall_appearance_defaults()['coil_message_font'],
+		'coil_title_padlock'    => Admin\get_exclusive_post_defaults()['coil_title_padlock'],
+		'coil_exclusive_toggle' => Admin\get_exclusive_content_enabled_default(),
 	];
 
-	foreach ( $checkbox_fields as $field_name ) {
-		$final_settings[ $field_name ] = isset( $exclusive_settings[ $field_name ] ) ? true : false;
+	foreach ( $checkbox_fields as $field_name => $field_default ) {
+		$final_settings[ $field_name ] = isset( $exclusive_settings[ $field_name ] ) && ( $exclusive_settings[ $field_name ] === 'on' || $exclusive_settings[ $field_name ] === true ) ? true : false;
 	}
 	return $final_settings;
 }
@@ -355,7 +354,7 @@ function coil_button_settings_group_validation( $coil_button_settings ): array {
 	$checkbox_fields = [ 'coil_show_promotion_bar' ];
 
 	foreach ( $checkbox_fields as $field_name ) {
-		$final_settings[ $field_name ] = isset( $coil_button_settings[ $field_name ] ) ? true : false;
+		$final_settings[ $field_name ] = isset( $coil_button_settings[ $field_name ] ) && ( $coil_button_settings[ $field_name ] === 'on' || $coil_button_settings[ $field_name ] === true ) ? true : false;
 	}
 	return $final_settings;
 }
@@ -567,11 +566,10 @@ function coil_settings_enable_exclusive_toggle_render_callback() {
 				$checked_input = '';
 			}
 			echo sprintf(
-				'<label class="coil-checkbox" for="%1$s"><input type="%2$s" name="%3$s" id="%1$s" value="%4$b" %5$s /><span></span><i></i></label>',
+				'<label class="coil-checkbox" for="%1$s"><input type="%2$s" name="%3$s" id="%1$s" %4$s /><span></span><i></i></label>',
 				esc_attr( $exclusive_toggle_id ),
 				esc_attr( 'checkbox' ),
 				esc_attr( 'coil_exclusive_settings_group[' . $exclusive_toggle_id . ']' ),
-				$value,
 				$checked_input
 			);
 			?>
@@ -768,13 +766,13 @@ function paywall_font_render_callback() {
 	}
 
 	echo sprintf(
-		'<label class="%6$s" for="%1$s"><input type="%3$s" name="%2$s" id="%1$s" %4$s /> <strong>%5$s</strong></label>',
+		'<label class="%1$s" for="%2$s"><input type="%3$s" name="%4$s" id="%2$s" %5$s /> <strong>%6$s</strong></label>',
+		esc_attr( 'coil-clear-left' ),
 		esc_attr( $font_input_id ),
-		esc_attr( 'coil_exclusive_settings_group[' . $font_input_id . ']' ),
 		esc_attr( 'checkbox' ),
+		esc_attr( 'coil_exclusive_settings_group[' . $font_input_id . ']' ),
 		$checked_input,
-		esc_html( 'Use theme font styles', 'coil-web-monetization' ),
-		esc_attr( 'coil-clear-left' )
+		esc_html( 'Use theme font styles', 'coil-web-monetization' )
 	);
 }
 
@@ -850,7 +848,6 @@ function coil_settings_exclusive_post_render_callback() {
  * @return void
 */
 function coil_padlock_display_checkbox_render_callback() {
-
 	/**
 	* Specify the default checked state for the input from
 	* any settings stored in the database. If the
@@ -863,21 +860,19 @@ function coil_padlock_display_checkbox_render_callback() {
 	if ( $value === true ) {
 		$checked_input = 'checked="checked"';
 	} else {
-		$checked_input = false;
-		$value         = false;
+		$checked_input = '';
 	}
 
 	printf(
-		'<input type="%s" name="%s" id="%s" value=%b %s>',
+		'<input type="%1$s" name="%2$s" id="%3$s" %4$s>',
 		esc_attr( 'checkbox' ),
 		esc_attr( 'coil_exclusive_settings_group[' . $padlock_input_id . ']' ),
 		esc_attr( $padlock_input_id ),
-		esc_attr( $value ),
-		checked( $value, true, false )
+		$checked_input
 	);
 
 	printf(
-		'<label for="%s">%s</label>',
+		'<label for="%1$s">%2$s</label>',
 		esc_attr( $padlock_input_id ),
 		esc_html_e( 'Show padlock icon next to exclusive post titles.', 'coil-web-monetization' )
 	);
@@ -1287,23 +1282,31 @@ function render_generic_post_type_table( $settings_group, $column_names, $input_
 							} elseif ( $input_type === 'checkbox' ) {
 								if ( isset( $current_options[ $post_type->name . '_' . $value_id_suffix ] ) && $current_options[ $post_type->name . '_' . $value_id_suffix ] === true ) {
 									$checked_input = 'checked="true"';
-									$setting_key   = true;
 								} else {
-									$checked_input = false;
-									$setting_key   = false;
+									$checked_input = '';
 								}
 							}
 							?>
 							<td>
 								<?php
-								printf(
-									'<input type="%s" name="%s" id="%s" value="%s"%s />',
-									esc_attr( $input_type ),
-									esc_attr( $input_name ),
-									esc_attr( $input_id ),
-									esc_attr( $setting_key ),
-									$checked_input
-								);
+								if ( $input_type === 'checkbox' ) {
+									printf(
+										'<input type="%s" name="%s" id="%s" %s />',
+										esc_attr( $input_type ),
+										esc_attr( $input_name ),
+										esc_attr( $input_id ),
+										$checked_input
+									);
+								} else {
+									printf(
+										'<input type="%s" name="%s" id="%s" value="%s"%s />',
+										esc_attr( $input_type ),
+										esc_attr( $input_name ),
+										esc_attr( $input_id ),
+										esc_attr( $setting_key ),
+										$checked_input
+									);
+								}
 								?>
 							</td>
 							<?php

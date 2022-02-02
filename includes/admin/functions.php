@@ -33,9 +33,16 @@ function maybe_save_post_metabox( int $post_id ) : void {
 	}
 
 	$post_monetization = sanitize_text_field( $_REQUEST['_coil_monetization_post_status'] ?? '' );
-	$post_visibility   = sanitize_text_field( $_REQUEST['_coil_visibility_post_status'] ?? '' );
 
-	if ( $post_monetization || $post_visibility ) {
+	if ( $post_monetization !== '' ) {
+		switch ( $post_monetization ) {
+			case 'monetized':
+				$post_visibility = sanitize_text_field( $_REQUEST['_coil_visibility_post_status'] ?? get_visibility_default() );
+				break;
+			default:
+				$post_visibility = get_visibility_default();
+				break;
+		}
 		Gating\set_post_status( $post_id, '_coil_monetization_post_status', $post_monetization );
 		Gating\set_post_status( $post_id, '_coil_visibility_post_status', $post_visibility );
 	} else {
@@ -64,9 +71,16 @@ function maybe_save_term_meta( int $term_id, int $tt_id, $taxonomy ) : void {
 	check_admin_referer( 'coil_term_gating_nonce_action', 'term_gating_nonce' );
 
 	$term_monetization = sanitize_text_field( $_REQUEST['_coil_monetization_term_status'] ?? '' );
-	$term_visibity     = sanitize_text_field( $_REQUEST['_coil_visibility_term_status'] ?? '' );
 
-	if ( $term_monetization && $term_visibity ) {
+	if ( $term_monetization !== '' ) {
+		switch ( $term_monetization ) {
+			case 'monetized':
+				$term_visibity = sanitize_text_field( $_REQUEST['_coil_visibility_term_status'] ?? get_visibility_default() );
+				break;
+			default:
+				$term_visibity = get_visibility_default();
+				break;
+		}
 		Gating\set_term_status( $term_id, '_coil_monetization_term_status', $term_monetization );
 		Gating\set_term_status( $term_id, '_coil_visibility_term_status', $term_visibity );
 	} else {
@@ -362,10 +376,7 @@ function get_exclusive_settings(): array {
 	$defaults = [ 'coil_content_container' => '.content-area .entry-content' ];
 
 	$exclusive_options = get_option( 'coil_exclusive_settings_group', [] );
-	if ( empty( $exclusive_options ) ) {
-		$exclusive_options = [ 'coil_content_container' => '.content-area .entry-content' ];
-	}
-	if ( ! isset( $exclusive_options['coil_content_container'] ) ) {
+	if ( empty( $exclusive_options ) || ! isset( $exclusive_options['coil_content_container'] ) ) {
 		$exclusive_options['coil_content_container'] = $defaults['coil_content_container'];
 	}
 
@@ -380,7 +391,16 @@ function get_exclusive_settings(): array {
 function is_exclusive_content_enabled() {
 	$exclusive_options   = get_exclusive_settings();
 	$exclusive_toggle_id = 'coil_exclusive_toggle';
-	return isset( $exclusive_options[ $exclusive_toggle_id ] ) ? $exclusive_options[ $exclusive_toggle_id ] : false;
+	return isset( $exclusive_options[ $exclusive_toggle_id ] ) ? $exclusive_options[ $exclusive_toggle_id ] : get_exclusive_content_enabled_default();
+}
+
+/**
+ * Provides the exclusive content toggle setting default
+ *
+ * @return bool The default is true
+ */
+function get_exclusive_content_enabled_default() {
+	return true;
 }
 
 /**
