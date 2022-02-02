@@ -147,16 +147,16 @@
 					font-size: 14px;
 					margin: 15px 0 10px;
 				}
-				#coil_title_padlock:not(:checked) {
-				  	+ label {
+				#coil_title_padlock:not( :checked ) {
+					+ label {
 						+ #coil_icon_position_label {
-						  	display: none;
+							display: none;
 							+ .coil-radio-group {
 								display: none;
 								+ #coil_icon_position_style {
 									display: none;
 									+ .coil-radio-group {
-										  display: none;
+										display: none;
 									}
 								}
 							}
