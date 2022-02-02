@@ -376,10 +376,7 @@ function get_exclusive_settings(): array {
 	$defaults = [ 'coil_content_container' => '.content-area .entry-content' ];
 
 	$exclusive_options = get_option( 'coil_exclusive_settings_group', [] );
-	if ( empty( $exclusive_options ) ) {
-		$exclusive_options = [ 'coil_content_container' => '.content-area .entry-content' ];
-	}
-	if ( ! isset( $exclusive_options['coil_content_container'] ) ) {
+	if ( empty( $exclusive_options ) || ! isset( $exclusive_options['coil_content_container'] ) ) {
 		$exclusive_options['coil_content_container'] = $defaults['coil_content_container'];
 	}
 
@@ -394,7 +391,16 @@ function get_exclusive_settings(): array {
 function is_exclusive_content_enabled() {
 	$exclusive_options   = get_exclusive_settings();
 	$exclusive_toggle_id = 'coil_exclusive_toggle';
-	return isset( $exclusive_options[ $exclusive_toggle_id ] ) ? $exclusive_options[ $exclusive_toggle_id ] : false;
+	return isset( $exclusive_options[ $exclusive_toggle_id ] ) ? $exclusive_options[ $exclusive_toggle_id ] : get_exclusive_content_enabled_default();
+}
+
+/**
+ * Provides the exclusive content toggle setting default
+ *
+ * @return bool The default is true
+ */
+function get_exclusive_content_enabled_default() {
+	return true;
 }
 
 /**
