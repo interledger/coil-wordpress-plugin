@@ -147,7 +147,22 @@
 					font-size: 14px;
 					margin: 15px 0 10px;
 				}
-
+				#coil_title_padlock:not(:checked) {
+				  	+ label {
+						+ #coil_icon_position_label {
+						  	display: none;
+							+ .coil-radio-group {
+								display: none;
+								+ #coil_icon_position_style {
+									display: none;
+									+ .coil-radio-group {
+										  display: none;
+									}
+								}
+							}
+						}
+					}
+				}
 				.coil-radio-group {
 					align-items: center;
 					display: flex;
@@ -212,7 +227,7 @@
 							}
 						}
 
-						&[data-padlock-position='after'] {
+						&[data-padlock-icon-position='after'] {
 							.coil-title-preview-row {
 								&.coil-title-padlock-row {
 									flex-direction: row-reverse;

@@ -797,26 +797,25 @@ function coil_settings_exclusive_post_render_callback() {
 				<?php
 				// Renders the padlock display checkbox
 				echo '<h4>' . esc_html__( 'Title Icon', 'coil-web-monetization' ) . '</h4>';
-
 				coil_padlock_display_checkbox_render_callback();
 
 				// Renders the icon position radio buttons
-				echo '<h4>' . esc_html__( 'Icon Position', 'coil-web-monetization' ) . '</h4>';
-
+				echo '<h4 id="coil_icon_position_label">' . esc_html__( 'Icon Position', 'coil-web-monetization' ) . '</h4>';
 				coil_padlock_icon_position_checkbox_render_callback();
 
 				// Renders the icon style radio buttons
-				echo '<h4>' . esc_html__( 'Icon Style', 'coil-web-monetization' ) . '</h4>';
+				echo '<h4 id="coil_icon_position_style">' . esc_html__( 'Icon Style', 'coil-web-monetization' ) . '</h4>';
 				coil_padlock_icon_style_checkbox_render_callback();
 
-				$padlock_icon_styles = get_padlock_icon_styles();
-				$padlock_icon        = Admin\get_exlusive_post_setting( 'coil_padlock_icon_style', true );
+				$padlock_icon_styles  = get_padlock_icon_styles();
+				$padlock_icon         = Admin\get_exlusive_post_setting( 'coil_padlock_icon_style', true );
+				$padlock_icon_enabled = Admin\get_exlusive_post_setting( 'coil_title_padlock' )
 				?>
 			</div>
-			<div class="coil-column-5">
+			<div class="coil-column-5 <?php echo esc_attr( $padlock_icon_enabled ? '' : 'hidden' ); ?>">
 				<?php echo '<h4>' . esc_html__( 'Preview', 'coil-web-monetization' ) . '</h4>'; ?>
 				<div class="coil-preview">
-					<div class="coil-title-preview-container"  data-padlock-position="<?php echo esc_attr( Admin\get_exlusive_post_setting( 'coil_padlock_icon_position' ) ); ?>">
+					<div class="coil-title-preview-container" data-padlock-icon-position="<?php echo esc_attr( Admin\get_exlusive_post_setting( 'coil_padlock_icon_position' ) ); ?>">
 						<div class="coil-title-preview-row coil-title-padlock-row">
 							<span class="coil-padlock-icon">
 								<?php echo $padlock_icon_styles[ $padlock_icon ]; ?>
@@ -874,7 +873,7 @@ function coil_padlock_display_checkbox_render_callback() {
 		esc_attr( 'coil_exclusive_settings_group[' . $padlock_input_id . ']' ),
 		esc_attr( $padlock_input_id ),
 		esc_attr( $value ),
-		$checked_input
+		checked( $value, true, false )
 	);
 
 	printf(
