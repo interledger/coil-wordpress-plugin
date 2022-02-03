@@ -147,6 +147,7 @@
 					font-size: 14px;
 					margin: 15px 0 10px;
 				}
+
 				#coil_title_padlock:not( :checked ) {
 					+ label {
 						+ #coil_icon_position_label {
@@ -163,6 +164,7 @@
 						}
 					}
 				}
+
 				.coil-radio-group {
 					align-items: center;
 					display: flex;
