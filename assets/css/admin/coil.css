@@ -113,9 +113,9 @@
         display: none; }
         .coil form .settings-main .tab-styling #coil_title_padlock:not(:checked) + label + #coil_icon_position_label + .coil-radio-group {
           display: none; }
-          .coil form .settings-main .tab-styling #coil_title_padlock:not(:checked) + label + #coil_icon_position_label + .coil-radio-group + #coil_icon_position_style {
+          .coil form .settings-main .tab-styling #coil_title_padlock:not(:checked) + label + #coil_icon_position_label + .coil-radio-group + #coil_icon_style_label {
             display: none; }
-            .coil form .settings-main .tab-styling #coil_title_padlock:not(:checked) + label + #coil_icon_position_label + .coil-radio-group + #coil_icon_position_style + .coil-radio-group {
+            .coil form .settings-main .tab-styling #coil_title_padlock:not(:checked) + label + #coil_icon_position_label + .coil-radio-group + #coil_icon_style_label + .coil-radio-group {
               display: none; }
       .coil form .settings-main .tab-styling .coil-radio-group {
         align-items: center;
