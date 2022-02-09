@@ -133,6 +133,16 @@
 		}
 	} );
 
+	$( document ).on( 'change', 'input[name="coil_exclusive_settings_group[coil_title_padlock]"]', function() {
+		$( this ).closest( '.coil-row' ).find( '.coil-column-5' ).toggleClass( 'hidden' );
+	} );
+
+	$( document ).on( 'change', 'input[name="coil_exclusive_settings_group[coil_padlock_icon_position]"]', function() {
+		const padlockPosition = $( this ).val();
+
+		$( '.coil-title-preview-container' ).attr( 'data-padlock-icon-position', padlockPosition );
+	} );
+
 	$( document ).on( 'change', 'input[name="coil_exclusive_settings_group[coil_message_color_theme]"]', function() {
 		const coilTheme = $( this ).val(),
 			logoSetting = $( '#coil_branding' ).val();

@@ -8,20 +8,21 @@ describe( 'Exclusive post appearance test', () => {
 		cy.resetSite();
 	} );
 
-	it( 'Checks if a padlock appears when enabled', () => {
+	it( 'Checks padlock settings', () => {
+		// Padlock should not display when disabled
 		togglePadlock( 'uncheck' );
 
 		cy.visit( '/coil-members-only/' );
 		cy
-			.get( '.entry-title > .emoji' )
+			.get( '.entry-title > svg' )
 			.should( 'not.exist' );
 
+		// Padlock should display when enabled
 		togglePadlock( 'check' );
 
-		// This test works in Circle CI where it recognizes the emoji but not always when run locally.
 		cy.visit( '/coil-members-only/' );
 		cy
-			.get( '.entry-title > .emoji' )
+			.get( '.entry-title > svg' )
 			.should( 'exist' );
 	} );
 
