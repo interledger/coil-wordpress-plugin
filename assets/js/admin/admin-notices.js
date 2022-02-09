@@ -96,7 +96,7 @@
 			incompatiblePostTypes = incompatiblePostTypes.slice( 0, -2 );
 			// Inserting an 'and' if there are more than two items in the list
 			incompatiblePostTypes = incompatiblePostTypes.replace( /,([^,]*)$/, ' and$1' );
-			modalMsg = modalMsg.replace( '[...]', incompatiblePostTypes );
+			modalMsg = modalMsg.replace( '{postTypes}', incompatiblePostTypes );
 			if ( ! confirm( modalMsg ) && ( typeof event.cancelable !== 'boolean' || event.cancelable ) ) { // eslint-disable-line
 				// The changes have not been confirmed.
 				event.preventDefault();

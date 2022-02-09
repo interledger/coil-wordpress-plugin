@@ -202,8 +202,8 @@ function load_admin_assets() : void {
 			],
 			'not_monetized_post_types' => get_post_types_with_status( 'monetization', 'not-monetized' ),
 			'exclusive_post_types'     => get_post_types_with_status( 'visibility', 'exclusive' ),
-			'general_modal_msg'        => __( 'Removing monetization from [...] will make them public.', 'coil-web-monetization' ),
-			'exclusive_modal_msg'      => __( 'Making [...] exclusive will also monetize them.', 'coil-web-monetization' ),
+			'general_modal_msg'        => __( 'Removing monetization from {postTypes} will set them as public by default.', 'coil-web-monetization' ),
+			'exclusive_modal_msg'      => __( 'Making {postTypes} exclusive will also set them as monetized by default.', 'coil-web-monetization' ),
 		]
 	);
 
