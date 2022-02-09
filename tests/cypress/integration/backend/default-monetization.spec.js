@@ -88,7 +88,7 @@ describe( 'Default monetization settings for pages and posts', () => {
 			.click();
 
 		cy.on( 'window:confirm', ( text ) => {
-			expect( text ).to.contains( 'Removing monetization from posts and pages will make them public.' );
+			expect( text ).to.contains( 'Removing monetization from posts and pages will set them as public by default.' );
 		} );
 
 		// Check that the visibility defaults have been changed to public

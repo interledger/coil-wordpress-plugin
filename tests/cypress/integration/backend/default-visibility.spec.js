@@ -94,7 +94,7 @@ describe( 'Default  visibility settings for pages and posts', () => {
 			.click();
 
 		cy.on( 'window:confirm', ( text ) => {
-			expect( text ).to.contains( 'Making posts and pages exclusive will also monetize them.' );
+			expect( text ).to.contains( 'Making posts and pages exclusive will also set them as monetized by default.' );
 		} );
 
 		// Check that monetization has been enabled
