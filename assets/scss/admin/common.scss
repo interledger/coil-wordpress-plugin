@@ -148,6 +148,23 @@
 					margin: 15px 0 10px;
 				}
 
+				#coil_title_padlock:not( :checked ) {
+					+ label {
+						+ #coil_icon_position_label {
+							display: none;
+							+ .coil-radio-group {
+								display: none;
+								+ #coil_icon_style_label {
+									display: none;
+									+ .coil-radio-group {
+										display: none;
+									}
+								}
+							}
+						}
+					}
+				}
+
 				.coil-radio-group {
 					align-items: center;
 					display: flex;
@@ -193,6 +210,7 @@
 							.coil-title-preview-bar {
 								background: #c4c4c4;
 								border-radius: 3px;
+
 								&.title {
 									height: 17px;
 									justify-self: flex-end;
@@ -207,6 +225,20 @@
 
 								&.body {
 									height: 9px;
+								}
+							}
+						}
+
+						&[data-padlock-icon-position='after'] {
+							.coil-title-preview-row {
+								&.coil-title-padlock-row {
+									flex-direction: row-reverse;
+									.coil-title-preview-bar {
+										&.title {
+											margin-left: 0;
+											margin-right: 6px;
+										}
+									}
 								}
 							}
 						}
