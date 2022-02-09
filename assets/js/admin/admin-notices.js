@@ -8,9 +8,16 @@
 	const ajaxUrl = coilAdminParams.ajax_url,
 		siteLogoUrl = coilAdminParams.site_logo_url,
 		lightCoilLogoUrl = coilAdminParams.coil_logo_url.light,
-		darkCoilLogoUrl = coilAdminParams.coil_logo_url.dark;
+		darkCoilLogoUrl = coilAdminParams.coil_logo_url.dark,
+		notMonetizedPostTypes = coilAdminParams.not_monetized_post_types,
+		exclusivePostTypes = coilAdminParams.exclusive_post_types,
+		generalModalMsg = coilAdminParams.general_modal_msg,
+		exclusiveModalMsg = coilAdminParams.exclusive_modal_msg;
 
 	const activeTabID = $( '.nav-tab-wrapper a.nav-tab-active' ).attr( 'id' );
+	const initialFormData = $( 'form' ).serialize();
+	// formSubmitting keeps track of whether the submit event fired prior to the beforeunload event.
+	let formSubmitting = false;
 
 	// Welcome notice
 	if ( activeTabID === 'coil-welcome-settings' ) {
@@ -45,6 +52,7 @@
 
 	// No payment pointer
 	if ( activeTabID === 'coil-general-settings' ) {
+		// No payment pointer warning
 		const noPaymentPointerNotice = $( '.coil-no-payment-pointer-notice' );
 		if ( noPaymentPointerNotice.length > 0 ) {
 			noPaymentPointerNotice.hide();
@@ -52,6 +60,47 @@
 			const settingsUpdated = $( '#setting-error-settings_updated' );
 			if ( settingsUpdated.length > 0 ) {
 				noPaymentPointerNotice.show();
+			}
+		}
+	}
+
+	// Display a modal when submitting incompatible global visibility and monetization defaults.
+	$( document ).on( 'submit', 'form', function() {
+		formSubmitting = true;
+		if ( activeTabID === 'coil-exclusive-settings' ) {
+			displayModal( event, notMonetizedPostTypes, '_visibility_exclusive', exclusiveModalMsg );
+		} else if ( activeTabID === 'coil-general-settings' ) {
+			displayModal( event, exclusivePostTypes, '_monetization_not-monetized', generalModalMsg );
+		}
+	} );
+
+	// Gets a list of post types that can cause conflicts (e.g. exclusive, or not-monetized).
+	// Checks each option on the current tab for the specified post types to see if anything incompatible has been selected.
+	// A setting is incompatible if it sets a post type to be exclusive and not-monetized by default.
+	// If an incompatibility is found then a modal is displayed which explains which settings will be changed to ensure compatibility.
+	function displayModal( event, postTypesToCheck, suffix, modalMsg ) {
+		let incompatiblePostTypes = '';
+		// Runs through a list of post types from the database that have the potential to cause conflicts with settings on this tab.
+		// E.g. On the General Content tab all post types that default to exclusive can lead to incompatible settings.
+		postTypesToCheck.forEach( ( postType ) => {
+			// The element ID is formed using the suffix and checks each checkbox that could lead to incompatible settings.
+			const elementId = postType + suffix;
+			// Gathers the names for all post types that have been checked and will create incompatibilities.
+			if ( document.getElementById( elementId ).checked ) {
+				incompatiblePostTypes += postType + 's, ';
+			}
+		} );
+
+		if ( incompatiblePostTypes.length > 0 ) {
+			// Remove trailing comma
+			incompatiblePostTypes = incompatiblePostTypes.slice( 0, -2 );
+			// Inserting an 'and' if there are more than two items in the list
+			incompatiblePostTypes = incompatiblePostTypes.replace( /,([^,]*)$/, ' and$1' );
+			modalMsg = modalMsg.replace( '{postTypes}', incompatiblePostTypes );
+			if ( ! confirm( modalMsg ) && ( typeof event.cancelable !== 'boolean' || event.cancelable ) ) { // eslint-disable-line
+				// The changes have not been confirmed.
+				event.preventDefault();
+				formSubmitting = false;
 			}
 		}
 	}
@@ -139,5 +188,17 @@
 			$selectedSvg = $thisInput.siblings( 'svg' ).clone();
 
 		$padlockIcon.html( $selectedSvg );
+	} );
+
+	// A modal to alert users to unsaved settings
+	window.addEventListener( 'beforeunload', function( event ) {
+		if ( ! formSubmitting && initialFormData !== $( 'form' ).serialize() ) {
+			// Cancel the event, preventing default behavior will prompt the user.
+			event.preventDefault();
+			// Chrome requires returnValue to be set
+			event.returnValue = '';
+		} else {
+			delete event.returnValue;
+		}
 	} );
 }( jQuery ) );

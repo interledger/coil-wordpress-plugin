@@ -48,7 +48,8 @@ Cypress.Commands.add( 'startWebMonetization', () => {
 		window.Cypress.monetized = true;
 	} ).then( () => {
 		cy.reload();
-		cy.wait( 500 ); // Ensure the bootstrap function has add the event listener
+		// Ensure the bootstrap function has add the event listener
+		cy.wait( 500 ); // eslint-disable-line
 	} ).then( () => {
 		cy
 			.document()
