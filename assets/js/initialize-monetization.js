@@ -343,14 +343,13 @@
 		$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'coil-extension-not-found' );
 
 		if ( isSubscribersOnly() ) {
-			$( contentContainer ).before( showSubscriberOnlyMessage( paywallMessage ) );
-
 			if ( isExcerptEnabled() && getContentExcerpt() !== null ) {
 				document.body.classList.add( 'show-excerpt-message' );
 				$( contentContainer ).before( getContentExcerpt() );
 			} else {
 				document.body.classList.add( 'show-fw-message' );
 			}
+			$( contentContainer ).last().before( showSubscriberOnlyMessage( paywallMessage ) );
 		} else if ( isSplitContent() ) {
 			// Split content with no extension found.
 			$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( paywallMessage ) );
@@ -428,8 +427,9 @@
 			if ( $( 'p.monetize-msg' ).length === 0 ) {
 				$( contentContainer ).last().before( showMonetizationMessage( loadingContent, '' ) );
 			}
+		} else {
+			document.querySelector( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
 		}
-		document.querySelector( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
 	}
 
 	/**
