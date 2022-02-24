@@ -185,8 +185,16 @@ function maybe_restrict_content( string $content ) : string {
 	switch ( $coil_visibility_status ) {
 		case 'exclusive':
 		case 'gate-tagged-blocks':
+
+			// Restrict content beneath the Coil Rea More block
+			if ( has_read_more_block( $content ) ) {
+				$content = str_replace($coil_read_more_string, '<div class="coil-restricted-content">', $content);
+				$content .= '</div>';
+				$public_content = $content;
+			}
+
 			// Restrict all / some excerpt content based on visibility settings.
-			if ( is_excerpt_visible( get_queried_object_id() ) ) {
+			else if ( is_excerpt_visible( get_queried_object_id() ) ) {
 				$public_content .= sprintf(
 					'<p>%s</p>',
 					$content_excerpt
@@ -206,6 +214,40 @@ function maybe_restrict_content( string $content ) : string {
 	}
 
 	return apply_filters( 'coil_maybe_restrict_content', $public_content, $content, $coil_visibility_status );
+}
+
+/**
+ * Check whether or not the Coil read more block is present
+ *
+ * @param string $content Post content.
+ *
+ * @return bool true if the block is present
+ */
+function has_read_more_block( $content ) : bool {
+
+	$coil_read_more_string = '<span class="wp-block-coil-read-more"></span>';
+	if ( FALSE !== strpos($content, $coil_read_more_string) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Get the post content until the read more block
+ * This is necessary if a user is restricting content up to the Read More block, it will override th excerpt
+ *
+ * @param string $content Post content.
+ *
+ * @return string $excerpt Post content until the read more block
+ */
+function coil_get_excerpt( $content ) : string {
+
+	$coil_read_more_string = '<span class="wp-block-coil-read-more"></span>';
+
+	$content_end = strpos($content, $coil_read_more_string);
+
+	return substr( $content, 0, $content_end );
 }
 
 /**

@@ -67,9 +67,7 @@ registerBlockType(
 				className: 'coil-read-more',
 			} );
 			return (
-				<div className={ props.className } >
-					coil-read-more!!
-				</div>
+				<span className={ props.className } ></span>
 			);
 		},
 	},
