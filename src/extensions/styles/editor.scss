@@ -1,17 +1,42 @@
 .wp-block-coil-read-more {
-	background: #fff;
-	border: 1px solid #a0a0a0;
-	border-radius: 4px;
-	padding: 20px;
-	text-align: center;
 
-	h4 {
-		font-size: 18px;
-		margin: 0;
+  	margin-top: 30px;
+
+	&:before,
+  	&:after {
+	  border-top: 2px dashed #8f949f;
+	  content: '';
+	  display: -ms-flexbox;
+	  display: flex;
+	  top: 20px;
+	  position: absolute;
+	  width: calc( ( 100% - 420px ) / 2 );
+	  z-index: 0;
 	}
-	p,a {
+
+  	&:after {
+	  right: 0;
+	}
+
+	.coil-read-more-inner {
+	  align-items: center;
+	  background: #fff;
+	  border: 1px solid #8f949f;
+	  border-radius: 8px;
+	  display: flex;
+	  justify-content: space-between;
+	  max-width: 400px;
+	  margin: auto;
+	  padding: 12px 8px;
+	  text-align: center;
+	  height: 42px;
+	  width: 100%;
+	  z-index: 1;
+
+	  p {
 		font-size: 14px;
-		margin: 0;
+		font-weight: 500;
+	  }
 	}
 }
 
