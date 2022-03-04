@@ -185,16 +185,12 @@ function maybe_restrict_content( string $content ) : string {
 	switch ( $coil_visibility_status ) {
 		case 'exclusive':
 		case 'gate-tagged-blocks':
-
 			// Restrict content beneath the Coil Rea More block
 			if ( has_read_more_block( $content ) ) {
-				$content = str_replace($coil_read_more_string, '<div class="coil-restricted-content">', $content);
-				$content .= '</div>';
+				$content        = str_replace( $coil_read_more_string, '<div class="coil-restricted-content">', $content );
+				$content       .= '</div>';
 				$public_content = $content;
-			}
-
-			// Restrict all / some excerpt content based on visibility settings.
-			else if ( is_excerpt_visible( get_queried_object_id() ) ) {
+			} elseif ( is_excerpt_visible( get_queried_object_id() ) ) { // Restrict all / some excerpt content based on visibility settings.
 				$public_content .= sprintf(
 					'<p>%s</p>',
 					$content_excerpt
@@ -226,7 +222,7 @@ function maybe_restrict_content( string $content ) : string {
 function has_read_more_block( $content ) : bool {
 
 	$coil_read_more_string = '<span class="wp-block-coil-read-more"></span>';
-	if ( FALSE !== strpos($content, $coil_read_more_string) ) {
+	if ( false !== strpos( $content, $coil_read_more_string ) ) {
 		return true;
 	}
 
@@ -245,7 +241,7 @@ function coil_get_excerpt( $content ) : string {
 
 	$coil_read_more_string = '<span class="wp-block-coil-read-more"></span>';
 
-	$content_end = strpos($content, $coil_read_more_string);
+	$content_end = strpos( $content, $coil_read_more_string );
 
 	return substr( $content, 0, $content_end );
 }

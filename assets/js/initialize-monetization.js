@@ -349,21 +349,17 @@
 			$( contentContainer ).before( showSubscriberOnlyMessage( paywallMessage ) );
 
 			if ( isExcerptEnabled() && getContentExcerpt() ) {
-				console.log('1');
 				document.body.classList.add( 'show-excerpt-message' );
 				$( contentContainer ).prepend( getContentExcerpt() );
 			} else {
-				console.log('1 a');
 				document.body.classList.add( 'show-fw-message' );
 			}
 		} else if ( isSplitContent() ) {
-			console.log('2');
 			// Split content with no extension found.
 			$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( paywallMessage ) );
 
 			showContentContainer();
 		} else if ( isMonetizedAndPublic() ) {
-			console.log('3');
 			// Content has monetization enabled and visible for everyone but no extension found.
 
 			if ( showPromotionBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
