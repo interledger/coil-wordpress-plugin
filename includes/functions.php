@@ -78,6 +78,7 @@ function init_plugin() : void {
 	// Load order - important.
 	add_action( 'init', __NAMESPACE__ . '\Gating\register_content_meta' );
 	add_action( 'init', __NAMESPACE__ . '\Gating\register_term_meta' );
+	//add_action( 'init', __NAMESPACE__ . '\Transfers\transfer_split_content_posts' );
 }
 
 /**

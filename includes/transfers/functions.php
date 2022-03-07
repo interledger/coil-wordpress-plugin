@@ -350,58 +350,75 @@ function update_post_meta( $post_id ) {
 
 
 function transfer_split_content_posts() {
+	$tagged_blog_posts = new \WP_Query( array(
+		'posts_per_page' => 200,
+		'meta_query'     => array(
+			'relation' => 'AND',
+			array(
+				'relation' => 'OR',
+				array(
+					'key' => '_coil_monetize_post_status',
+					'value' => 'gate-tagged-blocks',
+				),
+				array(
+					'key' => '_coil_visibility_post_status',
+					'value' => 'gate-tagged-blocks',
+				),
+			),
+			array(
+				'key' => '_coil_updated_tagged_blocks',
+				'compare' => 'NOT EXISTS',
 
-	$the_content = '<!-- wp:paragraph {"monetizeBlockDisplay":"hide-monetize-users"} -->
-	<p class="coil-hide-monetize-users">I will only show for users who are not running the Coil extension.</p>
-	<!-- /wp:paragraph -->
+			)
+		),
+	) );
 
-	<!-- wp:paragraph {"monetizeBlockDisplay":"show-monetize-users"} -->
-	<p class="coil-show-monetize-users">I will show for users who are running the Coil extension.</p>
-	<!-- /wp:paragraph -->
+	if( $tagged_blog_posts->have_posts() ) {
+		while( $tagged_blog_posts->have_posts() ) {
+			$tagged_blog_posts->the_post();
+			// Set the read more string as it will occur in the database
+			$coil_read_more_string = '<!-- wp:coil/read-more --><span class="wp-block-coil-read-more"></span><!-- /wp:coil/read-more -->';
 
-	<!-- wp:paragraph {"monetizeBlockDisplay":"hide-monetize-users"} -->
-	<p class="coil-hide-monetize-users">I will only show for users who are not running the Coil extension.</p>
-	<!-- /wp:paragraph -->
+			$the_content = get_the_content();
 
-	<!-- wp:paragraph {"monetizeBlockDisplay":"hide-monetize-users"} -->
-	<p class="coil-hide-monetize-users">I will only show for users who are not running the Coil extension.</p>
-	<!-- /wp:paragraph -->';
+			// Find the nearest hidden block using show-monetize-users
+			$hidden_pos = strpos( $the_content, '{"monetizeBlockDisplay":"show-monetize-users"}' );
 
+			if( false == $hidden_pos ) continue;
 
-	// Set the read more string as it will occur in the database
-	$coil_read_more_string = '<!-- wp:coil/read-more --><span class="wp-block-coil-read-more"></span><!-- /wp:coil/read-more -->';
+			// Get the string up to the point of the hidden setting
+			$sub_string = substr( $the_content, 0, $hidden_pos );
+			/*
+			//Find last iteration of <!--
+			$last_pos = strrpos( $sub_string, '<!--' );
 
-	// Find the nearest hidden block using show-monetize-users
-	$hidden_pos = strpos($the_content, '{"monetizeBlockDisplay":"show-monetize-users"}');
+			// Set the length after the final <!-- which we'll use to split the content string
+			$str_len = strlen($the_content) - $last_pos;
 
-	// Get the string up to the point of the hidden setting
-	$sub_string = substr($the_content, 0, $hidden_pos);
+			// Prepend read more tag between first hidden block and last hidden block
+			$first_split = substr( $the_content, 0, $last_pos );
+			$second_split = substr( $the_content, $last_pos, $str_len );
 
-	//Find last iteration of <!--
-	$last_pos = strrpos($sub_string, '<!--');
+			// Combine the content but keep some semblence of formatting, hence why we're using multiple lines
+			$combined_content = $first_split . '
+' . $coil_read_more_string . '
+' . $second_split;
 
-	// Set the length after the final <!-- which we'll use to split the content string
-	$str_len = strlen($the_content) - $last_pos;
+			// Clean out old attributes
+			$combined_content = str_replace( [ '{"monetizeBlockDisplay":"show-monetize-users"}', '{"monetizeBlockDisplay":"hide-monetize-users"}' ], '', $combined_content );
 
-	// Prepend read more tag between first hidden block and last hidden block
-	$first_split = substr($the_content, 0, $last_pos);
-	$second_split = substr($the_content, $last_pos, $str_len);
+			$data = array(
+				'ID' => get_the_ID(),
+				'post_content' => $combined_content,
+				'meta_input' => array(
+					'meta_key' => '_coil_updated_tagged_blocks',
+					'another_meta_key' => true,
+				)
+			);
 
-	echo '<h2>Content Before</h2>
-	';
-	echo $the_content;
-
-	// Combine the content but keep some semblence of formatting, hence why we're using multiple lines
-	$combined_content = $first_split . '
-	' . $coil_read_more_string . '
-	' . $second_split;
-
-	// Clean out old attributes
-	$combined_content = str_replace(['{"monetizeBlockDisplay":"show-monetize-users"}', '{"monetizeBlockDisplay":"hide-monetize-users"}'], '', $combined_content);
-
-	echo '
-
-	<h2>Content After</h2>
-	';
-	echo $combined_content;
+			wp_update_post( $data );
+			*/
+		}
+	}
+	die();
 }
