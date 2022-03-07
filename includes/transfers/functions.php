@@ -347,3 +347,61 @@ function update_post_meta( $post_id ) {
 		delete_post_meta( $post_id, '_coil_monetize_post_status' );
 	}
 }
+
+
+function transfer_split_content_posts() {
+
+	$the_content = '<!-- wp:paragraph {"monetizeBlockDisplay":"hide-monetize-users"} -->
+	<p class="coil-hide-monetize-users">I will only show for users who are not running the Coil extension.</p>
+	<!-- /wp:paragraph -->
+
+	<!-- wp:paragraph {"monetizeBlockDisplay":"show-monetize-users"} -->
+	<p class="coil-show-monetize-users">I will show for users who are running the Coil extension.</p>
+	<!-- /wp:paragraph -->
+
+	<!-- wp:paragraph {"monetizeBlockDisplay":"hide-monetize-users"} -->
+	<p class="coil-hide-monetize-users">I will only show for users who are not running the Coil extension.</p>
+	<!-- /wp:paragraph -->
+
+	<!-- wp:paragraph {"monetizeBlockDisplay":"hide-monetize-users"} -->
+	<p class="coil-hide-monetize-users">I will only show for users who are not running the Coil extension.</p>
+	<!-- /wp:paragraph -->';
+
+
+	// Set the read more string as it will occur in the database
+	$coil_read_more_string = '<!-- wp:coil/read-more --><span class="wp-block-coil-read-more"></span><!-- /wp:coil/read-more -->';
+
+	// Find the nearest hidden block using show-monetize-users
+	$hidden_pos = strpos($the_content, '{"monetizeBlockDisplay":"show-monetize-users"}');
+
+	// Get the string up to the point of the hidden setting
+	$sub_string = substr($the_content, 0, $hidden_pos);
+
+	//Find last iteration of <!--
+	$last_pos = strrpos($sub_string, '<!--');
+
+	// Set the length after the final <!-- which we'll use to split the content string
+	$str_len = strlen($the_content) - $last_pos;
+
+	// Prepend read more tag between first hidden block and last hidden block
+	$first_split = substr($the_content, 0, $last_pos);
+	$second_split = substr($the_content, $last_pos, $str_len);
+
+	echo '<h2>Content Before</h2>
+	';
+	echo $the_content;
+
+	// Combine the content but keep some semblence of formatting, hence why we're using multiple lines
+	$combined_content = $first_split . '
+	' . $coil_read_more_string . '
+	' . $second_split;
+
+	// Clean out old attributes
+	$combined_content = str_replace(['{"monetizeBlockDisplay":"show-monetize-users"}', '{"monetizeBlockDisplay":"hide-monetize-users"}'], '', $combined_content);
+
+	echo '
+
+	<h2>Content After</h2>
+	';
+	echo $combined_content;
+}
