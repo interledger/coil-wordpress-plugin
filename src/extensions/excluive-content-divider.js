@@ -5,10 +5,10 @@ const { __ } = window.wp.i18n;
 
 // Use registerBlockType to create a custom block
 registerBlockType(
-	'coil/read-more',
+	'coil/exclusive-content-divider',
 	{
 		// Localize title using wp.i18n.__()
-		title: __( 'Coil Excluive Content Divider' ),
+		title: __( 'Coil Exclusive Content Divider' ),
 		// Category Options: common, formatting, layout, widgets, embed
 		category: 'common',
 

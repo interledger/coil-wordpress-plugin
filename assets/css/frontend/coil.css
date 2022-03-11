@@ -21,7 +21,7 @@ body.monetization-not-initialized.coil-exclusive .site-content #primary .site-ma
 body.monetization-not-initialized.coil-exclusive #site-content .post-inner .entry-content:not(.coil-post-excerpt) {
   display: none; }
 
-body:not(.single):not(.page) .coil-restricted-content {
+body:not(.single):not(.page) .coil-show-monetize-users {
   display: none; }
 
 body.coil-extension-not-found:not(.coil-exclusive) #main #content .entry-content,
@@ -44,8 +44,7 @@ body.coil-show-admin-notice .monetize-msg {
   background-color: #fa8072;
   padding: 0.5em 0; }
 
-body.coil-gate-all:not(.coil-extension-not-found) .coil-restricted-content,
-body.coil-gate-tagged-blocks:not(.coil-extension-not-found) .coil-restricted-content {
+body.coil-gate-tagged-blocks:not(.coil-extension-not-found) .coil-show-monetize-users {
   display: none; }
 
 .monetize-msg {

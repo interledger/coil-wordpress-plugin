@@ -177,14 +177,16 @@ function maybe_restrict_content( string $content ) : string {
 		return $content;
 	}
 
-	$coil_read_more_string = '<span class="wp-block-exclusive-content-divider"></span>';
+	$coil_read_more_string  = '<span class="wp-block-exclusive-content-divider"></span>';
 	$coil_visibility_status = get_content_status( get_the_ID(), 'visibility' );
 	$post_obj               = get_post( get_the_ID() );
 	$content_excerpt        = $post_obj->post_excerpt;
 	$public_content         = '';
 
 	// If it's a single post which doesn't have a read more block, just return the content
-	if( is_single() && !has_read_more_block( $content ) ) return $content;
+	if ( is_single() && ! has_read_more_block( $content ) ) {
+		return $content;
+	}
 
 	switch ( $coil_visibility_status ) {
 		case 'exclusive':
