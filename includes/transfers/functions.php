@@ -316,42 +316,53 @@ function transfer_version_1_9_panel_settings() {
  * @return void
  *
  */
-function update_post_meta( $post_id ) {
+function transfer_post_meta_values() {
 
-	$monetize_post_status = get_post_meta( $post_id, '_coil_monetize_post_status', true );
-	if ( $monetize_post_status ) {
-		switch ( $monetize_post_status ) {
-			case 'no':
-				$monetization_state = 'not-monetized';
-				$visibility_state   = 'public';
-				break;
-			case 'no-gating':
-				$monetization_state = 'monetized';
-				$visibility_state   = 'public';
-				break;
-			case 'gate-all':
-				$monetization_state = 'monetized';
-				$visibility_state   = 'exclusive';
-				break;
-			case 'gate-tagged-blocks':
-				$monetization_state = 'monetized';
-				$visibility_state   = 'gate-tagged-blocks';
-				break;
-			default:
-				$monetization_state = 'default';
-				$visibility_state   = 'default';
-				break;
+	global $wpdb;
+
+	$existing_posts = $wpdb->get_results( "SELECT DISTINCT post_id from {$wpdb->prefix}postmeta WHERE `meta_key` = '_coil_monetize_post_status'" );
+
+	foreach( $existing_posts as $post_key => $post_data ) {
+
+		$post_id = $post_data->post_id;
+
+		$monetize_post_status = get_post_meta( $post_id, '_coil_monetize_post_status', true );
+		if ( $monetize_post_status ) {
+			switch ( $monetize_post_status ) {
+				case 'no':
+					$monetization_state = 'not-monetized';
+					$visibility_state   = 'public';
+					break;
+				case 'no-gating':
+					$monetization_state = 'monetized';
+					$visibility_state   = 'public';
+					break;
+				case 'gate-all':
+					$monetization_state = 'monetized';
+					$visibility_state   = 'exclusive';
+					break;
+				case 'gate-tagged-blocks': // @TODO: Change these to gate-all when using the exclusive content divider
+					$monetization_state = 'monetized';
+					$visibility_state   = 'gate-tagged-blocks';
+					break;
+				default:
+					$monetization_state = 'default';
+					$visibility_state   = 'default';
+					break;
+			}
+
+			add_post_meta( $post_id, '_coil_monetization_post_status', $monetization_state, true );
+			add_post_meta( $post_id, '_coil_visibility_post_status', $visibility_state, true );
+			delete_post_meta( $post_id, '_coil_monetize_post_status' );
 		}
-		add_post_meta( $post_id, '_coil_monetization_post_status', $monetization_state, true );
-		add_post_meta( $post_id, '_coil_visibility_post_status', $visibility_state, true );
-		delete_post_meta( $post_id, '_coil_monetize_post_status' );
 	}
 }
 
 
 function transfer_split_content_posts() {
-	$tagged_blog_posts = new \WP_Query( array(
-		'posts_per_page' => 200,
+
+	$posts_with_split_content = new \WP_Query( array(
+		'posts_per_page' => 999,
 		'meta_query'     => array(
 			'relation' => 'AND',
 			array(
@@ -368,57 +379,70 @@ function transfer_split_content_posts() {
 			array(
 				'key' => '_coil_updated_tagged_blocks',
 				'compare' => 'NOT EXISTS',
-
 			)
 		),
 	) );
 
-	if( $tagged_blog_posts->have_posts() ) {
-		while( $tagged_blog_posts->have_posts() ) {
-			$tagged_blog_posts->the_post();
+	if( $posts_with_split_content->have_posts() ) {
+		while( $posts_with_split_content->have_posts() ) {
+			$posts_with_split_content->the_post();
+
 			// Set the read more string as it will occur in the database
 			$coil_read_more_string = '<!-- wp:coil/read-more --><span class="wp-block-coil-read-more"></span><!-- /wp:coil/read-more -->';
 
 			$the_content = get_the_content();
 
 			// Find the nearest hidden block using show-monetize-users
-			$hidden_pos = strpos( $the_content, '{"monetizeBlockDisplay":"show-monetize-users"}' );
+			$hidden_pos = strpos($the_content, '"hide-monetize-users"');
+			$show_pos = strpos($the_content, '"show-monetize-users"');
 
-			if( false == $hidden_pos ) continue;
+			if ( false === $hidden_pos && false === $show_pos ) {
+				continue;
+			} elseif( false !== $hidden_pos && false === $show_pos ) {
+				// Clean out old attributes
+				$combined_content = $the_content;
+			} else {
+				// Get the string up to the point of the hidden setting
+				$sub_string = substr($the_content, 0, $show_pos);
 
-			// Get the string up to the point of the hidden setting
-			$sub_string = substr( $the_content, 0, $hidden_pos );
-			/*
-			//Find last iteration of <!--
-			$last_pos = strrpos( $sub_string, '<!--' );
+				//Find last iteration of <!--
+				$last_pos = strrpos($sub_string, '<!--');
 
-			// Set the length after the final <!-- which we'll use to split the content string
-			$str_len = strlen($the_content) - $last_pos;
+				// Set the length after the final <!-- which we'll use to split the content string
+				$str_len = strlen($the_content) - $last_pos;
 
-			// Prepend read more tag between first hidden block and last hidden block
-			$first_split = substr( $the_content, 0, $last_pos );
-			$second_split = substr( $the_content, $last_pos, $str_len );
+				// Prepend read more tag between first hidden block and last hidden block
+				$first_split = substr($the_content, 0, $last_pos);
+				$second_split = substr($the_content, $last_pos, $str_len);
 
-			// Combine the content but keep some semblence of formatting, hence why we're using multiple lines
-			$combined_content = $first_split . '
-' . $coil_read_more_string . '
-' . $second_split;
+
+				// Combine the content but keep some semblence of formatting, hence why we're using multiple lines
+				$combined_content = $first_split . '
+	' . $coil_read_more_string . '
+	' . $second_split;
+			}
+
+			// A list of strings to clear from the content
+			$strings_to_clear = array(
+				', "monetizeBlockDisplay":"show-monetize-users"',
+				', "monetizeBlockDisplay":"hide-monetize-users"',
+				'{"monetizeBlockDisplay":"show-monetize-users"}',
+				'{"monetizeBlockDisplay":"hide-monetize-users"}',
+				' class="coil-show-monetize-users"',
+				' class="coil-hide-monetize-users"',
+			);
 
 			// Clean out old attributes
-			$combined_content = str_replace( [ '{"monetizeBlockDisplay":"show-monetize-users"}', '{"monetizeBlockDisplay":"hide-monetize-users"}' ], '', $combined_content );
-
+			$combined_content = str_replace( $strings_to_clear, '', $combined_content );
 			$data = array(
 				'ID' => get_the_ID(),
-				'post_content' => $combined_content,
 				'meta_input' => array(
-					'meta_key' => '_coil_updated_tagged_blocks',
-					'another_meta_key' => true,
-				)
+					'_coil_updated_tagged_blocks' => true,
+				),
+				'post_content' => $combined_content
 			);
 
 			wp_update_post( $data );
-			*/
 		}
 	}
-	die();
 }

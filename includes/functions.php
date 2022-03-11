@@ -17,6 +17,11 @@ use \Coil\User;
 const PLUGIN_VERSION = '1.9.0';
 
 /**
+ * @var string Database version number.
+ */
+const DB_VERSION = '1.10.0';
+
+/**
  * @var string Plugin root folder.
  */
 const COIL__FILE__ = __DIR__;
@@ -78,7 +83,6 @@ function init_plugin() : void {
 	// Load order - important.
 	add_action( 'init', __NAMESPACE__ . '\Gating\register_content_meta' );
 	add_action( 'init', __NAMESPACE__ . '\Gating\register_term_meta' );
-	//add_action( 'init', __NAMESPACE__ . '\Transfers\transfer_split_content_posts' );
 }
 
 /**
@@ -301,9 +305,6 @@ function add_body_class( $classes ) : array {
 	$payment_pointer_id        = Admin\get_payment_pointer_setting();
 	$exclusive_content_enabled = Admin\is_exclusive_content_enabled();
 
-	// Transfer old post meta into new format
-	Transfers\update_post_meta( get_queried_object_id() );
-
 	// If content is not monetized, or exclusive content has been disabled,
 	// then the coil-exclusive class cannot be added to the content.
 	// This is an additional check to ensure that the incompatible not-monetized and exclusive state cannot be reached.
@@ -376,17 +377,39 @@ function print_meta_tag() : void {
  * @return void
  */
 function maybe_update_database() {
-	// maybe_load_database_defaults function must be called first becasue it loads neccessary defaults but only if the option group is empty.
-	// The transfer functions will override the defaults that were loaded if neccessary.
-	Transfers\maybe_load_database_defaults();
 
-	// Transfer settings saved in the customizer
-	Transfers\transfer_customizer_message_settings();
-	Transfers\transfer_customizer_appearance_settings();
+	$did_run_update = false;
+	$db_version = get_option( 'coil_db_ver' );
 
-	// Transfer settings saved in version 1.9 of the plugin where deprecated option groups are being used in the wp_options table
-	Transfers\transfer_version_1_9_panel_settings();
+	if( FALSE == $db_version || version_compare( '1.10.0', $db_version, '>' ) ) {
+
+		// Tell the function that we have run an update
+		$did_run_update = true;
+
+		// maybe_load_database_defaults function must be called first becasue it loads neccessary defaults but only if the option group is empty.
+		// The transfer functions will override the defaults that were loaded if neccessary.
+		Transfers\maybe_load_database_defaults();
+
+		// Transfer settings saved in the customizer
+		Transfers\transfer_customizer_message_settings();
+		Transfers\transfer_customizer_appearance_settings();
+
+		// Transfer settings saved in version 1.9 of the plugin where deprecated option groups are being used in the wp_options table
+		Transfers\transfer_version_1_9_panel_settings();
+
+		// Transfer split content posts to use the exclusive content divider
+		Transfers\transfer_split_content_posts();
+
+		// Transfer settings which are set in the post meta table (notibly gating and monetization settings)
+		Transfers\transfer_post_meta_values();
+	}
+
+	// Update the database version at the end of it
+	if( $did_run_update ) {
+		update_option( 'coil_db_ver', DB_VERSION, false );
+	}
 }
+
 /**
  * Get the filterable payment pointer meta option from the database.
  *
