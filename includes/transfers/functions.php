@@ -322,7 +322,7 @@ function transfer_post_meta_values() {
 
 	$existing_posts = $wpdb->get_results( "SELECT DISTINCT post_id from {$wpdb->prefix}postmeta WHERE `meta_key` = '_coil_monetize_post_status'" );
 
-	foreach( $existing_posts as $post_key => $post_data ) {
+	foreach ( $existing_posts as $post_key => $post_data ) {
 
 		$post_id = $post_data->post_id;
 
@@ -361,30 +361,32 @@ function transfer_post_meta_values() {
 
 function transfer_split_content_posts() {
 
-	$posts_with_split_content = new \WP_Query( array(
-		'posts_per_page' => 999,
-		'meta_query'     => array(
-			'relation' => 'AND',
-			array(
-				'relation' => 'OR',
-				array(
-					'key' => '_coil_monetize_post_status',
-					'value' => 'gate-tagged-blocks',
-				),
-				array(
-					'key' => '_coil_visibility_post_status',
-					'value' => 'gate-tagged-blocks',
-				),
-			),
-			array(
-				'key' => '_coil_updated_tagged_blocks',
-				'compare' => 'NOT EXISTS',
-			)
-		),
-	) );
+	$posts_with_split_content = new \WP_Query(
+		[
+			'posts_per_page' => 999,
+			'meta_query'     => [
+				'relation' => 'AND',
+				[
+					'relation' => 'OR',
+					[
+						'key'   => '_coil_monetize_post_status',
+						'value' => 'gate-tagged-blocks',
+					],
+					[
+						'key'   => '_coil_visibility_post_status',
+						'value' => 'gate-tagged-blocks',
+					],
+				],
+				[
+					'key'     => '_coil_updated_tagged_blocks',
+					'compare' => 'NOT EXISTS',
+				],
+			],
+		]
+	);
 
-	if( $posts_with_split_content->have_posts() ) {
-		while( $posts_with_split_content->have_posts() ) {
+	if ( $posts_with_split_content->have_posts() ) {
+		while ( $posts_with_split_content->have_posts() ) {
 			$posts_with_split_content->the_post();
 
 			// Set the read more string as it will occur in the database
@@ -393,28 +395,27 @@ function transfer_split_content_posts() {
 			$the_content = get_the_content();
 
 			// Find the nearest hidden block using show-monetize-users
-			$hidden_pos = strpos($the_content, '"hide-monetize-users"');
-			$show_pos = strpos($the_content, '"show-monetize-users"');
+			$hidden_pos = strpos( $the_content, '"hide-monetize-users"' );
+			$show_pos   = strpos( $the_content, '"show-monetize-users"' );
 
 			if ( false === $hidden_pos && false === $show_pos ) {
 				continue;
-			} elseif( false !== $hidden_pos && false === $show_pos ) {
+			} elseif ( false !== $hidden_pos && false === $show_pos ) {
 				// Clean out old attributes
 				$combined_content = $the_content;
 			} else {
 				// Get the string up to the point of the hidden setting
-				$sub_string = substr($the_content, 0, $show_pos);
+				$sub_string = substr( $the_content, 0, $show_pos );
 
 				//Find last iteration of <!--
-				$last_pos = strrpos($sub_string, '<!--');
+				$last_pos = strrpos( $sub_string, '<!--' );
 
 				// Set the length after the final <!-- which we'll use to split the content string
-				$str_len = strlen($the_content) - $last_pos;
+				$str_len = strlen( $the_content ) - $last_pos;
 
 				// Prepend read more tag between first hidden block and last hidden block
-				$first_split = substr($the_content, 0, $last_pos);
-				$second_split = substr($the_content, $last_pos, $str_len);
-
+				$first_split  = substr( $the_content, 0, $last_pos );
+				$second_split = substr( $the_content, $last_pos, $str_len );
 
 				// Combine the content but keep some semblence of formatting, hence why we're using multiple lines
 				$combined_content = $first_split . '
@@ -423,24 +424,24 @@ function transfer_split_content_posts() {
 			}
 
 			// A list of strings to clear from the content
-			$strings_to_clear = array(
+			$strings_to_clear = [
 				', "monetizeBlockDisplay":"show-monetize-users"',
 				', "monetizeBlockDisplay":"hide-monetize-users"',
 				'{"monetizeBlockDisplay":"show-monetize-users"}',
 				'{"monetizeBlockDisplay":"hide-monetize-users"}',
 				' class="coil-show-monetize-users"',
 				' class="coil-hide-monetize-users"',
-			);
+			];
 
 			// Clean out old attributes
 			$combined_content = str_replace( $strings_to_clear, '', $combined_content );
-			$data = array(
-				'ID' => get_the_ID(),
-				'meta_input' => array(
+			$data             = [
+				'ID'           => get_the_ID(),
+				'meta_input'   => [
 					'_coil_updated_tagged_blocks' => true,
-				),
-				'post_content' => $combined_content
-			);
+				],
+				'post_content' => $combined_content,
+			];
 
 			wp_update_post( $data );
 		}

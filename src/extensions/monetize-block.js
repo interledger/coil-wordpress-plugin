@@ -1,8 +1,3 @@
-/**
- * External Dependencies
- */
-import classnames from 'classnames';
-
 // Editor and Frontend Styles
 import './styles/editor.scss';
 import './styles/style.scss';
@@ -11,12 +6,8 @@ import './styles/style.scss';
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { addFilter } = wp.hooks;
-const { Fragment } = wp.element;
-const { InspectorControls } = wp.blockEditor || wp.editor; // wp.editor for WP < 5.2.
 const { withSelect, withDispatch } = wp.data;
-const { createHigherOrderComponent } = wp.compose;
-const { PanelBody, RadioControl, SelectControl } = wp.components;
+const { RadioControl, SelectControl } = wp.components;
 const { registerPlugin } = wp.plugins;
 const { PluginDocumentSettingPanel } = wp.editPost; // WP >= 5.3.
 

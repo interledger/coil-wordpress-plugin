@@ -379,9 +379,9 @@ function print_meta_tag() : void {
 function maybe_update_database() {
 
 	$did_run_update = false;
-	$db_version = get_option( 'coil_db_ver' );
+	$db_version     = get_option( 'coil_db_ver' );
 
-	if( FALSE == $db_version || version_compare( '1.10.0', $db_version, '>' ) ) {
+	if ( false === $db_version || version_compare( '1.10.0', $db_version, '>' ) ) {
 
 		// Tell the function that we have run an update
 		$did_run_update = true;
@@ -405,7 +405,7 @@ function maybe_update_database() {
 	}
 
 	// Update the database version at the end of it
-	if( $did_run_update ) {
+	if ( $did_run_update ) {
 		update_option( 'coil_db_ver', DB_VERSION, false );
 	}
 }

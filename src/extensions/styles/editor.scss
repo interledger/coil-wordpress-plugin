@@ -38,3 +38,10 @@
 		}
 	}
 }
+
+.coil-post-monetization-level {
+	&.default,
+	&.not-monetized {
+		display: none;
+	}
+}
