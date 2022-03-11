@@ -390,7 +390,7 @@ function transfer_split_content_posts() {
 			$posts_with_split_content->the_post();
 
 			// Set the read more string as it will occur in the database
-			$coil_read_more_string = '<!-- wp:coil/read-more --><span class="wp-block-coil-read-more"></span><!-- /wp:coil/read-more -->';
+			$coil_read_more_string = '<!-- wp:coil/exclusive-content-divider --><span class="wp-block-exclusive-content-divider"></span><!-- /wp:coil/exclusive-content-divider -->';
 
 			$the_content = get_the_content();
 
