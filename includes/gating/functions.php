@@ -168,7 +168,7 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 function maybe_restrict_content( string $content ) : string {
 
 	// Plugins can call the `the_content` filter outside of the post loop.
-	if ( is_singular() || ! get_the_ID() ) {
+	if ( ! get_the_ID() ) {
 		return $content;
 	}
 
@@ -177,19 +177,25 @@ function maybe_restrict_content( string $content ) : string {
 		return $content;
 	}
 
+	$coil_read_more_string = '<span class="wp-block-coil-read-more"></span>';
 	$coil_visibility_status = get_content_status( get_the_ID(), 'visibility' );
 	$post_obj               = get_post( get_the_ID() );
 	$content_excerpt        = $post_obj->post_excerpt;
 	$public_content         = '';
+
+	// If it's a single post which doesn't have a read more block, just return the content
+	if( is_single() && !has_read_more_block( $content ) ) return $content;
 
 	switch ( $coil_visibility_status ) {
 		case 'exclusive':
 		case 'gate-tagged-blocks':
 			// Restrict content beneath the Coil Rea More block
 			if ( has_read_more_block( $content ) ) {
+
 				$content        = str_replace( $coil_read_more_string, '<div class="coil-restricted-content">', $content );
 				$content       .= '</div>';
 				$public_content = $content;
+				//die(htmlspecialchars($public_content));
 			} elseif ( is_excerpt_visible( get_queried_object_id() ) ) { // Restrict all / some excerpt content based on visibility settings.
 				$public_content .= sprintf(
 					'<p>%s</p>',
