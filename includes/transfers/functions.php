@@ -9,7 +9,6 @@ namespace Coil\Transfers;
 
 use Coil;
 use Coil\Admin;
-use phpDocumentor\Reflection\PseudoTypes\HtmlEscapedString;
 
 /* ------------------------------------------------------------------------ *
  * Section Database setup and data migrations
@@ -400,7 +399,7 @@ function transfer_split_content_posts() {
 			$show_pos   = strpos( $the_content, '"show-monetize-users"' );
 
 			if ( false === $hidden_pos && false === $show_pos ) {
-				var_dump( [$hidden_pos, $show_pos]);
+				var_dump( [ $hidden_pos, $show_pos ] );
 				continue;
 			} elseif ( false !== $hidden_pos && false === $show_pos ) {
 				// Clean out old attributes
@@ -436,7 +435,7 @@ function transfer_split_content_posts() {
 
 			echo htmlspecialchars( $combined_content );
 
-			$data             = [
+			$data = [
 				'ID'           => get_the_ID(),
 				'meta_input'   => [
 					'_coil_updated_tagged_blocks' => true,
