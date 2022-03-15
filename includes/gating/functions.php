@@ -177,7 +177,7 @@ function maybe_restrict_content( string $content ) : string {
 		return $content;
 	}
 
-	$coil_read_more_string  = '<span class="wp-block-exclusive-content-divider"></span>';
+	$coil_read_more_string  = '<span class="wp-block-coil-exclusive-content-divider"></span>';
 	$coil_visibility_status = get_content_status( get_the_ID(), 'visibility' );
 	$post_obj               = get_post( get_the_ID() );
 	$content_excerpt        = $post_obj->post_excerpt;
@@ -229,7 +229,7 @@ function maybe_restrict_content( string $content ) : string {
  */
 function has_read_more_block( $content ) : bool {
 
-	$coil_read_more_string = '<span class="wp-block-exclusive-content-divider"></span>';
+	$coil_read_more_string = '<span class="wp-block-coil-exclusive-content-divider"></span>';
 	if ( false !== strpos( $content, $coil_read_more_string ) ) {
 		return true;
 	}
@@ -247,7 +247,7 @@ function has_read_more_block( $content ) : bool {
  */
 function coil_get_excerpt( $content ) : string {
 
-	$coil_read_more_string = '<span class="wp-block-exclusive-content-divider"></span>';
+	$coil_read_more_string = '<span class="wp-block-coil-exclusive-content-divider"></span>';
 
 	$content_end = strpos( $content, $coil_read_more_string );
 
