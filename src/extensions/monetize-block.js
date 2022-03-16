@@ -264,7 +264,7 @@ const PostMetaFields = withDispatch( ( dispatch, props ) => {
 		<div>
 			<div>
 				<SelectControl
-					label={ __( 'Select a monetization status', 'coil-web-monetization' ) }
+					label={ __( 'Select a Web Monetization status', 'coil-web-monetization' ) }
 					value={ props[ props.monetizationMetaFieldName ] ? props[ props.monetizationMetaFieldName ] : 'default' }
 					onChange={ ( value ) => props.updateMetaValues( value ) }
 					options={ [

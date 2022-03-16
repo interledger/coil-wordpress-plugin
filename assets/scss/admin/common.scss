@@ -119,7 +119,7 @@
 
 	form {
 		display: flex;
-		flex-direction: row-reverse;
+		flex-direction: row;
 		justify-content: start;
 
 		.settings-main {
@@ -148,6 +148,26 @@
 					margin: 15px 0 10px;
 				}
 
+				.coil-input-group {
+					display: flex;
+					flex-direction: row;
+					width: 90%;
+
+					input, p {
+						border-radius: 0;
+						text-align: center;
+						width: 100%;
+					}
+
+					div:first-child input {
+						border-radius: 4px 0 0 4px;
+					}
+
+					div:last-child input {
+						border-radius: 0 4px 4px 0;
+					}
+				}
+
 				#coil_title_padlock:not( :checked ) {
 					+ label {
 						+ #coil_icon_position_label {
@@ -160,6 +180,17 @@
 										display: none;
 									}
 								}
+							}
+						}
+					}
+				}
+
+				#coil_button_member_display:not( :checked ) {
+					+ label {
+						+ h4 {
+							display: none;
+							+ input {
+								display: none;
 							}
 						}
 					}
@@ -269,7 +300,8 @@
 						** TODO: Update this by cleaning it up according to the available fonts etc
 						**/
 						.coil-paywall-image {
-							max-width: 120px;
+							max-height: 50px;
+							max-width: 50px;
 
 							&.no_logo {
 								display: none;
@@ -307,7 +339,12 @@
 					}
 				}
 			}
-			.exclusive-content {
+
+			.exclusive-content-section {
+				display: none;
+			}
+
+			.coil-button-section {
 				display: none;
 			}
 		}

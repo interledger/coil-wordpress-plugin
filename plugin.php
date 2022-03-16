@@ -25,6 +25,7 @@ if ( version_compare( PHP_VERSION, '7.2', '<' ) ) {
 
 require_once __DIR__ . '/includes/admin/functions.php';
 require_once __DIR__ . '/includes/settings/functions.php';
+require_once __DIR__ . '/includes/settings/rendering.php';
 require_once __DIR__ . '/includes/gating/functions.php';
 require_once __DIR__ . '/includes/transfers/functions.php';
 require_once __DIR__ . '/includes/user/functions.php';

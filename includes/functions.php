@@ -51,7 +51,6 @@ function init_plugin() : void {
 	add_action( 'admin_init', __NAMESPACE__ . '\Settings\register_admin_content_settings' );
 	add_action( 'admin_notices', __NAMESPACE__ . '\Settings\admin_welcome_notice' );
 	add_action( 'admin_notices', __NAMESPACE__ . '\Settings\admin_no_payment_pointer_notice' );
-	add_action( 'wp_ajax_dismiss_welcome_notice', __NAMESPACE__ . '\Settings\dismiss_welcome_notice' );
 	add_action( 'init', __NAMESPACE__ . '\maybe_update_database' );
 
 	// Term meta.
@@ -194,35 +193,39 @@ function load_full_assets() : void {
 		true
 	);
 
-	$site_logo = false;
-	if ( function_exists( 'get_custom_logo' ) ) {
-		$site_logo = get_custom_logo();
-	}
-
-	$coil_logo = '<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM22.2293 20.7672C21.8378 19.841 21.2786 19.623 20.8498 19.623C20.6964 19.623 20.5429 19.6534 20.4465 19.6725C20.4375 19.6743 20.429 19.676 20.421 19.6775C20.2663 19.7435 20.1103 19.8803 19.9176 20.0493C19.3674 20.5319 18.5178 21.277 16.5435 21.3846H16.2266C14.1759 21.3846 12.2744 20.3313 11.305 18.6423C10.8576 17.8433 10.6339 16.9534 10.6339 16.0635C10.6339 15.0283 10.9322 13.975 11.5474 13.067C12.0134 12.3587 12.9269 11.2145 14.5674 10.7242C15.3504 10.4881 16.0401 10.3973 16.6367 10.3973C18.5009 10.3973 19.3584 11.3598 19.3584 12.0681C19.3584 12.4495 19.1161 12.7582 18.65 12.8127C18.5941 12.8309 18.5568 12.8309 18.5009 12.8309C18.3331 12.8309 18.1467 12.7945 17.9976 12.7037C17.9416 12.6674 17.8671 12.6493 17.7925 12.6493C17.2146 12.6493 16.413 13.6299 16.413 14.4653C16.413 15.0828 16.8604 15.6276 18.184 15.6276C18.4049 15.6276 18.6392 15.6016 18.9094 15.5716C18.9584 15.5661 19.0086 15.5606 19.0602 15.555C20.5142 15.3552 21.7633 14.3382 22.1361 13.0125C22.192 12.849 22.248 12.5766 22.248 12.2134C22.248 11.378 21.9124 10.0886 20.2905 8.90811C19.1347 8.05455 17.8111 7.80029 16.618 7.80029C15.3877 7.80029 14.3064 8.07271 13.6912 8.27248C11.2677 9.05339 9.88822 10.4881 9.17981 11.5778C8.26635 12.9398 7.80029 14.5198 7.80029 16.0998C7.80029 17.4619 8.13585 18.8058 8.82561 20.0226C10.2983 22.6014 13.1506 24.1996 16.2266 24.1996C16.3011 24.1996 16.3804 24.195 16.4596 24.1905C16.5388 24.186 16.618 24.1814 16.6926 24.1814C18.7619 24.0725 22.3225 22.6922 22.3225 21.1667C22.3225 21.0396 22.2853 20.8943 22.2293 20.7672Z" fill="black"/></svg>';
-
-	$coil_logo_white = '<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 6.66667C0 2.98477 2.98477 0 6.66667 0H25.3333C29.0152 0 32 2.98477 32 6.66667V25.3333C32 29.0152 29.0152 32 25.3333 32H6.66667C2.98477 32 0 29.0152 0 25.3333V6.66667Z" fill="white"/><path d="M21.0116 19.7656C21.4391 19.7656 21.9967 19.9825 22.3871 20.9042C22.4428 21.0307 22.48 21.1753 22.48 21.3018C22.48 22.8199 18.9297 24.1935 16.8664 24.3019C16.7177 24.3019 16.5504 24.32 16.4017 24.32C13.3347 24.32 10.4908 22.7296 9.02234 20.1632C8.33458 18.9523 8 17.6149 8 16.2594C8 14.687 8.4647 13.1147 9.37551 11.7592C10.0818 10.6748 11.4574 9.24704 13.8738 8.4699C14.4872 8.2711 15.5653 8 16.7921 8C17.9817 8 19.3015 8.25302 20.4539 9.10246C22.0711 10.2772 22.4056 11.5604 22.4056 12.3918C22.4056 12.7532 22.3499 13.0243 22.2941 13.187C21.9224 14.5063 20.677 15.5184 19.2271 15.7172C18.8925 15.7534 18.6137 15.7895 18.3535 15.7895C17.0337 15.7895 16.5876 15.2473 16.5876 14.6328C16.5876 13.8015 17.3869 12.8255 17.9631 12.8255C18.0375 12.8255 18.1118 12.8436 18.1676 12.8797C18.3163 12.9701 18.5022 13.0062 18.6695 13.0062C18.7252 13.0062 18.7624 13.0062 18.8182 12.9882C19.2829 12.934 19.5245 12.6267 19.5245 12.2472C19.5245 11.5423 18.6695 10.5845 16.8107 10.5845C16.2159 10.5845 15.5281 10.6748 14.7474 10.9098C13.1117 11.3977 12.2009 12.5363 11.7362 13.2412C11.1228 14.1448 10.8254 15.1931 10.8254 16.2233C10.8254 17.1088 11.0484 17.9944 11.4945 18.7896C12.4611 20.4704 14.3571 21.5187 16.4017 21.5187C16.5133 21.5187 16.6062 21.5187 16.7177 21.5187C19.3758 21.3741 19.9892 20.0728 20.584 19.8198C20.677 19.8017 20.8443 19.7656 21.0116 19.7656Z" fill="#2D333A"/></svg>';
-
 	$strings = apply_filters(
 		'coil_js_ui_messages',
 		[
-			'content_container'       => Admin\get_css_selector(),
-			'paywall_title'           => Admin\get_paywall_text_settings_or_default( 'coil_paywall_title' ),
-			'loading_content'         => __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' ),
-			'paywall_message'         => Admin\get_paywall_text_settings_or_default( 'coil_paywall_message' ),
-			'paywall_button_text'     => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_text' ),
-			'paywall_button_link'     => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_link' ),
-			'show_promotion_bar'      => Admin\get_coil_button_setting( 'coil_show_promotion_bar' ),
-			'post_excerpt'            => get_the_excerpt(),
-			'coil_message_branding'   => Admin\get_paywall_appearance_setting( 'coil_message_branding' ),
-			'site_logo'               => $site_logo,
-			'coil_logo'               => $coil_logo,
-			'coil_logo_white'         => $coil_logo_white,
-			'exclusive_message_theme' => Admin\get_paywall_appearance_setting( 'coil_message_color_theme' ),
-			'font_selection'          => Admin\get_paywall_appearance_setting( 'coil_message_font' ),
+			'content_container'           => Admin\get_css_selector(),
+			'paywall_title'               => Admin\get_paywall_text_settings_or_default( 'coil_paywall_title' ),
+			'loading_content'             => __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' ),
+			'paywall_message'             => Admin\get_paywall_text_settings_or_default( 'coil_paywall_message' ),
+			'coil_button_unpaid_message'  => Admin\get_coil_button_setting( 'coil_button_text', true ),
+			'coil_button_paid_message'    => Admin\get_coil_button_setting( 'coil_members_button_text', true ),
+			'show_coil_button_to_members' => Admin\get_coil_button_setting( 'coil_button_member_display' ),
+			'coil_button_link'            => Admin\get_coil_button_setting( 'coil_button_link', true ),
+			'paywall_button_text'         => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_text' ),
+			'paywall_button_link'         => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_link' ),
+			'post_excerpt'                => get_the_excerpt(),
+			'coil_message_branding'       => Admin\get_paywall_appearance_setting( 'coil_message_branding' ),
+			'coil_button_theme'           => Admin\get_coil_button_setting( 'coil_button_color_theme' ),
+			'coil_button_size'            => Admin\get_coil_button_setting( 'coil_button_size' ),
+			'coil_button_position'        => Admin\get_coil_button_setting( 'coil_button_position' ),
+			'button_margin_top'           => Admin\get_coil_button_margins( 'coil_button_top_margin' ),
+			'button_margin_right'         => Admin\get_coil_button_margins( 'coil_button_right_margin' ),
+			'button_margin_bottom'        => Admin\get_coil_button_margins( 'coil_button_bottom_margin' ),
+			'button_margin_left'          => Admin\get_coil_button_margins( 'coil_button_left_margin' ),
+			'coil_button_enabled'         => Admin\is_coil_button_enabled(),
+			'site_logo'                   => Admin\get_site_logo_src(),
+			'coil_logo'                   => plugin_dir_url( __DIR__ ) . 'assets/images/coil-icn-black.svg',
+			'coil_logo_streaming'         => plugin_dir_url( __DIR__ ) . 'assets/images/coil-icn-black-streaming.svg',
+			'coil_logo_white'             => plugin_dir_url( __DIR__ ) . 'assets/images/coil-icn-white.svg',
+			'coil_logo_white_streaming'   => plugin_dir_url( __DIR__ ) . 'assets/images/coil-icn-white-streaming.svg',
+			'exclusive_message_theme'     => Admin\get_paywall_appearance_setting( 'coil_message_color_theme' ),
+			'font_selection'              => Admin\get_paywall_appearance_setting( 'coil_message_font' ),
 
 			/* translators: 1 + 2) HTML link tags (to the Coil settings page). */
-			'admin_missing_id_notice' => sprintf( __( 'This post is monetized but you have not set your payment pointer ID in the %1$sCoil settings page%2$s. Only content set to show for all visitors will show.', 'coil-web-monetization' ), '<a href="' . admin_url( 'admin.php?page=coil' ) . '">', '</a>' ),
+			'admin_missing_id_notice'     => sprintf( __( 'This post is monetized but you have not set your payment pointer ID in the %1$sCoil settings page%2$s. Only content set to show for all visitors will show.', 'coil-web-monetization' ), '<a href="' . admin_url( 'admin.php?page=coil' ) . '">', '</a>' ),
 		],
 		get_queried_object_id()
 	);
@@ -280,7 +283,7 @@ function load_plugin_templates() : void {
 		require_once plugin_dir_path( __FILE__ ) . '../templates/messages/subscriber-only-message.php';
 		require_once plugin_dir_path( __FILE__ ) . '../templates/messages/split-content-message.php';
 	}
-	require_once plugin_dir_path( __FILE__ ) . '../templates/messages/banner-message.php';
+	require_once plugin_dir_path( __FILE__ ) . '../templates/messages/coil-button-message.php';
 }
 
 /**
@@ -296,30 +299,36 @@ function add_body_class( $classes ) : array {
 		return $classes;
 	}
 
+	$object_id                 = get_queried_object_id();
 	$payment_pointer_id        = Admin\get_payment_pointer_setting();
 	$exclusive_content_enabled = Admin\is_exclusive_content_enabled();
 
 	// Transfer old post meta into new format
-	Transfers\update_post_meta( get_queried_object_id() );
+	Transfers\update_post_meta( $object_id );
 
 	// If content is not monetized, or exclusive content has been disabled,
 	// then the coil-exclusive class cannot be added to the content.
 	// This is an additional check to ensure that the incompatible not-monetized and exclusive state cannot be reached.
-	if ( Gating\is_content_monetized( get_queried_object_id() ) ) {
+	if ( Gating\is_content_monetized( $object_id ) ) {
 		$classes[] = 'monetization-not-initialized';
 
-		$coil_monetization_status = Gating\get_content_status( get_queried_object_id(), 'monetization' );
+		$coil_monetization_status = Gating\get_content_status( $object_id, 'monetization' );
 		$classes[]                = sanitize_html_class( 'coil-' . $coil_monetization_status );
 		if ( ! $exclusive_content_enabled ) {
 			$coil_visibility_status = Admin\get_visibility_default();
 		} else {
-			$coil_visibility_status = Gating\get_content_status( get_queried_object_id(), 'visibility' );
+			$coil_visibility_status = Gating\get_content_status( $object_id, 'visibility' );
 		}
 		$classes[] = sanitize_html_class( 'coil-' . $coil_visibility_status );
 
+		$coil_button_status = Admin\get_coil_button_status( $object_id );
+		if ( $coil_button_status !== '' ) {
+			$classes[] = sanitize_html_class( $coil_button_status );
+		}
+
 		if ( ! empty( $payment_pointer_id ) ) {
 			if ( $exclusive_content_enabled ) {
-				$classes[] = ( Gating\is_excerpt_visible( get_queried_object_id() ) ) ? 'coil-show-excerpt' : 'coil-hide-excerpt';
+				$classes[] = ( Gating\is_excerpt_visible( $object_id ) ) ? 'coil-show-excerpt' : 'coil-hide-excerpt';
 			}
 		} else {
 			// Error: payment pointer ID is missing.

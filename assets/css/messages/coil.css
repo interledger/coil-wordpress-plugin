@@ -391,73 +391,98 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
       line-height: 27px;
       padding: 50px; } }
 
-.coil-banner-message-container {
-  bottom: 0;
-  color: rgba(0, 0, 0, 0.7);
+.coil-button-message-container {
+  display: flex;
   position: fixed;
   width: 100%;
   z-index: 200; }
-  @media only screen and (min-width: 768px) {
-    .coil-banner-message-container {
-      display: flex;
-      justify-content: center; } }
-  .coil-banner-message-container .banner-message-inner {
-    background-color: #fff;
-    border: 1px solid #e3e3e3;
+  @media only screen and (max-width: 768px) {
+    .coil-button-message-container {
+      display: none; } }
+  .coil-button-message-container .coil-button {
+    background-color: #2d333a;
+    border-radius: 6px;
     box-shadow: 0 6px 10px 0 rgba(194, 194, 194, 0.1);
     font-family: 'Open Sans', sans-serif;
-    padding: 23px 16px 16px;
-    position: relative; }
-    @media only screen and (min-width: 768px) {
-      .coil-banner-message-container .banner-message-inner {
-        align-items: center;
-        background-color: rgba(255, 255, 255, 0.8);
-        border-radius: 6px;
-        display: flex;
-        justify-content: space-around;
-        margin-bottom: 20px;
-        padding: 12px 32px; } }
-  .coil-banner-message-container .coil-banner-message-content {
-    font-size: 12px;
-    line-height: 17px;
-    margin: 22px 0 5px; }
-    @media only screen and (min-width: 768px) {
-      .coil-banner-message-container .coil-banner-message-content {
-        font-size: 14px;
-        line-height: 20px;
-        margin: 0;
-        max-width: 434px; } }
-  .coil-banner-message-container .coil-banner-message-button {
-    background-color: #2c333a;
-    border-radius: 6px;
-    color: #fff;
-    font-size: 14px;
+    font-size: 17px;
     font-weight: 600;
     line-height: 20px;
-    margin: 0;
-    padding: 8px 24px;
-    text-align: center;
-    text-decoration: none; }
-    .coil-banner-message-container .coil-banner-message-button:hover {
-      background-color: #494949; }
+    overflow: visible;
+    position: relative;
+    text-align: center; }
+    .coil-button-message-container .coil-button a {
+      border-radius: 6px;
+      display: flex;
+      flex-direction: row;
+      padding: 8px;
+      text-decoration: none; }
+      .coil-button-message-container .coil-button a div {
+        color: #fff;
+        margin: auto;
+        padding-left: 8px;
+        padding-right: 8px; }
+      .coil-button-message-container .coil-button a img {
+        height: 24px;
+        width: 24px; }
     @media only screen and (min-width: 768px) {
-      .coil-banner-message-container .coil-banner-message-button {
-        margin: 0 32px 0 67px; } }
-  .coil-banner-message-container .coil-banner-message-dismiss {
-    color: #777;
-    cursor: pointer;
-    font-size: 26px;
-    font-weight: 700;
-    line-height: 1.1;
-    position: absolute;
-    right: 12px;
-    top: 10px; }
-    @media only screen and (min-width: 768px) {
-      .coil-banner-message-container .coil-banner-message-dismiss {
-        font-size: 35px;
-        position: relative;
-        right: auto;
-        top: auto; } }
+      .coil-button-message-container .coil-button {
+        justify-content: space-around;
+        max-width: 434px; } }
+    .coil-button-message-container .coil-button .coil-button-dismiss {
+      background-color: #777;
+      border-radius: 100%;
+      color: #fff;
+      cursor: pointer;
+      display: none;
+      font-size: 20px;
+      font-weight: 700;
+      height: 20px;
+      line-height: 20px;
+      position: absolute;
+      right: -7px;
+      top: -7px;
+      width: 20px; }
+      .coil-button-message-container .coil-button .coil-button-dismiss:hover {
+        background-color: #c92c2c; }
+
+.coil-button-message-container.bottom {
+  bottom: 0;
+  margin-bottom: 20px; }
+
+.coil-button-message-container.top {
+  margin-top: 20px;
+  top: 0; }
+
+.coil-button-message-container.right {
+  justify-content: right; }
+
+.coil-button-message-container.left {
+  justify-content: left; }
+
+.coil-button-message-container.coil-light-theme .coil-button {
+  background-color: #fff; }
+  .coil-button-message-container.coil-light-theme .coil-button a div {
+    color: #000; }
+
+body:not(.monetization-initialized) .coil-button-message-container .coil-button:hover {
+  background-color: #444; }
+
+body:not(.monetization-initialized) .coil-button-message-container.coil-light-theme .coil-button:hover {
+  background-color: #e3e5e9; }
+
+.coil-button-message-container.coil-button-small .coil-button {
+  font-size: 14px;
+  line-height: 17px; }
+  .coil-button-message-container.coil-button-small .coil-button a img {
+    height: 16px;
+    width: 16px; }
+  .coil-button-message-container.coil-button-small .coil-button .coil-button-dismiss {
+    font-size: 14px;
+    height: 14px;
+    line-height: 14px;
+    right: -5px;
+    top: -5px;
+    width: 14px; }
 
 a.coil-serverside-message-button {
   background-color: #2c333a;
