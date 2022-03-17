@@ -198,13 +198,17 @@ function load_admin_assets() : void {
 				'light' => plugin_dir_url( dirname( __DIR__ ) ) . 'assets/images/coil-icn-black.svg',
 				'dark'  => plugin_dir_url( dirname( __DIR__ ) ) . 'assets/images/coil-icn-white.svg',
 			],
+			'coil_streaming_logo_url'               => [
+				'light' => plugin_dir_url( dirname( __DIR__ ) ) . 'assets/images/coil-icn-black-streaming.svg',
+				'dark'  => plugin_dir_url( dirname( __DIR__ ) ) . 'assets/images/coil-icn-white-streaming.svg',
+			],
 			'not_monetized_post_types'    => get_post_types_with_status( 'monetization', 'not-monetized' ),
 			'exclusive_post_types'        => get_post_types_with_status( 'visibility', 'exclusive' ),
 			'general_modal_msg'           => __( 'Removing monetization from {postTypes} will set them as public by default.', 'coil-web-monetization' ),
 			'exclusive_modal_msg'         => __( 'Making {postTypes} exclusive will also set them as monetized by default.', 'coil-web-monetization' ),
 			'invalid_payment_pointer_msg' => __( 'Please provide a valid payment pointer', 'coil-web-monetization' ),
 			'invalid_blank_input_msg'     => __( 'Field cannot be blank', 'coil-web-monetization' ),
-			'invalid_url_message'         => __( 'Please provide a valid URL', 'coil-web-monetization' ),
+			'invalid_url_msg'             => __( 'Please provide a valid URL', 'coil-web-monetization' ),
 		]
 	);
 

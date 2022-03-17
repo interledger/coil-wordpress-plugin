@@ -8,17 +8,20 @@
 	const siteLogoUrl = coilAdminParams.site_logo_url,
 		lightCoilLogoUrl = coilAdminParams.coil_logo_url.light,
 		darkCoilLogoUrl = coilAdminParams.coil_logo_url.dark,
+		lightStreamingCoilLogoUrl = coilAdminParams.coil_streaming_logo_url.light,
+		darkStreamingCoilLogoUrl = coilAdminParams.coil_streaming_logo_url.dark,
 		notMonetizedPostTypes = coilAdminParams.not_monetized_post_types,
 		exclusivePostTypes = coilAdminParams.exclusive_post_types,
 		generalModalMsg = coilAdminParams.general_modal_msg,
 		exclusiveModalMsg = coilAdminParams.exclusive_modal_msg,
 		invalidPaymentPointerMsg = coilAdminParams.invalid_payment_pointer_msg,
 		invalidBlankInputMsg = coilAdminParams.invalid_blank_input_msg,
-		invalidUrlMsg = coilAdminParams.invalid_url_message;
+		invalidUrlMsg = coilAdminParams.invalid_url_msg;
 
-	const activeTabID = $( '.nav-tab-wrapper a.nav-tab-active' ).attr( 'id' );
-	const red = '#EE4852';
-	const initialFormData = $( 'form' ).serialize();
+	const activeTabID = $( '.nav-tab-wrapper a.nav-tab-active' ).attr( 'id' ),
+		red = '#EE4852',
+		initialFormData = $( 'form' ).serialize();
+
 	// formSubmitting keeps track of whether the submit event fired prior to the beforeunload event.
 	let formSubmitting = false;
 
@@ -343,15 +346,48 @@
 	} );
 
 	$( document ).on( 'input', '#coil_content_container', function() {
-		const cssInputElement = $( '#coil_content_container' );
-		const onlyWhiteSpace = /^\s+$/;
-		const validityCondition = ! onlyWhiteSpace.test( $( this ).val() );
+		const cssInputElement = $( '#coil_content_container' ),
+			onlyWhiteSpace = /^\s+$/,
+			validityCondition = ! onlyWhiteSpace.test( $( this ).val() );
+
 		inputValidityHandler( cssInputElement, validityCondition, true, invalidBlankInputMsg );
 	} );
 
 	/* ------------------------------------------------------------------------ *
 	* Coil Button tab
 	* ------------------------------------------------------------------------ */
+
+	$( document ).on( 'input', '#coil_button_text', function() {
+		const buttonTextElement = $(this),
+			inputVal = buttonTextElement.val(),
+			onlyWhiteSpace = /^\s+$/,
+			validityCondition = ! onlyWhiteSpace.test( $( this ).val() ),
+			previewSelector = 'div.coil-preview.coil-non-members .coil-button div > div';
+
+		inputValidityHandler( buttonTextElement, validityCondition, true, invalidBlankInputMsg );
+
+		if ( inputVal !== '' && ! onlyWhiteSpace.test( inputVal ) ) {
+			$( previewSelector ).text( inputVal );
+		} else {
+			$( previewSelector ).text( $( this ).attr( 'placeholder' ) );
+		}
+	} );
+
+	$( document ).on( 'input', '#coil_members_button_text', function() {
+		const buttonTextElement = $(this),
+			inputVal = buttonTextElement.val(),
+			onlyWhiteSpace = /^\s+$/,
+			validityCondition = ! onlyWhiteSpace.test( inputVal ),
+			previewSelector = 'div.coil-preview.coil-members .coil-button div > div';
+
+		inputValidityHandler( buttonTextElement, validityCondition, true, invalidBlankInputMsg );
+
+		if ( inputVal !== '' && ! onlyWhiteSpace.test( inputVal ) ) {
+			$( previewSelector ).text( inputVal );
+		} else {
+			$( previewSelector ).text( $( this ).attr( 'placeholder' ) );
+		}
+	} );
 
 	$( document ).on( 'change', 'input[name="coil_button_settings_group[coil_button_toggle]"]', function() {
 		$( '.coil-button-section' ).toggle();
@@ -372,4 +408,41 @@
 		const validityCondition = ! onlyWhiteSpace.test( $( this ).val() );
 		inputValidityHandler( buttonLinkElement, validityCondition, true, invalidBlankInputMsg );
 	} );
+
+	$( document ).on( 'change', 'input[name="coil_button_settings_group[coil_button_color_theme]"]', function() {
+		const coilTheme = $( this ).val()
+
+		let logoSrc = '',
+			logoStreamingSrc = '';
+
+		$( '.coil-preview .coil-button' ).attr( 'data-theme', coilTheme );
+
+		if ( 'light' === coilTheme ) {
+			logoSrc          = lightCoilLogoUrl;
+			logoStreamingSrc = lightStreamingCoilLogoUrl;
+		} else {
+			logoSrc          = darkCoilLogoUrl;
+			logoStreamingSrc = darkStreamingCoilLogoUrl;
+		}
+
+		$( '.coil-preview.coil-non-members .coil-button-image' ).attr( 'src', logoSrc );
+		$( '.coil-preview.coil-members .coil-button-image' ).attr( 'src', logoStreamingSrc );
+	} );
+
+	$( document ).on( 'change', 'input[name="coil_button_settings_group[coil_button_member_display]"]', function() {
+		$( 'div.coil-preview.coil-members' ).toggleClass( 'hide' );
+	} );
+
+	$( document ).on( 'change', 'input[name="coil_button_settings_group[coil_button_size]"]', function() {
+		const buttonSize = $( this ).val()
+
+		$( '.coil-preview .coil-button' ).attr( 'data-size', buttonSize );
+	} );
+
+	$( document ).on( 'change', 'select[name="coil_button_settings_group[coil_button_position]"]', function() {
+		const buttonPosition = $( this ).val()
+
+		$( '.coil-preview .coil-button' ).attr( 'data-position', buttonPosition );
+	} );
+
 }( jQuery ) );

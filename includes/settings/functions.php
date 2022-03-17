@@ -1189,72 +1189,109 @@ function coil_settings_enable_coil_button_toggle_render_callback() {
 function coil_settings_coil_button_settings_render_callback() {
 	?>
 	<div class="tab-styling coil-button-section">
-		<?php
-		$defaults = Admin\get_coil_button_defaults();
+		<div class="coil-row">
+			<div class="coil-column-7">
+				<?php
+				$defaults = Admin\get_coil_button_defaults();
 
-		Rendering\render_settings_section_heading(
-			__( 'Button Settings', 'coil-web-monetization' )
-		);
+				Rendering\render_settings_section_heading(
+					__( 'Button Settings', 'coil-web-monetization' )
+				);
 
-		// Render the Coil button text input field
-		$coil_button_text_id = 'coil_button_text';
-		Rendering\render_text_input_field(
-			$coil_button_text_id,
-			'coil_button_settings_group[' . $coil_button_text_id . ']',
-			Admin\get_coil_button_setting( $coil_button_text_id ),
-			$defaults[ $coil_button_text_id ],
-			__( 'Button Text', 'coil-web-monetization' )
-		);
+				// Render the Coil button text input field
+				$coil_button_text_id = 'coil_button_text';
+				Rendering\render_text_input_field(
+					$coil_button_text_id,
+					'coil_button_settings_group[' . $coil_button_text_id . ']',
+					Admin\get_coil_button_setting( $coil_button_text_id ),
+					$defaults[ $coil_button_text_id ],
+					__( 'Button Text', 'coil-web-monetization' )
+				);
 
-		// Render the Coil button link input field
-		$coil_button_link_id = 'coil_button_link';
-		Rendering\render_text_input_field(
-			$coil_button_link_id,
-			'coil_button_settings_group[' . $coil_button_link_id . ']',
-			Admin\get_coil_button_setting( $coil_button_link_id ),
-			$defaults[ $coil_button_link_id ],
-			__( 'Button Link', 'coil-web-monetization' ),
-			__( 'If you have an affiliate link add it here.', 'coil-web-monetization' )
-		);
+				// Render the Coil button link input field
+				$coil_button_link_id = 'coil_button_link';
+				Rendering\render_text_input_field(
+					$coil_button_link_id,
+					'coil_button_settings_group[' . $coil_button_link_id . ']',
+					Admin\get_coil_button_setting( $coil_button_link_id ),
+					$defaults[ $coil_button_link_id ],
+					__( 'Button Link', 'coil-web-monetization' ),
+					__( 'If you have an affiliate link add it here.', 'coil-web-monetization' )
+				);
 
-		$coil_button_member_display_id = 'coil_button_member_display';
-		Rendering\render_checkbox_that_toggles_content(
-			$coil_button_member_display_id,
-			'coil_button_settings_group[' . $coil_button_member_display_id . ']',
-			__( 'Show button for Coil Members', 'coil-web-monetization' ),
-			Admin\get_coil_button_setting( $coil_button_member_display_id )
-		);
+				$coil_button_member_display_id = 'coil_button_member_display';
+				Rendering\render_checkbox_that_toggles_content(
+					$coil_button_member_display_id,
+					'coil_button_settings_group[' . $coil_button_member_display_id . ']',
+					__( 'Show button for Coil Members', 'coil-web-monetization' ),
+					Admin\get_coil_button_setting( $coil_button_member_display_id )
+				);
 
-		// Render the Coil button member text input field
-		$coil_button_member_text_id = 'coil_members_button_text';
-		Rendering\render_text_input_field(
-			$coil_button_member_text_id,
-			'coil_button_settings_group[' . $coil_button_member_text_id . ']',
-			Admin\get_coil_button_setting( $coil_button_member_text_id ),
-			$defaults[ $coil_button_member_text_id ],
-			__( 'Message for Coil Members', 'coil-web-monetization' )
-		);
+				// Render the Coil button member text input field
+				$coil_button_member_text_id = 'coil_members_button_text';
+				Rendering\render_text_input_field(
+					$coil_button_member_text_id,
+					'coil_button_settings_group[' . $coil_button_member_text_id . ']',
+					Admin\get_coil_button_setting( $coil_button_member_text_id ),
+					$defaults[ $coil_button_member_text_id ],
+					__( 'Message for Coil Members', 'coil-web-monetization' )
+				);
 
-		Rendering\render_input_field_heading(
-			__( 'Color Theme', 'coil-web-monetization' )
-		);
-		button_theme_render_callback();
+				Rendering\render_input_field_heading(
+					__( 'Color Theme', 'coil-web-monetization' )
+				);
+				button_theme_render_callback();
 
-		Rendering\render_input_field_heading(
-			__( 'Button Size', 'coil-web-monetization' )
-		);
-		button_size_render_callback();
+				Rendering\render_input_field_heading(
+					__( 'Button Size', 'coil-web-monetization' )
+				);
+				button_size_render_callback();
 
-		Rendering\render_input_field_heading(
-			__( 'Button Position on Screen', 'coil-web-monetization' )
-		);
-		buton_position_dropdown();
+				Rendering\render_input_field_heading(
+					__( 'Button Position on Screen', 'coil-web-monetization' )
+				);
+				buton_position_dropdown();
 
-		Rendering\render_input_field_heading(
-			__( 'Button Margin (PX)', 'coil-web-monetization' )
-		);
-		render_buton_margin_settings();
-		?>
+				Rendering\render_input_field_heading(
+					__( 'Button Margin (PX)', 'coil-web-monetization' )
+				);
+				render_buton_margin_settings();
+				?>
+			</div>
+			<div class="coil-column-5">
+				<?php
+				Rendering\render_input_field_heading(
+						__( 'Preview', 'coil-web-monetization' )
+				);
+
+				$coil_button_position  = Admin\get_coil_button_setting( 'coil_button_position' );
+				$coil_button_size  = Admin\get_coil_button_setting( 'coil_button_size' );
+				$coil_button_theme = Admin\get_coil_button_setting( 'coil_button_color_theme' );
+				$coil_button_member_display = Admin\get_coil_button_setting( 'coil_button_member_display' );
+
+				$coil_logo_type = ( $coil_button_theme === 'light' ? 'black' : 'white' );
+				?>
+
+				<div class="coil-preview coil-non-members stacked">
+					<p><?php _e( 'Without Coil Membership', 'coil-web-monetization' ); ?></p>
+					<div class="coil-button" data-theme="<?php echo esc_attr( $coil_button_theme ); ?>" data-position="<?php echo esc_attr( $coil_button_position ); ?>" data-size="<?php echo esc_attr( $coil_button_size ); ?>">
+						<div>
+							<?php printf( '<img class="%s" src="%s" />', 'coil-button-image', plugin_dir_url( COIL__FILE__ ) . 'assets/images/coil-icn-' . $coil_logo_type . '.svg'  ); ?>
+							<div><?php echo Admin\get_coil_button_setting( 'coil_button_text', true ); ?></div>
+						</div>
+					</div>
+				</div>
+				<div class="coil-preview coil-members stacked <?php echo $coil_button_member_display ?: 'hide'; ?>">
+					<p><?php _e( 'With Coil Membership', 'coil-web-monetization' ); ?></p>
+					<div class="coil-button" data-theme="<?php echo esc_attr( $coil_button_theme ); ?>" data-position="<?php echo esc_attr( $coil_button_position ); ?>" data-size="<?php echo esc_attr( $coil_button_size ); ?>">
+						<div>
+							<?php printf( '<img class="%s" src="%s" />', 'coil-button-image', plugin_dir_url( COIL__FILE__ ) . 'assets/images/coil-icn-' . $coil_logo_type . '-streaming.svg'  ); ?>
+							<div><?php echo Admin\get_coil_button_setting( 'coil_members_button_text', true ); ?></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<?php
 }

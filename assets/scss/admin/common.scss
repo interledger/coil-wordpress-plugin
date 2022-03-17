@@ -218,11 +218,22 @@
 					border: 1px solid #ccc;
 					border-radius: 3px;
 					display: flex;
+				  	flex-direction: column;
 					height: calc( 100% - 80px );
 					justify-content: center;
 					min-height: 350px;
 					padding: 15px;
+				  	position: relative;
 
+				  	&.stacked {
+					  	height: auto;
+					  	margin-bottom: 20px;
+					  	min-height: 240px;
+					}
+
+					&.hide {
+						display: none;
+					}
 					.coil-title-preview-container {
 						display: flex;
 						flex-direction: column;
@@ -335,6 +346,81 @@
 							margin-top: 15px;
 							padding: 12px;
 							width: 164px;
+						}
+					}
+
+					.coil-button {
+						background-color: $coil_button_message_color;
+						border-radius: 6px;
+						box-shadow: 0 6px 10px 0 $coil_button_message_shadow_color;
+					  	bottom: 10px;
+						font-family: 'Open Sans', sans-serif;
+						font-size: 17px;
+						font-weight: 600;
+						line-height: 10px;
+						overflow: visible;
+					  	position: absolute;
+					  	right: 10px;
+						text-align: center;
+
+					  	&[data-position="top-left"]{
+						  bottom: unset;
+						  right: unset;
+						  top: 10px;
+						  left: 10px;
+						}
+
+						&[data-position="top-right"]{
+						  bottom: unset;
+						  top: 10px;
+						}
+
+						&[data-position="bottom-left"]{
+						  bottom: 10px;
+						  left: 10px;
+						  right: unset;
+						}
+
+						div {
+							align-items: center;
+							border-radius: 6px;
+							display: flex;
+							flex-direction: row;
+							padding: 4px 8px;
+							text-decoration: none;
+
+							div {
+								color: $coil_button_font_color;
+								font-size: 14px;
+								font-weight: 400;
+								margin: auto;
+								padding-left: $message_spacing_baseline;
+								padding-right: $message_spacing_baseline;
+							}
+
+							img {
+								height: 24px;
+								width: 24px;
+							}
+						}
+
+						// Changes Coil button to implement light theme
+						&[data-theme="light"] {
+							background-color: $coil_button_message_color_light_theme;
+
+							div {
+								div {
+									  color: $coil_button_font_color_light_theme;
+								}
+							}
+						}
+
+					  	&[data-size="large"] {
+							div {
+								div {
+								  font-size: 17px;
+								}
+							}
 						}
 					}
 				}
