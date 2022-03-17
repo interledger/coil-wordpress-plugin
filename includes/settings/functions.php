@@ -1261,12 +1261,12 @@ function coil_settings_coil_button_settings_render_callback() {
 			<div class="coil-column-5">
 				<?php
 				Rendering\render_input_field_heading(
-						__( 'Preview', 'coil-web-monetization' )
+					__( 'Preview', 'coil-web-monetization' )
 				);
 
-				$coil_button_position  = Admin\get_coil_button_setting( 'coil_button_position' );
-				$coil_button_size  = Admin\get_coil_button_setting( 'coil_button_size' );
-				$coil_button_theme = Admin\get_coil_button_setting( 'coil_button_color_theme' );
+				$coil_button_position       = Admin\get_coil_button_setting( 'coil_button_position' );
+				$coil_button_size           = Admin\get_coil_button_setting( 'coil_button_size' );
+				$coil_button_theme          = Admin\get_coil_button_setting( 'coil_button_color_theme' );
 				$coil_button_member_display = Admin\get_coil_button_setting( 'coil_button_member_display' );
 
 				$coil_logo_type = ( $coil_button_theme === 'light' ? 'black' : 'white' );
@@ -1276,16 +1276,16 @@ function coil_settings_coil_button_settings_render_callback() {
 					<p><?php _e( 'Without Coil Membership', 'coil-web-monetization' ); ?></p>
 					<div class="coil-button" data-theme="<?php echo esc_attr( $coil_button_theme ); ?>" data-position="<?php echo esc_attr( $coil_button_position ); ?>" data-size="<?php echo esc_attr( $coil_button_size ); ?>">
 						<div>
-							<?php printf( '<img class="%s" src="%s" />', 'coil-button-image', plugin_dir_url( COIL__FILE__ ) . 'assets/images/coil-icn-' . $coil_logo_type . '.svg'  ); ?>
+							<?php printf( '<img class="%s" src="%s" />', 'coil-button-image', plugin_dir_url( COIL__FILE__ ) . 'assets/images/coil-icn-' . $coil_logo_type . '.svg' ); ?>
 							<div><?php echo Admin\get_coil_button_setting( 'coil_button_text', true ); ?></div>
 						</div>
 					</div>
 				</div>
-				<div class="coil-preview coil-members stacked <?php echo $coil_button_member_display ?: 'hide'; ?>">
+				<div class="coil-preview coil-members stacked <?php echo $coil_button_member_display === true ? '' : 'hide'; ?>">
 					<p><?php _e( 'With Coil Membership', 'coil-web-monetization' ); ?></p>
 					<div class="coil-button" data-theme="<?php echo esc_attr( $coil_button_theme ); ?>" data-position="<?php echo esc_attr( $coil_button_position ); ?>" data-size="<?php echo esc_attr( $coil_button_size ); ?>">
 						<div>
-							<?php printf( '<img class="%s" src="%s" />', 'coil-button-image', plugin_dir_url( COIL__FILE__ ) . 'assets/images/coil-icn-' . $coil_logo_type . '-streaming.svg'  ); ?>
+							<?php printf( '<img class="%s" src="%s" />', 'coil-button-image', plugin_dir_url( COIL__FILE__ ) . 'assets/images/coil-icn-' . $coil_logo_type . '-streaming.svg' ); ?>
 							<div><?php echo Admin\get_coil_button_setting( 'coil_members_button_text', true ); ?></div>
 						</div>
 					</div>

@@ -358,7 +358,7 @@
 	* ------------------------------------------------------------------------ */
 
 	$( document ).on( 'input', '#coil_button_text', function() {
-		const buttonTextElement = $(this),
+		const buttonTextElement = $( this ),
 			inputVal = buttonTextElement.val(),
 			onlyWhiteSpace = /^\s+$/,
 			validityCondition = ! onlyWhiteSpace.test( $( this ).val() ),
@@ -374,7 +374,7 @@
 	} );
 
 	$( document ).on( 'input', '#coil_members_button_text', function() {
-		const buttonTextElement = $(this),
+		const buttonTextElement = $( this ),
 			inputVal = buttonTextElement.val(),
 			onlyWhiteSpace = /^\s+$/,
 			validityCondition = ! onlyWhiteSpace.test( inputVal ),
@@ -410,7 +410,7 @@
 	} );
 
 	$( document ).on( 'change', 'input[name="coil_button_settings_group[coil_button_color_theme]"]', function() {
-		const coilTheme = $( this ).val()
+		const coilTheme = $( this ).val();
 
 		let logoSrc = '',
 			logoStreamingSrc = '';
@@ -418,10 +418,10 @@
 		$( '.coil-preview .coil-button' ).attr( 'data-theme', coilTheme );
 
 		if ( 'light' === coilTheme ) {
-			logoSrc          = lightCoilLogoUrl;
+			logoSrc = lightCoilLogoUrl;
 			logoStreamingSrc = lightStreamingCoilLogoUrl;
 		} else {
-			logoSrc          = darkCoilLogoUrl;
+			logoSrc = darkCoilLogoUrl;
 			logoStreamingSrc = darkStreamingCoilLogoUrl;
 		}
 
@@ -434,15 +434,14 @@
 	} );
 
 	$( document ).on( 'change', 'input[name="coil_button_settings_group[coil_button_size]"]', function() {
-		const buttonSize = $( this ).val()
+		const buttonSize = $( this ).val();
 
 		$( '.coil-preview .coil-button' ).attr( 'data-size', buttonSize );
 	} );
 
 	$( document ).on( 'change', 'select[name="coil_button_settings_group[coil_button_position]"]', function() {
-		const buttonPosition = $( this ).val()
+		const buttonPosition = $( this ).val();
 
 		$( '.coil-preview .coil-button' ).attr( 'data-position', buttonPosition );
 	} );
-
 }( jQuery ) );
