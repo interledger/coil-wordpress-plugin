@@ -5,74 +5,29 @@
 		return;
 	}
 
-	const ajaxUrl = coilAdminParams.ajax_url,
-		siteLogoUrl = coilAdminParams.site_logo_url,
+	const siteLogoUrl = coilAdminParams.site_logo_url,
 		lightCoilLogoUrl = coilAdminParams.coil_logo_url.light,
 		darkCoilLogoUrl = coilAdminParams.coil_logo_url.dark,
+		lightStreamingCoilLogoUrl = coilAdminParams.coil_streaming_logo_url.light,
+		darkStreamingCoilLogoUrl = coilAdminParams.coil_streaming_logo_url.dark,
 		notMonetizedPostTypes = coilAdminParams.not_monetized_post_types,
 		exclusivePostTypes = coilAdminParams.exclusive_post_types,
 		generalModalMsg = coilAdminParams.general_modal_msg,
-		exclusiveModalMsg = coilAdminParams.exclusive_modal_msg;
+		exclusiveModalMsg = coilAdminParams.exclusive_modal_msg,
+		invalidPaymentPointerMsg = coilAdminParams.invalid_payment_pointer_msg,
+		invalidBlankInputMsg = coilAdminParams.invalid_blank_input_msg,
+		invalidUrlMsg = coilAdminParams.invalid_url_msg;
 
-	const activeTabID = $( '.nav-tab-wrapper a.nav-tab-active' ).attr( 'id' );
-	const initialFormData = $( 'form' ).serialize();
+	const activeTabID = $( '.nav-tab-wrapper a.nav-tab-active' ).attr( 'id' ),
+		red = '#EE4852',
+		initialFormData = $( 'form' ).serialize();
+
 	// formSubmitting keeps track of whether the submit event fired prior to the beforeunload event.
 	let formSubmitting = false;
 
-	// Welcome notice
-	if ( activeTabID === 'coil-welcome-settings' ) {
-		const $welcomeNoticeDismissButton = $( '.coil-welcome-notice .notice-dismiss' );
-
-		// No welcome notice on this screen.
-		if ( ! $welcomeNoticeDismissButton ) {
-			return;
-		}
-
-		// Fire ajax request to dismiss notice permanently.
-		$welcomeNoticeDismissButton.on( 'click', function() {
-			$.ajax( {
-				url: ajaxUrl,
-				type: 'POST',
-				data: {
-					action: 'dismiss_welcome_notice',
-				},
-			} );
-		} );
-	}
-
-	// Exclusive Content tab
-	if ( activeTabID === 'coil-exclusive-settings' ) {
-		const exclusiveContentEnabled = $( 'input[name="coil_exclusive_settings_group[coil_exclusive_toggle]"]' ).is( ':checked' );
-		if ( exclusiveContentEnabled ) {
-			$( '*.exclusive-content' ).show();
-		} else {
-			$( '*.exclusive-content' ).hide();
-		}
-	}
-
-	// No payment pointer
-	if ( activeTabID === 'coil-general-settings' ) {
-		// No payment pointer warning
-		const noPaymentPointerNotice = $( '.coil-no-payment-pointer-notice' );
-		if ( noPaymentPointerNotice.length > 0 ) {
-			noPaymentPointerNotice.hide();
-
-			const settingsUpdated = $( '#setting-error-settings_updated' );
-			if ( settingsUpdated.length > 0 ) {
-				noPaymentPointerNotice.show();
-			}
-		}
-	}
-
-	// Display a modal when submitting incompatible global visibility and monetization defaults.
-	$( document ).on( 'submit', 'form', function() {
-		formSubmitting = true;
-		if ( activeTabID === 'coil-exclusive-settings' ) {
-			displayModal( event, notMonetizedPostTypes, '_visibility_exclusive', exclusiveModalMsg );
-		} else if ( activeTabID === 'coil-general-settings' ) {
-			displayModal( event, exclusivePostTypes, '_monetization_not-monetized', generalModalMsg );
-		}
-	} );
+	/* ------------------------------------------------------------------------ *
+	* Helper functions
+	* ------------------------------------------------------------------------ */
 
 	// Gets a list of post types that can cause conflicts (e.g. exclusive, or not-monetized).
 	// Checks each option on the current tab for the specified post types to see if anything incompatible has been selected.
@@ -105,11 +60,182 @@
 		}
 	}
 
-	$( document ).on( 'change', 'input[name="coil_exclusive_settings_group[coil_exclusive_toggle]"]', function() {
-		$( '.exclusive-content' ).toggle();
+	// Adds or removes alerting functionality for invalid input that is detected when focus leaves an input field.
+	function focusOutValidityHandler( inputElement, validCondition, msg ) {
+		const nextElement = inputElement.next();
+		let invalidMsgElement = null;
+		if ( nextElement !== null && nextElement.hasClass( 'invalid-input' ) ) {
+			invalidMsgElement = nextElement;
+		}
+		if ( ! validCondition ) {
+			inputElement.css( 'border-color', red );
+			if ( invalidMsgElement === null ) {
+				inputElement.after( '<p class="invalid-input" style="color: ' + red + '">' + msg + '</p>' );
+				const position = inputElement.prev().position();
+				let top;
+				if ( position !== undefined ) {
+					top = position.top;
+				} else {
+					top = 0;
+				}
+				$( 'html, body' ).animate( { scrollTop: top + 'px' } );
+			}
+		} else if ( invalidMsgElement !== null ) {
+			inputElement.removeAttr( 'style' );
+			invalidMsgElement.remove();
+		}
+	}
+
+	// Adds or removes alerting functionality for invalid input that is detected during changes to an input field.
+	function inputValidityHandler( inputElement, validCondition, alertWhileTyping, msg ) {
+		const nextElement = inputElement.next(),
+			onlyWhiteSpace = /^\s+$/;
+		let invalidMsgElement = null;
+
+		if ( nextElement !== null && nextElement.hasClass( 'invalid-input' ) ) {
+			invalidMsgElement = nextElement;
+		}
+		if ( invalidMsgElement !== null && validCondition ) {
+			inputElement.removeAttr( 'style' );
+			invalidMsgElement.remove();
+		} else if ( alertWhileTyping && onlyWhiteSpace.test( inputElement.val() ) && invalidMsgElement === null ) {
+			inputElement.css( 'border-color', red );
+			inputElement.after( '<p class="invalid-input" style="color: ' + red + '">' + msg + '</p>' );
+		}
+	}
+
+	// Returns a boolean indicating whether a URL is valid (true) or invalid (false)
+	function isValidUrl( string ) {
+		let url;
+		try {
+			url = new URL( string );
+		} catch ( _ ) {
+			return false;
+		}
+		return url.protocol === 'http:' || url.protocol === 'https:';
+	}
+
+	/* ------------------------------------------------------------------------ *
+	* Initial set-up
+	* ------------------------------------------------------------------------ */
+
+	// Welcome notice
+	if ( activeTabID === 'coil-welcome-settings' ) {
+		const $welcomeNotice = $( '.coil-welcome-notice' );
+
+		// No welcome notice on this screen.
+		if ( $welcomeNotice.length === 0 ) {
+			$( '.tab-styling .button-primary' ).show();
+		} else {
+			$( '.tab-styling .button-primary' ).hide();
+		}
+	}
+
+	// General Settings tab
+	if ( activeTabID === 'coil-general-settings' ) {
+		// No payment pointer warning
+		const noPaymentPointerNotice = $( '.coil-no-payment-pointer-notice' );
+		if ( noPaymentPointerNotice.length > 0 ) {
+			noPaymentPointerNotice.hide();
+
+			const settingsUpdated = $( '#setting-error-settings_updated' );
+			if ( settingsUpdated.length > 0 ) {
+				noPaymentPointerNotice.show();
+			}
+		}
+	}
+
+	// Exclusive Content tab
+	if ( activeTabID === 'coil-exclusive-settings' ) {
+		const exclusiveContentEnabled = $( 'input[name="coil_exclusive_settings_group[coil_exclusive_toggle]"]' ).is( ':checked' ),
+			siteLogoSelected = $( '#coil_branding option:selected' ).val() === 'site_logo';
+		if ( exclusiveContentEnabled ) {
+			$( '*.exclusive-content-section' ).show();
+		} else {
+			$( '*.exclusive-content-section' ).hide();
+		}
+
+		if ( siteLogoSelected ) {
+			$( '.set-site-logo-description' ).show();
+		} else {
+			$( '.set-site-logo-description' ).hide();
+		}
+	}
+
+	// Coil Button tab
+	if ( activeTabID === 'coil-button-settings' ) {
+		// Initial set-up
+		const coilButtonEnabled = $( 'input[name="coil_button_settings_group[coil_button_toggle]"]' ).is( ':checked' ),
+			coilButtonPreviewSelector = 'div.coil-preview.coil-non-members .coil-button div > div',
+			coilButtonMemberPreviewSelector = 'div.coil-preview.coil-members .coil-button div > div',
+			coilButton = $( '#coil_button_text' ),
+			coilMembersButton = $( '#coil_members_button_text' ),
+			onlyWhiteSpace = /^\s+$/;
+		if ( coilButtonEnabled ) {
+			$( '*.coil-button-section' ).show();
+		} else {
+			$( '*.coil-button-section' ).hide();
+		}
+
+		if ( onlyWhiteSpace.test( coilButton.val() ) ) {
+			$( coilButtonPreviewSelector ).hide();
+		}
+		if ( onlyWhiteSpace.test( coilMembersButton.val() ) ) {
+			$( coilButtonMemberPreviewSelector ).hide();
+		}
+	}
+
+	// A modal to alert users to unsaved settings
+	window.addEventListener( 'beforeunload', function( event ) {
+		if ( ! formSubmitting && initialFormData !== $( 'form' ).serialize() ) {
+			// Cancel the event, preventing default behavior will prompt the user.
+			event.preventDefault();
+			// Chrome requires returnValue to be set
+			event.returnValue = '';
+		} else {
+			delete event.returnValue;
+		}
 	} );
 
-	$( document ).on( 'keyup', '#coil_paywall_title', function() {
+	// Display a modal when submitting incompatible global visibility and monetization defaults.
+	$( document ).on( 'submit', 'form', function() {
+		formSubmitting = true;
+		if ( activeTabID === 'coil-exclusive-settings' ) {
+			displayModal( event, notMonetizedPostTypes, '_visibility_exclusive', exclusiveModalMsg );
+		} else if ( activeTabID === 'coil-general-settings' ) {
+			displayModal( event, exclusivePostTypes, '_monetization_not-monetized', generalModalMsg );
+		}
+	} );
+
+	/* ------------------------------------------------------------------------ *
+	* General Settings tab
+	* ------------------------------------------------------------------------ */
+
+	// Invalid input alert
+	$( document ).on( 'focusout', '#coil_payment_pointer', function() {
+		const paymentPointer = $( '#coil_payment_pointer' ),
+			pattern = /^(https:\/\/.)|^[\$]./,
+			validityCondition = pattern.test( $( this ).val() );
+		focusOutValidityHandler( paymentPointer, validityCondition, invalidPaymentPointerMsg );
+	} );
+
+	// Removes the invalid input warning if the input becomes valid
+	$( document ).on( 'input', '#coil_payment_pointer', function() {
+		const paymentPointer = $( '#coil_payment_pointer' ),
+			pattern = /^(https:\/\/.)|^[\$]./,
+			validityCondition = pattern.test( $( this ).val() );
+		inputValidityHandler( paymentPointer, validityCondition, false, '' );
+	} );
+
+	/* ------------------------------------------------------------------------ *
+	* Exclusive Settings tab
+	* ------------------------------------------------------------------------ */
+
+	$( document ).on( 'change', 'input[name="coil_exclusive_settings_group[coil_exclusive_toggle]"]', function() {
+		$( '.exclusive-content-section' ).toggle();
+	} );
+
+	$( document ).on( 'input', '#coil_paywall_title', function() {
 		if ( $( this ).val() !== '' ) {
 			$( '.coil-paywall-heading' ).text( $( this ).val() );
 		} else {
@@ -117,7 +243,7 @@
 		}
 	} );
 
-	$( document ).on( 'keyup', '#coil_paywall_message', function() {
+	$( document ).on( 'input', '#coil_paywall_message', function() {
 		if ( $( this ).val() !== '' ) {
 			$( '.coil-paywall-body' ).text( $( this ).val() );
 		} else {
@@ -125,22 +251,41 @@
 		}
 	} );
 
-	$( document ).on( 'keyup', '#coil_paywall_button_text', function() {
-		if ( $( this ).val() !== '' ) {
+	// Invalid input alert
+	$( document ).on( 'focusout', '#coil_paywall_button_text', function() {
+		const buttonTextElement = $( '#coil_paywall_button_text' ),
+			onlyWhiteSpace = /^\s+$/,
+			validityCondition = ! onlyWhiteSpace.test( $( this ).val() );
+		focusOutValidityHandler( buttonTextElement, validityCondition, invalidBlankInputMsg );
+	} );
+
+	$( document ).on( 'input', '#coil_paywall_button_text', function() {
+		const buttonTextElement = $( '#coil_paywall_button_text' ),
+			onlyWhiteSpace = /^\s+$/,
+			validityCondition = ! onlyWhiteSpace.test( $( this ).val() );
+		inputValidityHandler( buttonTextElement, validityCondition, true, invalidBlankInputMsg );
+
+		if ( $( this ).val() !== '' && ! onlyWhiteSpace.test( $( this ).val() ) ) {
 			$( '.coil-paywall-cta' ).text( $( this ).val() );
 		} else {
 			$( '.coil-paywall-cta' ).text( $( this ).attr( 'placeholder' ) );
 		}
 	} );
 
-	$( document ).on( 'change', 'input[name="coil_exclusive_settings_group[coil_title_padlock]"]', function() {
-		$( this ).closest( '.coil-row' ).find( '.coil-column-5' ).toggleClass( 'hidden' );
+	// Invalid input alert
+	$( document ).on( 'focusout', '#coil_paywall_button_link', function() {
+		const buttonLinkElement = $( '#coil_paywall_button_link' ),
+			validUrl = isValidUrl( $( this ).val() ),
+			validityCondition = validUrl || $( this ).val() === '';
+
+		focusOutValidityHandler( buttonLinkElement, validityCondition, invalidUrlMsg );
 	} );
 
-	$( document ).on( 'change', 'input[name="coil_exclusive_settings_group[coil_padlock_icon_position]"]', function() {
-		const padlockPosition = $( this ).val();
-
-		$( '.coil-title-preview-container' ).attr( 'data-padlock-icon-position', padlockPosition );
+	$( document ).on( 'input', '#coil_paywall_button_link', function() {
+		const buttonLinkElement = $( '#coil_paywall_button_link' ),
+			onlyWhiteSpace = /^\s+$/,
+			validityCondition = ! onlyWhiteSpace.test( $( this ).val() );
+		inputValidityHandler( buttonLinkElement, validityCondition, true, invalidBlankInputMsg );
 	} );
 
 	$( document ).on( 'change', 'input[name="coil_exclusive_settings_group[coil_message_color_theme]"]', function() {
@@ -162,6 +307,15 @@
 	} );
 
 	$( document ).on( 'change', '#coil_branding', function() {
+		const siteLogoSelected = $( '#coil_branding option:selected' ).val() === 'site_logo';
+		if ( siteLogoSelected ) {
+			$( '.set-site-logo-description' ).show();
+		} else {
+			$( '.set-site-logo-description' ).hide();
+		}
+	} );
+
+	$( document ).on( 'change', '#coil_branding', function() {
 		const logoSetting = $( this ).val(),
 			coilTheme = $( 'input[name="coil_exclusive_settings_group[coil_message_color_theme]"]:checked' ).val();
 
@@ -177,9 +331,24 @@
 			}
 		} else if ( logoSetting === 'site_logo' ) {
 			logoSrc = siteLogoUrl;
+			if ( logoSrc === '' ) {
+				$( '.site_logo' ).hide();
+			} else {
+				$( '.site_logo' ).show();
+			}
 		}
 
 		$( '.coil-paywall-image' ).attr( 'src', logoSrc );
+	} );
+
+	$( document ).on( 'change', 'input[name="coil_exclusive_settings_group[coil_title_padlock]"]', function() {
+		$( this ).closest( '.coil-row' ).find( '.coil-column-5' ).toggleClass( 'hidden' );
+	} );
+
+	$( document ).on( 'change', 'input[name="coil_exclusive_settings_group[coil_padlock_icon_position]"]', function() {
+		const padlockPosition = $( this ).val();
+
+		$( '.coil-title-preview-container' ).attr( 'data-padlock-icon-position', padlockPosition );
 	} );
 
 	$( document ).on( 'change', 'input[name="coil_exclusive_settings_group[coil_padlock_icon_style]"]', function() {
@@ -190,15 +359,103 @@
 		$padlockIcon.html( $selectedSvg );
 	} );
 
-	// A modal to alert users to unsaved settings
-	window.addEventListener( 'beforeunload', function( event ) {
-		if ( ! formSubmitting && initialFormData !== $( 'form' ).serialize() ) {
-			// Cancel the event, preventing default behavior will prompt the user.
-			event.preventDefault();
-			// Chrome requires returnValue to be set
-			event.returnValue = '';
+	$( document ).on( 'input', '#coil_content_container', function() {
+		const cssInputElement = $( '#coil_content_container' ),
+			onlyWhiteSpace = /^\s+$/,
+			validityCondition = ! onlyWhiteSpace.test( $( this ).val() );
+
+		inputValidityHandler( cssInputElement, validityCondition, true, invalidBlankInputMsg );
+	} );
+
+	/* ------------------------------------------------------------------------ *
+	* Coil Button tab
+	* ------------------------------------------------------------------------ */
+
+	$( document ).on( 'change', 'input[name="coil_button_settings_group[coil_button_toggle]"]', function() {
+		$( '.coil-button-section' ).toggle();
+	} );
+
+	$( document ).on( 'input', '#coil_button_text', function() {
+		const previewSelector = 'div.coil-preview.coil-non-members .coil-button div > div',
+			onlyWhiteSpace = /^\s+$/;
+		if ( $( this ).val() !== '' ) {
+			if ( ! onlyWhiteSpace.test( $( this ).val() ) ) {
+				$( previewSelector ).text( $( this ).val() );
+				$( previewSelector ).show();
+			} else {
+				$( previewSelector ).hide();
+			}
 		} else {
-			delete event.returnValue;
+			$( previewSelector ).text( $( this ).attr( 'placeholder' ) );
+			$( previewSelector ).show();
 		}
+	} );
+
+	// Invalid input alert
+	$( document ).on( 'focusout', '#coil_button_link', function() {
+		const buttonLinkElement = $( '#coil_button_link' ),
+			validUrl = isValidUrl( $( this ).val() ),
+			validityCondition = validUrl || $( this ).val() === '';
+
+		focusOutValidityHandler( buttonLinkElement, validityCondition, invalidUrlMsg );
+	} );
+
+	$( document ).on( 'input', '#coil_button_link', function() {
+		const buttonLinkElement = $( '#coil_button_link' ),
+			onlyWhiteSpace = /^\s+$/,
+			validityCondition = ! onlyWhiteSpace.test( $( this ).val() );
+		inputValidityHandler( buttonLinkElement, validityCondition, true, invalidBlankInputMsg );
+	} );
+
+	$( document ).on( 'input', '#coil_members_button_text', function() {
+		const previewSelector = 'div.coil-preview.coil-members .coil-button div > div',
+			onlyWhiteSpace = /^\s+$/;
+		if ( $( this ).val() !== '' ) {
+			if ( ! onlyWhiteSpace.test( $( this ).val() ) ) {
+				$( previewSelector ).text( $( this ).val() );
+				$( previewSelector ).show();
+			} else {
+				$( previewSelector ).hide();
+			}
+		} else {
+			$( previewSelector ).text( $( this ).attr( 'placeholder' ) );
+			$( previewSelector ).show();
+		}
+	} );
+
+	$( document ).on( 'change', 'input[name="coil_button_settings_group[coil_button_color_theme]"]', function() {
+		const coilTheme = $( this ).val();
+
+		let logoSrc = '',
+			logoStreamingSrc = '';
+
+		$( '.coil-preview .coil-button' ).attr( 'data-theme', coilTheme );
+
+		if ( 'light' === coilTheme ) {
+			logoSrc = lightCoilLogoUrl;
+			logoStreamingSrc = lightStreamingCoilLogoUrl;
+		} else {
+			logoSrc = darkCoilLogoUrl;
+			logoStreamingSrc = darkStreamingCoilLogoUrl;
+		}
+
+		$( '.coil-preview.coil-non-members .coil-button-image' ).attr( 'src', logoSrc );
+		$( '.coil-preview.coil-members .coil-button-image' ).attr( 'src', logoStreamingSrc );
+	} );
+
+	$( document ).on( 'change', 'input[name="coil_button_settings_group[coil_button_member_display]"]', function() {
+		$( 'div.coil-preview.coil-members' ).toggleClass( 'hide' );
+	} );
+
+	$( document ).on( 'change', 'input[name="coil_button_settings_group[coil_button_size]"]', function() {
+		const buttonSize = $( this ).val();
+
+		$( '.coil-preview .coil-button' ).attr( 'data-size', buttonSize );
+	} );
+
+	$( document ).on( 'change', 'select[name="coil_button_settings_group[coil_button_position]"]', function() {
+		const buttonPosition = $( this ).val();
+
+		$( '.coil-preview .coil-button' ).attr( 'data-position', buttonPosition );
 	} );
 }( jQuery ) );

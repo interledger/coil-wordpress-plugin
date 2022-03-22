@@ -14,14 +14,14 @@ Coil makes it easy for you to get paid for your online content.
 
 == Description ==
 
-Coil's official WordPress plugin makes it easy for you to get paid instantly while Coil Members browse your content.
+Coil's official WordPress plugin makes it easy for you to get paid instantly while Coil members browse your content.
 
 ### How it works
 
-1. Coil Members pay a monthly fee.
+1. Coil members pay a monthly fee.
 2. You create an account with an ILP-enabled digital wallet.
 3. You install the WordPress plugin.
-4. Coil streams payments to your wallet while Coil Members enjoy your content.
+4. Coil streams payments to your wallet while Coil members enjoy your content.
 
 To learn more about Coil, visit us at [coil.com](https://coil.com/).
 
@@ -40,7 +40,7 @@ For user documentation, visit our [help center](https://help.coil.com/for-creato
 Our plugin lets you add monetization to all or some of your pages and posts.
 
 * Monetization enabled and visible to everyone (default) - Allow all visitors to see the content, get paid when your visitor is a Coil Member
-* Monetization enabled and visible to Coil members only - Only allow Coil Members to see the content
+* Monetization enabled and visible to Coil members only - Only allow Coil members to see the content
 * Monetization disabled - Allow all visitors to see the content, don't get paid when your visitor is a Coil Member
 
 The plugin is supported with the Classic and Block/Gutenberg editors. Monetization can be assigned globally to pages and posts, to individual pages and posts, and to tags and categories. If you're using the Gutenberg editor, you can choose to monetize at the block level.
@@ -59,9 +59,9 @@ The Interledger Protocol (ILP) is an open protocol that Coil uses to stream paym
 
 A payment pointer is like an email address for your digital wallet. It's how we know where to stream your payments. Your payment pointer is assigned to you by your wallet provider.
 
-= Do I have to sign up for a Coil Membership? =
+= Do I have to sign up for a Coil membership? =
 
-Nope. You'll receive payments from Coil Members regardless of whether you have an account with us.
+Nope. You'll receive payments from Coil members regardless of whether you have an account with us.
 
 = Where can I report bugs or contribute to the project? =
 
@@ -100,7 +100,7 @@ First release.
 * Enhancement - The padlock icon has been completely removed from split content page / post titles and will only appear when entire pages / posts have monetization enabled and are only visible to Coil members.
 
 * Tweak - Minimum supported PHP version is now version 7.2.
-* Tweak - The gradient effect on the CTA boxes that block exclusive content for users without an active Coil Membership has been replaced with a solid border instead.
+* Tweak - The gradient effect on the CTA boxes that block exclusive content for users without an active Coil membership has been replaced with a solid border instead.
 * Tweak - Updated Coil header on the settings panel.
 * Tweak - Removed the “Configure the plugin” button in the settings panel (simply took users to the Global Settings tab).
 * Tweak - All buttons that point to external links now open in a new tab.
@@ -111,7 +111,7 @@ First release.
 
 = 15 July 2021 =
 
-* Fix - Fixed embedded videos that were set to Coil Members Only so that they now display correctly once monetization has begun.
+* Fix - Fixed embedded videos that were set to Coil members Only so that they now display correctly once monetization has begun.
 * Fix - The Coil Promotion Bar message no longer displays for Coil members.
 
 * Enhancement - The Coil settings panel's first tab is now the Global Settings tab where the payment pointers and CSS selectors are saved.
