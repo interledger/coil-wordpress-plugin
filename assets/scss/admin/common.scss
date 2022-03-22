@@ -225,10 +225,10 @@
 					padding: 15px;
 					position: relative;
 
-				  	&.stacked {
-					  	height: auto;
-					  	margin-bottom: 20px;
-					  	min-height: 240px;
+					&.stacked {
+						height: auto;
+						margin-bottom: 20px;
+						min-height: 240px;
 					}
 
 					&.hide {
@@ -352,33 +352,33 @@
 					.coil-button {
 						background-color: $coil_button_message_color;
 						border-radius: 6px;
+						bottom: 10px;
 						box-shadow: 0 6px 10px 0 $coil_button_message_shadow_color;
-					  	bottom: 10px;
 						font-family: 'Open Sans', sans-serif;
 						font-size: 17px;
 						font-weight: 600;
 						line-height: 10px;
 						overflow: visible;
-					  	position: absolute;
-					  	right: 10px;
+						position: absolute;
+						right: 10px;
 						text-align: center;
 
-					  	&[data-position="top-left"]{
-						  bottom: unset;
-						  right: unset;
-						  top: 10px;
-						  left: 10px;
+						&[data-position='top-left'] {
+							bottom: unset;
+							left: 10px;
+							right: unset;
+							top: 10px;
 						}
 
-						&[data-position="top-right"]{
-						  bottom: unset;
-						  top: 10px;
+						&[data-position='top-right'] {
+							bottom: unset;
+							top: 10px;
 						}
 
-						&[data-position="bottom-left"]{
-						  bottom: 10px;
-						  left: 10px;
-						  right: unset;
+						&[data-position='bottom-left'] {
+							bottom: 10px;
+							left: 10px;
+							right: unset;
 						}
 
 						div {
@@ -405,20 +405,20 @@
 						}
 
 						// Changes Coil button to implement light theme
-						&[data-theme="light"] {
+						&[data-theme='light'] {
 							background-color: $coil_button_message_color_light_theme;
 
 							div {
 								div {
-									  color: $coil_button_font_color_light_theme;
+									color: $coil_button_font_color_light_theme;
 								}
 							}
 						}
 
-					  	&[data-size="large"] {
+						&[data-size='large'] {
 							div {
 								div {
-								  font-size: 17px;
+									font-size: 17px;
 								}
 							}
 						}
