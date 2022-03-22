@@ -218,12 +218,12 @@
 					border: 1px solid #ccc;
 					border-radius: 3px;
 					display: flex;
-				  	flex-direction: column;
+					flex-direction: column;
 					height: calc( 100% - 80px );
 					justify-content: center;
 					min-height: 350px;
 					padding: 15px;
-				  	position: relative;
+					position: relative;
 
 				  	&.stacked {
 					  	height: auto;
