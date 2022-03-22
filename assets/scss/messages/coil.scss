@@ -43,6 +43,10 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 				margin: 0 0 $message_spacing_baseline * 2;
 			}
 
+			img {
+				height: 32px;
+			}
+
 			.coil-message-title {
 				font-size: 18px;
 				font-weight: 700;
