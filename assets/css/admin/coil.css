@@ -238,8 +238,8 @@
         .coil form .settings-main .tab-styling .coil-preview .coil-button {
           background-color: #2d333a;
           border-radius: 6px;
-          box-shadow: 0 6px 10px 0 rgba(194, 194, 194, 0.1);
           bottom: 10px;
+          box-shadow: 0 6px 10px 0 rgba(194, 194, 194, 0.1);
           font-family: 'Open Sans', sans-serif;
           font-size: 17px;
           font-weight: 600;
@@ -248,15 +248,15 @@
           position: absolute;
           right: 10px;
           text-align: center; }
-          .coil form .settings-main .tab-styling .coil-preview .coil-button[data-position="top-left"] {
+          .coil form .settings-main .tab-styling .coil-preview .coil-button[data-position='top-left'] {
             bottom: unset;
+            left: 10px;
             right: unset;
-            top: 10px;
-            left: 10px; }
-          .coil form .settings-main .tab-styling .coil-preview .coil-button[data-position="top-right"] {
+            top: 10px; }
+          .coil form .settings-main .tab-styling .coil-preview .coil-button[data-position='top-right'] {
             bottom: unset;
             top: 10px; }
-          .coil form .settings-main .tab-styling .coil-preview .coil-button[data-position="bottom-left"] {
+          .coil form .settings-main .tab-styling .coil-preview .coil-button[data-position='bottom-left'] {
             bottom: 10px;
             left: 10px;
             right: unset; }
@@ -277,11 +277,11 @@
             .coil form .settings-main .tab-styling .coil-preview .coil-button div img {
               height: 24px;
               width: 24px; }
-          .coil form .settings-main .tab-styling .coil-preview .coil-button[data-theme="light"] {
+          .coil form .settings-main .tab-styling .coil-preview .coil-button[data-theme='light'] {
             background-color: #fff; }
-            .coil form .settings-main .tab-styling .coil-preview .coil-button[data-theme="light"] div div {
+            .coil form .settings-main .tab-styling .coil-preview .coil-button[data-theme='light'] div div {
               color: #000; }
-          .coil form .settings-main .tab-styling .coil-preview .coil-button[data-size="large"] div div {
+          .coil form .settings-main .tab-styling .coil-preview .coil-button[data-size='large'] div div {
             font-size: 17px; }
     .coil form .settings-main .exclusive-content-section {
       display: none; }

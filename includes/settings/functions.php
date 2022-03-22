@@ -1009,7 +1009,7 @@ function coil_settings_post_visibility_render_callback() {
 		);
 		printf(
 			'<p>%1$s<a href="%2$s">%3$s</a>%4$s</p>',
-			esc_html__( 'A post type can only be marked as exclusive if it is also set to Monetized under .', 'coil-web-monetization' ),
+			esc_html__( 'A post type can only be marked as exclusive if it is also set to Monetized under ', 'coil-web-monetization' ),
 			esc_url( admin_url( 'admin.php?page=coil_settings&tab=general_settings', COIL__FILE__ ) ),
 			esc_html__( 'General Settings', 'coil-web-monetization' ),
 			'.'
