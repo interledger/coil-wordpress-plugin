@@ -88,9 +88,10 @@
 
 	// Adds or removes alerting functionality for invalid input that is detected during changes to an input field.
 	function inputValidityHandler( inputElement, validCondition, alertWhileTyping, msg ) {
-		const nextElement = inputElement.next();
+		const nextElement = inputElement.next(),
+			onlyWhiteSpace = /^\s+$/;
 		let invalidMsgElement = null;
-		const onlyWhiteSpace = /^\s+$/;
+
 		if ( nextElement !== null && nextElement.hasClass( 'invalid-input' ) ) {
 			invalidMsgElement = nextElement;
 		}
@@ -146,13 +147,14 @@
 
 	// Exclusive Content tab
 	if ( activeTabID === 'coil-exclusive-settings' ) {
-		const exclusiveContentEnabled = $( 'input[name="coil_exclusive_settings_group[coil_exclusive_toggle]"]' ).is( ':checked' );
+		const exclusiveContentEnabled = $( 'input[name="coil_exclusive_settings_group[coil_exclusive_toggle]"]' ).is( ':checked' ),
+			siteLogoSelected = $( '#coil_branding option:selected' ).val() === 'site_logo';
 		if ( exclusiveContentEnabled ) {
 			$( '*.exclusive-content-section' ).show();
 		} else {
 			$( '*.exclusive-content-section' ).hide();
 		}
-		const siteLogoSelected = $( '#coil_branding option:selected' ).val() === 'site_logo';
+
 		if ( siteLogoSelected ) {
 			$( '.set-site-logo-description' ).show();
 		} else {
@@ -163,11 +165,23 @@
 	// Coil Button tab
 	if ( activeTabID === 'coil-button-settings' ) {
 		// Initial set-up
-		const coilButtonEnabled = $( 'input[name="coil_button_settings_group[coil_button_toggle]"]' ).is( ':checked' );
+		const coilButtonEnabled = $( 'input[name="coil_button_settings_group[coil_button_toggle]"]' ).is( ':checked' ),
+			coilButtonPreviewSelector = 'div.coil-preview.coil-non-members .coil-button div > div',
+			coilButtonMemberPreviewSelector = 'div.coil-preview.coil-members .coil-button div > div',
+			coilButton = $( '#coil_button_text' ),
+			coilMembersButton = $( '#coil_members_button_text' ),
+			onlyWhiteSpace = /^\s+$/;
 		if ( coilButtonEnabled ) {
 			$( '*.coil-button-section' ).show();
 		} else {
 			$( '*.coil-button-section' ).hide();
+		}
+
+		if ( onlyWhiteSpace.test( coilButton.val() ) ) {
+			$( coilButtonPreviewSelector ).hide();
+		}
+		if ( onlyWhiteSpace.test( coilMembersButton.val() ) ) {
+			$( coilButtonMemberPreviewSelector ).hide();
 		}
 	}
 
@@ -199,17 +213,17 @@
 
 	// Invalid input alert
 	$( document ).on( 'focusout', '#coil_payment_pointer', function() {
-		const paymentPointer = $( '#coil_payment_pointer' );
-		const pattern = /^(https:\/\/.)|^[\$]./;
-		const validityCondition = pattern.test( $( this ).val() );
+		const paymentPointer = $( '#coil_payment_pointer' ),
+			pattern = /^(https:\/\/.)|^[\$]./,
+			validityCondition = pattern.test( $( this ).val() );
 		focusOutValidityHandler( paymentPointer, validityCondition, invalidPaymentPointerMsg );
 	} );
 
 	// Removes the invalid input warning if the input becomes valid
 	$( document ).on( 'input', '#coil_payment_pointer', function() {
-		const paymentPointer = $( '#coil_payment_pointer' );
-		const pattern = /^(https:\/\/.)|^[\$]./;
-		const validityCondition = pattern.test( $( this ).val() );
+		const paymentPointer = $( '#coil_payment_pointer' ),
+			pattern = /^(https:\/\/.)|^[\$]./,
+			validityCondition = pattern.test( $( this ).val() );
 		inputValidityHandler( paymentPointer, validityCondition, false, '' );
 	} );
 
@@ -239,16 +253,16 @@
 
 	// Invalid input alert
 	$( document ).on( 'focusout', '#coil_paywall_button_text', function() {
-		const buttonTextElement = $( '#coil_paywall_button_text' );
-		const onlyWhiteSpace = /^\s+$/;
-		const validityCondition = ! onlyWhiteSpace.test( $( this ).val() );
+		const buttonTextElement = $( '#coil_paywall_button_text' ),
+			onlyWhiteSpace = /^\s+$/,
+			validityCondition = ! onlyWhiteSpace.test( $( this ).val() );
 		focusOutValidityHandler( buttonTextElement, validityCondition, invalidBlankInputMsg );
 	} );
 
 	$( document ).on( 'input', '#coil_paywall_button_text', function() {
-		const buttonTextElement = $( '#coil_paywall_button_text' );
-		const onlyWhiteSpace = /^\s+$/;
-		const validityCondition = ! onlyWhiteSpace.test( $( this ).val() );
+		const buttonTextElement = $( '#coil_paywall_button_text' ),
+			onlyWhiteSpace = /^\s+$/,
+			validityCondition = ! onlyWhiteSpace.test( $( this ).val() );
 		inputValidityHandler( buttonTextElement, validityCondition, true, invalidBlankInputMsg );
 
 		if ( $( this ).val() !== '' && ! onlyWhiteSpace.test( $( this ).val() ) ) {
@@ -260,17 +274,17 @@
 
 	// Invalid input alert
 	$( document ).on( 'focusout', '#coil_paywall_button_link', function() {
-		const buttonLinkElement = $( '#coil_paywall_button_link' );
-		const validUrl = isValidUrl( $( this ).val() );
-		const validityCondition = validUrl || $( this ).val() === '';
+		const buttonLinkElement = $( '#coil_paywall_button_link' ),
+			validUrl = isValidUrl( $( this ).val() ),
+			validityCondition = validUrl || $( this ).val() === '';
 
 		focusOutValidityHandler( buttonLinkElement, validityCondition, invalidUrlMsg );
 	} );
 
 	$( document ).on( 'input', '#coil_paywall_button_link', function() {
-		const buttonLinkElement = $( '#coil_paywall_button_link' );
-		const onlyWhiteSpace = /^\s+$/;
-		const validityCondition = ! onlyWhiteSpace.test( $( this ).val() );
+		const buttonLinkElement = $( '#coil_paywall_button_link' ),
+			onlyWhiteSpace = /^\s+$/,
+			validityCondition = ! onlyWhiteSpace.test( $( this ).val() );
 		inputValidityHandler( buttonLinkElement, validityCondition, true, invalidBlankInputMsg );
 	} );
 
@@ -357,56 +371,56 @@
 	* Coil Button tab
 	* ------------------------------------------------------------------------ */
 
-	$( document ).on( 'input', '#coil_button_text', function() {
-		const buttonTextElement = $( this ),
-			inputVal = buttonTextElement.val(),
-			onlyWhiteSpace = /^\s+$/,
-			validityCondition = ! onlyWhiteSpace.test( $( this ).val() ),
-			previewSelector = 'div.coil-preview.coil-non-members .coil-button div > div';
-
-		inputValidityHandler( buttonTextElement, validityCondition, true, invalidBlankInputMsg );
-
-		if ( inputVal !== '' && ! onlyWhiteSpace.test( inputVal ) ) {
-			$( previewSelector ).text( inputVal );
-		} else {
-			$( previewSelector ).text( $( this ).attr( 'placeholder' ) );
-		}
-	} );
-
-	$( document ).on( 'input', '#coil_members_button_text', function() {
-		const buttonTextElement = $( this ),
-			inputVal = buttonTextElement.val(),
-			onlyWhiteSpace = /^\s+$/,
-			validityCondition = ! onlyWhiteSpace.test( inputVal ),
-			previewSelector = 'div.coil-preview.coil-members .coil-button div > div';
-
-		inputValidityHandler( buttonTextElement, validityCondition, true, invalidBlankInputMsg );
-
-		if ( inputVal !== '' && ! onlyWhiteSpace.test( inputVal ) ) {
-			$( previewSelector ).text( inputVal );
-		} else {
-			$( previewSelector ).text( $( this ).attr( 'placeholder' ) );
-		}
-	} );
-
 	$( document ).on( 'change', 'input[name="coil_button_settings_group[coil_button_toggle]"]', function() {
 		$( '.coil-button-section' ).toggle();
 	} );
 
+	$( document ).on( 'input', '#coil_button_text', function() {
+		const previewSelector = 'div.coil-preview.coil-non-members .coil-button div > div',
+			onlyWhiteSpace = /^\s+$/;
+		if ( $( this ).val() !== '' ) {
+			if ( ! onlyWhiteSpace.test( $( this ).val() ) ) {
+				$( previewSelector ).text( $( this ).val() );
+				$( previewSelector ).show();
+			} else {
+				$( previewSelector ).hide();
+			}
+		} else {
+			$( previewSelector ).text( $( this ).attr( 'placeholder' ) );
+			$( previewSelector ).show();
+		}
+	} );
+
 	// Invalid input alert
 	$( document ).on( 'focusout', '#coil_button_link', function() {
-		const buttonLinkElement = $( '#coil_button_link' );
-		const validUrl = isValidUrl( $( this ).val() );
-		const validityCondition = validUrl || $( this ).val() === '';
+		const buttonLinkElement = $( '#coil_button_link' ),
+			validUrl = isValidUrl( $( this ).val() ),
+			validityCondition = validUrl || $( this ).val() === '';
 
 		focusOutValidityHandler( buttonLinkElement, validityCondition, invalidUrlMsg );
 	} );
 
 	$( document ).on( 'input', '#coil_button_link', function() {
-		const buttonLinkElement = $( '#coil_button_link' );
-		const onlyWhiteSpace = /^\s+$/;
-		const validityCondition = ! onlyWhiteSpace.test( $( this ).val() );
+		const buttonLinkElement = $( '#coil_button_link' ),
+			onlyWhiteSpace = /^\s+$/,
+			validityCondition = ! onlyWhiteSpace.test( $( this ).val() );
 		inputValidityHandler( buttonLinkElement, validityCondition, true, invalidBlankInputMsg );
+	} );
+
+	$( document ).on( 'input', '#coil_members_button_text', function() {
+		const previewSelector = 'div.coil-preview.coil-members .coil-button div > div',
+			onlyWhiteSpace = /^\s+$/;
+		if ( $( this ).val() !== '' ) {
+			if ( ! onlyWhiteSpace.test( $( this ).val() ) ) {
+				$( previewSelector ).text( $( this ).val() );
+				$( previewSelector ).show();
+			} else {
+				$( previewSelector ).hide();
+			}
+		} else {
+			$( previewSelector ).text( $( this ).attr( 'placeholder' ) );
+			$( previewSelector ).show();
+		}
 	} );
 
 	$( document ).on( 'change', 'input[name="coil_button_settings_group[coil_button_color_theme]"]', function() {

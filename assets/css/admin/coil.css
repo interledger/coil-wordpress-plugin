@@ -241,9 +241,9 @@
           bottom: 10px;
           box-shadow: 0 6px 10px 0 rgba(194, 194, 194, 0.1);
           font-family: 'Open Sans', sans-serif;
-          font-size: 17px;
+          font-size: 14px;
           font-weight: 600;
-          line-height: 10px;
+          line-height: 20px;
           overflow: visible;
           position: absolute;
           right: 10px;
@@ -265,24 +265,26 @@
             border-radius: 6px;
             display: flex;
             flex-direction: row;
-            padding: 4px 8px;
+            padding: 8px;
             text-decoration: none; }
             .coil form .settings-main .tab-styling .coil-preview .coil-button div div {
               color: #fff;
-              font-size: 14px;
-              font-weight: 400;
               margin: auto;
               padding-left: 8px;
               padding-right: 8px; }
             .coil form .settings-main .tab-styling .coil-preview .coil-button div img {
-              height: 24px;
-              width: 24px; }
+              height: 16px;
+              width: 16px; }
           .coil form .settings-main .tab-styling .coil-preview .coil-button[data-theme='light'] {
             background-color: #fff; }
             .coil form .settings-main .tab-styling .coil-preview .coil-button[data-theme='light'] div div {
               color: #000; }
           .coil form .settings-main .tab-styling .coil-preview .coil-button[data-size='large'] div div {
-            font-size: 17px; }
+            font-size: 17px;
+            line-height: 20px; }
+          .coil form .settings-main .tab-styling .coil-preview .coil-button[data-size='large'] img {
+            height: 24px;
+            width: 24px; }
     .coil form .settings-main .exclusive-content-section {
       display: none; }
     .coil form .settings-main .coil-button-section {

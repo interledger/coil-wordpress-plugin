@@ -355,9 +355,9 @@
 						bottom: 10px;
 						box-shadow: 0 6px 10px 0 $coil_button_message_shadow_color;
 						font-family: 'Open Sans', sans-serif;
-						font-size: 17px;
+						font-size: 14px;
 						font-weight: 600;
-						line-height: 10px;
+						line-height: 20px;
 						overflow: visible;
 						position: absolute;
 						right: 10px;
@@ -386,21 +386,19 @@
 							border-radius: 6px;
 							display: flex;
 							flex-direction: row;
-							padding: 4px 8px;
+							padding: $message_spacing_baseline;
 							text-decoration: none;
 
 							div {
 								color: $coil_button_font_color;
-								font-size: 14px;
-								font-weight: 400;
 								margin: auto;
 								padding-left: $message_spacing_baseline;
 								padding-right: $message_spacing_baseline;
 							}
 
 							img {
-								height: 24px;
-								width: 24px;
+								height: 16px;
+								width: 16px;
 							}
 						}
 
@@ -419,7 +417,12 @@
 							div {
 								div {
 									font-size: 17px;
+									line-height: 20px;
 								}
+							}
+							img {
+								height: 24px;
+								width: 24px;
 							}
 						}
 					}

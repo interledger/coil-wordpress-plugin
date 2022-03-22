@@ -133,7 +133,12 @@
 	*/
 	function showCoilButton( message ) {
 		const coilButton = createCoilButton( message );
+		const onlyWhiteSpace = /^\s+$/;
 		$( 'body' ).append( coilButton );
+		// Hides the text div if there is no text
+		if ( onlyWhiteSpace.test( message ) ) {
+			$( '.coil-button a div' ).hide();
+		}
 		addButtonDismissClickHandler();
 		addButtonDismissAppearanceHandler();
 	}
