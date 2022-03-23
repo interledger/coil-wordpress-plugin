@@ -304,50 +304,11 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 			'coil_button_left_margin'   => Admin\get_coil_button_setting( 'coil_button_left_margin' ),
 		];
 
-		// When the input is considered empty (false, 0, '') then a null string is returned
-		$this->assertSame( '', $retrieved_margin_settings['coil_button_top_margin'] );
+		$this->assertSame( '0', $retrieved_margin_settings['coil_button_top_margin'] );
 		$this->assertSame( $coil_button_settings['coil_button_right_margin'], $retrieved_margin_settings['coil_button_right_margin'] );
 		// When invalid input is given a null string is returned
 		$this->assertSame( '', $retrieved_margin_settings['coil_button_bottom_margin'] );
 		$this->assertSame( $coil_button_settings['coil_button_left_margin'], $retrieved_margin_settings['coil_button_left_margin'] );
-	}
-
-	/**
-	 * Testing if the final Coil button margins can be calculated correctly from the wp_options table.
-	 * There are baseline values for the button margins which can be added to or subtracted from in the Coil buton settings tab.
-	 *
-	 * @return void
-	 */
-	public function test_if_the_coil_button_margins_can_be_calculated_correctly() :  void {
-		// Set the Coil button to have custom margin sizes
-		$coil_button_settings = [
-			'coil_button_top_margin'    => '0',
-			'coil_button_right_margin'  => '5',
-			'coil_button_bottom_margin' => 'abc', // incorrect input
-			'coil_button_left_margin'   => '', // no input
-		];
-		update_option( 'coil_button_settings_group', $coil_button_settings );
-
-		$basline_margin_values = Admin\get_button_margin_key_defaults();
-
-		$expected_margin_values = [
-			'coil_button_top_margin'    => strval( intval( $coil_button_settings['coil_button_top_margin'] ) + intval( $basline_margin_values['coil_button_top_margin'] ) ),
-			'coil_button_right_margin'  => strval( intval( $coil_button_settings['coil_button_right_margin'] ) + intval( $basline_margin_values['coil_button_right_margin'] ) ),
-			'coil_button_bottom_margin' => strval( intval( $coil_button_settings['coil_button_bottom_margin'] ) + intval( $basline_margin_values['coil_button_bottom_margin'] ) ),
-			'coil_button_left_margin'   => strval( intval( $coil_button_settings['coil_button_left_margin'] ) + intval( $basline_margin_values['coil_button_left_margin'] ) ),
-		];
-
-		$final_margin_value = [
-			'coil_button_top_margin'    => Admin\get_coil_button_margins( 'coil_button_top_margin' ),
-			'coil_button_right_margin'  => Admin\get_coil_button_margins( 'coil_button_right_margin' ),
-			'coil_button_bottom_margin' => Admin\get_coil_button_margins( 'coil_button_bottom_margin' ),
-			'coil_button_left_margin'   => Admin\get_coil_button_margins( 'coil_button_left_margin' ),
-		];
-
-		$this->assertSame( $expected_margin_values['coil_button_top_margin'], $final_margin_value['coil_button_top_margin'] );
-		$this->assertSame( $expected_margin_values['coil_button_right_margin'], $final_margin_value['coil_button_right_margin'] );
-		$this->assertSame( $expected_margin_values['coil_button_bottom_margin'], $final_margin_value['coil_button_bottom_margin'] );
-		$this->assertSame( $expected_margin_values['coil_button_left_margin'], $final_margin_value['coil_button_left_margin'] );
 	}
 
 	/**

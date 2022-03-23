@@ -391,8 +391,7 @@ function coil_button_settings_group_validation( $coil_button_settings ): array {
 	foreach ( $margin_fields as $field_name => $default ) {
 
 		if ( isset( $coil_button_settings[ $field_name ] ) ) {
-			$number = filter_var( $coil_button_settings[ $field_name ], FILTER_SANITIZE_NUMBER_INT );
-			// TODO: Give a max value as well.
+			$number                        = filter_var( $coil_button_settings[ $field_name ], FILTER_SANITIZE_NUMBER_INT );
 			$final_settings[ $field_name ] = $number !== false ? $number : $default;
 		} else {
 			$final_settings[ $field_name ] = '';
@@ -635,6 +634,11 @@ function coil_settings_enable_exclusive_toggle_render_callback() {
 			esc_url( 'https://help.coil.com/docs/membership/coil-extension/index.html' ),
 			esc_attr( '_blank' ),
 			esc_html__( 'Learn more', 'coil-web-monetization' )
+		);
+
+		printf(
+			'<p>%s</p>',
+			esc_html__( 'Disabling exclusive content will make all content publicly available. ', 'coil-web-monetization' )
 		);
 
 		$exclusive_toggle_id = 'coil_exclusive_toggle';
@@ -1253,7 +1257,7 @@ function coil_settings_coil_button_settings_render_callback() {
 				buton_position_dropdown();
 
 				Rendering\render_input_field_heading(
-					__( 'Button Margin (PX)', 'coil-web-monetization' )
+					__( 'Button Margin', 'coil-web-monetization' )
 				);
 				render_buton_margin_settings();
 				?>
@@ -1392,31 +1396,43 @@ function buton_position_dropdown() {
  * @return void
 */
 function render_buton_margin_settings() {
-	echo '<div class="coil-input-group">';
+	echo '<div class="coil-margin-input-group">';
 
 	$margins = [
 		'coil_button_top_margin'    => Admin\get_coil_button_setting( 'coil_button_top_margin' ) !== false ? Admin\get_coil_button_setting( 'coil_button_top_margin' ) : '',
-		'coil_button_right_margin'  => Admin\get_coil_button_setting( 'coil_button_right_margin' ) !== false ? Admin\get_coil_button_setting( 'coil_button_right_margin' ) : '',
 		'coil_button_bottom_margin' => Admin\get_coil_button_setting( 'coil_button_bottom_margin' ) !== false ? Admin\get_coil_button_setting( 'coil_button_bottom_margin' ) : '',
+		'coil_button_right_margin'  => Admin\get_coil_button_setting( 'coil_button_right_margin' ) !== false ? Admin\get_coil_button_setting( 'coil_button_right_margin' ) : '',
 		'coil_button_left_margin'   => Admin\get_coil_button_setting( 'coil_button_left_margin' ) !== false ? Admin\get_coil_button_setting( 'coil_button_left_margin' ) : '',
 	];
 
+	$placeholders = Admin\get_button_margin_key_defaults();
+
 	$desciptions = [
 		'coil_button_top_margin'    => esc_html__( 'TOP', 'coil-web-monetization' ),
-		'coil_button_right_margin'  => esc_html__( 'RIGHT', 'coil-web-monetization' ),
 		'coil_button_bottom_margin' => esc_html__( 'BOTTOM', 'coil-web-monetization' ),
+		'coil_button_right_margin'  => esc_html__( 'RIGHT', 'coil-web-monetization' ),
 		'coil_button_left_margin'   => esc_html__( 'LEFT', 'coil-web-monetization' ),
 
 	];
 
 	foreach ( $margins as $id => $setting ) {
-		echo '<div>';
+		$location = str_replace( 'coil_button_', '', $id );
+		$location = str_replace( '_margin', '', $location );
+		printf(
+			'<div class="%s" style="%s">',
+			esc_attr( 'margin-' . $location ),
+			esc_attr( 'display:none' )
+		);
 		// Render the Coil button margin text input fields
+		if ( $setting !== '' ) {
+
+			$setting = strval( $setting ) . 'px';
+		}
 		Rendering\render_text_input_field(
 			$id,
 			'coil_button_settings_group[' . $id . ']',
-			$setting,
-			esc_attr( '-' )
+			esc_attr( $setting ),
+			esc_attr( $placeholders[ $id ] . 'px' )
 		);
 
 		printf(

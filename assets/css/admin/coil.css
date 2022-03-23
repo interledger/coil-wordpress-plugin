@@ -109,17 +109,17 @@
       .coil form .settings-main .tab-styling h4 {
         font-size: 14px;
         margin: 15px 0 10px; }
-      .coil form .settings-main .tab-styling .coil-input-group {
+      .coil form .settings-main .tab-styling .coil-margin-input-group {
         display: flex;
         flex-direction: row;
         width: 90%; }
-        .coil form .settings-main .tab-styling .coil-input-group input, .coil form .settings-main .tab-styling .coil-input-group p {
+        .coil form .settings-main .tab-styling .coil-margin-input-group input, .coil form .settings-main .tab-styling .coil-margin-input-group p {
           border-radius: 0;
           text-align: center;
           width: 100%; }
-        .coil form .settings-main .tab-styling .coil-input-group div:first-child input {
+        .coil form .settings-main .tab-styling .coil-margin-input-group div:first-child input {
           border-radius: 4px 0 0 4px; }
-        .coil form .settings-main .tab-styling .coil-input-group div:last-child input {
+        .coil form .settings-main .tab-styling .coil-margin-input-group div:last-child input {
           border-radius: 0 4px 4px 0; }
       .coil form .settings-main .tab-styling #coil_title_padlock:not(:checked) + label + #coil_icon_position_label {
         display: none; }
