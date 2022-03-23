@@ -267,23 +267,19 @@
 
 	/**
 	 * @return {(null|object)} Get the post excerpt, if available.
-	 */
+	*/
 	function getContentExcerpt() {
 		if ( postExcerpt === '' ) {
 			return;
 		}
 
+		const msgContainer = document.createElement( 'div' );
+		msgContainer.classList.add( 'entry-content', 'coil-message-container' );
 		const excerptContainer = document.createElement( 'p' );
 		excerptContainer.classList.add( 'coil-post-excerpt' );
 		excerptContainer.innerHTML = postExcerpt;
-		return excerptContainer;
-	}
-
-	/**
-	 * @return {object} Hide the post excerpt.
-	 */
-	function hideContentExcerpt() {
-		return jQuery( 'p.coil-post-excerpt' ).remove();
+		$( msgContainer ).append( excerptContainer );
+		return msgContainer;
 	}
 
 	/**
@@ -358,10 +354,11 @@
 			$( 'p.monetize-msg' ).remove();
 
 			if ( isSubscribersOnly() ) {
-				if ( isExcerptEnabled() && getContentExcerpt() ) {
-					document.body.classList.add( 'show-excerpt-message' );
-					$( contentContainer ).before( showSubscriberOnlyMessage( paywallMessage ) );
-					$( contentContainer ).prepend( getContentExcerpt() );
+				if ( isExcerptEnabled() && getContentExcerpt() !== null ) {
+					if ( $( '.coil-post-excerpt' ).length === 0 ) {
+						$( contentContainer ).before( getContentExcerpt() );
+					}
+					$( contentContainer ).last().before( showSubscriberOnlyMessage( paywallMessage ) );
 				} else {
 					document.body.classList.add( 'show-fw-message' );
 					$( contentContainer ).before( showSubscriberOnlyMessage( paywallMessage ) );
@@ -449,14 +446,13 @@
 		$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'coil-extension-not-found' );
 
 		if ( isSubscribersOnly() ) {
-			$( contentContainer ).before( showSubscriberOnlyMessage( paywallMessage ) );
-
-			if ( isExcerptEnabled() && getContentExcerpt() ) {
+			if ( isExcerptEnabled() && getContentExcerpt() !== null ) {
 				document.body.classList.add( 'show-excerpt-message' );
-				$( contentContainer ).prepend( getContentExcerpt() );
+				$( contentContainer ).before( getContentExcerpt() );
 			} else {
 				document.body.classList.add( 'show-fw-message' );
 			}
+			$( contentContainer ).last().before( showSubscriberOnlyMessage( paywallMessage ) );
 		} else if ( isSplitContent() ) {
 			// Split content with no extension found.
 			$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( paywallMessage ) );
@@ -497,20 +493,15 @@
 		} else if ( ! isMonetizedAndPublic() ) {
 			// Verify monetization only if there is exclusive content.
 			// If post is exclusive then show verification message after excerpt.
-			if ( isSubscribersOnly() && isExcerptEnabled() ) {
+			if ( isSubscribersOnly() && isExcerptEnabled() && getContentExcerpt() !== null ) {
+				document.body.classList.add( 'show-excerpt-message' );
 				$( contentContainer ).before( getContentExcerpt() );
-				$( contentContainer ).after( showMonetizationMessage( loadingContent, '' ) );
+				$( contentContainer ).last().before( showMonetizationMessage( loadingContent, '' ) );
 			} else {
 				document.querySelector( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
 			}
-
-			// Update message if browser extension is verifying user.
-			setTimeout( function() {
-				messageWrapper.html( loadingContent );
-			}, 2000 );
 			// Update message if browser extension is unable to verify user.
 			setTimeout( function() {
-				hideContentExcerpt();
 				showVerificationFailureMessage();
 			}, 5000 );
 		}
@@ -523,8 +514,18 @@
 	 */
 	function handleStartedMonetization() {
 		// User account verified, loading content. Monetization state: Started
-		document.querySelector( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
-		$( '.coil-message-container' ).remove();
+
+		if ( isSubscribersOnly() && isExcerptEnabled() && getContentExcerpt() !== null ) {
+			document.body.classList.add( 'show-excerpt-message' );
+			if ( $( '.coil-post-excerpt' ).length === 0 ) {
+				$( contentContainer ).before( getContentExcerpt() );
+			}
+			if ( $( 'p.monetize-msg' ).length === 0 ) {
+				$( contentContainer ).last().before( showMonetizationMessage( loadingContent, '' ) );
+			}
+		} else {
+			document.querySelector( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
+		}
 	}
 
 	/**
@@ -533,10 +534,20 @@
 	 * @return {void}
 	 */
 	function handleStoppedMonetization() {
-		if ( isSubscribersOnly() || isSplitContent() ) {
-			hideContentExcerpt();
+		if ( isSubscribersOnly() && isExcerptEnabled() && getContentExcerpt() !== null ) {
 			hideContentContainer();
-			document.querySelector( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
+			document.body.classList.add( 'show-excerpt-message' );
+			if ( $( '.coil-post-excerpt' ).length === 0 ) {
+				$( contentContainer ).before( getContentExcerpt() );
+			}
+			if ( $( 'p.monetize-msg' ).length === 0 ) {
+				$( contentContainer ).last().before( showMonetizationMessage( loadingContent, '' ) );
+			}
+		} else if ( isSubscribersOnly() || isSplitContent() ) {
+			hideContentContainer();
+			if ( $( 'p.monetize-msg' ).length === 0 ) {
+				$( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
+			}
 		}
 
 		setTimeout( function() {
