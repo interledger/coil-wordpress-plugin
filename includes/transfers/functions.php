@@ -391,7 +391,7 @@ function transfer_split_content_posts() {
 			$posts_with_split_content->the_post();
 
 			// Set the read more string as it will occur in the database
-			$coil_read_more_string = '<!-- wp:coil/exclusive-content-divider --><span class="wp-block-exclusive-content-divider"></span><!-- /wp:coil/exclusive-content-divider -->';
+			$coil_read_more_string = '<!-- wp:coil/exclusive-content-divider --><span class="wp-block-coil-exclusive-content-divider"></span><!-- /wp:coil/exclusive-content-divider -->';
 
 			$the_content = get_the_content();
 
@@ -400,7 +400,6 @@ function transfer_split_content_posts() {
 			$show_pos   = strpos( $the_content, '"show-monetize-users"' );
 
 			if ( false === $hidden_pos && false === $show_pos ) {
-				var_dump( [ $hidden_pos, $show_pos ] );
 				continue;
 			} elseif ( false !== $hidden_pos && false === $show_pos ) {
 				// Clean out old attributes
@@ -439,7 +438,9 @@ function transfer_split_content_posts() {
 			$data = [
 				'ID'           => get_the_ID(),
 				'meta_input'   => [
-					'_coil_updated_tagged_blocks' => true,
+					'_coil_updated_tagged_blocks'    => true,
+					'_coil_visibility_post_status'   => 'exclusive',
+					'_coil_monetization_post_status' => 'monetized',
 				],
 				'post_content' => $combined_content,
 			];

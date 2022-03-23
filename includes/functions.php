@@ -390,14 +390,14 @@ function maybe_update_database() {
 	$did_run_update = false;
 	$db_version     = get_option( 'coil_db_ver' );
 
+	// maybe_load_database_defaults function must be called first becasue it loads neccessary defaults but only if the option group is empty.
+	// The transfer functions will override the defaults that were loaded if neccessary.
+	Transfers\maybe_load_database_defaults();
+
 	if ( false === $db_version || version_compare( '1.10.0', $db_version, '>' ) ) {
 
 		// Tell the function that we have run an update
 		$did_run_update = true;
-
-		// maybe_load_database_defaults function must be called first becasue it loads neccessary defaults but only if the option group is empty.
-		// The transfer functions will override the defaults that were loaded if neccessary.
-		Transfers\maybe_load_database_defaults();
 
 		// Transfer settings saved in the customizer
 		Transfers\transfer_customizer_message_settings();
