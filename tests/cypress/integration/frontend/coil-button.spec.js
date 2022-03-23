@@ -216,8 +216,6 @@ describe( 'Coil button for non WM-enabled users', function() {
 	} );
 
 	it( 'Checks the Coil button settings can be customized', () => {
-		const topMargin = '0';
-		const rightMargin = '10px';
 		const bottomMargin = '-40';
 		const leftMargin = 'abc';
 
@@ -232,14 +230,8 @@ describe( 'Coil button for non WM-enabled users', function() {
 
 		cy
 			.get( '#position_dropdown' )
-			.select( 'top-left' );
+			.select( 'bottom-left' );
 
-		cy
-			.get( '#coil_button_top_margin' )
-			.type( `{selectall}${ topMargin }` );
-		cy
-			.get( '#coil_button_right_margin' )
-			.type( `{selectall}${ rightMargin }` );
 		cy
 			.get( '#coil_button_bottom_margin' )
 			.type( `{selectall}${ bottomMargin }` );
@@ -254,12 +246,12 @@ describe( 'Coil button for non WM-enabled users', function() {
 		cy.visit( '/monetized-and-public/' );
 
 		cy
-			.get( '.coil-button-message-container.top.left.coil-light-theme.coil-button-small' )
+			.get( '.coil-button-message-container.bottom.left.coil-light-theme.coil-button-small' )
 			.should( 'exist' );
 
 		cy
 			.get( '.coil-button' )
-			.should( 'have.attr', 'style', 'margin: 0px 42px -40px 32px;' );
+			.should( 'have.attr', 'style', 'margin: 0px 0px -40px 32px;' );
 	} );
 
 	it( 'Checks the button can be hidden on a post level', () => {

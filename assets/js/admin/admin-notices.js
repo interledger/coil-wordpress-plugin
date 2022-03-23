@@ -16,7 +16,9 @@
 		exclusiveModalMsg = coilAdminParams.exclusive_modal_msg,
 		invalidPaymentPointerMsg = coilAdminParams.invalid_payment_pointer_msg,
 		invalidBlankInputMsg = coilAdminParams.invalid_blank_input_msg,
-		invalidUrlMsg = coilAdminParams.invalid_url_msg;
+		invalidUrlMsg = coilAdminParams.invalid_url_msg,
+		invalidMarginValueMsg = coilAdminParams.invalid_margin_value_msg,
+		coilButtonPosition = coilAdminParams.coil_button_position;
 
 	const activeTabID = $( '.nav-tab-wrapper a.nav-tab-active' ).attr( 'id' ),
 		red = '#EE4852',
@@ -62,7 +64,8 @@
 
 	// Adds or removes alerting functionality for invalid input that is detected when focus leaves an input field.
 	function focusOutValidityHandler( inputElement, validCondition, msg ) {
-		const nextElement = inputElement.next();
+		const nextElement = inputElement.next(),
+			screen = $( document ).scrollTop();
 		let invalidMsgElement = null;
 		if ( nextElement !== null && nextElement.hasClass( 'invalid-input' ) ) {
 			invalidMsgElement = nextElement;
@@ -78,10 +81,54 @@
 				} else {
 					top = 0;
 				}
-				$( 'html, body' ).animate( { scrollTop: top + 'px' } );
+				if ( screen > top ) {
+					$( 'html, body' ).animate( { scrollTop: top + 'px' } );
+				} else {
+					$( 'html, body' ).animate( { scrollTop: '0px' } );
+				}
 			}
 		} else if ( invalidMsgElement !== null ) {
 			inputElement.removeAttr( 'style' );
+			invalidMsgElement.remove();
+		}
+	}
+
+	// Adds or removes alerting functionality for invalid Coil button margin input that is detected when focus leaves the field.
+	function marginFocusOutValidityHandler( marginInputElement ) {
+		const validMargin = /(^(-)?[0-9]+((p)|(px)|(P)|(PX))?$)/,
+			nextElement = marginInputElement.next().next(), // checking element below the description
+			screen = $( document ).scrollTop();
+		const validCondition = validMargin.test( marginInputElement.val() ) || marginInputElement.val() === '';
+		let invalidMsgElement = null;
+		if ( nextElement !== null && nextElement.hasClass( 'invalid-input' ) ) {
+			invalidMsgElement = nextElement;
+		}
+		if ( ! validCondition ) {
+			marginInputElement.css( 'border-color', red );
+			if ( invalidMsgElement === null ) {
+				if ( marginInputElement.next() !== null ) {
+					marginInputElement.next().after( '<p class="invalid-input" style="color: ' + red + '">' + invalidMarginValueMsg + '</p>' );
+				}
+				let top;
+				let position;
+
+				if ( $( '.coil-margin-input-group' ) !== null && $( '.coil-margin-input-group' ).prev() !== null ) {
+					position = $( '.coil-margin-input-group' ).prev().position();
+					if ( position !== undefined ) {
+						top = position.top;
+					}
+				} else {
+					top = 0;
+				}
+
+				if ( screen > top ) {
+					$( 'html, body' ).animate( { scrollTop: top + 'px' } );
+				} else {
+					$( 'html, body' ).animate( { scrollTop: '0px' } );
+				}
+			}
+		} else if ( invalidMsgElement !== null ) {
+			marginInputElement.removeAttr( 'style' );
 			invalidMsgElement.remove();
 		}
 	}
@@ -101,6 +148,34 @@
 		} else if ( alertWhileTyping && onlyWhiteSpace.test( inputElement.val() ) && invalidMsgElement === null ) {
 			inputElement.css( 'border-color', red );
 			inputElement.after( '<p class="invalid-input" style="color: ' + red + '">' + msg + '</p>' );
+		}
+	}
+
+	// Adds or removes alerting functionality for invalid margin inputs that are detected during changes to an input field.
+	function marginInputValidityHandler( inputElement ) {
+		const nextElement = inputElement.next().next(), // checking element below the description
+			onlyWhiteSpace = /^\s+$/,
+			validMarginValue = /(^(-)?[0-9]+((p)|(px)|(P)|(PX))?$)/,
+			whiteSpaceValidCondition = ! onlyWhiteSpace.test( inputElement.val() ),
+			marginValueValidCondition = validMarginValue.test( inputElement.val() ) || inputElement.val() === '';
+		let invalidMsgElement = null;
+
+		if ( nextElement !== undefined && nextElement !== null && nextElement.hasClass( 'invalid-input' ) ) {
+			invalidMsgElement = nextElement;
+		}
+		if ( invalidMsgElement !== null ) {
+			if ( whiteSpaceValidCondition && invalidMsgElement.text() === invalidBlankInputMsg ) {
+				inputElement.removeAttr( 'style' );
+				invalidMsgElement.remove();
+			} else if ( marginValueValidCondition && invalidMsgElement.text() === invalidMarginValueMsg ) {
+				inputElement.removeAttr( 'style' );
+				invalidMsgElement.remove();
+			}
+		} else if ( onlyWhiteSpace.test( inputElement.val() ) && invalidMsgElement === null ) {
+			if ( inputElement.next() !== null ) {
+				inputElement.css( 'border-color', red );
+				inputElement.next().after( '<p class="invalid-input" style="color: ' + red + '">' + invalidBlankInputMsg + '</p>' );
+			}
 		}
 	}
 
@@ -170,19 +245,25 @@
 			coilButtonMemberPreviewSelector = 'div.coil-preview.coil-members .coil-button div > div',
 			coilButton = $( '#coil_button_text' ),
 			coilMembersButton = $( '#coil_members_button_text' ),
-			onlyWhiteSpace = /^\s+$/;
+			onlyWhiteSpace = /^\s+$/,
+			position = coilButtonPosition.split( '-' );
 		if ( coilButtonEnabled ) {
 			$( '*.coil-button-section' ).show();
 		} else {
 			$( '*.coil-button-section' ).hide();
 		}
 
+		// Hide the Coil button text div if the text is only white space
 		if ( onlyWhiteSpace.test( coilButton.val() ) ) {
 			$( coilButtonPreviewSelector ).hide();
 		}
 		if ( onlyWhiteSpace.test( coilMembersButton.val() ) ) {
 			$( coilButtonMemberPreviewSelector ).hide();
 		}
+
+		// Display the two margin input cells that are relevent to the Coil button's position
+		$( '.margin-' + position[ 0 ] ).show();
+		$( '.margin-' + position[ 1 ] ).show();
 	}
 
 	// A modal to alert users to unsaved settings
@@ -454,8 +535,58 @@
 	} );
 
 	$( document ).on( 'change', 'select[name="coil_button_settings_group[coil_button_position]"]', function() {
-		const buttonPosition = $( this ).val();
+		const buttonPosition = $( this ).val(),
+			position = buttonPosition.split( '-' );
 
 		$( '.coil-preview .coil-button' ).attr( 'data-position', buttonPosition );
+
+		// Display only the two margin input cells that are relevent to the Coil button's position
+		if ( position[ 0 ] === 'top' ) {
+			$( '.margin-bottom' ).hide();
+			$( '.margin-top' ).show();
+		} else {
+			$( '.margin-top' ).hide();
+			$( '.margin-bottom' ).show();
+		}
+
+		if ( position[ 1 ] === 'left' ) {
+			$( '.margin-right' ).hide();
+			$( '.margin-left' ).show();
+		} else {
+			$( '.margin-left' ).hide();
+			$( '.margin-right' ).show();
+		}
+	} );
+
+	$( document ).on( 'input', '#coil_button_top_margin', function() {
+		marginInputValidityHandler( $( '#coil_button_top_margin' ) );
+	} );
+
+	$( document ).on( 'focusout', '#coil_button_top_margin', function() {
+		marginFocusOutValidityHandler( $( '#coil_button_top_margin' ) );
+	} );
+
+	$( document ).on( 'input', '#coil_button_bottom_margin', function() {
+		marginInputValidityHandler( $( '#coil_button_bottom_margin' ) );
+	} );
+
+	$( document ).on( 'focusout', '#coil_button_bottom_margin', function() {
+		marginFocusOutValidityHandler( $( '#coil_button_bottom_margin' ) );
+	} );
+
+	$( document ).on( 'input', '#coil_button_right_margin', function() {
+		marginInputValidityHandler( $( '#coil_button_right_margin' ) );
+	} );
+
+	$( document ).on( 'focusout', '#coil_button_right_margin', function() {
+		marginFocusOutValidityHandler( $( '#coil_button_right_margin' ) );
+	} );
+
+	$( document ).on( 'input', '#coil_button_left_margin', function() {
+		marginInputValidityHandler( $( '#coil_button_left_margin' ) );
+	} );
+
+	$( document ).on( 'focusout', '#coil_button_left_margin', function() {
+		marginFocusOutValidityHandler( $( '#coil_button_left_margin' ) );
 	} );
 }( jQuery ) );

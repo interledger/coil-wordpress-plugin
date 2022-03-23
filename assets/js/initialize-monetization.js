@@ -151,6 +151,10 @@
 		const positionArray = coilButtonPosition.split( '-' );
 		const verticalPosition = positionArray[ 0 ];
 		const horizontalPosition = positionArray[ 1 ];
+		let topMargin,
+			rightMargin,
+			bottomMargin,
+			leftMargin;
 
 		const modalContainer = document.createElement( 'div' );
 		$( modalContainer ).addClass( 'coil-button-message-container' + ' ' + verticalPosition + ' ' + horizontalPosition );
@@ -178,10 +182,22 @@
 
 		$( modalContainer ).append( coilButtonMessage( modalData ) );
 
-		const topMargin = checkMarginValues( ButtonMarginTop );
-		const rightMargin = checkMarginValues( ButtonMarginRight );
-		const bottomMargin = checkMarginValues( ButtonMarginBottom );
-		const leftMargin = checkMarginValues( ButtonMarginLeft );
+		// Set the margins only for the two applicable sides of the Coil button based on the position selected.
+		if ( horizontalPosition === 'left' ) {
+			rightMargin = '0';
+			leftMargin = checkMarginValues( ButtonMarginLeft );
+		} else {
+			rightMargin = checkMarginValues( ButtonMarginRight );
+			leftMargin = '0';
+		}
+
+		if ( verticalPosition === 'top' ) {
+			topMargin = checkMarginValues( ButtonMarginTop );
+			bottomMargin = '0';
+		} else {
+			topMargin = '0';
+			bottomMargin = checkMarginValues( ButtonMarginBottom );
+		}
 
 		$( modalContainer ).find( '.coil-button' ).css( { 'margin-top': topMargin + 'px', 'margin-right': rightMargin + 'px', 'margin-bottom': bottomMargin + 'px', 'margin-left': leftMargin + 'px' } );
 		return modalContainer;

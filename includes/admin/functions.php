@@ -209,6 +209,8 @@ function load_admin_assets() : void {
 			'invalid_payment_pointer_msg' => __( 'Please provide a valid payment pointer', 'coil-web-monetization' ),
 			'invalid_blank_input_msg'     => __( 'Field cannot be blank', 'coil-web-monetization' ),
 			'invalid_url_msg'             => __( 'Please provide a valid URL', 'coil-web-monetization' ),
+			'invalid_margin_value_msg'    => __( 'Please enter a number', 'coil-web-monetization' ),
+			'coil_button_position'        => $position = get_coil_button_setting( 'coil_button_position' ),
 		]
 	);
 
@@ -666,7 +668,6 @@ function is_coil_button_enabled() {
 
 /**
  * Retrieve the Coil button settings.
- * Note: This does not return the final button margins since they need to be calculated relative the baseline using the get_coil_button_margins function.
  * @param string $field_name
  * @return string Setting stored in options.
  */
@@ -685,35 +686,18 @@ function get_coil_button_setting( $field_id, $use_text_default = false ) {
 			$value = ( ! empty( $coil_button_settings[ $field_id ] ) ) ? $coil_button_settings[ $field_id ] : '';
 		}
 	} elseif ( in_array( $field_id, $margin_keys, true ) ) {
-		if ( ! empty( $coil_button_settings[ $field_id ] ) ) {
-			$filtered_int = filter_var( $coil_button_settings[ $field_id ], FILTER_SANITIZE_NUMBER_INT );
-			$value        = ( $filtered_int !== false ) ? $filtered_int : '';
+		if ( $use_text_default && ( ! isset( $coil_button_settings[ $field_id ] ) || $coil_button_settings[ $field_id ] === '' ) ) {
+			$value = $default_settings[ $field_id ];
 		} else {
-			$value = '';
+			if ( isset( $coil_button_settings[ $field_id ] ) ) {
+				$filtered_int = filter_var( $coil_button_settings[ $field_id ], FILTER_SANITIZE_NUMBER_INT );
+				$value        = ( $filtered_int !== false ) ? $filtered_int : '';
+			} else {
+				$value = '';
+			}
 		}
 	} elseif ( in_array( $field_id, array_keys( $default_settings ), true ) ) {
 		$value = isset( $coil_button_settings[ $field_id ] ) ? $coil_button_settings[ $field_id ] : $default_settings[ $field_id ];
-	}
-
-	return $value;
-}
-
-/**
- * Calculates the final Coil button margin values.
- * The button has baseline margin values that can be added to or subtracted from in the Coil buton settings tab.
- * @param string $field_name
- * @return string Final button margin value.
- */
-function get_coil_button_margins( $field_id ) {
-	$value                   = get_coil_button_setting( $field_id );
-	$margin_keys             = array_keys( get_button_margin_key_defaults() );
-	$magin_baseline_settings = get_coil_button_defaults();
-	if ( in_array( $field_id, $margin_keys, true ) ) {
-		if ( empty( $value ) ) {
-			$value = $magin_baseline_settings[ $field_id ];
-		} else {
-			$value = strval( intval( $value ) + intval( $magin_baseline_settings[ $field_id ] ) );
-		}
 	}
 
 	return $value;
@@ -768,13 +752,12 @@ function get_coil_button_defaults() {
  * @return array Default margins for the Coil button.
  */
 function get_button_margin_key_defaults() {
-	$horizontal_margin_baseline = '32';
-	$vertical_margin_baseline   = '0';
+	$margin_baseline = '32';
 	return [
-		'coil_button_top_margin'    => $vertical_margin_baseline,
-		'coil_button_right_margin'  => $horizontal_margin_baseline,
-		'coil_button_bottom_margin' => $vertical_margin_baseline,
-		'coil_button_left_margin'   => $horizontal_margin_baseline,
+		'coil_button_top_margin'    => $margin_baseline,
+		'coil_button_right_margin'  => $margin_baseline,
+		'coil_button_bottom_margin' => $margin_baseline,
+		'coil_button_left_margin'   => $margin_baseline,
 	];
 }
 

@@ -69,9 +69,7 @@ describe( 'Coil button settings tab', () => {
 		const buttonLink = 'https://example.com/';
 		const buttonMemberText = 'Thank you for using Coil!';
 		const topMargin = '0';
-		const rightMargin = '10px';
-		const bottomMargin = '-40';
-		const leftMargin = 'abc';
+		const leftMargin = '5px';
 
 		cy
 			.get( '#coil_button_text' )
@@ -102,12 +100,7 @@ describe( 'Coil button settings tab', () => {
 		cy
 			.get( '#coil_button_top_margin' )
 			.type( `{selectall}${ topMargin }` );
-		cy
-			.get( '#coil_button_right_margin' )
-			.type( `{selectall}${ rightMargin }` );
-		cy
-			.get( '#coil_button_bottom_margin' )
-			.type( `{selectall}${ bottomMargin }` );
+
 		cy
 			.get( '#coil_button_left_margin' )
 			.type( `{selectall}${ leftMargin }` );
@@ -134,7 +127,7 @@ describe( 'Coil button settings tab', () => {
 			.get( '#position_dropdown' )
 			.should( 'have.value', 'top-left' );
 
-		checkButtonMargins( '', '10', bottomMargin, '' );
+		checkButtonMargins( '0px', '', '', '5px' );
 	} );
 
 	it( 'Checks coil button visibility defaults', () => {
@@ -204,20 +197,20 @@ function checkButtonText( buttonText, buttonLink, buttonMemberText ) {
 function checkButtonMargins( topMargin, rightMargin, bottomMargin, leftMargin ) {
 	cy
 		.get( '#coil_button_top_margin' )
-		.should( 'have.attr', 'placeholder', '-' )
+		.should( 'have.attr', 'placeholder', '32px' )
 		.should( 'have.value', topMargin );
 	cy
 		.get( '#coil_button_right_margin' )
-		.should( 'have.attr', 'placeholder', '-' )
+		.should( 'have.attr', 'placeholder', '32px' )
 		.should( 'have.value', rightMargin );
 	cy
 		.get( '#coil_button_bottom_margin' )
-		.should( 'have.attr', 'placeholder', '-' )
+		.should( 'have.attr', 'placeholder', '32px' )
 		.should( 'have.value', bottomMargin );
 
 	cy
 		.get( '#coil_button_left_margin' )
-		.should( 'have.attr', 'placeholder', '-' )
+		.should( 'have.attr', 'placeholder', '32px' )
 		.should( 'have.value', leftMargin );
 }
 
