@@ -295,11 +295,15 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_if_default_padlock_display_is_enabled() :  void {
+	public function test_default_padlock_settings() :  void {
 
-		$padlock_setting = Admin\get_exlusive_post_setting( 'coil_title_padlock' );
+		$padlock_display  = Admin\get_exlusive_post_setting( 'coil_title_padlock' );
+		$padlock_position = Admin\get_exlusive_post_setting( 'coil_padlock_icon_position' );
+		$padlock_style    = Admin\get_exlusive_post_setting( 'coil_padlock_icon_style' );
 
-		$this->assertSame( true, $padlock_setting );
+		$this->assertSame( true, $padlock_display );
+		$this->assertSame( 'before', $padlock_position );
+		$this->assertSame( 'lock', $padlock_style );
 	}
 
 	/**
@@ -307,21 +311,37 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_if_the_padlock_display_setting_is_retrieved_successfully() :  void {
+	public function test_if_the_padlock_settings_can_be_retrieved_successfully() :  void {
 
-		$padlock_display = [ 'coil_title_padlock' => false ];
-		update_option( 'coil_exclusive_settings_group', $padlock_display );
+		$padlock_settings = [
+			'coil_title_padlock'         => false,
+			'coil_padlock_icon_position' => 'after',
+			'coil_padlock_icon_style'    => 'bonus',
+		];
+		update_option( 'coil_exclusive_settings_group', $padlock_settings );
 
-		$padlock_setting = Admin\get_exlusive_post_setting( 'coil_title_padlock' );
+		$padlock_display  = Admin\get_exlusive_post_setting( 'coil_title_padlock' );
+		$padlock_position = Admin\get_exlusive_post_setting( 'coil_padlock_icon_position' );
+		$padlock_style    = Admin\get_exlusive_post_setting( 'coil_padlock_icon_style' );
 
-		$this->assertSame( false, $padlock_setting );
+		$this->assertSame( $padlock_settings['coil_title_padlock'], $padlock_display );
+		$this->assertSame( $padlock_settings['coil_padlock_icon_position'], $padlock_position );
+		$this->assertSame( $padlock_settings['coil_padlock_icon_style'], $padlock_style );
 
-		$padlock_display = [ 'coil_title_padlock' => true ];
-		update_option( 'coil_exclusive_settings_group', $padlock_display );
+		$padlock_settings = [
+			'coil_title_padlock'         => true,
+			'coil_padlock_icon_position' => 'before',
+			'coil_padlock_icon_style'    => 'exclusive',
+		];
+		update_option( 'coil_exclusive_settings_group', $padlock_settings );
 
-		$padlock_setting = Admin\get_exlusive_post_setting( 'coil_title_padlock' );
+		$padlock_display  = Admin\get_exlusive_post_setting( 'coil_title_padlock' );
+		$padlock_position = Admin\get_exlusive_post_setting( 'coil_padlock_icon_position' );
+		$padlock_style    = Admin\get_exlusive_post_setting( 'coil_padlock_icon_style' );
 
-		$this->assertSame( true, $padlock_setting );
+		$this->assertSame( $padlock_settings['coil_title_padlock'], $padlock_display );
+		$this->assertSame( $padlock_settings['coil_padlock_icon_position'], $padlock_position );
+		$this->assertSame( $padlock_settings['coil_padlock_icon_style'], $padlock_style );
 	}
 
 	/**

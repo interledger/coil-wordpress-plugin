@@ -127,89 +127,25 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 
 	/**
 	 * Testing if a user has donation bar and padlock display settings which they saved in the customizer that they are migrated successfully to the wp_options table
-	 * In the case where both settings had been set in the customizer and no settings had been added to the settings panel.
 	 *
 	 * @return void
 	 */
-	public function test_transfer_of_appearance_settings_from_customizer_when_settings_disabled() :  void {
+	public function test_transfer_of_appearance_settings_from_customizer() :  void {
 
 		// Testing when both settings are set to false
 		// Adding custom appearance settings to the theme_mod
-		set_theme_mod( 'coil_show_donation_bar', false );
+		set_theme_mod( 'coil_show_donation_bar', true ); // Deprecated
 		set_theme_mod( 'coil_title_padlock', false );
 
-		// Transferrng settings to the wp_options table
+		// Transferring settings to the wp_options table
 		Coil\maybe_update_database();
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
-			'coil_show_promotion_bar' => Admin\get_coil_button_setting( 'coil_show_promotion_bar' ),
-			'coil_title_padlock'      => Admin\get_exlusive_post_setting( 'coil_title_padlock' ),
+			'coil_title_padlock' => Admin\get_exlusive_post_setting( 'coil_title_padlock' ),
 		];
 
 		// Checking that all appearance settings that were retrieved are correct
-		$this->assertSame( false, $appearance_settings['coil_show_promotion_bar'] );
-		$this->assertSame( false, $appearance_settings['coil_title_padlock'] );
-
-		// Checking that the theme_mod appearance settings have been removed
-		$this->assertFalse( get_theme_mod( 'coil_show_donation_bar' ) );
-		$this->assertFalse( get_theme_mod( 'coil_title_padlock' ) );
-	}
-
-	/**
-	 * Testing if a user has donation bar and padlock display settings which they saved in the customizer that they are migrated successfully to the wp_options table
-	 * In the case where both settings had been set in the customizer and no settings had been added to the settings panel.
-	 *
-	 * @return void
-	 */
-	public function test_transfer_of_appearance_settings_from_customizer_when_settings_enabled() :  void {
-
-		// Adding custom appearance settings to the theme_mod
-		set_theme_mod( 'coil_show_donation_bar', true );
-		set_theme_mod( 'coil_title_padlock', true );
-
-		// Transferrng settings to the wp_options table
-		Coil\maybe_update_database();
-
-		// Creating an array of the appearance settings that were retrieved from the wp_options table.
-		$appearance_settings = [
-			'coil_show_promotion_bar' => Admin\get_coil_button_setting( 'coil_show_promotion_bar' ),
-			'coil_title_padlock'      => Admin\get_exlusive_post_setting( 'coil_title_padlock' ),
-		];
-
-		// Checking that all appearance settings that were retrieved are correct
-		$this->assertSame( true, $appearance_settings['coil_show_promotion_bar'] );
-		$this->assertSame( true, $appearance_settings['coil_title_padlock'] );
-
-		// Checking that the theme_mod appearance settings have been removed
-		$this->assertFalse( get_theme_mod( 'coil_show_donation_bar' ) );
-		$this->assertFalse( get_theme_mod( 'coil_title_padlock' ) );
-	}
-
-	/**
-	 * Testing if a user has donation bar and padlock display settings which they saved in the customizer that they are migrated successfully to the wp_options table
-	 * In the case where both settings had been set in the customizer and no settings had been added to the settings panel.
-	 *
-	 * @return void
-	 */
-	public function test_transfer_of_appearance_settings_from_customizer_when_settings_are_mixed() :  void {
-
-		// Testing when one setting is set to true and the other to false
-		// Adding custom appearance settings to the theme_mod
-		set_theme_mod( 'coil_show_donation_bar', true );
-		set_theme_mod( 'coil_title_padlock', false );
-
-		// Transferrng settings to the wp_options table
-		Coil\maybe_update_database();
-
-		// Creating an array of the appearance settings that were retrieved from the wp_options table.
-		$appearance_settings = [
-			'coil_show_promotion_bar' => Admin\get_coil_button_setting( 'coil_show_promotion_bar' ),
-			'coil_title_padlock'      => Admin\get_exlusive_post_setting( 'coil_title_padlock' ),
-		];
-
-		// Checking that all appearance settings that were retrieved are correct
-		$this->assertSame( true, $appearance_settings['coil_show_promotion_bar'] );
 		$this->assertSame( false, $appearance_settings['coil_title_padlock'] );
 
 		// Checking that the theme_mod appearance settings have been removed
@@ -227,19 +163,17 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 
 		// Adding custom appearance settings to the database and theme_mod
 		update_option( 'coil_exclusive_settings_group', [ 'coil_title_padlock' => false ] );
-		set_theme_mod( 'coil_show_donation_bar', false );
+		set_theme_mod( 'coil_show_donation_bar', false ); // Deprecated
 
 		// Transferrng settings to the wp_options table
 		Coil\maybe_update_database();
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
-			'coil_show_promotion_bar' => Admin\get_coil_button_setting( 'coil_show_promotion_bar' ),
-			'coil_title_padlock'      => Admin\get_exlusive_post_setting( 'coil_title_padlock' ),
+			'coil_title_padlock' => Admin\get_exlusive_post_setting( 'coil_title_padlock' ),
 		];
 
 		// Checking that all appearance settings that were retrieved are correct
-		$this->assertSame( false, $appearance_settings['coil_show_promotion_bar'] );
 		$this->assertSame( false, $appearance_settings['coil_title_padlock'] );
 
 		// Checking that the theme_mod appearance settings have been removed
@@ -390,7 +324,7 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 
 		// Settings saved in the deprecated option group
 		$original_settings = [
-			'coil_show_promotion_bar' => true,
+			'coil_show_promotion_bar' => true, // Deprecated
 			'coil_title_padlock'      => false,
 		];
 		update_option( 'coil_appearance_settings_group', $original_settings );
@@ -400,12 +334,10 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 
 		// Creating an array of the settings that were retrieved.
 		$retrieved_settings = [
-			'coil_show_promotion_bar' => Admin\get_coil_button_setting( 'coil_show_promotion_bar' ),
-			'coil_title_padlock'      => Admin\get_exlusive_post_setting( 'coil_title_padlock' ),
+			'coil_title_padlock' => Admin\get_exlusive_post_setting( 'coil_title_padlock' ),
 		];
 
 		// Checking that all settings that were retrieved are correct
-		$this->assertSame( $original_settings['coil_show_promotion_bar'], $retrieved_settings['coil_show_promotion_bar'] );
 		$this->assertSame( $original_settings['coil_title_padlock'], $retrieved_settings['coil_title_padlock'] );
 
 		// Checking that the coil_appearance_settings_group option group has been removed

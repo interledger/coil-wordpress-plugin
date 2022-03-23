@@ -103,7 +103,7 @@ describe( 'Fully restricted posts for non WM-enabled users', () => {
 
 		// By default the coil logo is displayed
 		cy
-			.get( '.coil-message-inner svg' )
+			.get( '.coil-message-inner img' )
 			.should( 'exist' );
 
 		// By default the theme's font isn't inherited
@@ -137,7 +137,7 @@ describe( 'Fully restricted posts for non WM-enabled users', () => {
 			.should( 'exist' );
 
 		cy
-			.get( '.coil-message-inner svg' )
+			.get( '.coil-message-inner img' )
 			.should( 'not.exist' );
 
 		cy

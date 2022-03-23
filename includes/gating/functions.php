@@ -129,6 +129,11 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 		return $title;
 	}
 
+	// Do not show the padlock on the menu items
+	if ( ! in_the_loop() && ! is_singular() ) {
+		return $title;
+	}
+
 	if ( ! Admin\get_exlusive_post_setting( 'coil_title_padlock' ) ) {
 		return $title;
 	}
@@ -138,18 +143,22 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 		return $title;
 	}
 
-	$padlock_location = Admin\get_exlusive_post_setting( 'coil_padlock_icon_position' );
+	$padlock_icon_styles = Admin\get_padlock_icon_styles();
+	$padlock_icon        = Admin\get_exlusive_post_setting( 'coil_padlock_icon_style', 'lock' );
+	$padlock_location    = Admin\get_exlusive_post_setting( 'coil_padlock_icon_position' );
 
 	if ( $padlock_location === 'after' ) {
 		$post_title = sprintf(
 			/* translators: %s: Gated post title. */
-			__( '%s 🔒', 'coil-web-monetization' ),
-			$title
+			__( '%1$s %2$s', 'coil-web-monetization' ),
+			$title,
+			$padlock_icon_styles[ $padlock_icon ]
 		);
 	} else {
 		$post_title = sprintf(
 			/* translators: %s: Gated post title. */
-			__( '🔒 %s', 'coil-web-monetization' ),
+			__( '%1$s %2$s', 'coil-web-monetization' ),
+			$padlock_icon_styles[ $padlock_icon ],
 			$title
 		);
 	}

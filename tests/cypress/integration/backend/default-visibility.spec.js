@@ -93,6 +93,10 @@ describe( 'Default  visibility settings for pages and posts', () => {
 			.get( '#submit' )
 			.click();
 
+		cy.on( 'window:confirm', ( text ) => {
+			expect( text ).to.contains( 'Making posts and pages exclusive will also set them as monetized by default.' );
+		} );
+
 		// Check that monetization has been enabled
 		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=general_settings' );
 		cy

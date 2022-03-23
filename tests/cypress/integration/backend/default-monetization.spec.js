@@ -87,6 +87,10 @@ describe( 'Default monetization settings for pages and posts', () => {
 			.get( '#submit' )
 			.click();
 
+		cy.on( 'window:confirm', ( text ) => {
+			expect( text ).to.contains( 'Removing monetization from posts and pages will set them as public by default.' );
+		} );
+
 		// Check that the visibility defaults have been changed to public
 		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );
 		cy

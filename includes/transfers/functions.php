@@ -70,13 +70,25 @@ function maybe_load_database_defaults() {
 		add_option( 'coil_exclusive_settings_group', $new_exclusive_settings );
 	}
 
-	// Loads donation bar default if it has not yet been entered into the database
+	// Loads the Coil button defaults if they have not yet been entered into the database
 	$coil_button_settings = get_option( 'coil_button_settings_group', 'absent' );
 
 	if ( $coil_button_settings === 'absent' ) {
-		// Donation bar default is true
-		$coil_button_settings = [ 'coil_show_promotion_bar' => true ];
-		add_option( 'coil_button_settings_group', $coil_button_settings );
+		$defaults                                  = Admin\get_coil_button_defaults();
+		$new_button_settings                       = [];
+		$new_button_settings['coil_button_toggle'] = $defaults['coil_button_toggle'];
+		$new_button_settings['coil_button_member_display'] = $defaults['coil_button_member_display'];
+
+		$post_type_options = Coil\get_supported_post_types( 'objects' );
+		// Button visibility default is 'show'
+		$button_visibility_default = $defaults['post_type_button_visibility'];
+
+		// Set post visibility and excerpt display default for each post type
+		foreach ( $post_type_options as $post_type ) {
+			$new_button_settings[ $post_type->name . '_button_visibility' ] = $button_visibility_default;
+		}
+
+		add_option( 'coil_button_settings_group', $new_button_settings );
 	}
 }
 
@@ -194,17 +206,9 @@ function transfer_customizer_appearance_settings() {
 		}
 	}
 
-	// The promotion bar display setting is now in the coil_button_settings_group.
 	// The promotion bar has been deprecated and a Coil button is taking its place instead.
 	if ( get_theme_mod( $coil_show_donation_bar, 'absent' ) !== 'absent' ) {
-		$existing_donation_bar_setting                        = get_option( 'coil_button_settings_group', [] );
-		$new_donation_bar_settings['coil_show_promotion_bar'] = get_theme_mod( $coil_show_donation_bar );
 		remove_theme_mod( $coil_show_donation_bar );
-		if ( [] !== $existing_donation_bar_setting ) {
-			update_option( 'coil_button_settings_group', array_merge( $existing_donation_bar_setting, $new_donation_bar_settings ) );
-		} else {
-			add_option( 'coil_button_settings_group', $new_donation_bar_settings );
-		}
 	}
 }
 
@@ -288,9 +292,6 @@ function transfer_version_1_9_panel_settings() {
 	if ( $appearance_settings !== 'absent' ) {
 		if ( isset( $appearance_settings['coil_title_padlock'] ) ) {
 			$new_exclusive_settings['coil_title_padlock'] = $appearance_settings['coil_title_padlock'];
-		}
-		if ( isset( $appearance_settings['coil_show_promotion_bar'] ) ) {
-			$new_coil_button_settings['coil_show_promotion_bar'] = $appearance_settings['coil_show_promotion_bar'];
 		}
 		delete_option( 'coil_appearance_settings_group' );
 	}

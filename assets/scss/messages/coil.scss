@@ -43,6 +43,10 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 				margin: 0 0 $message_spacing_baseline * 2;
 			}
 
+			img {
+				height: 32px;
+			}
+
 			.coil-message-title {
 				font-size: 18px;
 				font-weight: 700;
@@ -173,86 +177,140 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 	}
 }
 
-// Scenario 3 - Banner message
-.coil-banner-message-container {
-	bottom: 0;
-	color: rgba(0, 0, 0, 0.7);
+// Scenario 3 - Coil button
+.coil-button-message-container {
+	// Hide the Coil button on mobile
+	@media only screen and (max-width: $message_mobile_breakpoint) {
+		display: none;
+	}
+
+	display: flex;
 	position: fixed;
 	width: 100%;
 	z-index: 200;
-	@media only screen and (min-width: $message_mobile_breakpoint) {
-		display: flex;
-		justify-content: center;
-	}
 
-	.banner-message-inner {
-		background-color: $white;
-		border: 1px solid $message_banner_border_colour;
-		box-shadow: 0 6px 10px 0 $message_banner_shadow_colour;
-
-		font-family: 'Open Sans', sans-serif;
-		padding: 23px $message_spacing_baseline * 2 $message_spacing_baseline * 2;
-		position: relative;
-
-		@media only screen and (min-width: $message_mobile_breakpoint) {
-			align-items: center;
-			background-color: $message_banner_background_colour;
-			border-radius: 6px;
-			display: flex;
-			justify-content: space-around;
-			margin-bottom: 20px;
-			padding: 12px $message_spacing_baseline * 4;
-		}
-	}
-
-	.coil-banner-message-content {
-		font-size: 12px;
-		line-height: 17px;
-		margin: 22px 0 5px;
-
-		@media only screen and (min-width: $message_mobile_breakpoint) {
-			font-size: 14px;
-			line-height: 20px;
-			margin: 0;
-			max-width: 434px;
-		}
-	}
-
-	.coil-banner-message-button {
-		background-color: $message_banner_button_colour;
+	.coil-button {
+		background-color: $coil_button_message_color;
 		border-radius: 6px;
-		color: $white;
-		font-size: 14px;
+		box-shadow: 0 6px 10px 0 $coil_button_message_shadow_color;
+		font-family: 'Open Sans', sans-serif;
+		font-size: 17px;
 		font-weight: 600;
 		line-height: 20px;
-		margin: 0;
-		padding: $message_spacing_baseline $message_spacing_baseline * 3;
+		overflow: visible;
+		position: relative;
 		text-align: center;
-		text-decoration: none;
 
-		&:hover {
-			background-color: $message_banner_button_hover_colour;
+		a {
+			border-radius: 6px;
+			display: flex;
+			flex-direction: row;
+			padding: $message_spacing_baseline;
+			text-decoration: none;
+			div {
+				color: $coil_button_font_color;
+				margin: auto;
+				padding-left: $message_spacing_baseline;
+				padding-right: $message_spacing_baseline;
+			}
+
+			img {
+				height: 24px;
+				width: 24px;
+			}
 		}
 
 		@media only screen and (min-width: $message_mobile_breakpoint) {
-			margin: 0 $message_spacing_baseline * 4 0 67px;
+			justify-content: space-around;
+			max-width: 434px;
+		}
+
+		.coil-button-dismiss {
+			background-color: $coil_button_message_dismiss_color;
+			border-radius: 100%;
+			color: $coil_dismiss_font_color;
+			cursor: pointer;
+			display: none;
+			font-size: 20px;
+			font-weight: 700;
+			height: 20px;
+			line-height: 20px;
+			position: absolute;
+			right: -7px;
+			top: -7px;
+			width: 20px;
+	
+			&:hover {
+				background-color: $coil_dismiss_hover_color;
+			}
 		}
 	}
+}
 
-	.coil-banner-message-dismiss {
-		color: $message_banner_dismiss_colour;
-		cursor: pointer;
-		font-size: 26px;
-		font-weight: 700;
-		line-height: 1.1;
-		position: absolute;
-		right: 12px;
-		top: 10px;
-		@media only screen and (min-width: $message_mobile_breakpoint) {
-			font-size: 35px;
-			position: relative;
-			right: auto;
-			top: auto;
+.coil-button-message-container.bottom {
+	bottom: 0;
+}
+
+.coil-button-message-container.top {
+	top: 0;
+}
+
+.coil-button-message-container.right {
+	justify-content: right;
+}
+
+.coil-button-message-container.left {
+	justify-content: left;
+}
+
+// Changes Coil button to implement light theme
+.coil-button-message-container.coil-light-theme {
+	.coil-button {
+		background-color: $coil_button_message_color_light_theme;
+
+		a {
+			div {
+				color: $coil_button_font_color_light_theme;
+			}
+		}
+	}
+}
+
+// Implement hover effect
+body:not( .monetization-initialized ) .coil-button-message-container .coil-button {
+	&:hover {
+		background-color: $coil_button_message_hover_color;
+	}
+}
+
+// Implement hover effect for the light theme
+body:not( .monetization-initialized ) .coil-button-message-container.coil-light-theme .coil-button {
+	&:hover {
+		background-color: $coil_button_message_hover_color_light_theme;
+	}
+}
+
+// Changes Coil button to implement the small size
+.coil-button-message-container.coil-button-small {
+	.coil-button {
+		font-size: 14px;
+		line-height: 17px;
+	
+		a {
+	
+			img {
+				height: 16px;
+				width: 16px;
+			}
+		}
+	
+		.coil-button-dismiss {
+			font-size: 14px;
+			height: 14px;
+			line-height: 14px;
+			right: -5px;
+			top: -5px;
+			width: 14px;
 		}
 	}
 }

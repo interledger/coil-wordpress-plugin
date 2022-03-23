@@ -48,7 +48,8 @@ Cypress.Commands.add( 'startWebMonetization', () => {
 		window.Cypress.monetized = true;
 	} ).then( () => {
 		cy.reload();
-		cy.wait( 500 ); // Ensure the bootstrap function has add the event listener
+		// Ensure the bootstrap function has add the event listener
+		cy.wait( 500 ); // eslint-disable-line
 	} ).then( () => {
 		cy
 			.document()
@@ -81,7 +82,11 @@ Cypress.Commands.add( 'addSetting', ( optionName, settings ) => {
 		const keyLength = settings[ i ].key.length;
 		const valueLength = settings[ i ].value.length;
 		optionString += 's:' + keyLength + ':\\\"' + settings[ i ].key + '\\\";';
-		optionString += 's:' + valueLength + ':\\\"' + settings[ i ].value + '\\\";';
+		if ( settings[ i ].value === '0' || settings[ i ].value === '1' ) {
+			optionString += 'b:' + settings[ i ].value + ';';
+		} else {
+			optionString += 's:' + valueLength + ':\\\"' + settings[ i ].value + '\\\";';
+		}
 	}
 	optionString += '}';
 
