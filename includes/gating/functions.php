@@ -206,7 +206,6 @@ function maybe_restrict_content( string $content ) : string {
 				$content        = str_replace( $coil_read_more_string, '<div class="coil-restricted-content">', $content );
 				$content       .= '</div>';
 				$public_content = $content;
-				//die(htmlspecialchars($public_content));
 			} elseif ( is_excerpt_visible( get_queried_object_id() ) ) { // Restrict all / some excerpt content based on visibility settings.
 				$public_content .= sprintf(
 					'<p>%s</p>',
