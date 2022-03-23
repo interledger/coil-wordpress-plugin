@@ -273,7 +273,10 @@ function is_excerpt_visible( $post_id ) : bool {
 	$post_id   = (int) $post_id;
 	$post_type = get_post_type( $post_id );
 
-	$display_excerpt   = false;
+	$display_excerpt = false;
+	if ( has_read_more_block( get_the_content() ) ) {
+		return true;
+	}
 	$exclusive_options = Admin\get_exclusive_settings();
 	if ( ! empty( $exclusive_options ) && isset( $exclusive_options[ $post_type . '_excerpt' ] ) ) {
 		$display_excerpt = $exclusive_options[ $post_type . '_excerpt' ];
