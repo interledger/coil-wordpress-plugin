@@ -70,9 +70,12 @@ describe( 'Visibility of content blocks for non WM-enabled users', () => {
 
 	it( 'Check visibility of split content when exclusive content has been disabled', () => {
 		// Ensure exclusive content is disabled
-		const optionString = 'a:1:{s:21:\\\"coil_exclusive_toggle\\\";b:0;}';
-		cy.exec( 'wp db query \'DELETE FROM wp_options WHERE option_name IN ("coil_exclusive_settings_group");\' --allow-root' );
-		cy.exec( 'wp db query \'INSERT INTO wp_options (option_name, option_value) VALUES ( \"coil_exclusive_settings_group\", \"' + optionString + '\");\' --allow-root' );
+		cy.addSetting( 'coil_exclusive_settings_group', [
+			{
+				key: 'coil_exclusive_toggle',
+				value: '0',
+			},
+		] );
 		cy.reload();
 
 		// Post should be monetized and public.
@@ -99,10 +102,5 @@ describe( 'Visibility of content blocks for non WM-enabled users', () => {
 		cy
 			.get( '.coil-split-content-message' )
 			.should( 'not.exist' );
-
-		// Promotion bar should be visible.
-		cy
-			.get( '.banner-message-inner' )
-			.should( 'be.visible' );
 	} );
 } );

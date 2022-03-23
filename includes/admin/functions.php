@@ -188,22 +188,27 @@ function load_admin_assets() : void {
 		return;
 	}
 
-	$site_logo = get_custom_logo();
-
 	$suffix       = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 	$admin_params = apply_filters(
 		'coil_admin_js_params',
 		[
-			'ajax_url'                 => admin_url( 'admin-ajax.php' ),
-			'site_logo_url'            => ( ! empty( $site_logo ) ? $site_logo : false ),
-			'coil_logo_url'            => [
+			'ajax_url'                    => admin_url( 'admin-ajax.php' ),
+			'site_logo_url'               => get_site_logo_src(),
+			'coil_logo_url'               => [
 				'light' => plugin_dir_url( dirname( __DIR__ ) ) . 'assets/images/coil-icn-black.svg',
 				'dark'  => plugin_dir_url( dirname( __DIR__ ) ) . 'assets/images/coil-icn-white.svg',
 			],
-			'not_monetized_post_types' => get_post_types_with_status( 'monetization', 'not-monetized' ),
-			'exclusive_post_types'     => get_post_types_with_status( 'visibility', 'exclusive' ),
-			'general_modal_msg'        => __( 'Removing monetization from {postTypes} will set them as public by default.', 'coil-web-monetization' ),
-			'exclusive_modal_msg'      => __( 'Making {postTypes} exclusive will also set them as monetized by default.', 'coil-web-monetization' ),
+			'coil_streaming_logo_url'     => [
+				'light' => plugin_dir_url( dirname( __DIR__ ) ) . 'assets/images/coil-icn-black-streaming.svg',
+				'dark'  => plugin_dir_url( dirname( __DIR__ ) ) . 'assets/images/coil-icn-white-streaming.svg',
+			],
+			'not_monetized_post_types'    => get_post_types_with_status( 'monetization', 'not-monetized' ),
+			'exclusive_post_types'        => get_post_types_with_status( 'visibility', 'exclusive' ),
+			'general_modal_msg'           => __( 'Removing monetization from {postTypes} will set them as public by default.', 'coil-web-monetization' ),
+			'exclusive_modal_msg'         => __( 'Making {postTypes} exclusive will also set them as monetized by default.', 'coil-web-monetization' ),
+			'invalid_payment_pointer_msg' => __( 'Please provide a valid payment pointer', 'coil-web-monetization' ),
+			'invalid_blank_input_msg'     => __( 'Field cannot be blank', 'coil-web-monetization' ),
+			'invalid_url_msg'             => __( 'Please provide a valid URL', 'coil-web-monetization' ),
 		]
 	);
 
@@ -498,6 +503,24 @@ function get_paywall_branding_options() {
 	return $branding_choices;
 }
 
+/**
+ * @return string Extracts the src attribute of the website logo, if there is one.
+ */
+function get_site_logo_src() {
+	$site_logo_src = false;
+	if ( function_exists( 'get_custom_logo' ) ) {
+		$site_logo   = get_custom_logo();
+		$pattern     = '/(src=")[^"]*(")/i';
+		$matches     = [];
+		$match_found = preg_match( $pattern, $site_logo, $matches );
+		if ( $match_found ) {
+			$site_logo_src = str_replace( 'src="', '', $matches[0] );
+			$site_logo_src = str_replace( '"', '', $site_logo_src );
+		}
+	}
+	return $site_logo_src;
+}
+
 
 /**
  * @return array Valid padlock positions.
@@ -621,7 +644,7 @@ function get_css_selector() {
 }
 
 /**
- * Retrieve the Coil Button settings.
+ * Retrieve the Coil button settings.
  * @return array Setting stored in options.
  */
 function get_coil_button_settings() : array {
@@ -631,19 +654,153 @@ function get_coil_button_settings() : array {
 }
 
 /**
- * Retrieve the checkbox value for whether or not to display the Promotion Bar.
+ * Retrieve the Coil button toggle setting
+ *
+ * @return bool setting stored in options
+ */
+function is_coil_button_enabled() {
+	$coil_button_options = get_coil_button_settings();
+	$exclusive_toggle_id = 'coil_button_toggle';
+	return isset( $coil_button_options[ $exclusive_toggle_id ] ) ? $coil_button_options[ $exclusive_toggle_id ] : false;
+}
+
+/**
+ * Retrieve the Coil button settings.
+ * Note: This does not return the final button margins since they need to be calculated relative the baseline using the get_coil_button_margins function.
  * @param string $field_name
  * @return string Setting stored in options.
  */
-function get_coil_button_setting( $field_id ) {
+function get_coil_button_setting( $field_id, $use_text_default = false ) {
 
 	$coil_button_settings = get_coil_button_settings();
 	$value                = false;
-	if ( $field_id === 'coil_show_promotion_bar' ) {
-		$value = isset( $coil_button_settings[ $field_id ] ) ? $coil_button_settings[ $field_id ] : false;
+	$text_fields          = [ 'coil_button_text', 'coil_button_link', 'coil_members_button_text' ];
+	$margin_keys          = array_keys( get_button_margin_key_defaults() );
+	$default_settings     = get_coil_button_defaults();
+	// Text inputs can be empty strings, in which the placeholder text will display or the default text will be returned.
+	if ( in_array( $field_id, $text_fields, true ) ) {
+		if ( $use_text_default && empty( $coil_button_settings[ $field_id ] ) ) {
+			$value = $default_settings[ $field_id ];
+		} else {
+			$value = ( ! empty( $coil_button_settings[ $field_id ] ) ) ? $coil_button_settings[ $field_id ] : '';
+		}
+	} elseif ( in_array( $field_id, $margin_keys, true ) ) {
+		if ( ! empty( $coil_button_settings[ $field_id ] ) ) {
+			$filtered_int = filter_var( $coil_button_settings[ $field_id ], FILTER_SANITIZE_NUMBER_INT );
+			$value        = ( $filtered_int !== false ) ? $filtered_int : '';
+		} else {
+			$value = '';
+		}
+	} elseif ( in_array( $field_id, array_keys( $default_settings ), true ) ) {
+		$value = isset( $coil_button_settings[ $field_id ] ) ? $coil_button_settings[ $field_id ] : $default_settings[ $field_id ];
 	}
 
 	return $value;
+}
+
+/**
+ * Calculates the final Coil button margin values.
+ * The button has baseline margin values that can be added to or subtracted from in the Coil buton settings tab.
+ * @param string $field_name
+ * @return string Final button margin value.
+ */
+function get_coil_button_margins( $field_id ) {
+	$value                   = get_coil_button_setting( $field_id );
+	$margin_keys             = array_keys( get_button_margin_key_defaults() );
+	$magin_baseline_settings = get_coil_button_defaults();
+	if ( in_array( $field_id, $margin_keys, true ) ) {
+		if ( empty( $value ) ) {
+			$value = $magin_baseline_settings[ $field_id ];
+		} else {
+			$value = strval( intval( $value ) + intval( $magin_baseline_settings[ $field_id ] ) );
+		}
+	}
+
+	return $value;
+}
+
+/**
+ * Return the Coil button visibility status
+ * based on the global defaults.
+ *
+ * @param integer $post_id
+ * @return string Coil button status.
+ */
+function get_coil_button_status( $object_id ) {
+	$coil_button_class    = '';
+	$post_id              = (int) $object_id;
+	$post                 = get_post( $post_id );
+	$coil_button_settings = get_coil_button_settings();
+
+	if ( ! empty( $coil_button_settings ) && ! empty( $post ) && isset( $coil_button_settings[ $post->post_type . '_button_visibility' ] ) ) {
+		$status = $coil_button_settings[ $post->post_type . '_button_visibility' ];
+		if ( $status === 'show' ) {
+			$coil_button_class = 'show-coil-button';
+		}
+	}
+
+	return $coil_button_class;
+}
+
+/**
+ * Retrieve the Coil button settings defaults
+ *
+ * @return array Default values
+ */
+function get_coil_button_defaults() {
+	// Set up defaults.
+	$settings        = [
+		'coil_button_toggle'          => true,
+		'coil_button_member_display'  => true,
+		'coil_button_text'            => __( 'Support us with Coil', 'coil-web-monetization' ),
+		'coil_button_link'            => __( 'https://coil.com/', 'coil-web-monetization' ),
+		'coil_members_button_text'    => __( 'Thanks for your support!', 'coil-web-monetization' ),
+		'coil_button_color_theme'     => 'dark',
+		'coil_button_size'            => 'large',
+		'coil_button_position'        => 'bottom-right',
+		'post_type_button_visibility' => 'show', // a generic default for all post-types
+	];
+	$margin_defaults = get_button_margin_key_defaults();
+	return array_merge( $settings, $margin_defaults );
+}
+
+/**
+ * @return array Default margins for the Coil button.
+ */
+function get_button_margin_key_defaults() {
+	$horizontal_margin_baseline = '32';
+	$vertical_margin_baseline   = '0';
+	return [
+		'coil_button_top_margin'    => $vertical_margin_baseline,
+		'coil_button_right_margin'  => $horizontal_margin_baseline,
+		'coil_button_bottom_margin' => $vertical_margin_baseline,
+		'coil_button_left_margin'   => $horizontal_margin_baseline,
+	];
+}
+
+/**
+ * @return array Valid button sizes.
+ */
+function get_button_size_options() {
+
+	$sizes = [ 'large', 'small' ];
+
+	return $sizes;
+}
+
+/**
+ * @return array Valid button positions.
+ */
+function get_button_position_options() {
+
+	$position_options = [
+		'bottom-right' => 'Bottom - Right',
+		'bottom-left'  => 'Bottom - Left',
+		'top-right'    => 'Top - Right',
+		'top-left'     => 'Top - Left',
+	];
+
+	return $position_options;
 }
 
 /**

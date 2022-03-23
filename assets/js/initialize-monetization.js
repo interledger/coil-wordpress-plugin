@@ -10,21 +10,34 @@
 		paywallTitle = coilParams.paywall_title,
 		loadingContent = coilParams.loading_content,
 		paywallMessage = coilParams.paywall_message,
+		coilButtonUnpaidMessage = coilParams.coil_button_unpaid_message,
+		coilButtonPaidMessage = coilParams.coil_button_paid_message,
+		showCoilButtonToMembers = Boolean( coilParams.show_coil_button_to_members ),
+		coilButtonLink = coilParams.coil_button_link,
 		postExcerpt = coilParams.post_excerpt,
 		adminMissingIdNotice = coilParams.admin_missing_id_notice,
 		paywallButtonText = coilParams.paywall_button_text,
 		paywallButtonLink = coilParams.paywall_button_link,
 		coilMessageBranding = coilParams.coil_message_branding,
+		coilButtonTheme = coilParams.coil_button_theme,
+		coilButtonSize = coilParams.coil_button_size,
+		coilButtonPosition = coilParams.coil_button_position,
+		ButtonMarginTop = coilParams.button_margin_top,
+		ButtonMarginRight = coilParams.button_margin_right,
+		ButtonMarginBottom = coilParams.button_margin_bottom,
+		ButtonMarginLeft = coilParams.button_margin_left,
+		coilButtonGloballyEnabled = Boolean( coilParams.coil_button_enabled ), // Cast to boolean - wp_localize_script forces string values.
 		siteLogo = coilParams.site_logo,
 		coilLogo = coilParams.coil_logo,
+		coilLogoStreaming = coilParams.coil_logo_streaming,
 		coilLogoWhite = coilParams.coil_logo_white,
-		showPromotionBar = Boolean( coilParams.show_promotion_bar ), // Cast to boolean - wp_localize_script forces string values.
+		coilLogoWhiteStreaming = coilParams.coil_logo_white_streaming,
 		exclusiveMessageTheme = coilParams.exclusive_message_theme,
 		fontSelection = Boolean( coilParams.font_selection );
 
 	const subscriberOnlyMessage = wp.template( 'subscriber-only-message' );
 	const splitContentMessage = wp.template( 'split-content-message' );
-	const bannerMessage = wp.template( 'banner-message' );
+	const coilButtonMessage = wp.template( 'coil-button-message' );
 
 	const messageWrapper = $( 'p.monetize-msg' );
 
@@ -89,16 +102,14 @@
 			modalContainer.classList.add( 'coil-inherit-theme-font' );
 		}
 
-		let brandingLogo;
+		let brandingLogo = '';
 
-		if ( coilMessageBranding === 'site_logo' ) {
-			brandingLogo = siteLogo;
+		if ( coilMessageBranding === 'site_logo' && siteLogo !== '' ) {
+			brandingLogo = brandingLogo = '<img src="' + siteLogo + '">';
 		} else if ( coilMessageBranding === 'coil_logo' && exclusiveMessageTheme === 'dark' ) {
-			brandingLogo = coilLogoWhite;
+			brandingLogo = '<img src="' + coilLogoWhite + '">';
 		} else if ( coilMessageBranding === 'coil_logo' ) {
-			brandingLogo = coilLogo;
-		} else {
-			brandingLogo = '';
+			brandingLogo = '<img src="' + coilLogo + '">';
 		}
 
 		const modalData = {
@@ -116,21 +127,94 @@
 	}
 
 	/**
-	 * @return {object} Output a slim banner message.
-	 */
-	function showBannerMessage() {
+	 * Adds the Coil button to the body oif the document and adds it's handler functions.
+	 * @param {String} message Message shown to thank Coil members, or to encourage users to sign up.
+	 * @return {void}
+	*/
+	function showCoilButton( message ) {
+		const coilButton = createCoilButton( message );
+		const onlyWhiteSpace = /^\s+$/;
+		$( 'body' ).append( coilButton );
+		// Hides the text div if there is no text
+		if ( onlyWhiteSpace.test( message ) ) {
+			$( '.coil-button a div' ).hide();
+		}
+		addButtonDismissClickHandler();
+		addButtonDismissAppearanceHandler();
+	}
+
+	/**
+	 * @param {String} message Message shown to thank Coil members, or to encourage users to sign up.
+	 * @return {object} Output a Coil button message.
+	*/
+	function createCoilButton( message ) {
+		const positionArray = coilButtonPosition.split( '-' );
+		const verticalPosition = positionArray[ 0 ];
+		const horizontalPosition = positionArray[ 1 ];
+
 		const modalContainer = document.createElement( 'div' );
-		modalContainer.classList.add( 'coil-banner-message-container' );
+		$( modalContainer ).addClass( 'coil-button-message-container' + ' ' + verticalPosition + ' ' + horizontalPosition );
+
+		let brandingLogo = '';
+
+		if ( coilButtonTheme === 'light' ) {
+			modalContainer.classList.add( 'coil-light-theme' );
+			brandingLogo = coilLogo;
+		} else {
+			brandingLogo = coilLogoWhite;
+		}
+
+		if ( coilButtonSize === 'small' ) {
+			modalContainer.classList.add( 'coil-button-small' );
+		}
 
 		const modalData = {
+			headerLogo: brandingLogo,
 			button: {
-				text: paywallButtonText,
-				href: paywallButtonLink,
+				text: message,
+				href: coilButtonLink,
 			},
 		};
 
-		$( modalContainer ).append( bannerMessage( modalData ) );
+		$( modalContainer ).append( coilButtonMessage( modalData ) );
+
+		const topMargin = checkMarginValues( ButtonMarginTop );
+		const rightMargin = checkMarginValues( ButtonMarginRight );
+		const bottomMargin = checkMarginValues( ButtonMarginBottom );
+		const leftMargin = checkMarginValues( ButtonMarginLeft );
+
+		$( modalContainer ).find( '.coil-button' ).css( { 'margin-top': topMargin + 'px', 'margin-right': rightMargin + 'px', 'margin-bottom': bottomMargin + 'px', 'margin-left': leftMargin + 'px' } );
 		return modalContainer;
+	}
+
+	/**
+	 * Determines whether a Coil button element should be added to the page.
+	 * The button will only be added if it is not already present, it is globally enabled, the browser doesn't have a dismiss cookie for it,
+	 * and neither the pending message nor paywall are being displayed.
+	 */
+	function maybeAddCoilButton() {
+		// TODO shouldn't display if the read more block is present
+		const buttonEnabled = hasCoilButtonEnabled();
+		const buttonAlreadyExists = $( '.coil-button-message-container' ).length !== 0 ? true : false;
+		const buttonDismissed = hasButtonDismissCookie();
+		const pendingMessageDisplayed = $( 'p.monetize-msg' ).length !== 0 ? true : false;
+		const paywallDisplayed = $( '.coil-message-container' ).length !== 0 ? true : false;
+		if ( buttonEnabled && ! buttonAlreadyExists && ! buttonDismissed && ! pendingMessageDisplayed && ! paywallDisplayed ) {
+			showCoilButton( coilButtonUnpaidMessage );
+		}
+	}
+
+	/**
+	 * Ensures that the margin value assigned to the Coil button has an integer value as expected.
+	 * @param {String} marginValue from coilParams.
+	 * @return {String} A string containing only digits and possibly a minus sign.
+	 */
+	function checkMarginValues( marginValue ) {
+		// If the value is invalid simply set it to 0.
+		if ( marginValue.search( /[^1234567890-]/i ) >= 0 ) {
+			return '0';
+		}
+		return marginValue;
 	}
 
 	/**
@@ -182,10 +266,6 @@
 		return msgContainer;
 	}
 
-	function removePromotionBar() {
-		return $( 'div' ).remove( '.coil-banner-message-container' );
-	}
-
 	/**
 	 * @return {bool} Helper function to determine if the content has
 	 * monetization enabled and is visible to everyone
@@ -202,6 +282,14 @@
 	 */
 	function isSubscribersOnly() {
 		return document.body.classList.contains( 'coil-exclusive' );
+	}
+
+	/**
+	 * @return {bool} Helper function to determine if the content has
+	 * the Coil button enabled
+	*/
+	function hasCoilButtonEnabled() {
+		return coilButtonGloballyEnabled && document.body.classList.contains( 'show-coil-button' );
 	}
 
 	/**
@@ -274,15 +362,6 @@
 	}
 
 	/**
-	 * Checks for class on <body>.
-	 *
-	 * @return {bool} Determine if Coil is not yet initialized.
-	 */
-	function monetizationNotInitialized() {
-		return document.body.classList.contains( 'monetization-not-initialized' );
-	}
-
-	/**
 	 * Checks class is missing on <body>.
 	 *
 	 * @return {bool} Determine if Coil is initialized.
@@ -292,38 +371,46 @@
 	}
 
 	/**
-	 * Add a function to remove the banner and set a Cookie.
+	 * Add a function to remove the Coil button and set a Cookie.
 	 *
-	 * @param {String} cookieName Define when the cookie will be removed.
 	 * @see https://github.com/js-cookie/js-cookie
 	 */
-	function addBannerDismissClickHandler( cookieName ) {
-		$( '#js-coil-banner-dismiss' ).on( 'click', function() {
-			if ( ! hasBannerDismissCookie( cookieName ) ) {
-				if ( cookieName === 'ShowCoilPublicMsg' ) {
-					Cookies.set( cookieName, 1, { expires: 31 } );
-				} else if ( cookieName === 'ShowCoilPartialMsg' ) {
-					Cookies.set( cookieName, 1 );
-				}
+	function addButtonDismissClickHandler() {
+		const cookieName = 'ShowCoilButtonMsg';
+		$( '#js-coil-button-dismiss' ).on( 'click', function() {
+			if ( ! hasButtonDismissCookie() ) {
+				Cookies.set( cookieName, 1, { expires: 14 } );
 				$( this ).parent().parent().remove();
 			}
 		} );
 	}
 
 	/**
-	 * Checks if the footer banner message is dismissed.
+	 * Add a function to show or hide the Coil button dismiss
+	 * depending on whether you are hovering over the button or not.
 	 *
-	 * @param {string} cookieName Name of the cookie to check against.
+	 */
+	function addButtonDismissAppearanceHandler() {
+		$( '.coil-button' ).hover(
+			function() {
+				$( '#js-coil-button-dismiss' ).css( 'display', 'block' );
+			}, function() {
+				$( '#js-coil-button-dismiss' ).css( 'display', 'none' );
+			},
+		);
+	}
+
+	/**
+	 * Checks if the Coil button is dismissed.
 	 *
 	 * @return {bool} True if set to '1', otherwise false.
 	 */
-	function hasBannerDismissCookie( cookieName ) {
+	function hasButtonDismissCookie() {
+		const cookieName = 'ShowCoilButtonMsg';
 		const currentCookie = Cookies.get( cookieName );
 
 		if ( ( typeof currentCookie !== 'undefined' ) ) {
-			if ( cookieName === 'ShowCoilPublicMsg' || cookieName === 'ShowCoilPartialMsg' ) {
-				return ( currentCookie === '1' ) ? true : false;
-			}
+			return ( currentCookie === '1' ) ? true : false;
 		}
 		return false;
 	}
@@ -355,13 +442,8 @@
 			$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( paywallMessage ) );
 
 			showContentContainer();
-		} else if ( isMonetizedAndPublic() ) {
-			// Content has monetization enabled and visible for everyone but no extension found.
-
-			if ( showPromotionBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-				$( 'body' ).append( showBannerMessage() );
-				addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
-			}
+		} else {
+			maybeAddCoilButton();
 		}
 
 		// Trigger an event.
@@ -406,9 +488,6 @@
 			setTimeout( function() {
 				showVerificationFailureMessage();
 			}, 5000 );
-		} else if ( showPromotionBar && monetizationNotInitialized() && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-			$( 'body' ).append( showBannerMessage() );
-			addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
 		}
 	}
 
@@ -419,6 +498,7 @@
 	 */
 	function handleStartedMonetization() {
 		// User account verified, loading content. Monetization state: Started
+
 		if ( isSubscribersOnly() && isExcerptEnabled() && getContentExcerpt() !== null ) {
 			document.body.classList.add( 'show-excerpt-message' );
 			if ( $( '.coil-post-excerpt' ).length === 0 ) {
@@ -461,15 +541,11 @@
 				if ( $( 'p.monetize-msg' ).text() === loadingContent ) {
 					// Monetization not started and verification failed.
 					showVerificationFailureMessage();
-				} else if ( isMonetizedAndPublic() ) {
-					// Content is monetized and public but extension is stopped.
-					if ( showPromotionBar && ! hasBannerDismissCookie( 'ShowCoilPublicMsg' ) ) {
-						$( 'body' ).append( showBannerMessage() );
-						addBannerDismissClickHandler( 'ShowCoilPublicMsg' );
-					}
 				}
 			}
 		}, 5000 );
+
+		maybeAddCoilButton();
 	}
 
 	/**
@@ -481,6 +557,7 @@
 	 */
 	function monetizationStartListener( event ) {
 		monetizationStartEventOccurred = true;
+		let brandingLogo = '';
 
 		if ( document.body.classList.contains( 'show-fw-message' ) ) {
 			$( 'body' ).removeClass( 'show-fw-message' );
@@ -491,10 +568,6 @@
 
 		if ( isExcerptEnabled() ) {
 			$( 'p.coil-post-excerpt' ).remove(); // Remove post excerpt.
-		}
-
-		if ( showPromotionBar ) {
-			removePromotionBar();
 		}
 
 		// Removes exclusive messages
@@ -531,6 +604,31 @@
 
 		// Manually triggering resize to ensure elements get sized corretly after the verification proccess has been completed and they are no longer hidden.
 		jQuery( window ).trigger( 'resize' );
+
+		if ( ! showCoilButtonToMembers ) {
+			$( '.coil-button-message-container' ).remove();
+		} else {
+			const buttonEnabled = hasCoilButtonEnabled();
+			const buttonAlreadyExists = $( '.coil-button-message-container' ).length !== 0 ? true : false;
+			const buttonDismissed = hasButtonDismissCookie();
+			if ( coilButtonTheme === 'light' ) {
+				brandingLogo = coilLogoStreaming;
+			} else {
+				brandingLogo = coilLogoWhiteStreaming;
+			}
+
+			if ( buttonEnabled && ! buttonDismissed ) {
+				if ( buttonAlreadyExists ) {
+					// The text needs to change to the member message
+					$( '.coil-button div' ).text( coilButtonPaidMessage );
+				} else {
+					showCoilButton( coilButtonPaidMessage );
+				}
+				$( '.coil-button a' ).removeAttr( 'href' ).css( 'cursor', 'default' );
+				$( '.coil-button a' ).css( 'cursor', 'default' );
+				$( '.coil-button a img' ).attr( 'src', brandingLogo );
+			}
+		}
 	}
 
 	/**

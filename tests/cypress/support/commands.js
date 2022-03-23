@@ -82,7 +82,11 @@ Cypress.Commands.add( 'addSetting', ( optionName, settings ) => {
 		const keyLength = settings[ i ].key.length;
 		const valueLength = settings[ i ].value.length;
 		optionString += 's:' + keyLength + ':\\\"' + settings[ i ].key + '\\\";';
-		optionString += 's:' + valueLength + ':\\\"' + settings[ i ].value + '\\\";';
+		if ( settings[ i ].value === '0' || settings[ i ].value === '1' ) {
+			optionString += 'b:' + settings[ i ].value + ';';
+		} else {
+			optionString += 's:' + valueLength + ':\\\"' + settings[ i ].value + '\\\";';
+		}
 	}
 	optionString += '}';
 
