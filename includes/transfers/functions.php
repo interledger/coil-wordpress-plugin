@@ -365,6 +365,7 @@ function transfer_split_content_posts() {
 	$posts_with_split_content = new \WP_Query(
 		[
 			'posts_per_page' => 999,
+			'post_type'      => 'any',
 			'meta_query'     => [
 				'relation' => 'AND',
 				[
