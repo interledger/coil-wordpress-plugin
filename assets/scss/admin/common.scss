@@ -7,6 +7,11 @@
 		margin-bottom: 20px;
 	}
 
+  	.notice.notice-success {
+	  	border-radius: 4px;
+		max-width: calc( 880px - 38px - 15px ); //Accounting for the default padding + margins
+	}
+
 	.container {
 		background-color: $white;
 		border: 1px solid $lightgrey;
@@ -93,8 +98,16 @@
 		flex-wrap: nowrap;
 		margin-bottom: 20px;
 		margin-top: 20px;
-		max-width: calc( 820px - 3px );
+		max-width: calc( 840px - 3px );
 		padding: 20px;
+
+		&.notice.is-dismissible {
+			padding-right: 20px;
+
+			.notice-dismiss {
+				  display: none;
+			}
+		}
 	}
 
 	.coil-welcome-notice__icon,
@@ -123,7 +136,7 @@
 		justify-content: start;
 
 		.settings-main {
-			max-width: 790px;
+			max-width: 880px;
 			width: 100%;
 
 			&.has-sidebar {
@@ -148,26 +161,6 @@
 					margin: 15px 0 10px;
 				}
 
-				.coil-margin-input-group {
-					display: flex;
-					flex-direction: row;
-					width: 90%;
-
-					input, p {
-						border-radius: 0;
-						text-align: center;
-						width: 100%;
-					}
-
-					div:first-child input {
-						border-radius: 4px 0 0 4px;
-					}
-
-					div:last-child input {
-						border-radius: 0 4px 4px 0;
-					}
-				}
-
 				#coil_title_padlock:not( :checked ) {
 					+ label {
 						+ #coil_icon_position_label {
@@ -180,17 +173,6 @@
 										display: none;
 									}
 								}
-							}
-						}
-					}
-				}
-
-				#coil_button_member_display:not( :checked ) {
-					+ label {
-						+ h4 {
-							display: none;
-							+ input {
-								display: none;
 							}
 						}
 					}
@@ -218,22 +200,11 @@
 					border: 1px solid #ccc;
 					border-radius: 3px;
 					display: flex;
-					flex-direction: column;
 					height: calc( 100% - 80px );
 					justify-content: center;
 					min-height: 350px;
 					padding: 15px;
-					position: relative;
 
-					&.stacked {
-						height: auto;
-						margin-bottom: 20px;
-						min-height: 240px;
-					}
-
-					&.hide {
-						display: none;
-					}
 					.coil-title-preview-container {
 						display: flex;
 						flex-direction: column;
@@ -311,8 +282,7 @@
 						** TODO: Update this by cleaning it up according to the available fonts etc
 						**/
 						.coil-paywall-image {
-							max-height: 50px;
-							max-width: 50px;
+							max-width: 120px;
 
 							&.no_logo {
 								display: none;
@@ -348,92 +318,9 @@
 							width: 164px;
 						}
 					}
-
-					.coil-button {
-						background-color: $coil_button_message_color;
-						border-radius: 6px;
-						bottom: 10px;
-						box-shadow: 0 6px 10px 0 $coil_button_message_shadow_color;
-						font-family: 'Open Sans', sans-serif;
-						font-size: 14px;
-						font-weight: 600;
-						line-height: 20px;
-						overflow: visible;
-						position: absolute;
-						right: 10px;
-						text-align: center;
-
-						&[data-position='top-left'] {
-							bottom: unset;
-							left: 10px;
-							right: unset;
-							top: 10px;
-						}
-
-						&[data-position='top-right'] {
-							bottom: unset;
-							top: 10px;
-						}
-
-						&[data-position='bottom-left'] {
-							bottom: 10px;
-							left: 10px;
-							right: unset;
-						}
-
-						div {
-							align-items: center;
-							border-radius: 6px;
-							display: flex;
-							flex-direction: row;
-							padding: $message_spacing_baseline;
-							text-decoration: none;
-
-							div {
-								color: $coil_button_font_color;
-								margin: auto;
-								padding-left: $message_spacing_baseline;
-								padding-right: $message_spacing_baseline;
-							}
-
-							img {
-								height: 16px;
-								width: 16px;
-							}
-						}
-
-						// Changes Coil button to implement light theme
-						&[data-theme='light'] {
-							background-color: $coil_button_message_color_light_theme;
-
-							div {
-								div {
-									color: $coil_button_font_color_light_theme;
-								}
-							}
-						}
-
-						&[data-size='large'] {
-							div {
-								div {
-									font-size: 17px;
-									line-height: 20px;
-								}
-							}
-							img {
-								height: 24px;
-								width: 24px;
-							}
-						}
-					}
 				}
 			}
-
-			.exclusive-content-section {
-				display: none;
-			}
-
-			.coil-button-section {
+			.exclusive-content {
 				display: none;
 			}
 		}
