@@ -259,6 +259,10 @@ function coil_get_excerpt( $content ) : string {
 
 	$content_end = strpos( $content, $coil_read_more_string );
 
+	if ( $content_end === false ) {
+		return '';
+	}
+
 	return substr( $content, 0, $content_end );
 }
 
