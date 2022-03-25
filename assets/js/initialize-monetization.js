@@ -256,6 +256,17 @@
 	}
 
 	/**
+	 * Show the content container.
+	*/
+	function showRestrictedContent() {
+		const restrictedContent = document.querySelector( '.coil-restricted-content' );
+
+		if ( restrictedContent ) {
+			restrictedContent.style.display = 'block';
+		}
+	}
+
+	/**
 	 * Hide the content container.
 	 */
 	function hideContentContainer() {
@@ -604,6 +615,7 @@
 		}
 
 		showContentContainer();
+		showRestrictedContent();
 
 		// Show embedded content.
 		document.querySelectorAll( 'iframe, object, video' ).forEach( function( embed ) {
@@ -691,7 +703,11 @@
 
 		// Hide content entry area if not default selector.
 		if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
-			$( contentContainer ).not( '.coil-post-excerpt' ).hide();
+			if ( hasReadMoreBlock ) {
+				$( contentContainer + ' .coil-restricted-content' ).hide();
+			} else {
+				$( contentContainer ).not( '.coil-post-excerpt' ).hide();
+			}
 		}
 
 		// Check if browser extension exists.
