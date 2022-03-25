@@ -279,7 +279,7 @@ function is_excerpt_visible( $post_id ) : bool {
 
 	$display_excerpt = false;
 	if ( has_read_more_block( get_the_content() ) ) {
-		return true;
+		return false;
 	}
 	$exclusive_options = Admin\get_exclusive_settings();
 	if ( ! empty( $exclusive_options ) && isset( $exclusive_options[ $post_type . '_excerpt' ] ) ) {
