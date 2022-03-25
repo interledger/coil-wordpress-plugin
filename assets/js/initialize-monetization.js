@@ -516,6 +516,10 @@
 				document.body.classList.add( 'show-excerpt-message' );
 				$( contentContainer ).before( getContentExcerpt() );
 				$( contentContainer ).last().before( showMonetizationMessage( loadingContent, '' ) );
+			} else if ( isSubscribersOnly() && hasReadMoreBlock ) {
+				if ( $( 'p.monetize-msg' ).length === 0 ) {
+					$( '.coil-restricted-content' ).after( showMonetizationMessage( loadingContent, '' ) );
+				}
 			} else {
 				document.querySelector( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
 			}
@@ -541,6 +545,10 @@
 			}
 			if ( $( 'p.monetize-msg' ).length === 0 ) {
 				$( contentContainer ).last().before( showMonetizationMessage( loadingContent, '' ) );
+			}
+		} else if ( isSubscribersOnly() && hasReadMoreBlock ) {
+			if ( $( 'p.monetize-msg' ).length === 0 ) {
+				$( '.coil-restricted-content' ).after( showMonetizationMessage( loadingContent, '' ) );
 			}
 		} else {
 			document.querySelector( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
