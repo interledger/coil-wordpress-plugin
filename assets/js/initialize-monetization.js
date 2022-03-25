@@ -15,6 +15,7 @@
 		showCoilButtonToMembers = Boolean( coilParams.show_coil_button_to_members ),
 		coilButtonLink = coilParams.coil_button_link,
 		postExcerpt = coilParams.post_excerpt,
+		hasReadMoreBlock = Boolean( coilParams.has_read_more_block ),
 		adminMissingIdNotice = coilParams.admin_missing_id_notice,
 		paywallButtonText = coilParams.paywall_button_text,
 		paywallButtonLink = coilParams.paywall_button_link,
@@ -359,6 +360,9 @@
 						$( contentContainer ).before( getContentExcerpt() );
 					}
 					$( contentContainer ).last().before( showSubscriberOnlyMessage( paywallMessage ) );
+				} else if ( hasReadMoreBlock ) {
+					document.body.classList.add( 'show-fw-message' );
+					$( '.coil-restricted-content' ).before( showSubscriberOnlyMessage( paywallMessage ) );
 				} else {
 					document.body.classList.add( 'show-fw-message' );
 					$( contentContainer ).before( showSubscriberOnlyMessage( paywallMessage ) );
@@ -449,10 +453,14 @@
 			if ( isExcerptEnabled() && getContentExcerpt() !== null ) {
 				document.body.classList.add( 'show-excerpt-message' );
 				$( contentContainer ).before( getContentExcerpt() );
+				$( contentContainer ).last().before( showSubscriberOnlyMessage( paywallMessage ) );
+			} else if ( hasReadMoreBlock ) {
+				document.body.classList.add( 'show-fw-message' );
+				$( '.coil-restricted-content' ).before( showSubscriberOnlyMessage( paywallMessage ) );
 			} else {
 				document.body.classList.add( 'show-fw-message' );
+				$( contentContainer ).last().before( showSubscriberOnlyMessage( paywallMessage ) );
 			}
-			$( contentContainer ).last().before( showSubscriberOnlyMessage( paywallMessage ) );
 		} else if ( isSplitContent() ) {
 			// Split content with no extension found.
 			$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( paywallMessage ) );
