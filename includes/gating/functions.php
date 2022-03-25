@@ -246,27 +246,6 @@ function has_read_more_block( $content ) : bool {
 }
 
 /**
- * Get the post content until the read more block
- * This is necessary if a user is restricting content up to the Read More block, it will override th excerpt
- *
- * @param string $content Post content.
- *
- * @return string $excerpt Post content until the read more block
- */
-function coil_get_excerpt( $content ) : string {
-
-	$coil_read_more_string = '<span class="wp-block-coil-exclusive-content-divider"></span>';
-
-	$content_end = strpos( $content, $coil_read_more_string );
-
-	if ( $content_end === false ) {
-		return '';
-	}
-
-	return substr( $content, 0, $content_end );
-}
-
-/**
  * Get the value of the "Display Excerpt" setting for this post .
  *
  * @param integer $post_id The post to check.

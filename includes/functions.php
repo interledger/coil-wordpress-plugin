@@ -211,7 +211,7 @@ function load_full_assets() : void {
 			'coil_button_link'            => Admin\get_coil_button_setting( 'coil_button_link', true ),
 			'paywall_button_text'         => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_text' ),
 			'paywall_button_link'         => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_link' ),
-			'post_excerpt'                => Gating\has_read_more_block( get_the_content() ) ? Gating\coil_get_excerpt( get_the_content() ) : get_the_excerpt(),
+			'post_excerpt'                => Gating\has_read_more_block( get_the_content() ) ? '' : get_the_excerpt(),
 			'has_read_more_block'         => Gating\has_read_more_block( get_the_content() ),
 			'coil_message_branding'       => Admin\get_paywall_appearance_setting( 'coil_message_branding' ),
 			'coil_button_theme'           => Admin\get_coil_button_setting( 'coil_button_color_theme' ),
