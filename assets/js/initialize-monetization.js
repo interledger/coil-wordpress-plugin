@@ -562,6 +562,10 @@
 			if ( $( 'p.monetize-msg' ).length === 0 ) {
 				$( contentContainer ).last().before( showMonetizationMessage( loadingContent, '' ) );
 			}
+		} else if ( isSubscribersOnly() && hasReadMoreBlock ) {
+			if ( $( 'p.monetize-msg' ).length === 0 ) {
+				$( '.coil-restricted-content' ).after( showMonetizationMessage( loadingContent, '' ) );
+			}
 		} else if ( isSubscribersOnly() || isSplitContent() ) {
 			hideContentContainer();
 			if ( $( 'p.monetize-msg' ).length === 0 ) {
