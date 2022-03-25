@@ -406,8 +406,7 @@
 							div {
 								color: $coil_button_font_color;
 								margin: auto;
-								padding-left: $message_spacing_baseline;
-								padding-right: $message_spacing_baseline;
+								padding: 0 $message_spacing_baseline 0 $message_spacing_baseline;
 							}
 
 							img {

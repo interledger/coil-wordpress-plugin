@@ -280,8 +280,7 @@
             .coil form .settings-main .tab-styling .coil-preview .coil-button div div {
               color: #fff;
               margin: auto;
-              padding-left: 8px;
-              padding-right: 8px; }
+              padding: 0 8px 0 8px; }
             .coil form .settings-main .tab-styling .coil-preview .coil-button div img {
               height: 16px;
               width: 16px; }
