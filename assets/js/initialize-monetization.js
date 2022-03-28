@@ -215,7 +215,6 @@
 	 * and neither the pending message nor paywall are being displayed.
 	 */
 	function maybeAddCoilButton() {
-		// TODO shouldn't display if the read more block is present
 		const buttonEnabled = hasCoilButtonEnabled();
 		const buttonAlreadyExists = $( '.coil-button-message-container' ).length !== 0 ? true : false;
 		const buttonDismissed = hasButtonDismissCookie();
@@ -342,7 +341,7 @@
 	 * @return {bool} Determine if the content container is default.
 	 */
 	function usingDefaultContentContainer() {
-		return contentContainer === '.content-area .entry-content';
+		return contentContainer === '.content-area .entry-content, main .entry-content';
 	}
 
 	/**
@@ -481,7 +480,7 @@
 		// If the site is missing it's payment pointer ID.
 		if ( isPaymentPointerMissing() ) {
 			if ( isViewingAdmin() ) {
-				if ( hasContentContainer() ) {
+				if ( hasContentContainer() ) { // Since this code is reachable with an invalid CSS selector an additional check is required.
 					// Show message to site owner/administrators only.
 					$( contentContainer ).before( showMonetizationMessage( adminMissingIdNotice, 'admin-message' ) );
 				}
@@ -531,7 +530,7 @@
 			if ( $( 'p.monetize-msg' ).length === 0 ) {
 				$( contentContainer ).last().before( showMonetizationMessage( loadingContent, '' ) );
 			}
-		} else if ( hasContentContainer() ) {
+		} else if ( hasContentContainer() ) { // Since this code is reachable with an invalid CSS selector an additional check is required.
 			document.querySelector( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
 		}
 	}

@@ -390,7 +390,7 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 
 		$css_selector = Admin\get_css_selector();
 
-		$this->assertSame( '.content-area .entry-content', $css_selector );
+		$this->assertSame( Admin\get_css_selector_default(), $css_selector );
 	}
 
 	/**
