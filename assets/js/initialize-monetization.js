@@ -2,7 +2,42 @@
 /* global coilParams */
 
 ( function( $ ) {
-	if ( typeof coilParams === 'undefined' || ! hasContentContainer() ) {
+	if ( typeof coilParams === 'undefined' ) {
+		console.error( 'There was a problem retrieving the Coil parameters' );
+		return false;
+	}
+
+	/**
+	 *
+	 * Returns false if the container element doesn't exist OR an invalid CSS
+	 * selector was used to define it.
+	 *
+	 * @return {boolean} Check the content container element exists.
+	*/
+	function hasContentContainer() {
+		let element;
+
+		// Use try-catch to handle invalid CSS selectors.
+		// Accesses coilParams object because it is called before contentContainer has been defined.
+		try {
+			element = document.querySelector( coilParams.content_container );
+		} catch ( e ) {
+			console.error( 'An error occured when attempting to retrieve the page. Invalid container.' );
+			return false;
+		}
+
+		// Content container exists.
+		if ( element ) {
+			return true;
+		}
+
+		// Content container does not exist.
+		console.error( 'An error occured when attempting to retrieve the page. Container not found.' );
+		return false;
+	}
+
+	// If the content container is invalid and there is exclusive content present, then the plugin cannot function properly.
+	if ( ! hasContentContainer() && ! document.body.classList.contains( 'coil-public' ) ) {
 		return false;
 	}
 
@@ -42,35 +77,6 @@
 	const messageWrapper = $( 'p.monetize-msg' );
 
 	let monetizationStartEventOccurred = false;
-
-	/**
-	 *
-	 * Returns false if the container element doesn't exist OR an invalid CSS
-	 * selector was used to define it.
-	 *
-	 * @return {boolean} Check the content container element exists.
-	 */
-	function hasContentContainer() {
-		let element;
-
-		// Use try-catch to handle invalid CSS selectors.
-		// Accesses coilParams object because it is called before contentContainer has been defined.
-		try {
-			element = document.querySelector( coilParams.content_container );
-		} catch ( e ) {
-			console.error( 'An error occured when attempting to retrieve the page. Invalid container.' );
-			return false;
-		}
-
-		// Content container exists.
-		if ( element ) {
-			return true;
-		}
-
-		// Content container does not exist.
-		console.error( 'An error occured when attempting to retrieve the page. Container not found.' );
-		return false;
-	}
 
 	/**
 	 * @param {String} message The message to display inside the tag.
@@ -285,7 +291,7 @@
 	/**
 	 * @return {bool} Helper function to determine if the content has
 	 * monetization enabled and is visible to everyone
-	 */
+	*/
 	function isMonetizedAndPublic() {
 		const isMonetized = document.body.classList.contains( 'coil-monetized' );
 		const isPublic = document.body.classList.contains( 'coil-public' );
@@ -475,8 +481,10 @@
 		// If the site is missing it's payment pointer ID.
 		if ( isPaymentPointerMissing() ) {
 			if ( isViewingAdmin() ) {
-				// Show message to site owner/administrators only.
-				$( contentContainer ).before( showMonetizationMessage( adminMissingIdNotice, 'admin-message' ) );
+				if ( hasContentContainer() ) {
+					// Show message to site owner/administrators only.
+					$( contentContainer ).before( showMonetizationMessage( adminMissingIdNotice, 'admin-message' ) );
+				}
 			} else {
 				$( 'body' ).removeClass( 'coil-missing-id' );
 			}
@@ -523,7 +531,7 @@
 			if ( $( 'p.monetize-msg' ).length === 0 ) {
 				$( contentContainer ).last().before( showMonetizationMessage( loadingContent, '' ) );
 			}
-		} else {
+		} else if ( hasContentContainer() ) {
 			document.querySelector( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
 		}
 	}
