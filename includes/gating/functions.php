@@ -169,6 +169,7 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 /**
  * Maybe restrict (gate) visibility of the post content on archive pages, home pages, and feeds.
  * If the post is exclusive then no excerpt will show unless one has been set explicitly.
+ * If the Coil Exclusive Content Divider is being used then only the content which is above the divider will appear publicly.
  *
  * @param string $content Post content.
  *
@@ -264,6 +265,8 @@ function is_excerpt_visible( $post_id ) : bool {
 	$post_type = get_post_type( $post_id );
 
 	$display_excerpt = false;
+	// A post cannot display an excerpt if it uses the Coil Exclusive Content Divider.
+	// In which case the public content replaces the need for an excerpt altogether.
 	if ( has_read_more_block( get_the_content() ) ) {
 		return false;
 	}
