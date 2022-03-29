@@ -31,7 +31,10 @@ registerBlockType(
 		keywords: [
 			__( 'Coil' ),
 			__( 'Exclusive' ),
+			__( 'Divider' ),
 			__( 'Monetize' ),
+			__( 'Monetization' ),
+			__( 'Web Monetization' ),
 			__( 'Restrict' ),
 			__( 'Read' ),
 			__( 'More' ),

@@ -211,8 +211,8 @@ function load_full_assets() : void {
 			'coil_button_link'            => Admin\get_coil_button_setting( 'coil_button_link', true ),
 			'paywall_button_text'         => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_text' ),
 			'paywall_button_link'         => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_link' ),
-			'post_excerpt'                => Gating\has_read_more_block( get_the_content() ) ? Gating\coil_get_excerpt( get_the_content() ) : get_the_excerpt(),
-			'has_read_more_block'         => Gating\has_read_more_block( get_the_content() ),
+			'post_excerpt'                => Gating\has_coil_divider( get_the_content() ) ? '' : get_the_excerpt(),
+			'has_coil_divider'            => Gating\has_coil_divider( get_the_content() ),
 			'coil_message_branding'       => Admin\get_paywall_appearance_setting( 'coil_message_branding' ),
 			'coil_button_theme'           => Admin\get_coil_button_setting( 'coil_button_color_theme' ),
 			'coil_button_size'            => Admin\get_coil_button_setting( 'coil_button_size' ),
@@ -330,8 +330,12 @@ function add_body_class( $classes ) : array {
 		}
 
 		if ( ! empty( $payment_pointer_id ) ) {
-			if ( $exclusive_content_enabled ) {
-				$classes[] = ( Gating\is_excerpt_visible( $object_id ) ) ? 'coil-show-excerpt' : 'coil-hide-excerpt';
+			if ( $exclusive_content_enabled && $coil_visibility_status !== 'public' ) {
+				if ( Gating\has_coil_divider( get_the_content() ) ) {
+					$classes[] = 'coil-divider';
+				} else {
+					$classes[] = ( Gating\is_excerpt_visible( $object_id ) ) ? 'coil-show-excerpt' : 'coil-hide-excerpt';
+				}
 			}
 		} else {
 			// Error: payment pointer ID is missing.
@@ -395,10 +399,6 @@ function maybe_update_database() {
 	Transfers\maybe_load_database_defaults();
 
 	if ( false === $db_version || version_compare( '1.10.0', $db_version, '>' ) ) {
-
-		// Tell the function that we have run an update
-		$did_run_update = true;
-
 		// Transfer settings saved in the customizer
 		Transfers\transfer_customizer_message_settings();
 		Transfers\transfer_customizer_appearance_settings();
@@ -410,7 +410,11 @@ function maybe_update_database() {
 		Transfers\transfer_split_content_posts();
 
 		// Transfer settings which are set in the post meta table (notibly gating and monetization settings)
+		// Note: This function must only be run after the transfer_split_content_posts function.
 		Transfers\transfer_post_meta_values();
+
+		// Tell the function that we have run an update
+		$did_run_update = true;
 	}
 
 	// Update the database version at the end of it
