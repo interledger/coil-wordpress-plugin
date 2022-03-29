@@ -7,6 +7,11 @@
 		margin-bottom: 20px;
 	}
 
+	.notice.notice-success {
+		border-radius: 4px;
+		max-width: calc( 880px - 38px - 15px ); //Accounting for the default padding + margins
+	}
+
 	.container {
 		background-color: $white;
 		border: 1px solid $lightgrey;
@@ -93,8 +98,16 @@
 		flex-wrap: nowrap;
 		margin-bottom: 20px;
 		margin-top: 20px;
-		max-width: calc( 820px - 3px );
+		max-width: calc( 840px - 3px );
 		padding: 20px;
+
+		&.notice.is-dismissible {
+			padding-right: 20px;
+
+			.notice-dismiss {
+				display: none;
+			}
+		}
 	}
 
 	.coil-welcome-notice__icon,
@@ -123,7 +136,7 @@
 		justify-content: start;
 
 		.settings-main {
-			max-width: 790px;
+			max-width: 880px;
 			width: 100%;
 
 			&.has-sidebar {
@@ -393,8 +406,7 @@
 							div {
 								color: $coil_button_font_color;
 								margin: auto;
-								padding-left: $message_spacing_baseline;
-								padding-right: $message_spacing_baseline;
+								padding: 0 $message_spacing_baseline 0 $message_spacing_baseline;
 							}
 
 							img {
