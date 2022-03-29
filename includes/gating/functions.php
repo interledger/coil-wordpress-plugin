@@ -186,7 +186,7 @@ function maybe_restrict_content( string $content ) : string {
 		return $content;
 	}
 
-	$coil_read_more_string  = '<span class="wp-block-coil-exclusive-content-divider"></span>';
+	$coil_read_more_string  = get_coil_read_more_string();
 	$coil_visibility_status = get_content_status( get_the_ID(), 'visibility' );
 	$post_obj               = get_post( get_the_ID() );
 	$content_excerpt        = $post_obj->post_excerpt;
@@ -237,12 +237,19 @@ function maybe_restrict_content( string $content ) : string {
  */
 function has_read_more_block( $content ) : bool {
 
-	$coil_read_more_string = '<span class="wp-block-coil-exclusive-content-divider"></span>';
+	$coil_read_more_string = get_coil_read_more_string();
 	if ( false !== strpos( $content, $coil_read_more_string ) ) {
 		return true;
 	}
 
 	return false;
+}
+
+/**
+ * @return string returns the read more string as it is isnerted by the editor when the Exclusive Content divider is added to a post.
+ */
+function get_coil_read_more_string() : string {
+	return '<span class="wp-block-coil-exclusive-content-divider"></span>';
 }
 
 /**

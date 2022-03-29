@@ -9,6 +9,7 @@ namespace Coil\Transfers;
 
 use Coil;
 use Coil\Admin;
+use Coil\Gating;
 
 /* ------------------------------------------------------------------------ *
  * Section Database setup and data migrations
@@ -392,7 +393,7 @@ function transfer_split_content_posts() {
 			$posts_with_split_content->the_post();
 
 			// Set the read more string as it will occur in the database
-			$coil_read_more_string = '<!-- wp:coil/exclusive-content-divider --><span class="wp-block-coil-exclusive-content-divider"></span><!-- /wp:coil/exclusive-content-divider -->';
+			$coil_read_more_string = '<!-- wp:coil/exclusive-content-divider -->' . Gating\get_coil_read_more_string() . '<!-- /wp:coil/exclusive-content-divider -->';
 
 			$the_content = get_the_content();
 
