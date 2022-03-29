@@ -4,6 +4,10 @@
 .coil.plugin-header {
   margin-bottom: 20px; }
 
+.coil .notice.notice-success {
+  border-radius: 4px;
+  max-width: calc( 880px - 38px - 15px); }
+
 .coil .container {
   background-color: #fff;
   border: 1px solid #e5e5e5;
@@ -68,8 +72,14 @@
   flex-wrap: nowrap;
   margin-bottom: 20px;
   margin-top: 20px;
-  max-width: calc( 820px - 3px);
+  max-width: calc( 840px - 3px);
   padding: 20px; }
+  .coil .coil-welcome-notice.notice.is-dismissible,
+  .coil .coil-no-payment-pointer-notice.notice.is-dismissible {
+    padding-right: 20px; }
+    .coil .coil-welcome-notice.notice.is-dismissible .notice-dismiss,
+    .coil .coil-no-payment-pointer-notice.notice.is-dismissible .notice-dismiss {
+      display: none; }
 
 .coil .coil-welcome-notice__icon,
 .coil .coil-no-payment-pointer-notice__icon {
@@ -92,7 +102,7 @@
   flex-direction: row;
   justify-content: start; }
   .coil form .settings-main {
-    max-width: 790px;
+    max-width: 880px;
     width: 100%; }
     .coil form .settings-main.has-sidebar {
       max-width: 580px;
@@ -270,8 +280,7 @@
             .coil form .settings-main .tab-styling .coil-preview .coil-button div div {
               color: #fff;
               margin: auto;
-              padding-left: 8px;
-              padding-right: 8px; }
+              padding: 0 8px 0 8px; }
             .coil form .settings-main .tab-styling .coil-preview .coil-button div img {
               height: 16px;
               width: 16px; }
