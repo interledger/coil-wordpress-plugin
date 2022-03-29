@@ -330,7 +330,7 @@ function add_body_class( $classes ) : array {
 		}
 
 		if ( ! empty( $payment_pointer_id ) ) {
-			if ( $exclusive_content_enabled ) {
+			if ( $exclusive_content_enabled && $coil_visibility_status !== 'public' ) {
 				if ( Gating\has_read_more_block( get_the_content() ) ) {
 					$classes[] = 'coil-divider';
 				} else {
