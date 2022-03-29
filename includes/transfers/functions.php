@@ -388,6 +388,9 @@ function transfer_split_content_posts() {
 		while ( $posts_with_split_content->have_posts() ) {
 			$posts_with_split_content->the_post();
 
+			// By default when transferring split content the Coil Exclusive Content Divider will be used and the post will be made exlusive.
+			$visibility_status = 'exclusive';
+
 			// Set the read more string as it will occur in the database
 			$coil_read_more_string = '<!-- wp:coil/exclusive-content-divider -->' . Gating\get_coil_read_more_string() . '<!-- /wp:coil/exclusive-content-divider -->';
 
@@ -398,8 +401,14 @@ function transfer_split_content_posts() {
 			$show_pos   = strpos( $the_content, '"show-monetize-users"' );
 
 			if ( false === $hidden_pos && false === $show_pos ) {
+				update_post_meta( get_the_ID(), '_coil_monetization_post_status', 'monetized' );
+				update_post_meta( get_the_ID(), '_coil_visibility_post_status', 'public' );
+				update_post_meta( get_the_ID(), '_coil_updated_tagged_blocks', true );
+				delete_post_meta( get_the_ID(), '_coil_monetize_post_status' );
 				continue;
 			} elseif ( false !== $hidden_pos && false === $show_pos ) {
+				// Since split content was not used to make anything exclusive the post should be kept public during the transfer.
+				$visibility_status = 'public';
 				// Clean out old attributes
 				$combined_content = $the_content;
 			} else {
@@ -433,11 +442,13 @@ function transfer_split_content_posts() {
 
 			echo htmlspecialchars( $combined_content );
 
+			delete_post_meta( get_the_ID(), '_coil_monetize_post_status' );
+
 			$data = [
 				'ID'           => get_the_ID(),
 				'meta_input'   => [
 					'_coil_updated_tagged_blocks'    => true,
-					'_coil_visibility_post_status'   => 'exclusive',
+					'_coil_visibility_post_status'   => $visibility_status,
 					'_coil_monetization_post_status' => 'monetized',
 				],
 				'post_content' => $combined_content,
