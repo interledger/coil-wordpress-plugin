@@ -440,8 +440,6 @@ function transfer_split_content_posts() {
 			// Clean out old attributes
 			$combined_content = str_replace( $strings_to_clear, '', $combined_content );
 
-			echo htmlspecialchars( $combined_content );
-
 			delete_post_meta( get_the_ID(), '_coil_monetize_post_status' );
 
 			$data = [
