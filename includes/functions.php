@@ -399,10 +399,6 @@ function maybe_update_database() {
 	Transfers\maybe_load_database_defaults();
 
 	if ( false === $db_version || version_compare( '1.10.0', $db_version, '>' ) ) {
-
-		// Tell the function that we have run an update
-		$did_run_update = true;
-
 		// Transfer settings saved in the customizer
 		Transfers\transfer_customizer_message_settings();
 		Transfers\transfer_customizer_appearance_settings();
@@ -415,6 +411,9 @@ function maybe_update_database() {
 
 		// Transfer settings which are set in the post meta table (notibly gating and monetization settings)
 		Transfers\transfer_post_meta_values();
+
+		// Tell the function that we have run an update
+		$did_run_update = true;
 	}
 
 	// Update the database version at the end of it
