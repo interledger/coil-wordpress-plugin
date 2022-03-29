@@ -343,9 +343,9 @@ function transfer_post_meta_values() {
 					$monetization_state = 'monetized';
 					$visibility_state   = 'exclusive';
 					break;
-				case 'gate-tagged-blocks': // @TODO: Change these to gate-all when using the exclusive content divider
+				case 'gate-tagged-blocks':
 					$monetization_state = 'monetized';
-					$visibility_state   = 'gate-tagged-blocks';
+					$visibility_state   = 'exclusive';
 					break;
 				default:
 					$monetization_state = 'default';
@@ -373,10 +373,6 @@ function transfer_split_content_posts() {
 					'relation' => 'OR',
 					[
 						'key'   => '_coil_monetize_post_status',
-						'value' => 'gate-tagged-blocks',
-					],
-					[
-						'key'   => '_coil_visibility_post_status',
 						'value' => 'gate-tagged-blocks',
 					],
 				],

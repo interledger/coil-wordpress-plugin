@@ -410,6 +410,7 @@ function maybe_update_database() {
 		Transfers\transfer_split_content_posts();
 
 		// Transfer settings which are set in the post meta table (notibly gating and monetization settings)
+		// Note: This function must only be run after the transfer_split_content_posts function.
 		Transfers\transfer_post_meta_values();
 
 		// Tell the function that we have run an update
