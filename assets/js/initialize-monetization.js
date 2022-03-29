@@ -366,14 +366,14 @@
 			$( 'p.monetize-msg' ).remove();
 
 			if ( isSubscribersOnly() ) {
-				if ( isExcerptEnabled() && getContentExcerpt() !== null ) {
+				if ( hasReadMoreBlock ) {
+					document.body.classList.add( 'show-fw-message' );
+					$( '.coil-restricted-content' ).before( showSubscriberOnlyMessage( paywallMessage ) );
+				} else if ( isExcerptEnabled() && getContentExcerpt() !== null ) {
 					if ( $( '.coil-post-excerpt' ).length === 0 ) {
 						$( contentContainer ).before( getContentExcerpt() );
 					}
 					$( contentContainer ).last().before( showSubscriberOnlyMessage( paywallMessage ) );
-				} else if ( hasReadMoreBlock ) {
-					document.body.classList.add( 'show-fw-message' );
-					$( '.coil-restricted-content' ).before( showSubscriberOnlyMessage( paywallMessage ) );
 				} else {
 					document.body.classList.add( 'show-fw-message' );
 					$( contentContainer ).before( showSubscriberOnlyMessage( paywallMessage ) );
@@ -461,13 +461,13 @@
 		$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'coil-extension-not-found' );
 
 		if ( isSubscribersOnly() ) {
-			if ( isExcerptEnabled() && getContentExcerpt() !== null ) {
+			if ( hasReadMoreBlock ) {
+				document.body.classList.add( 'show-fw-message' );
+				$( '.coil-restricted-content' ).before( showSubscriberOnlyMessage( paywallMessage ) );
+			} else if ( isExcerptEnabled() && getContentExcerpt() !== null ) {
 				document.body.classList.add( 'show-excerpt-message' );
 				$( contentContainer ).before( getContentExcerpt() );
 				$( contentContainer ).last().before( showSubscriberOnlyMessage( paywallMessage ) );
-			} else if ( hasReadMoreBlock ) {
-				document.body.classList.add( 'show-fw-message' );
-				$( '.coil-restricted-content' ).before( showSubscriberOnlyMessage( paywallMessage ) );
 			} else {
 				document.body.classList.add( 'show-fw-message' );
 				$( contentContainer ).last().before( showSubscriberOnlyMessage( paywallMessage ) );
@@ -512,14 +512,12 @@
 		} else if ( ! isMonetizedAndPublic() ) {
 			// Verify monetization only if there is exclusive content.
 			// If post is exclusive then show verification message after excerpt.
-			if ( isSubscribersOnly() && isExcerptEnabled() && getContentExcerpt() !== null ) {
+			if ( isSubscribersOnly() && hasReadMoreBlock && $( 'p.monetize-msg' ).length === 0 ) {
+				$( '.coil-restricted-content' ).after( showMonetizationMessage( loadingContent, '' ) );
+			} else if ( isSubscribersOnly() && isExcerptEnabled() && getContentExcerpt() !== null ) {
 				document.body.classList.add( 'show-excerpt-message' );
 				$( contentContainer ).before( getContentExcerpt() );
 				$( contentContainer ).last().before( showMonetizationMessage( loadingContent, '' ) );
-			} else if ( isSubscribersOnly() && hasReadMoreBlock ) {
-				if ( $( 'p.monetize-msg' ).length === 0 ) {
-					$( '.coil-restricted-content' ).after( showMonetizationMessage( loadingContent, '' ) );
-				}
 			} else {
 				document.querySelector( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
 			}
@@ -538,17 +536,15 @@
 	function handleStartedMonetization() {
 		// User account verified, loading content. Monetization state: Started
 
-		if ( isSubscribersOnly() && isExcerptEnabled() && getContentExcerpt() !== null ) {
+		if ( isSubscribersOnly() && hasReadMoreBlock && $( 'p.monetize-msg' ).length === 0 ) {
+			$( '.coil-restricted-content' ).after( showMonetizationMessage( loadingContent, '' ) );
+		} else if ( isSubscribersOnly() && isExcerptEnabled() && getContentExcerpt() !== null ) {
 			document.body.classList.add( 'show-excerpt-message' );
 			if ( $( '.coil-post-excerpt' ).length === 0 ) {
 				$( contentContainer ).before( getContentExcerpt() );
 			}
 			if ( $( 'p.monetize-msg' ).length === 0 ) {
 				$( contentContainer ).last().before( showMonetizationMessage( loadingContent, '' ) );
-			}
-		} else if ( isSubscribersOnly() && hasReadMoreBlock ) {
-			if ( $( 'p.monetize-msg' ).length === 0 ) {
-				$( '.coil-restricted-content' ).after( showMonetizationMessage( loadingContent, '' ) );
 			}
 		} else {
 			document.querySelector( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
@@ -561,7 +557,9 @@
 	 * @return {void}
 	 */
 	function handleStoppedMonetization() {
-		if ( isSubscribersOnly() && isExcerptEnabled() && getContentExcerpt() !== null ) {
+		if ( isSubscribersOnly() && hasReadMoreBlock && $( 'p.monetize-msg' ).length === 0 ) {
+			$( '.coil-restricted-content' ).after( showMonetizationMessage( loadingContent, '' ) );
+		} else if ( isSubscribersOnly() && isExcerptEnabled() && getContentExcerpt() !== null ) {
 			hideContentContainer();
 			document.body.classList.add( 'show-excerpt-message' );
 			if ( $( '.coil-post-excerpt' ).length === 0 ) {
@@ -569,10 +567,6 @@
 			}
 			if ( $( 'p.monetize-msg' ).length === 0 ) {
 				$( contentContainer ).last().before( showMonetizationMessage( loadingContent, '' ) );
-			}
-		} else if ( isSubscribersOnly() && hasReadMoreBlock ) {
-			if ( $( 'p.monetize-msg' ).length === 0 ) {
-				$( '.coil-restricted-content' ).after( showMonetizationMessage( loadingContent, '' ) );
 			}
 		} else if ( isSubscribersOnly() || isSplitContent() ) {
 			hideContentContainer();
