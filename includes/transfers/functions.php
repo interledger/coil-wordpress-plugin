@@ -391,8 +391,8 @@ function transfer_split_content_posts() {
 			// By default when transferring split content the Coil Exclusive Content Divider will be used and the post will be made exlusive.
 			$visibility_status = 'exclusive';
 
-			// Set the read more string as it will occur in the database
-			$coil_read_more_string = '<!-- wp:coil/exclusive-content-divider -->' . Gating\get_coil_read_more_string() . '<!-- /wp:coil/exclusive-content-divider -->';
+			// Set the Coil divider string as it will occur in the database
+			$coil_divider_string = '<!-- wp:coil/exclusive-content-divider -->' . Gating\get_coil_divider_string() . '<!-- /wp:coil/exclusive-content-divider -->';
 
 			$the_content = get_the_content();
 
@@ -427,7 +427,7 @@ function transfer_split_content_posts() {
 
 				// Combine the content but keep some semblence of formatting, hence why we're using multiple lines
 				$combined_content = $first_split . '
-	' . $coil_read_more_string . '
+	' . $coil_divider_string . '
 	' . $second_split;
 			}
 

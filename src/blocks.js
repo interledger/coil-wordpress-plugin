@@ -1,5 +1,5 @@
 // Extensions
 import './extensions/monetize-block';
 
-// Read More Block
+// Coil Exclusive Content Divider
 import './extensions/excluive-content-divider';

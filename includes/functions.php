@@ -211,8 +211,8 @@ function load_full_assets() : void {
 			'coil_button_link'            => Admin\get_coil_button_setting( 'coil_button_link', true ),
 			'paywall_button_text'         => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_text' ),
 			'paywall_button_link'         => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_link' ),
-			'post_excerpt'                => Gating\has_read_more_block( get_the_content() ) ? '' : get_the_excerpt(),
-			'has_read_more_block'         => Gating\has_read_more_block( get_the_content() ),
+			'post_excerpt'                => Gating\has_coil_divider( get_the_content() ) ? '' : get_the_excerpt(),
+			'has_coil_divider'            => Gating\has_coil_divider( get_the_content() ),
 			'coil_message_branding'       => Admin\get_paywall_appearance_setting( 'coil_message_branding' ),
 			'coil_button_theme'           => Admin\get_coil_button_setting( 'coil_button_color_theme' ),
 			'coil_button_size'            => Admin\get_coil_button_setting( 'coil_button_size' ),
@@ -331,7 +331,7 @@ function add_body_class( $classes ) : array {
 
 		if ( ! empty( $payment_pointer_id ) ) {
 			if ( $exclusive_content_enabled && $coil_visibility_status !== 'public' ) {
-				if ( Gating\has_read_more_block( get_the_content() ) ) {
+				if ( Gating\has_coil_divider( get_the_content() ) ) {
 					$classes[] = 'coil-divider';
 				} else {
 					$classes[] = ( Gating\is_excerpt_visible( $object_id ) ) ? 'coil-show-excerpt' : 'coil-hide-excerpt';

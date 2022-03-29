@@ -187,14 +187,14 @@ function maybe_restrict_content( string $content ) : string {
 		return $content;
 	}
 
-	$coil_read_more_string  = get_coil_read_more_string();
+	$coil_divider_string    = get_coil_divider_string();
 	$coil_visibility_status = get_content_status( get_the_ID(), 'visibility' );
 	$post_obj               = get_post( get_the_ID() );
 	$content_excerpt        = $post_obj->post_excerpt;
 	$public_content         = '';
 
 	// If it's a single post which doesn't have a read more block, just return the content
-	if ( is_singular() && ! has_read_more_block( $content ) ) {
+	if ( is_singular() && ! has_coil_divider( $content ) ) {
 		return $content;
 	}
 
@@ -202,9 +202,9 @@ function maybe_restrict_content( string $content ) : string {
 		case 'exclusive':
 		case 'gate-tagged-blocks':
 			// Restrict content beneath the Coil Read More block
-			if ( has_read_more_block( $content ) ) {
+			if ( has_coil_divider( $content ) ) {
 
-				$content        = str_replace( $coil_read_more_string, '<div class="coil-restricted-content">', $content );
+				$content        = str_replace( $coil_divider_string, '<div class="coil-restricted-content">', $content );
 				$content       .= '</div>';
 				$public_content = $content;
 			} elseif ( is_excerpt_visible( get_queried_object_id() ) ) { // Restrict all / some excerpt content based on visibility settings.
@@ -236,10 +236,10 @@ function maybe_restrict_content( string $content ) : string {
  *
  * @return bool true if the block is present
  */
-function has_read_more_block( $content ) : bool {
+function has_coil_divider( $content ) : bool {
 
-	$coil_read_more_string = get_coil_read_more_string();
-	if ( false !== strpos( $content, $coil_read_more_string ) ) {
+	$coil_divider_string = get_coil_divider_string();
+	if ( false !== strpos( $content, $coil_divider_string ) ) {
 		return true;
 	}
 
@@ -247,9 +247,9 @@ function has_read_more_block( $content ) : bool {
 }
 
 /**
- * @return string returns the read more string as it is isnerted by the editor when the Exclusive Content divider is added to a post.
+ * @return string returns the Coil divider string as it is isnerted by the editor when the Coil Exclusive Content divider is added to a post.
  */
-function get_coil_read_more_string() : string {
+function get_coil_divider_string() : string {
 	return '<span class="wp-block-coil-exclusive-content-divider"></span>';
 }
 
@@ -267,7 +267,7 @@ function is_excerpt_visible( $post_id ) : bool {
 	$display_excerpt = false;
 	// A post cannot display an excerpt if it uses the Coil Exclusive Content Divider.
 	// In which case the public content replaces the need for an excerpt altogether.
-	if ( has_read_more_block( get_the_content() ) ) {
+	if ( has_coil_divider( get_the_content() ) ) {
 		return false;
 	}
 	$exclusive_options = Admin\get_exclusive_settings();

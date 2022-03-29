@@ -15,7 +15,7 @@
 		showCoilButtonToMembers = Boolean( coilParams.show_coil_button_to_members ),
 		coilButtonLink = coilParams.coil_button_link,
 		postExcerpt = coilParams.post_excerpt,
-		hasReadMoreBlock = Boolean( coilParams.has_read_more_block ),
+		hasCoilDivider = Boolean( coilParams.has_coil_divider ),
 		adminMissingIdNotice = coilParams.admin_missing_id_notice,
 		paywallButtonText = coilParams.paywall_button_text,
 		paywallButtonLink = coilParams.paywall_button_link,
@@ -366,7 +366,7 @@
 			$( 'p.monetize-msg' ).remove();
 
 			if ( isSubscribersOnly() ) {
-				if ( hasReadMoreBlock ) {
+				if ( hasCoilDivider ) {
 					document.body.classList.add( 'show-fw-message' );
 					$( '.coil-restricted-content' ).before( showSubscriberOnlyMessage( paywallMessage ) );
 				} else if ( isExcerptEnabled() && getContentExcerpt() !== null ) {
@@ -461,7 +461,7 @@
 		$( 'body' ).removeClass( 'monetization-not-initialized' ).addClass( 'coil-extension-not-found' );
 
 		if ( isSubscribersOnly() ) {
-			if ( hasReadMoreBlock ) {
+			if ( hasCoilDivider ) {
 				document.body.classList.add( 'show-fw-message' );
 				$( '.coil-restricted-content' ).before( showSubscriberOnlyMessage( paywallMessage ) );
 			} else if ( isExcerptEnabled() && getContentExcerpt() !== null ) {
@@ -512,7 +512,7 @@
 		} else if ( ! isMonetizedAndPublic() ) {
 			// Verify monetization only if there is exclusive content.
 			// If post is exclusive then show verification message after excerpt.
-			if ( isSubscribersOnly() && hasReadMoreBlock && $( 'p.monetize-msg' ).length === 0 ) {
+			if ( isSubscribersOnly() && hasCoilDivider && $( 'p.monetize-msg' ).length === 0 ) {
 				$( '.coil-restricted-content' ).after( showMonetizationMessage( loadingContent, '' ) );
 			} else if ( isSubscribersOnly() && isExcerptEnabled() && getContentExcerpt() !== null ) {
 				document.body.classList.add( 'show-excerpt-message' );
@@ -536,7 +536,7 @@
 	function handleStartedMonetization() {
 		// User account verified, loading content. Monetization state: Started
 
-		if ( isSubscribersOnly() && hasReadMoreBlock && $( 'p.monetize-msg' ).length === 0 ) {
+		if ( isSubscribersOnly() && hasCoilDivider && $( 'p.monetize-msg' ).length === 0 ) {
 			$( '.coil-restricted-content' ).after( showMonetizationMessage( loadingContent, '' ) );
 		} else if ( isSubscribersOnly() && isExcerptEnabled() && getContentExcerpt() !== null ) {
 			document.body.classList.add( 'show-excerpt-message' );
@@ -557,7 +557,7 @@
 	 * @return {void}
 	 */
 	function handleStoppedMonetization() {
-		if ( isSubscribersOnly() && hasReadMoreBlock && $( 'p.monetize-msg' ).length === 0 ) {
+		if ( isSubscribersOnly() && hasCoilDivider && $( 'p.monetize-msg' ).length === 0 ) {
 			$( '.coil-restricted-content' ).after( showMonetizationMessage( loadingContent, '' ) );
 		} else if ( isSubscribersOnly() && isExcerptEnabled() && getContentExcerpt() !== null ) {
 			hideContentContainer();
@@ -709,7 +709,7 @@
 
 		// Hide content entry area if not default selector.
 		if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
-			if ( hasReadMoreBlock ) {
+			if ( hasCoilDivider ) {
 				$( contentContainer + ' .coil-restricted-content' ).hide();
 			} else {
 				$( contentContainer ).not( '.coil-post-excerpt' ).hide();
