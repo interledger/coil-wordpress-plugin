@@ -206,6 +206,8 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-
     background: #fff;
     border: 1px solid #d9d9d9;
     border-radius: 6px;
+    margin: auto;
+    max-width: 660px;
     padding: 32px; }
   body.coil-exclusive.coil-extension-not-found.show-fw-message .coil-message-container a.custom-logo-link,
   body.coil-missing-id.coil-extension-not-found.show-fw-message .coil-message-container a.custom-logo-link,

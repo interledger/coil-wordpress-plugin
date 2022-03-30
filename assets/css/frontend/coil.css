@@ -1,3 +1,5 @@
+body.monetization-not-initialized:not(.coil-monetized.coil-public):not(.coil-hide-excerpt):not(.coil-divider):not(.coil-gate-tagged-blocks) .content-area .entry-content:not(.coil-post-excerpt),
+body.monetization-not-initialized:not(.coil-monetized.coil-public):not(.coil-hide-excerpt):not(.coil-divider):not(.coil-gate-tagged-blocks) main .entry-content:not(.coil-post-excerpt),
 body.monetization-not-initialized:not(.coil-monetized.coil-public):not(.coil-hide-excerpt):not(.coil-divider):not(.coil-gate-tagged-blocks) #main #content .entry-content:not(.coil-post-excerpt),
 body.monetization-not-initialized:not(.coil-monetized.coil-public):not(.coil-hide-excerpt):not(.coil-divider):not(.coil-gate-tagged-blocks) .site-content #content .entry-content:not(.coil-post-excerpt),
 body.monetization-not-initialized:not(.coil-monetized.coil-public):not(.coil-hide-excerpt):not(.coil-divider):not(.coil-gate-tagged-blocks) .site-content .entry-content:not(.coil-post-excerpt),
@@ -5,6 +7,8 @@ body.monetization-not-initialized:not(.coil-monetized.coil-public):not(.coil-hid
 body.monetization-not-initialized:not(.coil-monetized.coil-public):not(.coil-hide-excerpt):not(.coil-divider):not(.coil-gate-tagged-blocks) .site-main .entry-content:not(.coil-post-excerpt),
 body.monetization-not-initialized:not(.coil-monetized.coil-public):not(.coil-hide-excerpt):not(.coil-divider):not(.coil-gate-tagged-blocks) .site-content #primary .site-main .entry-content:not(.coil-post-excerpt),
 body.monetization-not-initialized:not(.coil-monetized.coil-public):not(.coil-hide-excerpt):not(.coil-divider):not(.coil-gate-tagged-blocks) #site-content .post-inner .entry-content:not(.coil-post-excerpt),
+body.coil-extension-not-found.coil-exclusive:not(.coil-divider) .content-area .entry-content:not(.coil-post-excerpt),
+body.coil-extension-not-found.coil-exclusive:not(.coil-divider) main .entry-content:not(.coil-post-excerpt),
 body.coil-extension-not-found.coil-exclusive:not(.coil-divider) #main #content .entry-content:not(.coil-post-excerpt),
 body.coil-extension-not-found.coil-exclusive:not(.coil-divider) .site-content #content .entry-content:not(.coil-post-excerpt),
 body.coil-extension-not-found.coil-exclusive:not(.coil-divider) .site-content .entry-content:not(.coil-post-excerpt),
@@ -12,6 +16,8 @@ body.coil-extension-not-found.coil-exclusive:not(.coil-divider) .site-main #cont
 body.coil-extension-not-found.coil-exclusive:not(.coil-divider) .site-main .entry-content:not(.coil-post-excerpt),
 body.coil-extension-not-found.coil-exclusive:not(.coil-divider) .site-content #primary .site-main .entry-content:not(.coil-post-excerpt),
 body.coil-extension-not-found.coil-exclusive:not(.coil-divider) #site-content .post-inner .entry-content:not(.coil-post-excerpt),
+body.monetization-not-initialized.coil-exclusive:not(.coil-divider) .content-area .entry-content:not(.coil-post-excerpt),
+body.monetization-not-initialized.coil-exclusive:not(.coil-divider) main .entry-content:not(.coil-post-excerpt),
 body.monetization-not-initialized.coil-exclusive:not(.coil-divider) #main #content .entry-content:not(.coil-post-excerpt),
 body.monetization-not-initialized.coil-exclusive:not(.coil-divider) .site-content #content .entry-content:not(.coil-post-excerpt),
 body.monetization-not-initialized.coil-exclusive:not(.coil-divider) .site-content .entry-content:not(.coil-post-excerpt),
@@ -47,6 +53,8 @@ body.monetization-not-initialized.coil-exclusive.coil-divider #site-content .pos
 body:not(.single):not(.page) .coil-show-monetize-users {
   display: none; }
 
+body.coil-extension-not-found:not(.coil-exclusive) .content-area .entry-content,
+body.coil-extension-not-found:not(.coil-exclusive) main .entry-content,
 body.coil-extension-not-found:not(.coil-exclusive) #main #content .entry-content,
 body.coil-extension-not-found:not(.coil-exclusive) .site-content #content .entry-content,
 body.coil-extension-not-found:not(.coil-exclusive) .site-content .entry-content,
@@ -54,6 +62,8 @@ body.coil-extension-not-found:not(.coil-exclusive) .site-main #content .entry-co
 body.coil-extension-not-found:not(.coil-exclusive) .site-main .entry-content,
 body.coil-extension-not-found:not(.coil-exclusive) .site-content #primary .site-main .entry-content,
 body.coil-extension-not-found:not(.coil-exclusive) #site-content .post-inner .entry-content,
+body.coil-missing-id:not(.coil-exclusive) .content-area .entry-content,
+body.coil-missing-id:not(.coil-exclusive) main .entry-content,
 body.coil-missing-id:not(.coil-exclusive) #main #content .entry-content,
 body.coil-missing-id:not(.coil-exclusive) .site-content #content .entry-content,
 body.coil-missing-id:not(.coil-exclusive) .site-content .entry-content,

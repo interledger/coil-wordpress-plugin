@@ -4,6 +4,8 @@ body.monetization-not-initialized:not( .coil-monetized.coil-public ):not( .coil-
 body.coil-extension-not-found.coil-exclusive:not( .coil-divider ),
 body.monetization-not-initialized.coil-exclusive:not( .coil-divider ) {
 
+	.content-area .entry-content:not( .coil-post-excerpt ), 
+	main .entry-content:not( .coil-post-excerpt ),
 	#main #content .entry-content:not( .coil-post-excerpt ),
 	.site-content #content .entry-content:not( .coil-post-excerpt ),
 	.site-content .entry-content:not( .coil-post-excerpt ),
@@ -47,6 +49,8 @@ body:not( .single ):not( .page ) {
 body.coil-extension-not-found:not( .coil-exclusive ),
 body.coil-missing-id:not( .coil-exclusive ) {
 
+	.content-area .entry-content, 
+	main .entry-content,
 	#main #content .entry-content,
 	.site-content #content .entry-content,
 	.site-content .entry-content,

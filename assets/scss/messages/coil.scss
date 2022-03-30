@@ -19,6 +19,8 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 			background: $message_background_colour;
 			border: 1px solid $message_border_colour;
 			border-radius: $message_border_radius;
+			margin: auto;
+			max-width: 660px;
 			padding: $message_spacing_baseline * 4;
 		}
 
@@ -239,7 +241,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 			right: -7px;
 			top: -7px;
 			width: 20px;
-	
+
 			&:hover {
 				background-color: $coil_dismiss_hover_color;
 			}
@@ -295,15 +297,15 @@ body:not( .monetization-initialized ) .coil-button-message-container.coil-light-
 	.coil-button {
 		font-size: 14px;
 		line-height: 17px;
-	
+
 		a {
-	
+
 			img {
 				height: 16px;
 				width: 16px;
 			}
 		}
-	
+
 		.coil-button-dismiss {
 			font-size: 14px;
 			height: 14px;

@@ -384,7 +384,7 @@ function get_monetization_default() {
 function get_exclusive_settings(): array {
 
 	// Set up defaults.
-	$defaults = [ 'coil_content_container' => '.content-area .entry-content' ];
+	$defaults = [ 'coil_content_container' => get_css_selector_default() ];
 
 	$exclusive_options = get_option( 'coil_exclusive_settings_group', [] );
 	if ( empty( $exclusive_options ) || ! isset( $exclusive_options['coil_content_container'] ) ) {
@@ -639,10 +639,18 @@ function get_css_selector() {
 
 	$exclusive_options = get_exclusive_settings();
 	if ( empty( $exclusive_options ['coil_content_container'] ) ) {
-		return '.content-area .entry-content';
+		return get_css_selector_default();
 	} else {
 		return $exclusive_options ['coil_content_container'];
 	}
+}
+
+/**
+ * Retrieve the CSS selector default setting.
+ * @return string default content container.
+ */
+function get_css_selector_default() {
+	return '.content-area .entry-content, main .entry-content';
 }
 
 /**
