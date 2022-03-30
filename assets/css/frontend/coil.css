@@ -27,6 +27,8 @@ body.monetization-not-initialized.coil-exclusive:not(.coil-divider) .site-conten
 body.monetization-not-initialized.coil-exclusive:not(.coil-divider) #site-content .post-inner .entry-content:not(.coil-post-excerpt) {
   display: none; }
 
+body.monetization-not-initialized.coil-divider:not(.coil-monetized.coil-public):not(.coil-hide-excerpt) .content-area .entry-content .coil-restricted-content,
+body.monetization-not-initialized.coil-divider:not(.coil-monetized.coil-public):not(.coil-hide-excerpt) main .entry-content .coil-restricted-content,
 body.monetization-not-initialized.coil-divider:not(.coil-monetized.coil-public):not(.coil-hide-excerpt) #main #content .entry-content .coil-restricted-content,
 body.monetization-not-initialized.coil-divider:not(.coil-monetized.coil-public):not(.coil-hide-excerpt) .site-content #content .entry-content .coil-restricted-content,
 body.monetization-not-initialized.coil-divider:not(.coil-monetized.coil-public):not(.coil-hide-excerpt) .site-content .entry-content .coil-restricted-content,
@@ -34,6 +36,8 @@ body.monetization-not-initialized.coil-divider:not(.coil-monetized.coil-public):
 body.monetization-not-initialized.coil-divider:not(.coil-monetized.coil-public):not(.coil-hide-excerpt) .site-main .entry-content .coil-restricted-content,
 body.monetization-not-initialized.coil-divider:not(.coil-monetized.coil-public):not(.coil-hide-excerpt) .site-content #primary .site-main .entry-content .coil-restricted-content,
 body.monetization-not-initialized.coil-divider:not(.coil-monetized.coil-public):not(.coil-hide-excerpt) #site-content .post-inner .entry-content .coil-restricted-content,
+body.coil-extension-not-found.coil-exclusive.coil-divider .content-area .entry-content .coil-restricted-content,
+body.coil-extension-not-found.coil-exclusive.coil-divider main .entry-content .coil-restricted-content,
 body.coil-extension-not-found.coil-exclusive.coil-divider #main #content .entry-content .coil-restricted-content,
 body.coil-extension-not-found.coil-exclusive.coil-divider .site-content #content .entry-content .coil-restricted-content,
 body.coil-extension-not-found.coil-exclusive.coil-divider .site-content .entry-content .coil-restricted-content,
@@ -41,6 +45,8 @@ body.coil-extension-not-found.coil-exclusive.coil-divider .site-main #content .e
 body.coil-extension-not-found.coil-exclusive.coil-divider .site-main .entry-content .coil-restricted-content,
 body.coil-extension-not-found.coil-exclusive.coil-divider .site-content #primary .site-main .entry-content .coil-restricted-content,
 body.coil-extension-not-found.coil-exclusive.coil-divider #site-content .post-inner .entry-content .coil-restricted-content,
+body.monetization-not-initialized.coil-exclusive.coil-divider .content-area .entry-content .coil-restricted-content,
+body.monetization-not-initialized.coil-exclusive.coil-divider main .entry-content .coil-restricted-content,
 body.monetization-not-initialized.coil-exclusive.coil-divider #main #content .entry-content .coil-restricted-content,
 body.monetization-not-initialized.coil-exclusive.coil-divider .site-content #content .entry-content .coil-restricted-content,
 body.monetization-not-initialized.coil-exclusive.coil-divider .site-content .entry-content .coil-restricted-content,
