@@ -4,7 +4,7 @@ body.monetization-not-initialized:not( .coil-monetized.coil-public ):not( .coil-
 body.coil-extension-not-found.coil-exclusive:not( .coil-divider ),
 body.monetization-not-initialized.coil-exclusive:not( .coil-divider ) {
 
-	.content-area .entry-content:not( .coil-post-excerpt ), 
+	.content-area .entry-content:not( .coil-post-excerpt ),
 	main .entry-content:not( .coil-post-excerpt ),
 	#main #content .entry-content:not( .coil-post-excerpt ),
 	.site-content #content .entry-content:not( .coil-post-excerpt ),
@@ -23,7 +23,7 @@ body.monetization-not-initialized.coil-divider:not( .coil-monetized.coil-public 
 body.coil-extension-not-found.coil-exclusive.coil-divider,
 body.monetization-not-initialized.coil-exclusive.coil-divider {
 
-	.content-area .entry-content .coil-restricted-content, 
+	.content-area .entry-content .coil-restricted-content,
 	main .entry-content .coil-restricted-content,
 	#main #content .entry-content .coil-restricted-content,
 	.site-content #content .entry-content .coil-restricted-content,
@@ -36,7 +36,6 @@ body.monetization-not-initialized.coil-exclusive.coil-divider {
 	}
 
 }
-
 
 // If the reader is not viewing a single post/page then hide monetized content.
 body:not( .single ):not( .page ) {
@@ -51,7 +50,7 @@ body:not( .single ):not( .page ) {
 body.coil-extension-not-found:not( .coil-exclusive ),
 body.coil-missing-id:not( .coil-exclusive ) {
 
-	.content-area .entry-content, 
+	.content-area .entry-content,
 	main .entry-content,
 	#main #content .entry-content,
 	.site-content #content .entry-content,

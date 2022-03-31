@@ -510,3 +510,7 @@ a.coil-serverside-message-button {
   @media only screen and (min-width: 1168px) {
     a.coil-serverside-message-button {
       margin-bottom: 0; } }
+
+svg.coil-post-title-padlock {
+  clear: none;
+  display: inline; }

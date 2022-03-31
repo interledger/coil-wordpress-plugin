@@ -110,14 +110,33 @@ function get_valid_visibility_types() {
 }
 
 /**
+ * Restore default post/page title in navigation
+ *
+ * @param string   $title The menu item's title.
+ * @param WP_Post  $item  The current menu item.
+ * @param stdClass $args  An object of wp_nav_menu() arguments.
+ * @param int      $depth Depth of menu item. Used for padding.
+ *
+ * @return string Restored post title
+ */
+function restore_title_in_menus( $title, $item, $args, $depth ) {
+
+	// Remove filter to not affect title
+	remove_filter( 'the_title', __NAMESPACE__ . '\maybe_add_padlock_to_title', 10, 2 );
+
+	$post_id = $item->object_id;
+	$title   = get_the_title( $post_id );
+
+	// Add the title filter back
+	add_filter( 'the_title', __NAMESPACE__ . '\maybe_add_padlock_to_title', 10, 2 );
+
+	return $title;
+}
+
+/**
  * Maybe prefix a padlock emoji to the post title.
  *
- * Used on archive pages to represent if a post is gated.
- *
- * @param string $title The post title.
- * @param int    $id    The post ID. Optional.
- *
- * @return string The updated post title.
+ * This actually deactivates the title filter
  */
 function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 
@@ -130,7 +149,7 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 	}
 
 	// Do not show the padlock on the menu items
-	if ( ! in_the_loop() && ! is_singular() ) {
+	if ( ( ! in_the_loop() && ! is_singular() && !is_page() ) ) {
 		return $title;
 	}
 

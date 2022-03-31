@@ -14,7 +14,7 @@ use \Coil\User;
 /**
  * @var string Plugin version number.
  */
-const PLUGIN_VERSION = '1.9.0';
+const PLUGIN_VERSION = '1.10.0';
 
 /**
  * @var string Database version number.
@@ -47,6 +47,7 @@ function init_plugin() : void {
 	add_filter( 'body_class', __NAMESPACE__ . '\add_body_class' );
 	add_filter( 'the_content', __NAMESPACE__ . '\Gating\maybe_restrict_content' );
 	add_filter( 'the_title', __NAMESPACE__ . '\Gating\maybe_add_padlock_to_title', 10, 2 );
+	add_filter( 'nav_menu_item_title', __NAMESPACE__ . '\Gating\restore_title_in_menus', 10, 4 );
 	add_action( 'wp_head', __NAMESPACE__ . '\print_meta_tag' );
 
 	// Admin screens and settings.
