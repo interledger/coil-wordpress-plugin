@@ -373,33 +373,6 @@ body.coil-exclusive.coil-extension-not-found.show-excerpt-message .coil-message-
 body.coil-hide-excerpt.show-fw-message .entry-content {
   display: none; }
 
-.coil-show-monetize-users span.coil-split-content-message {
-  align-items: center;
-  background: #fff;
-  border: 1px solid #d9d9d9;
-  border-radius: 6px;
-  bottom: 0;
-  color: #555d66;
-  display: flex;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 16px;
-  justify-content: center;
-  left: 0;
-  line-height: 22px;
-  margin: 0;
-  padding: 50px;
-  position: absolute;
-  right: 0;
-  text-align: center;
-  top: 0;
-  width: 100%;
-  z-index: 110; }
-  @media only screen and (min-width: 768px) {
-    .coil-show-monetize-users span.coil-split-content-message {
-      font-size: 18px;
-      line-height: 27px;
-      padding: 50px; } }
-
 .coil-button-message-container {
   display: flex;
   position: fixed;

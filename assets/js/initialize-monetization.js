@@ -72,7 +72,6 @@
 		fontSelection = Boolean( coilParams.font_selection );
 
 	const subscriberOnlyMessage = wp.template( 'subscriber-only-message' );
-	const splitContentMessage = wp.template( 'split-content-message' );
 	const coilButtonMessage = wp.template( 'coil-button-message' );
 
 	const messageWrapper = $( 'p.monetize-msg' );
@@ -240,16 +239,6 @@
 	}
 
 	/**
-	 * @param {String} message from coilParams.
-	 * @return {object} Overlay "Split Content" blocks with a message when set to
-	 * Only Show Coil Members. This will display if the browser is
-	 * not compatible or verified.
-	 */
-	function showSplitContentMessage( message ) {
-		return splitContentMessage( message );
-	}
-
-	/**
 	 * Show the content container.
 	 */
 	function showContentContainer() {
@@ -341,15 +330,6 @@
 	}
 
 	/**
-	 * @return {bool} Helper function to determine if the content is "Split"
-	 */
-	function isSplitContent() {
-		const isMonetized = document.body.classList.contains( 'coil-monetized' );
-		const isSplit = document.body.classList.contains( 'coil-gate-tagged-blocks' );
-		return isMonetized && isSplit;
-	}
-
-	/**
 	 * @return {bool} Determine if the content container is default.
 	 */
 	function usingDefaultContentContainer() {
@@ -383,12 +363,6 @@
 					document.body.classList.add( 'show-fw-message' );
 					$( contentContainer ).before( showSubscriberOnlyMessage( paywallMessage ) );
 				}
-			} else if ( isSplitContent() ) {
-				// Split content and unable to verify hidden content.
-				$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( paywallMessage ) );
-				$( '.coil-show-monetize-users' ).css( 'display', 'block' );
-
-				showContentContainer();
 			} else {
 				// No tagged blocks.
 				document.body.classList.add( 'show-fw-message' );
@@ -477,11 +451,6 @@
 				document.body.classList.add( 'show-fw-message' );
 				$( contentContainer ).last().before( showSubscriberOnlyMessage( paywallMessage ) );
 			}
-		} else if ( isSplitContent() ) {
-			// Split content with no extension found.
-			$( '.coil-show-monetize-users' ).prepend( showSplitContentMessage( paywallMessage ) );
-
-			showContentContainer();
 		} else {
 			maybeAddCoilButton();
 		}
@@ -511,8 +480,6 @@
 			// the block settings should the theme use different theme selectors.
 			if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
 				showContentContainer();
-				$( contentContainer + '*.coil-hide-monetize-users' ).css( 'display', 'none' );
-				$( contentContainer + '*.coil-show-monetize-users' ).css( 'display', 'none' );
 			}
 
 			$( 'body' ).trigger( 'coil-missing-id' );
@@ -575,7 +542,7 @@
 			if ( $( 'p.monetize-msg' ).length === 0 ) {
 				$( contentContainer ).last().before( showMonetizationMessage( loadingContent, '' ) );
 			}
-		} else if ( isSubscribersOnly() || isSplitContent() ) {
+		} else if ( isSubscribersOnly() ) {
 			hideContentContainer();
 			if ( $( 'p.monetize-msg' ).length === 0 ) {
 				$( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
@@ -621,10 +588,6 @@
 		// Removes exclusive messages
 		if ( isSubscribersOnly() ) {
 			$( '.entry-content.coil-message-container' ).remove();
-		} else if ( isSplitContent() ) {
-			$( '.coil-show-monetize-users' ).removeClass( 'coil-show-monetize-users' );
-			$( '.coil-split-content-message' ).remove();
-			$( '*.coil-hide-monetize-users' ).css( 'display', 'none' );
 		}
 
 		showContentContainer();
