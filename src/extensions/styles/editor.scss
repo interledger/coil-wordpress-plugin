@@ -1,39 +1,47 @@
+.wp-block-coil-exclusive-content-divider {
+
+	margin-top: 30px;
+
+	&::before,
+	&::after {
+		border-top: 2px dashed #8f949f;
+		content: '';
+		display: flex;
+		position: absolute;
+		top: 20px;
+		width: calc( ( 100% - 420px ) / 2 );
+		z-index: 0;
+	}
+
+	&::after {
+		right: 0;
+	}
+
+	.coil-exclusive-content-divider-inner {
+		align-items: center;
+		background: #fff;
+		border: 1px solid #8f949f;
+		border-radius: 8px;
+		display: flex;
+		height: 42px;
+		justify-content: space-between;
+		margin: auto;
+		max-width: 400px;
+		padding: 12px 8px;
+		text-align: center;
+		width: 100%;
+		z-index: 1;
+
+		p {
+			font-size: 14px;
+			font-weight: 500;
+		}
+	}
+}
+
 .coil-post-monetization-level {
 	&.default,
 	&.not-monetized {
 		display: none;
-	}
-}
-
-.coil-hide-monetize-users:not( .has-warning ),
-.coil-show-monetize-users:not( .has-warning ) {
-	position: relative;
-
-	&::before {
-		font-family: Arial, sans-serif;
-		font-size: 12px;
-		height: 20px;
-		left: 0;
-		padding: 0 12px;
-		position: absolute;
-		top: -14px;
-		width: max-content;
-		z-index: 10;
-	}
-}
-
-.coil-hide-monetize-users:not( .has-warning ) {
-	&::before {
-		background-color: #ff0;
-		color: #000;
-		content: 'Coil: This block will be hidden from monetized users.';
-	}
-}
-
-.coil-show-monetize-users:not( .has-warning ) {
-	&::before {
-		background-color: #32ff00;
-		color: #000;
-		content: 'Coil: This block will be shown to monetized users only.';
 	}
 }

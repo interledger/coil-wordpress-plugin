@@ -400,7 +400,7 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 	 */
 	public function test_if_content_container_is_retrieved_successfully() :  void {
 
-		$content_container = [ 'coil_content_container' => '.content-area .entry-content, .post-story' ];
+		$content_container = [ 'coil_content_container' => '.content-area .entry-content, .post-story, .coil-restricted-content' ];
 		update_option( 'coil_exclusive_settings_group', $content_container );
 
 		$retrieved_content_container = Admin\get_css_selector();

@@ -17,6 +17,11 @@ use \Coil\User;
 const PLUGIN_VERSION = '1.9.0';
 
 /**
+ * @var string Database version number.
+ */
+const DB_VERSION = '1.10.0';
+
+/**
  * @var string Plugin root folder.
  */
 const COIL__FILE__ = __DIR__;
@@ -206,7 +211,8 @@ function load_full_assets() : void {
 			'coil_button_link'            => Admin\get_coil_button_setting( 'coil_button_link', true ),
 			'paywall_button_text'         => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_text' ),
 			'paywall_button_link'         => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_link' ),
-			'post_excerpt'                => get_the_excerpt(),
+			'post_excerpt'                => Gating\has_coil_divider( get_the_content() ) ? '' : get_the_excerpt(),
+			'has_coil_divider'            => Gating\has_coil_divider( get_the_content() ),
 			'coil_message_branding'       => Admin\get_paywall_appearance_setting( 'coil_message_branding' ),
 			'coil_button_theme'           => Admin\get_coil_button_setting( 'coil_button_color_theme' ),
 			'coil_button_size'            => Admin\get_coil_button_setting( 'coil_button_size' ),
@@ -303,9 +309,6 @@ function add_body_class( $classes ) : array {
 	$payment_pointer_id        = Admin\get_payment_pointer_setting();
 	$exclusive_content_enabled = Admin\is_exclusive_content_enabled();
 
-	// Transfer old post meta into new format
-	Transfers\update_post_meta( $object_id );
-
 	// If content is not monetized, or exclusive content has been disabled,
 	// then the coil-exclusive class cannot be added to the content.
 	// This is an additional check to ensure that the incompatible not-monetized and exclusive state cannot be reached.
@@ -327,8 +330,12 @@ function add_body_class( $classes ) : array {
 		}
 
 		if ( ! empty( $payment_pointer_id ) ) {
-			if ( $exclusive_content_enabled ) {
-				$classes[] = ( Gating\is_excerpt_visible( $object_id ) ) ? 'coil-show-excerpt' : 'coil-hide-excerpt';
+			if ( $exclusive_content_enabled && $coil_visibility_status !== 'public' ) {
+				if ( Gating\has_coil_divider( get_the_content() ) ) {
+					$classes[] = 'coil-divider';
+				} else {
+					$classes[] = ( Gating\is_excerpt_visible( $object_id ) ) ? 'coil-show-excerpt' : 'coil-hide-excerpt';
+				}
 			}
 		} else {
 			// Error: payment pointer ID is missing.
@@ -383,17 +390,39 @@ function print_meta_tag() : void {
  * @return void
  */
 function maybe_update_database() {
+
+	$did_run_update = false;
+	$db_version     = get_option( 'coil_db_ver' );
+
 	// maybe_load_database_defaults function must be called first becasue it loads neccessary defaults but only if the option group is empty.
 	// The transfer functions will override the defaults that were loaded if neccessary.
 	Transfers\maybe_load_database_defaults();
 
-	// Transfer settings saved in the customizer
-	Transfers\transfer_customizer_message_settings();
-	Transfers\transfer_customizer_appearance_settings();
+	if ( false === $db_version || version_compare( '1.10.0', $db_version, '>' ) ) {
+		// Transfer settings saved in the customizer
+		Transfers\transfer_customizer_message_settings();
+		Transfers\transfer_customizer_appearance_settings();
 
-	// Transfer settings saved in version 1.9 of the plugin where deprecated option groups are being used in the wp_options table
-	Transfers\transfer_version_1_9_panel_settings();
+		// Transfer settings saved in version 1.9 of the plugin where deprecated option groups are being used in the wp_options table
+		Transfers\transfer_version_1_9_panel_settings();
+
+		// Transfer split content posts to use the exclusive content divider
+		Transfers\transfer_split_content_posts();
+
+		// Transfer settings which are set in the post meta table (notibly gating and monetization settings)
+		// Note: This function must only be run after the transfer_split_content_posts function.
+		Transfers\transfer_post_meta_values();
+
+		// Tell the function that we have run an update
+		$did_run_update = true;
+	}
+
+	// Update the database version at the end of it
+	if ( $did_run_update ) {
+		update_option( 'coil_db_ver', DB_VERSION, false );
+	}
 }
+
 /**
  * Get the filterable payment pointer meta option from the database.
  *
