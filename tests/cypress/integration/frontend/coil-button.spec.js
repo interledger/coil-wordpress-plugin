@@ -109,14 +109,6 @@ describe( 'Coil button for WM-enabled users', function() {
 			.get( '.coil-button' )
 			.should( 'be.visible' );
 	} );
-
-	it( 'Checks the Coil button displays correctly on posts that are split', () => {
-		cy.visit( '/block-visibility/' );
-		cy.startWebMonetization();
-		cy
-			.get( '.coil-button' )
-			.should( 'be.visible' );
-	} );
 } );
 
 describe( 'Coil button for non WM-enabled users', function() {
@@ -135,13 +127,6 @@ describe( 'Coil button for non WM-enabled users', function() {
 
 	it( 'Checks the Coil button display does not display in conjunction with the paywall on exclusive posts', () => {
 		cy.visit( '/coil-members-only/' );
-		cy
-			.get( '.coil-button' )
-			.should( 'not.exist' );
-	} );
-
-	it( 'Checks the Coil button displays does not display in conjunction with the split content message', () => {
-		cy.visit( '/block-visibility/' );
 		cy
 			.get( '.coil-button' )
 			.should( 'not.exist' );

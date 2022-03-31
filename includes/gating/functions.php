@@ -103,7 +103,6 @@ function get_valid_visibility_types() {
 	$valid = [
 		'public', // visible to everyone.
 		'exclusive', // visible to Coil members only.
-		'gate-tagged-blocks', // split content.
 		'default', // Whatever is set on the post to revert back.
 	];
 	return $valid;
@@ -200,7 +199,6 @@ function maybe_restrict_content( string $content ) : string {
 
 	switch ( $coil_visibility_status ) {
 		case 'exclusive':
-		case 'gate-tagged-blocks':
 			// Restrict content beneath the Coil Read More block
 			if ( has_coil_divider( $content ) ) {
 
