@@ -20,10 +20,6 @@ describe( 'Tests for visibility settings in editor', () => {
 		const monetizationAndVisibilityCombinations = [
 			{
 				monetization: 'Enabled',
-				visibility: '#inspector-radio-control-0-2', // Enabled with Split content
-			},
-			{
-				monetization: 'Enabled',
 				visibility: '#inspector-radio-control-0-0', // Enabled for Everyone
 			},
 			{

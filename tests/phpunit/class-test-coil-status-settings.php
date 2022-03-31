@@ -78,12 +78,6 @@ class Test_Coil_Status_Settings extends WP_UnitTestCase {
 			],
 			[
 				'post'         => $factory->post->create_and_get(),
-				'title'        => 'Split',
-				'monetization' => 'monetized',
-				'visibility'   => 'gate-tagged-blocks',
-			],
-			[
-				'post'         => $factory->post->create_and_get(),
 				'title'        => 'Default',
 				'monetization' => 'default',
 				'visibility'   => 'default',

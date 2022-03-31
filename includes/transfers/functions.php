@@ -404,6 +404,7 @@ function transfer_split_content_posts() {
 				update_post_meta( get_the_ID(), '_coil_monetization_post_status', 'monetized' );
 				update_post_meta( get_the_ID(), '_coil_visibility_post_status', 'public' );
 				update_post_meta( get_the_ID(), '_coil_updated_tagged_blocks', true );
+				// Remove the deprecated meta key
 				delete_post_meta( get_the_ID(), '_coil_monetize_post_status' );
 				continue;
 			} elseif ( false !== $hidden_pos && false === $show_pos ) {
@@ -440,6 +441,7 @@ function transfer_split_content_posts() {
 			// Clean out old attributes
 			$combined_content = str_replace( $strings_to_clear, '', $combined_content );
 
+			// Remove the deprecated meta key
 			delete_post_meta( get_the_ID(), '_coil_monetize_post_status' );
 
 			$data = [

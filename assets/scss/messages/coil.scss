@@ -149,36 +149,6 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 	display: none;
 }
 
-// Split content
-.coil-show-monetize-users span.coil-split-content-message {
-	align-items: center;
-	background: $white;
-	border: 1px solid $message_border_colour;
-	border-radius: $message_border_radius;
-	bottom: 0;
-	color: $grey;
-	display: flex;
-	font-family: 'Open Sans', sans-serif;
-	font-size: 16px;
-	justify-content: center;
-	left: 0;
-	line-height: 22px;
-	margin: 0;
-	padding: 50px;
-	position: absolute;
-	right: 0;
-	text-align: center;
-	top: 0;
-	width: 100%;
-	z-index: 110;
-
-	@media only screen and (min-width: $message_mobile_breakpoint) {
-		font-size: 18px;
-		line-height: 27px;
-		padding: 50px;
-	}
-}
-
 // Scenario 3 - Coil button
 .coil-button-message-container {
 	// Hide the Coil button on mobile

@@ -89,10 +89,6 @@ const PostMetaFields = withDispatch( ( dispatch, props ) => {
 							label: __( 'Coil Members Only', 'coil-web-monetization' ),
 							value: 'exclusive',
 						},
-						{
-							label: __( 'Split', 'coil-web-monetization' ),
-							value: 'gate-tagged-blocks',
-						},
 					] }
 					onChange={ ( value ) => props.updateVisibilityMetaValue( value ) }
 				/>
