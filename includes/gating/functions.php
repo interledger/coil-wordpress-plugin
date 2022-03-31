@@ -149,7 +149,7 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 	}
 
 	// Do not show the padlock on the menu items
-	if ( ( ! in_the_loop() && ! is_singular() && !is_page() ) ) {
+	if ( ! in_the_loop() && ! is_singular() ) {
 		return $title;
 	}
 
