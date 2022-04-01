@@ -238,7 +238,7 @@
 	}
 
 	// Coil Button tab
-	if ( activeTabID === 'coil-button-settings' ) {
+	if ( activeTabID === 'streaming-support-widget-settings' ) {
 		// Initial set-up
 		const coilButtonEnabled = $( 'input[name="coil_button_settings_group[coil_button_toggle]"]' ).is( ':checked' ),
 			coilButtonPreviewSelector = 'div.coil-preview.coil-non-members .coil-button div > div',

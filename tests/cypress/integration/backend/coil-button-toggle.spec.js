@@ -6,7 +6,7 @@ describe( 'Coil button settings tab', () => {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
 		cy.resetSite();
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=coil_button' );
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_support_widget' );
 	} );
 
 	it( 'Checks that by default the Coil button is enabled', () => {

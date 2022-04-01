@@ -6,7 +6,7 @@ describe( 'Coil button for WM-enabled users', function() {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
 		cy.resetSite();
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=coil_button' );
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_support_widget' );
 	} );
 
 	afterEach( () => {
@@ -134,7 +134,7 @@ describe( 'Coil button for non WM-enabled users', function() {
 
 	it( 'Checks that the Coil button be can be enabled/disabled', function() {
 		// Disable the Coil button.
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=coil_button' );
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_support_widget' );
 		cy
 			.get( '.coil-checkbox' )
 			.click();
@@ -149,7 +149,7 @@ describe( 'Coil button for non WM-enabled users', function() {
 			.should( 'not.exist' );
 
 		// Enable the Coil button and set it to display.
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=coil_button' );
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_support_widget' );
 		cy
 			.get( '.coil-checkbox' )
 			.click();
@@ -175,7 +175,7 @@ describe( 'Coil button for non WM-enabled users', function() {
 		const buttonText = 'Coil Eyes Only';
 		const buttonLink = 'https://example.com/';
 
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=coil_button' );
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_support_widget' );
 		cy
 			.get( '#coil_button_text' )
 			.type( `{selectall}${ buttonText }` );
@@ -204,7 +204,7 @@ describe( 'Coil button for non WM-enabled users', function() {
 		const bottomMargin = '-40';
 		const leftMargin = 'abc';
 
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=coil_button' );
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_support_widget' );
 		cy
 			.get( '#light_color_theme' )
 			.click();
@@ -240,7 +240,7 @@ describe( 'Coil button for non WM-enabled users', function() {
 	} );
 
 	it( 'Checks the button can be hidden on a post level', () => {
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=coil_button' );
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_support_widget' );
 
 		cy
 			.get( '#post_button_visibility_hide' )

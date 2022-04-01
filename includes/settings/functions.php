@@ -471,7 +471,7 @@ function coil_settings_welcome_render_callback() {
 		Rendering\render_welcome_section(
 			__( 'Streaming Support Widget', 'coil-web-monetization' ),
 			__( 'Show that you accept support from Coil members by displaying a widget on certain pages of your site. If you choose to show the widget to active Coil members, the widget\'s text changes to thank them for their support.', 'coil-web-monetization' ),
-			'coil_button',
+			'streaming_support_widget',
 			__( 'Add Widget', 'coil-web-monetization' )
 		);
 
@@ -1601,7 +1601,7 @@ function render_coil_settings_screen() : void {
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=welcome' ); ?>" id="coil-welcome-settings" class="nav-tab <?php echo $active_tab === 'welcome' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Welcome', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=general_settings' ); ?>" id="coil-general-settings" class="nav-tab <?php echo $active_tab === 'general_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'General Settings', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=exclusive_settings' ); ?>" id="coil-exclusive-settings" class="nav-tab <?php echo $active_tab === 'exclusive_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Exclusive Content', 'coil-web-monetization' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=coil_button' ); ?>" id="coil-button-settings" class="nav-tab <?php echo $active_tab === 'coil_button' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Streaming Support Widget', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=streaming_support_widget' ); ?>" id="streaming-support-widget-settings" class="nav-tab <?php echo $active_tab === 'streaming_support_widget' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Streaming Support Widget', 'coil-web-monetization' ); ?></a>
 		</h2>
 	</div>
 	<div class="wrap coil plugin-settings">
@@ -1638,7 +1638,7 @@ function render_coil_settings_screen() : void {
 					submit_button();
 					echo '</div>';
 					break;
-				case 'coil_button':
+				case 'streaming_support_widget':
 					echo '<div class="settings-main">';
 					settings_fields( 'coil_button_settings_group' );
 					do_settings_sections( 'coil_enable_button_section' );
