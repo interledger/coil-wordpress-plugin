@@ -229,7 +229,7 @@ function checkMemberButtonOptionsVisibility( visibilityStatus ) {
 
 	cy
 		.get( '#coil_button_member_display + label + h4' )
-		.should( 'contain', 'Message for Coil Members' )
+		.should( 'contain', 'Message for Coil members' )
 		.should( assertion );
 
 	cy
