@@ -133,7 +133,7 @@
 	}
 
 	/**
-	 * Adds the Coil button to the body oif the document and adds it's handler functions.
+	 * Adds the streaming support widget to the body oif the document and adds it's handler functions.
 	 * @param {String} message Message shown to thank Coil members, or to encourage users to sign up.
 	 * @return {void}
 	*/
@@ -151,7 +151,7 @@
 
 	/**
 	 * @param {String} message Message shown to thank Coil members, or to encourage users to sign up.
-	 * @return {object} Output a Coil button message.
+	 * @return {object} Output a streaming support widget.
 	*/
 	function createCoilButton( message ) {
 		const positionArray = coilButtonPosition.split( '-' );
@@ -188,7 +188,7 @@
 
 		$( modalContainer ).append( coilButtonMessage( modalData ) );
 
-		// Set the margins only for the two applicable sides of the Coil button based on the position selected.
+		// Set the margins only for the two applicable sides of the streaming support widget based on the position selected.
 		if ( horizontalPosition === 'left' ) {
 			rightMargin = '0';
 			leftMargin = checkMarginValues( ButtonMarginLeft );
@@ -210,7 +210,7 @@
 	}
 
 	/**
-	 * Determines whether a Coil button element should be added to the page.
+	 * Determines whether a streaming support widget should be added to the page.
 	 * The button will only be added if it is not already present, it is globally enabled, the browser doesn't have a dismiss cookie for it,
 	 * and neither the pending message nor paywall are being displayed.
 	 */
@@ -226,7 +226,7 @@
 	}
 
 	/**
-	 * Ensures that the margin value assigned to the Coil button has an integer value as expected.
+	 * Ensures that the margin value assigned to the streaming support widget has an integer value as expected.
 	 * @param {String} marginValue from coilParams.
 	 * @return {String} A string containing only digits and possibly a minus sign.
 	 */
@@ -308,7 +308,7 @@
 
 	/**
 	 * @return {bool} Helper function to determine if the content has
-	 * the Coil button enabled
+	 * the streaming support widget enabled
 	*/
 	function hasCoilButtonEnabled() {
 		return coilButtonGloballyEnabled && document.body.classList.contains( 'show-coil-button' );
@@ -381,7 +381,7 @@
 	}
 
 	/**
-	 * Add a function to remove the Coil button and set a Cookie.
+	 * Add a function to remove the streaming support widget and set a Cookie.
 	 *
 	 * @see https://github.com/js-cookie/js-cookie
 	 */
@@ -396,8 +396,8 @@
 	}
 
 	/**
-	 * Add a function to show or hide the Coil button dismiss
-	 * depending on whether you are hovering over the button or not.
+	 * Add a function to show or hide the streaming support widget dismiss
+	 * depending on whether you are hovering over the widget or not.
 	 *
 	 */
 	function addButtonDismissAppearanceHandler() {
@@ -411,7 +411,7 @@
 	}
 
 	/**
-	 * Checks if the Coil button is dismissed.
+	 * Checks if the streaming support widget is dismissed.
 	 *
 	 * @return {bool} True if set to '1', otherwise false.
 	 */

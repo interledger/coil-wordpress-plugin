@@ -71,7 +71,7 @@ function maybe_load_database_defaults() {
 		add_option( 'coil_exclusive_settings_group', $new_exclusive_settings );
 	}
 
-	// Loads the Coil button defaults if they have not yet been entered into the database
+	// Loads the streaming support widget defaults if they have not yet been entered into the database
 	$coil_button_settings = get_option( 'coil_button_settings_group', 'absent' );
 
 	if ( $coil_button_settings === 'absent' ) {
@@ -81,7 +81,7 @@ function maybe_load_database_defaults() {
 		$new_button_settings['coil_button_member_display'] = $defaults['coil_button_member_display'];
 
 		$post_type_options = Coil\get_supported_post_types( 'objects' );
-		// Button visibility default is 'show'
+		// streaming support widget visibility default is 'show'
 		$button_visibility_default = $defaults['post_type_button_visibility'];
 
 		// Set post visibility and excerpt display default for each post type
@@ -207,7 +207,7 @@ function transfer_customizer_appearance_settings() {
 		}
 	}
 
-	// The promotion bar has been deprecated and a Coil button is taking its place instead.
+	// The promotion bar has been deprecated and a streaming support widget is taking its place instead.
 	if ( get_theme_mod( $coil_show_donation_bar, 'absent' ) !== 'absent' ) {
 		remove_theme_mod( $coil_show_donation_bar );
 	}

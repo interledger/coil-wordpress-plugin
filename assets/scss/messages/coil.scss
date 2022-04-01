@@ -149,9 +149,9 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 	display: none;
 }
 
-// Scenario 3 - Coil button
+// Scenario 3 - streaming support widget
 .coil-button-message-container {
-	// Hide the Coil button on mobile
+	// Hide the streaming support widget on mobile
 	@media only screen and (max-width: $message_mobile_breakpoint) {
 		display: none;
 	}
@@ -235,7 +235,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 	justify-content: left;
 }
 
-// Changes Coil button to implement light theme
+// Changes streaming support widget to implement light theme
 .coil-button-message-container.coil-light-theme {
 	.coil-button {
 		background-color: $coil_button_message_color_light_theme;
@@ -262,7 +262,7 @@ body:not( .monetization-initialized ) .coil-button-message-container.coil-light-
 	}
 }
 
-// Changes Coil button to implement the small size
+// Changes streaming support widget to implement the small size
 .coil-button-message-container.coil-button-small {
 	.coil-button {
 		font-size: 14px;

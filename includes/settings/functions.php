@@ -350,7 +350,7 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 }
 
 /**
- * Validates the Coil button settings.
+ * Validates the streaming support widget settings.
  *
  * @param array $coil_button_settings
  * @return array
@@ -371,8 +371,7 @@ function coil_button_settings_group_validation( $coil_button_settings ): array {
 		if ( $field_name === 'coil_button_link' ) {
 			$final_settings[ $field_name ] = ( isset( $coil_button_settings[ $field_name ] ) ) ? esc_url_raw( $coil_button_settings[ $field_name ] ) : '';
 		} elseif ( ( $field_name === 'coil_button_text' || $field_name === 'coil_members_button_text' ) && isset( $coil_button_settings[ $field_name ] ) && ctype_space( $coil_button_settings[ $field_name ] ) ) {
-			// Allows the option of saving whitespace in the button text as a way of eliminating it
-			// from the paywall message
+			// Allows the option of saving whitespace in the streaming support widget text as a way of eliminating it to only show the icon.
 			$final_settings[ $field_name ] = ' ';
 		} else {
 			$final_settings[ $field_name ] = ( isset( $coil_button_settings[ $field_name ] ) ) ? sanitize_text_field( $coil_button_settings[ $field_name ] ) : '';
@@ -385,7 +384,7 @@ function coil_button_settings_group_validation( $coil_button_settings ): array {
 		$final_settings[ $field_name ] = isset( $coil_button_settings[ $field_name ] ) && ( $coil_button_settings[ $field_name ] === 'on' || $coil_button_settings[ $field_name ] === true ) ? true : false;
 	}
 
-	// Validates button margins
+	// Validates streaming support widget margins
 	$margin_fields = Admin\get_button_margin_key_defaults();
 
 	foreach ( $margin_fields as $field_name => $default ) {
@@ -401,7 +400,7 @@ function coil_button_settings_group_validation( $coil_button_settings ): array {
 	// A list of valid post types
 	$post_type_options = Coil\get_supported_post_types( 'objects' );
 	foreach ( $post_type_options as $post_type ) {
-		// Validates Coil button visibility settings
+		// Validates streaming support widget visibility settings
 		$button_visibility_setting_key = $post_type->name . '_button_visibility';
 		$valid_options                 = [ 'show', 'hide' ];
 
@@ -409,7 +408,7 @@ function coil_button_settings_group_validation( $coil_button_settings ): array {
 		$final_settings[ $button_visibility_setting_key ] = isset( $coil_button_settings[ $button_visibility_setting_key ] ) && in_array( $coil_button_settings[ $button_visibility_setting_key ], $valid_options, true ) ? sanitize_key( $coil_button_settings[ $button_visibility_setting_key ] ) : $defaults['post_type_button_visibility'];
 	}
 
-	// Theme validation, button size, and button position validation
+	// Validates the streaming support widget's color theme, size, and position.
 	$additional_fields = [
 		[
 			'field_name'    => 'coil_button_color_theme',
@@ -1164,7 +1163,7 @@ function coil_paywall_appearance_text_field_settings_render_callback( $field_nam
 }
 
 /**
- * Renders the output of the enable Coil button toggle
+ * Renders the output of the enable streaming support widget toggle
  * @return void
 */
 function coil_settings_enable_coil_button_toggle_render_callback() {
@@ -1200,7 +1199,7 @@ function coil_settings_enable_coil_button_toggle_render_callback() {
 }
 
 /**
- * Renders the Coil button customization settings
+ * Renders the streaming support widget customization settings
  * @return void
 */
 function coil_settings_coil_button_settings_render_callback() {
@@ -1215,7 +1214,7 @@ function coil_settings_coil_button_settings_render_callback() {
 					__( 'Widget Settings', 'coil-web-monetization' )
 				);
 
-				// Render the Coil button text input field
+				// Render the streaming support widget text input field
 				$coil_button_text_id = 'coil_button_text';
 				Rendering\render_text_input_field(
 					$coil_button_text_id,
@@ -1225,7 +1224,7 @@ function coil_settings_coil_button_settings_render_callback() {
 					__( 'Text', 'coil-web-monetization' )
 				);
 
-				// Render the Coil button link input field
+				// Render the streaming support widget link input field
 				$coil_button_link_id = 'coil_button_link';
 				Rendering\render_text_input_field(
 					$coil_button_link_id,
@@ -1236,6 +1235,7 @@ function coil_settings_coil_button_settings_render_callback() {
 					__( 'If you have an affiliate link add it here.', 'coil-web-monetization' )
 				);
 
+				// Render the streaming support widget member's display checkbox
 				$coil_button_member_display_id = 'coil_button_member_display';
 				Rendering\render_checkbox_that_toggles_content(
 					$coil_button_member_display_id,
@@ -1244,7 +1244,7 @@ function coil_settings_coil_button_settings_render_callback() {
 					Admin\get_coil_button_setting( $coil_button_member_display_id )
 				);
 
-				// Render the Coil button member text input field
+				// Render the streaming support widget's member text input field
 				$coil_button_member_text_id = 'coil_members_button_text';
 				Rendering\render_text_input_field(
 					$coil_button_member_text_id,
@@ -1314,7 +1314,7 @@ function coil_settings_coil_button_settings_render_callback() {
 }
 
 /**
- * Renders the output of the Coil button theme radio button settings.
+ * Renders the output of the streaming support widget theme radio button settings.
  *
  * @return void
 */
@@ -1346,13 +1346,13 @@ function button_theme_render_callback() {
 }
 
 /**
- * Renders the output of the Coil button size radio button settings.
+ * Renders the output of the streaming support widget size radio button settings.
  *
  * @return void
 */
 function button_size_render_callback() {
 
-	// Set the theme color settingcoil-preview
+	// Set the theme color setting coil-preview
 	$button_size = Admin\get_coil_button_setting( 'coil_button_size' );
 
 	echo '<div class="coil-radio-group">';
@@ -1378,7 +1378,7 @@ function button_size_render_callback() {
 }
 
 /**
- * Renders the output of the Coil button position dropdown.
+ * Renders the output of the streaming support widget position dropdown.
  *
  * @return void
 */
@@ -1404,7 +1404,7 @@ function buton_position_dropdown() {
 }
 
 /**
- * Renders the output of the Coil margin table.
+ * Renders the output of the streaming support widget margin table.
  *
  * @return void
 */
@@ -1436,7 +1436,7 @@ function render_buton_margin_settings() {
 			esc_attr( 'margin-' . $location ),
 			esc_attr( 'display:none' )
 		);
-		// Render the Coil button margin text input fields
+		// Render the streaming support widget margin text input fields
 		if ( $setting !== '' ) {
 
 			$setting = strval( $setting ) . 'px';
@@ -1459,7 +1459,7 @@ function render_buton_margin_settings() {
 }
 
 /**
- * Renders the Coil button visibility settings
+ * Renders the streaming support widget visibility settings
  * @return void
 */
 function coil_settings_coil_button_visibility_render_callback() {

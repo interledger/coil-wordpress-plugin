@@ -93,7 +93,7 @@
 		}
 	}
 
-	// Adds or removes alerting functionality for invalid Coil button margin input that is detected when focus leaves the field.
+	// Adds or removes alerting functionality for invalid streaming support widget margin input that is detected when focus leaves the field.
 	function marginFocusOutValidityHandler( marginInputElement ) {
 		const validMargin = /(^(-)?[0-9]+((p)|(px)|(P)|(PX))?$)/,
 			nextElement = marginInputElement.next().next(), // checking element below the description
@@ -237,7 +237,7 @@
 		}
 	}
 
-	// Coil Button tab
+	// Streaming support widget tab
 	if ( activeTabID === 'streaming-support-widget-settings' ) {
 		// Initial set-up
 		const coilButtonEnabled = $( 'input[name="coil_button_settings_group[coil_button_toggle]"]' ).is( ':checked' ),
@@ -253,7 +253,7 @@
 			$( '*.coil-button-section' ).hide();
 		}
 
-		// Hide the Coil button text div if the text is only white space
+		// Hide the streaming support widget text div if the text is only white space
 		if ( onlyWhiteSpace.test( coilButton.val() ) ) {
 			$( coilButtonPreviewSelector ).hide();
 		}
@@ -261,7 +261,7 @@
 			$( coilButtonMemberPreviewSelector ).hide();
 		}
 
-		// Display the two margin input cells that are relevent to the Coil button's position
+		// Display the two margin input cells that are relevent to the streaming support widget's position
 		$( '.margin-' + position[ 0 ] ).show();
 		$( '.margin-' + position[ 1 ] ).show();
 	}
@@ -449,7 +449,7 @@
 	} );
 
 	/* ------------------------------------------------------------------------ *
-	* Coil Button tab
+	* Streaming support widget tab
 	* ------------------------------------------------------------------------ */
 
 	$( document ).on( 'change', 'input[name="coil_button_settings_group[coil_button_toggle]"]', function() {
@@ -540,7 +540,7 @@
 
 		$( '.coil-preview .coil-button' ).attr( 'data-position', buttonPosition );
 
-		// Display only the two margin input cells that are relevent to the Coil button's position
+		// Display only the two margin input cells that are relevent to the streaming support widget's position
 		if ( position[ 0 ] === 'top' ) {
 			$( '.margin-bottom' ).hide();
 			$( '.margin-top' ).show();

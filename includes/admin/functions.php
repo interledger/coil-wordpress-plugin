@@ -654,7 +654,7 @@ function get_css_selector_default() {
 }
 
 /**
- * Retrieve the Coil button settings.
+ * Retrieve the streaming support widget settings.
  * @return array Setting stored in options.
  */
 function get_coil_button_settings() : array {
@@ -664,7 +664,7 @@ function get_coil_button_settings() : array {
 }
 
 /**
- * Retrieve the Coil button toggle setting
+ * Retrieve the streaming support widget toggle setting
  *
  * @return bool setting stored in options
  */
@@ -675,7 +675,7 @@ function is_coil_button_enabled() {
 }
 
 /**
- * Retrieve the Coil button settings.
+ * Retrieve the streaming support widget settings.
  * @param string $field_name
  * @return string Setting stored in options.
  */
@@ -712,11 +712,11 @@ function get_coil_button_setting( $field_id, $use_text_default = false ) {
 }
 
 /**
- * Return the Coil button visibility status
+ * Return the streaming support widget visibility status
  * based on the global defaults.
  *
  * @param integer $post_id
- * @return string Coil button status.
+ * @return string streaming support widget status.
  */
 function get_coil_button_status( $object_id ) {
 	$coil_button_class    = '';
@@ -735,7 +735,7 @@ function get_coil_button_status( $object_id ) {
 }
 
 /**
- * Retrieve the Coil button settings defaults
+ * Retrieve the streaming support widget settings defaults
  *
  * @return array Default values
  */
@@ -757,7 +757,7 @@ function get_coil_button_defaults() {
 }
 
 /**
- * @return array Default margins for the Coil button.
+ * @return array Default margins for the streaming support widget.
  */
 function get_button_margin_key_defaults() {
 	$margin_baseline = '32';
