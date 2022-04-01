@@ -119,6 +119,11 @@
       .coil form .settings-main .tab-styling h4 {
         font-size: 14px;
         margin: 15px 0 10px; }
+      .coil form .settings-main .tab-styling ul {
+        list-style: disc;
+        margin-left: 20px;
+        margin-top: 0;
+        width: 80%; }
       .coil form .settings-main .tab-styling .coil-margin-input-group {
         display: flex;
         flex-direction: row;

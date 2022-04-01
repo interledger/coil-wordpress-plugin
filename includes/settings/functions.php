@@ -139,7 +139,7 @@ function register_admin_content_settings() {
 		'coil_css_selector_section'
 	);
 
-	// Tab 4 - Coil Button
+	// Tab 4 - Streaming Support Widget
 	register_setting(
 		'coil_button_settings_group',
 		'coil_button_settings_group',
@@ -467,12 +467,12 @@ function coil_settings_welcome_render_callback() {
 			__( 'Enable Exclusive Content', 'coil-web-monetization' )
 		);
 
-		// Coil Button Section
+		// Streaming Support Widget Section
 		Rendering\render_welcome_section(
-			__( 'Coil Button', 'coil-web-monetization' ),
-			__( 'Show that you accept support from Coil members by displaying a Coil button on your page.', 'coil-web-monetization' ),
+			__( 'Streaming Support Widget', 'coil-web-monetization' ),
+			__( 'Show that you accept support from Coil members by displaying a widget on certain pages of your site. If you choose to show the widget to active Coil members, the widget\'s text changes to thank them for their support.', 'coil-web-monetization' ),
 			'coil_button',
-			__( 'Add Coil Button', 'coil-web-monetization' )
+			__( 'Add Widget', 'coil-web-monetization' )
 		);
 
 		?>
@@ -638,7 +638,7 @@ function coil_settings_enable_exclusive_toggle_render_callback() {
 
 		printf(
 			'<p>%s</p>',
-			esc_html__( 'Disabling exclusive content will make all content publicly available. ', 'coil-web-monetization' )
+			esc_html__( 'Disabling exclusive content will make all content publicly available.', 'coil-web-monetization' )
 		);
 
 		$exclusive_toggle_id = 'coil_exclusive_toggle';
@@ -1172,7 +1172,20 @@ function coil_settings_enable_coil_button_toggle_render_callback() {
 	<div class="tab-styling">
 		<?php
 		Rendering\render_settings_section_heading(
-			__( 'Floating \'Support\' Button', 'coil-web-monetization' )
+			__( 'Streaming Support Widget', 'coil-web-monetization' )
+		);
+
+		printf(
+			'<p>%s</p>',
+			esc_html__( 'Encourage your audience to support you through Coil by adding a Coil-branded widget to selected post types. You\'ll receive streaming payments for each second a Coil member spends on your web monetized content.', 'coil-web-monetization' )
+		);
+
+		printf(
+			'<p>%s</p><ul><li>%s</li><li>%s</li><li>%s</li></ul>',
+			esc_html__( 'When enabled, the widget will not appear:', 'coil-web-monetization' ),
+			esc_html__( 'On post types set to Not Monetized.', 'coil-web-monetization' ),
+			esc_html__( 'When a visitor dismisses the widget. The widget reappears after the cookie expires (2 weeks) or sooner if the visitor clears their cache.', 'coil-web-monetization' ),
+			esc_html__( 'When a visitor is not a Coil member and a post is either set to Exclusive or contains the exclusive content divider. Non-members will see your paywall. Coil members will see your content and the widget unless you\'ve chosen to hide the widget from members.', 'coil-web-monetization' )
 		);
 
 		$coil_button_toggle_id = 'coil_button_toggle';
@@ -1199,7 +1212,7 @@ function coil_settings_coil_button_settings_render_callback() {
 				$defaults = Admin\get_coil_button_defaults();
 
 				Rendering\render_settings_section_heading(
-					__( 'Button Settings', 'coil-web-monetization' )
+					__( 'Widget Settings', 'coil-web-monetization' )
 				);
 
 				// Render the Coil button text input field
@@ -1209,7 +1222,7 @@ function coil_settings_coil_button_settings_render_callback() {
 					'coil_button_settings_group[' . $coil_button_text_id . ']',
 					Admin\get_coil_button_setting( $coil_button_text_id ),
 					$defaults[ $coil_button_text_id ],
-					__( 'Button Text', 'coil-web-monetization' )
+					__( 'Text', 'coil-web-monetization' )
 				);
 
 				// Render the Coil button link input field
@@ -1219,7 +1232,7 @@ function coil_settings_coil_button_settings_render_callback() {
 					'coil_button_settings_group[' . $coil_button_link_id . ']',
 					Admin\get_coil_button_setting( $coil_button_link_id ),
 					$defaults[ $coil_button_link_id ],
-					__( 'Button Link', 'coil-web-monetization' ),
+					__( 'Link', 'coil-web-monetization' ),
 					__( 'If you have an affiliate link add it here.', 'coil-web-monetization' )
 				);
 
@@ -1227,7 +1240,7 @@ function coil_settings_coil_button_settings_render_callback() {
 				Rendering\render_checkbox_that_toggles_content(
 					$coil_button_member_display_id,
 					'coil_button_settings_group[' . $coil_button_member_display_id . ']',
-					__( 'Show button for Coil Members', 'coil-web-monetization' ),
+					__( 'Show widget to Coil members', 'coil-web-monetization' ),
 					Admin\get_coil_button_setting( $coil_button_member_display_id )
 				);
 
@@ -1238,7 +1251,7 @@ function coil_settings_coil_button_settings_render_callback() {
 					'coil_button_settings_group[' . $coil_button_member_text_id . ']',
 					Admin\get_coil_button_setting( $coil_button_member_text_id ),
 					$defaults[ $coil_button_member_text_id ],
-					__( 'Message for Coil Members', 'coil-web-monetization' )
+					__( 'Message for Coil members', 'coil-web-monetization' )
 				);
 
 				Rendering\render_input_field_heading(
@@ -1247,17 +1260,17 @@ function coil_settings_coil_button_settings_render_callback() {
 				button_theme_render_callback();
 
 				Rendering\render_input_field_heading(
-					__( 'Button Size', 'coil-web-monetization' )
+					__( 'Widget Size', 'coil-web-monetization' )
 				);
 				button_size_render_callback();
 
 				Rendering\render_input_field_heading(
-					__( 'Button Position on Screen', 'coil-web-monetization' )
+					__( 'Position on Screen', 'coil-web-monetization' )
 				);
 				buton_position_dropdown();
 
 				Rendering\render_input_field_heading(
-					__( 'Button Margin', 'coil-web-monetization' )
+					__( 'Margin', 'coil-web-monetization' )
 				);
 				render_buton_margin_settings();
 				?>
@@ -1455,7 +1468,7 @@ function coil_settings_coil_button_visibility_render_callback() {
 		<?php
 		Rendering\render_settings_section_heading(
 			__( 'Visibility', 'coil-web-monetization' ),
-			__( 'Select where you want the floating button to show up by default. You can hide the button on specific pages in the Page Editor Settings.', 'coil-web-monetization' )
+			__( 'Select whether to show or hide the widget on specific post types.', 'coil-web-monetization' )
 		);
 
 		// Using a function to generate the table with the post type excerpt checkboxes.
@@ -1588,7 +1601,7 @@ function render_coil_settings_screen() : void {
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=welcome' ); ?>" id="coil-welcome-settings" class="nav-tab <?php echo $active_tab === 'welcome' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Welcome', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=general_settings' ); ?>" id="coil-general-settings" class="nav-tab <?php echo $active_tab === 'general_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'General Settings', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=exclusive_settings' ); ?>" id="coil-exclusive-settings" class="nav-tab <?php echo $active_tab === 'exclusive_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Exclusive Content', 'coil-web-monetization' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=coil_button' ); ?>" id="coil-button-settings" class="nav-tab <?php echo $active_tab === 'coil_button' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Coil Button', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=coil_button' ); ?>" id="coil-button-settings" class="nav-tab <?php echo $active_tab === 'coil_button' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Streaming Support Widget', 'coil-web-monetization' ); ?></a>
 		</h2>
 	</div>
 	<div class="wrap coil plugin-settings">
