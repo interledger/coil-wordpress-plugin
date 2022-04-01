@@ -9,12 +9,12 @@ use Coil\Admin;
 use WP_UnitTestCase;
 
 /**
- * Testing the Coil button settings.
+ * Testing the streaming support widget settings.
  */
 class Test_Coil_Button_Settings extends WP_UnitTestCase {
 
 	/**
-	 * Testing if the Coil button shows by default.
+	 * Testing if the streaming support widget shows by default.
 	 *
 	 * @return void
 	 */
@@ -31,7 +31,7 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing if the Coil button display setting is retrieved correctly from the wp_options table.
+	 * Testing if the streaming support widget display setting is retrieved correctly from the wp_options table.
 	 *
 	 * @return void
 	 */
@@ -53,7 +53,7 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing the Coil button message and link defaults.
+	 * Testing the streaming support widget message and link defaults.
 	 *
 	 * @return void
 	 */
@@ -76,12 +76,12 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing if the Coil button message and link settings are retrieved correctly from the wp_options table.
+	 * Testing if the streaming support widget message and link settings are retrieved correctly from the wp_options table.
 	 *
 	 * @return void
 	 */
 	public function test_if_the_coil_button_message_and_link_settings_are_retrieved_successfully() :  void {
-		// Set custom Coil button messages
+		// Set custom streaming support widget messages
 		$coil_button_settings = [
 			'coil_button_text'         => 'Coil Eyes Only',
 			'coil_button_link'         => 'https://example.com',
@@ -99,7 +99,7 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing the Coil button shows to members by default.
+	 * Testing the streaming support widget shows to members by default.
 	 *
 	 * @return void
 	 */
@@ -115,12 +115,12 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing if the Coil button member display option can be retrieved correctly from the wp_options table.
+	 * Testing if the streaming support widget member display option can be retrieved correctly from the wp_options table.
 	 *
 	 * @return void
 	 */
 	public function test_if_the_coil_button_member_display_setting_can_be_retrieved_successfully() :  void {
-		// Set the Coil button to show for Coil members
+		// Set the streaming support widget to show for Coil members
 		$coil_button_settings = [ 'coil_button_member_display' => false ];
 		update_option( 'coil_button_settings_group', $coil_button_settings );
 
@@ -128,7 +128,7 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 
 		$this->assertSame( false, $member_button_display );
 
-		// Set the Coil button to be hidden from Coil members
+		// Set the streaming support widget to be hidden from Coil members
 		$coil_button_settings = [ 'coil_button_member_display' => true ];
 		update_option( 'coil_button_settings_group', $coil_button_settings );
 
@@ -138,7 +138,7 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing the Coil button color theme default.
+	 * Testing the streaming support widget color theme default.
 	 *
 	 * @return void
 	 */
@@ -154,12 +154,12 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing if the Coil button color theme option can be retrieved correctly from the wp_options table.
+	 * Testing if the streaming support widget color theme option can be retrieved correctly from the wp_options table.
 	 *
 	 * @return void
 	 */
 	public function test_if_the_coil_button_color_theme_can_be_retrieved_successfully() :  void {
-		// Set the Coil button theme as light
+		// Set the streaming support widget theme as light
 		$coil_button_settings = [ 'coil_button_color_theme' => 'light' ];
 		update_option( 'coil_button_settings_group', $coil_button_settings );
 
@@ -167,7 +167,7 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 
 		$this->assertSame( 'light', $retrieved_color_theme );
 
-		// Set the Coil button theme as dark
+		// Set the streaming support widget theme as dark
 		$coil_button_settings = [ 'coil_button_color_theme' => 'dark' ];
 		update_option( 'coil_button_settings_group', $coil_button_settings );
 
@@ -177,7 +177,7 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing the Coil button size default.
+	 * Testing the streaming support widget size default.
 	 *
 	 * @return void
 	 */
@@ -193,12 +193,12 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing if the Coil button size can be retrieved correctly from the wp_options table.
+	 * Testing if the streaming support widget size can be retrieved correctly from the wp_options table.
 	 *
 	 * @return void
 	 */
 	public function test_if_the_coil_button_size_can_be_retrieved_successfully() :  void {
-		// Set the Coil button to be small
+		// Set the streaming support widget to be small
 		$coil_button_settings = [ 'coil_button_size' => 'small' ];
 		update_option( 'coil_button_settings_group', $coil_button_settings );
 
@@ -206,7 +206,7 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 
 		$this->assertSame( 'small', $retrieved_button_size );
 
-		// Set the Coil button to be large
+		// Set the streaming support widget to be large
 		$coil_button_settings = [ 'coil_button_size' => 'large' ];
 		update_option( 'coil_button_settings_group', $coil_button_settings );
 
@@ -216,7 +216,7 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing the Coil button position default.
+	 * Testing the streaming support widget position default.
 	 *
 	 * @return void
 	 */
@@ -232,12 +232,12 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing if the Coil button position can be retrieved correctly from the wp_options table.
+	 * Testing if the streaming support widget position can be retrieved correctly from the wp_options table.
 	 *
 	 * @return void
 	 */
 	public function test_if_the_coil_button_position_can_be_retrieved_successfully() :  void {
-		// Set the Coil button position to top-right
+		// Set the streaming support widget position to top-right
 		$coil_button_settings = [ 'coil_button_position' => 'top-right' ];
 		update_option( 'coil_button_settings_group', $coil_button_settings );
 
@@ -245,7 +245,7 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 
 		$this->assertSame( 'top-right', $retrieved_button_position );
 
-		// Set the Coil button position to bottom-left
+		// Set the streaming support widget position to bottom-left
 		$coil_button_settings = [ 'coil_button_position' => 'bottom-left' ];
 		update_option( 'coil_button_settings_group', $coil_button_settings );
 
@@ -255,7 +255,7 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing the Coil button margin defaults.
+	 * Testing the streaming support widget margin defaults.
 	 *
 	 * @return void
 	 */
@@ -283,12 +283,12 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing if the Coil button margins can be retrieved correctly from the wp_options table.
+	 * Testing if the streaming support widget margins can be retrieved correctly from the wp_options table.
 	 *
 	 * @return void
 	 */
 	public function test_if_the_coil_button_margins_can_be_retrieved_successfully() :  void {
-		// Set the Coil button to have custom margin sizes
+		// Set the streaming support widget to have custom margin sizes
 		$coil_button_settings = [
 			'coil_button_top_margin'    => '0',
 			'coil_button_right_margin'  => '5',
@@ -312,7 +312,7 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Testing if the Coil button post-type visibility settings can be retrieved correctly from the wp_options table.
+	 * Testing if the streaming support widget post-type visibility settings can be retrieved correctly from the wp_options table.
 	 *
 	 * @return void
 	 */
@@ -320,7 +320,7 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 		// Create a post
 		$post_obj = self::factory()->post->create_and_get();
 
-		// Set the Coil button to show on posts
+		// Set the streaming support widget to show on posts
 		$coil_button_settings = [ 'post_button_visibility' => 'show' ];
 		update_option( 'coil_button_settings_group', $coil_button_settings );
 
@@ -328,7 +328,7 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 
 		$this->assertSame( 'show-coil-button', $button_status );
 
-		// Set the Coil button to be hidden on posts
+		// Set the streaming support widget to be hidden on posts
 		$coil_button_settings = [ 'post_button_visibility' => 'hide' ];
 		update_option( 'coil_button_settings_group', $coil_button_settings );
 

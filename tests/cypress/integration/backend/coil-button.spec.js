@@ -1,15 +1,15 @@
 /**
- * Coil button settings.
+ * Streaming support widget settings.
 */
 
-describe( 'Coil button settings tab', () => {
+describe( 'Streaming support widget settings tab', () => {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
 		cy.resetSite();
 		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_support_widget' );
 	} );
 
-	it( 'Checks coil button setting defaults', () => {
+	it( 'Checks streaming support widget setting defaults', () => {
 		// Checks the button text and link deafults
 		checkButtonText( '', '', '' );
 
@@ -33,18 +33,18 @@ describe( 'Coil button settings tab', () => {
 		checkButtonMargins( '', '', '', '' );
 	} );
 
-	it( 'Checks that the member sections are shown or hidden depending on whether the Coil button is enabled for Coil members', () => {
-		// By default the Coil button is displayed to members.
+	it( 'Checks that the member sections are shown or hidden depending on whether the streaming support widget is enabled for Coil members', () => {
+		// By default the streaming support widget is displayed to members.
 		checkMemberButtonOptionsVisibility( 'show' );
 
-		// Hide the Coil button from members and check that the other settings are hidden.
+		// Hide the streaming support widget from members and check that the other settings are hidden.
 		cy
 			.get( '#coil_button_member_display' )
 			.click();
 
 		checkMemberButtonOptionsVisibility( 'hidden' );
 
-		// Enabling the Coil button to members should reveal the other settings.
+		// Enabling the streaming support widget to members should reveal the other settings.
 		cy
 			.get( '#coil_button_member_display' )
 			.click();
@@ -52,7 +52,7 @@ describe( 'Coil button settings tab', () => {
 		checkMemberButtonOptionsVisibility( 'show' );
 	} );
 
-	it( 'Checks that when the Coil button is set to hide for Coil members that the members settings are hidden', () => {
+	it( 'Checks that when the streaming support widget is set to hide for Coil members that the members settings are hidden', () => {
 		cy
 			.get( '#coil_button_member_display' )
 			.click();
@@ -130,7 +130,7 @@ describe( 'Coil button settings tab', () => {
 		checkButtonMargins( '0px', '', '', '5px' );
 	} );
 
-	it( 'Checks coil button visibility defaults', () => {
+	it( 'Checks streaming support widget visibility defaults', () => {
 		cy
 			.get( '#post_button_visibility_show' )
 			.should( 'be.checked' );
@@ -140,7 +140,7 @@ describe( 'Coil button settings tab', () => {
 			.should( 'be.checked' );
 	} );
 
-	it( 'Checks coil button visibility settings can be changed', () => {
+	it( 'Checks streaming support widget visibility settings can be changed', () => {
 		cy
 			.get( '#post_button_visibility_hide' )
 			.click();
@@ -164,7 +164,7 @@ describe( 'Coil button settings tab', () => {
 } );
 
 /**
- * Checks the button text and link contents in the Coil button tab.
+ * Checks the button text and link contents in the Streaming Support Widget tab.
  *
  * @param {String} buttonText The button's expected text.
  * @param {String} buttonLink The button's expected link.
@@ -187,7 +187,7 @@ function checkButtonText( buttonText, buttonLink, buttonMemberText ) {
 }
 
 /**
- * Checks the button margin contents in the Coil button tab.
+ * Checks the button margin contents in the Streaming Support Widget tab.
  *
  * @param {String} topMargin The button's top margin.
  * @param {String} rightMargin The button's right margin.
@@ -215,7 +215,7 @@ function checkButtonMargins( topMargin, rightMargin, bottomMargin, leftMargin ) 
 }
 
 /**
- * Checks the visibility status of the Coil button settings for displaying to Coil members.
+ * Checks the visibility status of the streaming support widget settings for displaying to Coil members.
  *
  * @param {String} visibilityStatus Whether the elements should be 'shown' or 'hidden'.
 */

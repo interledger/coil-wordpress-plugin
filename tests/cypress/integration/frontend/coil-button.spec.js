@@ -1,8 +1,8 @@
 /**
- * Coil button settings.
+ * sStreaming support widget settings.
 */
 
-describe( 'Coil button for WM-enabled users', function() {
+describe( 'Streaming support widget for WM-enabled users', function() {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
 		cy.resetSite();
@@ -13,8 +13,8 @@ describe( 'Coil button for WM-enabled users', function() {
 		cy.stopWebMonetization();
 	} );
 
-	it( 'Checks the Coil button can be set to not display for Coil members', () => {
-		// Set the Coil button to not display for Coil members.
+	it( 'Checks the streaming support widget can be set to not display for Coil members', () => {
+		// Set the streaming support widget to not display for Coil members.
 		cy
 			.get( '#coil_button_member_display' )
 			.uncheck();
@@ -40,8 +40,8 @@ describe( 'Coil button for WM-enabled users', function() {
 			.should( 'not.exist' );
 	} );
 
-	it( 'Checks the Coil button is not shown to Coil members when it is disabled', () => {
-		// Disable the Coil button.
+	it( 'Checks the streaming support widget is not shown to Coil members when it is disabled', () => {
+		// Disable the streaming support widget.
 		cy
 			.get( '.coil-checkbox' )
 			.click();
@@ -59,7 +59,7 @@ describe( 'Coil button for WM-enabled users', function() {
 			.should( 'not.exist' );
 	} );
 
-	it( 'Checks the Coil button can have a customized message for Coil members', () => {
+	it( 'Checks the streaming support widget can have a customized message for Coil members', () => {
 		// Set a custom message for Coil members.
 		const buttonMemberText = 'Thank you!';
 
@@ -87,14 +87,14 @@ describe( 'Coil button for WM-enabled users', function() {
 			.should( 'contain', buttonMemberText );
 	} );
 
-	it( 'Checks the Coil button shows a streaming logo for Coil members', () => {
+	it( 'Checks the streaming support widget shows a streaming logo for Coil members', () => {
 		cy.visit( '/monetized-and-public/' );
 		cy.startWebMonetization();
 
 		cy.get( '.coil-button a img' ).invoke( 'attr', 'src' ).should( 'match', /coil-icn-white-streaming.svg/ );
 	} );
 
-	it( 'Checks the Coil button displays correctly on posts that are monetized and public', () => {
+	it( 'Checks the streaming support widget displays correctly on posts that are monetized and public', () => {
 		cy.visit( '/monetized-and-public/' );
 		cy.startWebMonetization();
 		cy
@@ -102,7 +102,7 @@ describe( 'Coil button for WM-enabled users', function() {
 			.should( 'be.visible' );
 	} );
 
-	it( 'Checks the Coil button displays correctly on posts that are exclusive', () => {
+	it( 'Checks the streaming support widget displays correctly on posts that are exclusive', () => {
 		cy.visit( '/coil-members-only/' );
 		cy.startWebMonetization();
 		cy
@@ -111,29 +111,29 @@ describe( 'Coil button for WM-enabled users', function() {
 	} );
 } );
 
-describe( 'Coil button for non WM-enabled users', function() {
+describe( 'Streaming support widget for non WM-enabled users', function() {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
 		cy.resetSite();
 	} );
 
-	it( 'Checks the Coil button displays correctly on posts that are not monetized', () => {
-		// The Coil button doesn't display on pages which are not monetized.
+	it( 'Checks the streaming support widget displays correctly on posts that are not monetized', () => {
+		// The streaming support widget doesn't display on pages which are not monetized.
 		cy.visit( '/no-monetization/' );
 		cy
 			.get( '.coil-button' )
 			.should( 'not.exist' );
 	} );
 
-	it( 'Checks the Coil button display does not display in conjunction with the paywall on exclusive posts', () => {
+	it( 'Checks the streaming support widget display does not display in conjunction with the paywall on exclusive posts', () => {
 		cy.visit( '/coil-members-only/' );
 		cy
 			.get( '.coil-button' )
 			.should( 'not.exist' );
 	} );
 
-	it( 'Checks that the Coil button be can be enabled/disabled', function() {
-		// Disable the Coil button.
+	it( 'Checks that the streaming support widget be can be enabled/disabled', function() {
+		// Disable the streaming support widget.
 		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_support_widget' );
 		cy
 			.get( '.coil-checkbox' )
@@ -148,7 +148,7 @@ describe( 'Coil button for non WM-enabled users', function() {
 			.get( '.coil-button' )
 			.should( 'not.exist' );
 
-		// Enable the Coil button and set it to display.
+		// Enable the streaming support widget and set it to display.
 		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_support_widget' );
 		cy
 			.get( '.coil-checkbox' )
@@ -170,7 +170,7 @@ describe( 'Coil button for non WM-enabled users', function() {
 			.should( 'be.visible' );
 	} );
 
-	it( 'Checks the Coil button can have a customized message and link', () => {
+	it( 'Checks the streaming support widget can have a customized message and link', () => {
 		// Set a custom message and link.
 		const buttonText = 'Coil Eyes Only';
 		const buttonLink = 'https://example.com/';
@@ -200,7 +200,7 @@ describe( 'Coil button for non WM-enabled users', function() {
 			.should( 'have.attr', 'href', buttonLink );
 	} );
 
-	it( 'Checks the Coil button settings can be customized', () => {
+	it( 'Checks the streaming support widget settings can be customized', () => {
 		const bottomMargin = '-40';
 		const leftMargin = 'abc';
 
@@ -256,7 +256,7 @@ describe( 'Coil button for non WM-enabled users', function() {
 			.get( '.coil-button' )
 			.should( 'not.exist' );
 
-		// Hiding the Coil button for posts shouldn't affect their display on pages
+		// Hiding the streaming support widget for posts shouldn't affect their display on pages
 		cy.visit( '/monetized-and-public-page/' );
 
 		cy
@@ -264,7 +264,7 @@ describe( 'Coil button for non WM-enabled users', function() {
 			.should( 'exist' );
 	} );
 
-	it( 'Checks that you can dissmiss the Coil button', () => {
+	it( 'Checks that you can dissmiss the streaming support widget', () => {
 		cy.visit( '/monetized-and-public/' );
 		cy
 			.get( '.coil-button' )
