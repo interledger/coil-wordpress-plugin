@@ -137,8 +137,8 @@
 	 * @param {String} message Message shown to thank Coil members, or to encourage users to sign up.
 	 * @return {void}
 	*/
-	function showCoilButton( message ) {
-		const coilButton = createCoilButton( message );
+	function showStreamingSupportWidget( message ) {
+		const coilButton = createStreamingSupportWidget( message );
 		const onlyWhiteSpace = /^\s+$/;
 		$( 'body' ).append( coilButton );
 		// Hides the text div if there is no text
@@ -153,7 +153,7 @@
 	 * @param {String} message Message shown to thank Coil members, or to encourage users to sign up.
 	 * @return {object} Output a streaming support widget.
 	*/
-	function createCoilButton( message ) {
+	function createStreamingSupportWidget( message ) {
 		const positionArray = coilButtonPosition.split( '-' );
 		const verticalPosition = positionArray[ 0 ];
 		const horizontalPosition = positionArray[ 1 ];
@@ -221,7 +221,7 @@
 		const pendingMessageDisplayed = $( 'p.monetize-msg' ).length !== 0 ? true : false;
 		const paywallDisplayed = $( '.coil-message-container' ).length !== 0 ? true : false;
 		if ( buttonEnabled && ! buttonAlreadyExists && ! buttonDismissed && ! pendingMessageDisplayed && ! paywallDisplayed ) {
-			showCoilButton( coilButtonUnpaidMessage );
+			showStreamingSupportWidget( coilButtonUnpaidMessage );
 		}
 	}
 
@@ -634,7 +634,7 @@
 					// The text needs to change to the member message
 					$( '.coil-button div' ).text( coilButtonPaidMessage );
 				} else {
-					showCoilButton( coilButtonPaidMessage );
+					showStreamingSupportWidget( coilButtonPaidMessage );
 				}
 				$( '.coil-button a' ).removeAttr( 'href' ).css( 'cursor', 'default' );
 				$( '.coil-button a' ).css( 'cursor', 'default' );
