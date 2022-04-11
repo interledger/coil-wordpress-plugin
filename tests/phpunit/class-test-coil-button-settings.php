@@ -11,7 +11,7 @@ use WP_UnitTestCase;
 /**
  * Testing the streaming support widget settings.
  */
-class Test_Coil_Button_Settings extends WP_UnitTestCase {
+class Test_Streaming_Support_Widget_Settings extends WP_UnitTestCase {
 
 	/**
 	 * Testing if the streaming support widget shows by default.
@@ -64,7 +64,7 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 		$retrieved_value = [
 			'default_streaming_widget_text'   => Admin\get_streaming_widget_setting( 'streaming_widget_text', true ),
 			'default_streaming_widget_link'   => Admin\get_streaming_widget_setting( 'streaming_widget_link', true ),
-			'default_coil_member_button_text' => Admin\get_streaming_widget_setting( 'members_streaming_widget_text', true ),
+			'default_coil_member_widget_text' => Admin\get_streaming_widget_setting( 'members_streaming_widget_text', true ),
 		];
 
 		$this->assertSame( $default_values['streaming_widget_text'], 'Support us with Coil' );
@@ -72,7 +72,7 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 		$this->assertSame( $default_values['streaming_widget_link'], 'https://coil.com/' );
 		$this->assertSame( $default_values['streaming_widget_link'], $retrieved_value['default_streaming_widget_link'] );
 		$this->assertSame( $default_values['members_streaming_widget_text'], 'Thanks for your support!' );
-		$this->assertSame( $default_values['members_streaming_widget_text'], $retrieved_value['default_coil_member_button_text'] );
+		$this->assertSame( $default_values['members_streaming_widget_text'], $retrieved_value['default_coil_member_widget_text'] );
 	}
 
 	/**
@@ -89,13 +89,13 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 		];
 		update_option( 'streaming_widget_settings_group', $streaming_widget_settings );
 
-		$button_text        = Admin\get_streaming_widget_setting( 'streaming_widget_text' );
-		$button_link        = Admin\get_streaming_widget_setting( 'streaming_widget_link' );
-		$member_button_text = Admin\get_streaming_widget_setting( 'members_streaming_widget_text' );
+		$widget_text        = Admin\get_streaming_widget_setting( 'streaming_widget_text' );
+		$widget_link        = Admin\get_streaming_widget_setting( 'streaming_widget_link' );
+		$member_widget_text = Admin\get_streaming_widget_setting( 'members_streaming_widget_text' );
 
-		$this->assertSame( $streaming_widget_settings['streaming_widget_text'], $button_text );
-		$this->assertSame( $streaming_widget_settings['streaming_widget_link'], $button_link );
-		$this->assertSame( $streaming_widget_settings['members_streaming_widget_text'], $member_button_text );
+		$this->assertSame( $streaming_widget_settings['streaming_widget_text'], $widget_text );
+		$this->assertSame( $streaming_widget_settings['streaming_widget_link'], $widget_link );
+		$this->assertSame( $streaming_widget_settings['members_streaming_widget_text'], $member_widget_text );
 	}
 
 	/**
@@ -124,17 +124,17 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 		$streaming_widget_settings = [ 'streaming_widget_member_display' => false ];
 		update_option( 'streaming_widget_settings_group', $streaming_widget_settings );
 
-		$member_button_display = Admin\get_streaming_widget_setting( 'streaming_widget_member_display' );
+		$member_widget_display = Admin\get_streaming_widget_setting( 'streaming_widget_member_display' );
 
-		$this->assertSame( false, $member_button_display );
+		$this->assertSame( false, $member_widget_display );
 
 		// Set the streaming support widget to be hidden from Coil members
 		$streaming_widget_settings = [ 'streaming_widget_member_display' => true ];
 		update_option( 'streaming_widget_settings_group', $streaming_widget_settings );
 
-		$member_button_display = Admin\get_streaming_widget_setting( 'streaming_widget_member_display' );
+		$member_widget_display = Admin\get_streaming_widget_setting( 'streaming_widget_member_display' );
 
-		$this->assertSame( true, $member_button_display );
+		$this->assertSame( true, $member_widget_display );
 	}
 
 	/**
@@ -241,17 +241,17 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 		$streaming_widget_settings = [ 'streaming_widget_position' => 'top-right' ];
 		update_option( 'streaming_widget_settings_group', $streaming_widget_settings );
 
-		$retrieved_button_position = Admin\get_streaming_widget_setting( 'streaming_widget_position' );
+		$retrieved_widget_position = Admin\get_streaming_widget_setting( 'streaming_widget_position' );
 
-		$this->assertSame( 'top-right', $retrieved_button_position );
+		$this->assertSame( 'top-right', $retrieved_widget_position );
 
 		// Set the streaming support widget position to bottom-left
 		$streaming_widget_settings = [ 'streaming_widget_position' => 'bottom-left' ];
 		update_option( 'streaming_widget_settings_group', $streaming_widget_settings );
 
-		$retrieved_button_position = Admin\get_streaming_widget_setting( 'streaming_widget_position' );
+		$retrieved_widget_position = Admin\get_streaming_widget_setting( 'streaming_widget_position' );
 
-		$this->assertSame( 'bottom-left', $retrieved_button_position );
+		$this->assertSame( 'bottom-left', $retrieved_widget_position );
 	}
 
 	/**
@@ -324,16 +324,16 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 		$streaming_widget_settings = [ 'post_streaming_widget_visibility' => 'show' ];
 		update_option( 'streaming_widget_settings_group', $streaming_widget_settings );
 
-		$button_status = Admin\get_streaming_widget_status( $post_obj->ID );
+		$widget_status = Admin\get_streaming_widget_status( $post_obj->ID );
 
-		$this->assertSame( 'show-streaming-widget', $button_status );
+		$this->assertSame( 'show-streaming-widget', $widget_status );
 
 		// Set the streaming support widget to be hidden on posts
 		$streaming_widget_settings = [ 'post_streaming_widget_visibility' => 'hide' ];
 		update_option( 'streaming_widget_settings_group', $streaming_widget_settings );
 
-		$button_status = Admin\get_streaming_widget_status( $post_obj->ID );
+		$widget_status = Admin\get_streaming_widget_status( $post_obj->ID );
 
-		$this->assertSame( '', $button_status );
+		$this->assertSame( '', $widget_status );
 	}
 }
