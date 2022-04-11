@@ -144,9 +144,9 @@
             display: none; }
             .coil form .settings-main .tab-styling #coil_title_padlock:not(:checked) + label + #coil_icon_position_label + .coil-radio-group + #coil_icon_style_label + .coil-radio-group {
               display: none; }
-      .coil form .settings-main .tab-styling #coil_button_member_display:not(:checked) + label + h4 {
+      .coil form .settings-main .tab-styling #streaming_support_widget_member_display:not(:checked) + label + h4 {
         display: none; }
-        .coil form .settings-main .tab-styling #coil_button_member_display:not(:checked) + label + h4 + input {
+        .coil form .settings-main .tab-styling #streaming_support_widget_member_display:not(:checked) + label + h4 + input {
           display: none; }
       .coil form .settings-main .tab-styling .coil-radio-group {
         align-items: center;
@@ -250,7 +250,7 @@
             margin-top: 15px;
             padding: 12px;
             width: 164px; }
-        .coil form .settings-main .tab-styling .coil-preview .coil-button {
+        .coil form .settings-main .tab-styling .coil-preview .streaming-support-widget {
           background-color: #2d333a;
           border-radius: 6px;
           bottom: 10px;
@@ -263,45 +263,45 @@
           position: absolute;
           right: 10px;
           text-align: center; }
-          .coil form .settings-main .tab-styling .coil-preview .coil-button[data-position='top-left'] {
+          .coil form .settings-main .tab-styling .coil-preview .streaming-support-widget[data-position='top-left'] {
             bottom: unset;
             left: 10px;
             right: unset;
             top: 10px; }
-          .coil form .settings-main .tab-styling .coil-preview .coil-button[data-position='top-right'] {
+          .coil form .settings-main .tab-styling .coil-preview .streaming-support-widget[data-position='top-right'] {
             bottom: unset;
             top: 10px; }
-          .coil form .settings-main .tab-styling .coil-preview .coil-button[data-position='bottom-left'] {
+          .coil form .settings-main .tab-styling .coil-preview .streaming-support-widget[data-position='bottom-left'] {
             bottom: 10px;
             left: 10px;
             right: unset; }
-          .coil form .settings-main .tab-styling .coil-preview .coil-button div {
+          .coil form .settings-main .tab-styling .coil-preview .streaming-support-widget div {
             align-items: center;
             border-radius: 6px;
             display: flex;
             flex-direction: row;
             padding: 8px;
             text-decoration: none; }
-            .coil form .settings-main .tab-styling .coil-preview .coil-button div div {
+            .coil form .settings-main .tab-styling .coil-preview .streaming-support-widget div div {
               color: #fff;
               margin: auto;
               padding: 0 8px 0 8px; }
-            .coil form .settings-main .tab-styling .coil-preview .coil-button div img {
+            .coil form .settings-main .tab-styling .coil-preview .streaming-support-widget div img {
               height: 16px;
               width: 16px; }
-          .coil form .settings-main .tab-styling .coil-preview .coil-button[data-theme='light'] {
+          .coil form .settings-main .tab-styling .coil-preview .streaming-support-widget[data-theme='light'] {
             background-color: #fff; }
-            .coil form .settings-main .tab-styling .coil-preview .coil-button[data-theme='light'] div div {
+            .coil form .settings-main .tab-styling .coil-preview .streaming-support-widget[data-theme='light'] div div {
               color: #000; }
-          .coil form .settings-main .tab-styling .coil-preview .coil-button[data-size='large'] div div {
+          .coil form .settings-main .tab-styling .coil-preview .streaming-support-widget[data-size='large'] div div {
             font-size: 17px;
             line-height: 20px; }
-          .coil form .settings-main .tab-styling .coil-preview .coil-button[data-size='large'] img {
+          .coil form .settings-main .tab-styling .coil-preview .streaming-support-widget[data-size='large'] img {
             height: 24px;
             width: 24px; }
     .coil form .settings-main .exclusive-content-section {
       display: none; }
-    .coil form .settings-main .coil-button-section {
+    .coil form .settings-main .streaming-support-widget-section {
       display: none; }
   .coil form .settings-sidebar {
     border-radius: 4px;

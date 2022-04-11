@@ -206,7 +206,7 @@
 					}
 				}
 
-				#coil_button_member_display:not( :checked ) {
+				#streaming_support_widget_member_display:not( :checked ) {
 					+ label {
 						+ h4 {
 							display: none;
@@ -371,11 +371,11 @@
 						}
 					}
 
-					.coil-button {
-						background-color: $coil_button_message_color;
+					.streaming-support-widget {
+						background-color: $streaming_support_widget_message_color;
 						border-radius: 6px;
 						bottom: 10px;
-						box-shadow: 0 6px 10px 0 $coil_button_message_shadow_color;
+						box-shadow: 0 6px 10px 0 $streaming_support_widget_message_shadow_color;
 						font-family: 'Open Sans', sans-serif;
 						font-size: 14px;
 						font-weight: 600;
@@ -412,7 +412,7 @@
 							text-decoration: none;
 
 							div {
-								color: $coil_button_font_color;
+								color: $streaming_support_widget_font_color;
 								margin: auto;
 								padding: 0 $message_spacing_baseline 0 $message_spacing_baseline;
 							}
@@ -425,11 +425,11 @@
 
 						// Changes streaming support widget to implement light theme
 						&[data-theme='light'] {
-							background-color: $coil_button_message_color_light_theme;
+							background-color: $streaming_support_widget_message_color_light_theme;
 
 							div {
 								div {
-									color: $coil_button_font_color_light_theme;
+									color: $streaming_support_widget_font_color_light_theme;
 								}
 							}
 						}
@@ -454,7 +454,7 @@
 				display: none;
 			}
 
-			.coil-button-section {
+			.streaming-support-widget-section {
 				display: none;
 			}
 		}

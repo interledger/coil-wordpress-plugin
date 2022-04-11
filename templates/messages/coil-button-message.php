@@ -1,5 +1,5 @@
-<script type="text/template" id="tmpl-coil-button-message">
-	<div class="coil-button">
+<script type="text/template" id="tmpl-streaming-support-widget-message">
+	<div class="streaming-support-widget">
 		<# if ( data.button.href ) { #>
 			<a target="_blank" href="{{data.button.href}}">
 				<# if ( data.headerLogo ) { #>
@@ -12,6 +12,6 @@
 				<# } #>
 			</a>
 		<# } #>
-		<span class="coil-button-dismiss" id="js-coil-button-dismiss">&times;</span>
+		<span class="streaming-support-widget-dismiss" id="js-streaming-support-widget-dismiss">&times;</span>
 	</div>
 </script>

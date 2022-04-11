@@ -45,24 +45,24 @@
 		paywallTitle = coilParams.paywall_title,
 		loadingContent = coilParams.loading_content,
 		paywallMessage = coilParams.paywall_message,
-		coilButtonUnpaidMessage = coilParams.coil_button_unpaid_message,
-		coilButtonPaidMessage = coilParams.coil_button_paid_message,
-		showCoilButtonToMembers = Boolean( coilParams.show_coil_button_to_members ),
-		coilButtonLink = coilParams.coil_button_link,
+		streamingSupportWidgetUnpaidMessage = coilParams.streaming_support_widget_unpaid_message,
+		streamingSupportWidgetPaidMessage = coilParams.streaming_support_widget_paid_message,
+		showStreamingSupportWidgetToMembers = Boolean( coilParams.show_streaming_support_widget_to_members ),
+		streamingSupportWidgetLink = coilParams.streaming_support_widget_link,
 		postExcerpt = coilParams.post_excerpt,
 		hasCoilDivider = Boolean( coilParams.has_coil_divider ),
 		adminMissingIdNotice = coilParams.admin_missing_id_notice,
 		paywallButtonText = coilParams.paywall_button_text,
 		paywallButtonLink = coilParams.paywall_button_link,
 		coilMessageBranding = coilParams.coil_message_branding,
-		coilButtonTheme = coilParams.coil_button_theme,
-		coilButtonSize = coilParams.coil_button_size,
-		coilButtonPosition = coilParams.coil_button_position,
+		streamingSupportWidgetTheme = coilParams.streaming_support_widget_theme,
+		streamingSupportWidgetSize = coilParams.streaming_support_widget_size,
+		streamingSupportWidgetPosition = coilParams.streaming_support_widget_position,
 		ButtonMarginTop = coilParams.button_margin_top,
 		ButtonMarginRight = coilParams.button_margin_right,
 		ButtonMarginBottom = coilParams.button_margin_bottom,
 		ButtonMarginLeft = coilParams.button_margin_left,
-		coilButtonGloballyEnabled = Boolean( coilParams.coil_button_enabled ), // Cast to boolean - wp_localize_script forces string values.
+		streamingSupportWidgetGloballyEnabled = Boolean( coilParams.streaming_support_widget_enabled ), // Cast to boolean - wp_localize_script forces string values.
 		siteLogo = coilParams.site_logo,
 		coilLogo = coilParams.coil_logo,
 		coilLogoStreaming = coilParams.coil_logo_streaming,
@@ -72,7 +72,7 @@
 		fontSelection = Boolean( coilParams.font_selection );
 
 	const subscriberOnlyMessage = wp.template( 'subscriber-only-message' );
-	const coilButtonMessage = wp.template( 'coil-button-message' );
+	const streamingSupportWidgetMessage = wp.template( 'streaming-support-widget-message' );
 
 	const messageWrapper = $( 'p.monetize-msg' );
 
@@ -138,15 +138,15 @@
 	 * @return {void}
 	*/
 	function showStreamingSupportWidget( message ) {
-		const coilButton = createStreamingSupportWidget( message );
+		const streamingSupportWidget = createStreamingSupportWidget( message );
 		const onlyWhiteSpace = /^\s+$/;
-		$( 'body' ).append( coilButton );
+		$( 'body' ).append( streamingSupportWidget );
 		// Hides the text div if there is no text
 		if ( onlyWhiteSpace.test( message ) ) {
-			$( '.coil-button a div' ).hide();
+			$( '.streaming-support-widget a div' ).hide();
 		}
 		addButtonDismissClickHandler();
-		addButtonDismissAppearanceHandler();
+		addWidgetDismissAppearanceHandler();
 	}
 
 	/**
@@ -154,7 +154,7 @@
 	 * @return {object} Output a streaming support widget.
 	*/
 	function createStreamingSupportWidget( message ) {
-		const positionArray = coilButtonPosition.split( '-' );
+		const positionArray = streamingSupportWidgetPosition.split( '-' );
 		const verticalPosition = positionArray[ 0 ];
 		const horizontalPosition = positionArray[ 1 ];
 		let topMargin,
@@ -163,30 +163,30 @@
 			leftMargin;
 
 		const modalContainer = document.createElement( 'div' );
-		$( modalContainer ).addClass( 'coil-button-message-container' + ' ' + verticalPosition + ' ' + horizontalPosition );
+		$( modalContainer ).addClass( 'streaming-support-widget-message-container' + ' ' + verticalPosition + ' ' + horizontalPosition );
 
 		let brandingLogo = '';
 
-		if ( coilButtonTheme === 'light' ) {
+		if ( streamingSupportWidgetTheme === 'light' ) {
 			modalContainer.classList.add( 'coil-light-theme' );
 			brandingLogo = coilLogo;
 		} else {
 			brandingLogo = coilLogoWhite;
 		}
 
-		if ( coilButtonSize === 'small' ) {
-			modalContainer.classList.add( 'coil-button-small' );
+		if ( streamingSupportWidgetSize === 'small' ) {
+			modalContainer.classList.add( 'streaming-support-widget-small' );
 		}
 
 		const modalData = {
 			headerLogo: brandingLogo,
 			button: {
 				text: message,
-				href: coilButtonLink,
+				href: streamingSupportWidgetLink,
 			},
 		};
 
-		$( modalContainer ).append( coilButtonMessage( modalData ) );
+		$( modalContainer ).append( streamingSupportWidgetMessage( modalData ) );
 
 		// Set the margins only for the two applicable sides of the streaming support widget based on the position selected.
 		if ( horizontalPosition === 'left' ) {
@@ -205,7 +205,7 @@
 			bottomMargin = checkMarginValues( ButtonMarginBottom );
 		}
 
-		$( modalContainer ).find( '.coil-button' ).css( { 'margin-top': topMargin + 'px', 'margin-right': rightMargin + 'px', 'margin-bottom': bottomMargin + 'px', 'margin-left': leftMargin + 'px' } );
+		$( modalContainer ).find( '.streaming-support-widget' ).css( { 'margin-top': topMargin + 'px', 'margin-right': rightMargin + 'px', 'margin-bottom': bottomMargin + 'px', 'margin-left': leftMargin + 'px' } );
 		return modalContainer;
 	}
 
@@ -214,14 +214,14 @@
 	 * The button will only be added if it is not already present, it is globally enabled, the browser doesn't have a dismiss cookie for it,
 	 * and neither the pending message nor paywall are being displayed.
 	 */
-	function maybeAddCoilButton() {
-		const buttonEnabled = hasCoilButtonEnabled();
-		const buttonAlreadyExists = $( '.coil-button-message-container' ).length !== 0 ? true : false;
-		const buttonDismissed = hasButtonDismissCookie();
+	function maybeAddStreamingSupportWidget() {
+		const buttonEnabled = hasStreamingSupportWidgetEnabled();
+		const buttonAlreadyExists = $( '.streaming-support-widget-message-container' ).length !== 0 ? true : false;
+		const buttonDismissed = hasStreamingSupportWidget();
 		const pendingMessageDisplayed = $( 'p.monetize-msg' ).length !== 0 ? true : false;
 		const paywallDisplayed = $( '.coil-message-container' ).length !== 0 ? true : false;
 		if ( buttonEnabled && ! buttonAlreadyExists && ! buttonDismissed && ! pendingMessageDisplayed && ! paywallDisplayed ) {
-			showStreamingSupportWidget( coilButtonUnpaidMessage );
+			showStreamingSupportWidget( streamingSupportWidgetUnpaidMessage );
 		}
 	}
 
@@ -310,8 +310,8 @@
 	 * @return {bool} Helper function to determine if the content has
 	 * the streaming support widget enabled
 	*/
-	function hasCoilButtonEnabled() {
-		return coilButtonGloballyEnabled && document.body.classList.contains( 'show-coil-button' );
+	function hasStreamingSupportWidgetEnabled() {
+		return streamingSupportWidgetGloballyEnabled && document.body.classList.contains( 'show-streaming-support-widget' );
 	}
 
 	/**
@@ -386,9 +386,9 @@
 	 * @see https://github.com/js-cookie/js-cookie
 	 */
 	function addButtonDismissClickHandler() {
-		const cookieName = 'ShowCoilButtonMsg';
-		$( '#js-coil-button-dismiss' ).on( 'click', function() {
-			if ( ! hasButtonDismissCookie() ) {
+		const cookieName = 'ShowStreamingSupportWidgetMsg';
+		$( '#js-streaming-support-widget-dismiss' ).on( 'click', function() {
+			if ( ! hasStreamingSupportWidget() ) {
 				Cookies.set( cookieName, 1, { expires: 14 } );
 				$( this ).parent().parent().remove();
 			}
@@ -400,12 +400,12 @@
 	 * depending on whether you are hovering over the widget or not.
 	 *
 	 */
-	function addButtonDismissAppearanceHandler() {
-		$( '.coil-button' ).hover(
+	function addWidgetDismissAppearanceHandler() {
+		$( '.streaming-support-widget' ).hover(
 			function() {
-				$( '#js-coil-button-dismiss' ).css( 'display', 'block' );
+				$( '#js-streaming-support-widget-dismiss' ).css( 'display', 'block' );
 			}, function() {
-				$( '#js-coil-button-dismiss' ).css( 'display', 'none' );
+				$( '#js-streaming-support-widget-dismiss' ).css( 'display', 'none' );
 			},
 		);
 	}
@@ -415,8 +415,8 @@
 	 *
 	 * @return {bool} True if set to '1', otherwise false.
 	 */
-	function hasButtonDismissCookie() {
-		const cookieName = 'ShowCoilButtonMsg';
+	function hasStreamingSupportWidget() {
+		const cookieName = 'ShowStreamingSupportWidgetMsg';
 		const currentCookie = Cookies.get( cookieName );
 
 		if ( ( typeof currentCookie !== 'undefined' ) ) {
@@ -452,7 +452,7 @@
 				$( contentContainer ).last().before( showSubscriberOnlyMessage( paywallMessage ) );
 			}
 		} else {
-			maybeAddCoilButton();
+			maybeAddStreamingSupportWidget();
 		}
 
 		// Trigger an event.
@@ -560,7 +560,7 @@
 			}
 		}, 5000 );
 
-		maybeAddCoilButton();
+		maybeAddStreamingSupportWidget();
 	}
 
 	/**
@@ -617,13 +617,13 @@
 		// Manually triggering resize to ensure elements get sized corretly after the verification proccess has been completed and they are no longer hidden.
 		jQuery( window ).trigger( 'resize' );
 
-		if ( ! showCoilButtonToMembers ) {
-			$( '.coil-button-message-container' ).remove();
+		if ( ! showStreamingSupportWidgetToMembers ) {
+			$( '.streaming-support-widget-message-container' ).remove();
 		} else {
-			const buttonEnabled = hasCoilButtonEnabled();
-			const buttonAlreadyExists = $( '.coil-button-message-container' ).length !== 0 ? true : false;
-			const buttonDismissed = hasButtonDismissCookie();
-			if ( coilButtonTheme === 'light' ) {
+			const buttonEnabled = hasStreamingSupportWidgetEnabled();
+			const buttonAlreadyExists = $( '.streaming-support-widget-message-container' ).length !== 0 ? true : false;
+			const buttonDismissed = hasStreamingSupportWidget();
+			if ( streamingSupportWidgetTheme === 'light' ) {
 				brandingLogo = coilLogoStreaming;
 			} else {
 				brandingLogo = coilLogoWhiteStreaming;
@@ -632,13 +632,13 @@
 			if ( buttonEnabled && ! buttonDismissed ) {
 				if ( buttonAlreadyExists ) {
 					// The text needs to change to the member message
-					$( '.coil-button div' ).text( coilButtonPaidMessage );
+					$( '.streaming-support-widget div' ).text( streamingSupportWidgetPaidMessage );
 				} else {
-					showStreamingSupportWidget( coilButtonPaidMessage );
+					showStreamingSupportWidget( streamingSupportWidgetPaidMessage );
 				}
-				$( '.coil-button a' ).removeAttr( 'href' ).css( 'cursor', 'default' );
-				$( '.coil-button a' ).css( 'cursor', 'default' );
-				$( '.coil-button a img' ).attr( 'src', brandingLogo );
+				$( '.streaming-support-widget a' ).removeAttr( 'href' ).css( 'cursor', 'default' );
+				$( '.streaming-support-widget a' ).css( 'cursor', 'default' );
+				$( '.streaming-support-widget a img' ).attr( 'src', brandingLogo );
 			}
 		}
 	}

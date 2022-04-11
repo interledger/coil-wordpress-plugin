@@ -150,7 +150,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 }
 
 // Scenario 3 - streaming support widget
-.coil-button-message-container {
+.streaming-support-widget-message-container {
 	// Hide the streaming support widget on mobile
 	@media only screen and (max-width: $message_mobile_breakpoint) {
 		display: none;
@@ -161,10 +161,10 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 	width: 100%;
 	z-index: 200;
 
-	.coil-button {
-		background-color: $coil_button_message_color;
+	.streaming-support-widget {
+		background-color: $streaming_support_widget_message_color;
 		border-radius: 6px;
-		box-shadow: 0 6px 10px 0 $coil_button_message_shadow_color;
+		box-shadow: 0 6px 10px 0 $streaming_support_widget_message_shadow_color;
 		font-family: 'Open Sans', sans-serif;
 		font-size: 17px;
 		font-weight: 600;
@@ -180,7 +180,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 			padding: $message_spacing_baseline;
 			text-decoration: none;
 			div {
-				color: $coil_button_font_color;
+				color: $streaming_support_widget_font_color;
 				margin: auto;
 				padding-left: $message_spacing_baseline;
 				padding-right: $message_spacing_baseline;
@@ -197,8 +197,8 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 			max-width: 434px;
 		}
 
-		.coil-button-dismiss {
-			background-color: $coil_button_message_dismiss_color;
+		.streaming-support-widget-dismiss {
+			background-color: $streaming_support_widget_message_dismiss_color;
 			border-radius: 100%;
 			color: $coil_dismiss_font_color;
 			cursor: pointer;
@@ -219,52 +219,52 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 	}
 }
 
-.coil-button-message-container.bottom {
+.streaming-support-widget-message-container.bottom {
 	bottom: 0;
 }
 
-.coil-button-message-container.top {
+.streaming-support-widget-message-container.top {
 	top: 0;
 }
 
-.coil-button-message-container.right {
+.streaming-support-widget-message-container.right {
 	justify-content: right;
 }
 
-.coil-button-message-container.left {
+.streaming-support-widget-message-container.left {
 	justify-content: left;
 }
 
 // Changes streaming support widget to implement light theme
-.coil-button-message-container.coil-light-theme {
-	.coil-button {
-		background-color: $coil_button_message_color_light_theme;
+.streaming-support-widget-message-container.coil-light-theme {
+	.streaming-support-widget {
+		background-color: $streaming_support_widget_message_color_light_theme;
 
 		a {
 			div {
-				color: $coil_button_font_color_light_theme;
+				color: $streaming_support_widget_font_color_light_theme;
 			}
 		}
 	}
 }
 
 // Implement hover effect
-body:not( .monetization-initialized ) .coil-button-message-container .coil-button {
+body:not( .monetization-initialized ) .streaming-support-widget-message-container .streaming-support-widget {
 	&:hover {
-		background-color: $coil_button_message_hover_color;
+		background-color: $streaming_support_widget_message_hover_color;
 	}
 }
 
 // Implement hover effect for the light theme
-body:not( .monetization-initialized ) .coil-button-message-container.coil-light-theme .coil-button {
+body:not( .monetization-initialized ) .streaming-support-widget-message-container.coil-light-theme .streaming-support-widget {
 	&:hover {
-		background-color: $coil_button_message_hover_color_light_theme;
+		background-color: $streaming_support_widget_message_hover_color_light_theme;
 	}
 }
 
 // Changes streaming support widget to implement the small size
-.coil-button-message-container.coil-button-small {
-	.coil-button {
+.streaming-support-widget-message-container.streaming-support-widget-small {
+	.streaming-support-widget {
 		font-size: 14px;
 		line-height: 17px;
 
@@ -276,7 +276,7 @@ body:not( .monetization-initialized ) .coil-button-message-container.coil-light-
 			}
 		}
 
-		.coil-button-dismiss {
+		.streaming-support-widget-dismiss {
 			font-size: 14px;
 			height: 14px;
 			line-height: 14px;
