@@ -529,16 +529,16 @@
 	} );
 
 	$( document ).on( 'change', 'input[name="streaming_widget_settings_group[streaming_widget_size]"]', function() {
-		const buttonSize = $( this ).val();
+		const widgetSize = $( this ).val();
 
-		$( '.coil-preview .streaming-widget' ).attr( 'data-size', buttonSize );
+		$( '.coil-preview .streaming-widget' ).attr( 'data-size', widgetSize );
 	} );
 
 	$( document ).on( 'change', 'select[name="streaming_widget_settings_group[streaming_widget_position]"]', function() {
-		const buttonPosition = $( this ).val(),
-			position = buttonPosition.split( '-' );
+		const widgetPosition = $( this ).val(),
+			position = widgetPosition.split( '-' );
 
-		$( '.coil-preview .streaming-widget' ).attr( 'data-position', buttonPosition );
+		$( '.coil-preview .streaming-widget' ).attr( 'data-position', widgetPosition );
 
 		// Display only the two margin input cells that are relevent to the streaming support widget's position
 		if ( position[ 0 ] === 'top' ) {

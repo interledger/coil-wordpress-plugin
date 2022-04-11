@@ -10,8 +10,8 @@ describe( 'Streaming support widget settings tab', () => {
 	} );
 
 	it( 'Checks streaming support widget setting defaults', () => {
-		// Checks the button text and link deafults
-		checkButtonText( '', '', '' );
+		// Checks the widget text and link deafults
+		checkWidgetText( '', '', '' );
 
 		cy
 			.get( '#dark_color_theme' )
@@ -30,26 +30,26 @@ describe( 'Streaming support widget settings tab', () => {
 			.should( 'have.value', 'bottom-right' );
 
 		// Checks the margin defaults
-		checkButtonMargins( '', '', '', '' );
+		checkWidgetMargins( '', '', '', '' );
 	} );
 
 	it( 'Checks that the member sections are shown or hidden depending on whether the streaming support widget is enabled for Coil members', () => {
 		// By default the streaming support widget is displayed to members.
-		checkMemberButtonOptionsVisibility( 'show' );
+		checkMemberWidgetOptionsVisibility( 'show' );
 
 		// Hide the streaming support widget from members and check that the other settings are hidden.
 		cy
 			.get( '#streaming_widget_member_display' )
 			.click();
 
-		checkMemberButtonOptionsVisibility( 'hidden' );
+		checkMemberWidgetOptionsVisibility( 'hidden' );
 
 		// Enabling the streaming support widget to members should reveal the other settings.
 		cy
 			.get( '#streaming_widget_member_display' )
 			.click();
 
-		checkMemberButtonOptionsVisibility( 'show' );
+		checkMemberWidgetOptionsVisibility( 'show' );
 	} );
 
 	it( 'Checks that when the streaming support widget is set to hide for Coil members that the members settings are hidden', () => {
@@ -61,25 +61,25 @@ describe( 'Streaming support widget settings tab', () => {
 
 		cy.reload();
 
-		checkMemberButtonOptionsVisibility( 'hidden' );
+		checkMemberWidgetOptionsVisibility( 'hidden' );
 	} );
 
-	it( 'Checks the button settings can be changed', () => {
-		const buttonText = 'Coil Eyes Only';
-		const buttonLink = 'https://example.com/';
-		const buttonMemberText = 'Thank you for using Coil!';
+	it( 'Checks the widget settings can be changed', () => {
+		const widgetText = 'Coil Eyes Only';
+		const widgetLink = 'https://example.com/';
+		const widgetMemberText = 'Thank you for using Coil!';
 		const topMargin = '0';
 		const leftMargin = '5px';
 
 		cy
 			.get( '#streaming_widget_text' )
-			.type( `{selectall}${ buttonText }` );
+			.type( `{selectall}${ widgetText }` );
 		cy
 			.get( '#streaming_widget_link' )
-			.type( `{selectall}${ buttonLink }` );
+			.type( `{selectall}${ widgetLink }` );
 		cy
 			.get( '#members_streaming_widget_text' )
-			.type( `{selectall}${ buttonMemberText }` );
+			.type( `{selectall}${ widgetMemberText }` );
 
 		cy
 			.get( '#light_color_theme' )
@@ -109,7 +109,7 @@ describe( 'Streaming support widget settings tab', () => {
 			.get( '#submit' )
 			.click();
 
-		checkButtonText( buttonText, buttonLink, buttonMemberText );
+		checkWidgetText( widgetText, widgetLink, widgetMemberText );
 
 		cy
 			.get( '#light_color_theme' )
@@ -127,7 +127,7 @@ describe( 'Streaming support widget settings tab', () => {
 			.get( '#position_dropdown' )
 			.should( 'have.value', 'top-left' );
 
-		checkButtonMargins( '0px', '', '', '5px' );
+		checkWidgetMargins( '0px', '', '', '5px' );
 	} );
 
 	it( 'Checks streaming support widget visibility defaults', () => {
@@ -164,37 +164,37 @@ describe( 'Streaming support widget settings tab', () => {
 } );
 
 /**
- * Checks the button text and link contents in the Streaming Support Widget tab.
+ * Checks the widget text and link contents in the Streaming Support Widget tab.
  *
- * @param {String} buttonText The button's expected text.
- * @param {String} buttonLink The button's expected link.
- * @param {String} buttonMemberText The member's button expected text.
+ * @param {String} widgetText The widget's expected text.
+ * @param {String} widgetLink The widget's expected link.
+ * @param {String} widgetMemberText The member's widget expected text.
 
  */
-function checkButtonText( buttonText, buttonLink, buttonMemberText ) {
+function checkWidgetText( widgetText, widgetLink, widgetMemberText ) {
 	cy
 		.get( '#streaming_widget_text' )
 		.should( 'have.attr', 'placeholder', 'Support us with Coil' )
-		.should( 'have.value', buttonText );
+		.should( 'have.value', widgetText );
 	cy
 		.get( '#streaming_widget_link' )
 		.should( 'have.attr', 'placeholder', 'https://coil.com/' )
-		.should( 'have.value', buttonLink );
+		.should( 'have.value', widgetLink );
 	cy
 		.get( '#members_streaming_widget_text' )
 		.should( 'have.attr', 'placeholder', 'Thanks for your support!' )
-		.should( 'have.value', buttonMemberText );
+		.should( 'have.value', widgetMemberText );
 }
 
 /**
- * Checks the button margin contents in the Streaming Support Widget tab.
+ * Checks the widget margin contents in the Streaming Support Widget tab.
  *
- * @param {String} topMargin The button's top margin.
- * @param {String} rightMargin The button's right margin.
- * @param {String} bottomMargin The member's bottom margin.
- * @param {String} leftMargin The member's button left margin.
+ * @param {String} topMargin The widget's top margin.
+ * @param {String} rightMargin The widget's right margin.
+ * @param {String} bottomMargin The widget's bottom margin.
+ * @param {String} leftMargin The widget's left margin.
  */
-function checkButtonMargins( topMargin, rightMargin, bottomMargin, leftMargin ) {
+function checkWidgetMargins( topMargin, rightMargin, bottomMargin, leftMargin ) {
 	cy
 		.get( '#streaming_widget_top_margin' )
 		.should( 'have.attr', 'placeholder', '32px' )
@@ -219,7 +219,7 @@ function checkButtonMargins( topMargin, rightMargin, bottomMargin, leftMargin ) 
  *
  * @param {String} visibilityStatus Whether the elements should be 'shown' or 'hidden'.
 */
-function checkMemberButtonOptionsVisibility( visibilityStatus ) {
+function checkMemberWidgetOptionsVisibility( visibilityStatus ) {
 	let assertion;
 	if ( visibilityStatus === 'show' ) {
 		assertion = 'be.visible';

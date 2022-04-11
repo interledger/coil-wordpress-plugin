@@ -75,21 +75,21 @@ function maybe_load_database_defaults() {
 	$streaming_widget_settings = get_option( 'streaming_widget_settings_group', 'absent' );
 
 	if ( $streaming_widget_settings === 'absent' ) {
-		$defaults                                       = Admin\get_streaming_widget_defaults();
-		$new_button_settings                            = [];
-		$new_button_settings['streaming_widget_toggle'] = $defaults['streaming_widget_toggle'];
-		$new_button_settings['streaming_widget_member_display'] = $defaults['streaming_widget_member_display'];
+		$defaults                      = Admin\get_streaming_widget_defaults();
+		$new_streaming_widget_settings = [];
+		$new_streaming_widget_settings['streaming_widget_toggle']         = $defaults['streaming_widget_toggle'];
+		$new_streaming_widget_settings['streaming_widget_member_display'] = $defaults['streaming_widget_member_display'];
 
 		$post_type_options = Coil\get_supported_post_types( 'objects' );
 		// streaming support widget visibility default is 'show'
-		$button_visibility_default = $defaults['post_type_widget_visibility'];
+		$widget_visibility_default = $defaults['post_type_widget_visibility'];
 
 		// Set post visibility and excerpt display default for each post type
 		foreach ( $post_type_options as $post_type ) {
-			$new_button_settings[ $post_type->name . '_streaming_widget_visibility' ] = $button_visibility_default;
+			$new_streaming_widget_settings[ $post_type->name . '_streaming_widget_visibility' ] = $widget_visibility_default;
 		}
 
-		add_option( 'streaming_widget_settings_group', $new_button_settings );
+		add_option( 'streaming_widget_settings_group', $new_streaming_widget_settings );
 	}
 }
 

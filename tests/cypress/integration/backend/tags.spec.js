@@ -103,7 +103,7 @@ describe( 'Tag Settings', function() {
  */
 function checkDisplayBehavior() {
 	// The first value in each array is the text thet appears in the dropdown menu, e.g. 'Enabled'. It represents the item that Cypress will select.
-	// The second value in each array is the id (reflecting the the value) of the visibility radiobutton that is expected to be checked.
+	// The second value in each array is the id (reflecting the the value) of the visibility radio button that is expected to be checked.
 	// Enabled is selected twice in this test to ensure the radio buttons reappear every time Enabled is selected.
 	const settings = [
 		[ 'Enabled', 'public' ],

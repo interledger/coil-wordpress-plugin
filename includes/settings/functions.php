@@ -148,13 +148,13 @@ function register_admin_content_settings() {
 
 	// ==== Enable / Disable
 	add_settings_section(
-		'coil_enable_button_section',
+		'coil_enable_streaming_widget_section',
 		false,
 		__NAMESPACE__ . '\coil_settings_enable_streaming_widget_toggle_render_callback',
-		'coil_enable_button_section'
+		'coil_enable_streaming_widget_section'
 	);
 
-	// ==== Button Settings
+	// ==== Streaming Support Widget Settings
 	add_settings_section(
 		'streaming_widget_settings_section',
 		false,
@@ -162,7 +162,7 @@ function register_admin_content_settings() {
 		'streaming_widget_settings_section'
 	);
 
-	// ==== Button Visibility
+	// ==== Streaming Support Widget Visibility
 	add_settings_section(
 		'streaming_widget_visibility_section',
 		false,
@@ -1641,7 +1641,7 @@ function render_coil_settings_screen() : void {
 				case 'streaming_widget':
 					echo '<div class="settings-main">';
 					settings_fields( 'streaming_widget_settings_group' );
-					do_settings_sections( 'coil_enable_button_section' );
+					do_settings_sections( 'coil_enable_streaming_widget_section' );
 					do_settings_sections( 'streaming_widget_settings_section' );
 					do_settings_sections( 'streaming_widget_visibility_section' );
 					submit_button();

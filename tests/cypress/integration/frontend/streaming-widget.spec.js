@@ -61,11 +61,11 @@ describe( 'Streaming support widget for WM-enabled users', function() {
 
 	it( 'Checks the streaming support widget can have a customized message for Coil members', () => {
 		// Set a custom message for Coil members.
-		const buttonMemberText = 'Thank you!';
+		const widgetMemberText = 'Thank you!';
 
 		cy
 			.get( '#members_streaming_widget_text' )
-			.type( `{selectall}${ buttonMemberText }` );
+			.type( `{selectall}${ widgetMemberText }` );
 		cy
 			.get( '#streaming_widget_member_display' )
 			.should( 'be.checked' );
@@ -84,7 +84,7 @@ describe( 'Streaming support widget for WM-enabled users', function() {
 			.should( 'be.visible' );
 		cy
 			.get( '.streaming-widget > a' )
-			.should( 'contain', buttonMemberText );
+			.should( 'contain', widgetMemberText );
 	} );
 
 	it( 'Checks the streaming support widget shows a streaming logo for Coil members', () => {
@@ -172,16 +172,16 @@ describe( 'Streaming support widget for non WM-enabled users', function() {
 
 	it( 'Checks the streaming support widget can have a customized message and link', () => {
 		// Set a custom message and link.
-		const buttonText = 'Coil Eyes Only';
-		const buttonLink = 'https://example.com/';
+		const widgetText = 'Coil Eyes Only';
+		const widgetLink = 'https://example.com/';
 
 		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_widget' );
 		cy
 			.get( '#streaming_widget_text' )
-			.type( `{selectall}${ buttonText }` );
+			.type( `{selectall}${ widgetText }` );
 		cy
 			.get( '#streaming_widget_link' )
-			.type( `{selectall}${ buttonLink }` );
+			.type( `{selectall}${ widgetLink }` );
 
 		cy
 			.get( '#post_streaming_widget_visibility_show' )
@@ -194,10 +194,10 @@ describe( 'Streaming support widget for non WM-enabled users', function() {
 
 		cy
 			.get( '.streaming-widget > a' )
-			.should( 'contain', buttonText );
+			.should( 'contain', widgetText );
 		cy
 			.get( '.streaming-widget > a' )
-			.should( 'have.attr', 'href', buttonLink );
+			.should( 'have.attr', 'href', widgetLink );
 	} );
 
 	it( 'Checks the streaming support widget settings can be customized', () => {
@@ -239,7 +239,7 @@ describe( 'Streaming support widget for non WM-enabled users', function() {
 			.should( 'have.attr', 'style', 'margin: 0px 0px -40px 32px;' );
 	} );
 
-	it( 'Checks the button can be hidden on a post level', () => {
+	it( 'Checks the streaming support widget can be hidden on a post level', () => {
 		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_widget' );
 
 		cy

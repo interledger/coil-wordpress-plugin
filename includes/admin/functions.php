@@ -770,7 +770,7 @@ function get_streaming_widget_margin_key_defaults() {
 }
 
 /**
- * @return array Valid button sizes.
+ * @return array Valid streaming support widget sizes.
  */
 function get_streaming_widget_size_options() {
 
@@ -780,7 +780,7 @@ function get_streaming_widget_size_options() {
 }
 
 /**
- * @return array Valid button positions.
+ * @return array Valid streaming support widget positions.
  */
 function get_streaming_widget_position_options() {
 
