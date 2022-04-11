@@ -211,16 +211,16 @@
 
 	/**
 	 * Determines whether a streaming support widget should be added to the page.
-	 * The button will only be added if it is not already present, it is globally enabled, the browser doesn't have a dismiss cookie for it,
-	 * and neither the pending message nor paywall are being displayed.
-	 */
+	 * The widget will only be added if the post is monetized, it is not already present, it is globally enabled,
+	 * the browser doesn't have a dismiss cookie for it, and neither the pending message nor paywall are being displayed.
+	*/
 	function maybeAddStreamingWidget() {
-		const buttonEnabled = hasStreamingWidgetEnabled();
-		const buttonAlreadyExists = $( '.streaming-widget-container' ).length !== 0 ? true : false;
-		const buttonDismissed = hasStreamingWidget();
+		const streamingWidgetEnabled = hasStreamingWidgetEnabled();
+		const streamingWidgetAlreadyExists = $( '.streaming-widget-container' ).length !== 0 ? true : false;
+		const streamingWidgetDismissed = hasStreamingWidget();
 		const pendingMessageDisplayed = $( 'p.monetize-msg' ).length !== 0 ? true : false;
 		const paywallDisplayed = $( '.coil-message-container' ).length !== 0 ? true : false;
-		if ( buttonEnabled && ! buttonAlreadyExists && ! buttonDismissed && ! pendingMessageDisplayed && ! paywallDisplayed ) {
+		if ( streamingWidgetEnabled && ! streamingWidgetAlreadyExists && ! streamingWidgetDismissed && ! pendingMessageDisplayed && ! paywallDisplayed ) {
 			showStreamingWidget( streamingWidgetUnpaidMessage );
 		}
 	}
@@ -620,17 +620,17 @@
 		if ( ! showStreamingWidgetToMembers ) {
 			$( '.streaming-widget-container' ).remove();
 		} else {
-			const buttonEnabled = hasStreamingWidgetEnabled();
-			const buttonAlreadyExists = $( '.streaming-widget-container' ).length !== 0 ? true : false;
-			const buttonDismissed = hasStreamingWidget();
+			const streamingWidgetEnabled = hasStreamingWidgetEnabled();
+			const streamingWidgetAlreadyExists = $( '.streaming-widget-container' ).length !== 0 ? true : false;
+			const streamingWidgetDismissed = hasStreamingWidget();
 			if ( streamingWidgetTheme === 'light' ) {
 				brandingLogo = coilLogoStreaming;
 			} else {
 				brandingLogo = coilLogoWhiteStreaming;
 			}
 
-			if ( buttonEnabled && ! buttonDismissed ) {
-				if ( buttonAlreadyExists ) {
+			if ( streamingWidgetEnabled && ! streamingWidgetDismissed ) {
+				if ( streamingWidgetAlreadyExists ) {
 					// The text needs to change to the member message
 					$( '.streaming-widget div' ).text( streamingWidgetPaidMessage );
 				} else {
