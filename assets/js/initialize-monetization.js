@@ -217,7 +217,7 @@
 	function maybeAddStreamingWidget() {
 		const streamingWidgetEnabled = hasStreamingWidgetEnabled();
 		const streamingWidgetAlreadyExists = $( '.streaming-widget-container' ).length !== 0 ? true : false;
-		const streamingWidgetDismissed = hasStreamingWidget();
+		const streamingWidgetDismissed = hasStreamingWidgetDismissCookie();
 		const pendingMessageDisplayed = $( 'p.monetize-msg' ).length !== 0 ? true : false;
 		const paywallDisplayed = $( '.coil-message-container' ).length !== 0 ? true : false;
 		if ( streamingWidgetEnabled && ! streamingWidgetAlreadyExists && ! streamingWidgetDismissed && ! pendingMessageDisplayed && ! paywallDisplayed ) {
@@ -307,8 +307,8 @@
 	}
 
 	/**
-	 * @return {bool} Helper function to determine if the content has
-	 * the streaming support widget enabled
+	 * @return {bool} Helper function to determine if the
+	 * streaming support widget is enabled
 	*/
 	function hasStreamingWidgetEnabled() {
 		return streamingWidgetGloballyEnabled && document.body.classList.contains( 'show-streaming-widget' );
@@ -388,7 +388,7 @@
 	function addWidgetDismissClickHandler() {
 		const cookieName = 'ShowStreamingWidgetMsg';
 		$( '#js-streaming-widget-dismiss' ).on( 'click', function() {
-			if ( ! hasStreamingWidget() ) {
+			if ( ! hasStreamingWidgetDismissCookie() ) {
 				Cookies.set( cookieName, 1, { expires: 14 } );
 				$( this ).parent().parent().remove();
 			}
@@ -415,7 +415,7 @@
 	 *
 	 * @return {bool} True if set to '1', otherwise false.
 	*/
-	function hasStreamingWidget() {
+	function hasStreamingWidgetDismissCookie() {
 		const cookieName = 'ShowStreamingWidgetMsg';
 		const currentCookie = Cookies.get( cookieName );
 
@@ -622,7 +622,7 @@
 		} else {
 			const streamingWidgetEnabled = hasStreamingWidgetEnabled();
 			const streamingWidgetAlreadyExists = $( '.streaming-widget-container' ).length !== 0 ? true : false;
-			const streamingWidgetDismissed = hasStreamingWidget();
+			const streamingWidgetDismissed = hasStreamingWidgetDismissCookie();
 			if ( streamingWidgetTheme === 'light' ) {
 				brandingLogo = coilLogoStreaming;
 			} else {
