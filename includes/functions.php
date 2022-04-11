@@ -202,37 +202,37 @@ function load_full_assets() : void {
 	$strings = apply_filters(
 		'coil_js_ui_messages',
 		[
-			'content_container'                        => Admin\get_css_selector(),
-			'paywall_title'                            => Admin\get_paywall_text_settings_or_default( 'coil_paywall_title' ),
-			'loading_content'                          => __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' ),
-			'paywall_message'                          => Admin\get_paywall_text_settings_or_default( 'coil_paywall_message' ),
-			'streaming_support_widget_unpaid_message'  => Admin\get_streaming_support_widget_setting( 'streaming_support_widget_text', true ),
-			'streaming_support_widget_paid_message'    => Admin\get_streaming_support_widget_setting( 'coil_members_button_text', true ),
-			'show_streaming_support_widget_to_members' => Admin\get_streaming_support_widget_setting( 'streaming_support_widget_member_display' ),
-			'streaming_support_widget_link'            => Admin\get_streaming_support_widget_setting( 'streaming_support_widget_link', true ),
-			'paywall_button_text'                      => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_text' ),
-			'paywall_button_link'                      => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_link' ),
-			'post_excerpt'                             => Gating\has_coil_divider( get_the_content() ) ? '' : get_the_excerpt(),
-			'has_coil_divider'                         => Gating\has_coil_divider( get_the_content() ),
-			'coil_message_branding'                    => Admin\get_paywall_appearance_setting( 'coil_message_branding' ),
-			'streaming_support_widget_theme'           => Admin\get_streaming_support_widget_setting( 'streaming_support_widget_color_theme' ),
-			'streaming_support_widget_size'            => Admin\get_streaming_support_widget_setting( 'streaming_support_widget_size' ),
-			'streaming_support_widget_position'        => Admin\get_streaming_support_widget_setting( 'streaming_support_widget_position' ),
-			'button_margin_top'                        => Admin\get_streaming_support_widget_setting( 'streaming_support_widget_top_margin', true ),
-			'button_margin_right'                      => Admin\get_streaming_support_widget_setting( 'streaming_support_widget_right_margin', true ),
-			'button_margin_bottom'                     => Admin\get_streaming_support_widget_setting( 'streaming_support_widget_bottom_margin', true ),
-			'button_margin_left'                       => Admin\get_streaming_support_widget_setting( 'streaming_support_widget_left_margin', true ),
-			'streaming_support_widget_enabled'         => Admin\is_streaming_support_widget_enabled(),
-			'site_logo'                                => Admin\get_site_logo_src(),
-			'coil_logo'                                => plugin_dir_url( __DIR__ ) . 'assets/images/coil-icn-black.svg',
-			'coil_logo_streaming'                      => plugin_dir_url( __DIR__ ) . 'assets/images/coil-icn-black-streaming.svg',
-			'coil_logo_white'                          => plugin_dir_url( __DIR__ ) . 'assets/images/coil-icn-white.svg',
-			'coil_logo_white_streaming'                => plugin_dir_url( __DIR__ ) . 'assets/images/coil-icn-white-streaming.svg',
-			'exclusive_message_theme'                  => Admin\get_paywall_appearance_setting( 'coil_message_color_theme' ),
-			'font_selection'                           => Admin\get_paywall_appearance_setting( 'coil_message_font' ),
+			'content_container'                => Admin\get_css_selector(),
+			'paywall_title'                    => Admin\get_paywall_text_settings_or_default( 'coil_paywall_title' ),
+			'loading_content'                  => __( 'Verifying Web Monetization status. Please wait...', 'coil-web-monetization' ),
+			'paywall_message'                  => Admin\get_paywall_text_settings_or_default( 'coil_paywall_message' ),
+			'streaming_widget_unpaid_message'  => Admin\get_streaming_widget_setting( 'streaming_widget_text', true ),
+			'streaming_widget_paid_message'    => Admin\get_streaming_widget_setting( 'members_streaming_widget_text', true ),
+			'show_streaming_widget_to_members' => Admin\get_streaming_widget_setting( 'streaming_widget_member_display' ),
+			'streaming_widget_link'            => Admin\get_streaming_widget_setting( 'streaming_widget_link', true ),
+			'paywall_button_text'              => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_text' ),
+			'paywall_button_link'              => Admin\get_paywall_text_settings_or_default( 'coil_paywall_button_link' ),
+			'post_excerpt'                     => Gating\has_coil_divider( get_the_content() ) ? '' : get_the_excerpt(),
+			'has_coil_divider'                 => Gating\has_coil_divider( get_the_content() ),
+			'coil_message_branding'            => Admin\get_paywall_appearance_setting( 'coil_message_branding' ),
+			'streaming_widget_theme'           => Admin\get_streaming_widget_setting( 'streaming_widget_color_theme' ),
+			'streaming_widget_size'            => Admin\get_streaming_widget_setting( 'streaming_widget_size' ),
+			'streaming_widget_position'        => Admin\get_streaming_widget_setting( 'streaming_widget_position' ),
+			'button_margin_top'                => Admin\get_streaming_widget_setting( 'streaming_widget_top_margin', true ),
+			'button_margin_right'              => Admin\get_streaming_widget_setting( 'streaming_widget_right_margin', true ),
+			'button_margin_bottom'             => Admin\get_streaming_widget_setting( 'streaming_widget_bottom_margin', true ),
+			'button_margin_left'               => Admin\get_streaming_widget_setting( 'streaming_widget_left_margin', true ),
+			'streaming_widget_enabled'         => Admin\is_streaming_widget_enabled(),
+			'site_logo'                        => Admin\get_site_logo_src(),
+			'coil_logo'                        => plugin_dir_url( __DIR__ ) . 'assets/images/coil-icn-black.svg',
+			'coil_logo_streaming'              => plugin_dir_url( __DIR__ ) . 'assets/images/coil-icn-black-streaming.svg',
+			'coil_logo_white'                  => plugin_dir_url( __DIR__ ) . 'assets/images/coil-icn-white.svg',
+			'coil_logo_white_streaming'        => plugin_dir_url( __DIR__ ) . 'assets/images/coil-icn-white-streaming.svg',
+			'exclusive_message_theme'          => Admin\get_paywall_appearance_setting( 'coil_message_color_theme' ),
+			'font_selection'                   => Admin\get_paywall_appearance_setting( 'coil_message_font' ),
 
 			/* translators: 1 + 2) HTML link tags (to the Coil settings page). */
-			'admin_missing_id_notice'                  => sprintf( __( 'This post is monetized but you have not set your payment pointer ID in the %1$sCoil settings page%2$s. Only content set to show for all visitors will show.', 'coil-web-monetization' ), '<a href="' . admin_url( 'admin.php?page=coil' ) . '">', '</a>' ),
+			'admin_missing_id_notice'          => sprintf( __( 'This post is monetized but you have not set your payment pointer ID in the %1$sCoil settings page%2$s. Only content set to show for all visitors will show.', 'coil-web-monetization' ), '<a href="' . admin_url( 'admin.php?page=coil' ) . '">', '</a>' ),
 		],
 		get_queried_object_id()
 	);
@@ -324,9 +324,9 @@ function add_body_class( $classes ) : array {
 		}
 		$classes[] = sanitize_html_class( 'coil-' . $coil_visibility_status );
 
-		$streaming_support_widget_status = Admin\get_streaming_support_widget_status( $object_id );
-		if ( $streaming_support_widget_status !== '' ) {
-			$classes[] = sanitize_html_class( $streaming_support_widget_status );
+		$streaming_widget_status = Admin\get_streaming_widget_status( $object_id );
+		if ( $streaming_widget_status !== '' ) {
+			$classes[] = sanitize_html_class( $streaming_widget_status );
 		}
 
 		if ( ! empty( $payment_pointer_id ) ) {

@@ -6,7 +6,7 @@ describe( 'Streaming support widget settings tab', () => {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
 		cy.resetSite();
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_support_widget' );
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_widget' );
 	} );
 
 	it( 'Checks streaming support widget setting defaults', () => {
@@ -22,7 +22,7 @@ describe( 'Streaming support widget settings tab', () => {
 			.should( 'be.checked' );
 
 		cy
-			.get( '#streaming_support_widget_member_display' )
+			.get( '#streaming_widget_member_display' )
 			.should( 'be.checked' );
 
 		cy
@@ -39,14 +39,14 @@ describe( 'Streaming support widget settings tab', () => {
 
 		// Hide the streaming support widget from members and check that the other settings are hidden.
 		cy
-			.get( '#streaming_support_widget_member_display' )
+			.get( '#streaming_widget_member_display' )
 			.click();
 
 		checkMemberButtonOptionsVisibility( 'hidden' );
 
 		// Enabling the streaming support widget to members should reveal the other settings.
 		cy
-			.get( '#streaming_support_widget_member_display' )
+			.get( '#streaming_widget_member_display' )
 			.click();
 
 		checkMemberButtonOptionsVisibility( 'show' );
@@ -54,7 +54,7 @@ describe( 'Streaming support widget settings tab', () => {
 
 	it( 'Checks that when the streaming support widget is set to hide for Coil members that the members settings are hidden', () => {
 		cy
-			.get( '#streaming_support_widget_member_display' )
+			.get( '#streaming_widget_member_display' )
 			.click();
 
 		cy.get( '#submit' ).click();
@@ -72,13 +72,13 @@ describe( 'Streaming support widget settings tab', () => {
 		const leftMargin = '5px';
 
 		cy
-			.get( '#streaming_support_widget_text' )
+			.get( '#streaming_widget_text' )
 			.type( `{selectall}${ buttonText }` );
 		cy
-			.get( '#streaming_support_widget_link' )
+			.get( '#streaming_widget_link' )
 			.type( `{selectall}${ buttonLink }` );
 		cy
-			.get( '#coil_members_button_text' )
+			.get( '#members_streaming_widget_text' )
 			.type( `{selectall}${ buttonMemberText }` );
 
 		cy
@@ -90,7 +90,7 @@ describe( 'Streaming support widget settings tab', () => {
 			.click();
 
 		cy
-			.get( '#streaming_support_widget_member_display' )
+			.get( '#streaming_widget_member_display' )
 			.click();
 
 		cy
@@ -98,11 +98,11 @@ describe( 'Streaming support widget settings tab', () => {
 			.select( 'top-left' );
 
 		cy
-			.get( '#streaming_support_widget_top_margin' )
+			.get( '#streaming_widget_top_margin' )
 			.type( `{selectall}${ topMargin }` );
 
 		cy
-			.get( '#streaming_support_widget_left_margin' )
+			.get( '#streaming_widget_left_margin' )
 			.type( `{selectall}${ leftMargin }` );
 
 		cy
@@ -120,7 +120,7 @@ describe( 'Streaming support widget settings tab', () => {
 			.should( 'be.checked' );
 
 		cy
-			.get( '#streaming_support_widget_member_display' )
+			.get( '#streaming_widget_member_display' )
 			.should( 'not.be.checked' );
 
 		cy
@@ -132,21 +132,21 @@ describe( 'Streaming support widget settings tab', () => {
 
 	it( 'Checks streaming support widget visibility defaults', () => {
 		cy
-			.get( '#post_button_visibility_show' )
+			.get( '#post_streaming_widget_visibility_show' )
 			.should( 'be.checked' );
 
 		cy
-			.get( '#page_button_visibility_show' )
+			.get( '#page_streaming_widget_visibility_show' )
 			.should( 'be.checked' );
 	} );
 
 	it( 'Checks streaming support widget visibility settings can be changed', () => {
 		cy
-			.get( '#post_button_visibility_hide' )
+			.get( '#post_streaming_widget_visibility_hide' )
 			.click();
 
 		cy
-			.get( '#page_button_visibility_hide' )
+			.get( '#page_streaming_widget_visibility_hide' )
 			.click();
 
 		cy
@@ -154,11 +154,11 @@ describe( 'Streaming support widget settings tab', () => {
 			.click();
 
 		cy
-			.get( '#post_button_visibility_hide' )
+			.get( '#post_streaming_widget_visibility_hide' )
 			.should( 'be.checked' );
 
 		cy
-			.get( '#page_button_visibility_hide' )
+			.get( '#page_streaming_widget_visibility_hide' )
 			.should( 'be.checked' );
 	} );
 } );
@@ -173,15 +173,15 @@ describe( 'Streaming support widget settings tab', () => {
  */
 function checkButtonText( buttonText, buttonLink, buttonMemberText ) {
 	cy
-		.get( '#streaming_support_widget_text' )
+		.get( '#streaming_widget_text' )
 		.should( 'have.attr', 'placeholder', 'Support us with Coil' )
 		.should( 'have.value', buttonText );
 	cy
-		.get( '#streaming_support_widget_link' )
+		.get( '#streaming_widget_link' )
 		.should( 'have.attr', 'placeholder', 'https://coil.com/' )
 		.should( 'have.value', buttonLink );
 	cy
-		.get( '#coil_members_button_text' )
+		.get( '#members_streaming_widget_text' )
 		.should( 'have.attr', 'placeholder', 'Thanks for your support!' )
 		.should( 'have.value', buttonMemberText );
 }
@@ -196,20 +196,20 @@ function checkButtonText( buttonText, buttonLink, buttonMemberText ) {
  */
 function checkButtonMargins( topMargin, rightMargin, bottomMargin, leftMargin ) {
 	cy
-		.get( '#streaming_support_widget_top_margin' )
+		.get( '#streaming_widget_top_margin' )
 		.should( 'have.attr', 'placeholder', '32px' )
 		.should( 'have.value', topMargin );
 	cy
-		.get( '#streaming_support_widget_right_margin' )
+		.get( '#streaming_widget_right_margin' )
 		.should( 'have.attr', 'placeholder', '32px' )
 		.should( 'have.value', rightMargin );
 	cy
-		.get( '#streaming_support_widget_bottom_margin' )
+		.get( '#streaming_widget_bottom_margin' )
 		.should( 'have.attr', 'placeholder', '32px' )
 		.should( 'have.value', bottomMargin );
 
 	cy
-		.get( '#streaming_support_widget_left_margin' )
+		.get( '#streaming_widget_left_margin' )
 		.should( 'have.attr', 'placeholder', '32px' )
 		.should( 'have.value', leftMargin );
 }
@@ -228,11 +228,11 @@ function checkMemberButtonOptionsVisibility( visibilityStatus ) {
 	}
 
 	cy
-		.get( '#streaming_support_widget_member_display + label + h4' )
+		.get( '#streaming_widget_member_display + label + h4' )
 		.should( 'contain', 'Message for Coil members' )
 		.should( assertion );
 
 	cy
-		.get( '#coil_members_button_text' )
+		.get( '#members_streaming_widget_text' )
 		.should( assertion );
 }

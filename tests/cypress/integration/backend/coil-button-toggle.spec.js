@@ -6,12 +6,12 @@ describe( 'Streaming support widget settings tab', () => {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
 		cy.resetSite();
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_support_widget' );
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_widget' );
 	} );
 
-	it( 'Checks that by default the Streaming support widget is enabled', () => {
+	it( 'Checks that by default the streaming support widget is enabled', () => {
 		cy
-			.get( '#streaming_support_widget_toggle' )
+			.get( '#streaming_widget_toggle' )
 			.should( 'be.checked' );
 
 		cy
@@ -20,7 +20,7 @@ describe( 'Streaming support widget settings tab', () => {
 	} );
 
 	it( 'Checks that the setting sections are shown or hidden depending on whether the Streaming support widget is enabled', () => {
-		// By default the Streaming support widget is enabled.
+		// By default the streaming support widget is enabled.
 		cy
 			.get( '.streaming-support-widget-section' )
 			.should( 'be.visible' );

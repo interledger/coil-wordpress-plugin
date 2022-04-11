@@ -72,24 +72,24 @@ function maybe_load_database_defaults() {
 	}
 
 	// Loads the streaming support widget defaults if they have not yet been entered into the database
-	$streaming_support_widget_settings = get_option( 'streaming_support_widget_settings_group', 'absent' );
+	$streaming_widget_settings = get_option( 'streaming_widget_settings_group', 'absent' );
 
-	if ( $streaming_support_widget_settings === 'absent' ) {
-		$defaults            = Admin\get_streaming_support_widget_defaults();
-		$new_button_settings = [];
-		$new_button_settings['streaming_support_widget_toggle']         = $defaults['streaming_support_widget_toggle'];
-		$new_button_settings['streaming_support_widget_member_display'] = $defaults['streaming_support_widget_member_display'];
+	if ( $streaming_widget_settings === 'absent' ) {
+		$defaults                                       = Admin\get_streaming_widget_defaults();
+		$new_button_settings                            = [];
+		$new_button_settings['streaming_widget_toggle'] = $defaults['streaming_widget_toggle'];
+		$new_button_settings['streaming_widget_member_display'] = $defaults['streaming_widget_member_display'];
 
 		$post_type_options = Coil\get_supported_post_types( 'objects' );
 		// streaming support widget visibility default is 'show'
-		$button_visibility_default = $defaults['post_type_button_visibility'];
+		$button_visibility_default = $defaults['post_type_widget_visibility'];
 
 		// Set post visibility and excerpt display default for each post type
 		foreach ( $post_type_options as $post_type ) {
-			$new_button_settings[ $post_type->name . '_button_visibility' ] = $button_visibility_default;
+			$new_button_settings[ $post_type->name . '_streaming_widget_visibility' ] = $button_visibility_default;
 		}
 
-		add_option( 'streaming_support_widget_settings_group', $new_button_settings );
+		add_option( 'streaming_widget_settings_group', $new_button_settings );
 	}
 }
 
@@ -224,13 +224,13 @@ function transfer_customizer_appearance_settings() {
 function transfer_version_1_9_panel_settings() {
 
 	// Retrieve all current option groups from the database
-	$general_settings                  = get_option( 'coil_general_settings_group', 'absent' );
-	$exclusive_settings                = get_option( 'coil_exclusive_settings_group', 'absent' );
-	$streaming_support_widget_settings = get_option( 'streaming_support_widget_settings_group', 'absent' );
+	$general_settings          = get_option( 'coil_general_settings_group', 'absent' );
+	$exclusive_settings        = get_option( 'coil_exclusive_settings_group', 'absent' );
+	$streaming_widget_settings = get_option( 'streaming_widget_settings_group', 'absent' );
 
-	$new_general_settings                  = [];
-	$new_exclusive_settings                = [];
-	$new_streaming_support_widget_settings = [];
+	$new_general_settings          = [];
+	$new_exclusive_settings        = [];
+	$new_streaming_widget_settings = [];
 
 	$global_settings = get_option( 'coil_global_settings_group', 'absent' );
 	if ( $global_settings !== 'absent' ) {
@@ -306,8 +306,8 @@ function transfer_version_1_9_panel_settings() {
 		update_option( 'coil_exclusive_settings_group', array_merge( $exclusive_settings, $new_exclusive_settings ) );
 	}
 
-	if ( $new_streaming_support_widget_settings !== [] ) {
-		update_option( 'streaming_support_widget_settings_group', array_merge( $streaming_support_widget_settings, $new_streaming_support_widget_settings ) );
+	if ( $new_streaming_widget_settings !== [] ) {
+		update_option( 'streaming_widget_settings_group', array_merge( $streaming_widget_settings, $new_streaming_widget_settings ) );
 	}
 }
 

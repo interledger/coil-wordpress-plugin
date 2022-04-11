@@ -141,33 +141,33 @@ function register_admin_content_settings() {
 
 	// Tab 4 - Streaming Support Widget
 	register_setting(
-		'streaming_support_widget_settings_group',
-		'streaming_support_widget_settings_group',
-		__NAMESPACE__ . '\streaming_support_widget_settings_group_validation'
+		'streaming_widget_settings_group',
+		'streaming_widget_settings_group',
+		__NAMESPACE__ . '\streaming_widget_settings_group_validation'
 	);
 
 	// ==== Enable / Disable
 	add_settings_section(
 		'coil_enable_button_section',
 		false,
-		__NAMESPACE__ . '\coil_settings_enable_streaming_support_widget_toggle_render_callback',
+		__NAMESPACE__ . '\coil_settings_enable_streaming_widget_toggle_render_callback',
 		'coil_enable_button_section'
 	);
 
 	// ==== Button Settings
 	add_settings_section(
-		'streaming_support_widget_settings_section',
+		'streaming_widget_settings_section',
 		false,
-		__NAMESPACE__ . '\coil_settings_streaming_support_widget_settings_render_callback',
-		'streaming_support_widget_settings_section'
+		__NAMESPACE__ . '\coil_settings_streaming_widget_settings_render_callback',
+		'streaming_widget_settings_section'
 	);
 
 	// ==== Button Visibility
 	add_settings_section(
-		'streaming_support_widget_visibility_section',
+		'streaming_widget_visibility_section',
 		false,
-		__NAMESPACE__ . '\coil_settings_streaming_support_widget_visibility_render_callback',
-		'streaming_support_widget_visibility_section'
+		__NAMESPACE__ . '\coil_settings_streaming_widget_visibility_render_callback',
+		'streaming_widget_visibility_section'
 	);
 }
 
@@ -352,45 +352,45 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 /**
  * Validates the streaming support widget settings.
  *
- * @param array $streaming_support_widget_settings
+ * @param array $streaming_widget_settings
  * @return array
 */
-function streaming_support_widget_settings_group_validation( $streaming_support_widget_settings ): array {
+function streaming_widget_settings_group_validation( $streaming_widget_settings ): array {
 	$final_settings = [];
-	$defaults       = Admin\get_streaming_support_widget_defaults();
+	$defaults       = Admin\get_streaming_widget_defaults();
 
 	// Validates all text input fields
 	$text_fields = [
-		'streaming_support_widget_text',
-		'streaming_support_widget_link',
-		'coil_members_button_text',
+		'streaming_widget_text',
+		'streaming_widget_link',
+		'members_streaming_widget_text',
 	];
 
 	foreach ( $text_fields as $field_name ) {
 
-		if ( $field_name === 'streaming_support_widget_link' ) {
-			$final_settings[ $field_name ] = ( isset( $streaming_support_widget_settings[ $field_name ] ) ) ? esc_url_raw( $streaming_support_widget_settings[ $field_name ] ) : '';
-		} elseif ( ( $field_name === 'streaming_support_widget_text' || $field_name === 'coil_members_button_text' ) && isset( $streaming_support_widget_settings[ $field_name ] ) && ctype_space( $streaming_support_widget_settings[ $field_name ] ) ) {
+		if ( $field_name === 'streaming_widget_link' ) {
+			$final_settings[ $field_name ] = ( isset( $streaming_widget_settings[ $field_name ] ) ) ? esc_url_raw( $streaming_widget_settings[ $field_name ] ) : '';
+		} elseif ( ( $field_name === 'streaming_widget_text' || $field_name === 'members_streaming_widget_text' ) && isset( $streaming_widget_settings[ $field_name ] ) && ctype_space( $streaming_widget_settings[ $field_name ] ) ) {
 			// Allows the option of saving whitespace in the streaming support widget text as a way of eliminating it to only show the icon.
 			$final_settings[ $field_name ] = ' ';
 		} else {
-			$final_settings[ $field_name ] = ( isset( $streaming_support_widget_settings[ $field_name ] ) ) ? sanitize_text_field( $streaming_support_widget_settings[ $field_name ] ) : '';
+			$final_settings[ $field_name ] = ( isset( $streaming_widget_settings[ $field_name ] ) ) ? sanitize_text_field( $streaming_widget_settings[ $field_name ] ) : '';
 		}
 	}
 
-	$checkbox_fields = [ 'streaming_support_widget_toggle', 'streaming_support_widget_member_display' ];
+	$checkbox_fields = [ 'streaming_widget_toggle', 'streaming_widget_member_display' ];
 
 	foreach ( $checkbox_fields as $field_name ) {
-		$final_settings[ $field_name ] = isset( $streaming_support_widget_settings[ $field_name ] ) && ( $streaming_support_widget_settings[ $field_name ] === 'on' || $streaming_support_widget_settings[ $field_name ] === true ) ? true : false;
+		$final_settings[ $field_name ] = isset( $streaming_widget_settings[ $field_name ] ) && ( $streaming_widget_settings[ $field_name ] === 'on' || $streaming_widget_settings[ $field_name ] === true ) ? true : false;
 	}
 
 	// Validates streaming support widget margins
-	$margin_fields = Admin\get_button_margin_key_defaults();
+	$margin_fields = Admin\get_streaming_widget_margin_key_defaults();
 
 	foreach ( $margin_fields as $field_name => $default ) {
 
-		if ( isset( $streaming_support_widget_settings[ $field_name ] ) ) {
-			$number                        = filter_var( $streaming_support_widget_settings[ $field_name ], FILTER_SANITIZE_NUMBER_INT );
+		if ( isset( $streaming_widget_settings[ $field_name ] ) ) {
+			$number                        = filter_var( $streaming_widget_settings[ $field_name ], FILTER_SANITIZE_NUMBER_INT );
 			$final_settings[ $field_name ] = $number !== false ? $number : $default;
 		} else {
 			$final_settings[ $field_name ] = '';
@@ -401,33 +401,33 @@ function streaming_support_widget_settings_group_validation( $streaming_support_
 	$post_type_options = Coil\get_supported_post_types( 'objects' );
 	foreach ( $post_type_options as $post_type ) {
 		// Validates streaming support widget visibility settings
-		$widget_visibility_setting_key = $post_type->name . '_button_visibility';
+		$widget_visibility_setting_key = $post_type->name . '_streaming_widget_visibility';
 		$valid_options                 = [ 'show', 'hide' ];
 
 		// The default value is to show
-		$final_settings[ $widget_visibility_setting_key ] = isset( $streaming_support_widget_settings[ $widget_visibility_setting_key ] ) && in_array( $streaming_support_widget_settings[ $widget_visibility_setting_key ], $valid_options, true ) ? sanitize_key( $streaming_support_widget_settings[ $widget_visibility_setting_key ] ) : $defaults['post_type_button_visibility'];
+		$final_settings[ $widget_visibility_setting_key ] = isset( $streaming_widget_settings[ $widget_visibility_setting_key ] ) && in_array( $streaming_widget_settings[ $widget_visibility_setting_key ], $valid_options, true ) ? sanitize_key( $streaming_widget_settings[ $widget_visibility_setting_key ] ) : $defaults['post_type_widget_visibility'];
 	}
 
 	// Validates the streaming support widget's color theme, size, and position.
 	$additional_fields = [
 		[
-			'field_name'    => 'streaming_support_widget_color_theme',
+			'field_name'    => 'streaming_widget_color_theme',
 			'valid_choices' => Admin\get_theme_color_types(),
 		],
 		[
-			'field_name'    => 'streaming_support_widget_size',
-			'valid_choices' => Admin\get_button_size_options(),
+			'field_name'    => 'streaming_widget_size',
+			'valid_choices' => Admin\get_streaming_widget_size_options(),
 		],
 		[
-			'field_name'    => 'streaming_support_widget_position',
-			'valid_choices' => array_keys( Admin\get_button_position_options() ),
+			'field_name'    => 'streaming_widget_position',
+			'valid_choices' => array_keys( Admin\get_streaming_widget_position_options() ),
 		],
 	];
 
 	foreach ( $additional_fields as $field_item ) {
 		$field_name                    = $field_item['field_name'];
 		$valid_choices                 = $field_item['valid_choices'];
-		$final_settings[ $field_name ] = isset( $streaming_support_widget_settings[ $field_name ] ) && in_array( $streaming_support_widget_settings[ $field_name ], $valid_choices, true ) ? sanitize_key( $streaming_support_widget_settings[ $field_name ] ) : $defaults[ $field_name ];
+		$final_settings[ $field_name ] = isset( $streaming_widget_settings[ $field_name ] ) && in_array( $streaming_widget_settings[ $field_name ], $valid_choices, true ) ? sanitize_key( $streaming_widget_settings[ $field_name ] ) : $defaults[ $field_name ];
 	}
 
 	return $final_settings;
@@ -470,7 +470,7 @@ function coil_settings_welcome_render_callback() {
 		Rendering\render_welcome_section(
 			__( 'Streaming Support Widget', 'coil-web-monetization' ),
 			__( 'Show that you accept support from Coil members by displaying a widget on certain pages of your site. If you choose to show the widget to active Coil members, the widget\'s text changes to thank them for their support.', 'coil-web-monetization' ),
-			'streaming_support_widget',
+			'streaming_widget',
 			__( 'Add Widget', 'coil-web-monetization' )
 		);
 
@@ -1166,7 +1166,7 @@ function coil_paywall_appearance_text_field_settings_render_callback( $field_nam
  * Renders the output of the enable streaming support widget toggle
  * @return void
 */
-function coil_settings_enable_streaming_support_widget_toggle_render_callback() {
+function coil_settings_enable_streaming_widget_toggle_render_callback() {
 	?>
 	<div class="tab-styling">
 		<?php
@@ -1187,11 +1187,11 @@ function coil_settings_enable_streaming_support_widget_toggle_render_callback() 
 			esc_html__( 'When a visitor is not a Coil member and a post is either set to Exclusive or contains the exclusive content divider. Non-members will see your paywall. Coil members will see your content and the widget unless you\'ve chosen to hide the widget from members.', 'coil-web-monetization' )
 		);
 
-		$streaming_support_widget_toggle_id = 'streaming_support_widget_toggle';
+		$streaming_widget_toggle_id = 'streaming_widget_toggle';
 		Rendering\render_toggle(
-			$streaming_support_widget_toggle_id,
-			'streaming_support_widget_settings_group[' . $streaming_support_widget_toggle_id . ']',
-			Admin\is_streaming_support_widget_enabled()
+			$streaming_widget_toggle_id,
+			'streaming_widget_settings_group[' . $streaming_widget_toggle_id . ']',
+			Admin\is_streaming_widget_enabled()
 		);
 		?>
 	</div>
@@ -1202,72 +1202,72 @@ function coil_settings_enable_streaming_support_widget_toggle_render_callback() 
  * Renders the streaming support widget customization settings
  * @return void
 */
-function coil_settings_streaming_support_widget_settings_render_callback() {
+function coil_settings_streaming_widget_settings_render_callback() {
 	?>
 	<div class="tab-styling streaming-support-widget-section">
 		<div class="coil-row">
 			<div class="coil-column-7">
 				<?php
-				$defaults = Admin\get_streaming_support_widget_defaults();
+				$defaults = Admin\get_streaming_widget_defaults();
 
 				Rendering\render_settings_section_heading(
 					__( 'Widget Settings', 'coil-web-monetization' )
 				);
 
 				// Render the streaming support widget text input field
-				$streaming_support_widget_text_id = 'streaming_support_widget_text';
+				$streaming_widget_text_id = 'streaming_widget_text';
 				Rendering\render_text_input_field(
-					$streaming_support_widget_text_id,
-					'streaming_support_widget_settings_group[' . $streaming_support_widget_text_id . ']',
-					Admin\get_streaming_support_widget_setting( $streaming_support_widget_text_id ),
-					$defaults[ $streaming_support_widget_text_id ],
+					$streaming_widget_text_id,
+					'streaming_widget_settings_group[' . $streaming_widget_text_id . ']',
+					Admin\get_streaming_widget_setting( $streaming_widget_text_id ),
+					$defaults[ $streaming_widget_text_id ],
 					__( 'Text', 'coil-web-monetization' )
 				);
 
 				// Render the streaming support widget link input field
-				$streaming_support_widget_link_id = 'streaming_support_widget_link';
+				$streaming_widget_link_id = 'streaming_widget_link';
 				Rendering\render_text_input_field(
-					$streaming_support_widget_link_id,
-					'streaming_support_widget_settings_group[' . $streaming_support_widget_link_id . ']',
-					Admin\get_streaming_support_widget_setting( $streaming_support_widget_link_id ),
-					$defaults[ $streaming_support_widget_link_id ],
+					$streaming_widget_link_id,
+					'streaming_widget_settings_group[' . $streaming_widget_link_id . ']',
+					Admin\get_streaming_widget_setting( $streaming_widget_link_id ),
+					$defaults[ $streaming_widget_link_id ],
 					__( 'Link', 'coil-web-monetization' ),
 					__( 'If you have an affiliate link add it here.', 'coil-web-monetization' )
 				);
 
 				// Render the streaming support widget member's display checkbox
-				$streaming_support_widget_member_display_id = 'streaming_support_widget_member_display';
+				$streaming_widget_member_display_id = 'streaming_widget_member_display';
 				Rendering\render_checkbox_that_toggles_content(
-					$streaming_support_widget_member_display_id,
-					'streaming_support_widget_settings_group[' . $streaming_support_widget_member_display_id . ']',
+					$streaming_widget_member_display_id,
+					'streaming_widget_settings_group[' . $streaming_widget_member_display_id . ']',
 					__( 'Show widget to Coil members', 'coil-web-monetization' ),
-					Admin\get_streaming_support_widget_setting( $streaming_support_widget_member_display_id )
+					Admin\get_streaming_widget_setting( $streaming_widget_member_display_id )
 				);
 
 				// Render the streaming support widget's member text input field
-				$streaming_support_widget_member_text_id = 'coil_members_button_text';
+				$streaming_widget_member_text_id = 'members_streaming_widget_text';
 				Rendering\render_text_input_field(
-					$streaming_support_widget_member_text_id,
-					'streaming_support_widget_settings_group[' . $streaming_support_widget_member_text_id . ']',
-					Admin\get_streaming_support_widget_setting( $streaming_support_widget_member_text_id ),
-					$defaults[ $streaming_support_widget_member_text_id ],
+					$streaming_widget_member_text_id,
+					'streaming_widget_settings_group[' . $streaming_widget_member_text_id . ']',
+					Admin\get_streaming_widget_setting( $streaming_widget_member_text_id ),
+					$defaults[ $streaming_widget_member_text_id ],
 					__( 'Message for Coil members', 'coil-web-monetization' )
 				);
 
 				Rendering\render_input_field_heading(
 					__( 'Color Theme', 'coil-web-monetization' )
 				);
-				button_theme_render_callback();
+				streaming_widget_theme_render_callback();
 
 				Rendering\render_input_field_heading(
 					__( 'Widget Size', 'coil-web-monetization' )
 				);
-				button_size_render_callback();
+				streaming_widget_size_render_callback();
 
 				Rendering\render_input_field_heading(
 					__( 'Position on Screen', 'coil-web-monetization' )
 				);
-				buton_position_dropdown();
+				streaming_widget_position_dropdown();
 
 				Rendering\render_input_field_heading(
 					__( 'Margin', 'coil-web-monetization' )
@@ -1281,29 +1281,29 @@ function coil_settings_streaming_support_widget_settings_render_callback() {
 					__( 'Preview', 'coil-web-monetization' )
 				);
 
-				$streaming_support_widget_position       = Admin\get_streaming_support_widget_setting( 'streaming_support_widget_position' );
-				$streaming_support_widget_size           = Admin\get_streaming_support_widget_setting( 'streaming_support_widget_size' );
-				$streaming_support_widget_theme          = Admin\get_streaming_support_widget_setting( 'streaming_support_widget_color_theme' );
-				$streaming_support_widget_member_display = Admin\get_streaming_support_widget_setting( 'streaming_support_widget_member_display' );
+				$streaming_widget_position       = Admin\get_streaming_widget_setting( 'streaming_widget_position' );
+				$streaming_widget_size           = Admin\get_streaming_widget_setting( 'streaming_widget_size' );
+				$streaming_widget_theme          = Admin\get_streaming_widget_setting( 'streaming_widget_color_theme' );
+				$streaming_widget_member_display = Admin\get_streaming_widget_setting( 'streaming_widget_member_display' );
 
-				$coil_logo_type = ( $streaming_support_widget_theme === 'light' ? 'black' : 'white' );
+				$coil_logo_type = ( $streaming_widget_theme === 'light' ? 'black' : 'white' );
 				?>
 
 				<div class="coil-preview coil-non-members stacked">
 					<p><?php _e( 'Without Coil Membership', 'coil-web-monetization' ); ?></p>
-					<div class="streaming-support-widget" data-theme="<?php echo esc_attr( $streaming_support_widget_theme ); ?>" data-position="<?php echo esc_attr( $streaming_support_widget_position ); ?>" data-size="<?php echo esc_attr( $streaming_support_widget_size ); ?>">
+					<div class="streaming-support-widget" data-theme="<?php echo esc_attr( $streaming_widget_theme ); ?>" data-position="<?php echo esc_attr( $streaming_widget_position ); ?>" data-size="<?php echo esc_attr( $streaming_widget_size ); ?>">
 						<div>
 							<?php printf( '<img class="%s" src="%s" />', 'streaming-support-widget-image', plugin_dir_url( COIL__FILE__ ) . 'assets/images/coil-icn-' . $coil_logo_type . '.svg' ); ?>
-							<div><?php echo Admin\get_streaming_support_widget_setting( 'streaming_support_widget_text', true ); ?></div>
+							<div><?php echo Admin\get_streaming_widget_setting( 'streaming_widget_text', true ); ?></div>
 						</div>
 					</div>
 				</div>
-				<div class="coil-preview coil-members stacked <?php echo $streaming_support_widget_member_display === true ? '' : 'hide'; ?>">
+				<div class="coil-preview coil-members stacked <?php echo $streaming_widget_member_display === true ? '' : 'hide'; ?>">
 					<p><?php _e( 'With Coil Membership', 'coil-web-monetization' ); ?></p>
-					<div class="streaming-support-widget" data-theme="<?php echo esc_attr( $streaming_support_widget_theme ); ?>" data-position="<?php echo esc_attr( $streaming_support_widget_position ); ?>" data-size="<?php echo esc_attr( $streaming_support_widget_size ); ?>">
+					<div class="streaming-support-widget" data-theme="<?php echo esc_attr( $streaming_widget_theme ); ?>" data-position="<?php echo esc_attr( $streaming_widget_position ); ?>" data-size="<?php echo esc_attr( $streaming_widget_size ); ?>">
 						<div>
 							<?php printf( '<img class="%s" src="%s" />', 'streaming-support-widget-image', plugin_dir_url( COIL__FILE__ ) . 'assets/images/coil-icn-' . $coil_logo_type . '-streaming.svg' ); ?>
-							<div><?php echo Admin\get_streaming_support_widget_setting( 'coil_members_button_text', true ); ?></div>
+							<div><?php echo Admin\get_streaming_widget_setting( 'members_streaming_widget_text', true ); ?></div>
 						</div>
 					</div>
 				</div>
@@ -1318,28 +1318,28 @@ function coil_settings_streaming_support_widget_settings_render_callback() {
  *
  * @return void
 */
-function button_theme_render_callback() {
+function streaming_widget_theme_render_callback() {
 
 	// Set the theme color settingcoil-preview
-	$button_color_theme = Admin\get_streaming_support_widget_setting( 'streaming_support_widget_color_theme' );
+	$widget_color_theme = Admin\get_streaming_widget_setting( 'streaming_widget_color_theme' );
 
 	echo '<div class="coil-radio-group">';
 
 	Rendering\render_radio_button_field(
 		'dark_color_theme',
-		'streaming_support_widget_settings_group[streaming_support_widget_color_theme]',
+		'streaming_widget_settings_group[streaming_widget_color_theme]',
 		'dark',
 		__( 'Dark', 'coil-web-monetization' ),
-		$button_color_theme,
+		$widget_color_theme,
 		true
 	);
 
 	Rendering\render_radio_button_field(
 		'light_color_theme',
-		'streaming_support_widget_settings_group[streaming_support_widget_color_theme]',
+		'streaming_widget_settings_group[streaming_widget_color_theme]',
 		'light',
 		__( 'Light', 'coil-web-monetization' ),
-		$button_color_theme
+		$widget_color_theme
 	);
 
 	echo '</div>';
@@ -1350,28 +1350,28 @@ function button_theme_render_callback() {
  *
  * @return void
 */
-function button_size_render_callback() {
+function streaming_widget_size_render_callback() {
 
 	// Set the theme color setting coil-preview
-	$button_size = Admin\get_streaming_support_widget_setting( 'streaming_support_widget_size' );
+	$widget_size = Admin\get_streaming_widget_setting( 'streaming_widget_size' );
 
 	echo '<div class="coil-radio-group">';
 
 	Rendering\render_radio_button_field(
 		'large_size',
-		'streaming_support_widget_settings_group[streaming_support_widget_size]',
+		'streaming_widget_settings_group[streaming_widget_size]',
 		'large',
 		__( 'Large', 'coil-web-monetization' ),
-		$button_size,
+		$widget_size,
 		true
 	);
 
 	Rendering\render_radio_button_field(
 		'small_size',
-		'streaming_support_widget_settings_group[streaming_support_widget_size]',
+		'streaming_widget_settings_group[streaming_widget_size]',
 		'small',
 		__( 'Small', 'coil-web-monetization' ),
-		$button_size
+		$widget_size
 	);
 
 	echo '</div>';
@@ -1382,15 +1382,15 @@ function button_size_render_callback() {
  *
  * @return void
 */
-function buton_position_dropdown() {
-	$position = Admin\get_streaming_support_widget_setting( 'streaming_support_widget_position' );
+function streaming_widget_position_dropdown() {
+	$position = Admin\get_streaming_widget_setting( 'streaming_widget_position' );
 	echo sprintf(
 		'<select name="%s" id="%s">',
-		'streaming_support_widget_settings_group[streaming_support_widget_position]',
+		'streaming_widget_settings_group[streaming_widget_position]',
 		'position_dropdown'
 	);
 
-	$position_options = Admin\get_button_position_options();
+	$position_options = Admin\get_streaming_widget_position_options();
 
 	foreach ( $position_options as $setting_key => $setting_value ) {
 		printf(
@@ -1412,24 +1412,24 @@ function render_buton_margin_settings() {
 	echo '<div class="coil-margin-input-group">';
 
 	$margins = [
-		'streaming_support_widget_top_margin'    => Admin\get_streaming_support_widget_setting( 'streaming_support_widget_top_margin' ) !== false ? Admin\get_streaming_support_widget_setting( 'streaming_support_widget_top_margin' ) : '',
-		'streaming_support_widget_bottom_margin' => Admin\get_streaming_support_widget_setting( 'streaming_support_widget_bottom_margin' ) !== false ? Admin\get_streaming_support_widget_setting( 'streaming_support_widget_bottom_margin' ) : '',
-		'streaming_support_widget_right_margin'  => Admin\get_streaming_support_widget_setting( 'streaming_support_widget_right_margin' ) !== false ? Admin\get_streaming_support_widget_setting( 'streaming_support_widget_right_margin' ) : '',
-		'streaming_support_widget_left_margin'   => Admin\get_streaming_support_widget_setting( 'streaming_support_widget_left_margin' ) !== false ? Admin\get_streaming_support_widget_setting( 'streaming_support_widget_left_margin' ) : '',
+		'streaming_widget_top_margin'    => Admin\get_streaming_widget_setting( 'streaming_widget_top_margin' ) !== false ? Admin\get_streaming_widget_setting( 'streaming_widget_top_margin' ) : '',
+		'streaming_widget_bottom_margin' => Admin\get_streaming_widget_setting( 'streaming_widget_bottom_margin' ) !== false ? Admin\get_streaming_widget_setting( 'streaming_widget_bottom_margin' ) : '',
+		'streaming_widget_right_margin'  => Admin\get_streaming_widget_setting( 'streaming_widget_right_margin' ) !== false ? Admin\get_streaming_widget_setting( 'streaming_widget_right_margin' ) : '',
+		'streaming_widget_left_margin'   => Admin\get_streaming_widget_setting( 'streaming_widget_left_margin' ) !== false ? Admin\get_streaming_widget_setting( 'streaming_widget_left_margin' ) : '',
 	];
 
-	$placeholders = Admin\get_button_margin_key_defaults();
+	$placeholders = Admin\get_streaming_widget_margin_key_defaults();
 
 	$desciptions = [
-		'streaming_support_widget_top_margin'    => esc_html__( 'TOP', 'coil-web-monetization' ),
-		'streaming_support_widget_bottom_margin' => esc_html__( 'BOTTOM', 'coil-web-monetization' ),
-		'streaming_support_widget_right_margin'  => esc_html__( 'RIGHT', 'coil-web-monetization' ),
-		'streaming_support_widget_left_margin'   => esc_html__( 'LEFT', 'coil-web-monetization' ),
+		'streaming_widget_top_margin'    => esc_html__( 'TOP', 'coil-web-monetization' ),
+		'streaming_widget_bottom_margin' => esc_html__( 'BOTTOM', 'coil-web-monetization' ),
+		'streaming_widget_right_margin'  => esc_html__( 'RIGHT', 'coil-web-monetization' ),
+		'streaming_widget_left_margin'   => esc_html__( 'LEFT', 'coil-web-monetization' ),
 
 	];
 
 	foreach ( $margins as $id => $setting ) {
-		$location = str_replace( 'streaming_support_widget_', '', $id );
+		$location = str_replace( 'streaming_widget_', '', $id );
 		$location = str_replace( '_margin', '', $location );
 		printf(
 			'<div class="%s" style="%s">',
@@ -1443,7 +1443,7 @@ function render_buton_margin_settings() {
 		}
 		Rendering\render_text_input_field(
 			$id,
-			'streaming_support_widget_settings_group[' . $id . ']',
+			'streaming_widget_settings_group[' . $id . ']',
 			esc_attr( $setting ),
 			esc_attr( $placeholders[ $id ] . 'px' )
 		);
@@ -1462,7 +1462,7 @@ function render_buton_margin_settings() {
  * Renders the streaming support widget visibility settings
  * @return void
 */
-function coil_settings_streaming_support_widget_visibility_render_callback() {
+function coil_settings_streaming_widget_visibility_render_callback() {
 	?>
 	<div class="tab-styling streaming-support-widget-section">
 		<?php
@@ -1477,11 +1477,11 @@ function coil_settings_streaming_support_widget_visibility_render_callback() {
 			'hide' => 'Hide',
 		];
 		Rendering\render_generic_post_type_table(
-			'streaming_support_widget_settings_group',
+			'streaming_widget_settings_group',
 			$columns,
 			'radio',
-			'button_visibility',
-			Admin\get_streaming_support_widget_settings()
+			'streaming_widget_visibility',
+			Admin\get_streaming_widget_settings()
 		);
 		?>
 	</div>
@@ -1601,7 +1601,7 @@ function render_coil_settings_screen() : void {
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=welcome' ); ?>" id="coil-welcome-settings" class="nav-tab <?php echo $active_tab === 'welcome' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Welcome', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=general_settings' ); ?>" id="coil-general-settings" class="nav-tab <?php echo $active_tab === 'general_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'General Settings', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=exclusive_settings' ); ?>" id="coil-exclusive-settings" class="nav-tab <?php echo $active_tab === 'exclusive_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Exclusive Content', 'coil-web-monetization' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=streaming_support_widget' ); ?>" id="streaming-support-widget-settings" class="nav-tab <?php echo $active_tab === 'streaming_support_widget' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Streaming Support Widget', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=streaming_widget' ); ?>" id="streaming-support-widget-settings" class="nav-tab <?php echo $active_tab === 'streaming_widget' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Streaming Support Widget', 'coil-web-monetization' ); ?></a>
 		</h2>
 	</div>
 	<div class="wrap coil plugin-settings">
@@ -1638,12 +1638,12 @@ function render_coil_settings_screen() : void {
 					submit_button();
 					echo '</div>';
 					break;
-				case 'streaming_support_widget':
+				case 'streaming_widget':
 					echo '<div class="settings-main">';
-					settings_fields( 'streaming_support_widget_settings_group' );
+					settings_fields( 'streaming_widget_settings_group' );
 					do_settings_sections( 'coil_enable_button_section' );
-					do_settings_sections( 'streaming_support_widget_settings_section' );
-					do_settings_sections( 'streaming_support_widget_visibility_section' );
+					do_settings_sections( 'streaming_widget_settings_section' );
+					do_settings_sections( 'streaming_widget_visibility_section' );
 					submit_button();
 					echo '</div>';
 					break;

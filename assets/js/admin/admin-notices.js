@@ -18,7 +18,7 @@
 		invalidBlankInputMsg = coilAdminParams.invalid_blank_input_msg,
 		invalidUrlMsg = coilAdminParams.invalid_url_msg,
 		invalidMarginValueMsg = coilAdminParams.invalid_margin_value_msg,
-		streamingSupportWidgetPosition = coilAdminParams.streaming_support_widget_position;
+		streamingWidgetPosition = coilAdminParams.streaming_widget_position;
 
 	const activeTabID = $( '.nav-tab-wrapper a.nav-tab-active' ).attr( 'id' ),
 		red = '#EE4852',
@@ -240,25 +240,25 @@
 	// Streaming support widget tab
 	if ( activeTabID === 'streaming-support-widget-settings' ) {
 		// Initial set-up
-		const streamingSupportWidgetEnabled = $( 'input[name="streaming_support_widget_settings_group[streaming_support_widget_toggle]"]' ).is( ':checked' ),
-			streamingSupportWidgetPreviewSelector = 'div.coil-preview.coil-non-members .streaming-support-widget div > div',
-			streamingSupportWidgetMemberPreviewSelector = 'div.coil-preview.coil-members .streaming-support-widget div > div',
-			streamingSupportWidget = $( '#streaming_support_widget_text' ),
-			coilMembersWidget = $( '#coil_members_button_text' ),
+		const streamingWidgetEnabled = $( 'input[name="streaming_widget_settings_group[streaming_widget_toggle]"]' ).is( ':checked' ),
+			streamingWidgetPreviewSelector = 'div.coil-preview.coil-non-members .streaming-support-widget div > div',
+			streamingWidgetMemberPreviewSelector = 'div.coil-preview.coil-members .streaming-support-widget div > div',
+			streamingWidget = $( '#streaming_widget_text' ),
+			coilMembersWidget = $( '#members_streaming_widget_text' ),
 			onlyWhiteSpace = /^\s+$/,
-			position = streamingSupportWidgetPosition.split( '-' );
-		if ( streamingSupportWidgetEnabled ) {
+			position = streamingWidgetPosition.split( '-' );
+		if ( streamingWidgetEnabled ) {
 			$( '*.streaming-support-widget-section' ).show();
 		} else {
 			$( '*.streaming-support-widget-section' ).hide();
 		}
 
 		// Hide the streaming support widget text div if the text is only white space
-		if ( onlyWhiteSpace.test( streamingSupportWidget.val() ) ) {
-			$( streamingSupportWidgetPreviewSelector ).hide();
+		if ( onlyWhiteSpace.test( streamingWidget.val() ) ) {
+			$( streamingWidgetPreviewSelector ).hide();
 		}
 		if ( onlyWhiteSpace.test( coilMembersWidget.val() ) ) {
-			$( streamingSupportWidgetMemberPreviewSelector ).hide();
+			$( streamingWidgetMemberPreviewSelector ).hide();
 		}
 
 		// Display the two margin input cells that are relevent to the streaming support widget's position
@@ -452,11 +452,11 @@
 	* Streaming support widget tab
 	* ------------------------------------------------------------------------ */
 
-	$( document ).on( 'change', 'input[name="streaming_support_widget_settings_group[streaming_support_widget_toggle]"]', function() {
+	$( document ).on( 'change', 'input[name="streaming_widget_settings_group[streaming_widget_toggle]"]', function() {
 		$( '.streaming-support-widget-section' ).toggle();
 	} );
 
-	$( document ).on( 'input', '#streaming_support_widget_text', function() {
+	$( document ).on( 'input', '#streaming_widget_text', function() {
 		const previewSelector = 'div.coil-preview.coil-non-members .streaming-support-widget div > div',
 			onlyWhiteSpace = /^\s+$/;
 		if ( $( this ).val() !== '' ) {
@@ -473,22 +473,22 @@
 	} );
 
 	// Invalid input alert
-	$( document ).on( 'focusout', '#streaming_support_widget_link', function() {
-		const widgetLinkElement = $( '#streaming_support_widget_link' ),
+	$( document ).on( 'focusout', '#streaming_widget_link', function() {
+		const widgetLinkElement = $( '#streaming_widget_link' ),
 			validUrl = isValidUrl( $( this ).val() ),
 			validityCondition = validUrl || $( this ).val() === '';
 
 		focusOutValidityHandler( widgetLinkElement, validityCondition, invalidUrlMsg );
 	} );
 
-	$( document ).on( 'input', '#streaming_support_widget_link', function() {
-		const widgetLinkElement = $( '#streaming_support_widget_link' ),
+	$( document ).on( 'input', '#streaming_widget_link', function() {
+		const widgetLinkElement = $( '#streaming_widget_link' ),
 			onlyWhiteSpace = /^\s+$/,
 			validityCondition = ! onlyWhiteSpace.test( $( this ).val() );
 		inputValidityHandler( widgetLinkElement, validityCondition, true, invalidBlankInputMsg );
 	} );
 
-	$( document ).on( 'input', '#coil_members_button_text', function() {
+	$( document ).on( 'input', '#members_streaming_widget_text', function() {
 		const previewSelector = 'div.coil-preview.coil-members .streaming-support-widget div > div',
 			onlyWhiteSpace = /^\s+$/;
 		if ( $( this ).val() !== '' ) {
@@ -504,7 +504,7 @@
 		}
 	} );
 
-	$( document ).on( 'change', 'input[name="streaming_support_widget_settings_group[streaming_support_widget_color_theme]"]', function() {
+	$( document ).on( 'change', 'input[name="streaming_widget_settings_group[streaming_widget_color_theme]"]', function() {
 		const coilTheme = $( this ).val();
 
 		let logoSrc = '',
@@ -524,17 +524,17 @@
 		$( '.coil-preview.coil-members .streaming-support-widget-image' ).attr( 'src', logoStreamingSrc );
 	} );
 
-	$( document ).on( 'change', 'input[name="streaming_support_widget_settings_group[streaming_support_widget_member_display]"]', function() {
+	$( document ).on( 'change', 'input[name="streaming_widget_settings_group[streaming_widget_member_display]"]', function() {
 		$( 'div.coil-preview.coil-members' ).toggleClass( 'hide' );
 	} );
 
-	$( document ).on( 'change', 'input[name="streaming_support_widget_settings_group[streaming_support_widget_size]"]', function() {
+	$( document ).on( 'change', 'input[name="streaming_widget_settings_group[streaming_widget_size]"]', function() {
 		const buttonSize = $( this ).val();
 
 		$( '.coil-preview .streaming-support-widget' ).attr( 'data-size', buttonSize );
 	} );
 
-	$( document ).on( 'change', 'select[name="streaming_support_widget_settings_group[streaming_support_widget_position]"]', function() {
+	$( document ).on( 'change', 'select[name="streaming_widget_settings_group[streaming_widget_position]"]', function() {
 		const buttonPosition = $( this ).val(),
 			position = buttonPosition.split( '-' );
 
@@ -558,35 +558,35 @@
 		}
 	} );
 
-	$( document ).on( 'input', '#streaming_support_widget_top_margin', function() {
-		marginInputValidityHandler( $( '#streaming_support_widget_top_margin' ) );
+	$( document ).on( 'input', '#streaming_widget_top_margin', function() {
+		marginInputValidityHandler( $( '#streaming_widget_top_margin' ) );
 	} );
 
-	$( document ).on( 'focusout', '#streaming_support_widget_top_margin', function() {
-		marginFocusOutValidityHandler( $( '#streaming_support_widget_top_margin' ) );
+	$( document ).on( 'focusout', '#streaming_widget_top_margin', function() {
+		marginFocusOutValidityHandler( $( '#streaming_widget_top_margin' ) );
 	} );
 
-	$( document ).on( 'input', '#streaming_support_widget_bottom_margin', function() {
-		marginInputValidityHandler( $( '#streaming_support_widget_bottom_margin' ) );
+	$( document ).on( 'input', '#streaming_widget_bottom_margin', function() {
+		marginInputValidityHandler( $( '#streaming_widget_bottom_margin' ) );
 	} );
 
-	$( document ).on( 'focusout', '#streaming_support_widget_bottom_margin', function() {
-		marginFocusOutValidityHandler( $( '#streaming_support_widget_bottom_margin' ) );
+	$( document ).on( 'focusout', '#streaming_widget_bottom_margin', function() {
+		marginFocusOutValidityHandler( $( '#streaming_widget_bottom_margin' ) );
 	} );
 
-	$( document ).on( 'input', '#streaming_support_widget_right_margin', function() {
-		marginInputValidityHandler( $( '#streaming_support_widget_right_margin' ) );
+	$( document ).on( 'input', '#streaming_widget_right_margin', function() {
+		marginInputValidityHandler( $( '#streaming_widget_right_margin' ) );
 	} );
 
-	$( document ).on( 'focusout', '#streaming_support_widget_right_margin', function() {
-		marginFocusOutValidityHandler( $( '#streaming_support_widget_right_margin' ) );
+	$( document ).on( 'focusout', '#streaming_widget_right_margin', function() {
+		marginFocusOutValidityHandler( $( '#streaming_widget_right_margin' ) );
 	} );
 
-	$( document ).on( 'input', '#streaming_support_widget_left_margin', function() {
-		marginInputValidityHandler( $( '#streaming_support_widget_left_margin' ) );
+	$( document ).on( 'input', '#streaming_widget_left_margin', function() {
+		marginInputValidityHandler( $( '#streaming_widget_left_margin' ) );
 	} );
 
-	$( document ).on( 'focusout', '#streaming_support_widget_left_margin', function() {
-		marginFocusOutValidityHandler( $( '#streaming_support_widget_left_margin' ) );
+	$( document ).on( 'focusout', '#streaming_widget_left_margin', function() {
+		marginFocusOutValidityHandler( $( '#streaming_widget_left_margin' ) );
 	} );
 }( jQuery ) );

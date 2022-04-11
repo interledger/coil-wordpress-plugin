@@ -6,7 +6,7 @@ describe( 'Streaming support widget for WM-enabled users', function() {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
 		cy.resetSite();
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_support_widget' );
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_widget' );
 	} );
 
 	afterEach( () => {
@@ -16,11 +16,11 @@ describe( 'Streaming support widget for WM-enabled users', function() {
 	it( 'Checks the streaming support widget can be set to not display for Coil members', () => {
 		// Set the streaming support widget to not display for Coil members.
 		cy
-			.get( '#streaming_support_widget_member_display' )
+			.get( '#streaming_widget_member_display' )
 			.uncheck();
 
 		cy
-			.get( '#post_button_visibility_show' )
+			.get( '#post_streaming_widget_visibility_show' )
 			.should( 'be.checked' );
 
 		cy
@@ -64,13 +64,13 @@ describe( 'Streaming support widget for WM-enabled users', function() {
 		const buttonMemberText = 'Thank you!';
 
 		cy
-			.get( '#coil_members_button_text' )
+			.get( '#members_streaming_widget_text' )
 			.type( `{selectall}${ buttonMemberText }` );
 		cy
-			.get( '#streaming_support_widget_member_display' )
+			.get( '#streaming_widget_member_display' )
 			.should( 'be.checked' );
 		cy
-			.get( '#post_button_visibility_show' )
+			.get( '#post_streaming_widget_visibility_show' )
 			.should( 'be.checked' );
 		cy
 			.get( '#submit' )
@@ -134,7 +134,7 @@ describe( 'Streaming support widget for non WM-enabled users', function() {
 
 	it( 'Checks that the streaming support widget be can be enabled/disabled', function() {
 		// Disable the streaming support widget.
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_support_widget' );
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_widget' );
 		cy
 			.get( '.coil-checkbox' )
 			.click();
@@ -149,15 +149,15 @@ describe( 'Streaming support widget for non WM-enabled users', function() {
 			.should( 'not.exist' );
 
 		// Enable the streaming support widget and set it to display.
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_support_widget' );
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_widget' );
 		cy
 			.get( '.coil-checkbox' )
 			.click();
 		cy
-			.get( '#post_button_visibility_show' )
+			.get( '#post_streaming_widget_visibility_show' )
 			.should( 'be.checked' );
 		cy
-			.get( '#post_button_visibility_show' )
+			.get( '#post_streaming_widget_visibility_show' )
 			.should( 'be.checked' );
 
 		cy
@@ -175,16 +175,16 @@ describe( 'Streaming support widget for non WM-enabled users', function() {
 		const buttonText = 'Coil Eyes Only';
 		const buttonLink = 'https://example.com/';
 
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_support_widget' );
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_widget' );
 		cy
-			.get( '#streaming_support_widget_text' )
+			.get( '#streaming_widget_text' )
 			.type( `{selectall}${ buttonText }` );
 		cy
-			.get( '#streaming_support_widget_link' )
+			.get( '#streaming_widget_link' )
 			.type( `{selectall}${ buttonLink }` );
 
 		cy
-			.get( '#post_button_visibility_show' )
+			.get( '#post_streaming_widget_visibility_show' )
 			.should( 'be.checked' );
 		cy
 			.get( '#submit' )
@@ -204,7 +204,7 @@ describe( 'Streaming support widget for non WM-enabled users', function() {
 		const bottomMargin = '-40';
 		const leftMargin = 'abc';
 
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_support_widget' );
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_widget' );
 		cy
 			.get( '#light_color_theme' )
 			.click();
@@ -218,10 +218,10 @@ describe( 'Streaming support widget for non WM-enabled users', function() {
 			.select( 'bottom-left' );
 
 		cy
-			.get( '#streaming_support_widget_bottom_margin' )
+			.get( '#streaming_widget_bottom_margin' )
 			.type( `{selectall}${ bottomMargin }` );
 		cy
-			.get( '#streaming_support_widget_left_margin' )
+			.get( '#streaming_widget_left_margin' )
 			.type( `{selectall}${ leftMargin }` );
 
 		cy
@@ -240,10 +240,10 @@ describe( 'Streaming support widget for non WM-enabled users', function() {
 	} );
 
 	it( 'Checks the button can be hidden on a post level', () => {
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_support_widget' );
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_widget' );
 
 		cy
-			.get( '#post_button_visibility_hide' )
+			.get( '#post_streaming_widget_visibility_hide' )
 			.click();
 
 		cy
@@ -297,7 +297,7 @@ describe( 'Streaming support widget for non WM-enabled users', function() {
 			.should( 'not.exist' );
 
 		cy
-			.getCookie( 'ShowStreamingSupportWidgetMsg' )
+			.getCookie( 'ShowStreamingWidgetMsg' )
 			.should( 'have.property', 'value', '1' );
 	} );
 } );

@@ -162,9 +162,9 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 	z-index: 200;
 
 	.streaming-support-widget {
-		background-color: $streaming_support_widget_message_color;
+		background-color: $streaming_widget_message_color;
 		border-radius: 6px;
-		box-shadow: 0 6px 10px 0 $streaming_support_widget_message_shadow_color;
+		box-shadow: 0 6px 10px 0 $streaming_widget_message_shadow_color;
 		font-family: 'Open Sans', sans-serif;
 		font-size: 17px;
 		font-weight: 600;
@@ -180,7 +180,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 			padding: $message_spacing_baseline;
 			text-decoration: none;
 			div {
-				color: $streaming_support_widget_font_color;
+				color: $streaming_widget_font_color;
 				margin: auto;
 				padding-left: $message_spacing_baseline;
 				padding-right: $message_spacing_baseline;
@@ -198,7 +198,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 		}
 
 		.streaming-support-widget-dismiss {
-			background-color: $streaming_support_widget_message_dismiss_color;
+			background-color: $streaming_widget_message_dismiss_color;
 			border-radius: 100%;
 			color: $coil_dismiss_font_color;
 			cursor: pointer;
@@ -238,11 +238,11 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 // Changes streaming support widget to implement light theme
 .streaming-support-widget-message-container.coil-light-theme {
 	.streaming-support-widget {
-		background-color: $streaming_support_widget_message_color_light_theme;
+		background-color: $streaming_widget_message_color_light_theme;
 
 		a {
 			div {
-				color: $streaming_support_widget_font_color_light_theme;
+				color: $streaming_widget_font_color_light_theme;
 			}
 		}
 	}
@@ -251,14 +251,14 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 // Implement hover effect
 body:not( .monetization-initialized ) .streaming-support-widget-message-container .streaming-support-widget {
 	&:hover {
-		background-color: $streaming_support_widget_message_hover_color;
+		background-color: $streaming_widget_message_hover_color;
 	}
 }
 
 // Implement hover effect for the light theme
 body:not( .monetization-initialized ) .streaming-support-widget-message-container.coil-light-theme .streaming-support-widget {
 	&:hover {
-		background-color: $streaming_support_widget_message_hover_color_light_theme;
+		background-color: $streaming_widget_message_hover_color_light_theme;
 	}
 }
 

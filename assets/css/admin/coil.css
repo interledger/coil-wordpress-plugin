@@ -144,9 +144,9 @@
             display: none; }
             .coil form .settings-main .tab-styling #coil_title_padlock:not(:checked) + label + #coil_icon_position_label + .coil-radio-group + #coil_icon_style_label + .coil-radio-group {
               display: none; }
-      .coil form .settings-main .tab-styling #streaming_support_widget_member_display:not(:checked) + label + h4 {
+      .coil form .settings-main .tab-styling #streaming_widget_member_display:not(:checked) + label + h4 {
         display: none; }
-        .coil form .settings-main .tab-styling #streaming_support_widget_member_display:not(:checked) + label + h4 + input {
+        .coil form .settings-main .tab-styling #streaming_widget_member_display:not(:checked) + label + h4 + input {
           display: none; }
       .coil form .settings-main .tab-styling .coil-radio-group {
         align-items: center;
