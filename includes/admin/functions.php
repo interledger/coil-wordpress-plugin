@@ -400,9 +400,9 @@ function get_exclusive_settings(): array {
  * @return bool setting stored in options
  */
 function is_exclusive_content_enabled() {
-	$exclusive_options   = get_exclusive_settings();
-	$exclusive_toggle_id = 'coil_exclusive_toggle';
-	return isset( $exclusive_options[ $exclusive_toggle_id ] ) ? $exclusive_options[ $exclusive_toggle_id ] : get_exclusive_content_enabled_default();
+	$exclusive_options = get_exclusive_settings();
+	$toggle_id         = 'coil_exclusive_toggle';
+	return isset( $exclusive_options[ $toggle_id ] ) ? $exclusive_options[ $toggle_id ] : get_exclusive_content_enabled_default();
 }
 
 /**
@@ -670,8 +670,8 @@ function get_streaming_widget_settings() : array {
  */
 function is_streaming_widget_enabled() {
 	$streaming_widget_options = get_streaming_widget_settings();
-	$exclusive_toggle_id      = 'streaming_widget_toggle';
-	return isset( $streaming_widget_options[ $exclusive_toggle_id ] ) ? $streaming_widget_options[ $exclusive_toggle_id ] : false;
+	$toggle_id                = 'streaming_widget_toggle';
+	return isset( $streaming_widget_options[ $toggle_id ] ) ? $streaming_widget_options[ $toggle_id ] : false;
 }
 
 /**

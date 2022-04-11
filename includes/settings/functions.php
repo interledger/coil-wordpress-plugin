@@ -1272,7 +1272,7 @@ function coil_settings_streaming_widget_settings_render_callback() {
 				Rendering\render_input_field_heading(
 					__( 'Margin', 'coil-web-monetization' )
 				);
-				render_buton_margin_settings();
+				render_streaming_widget_margin_settings();
 				?>
 			</div>
 			<div class="coil-column-5">
@@ -1408,7 +1408,7 @@ function streaming_widget_position_dropdown() {
  *
  * @return void
 */
-function render_buton_margin_settings() {
+function render_streaming_widget_margin_settings() {
 	echo '<div class="coil-margin-input-group">';
 
 	$margins = [

@@ -200,7 +200,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 		.streaming-support-widget-dismiss {
 			background-color: $streaming_widget_message_dismiss_color;
 			border-radius: 100%;
-			color: $coil_dismiss_font_color;
+			color: $streaming_widget_dismiss_font_color;
 			cursor: pointer;
 			display: none;
 			font-size: 20px;
@@ -213,7 +213,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 			width: 20px;
 
 			&:hover {
-				background-color: $coil_dismiss_hover_color;
+				background-color: $streaming_widget_dismiss_hover_color;
 			}
 		}
 	}
