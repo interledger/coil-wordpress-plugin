@@ -1661,28 +1661,6 @@ function render_coil_settings_screen() : void {
  * @return void
 */
 function coil_add_term_custom_meta( $term ) {
-	coil_term_custom_meta( 'add', $term );
-}
-
-/**
- * Add Coil status controls to the "Edit Term" screen.
- *
- * @param WP_Term_Object $term
- * @return void
-*/
-function coil_edit_term_custom_meta( $term ) {
-	coil_term_custom_meta( 'edit', $term );
-}
-
-/**
- * Add Coil status controls to the "Add Term" and "Edit Term" screens.
- * The functions differ slightly in structure due to the html requirements of the different screens.
- *
- * @param String $action {'add' | 'edit'}
- * @param WP_Term_Object $term
- * @return void
-*/
-function coil_term_custom_meta( $action, $term ) {
 
 	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
 		return;
@@ -1703,29 +1681,16 @@ function coil_term_custom_meta( $action, $term ) {
 	// If these meta fields are empty they return 'default'.
 	$term_monetization = Gating\get_term_status( $term->term_id, '_coil_monetization_term_status' );
 	$term_visibility   = Gating\get_term_status( $term->term_id, '_coil_visibility_term_status' );
-
 	// There is no 'default' button for visibility so if it is set to default then select the option that it is defaulting to in the exclusive settings group.
 	if ( $term_visibility === 'default' ) {
 		$term_visibility = Admin\get_visibility_default();
 	}
 
-	if ( $action === 'add' ) {
-		?>
-		<div id="coil_dropdown">
-			<label for="_coil_monetization_term_status"><?php esc_html_e( 'Select a Web Monetization status', 'coil-web-monetization' ); ?></label>
-		<?php
-	} else {
-		?>
-		<tr class="form-field">
-		<th>
-			<?php esc_html_e( 'Select a Web Monetization status', 'coil-web-monetization' ); ?>
-		</th>
-		<td id="coil_dropdown">
-		<?php
-	}
 	?>
+	<div id="coil_dropdown">
+		<label for="_coil_monetization_term_status"><?php esc_html_e( 'Select a Web Monetization status', 'coil-web-monetization' ); ?></label>
 
-	<select name="_coil_monetization_term_status" id="monetization_dropdown" onchange="javascript: handleRadioOptionsDisplay('<?php echo esc_attr( $term_visibility ); ?>')">
+		<select name="_coil_monetization_term_status" id="monetization_dropdown" onchange="javascript: handleRadioOptionsDisplay('<?php echo esc_attr( $term_visibility ); ?>')">
 		<?php
 		foreach ( $monetization_options as $setting_key => $setting_value ) {
 			printf(
@@ -1736,7 +1701,9 @@ function coil_term_custom_meta( $action, $term ) {
 			);
 		}
 		?>
-	</select>
+		</select>
+	</div><br>
+
 	<?php
 	// Use the output buffer to set the content for the visibility settings
 	ob_start();
@@ -1758,22 +1725,10 @@ function coil_term_custom_meta( $action, $term ) {
 	endforeach;
 	$visibility_options = ob_get_contents();
 	ob_end_clean();
+	?>
 
-	if ( $action === 'add' ) {
-		?>
-		</div>
-		<br />
-		<div id="coil-radio-selection" style="display: none;">
-			<label><?php esc_html_e( 'Who can access this content?', 'coil-web-monetization' ); ?></label>
-			<fieldset id="coil-visibility-settings">
-				<?php echo $visibility_options; ?>
-			</fieldset>
-		</div>
-		<?php
-	} else {
-		?>
-		</tr>
-		<tr class="form-field" id="coil-radio-selection" style="display: none">
+	<div id="coil-radio-selection" style="display: none">
+		<tr class="form-field">
 			<th scope="row">
 				<label><?php esc_html_e( 'Who can access this content?', 'coil-web-monetization' ); ?></label>
 			</th>
@@ -1783,33 +1738,155 @@ function coil_term_custom_meta( $action, $term ) {
 				</fieldset>
 			</td>
 		</tr>
-		<?php
-	}
-	?>
-	<script>
-		/**
-		 *
-		 * Ensures the appropriate visibility radio button is selected.
-		 * @param {String} The visibility status slug
-		 * @return {void}
-		*/
-		function handleRadioOptionsDisplay( element ) {
-			var radioButtons = document.getElementById("coil-radio-selection");
-			if (document.getElementById("monetization_dropdown").value === 'monetized') {
-				// If monetization is enabled then the visibility options should appear
-				radioButtons.removeAttribute("style");
-				// Checks the button associated with the default visibility value rather than just the last button that had been selected.
-				if (element !== '' ) {
-					document.getElementById(element).checked = true;
-				}
-			} else {
-				// If monetization is not enabled then the visibility options should disappear
-				radioButtons.setAttribute("style", "display: none" );
-			}
-		}
+	</div>
+	<br>
 
-		// For the edit screen this function is called so that the radio buttons are hidden or displayed based on the existing settings.
-		handleRadioOptionsDisplay('');
+	<script>
+	/**
+	 *
+	 * Ensures the appropriate visibility radio button is selected.
+	 * @param {String} The visibility status slug
+	 * @return {void}
+	*/
+	function handleRadioOptionsDisplay( element ) {
+		var radioButtons = document.getElementById("coil-radio-selection");
+		if (document.getElementById("monetization_dropdown").value === 'monetized') {
+			// If monetization is enabled then the visibility options should appear
+			radioButtons.removeAttribute("style");
+			// Checks the button associated with the default visibility value rather than just the last button that had been selected.
+			if (element !== '' ) {
+				document.getElementById(element).checked = true;
+			}
+		} else {
+			// If monetization is not enabled then the visibility options should disappear
+			radioButtons.setAttribute("style", "display: none" );
+		}
+	}
+
+	// For the edit screen this function is called so that the radio buttons are hidden or displayed based on the existing settings.
+	handleRadioOptionsDisplay('');
+
+	</script>
+
+	<?php
+	wp_nonce_field( 'coil_term_gating_nonce_action', 'term_gating_nonce' );
+}
+
+/**
+ * Add Coil status controls to the "Edit Term" screen.
+ *
+ * @param WP_Term_Object $term
+ * @return void
+*/
+function coil_edit_term_custom_meta( $term ) {
+
+	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
+		return;
+	}
+
+	// Get monetization and visibility options.
+	$monetization_options = [
+		'default'       => 'Default',
+		'monetized'     => 'Enabled',
+		'not-monetized' => 'Disabled',
+	];
+	$visibility_options   = [
+		'public'    => 'Everyone',
+		'exclusive' => 'Coil Members Only',
+	];
+
+	// Retrieve the monetization and visibility meta saved on the term.
+	// If these meta fields are empty they return 'default'.
+	$term_monetization = Gating\get_term_status( $term->term_id, '_coil_monetization_term_status' );
+	$term_visibility   = Gating\get_term_status( $term->term_id, '_coil_visibility_term_status' );
+	// There is no 'default' button for visibility so if it is set to default then select the option that it is defaulting to in the exclusive settings group.
+	if ( $term_visibility === 'default' ) {
+		$term_visibility = Admin\get_visibility_default();
+	}
+
+	?>
+	<tr class="form-field">
+		<th>
+			<?php esc_html_e( 'Select a Web Monetization status', 'coil-web-monetization' ); ?>
+		</th>
+		<td id="coil_dropdown">
+
+			<select name="_coil_monetization_term_status" id="monetization_dropdown" onchange="javascript: handleRadioOptionsDisplay('<?php echo esc_attr( $term_visibility ); ?>')">
+			<?php
+			foreach ( $monetization_options as $setting_key => $setting_value ) {
+				printf(
+					'<option value="%s"%s>%s</option>',
+					esc_attr( $setting_key ),
+					selected( $setting_key, $term_monetization ),
+					$setting_key === 'default' ? esc_html__( 'Default', 'coil-web-monetization' ) : $setting_value
+				);
+			}
+			?>
+			</select>
+			<br>
+		</td>
+	</tr>
+
+	<?php
+	// Use the output buffer to set the content for the visibility settings
+	ob_start();
+	foreach ( $visibility_options as $setting_key => $setting_value ) :
+		?>
+		<label for="<?php echo esc_attr( $setting_key ); ?>">
+			<?php
+			printf(
+				'<input type="radio" name="%s" id="%s" value="%s"%s />%s',
+				esc_attr( '_coil_visibility_term_status' ),
+				esc_attr( $setting_key ),
+				esc_attr( $setting_key ),
+				! empty( $term_visibility ) ? checked( $setting_key, $term_visibility, false ) : '',
+				esc_attr( $setting_value )
+			);
+			?>
+		</label><br>
+		<?php
+	endforeach;
+	$visibility_options = ob_get_contents();
+	ob_end_clean();
+	?>
+
+	<tr class="form-field" id="coil-radio-selection" style="display: none">
+
+		<th scope="row">
+			<label><?php esc_html_e( 'Who can access this content?', 'coil-web-monetization' ); ?></label>
+		</th>
+		<td>
+			<fieldset id="coil-visibility-settings">
+				<?php echo $visibility_options; ?>
+			</fieldset>
+		</td>
+	</tr>
+
+	<script>
+	/**
+	 *
+	 * Ensures the appropriate visibility radio button is selected.
+	 * @param {String} The visibility status slug
+	 * @return {void}
+	*/
+	function handleRadioOptionsDisplay( element ) {
+		var radioButtons = document.getElementById("coil-radio-selection");
+		if (document.getElementById("monetization_dropdown").value === 'monetized') {
+			// If monetization is enabled then the visibility options should appear
+			radioButtons.removeAttribute("style");
+			// Checks the button associated with the default visibility value rather than just the last button that had been selected.
+			if (element !== '' ) {
+				document.getElementById(element).checked = true;
+			}
+		} else {
+			// If monetization is not enabled then the visibility options should disappear
+			radioButtons.setAttribute("style", "display: none" );
+		}
+	}
+
+	// For the edit screen this function is called so that the radio buttons are hidden or displayed based on the existing settings.
+	handleRadioOptionsDisplay('');
+
 	</script>
 
 	<?php
