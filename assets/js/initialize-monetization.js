@@ -180,7 +180,7 @@
 
 		const modalData = {
 			headerLogo: brandingLogo,
-			button: {
+			widget: {
 				text: message,
 				href: streamingWidgetLink,
 			},

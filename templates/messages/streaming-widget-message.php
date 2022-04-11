@@ -1,13 +1,13 @@
 <script type="text/template" id="tmpl-streaming-widget-message">
 	<div class="streaming-widget">
-		<# if ( data.button.href ) { #>
-			<a target="_blank" href="{{data.button.href}}">
+		<# if ( data.widget.href ) { #>
+			<a target="_blank" href="{{data.widget.href}}">
 				<# if ( data.headerLogo ) { #>
 					<img src="{{data.headerLogo}}">
 				<# } #>
-				<# if ( data.button.href ) { #>
+				<# if ( data.widget.text ) { #>
 					<div>
-						{{data.button.text}}
+						{{data.widget.text}}
 					</div>
 				<# } #>
 			</a>
