@@ -161,7 +161,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 	width: 100%;
 	z-index: 200;
 
-	.streaming-support-widget {
+	.streaming-widget {
 		background-color: $streaming_widget_message_color;
 		border-radius: 6px;
 		box-shadow: 0 6px 10px 0 $streaming_widget_message_shadow_color;
@@ -197,7 +197,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 			max-width: 434px;
 		}
 
-		.streaming-support-widget-dismiss {
+		.streaming-widget-dismiss {
 			background-color: $streaming_widget_message_dismiss_color;
 			border-radius: 100%;
 			color: $streaming_widget_dismiss_font_color;
@@ -237,7 +237,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 
 // Changes streaming support widget to implement light theme
 .streaming-widget-container.coil-light-theme {
-	.streaming-support-widget {
+	.streaming-widget {
 		background-color: $streaming_widget_message_color_light_theme;
 
 		a {
@@ -249,14 +249,14 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 }
 
 // Implement hover effect
-body:not( .monetization-initialized ) .streaming-widget-container .streaming-support-widget {
+body:not( .monetization-initialized ) .streaming-widget-container .streaming-widget {
 	&:hover {
 		background-color: $streaming_widget_message_hover_color;
 	}
 }
 
 // Implement hover effect for the light theme
-body:not( .monetization-initialized ) .streaming-widget-container.coil-light-theme .streaming-support-widget {
+body:not( .monetization-initialized ) .streaming-widget-container.coil-light-theme .streaming-widget {
 	&:hover {
 		background-color: $streaming_widget_message_hover_color_light_theme;
 	}
@@ -264,7 +264,7 @@ body:not( .monetization-initialized ) .streaming-widget-container.coil-light-the
 
 // Changes streaming support widget to implement the small size
 .streaming-widget-container.streaming-widget-small {
-	.streaming-support-widget {
+	.streaming-widget {
 		font-size: 14px;
 		line-height: 17px;
 
@@ -276,7 +276,7 @@ body:not( .monetization-initialized ) .streaming-widget-container.coil-light-the
 			}
 		}
 
-		.streaming-support-widget-dismiss {
+		.streaming-widget-dismiss {
 			font-size: 14px;
 			height: 14px;
 			line-height: 14px;

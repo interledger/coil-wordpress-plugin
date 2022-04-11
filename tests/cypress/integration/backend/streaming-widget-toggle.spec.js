@@ -15,14 +15,14 @@ describe( 'Streaming support widget settings tab', () => {
 			.should( 'be.checked' );
 
 		cy
-			.get( '.streaming-support-widget-section' )
+			.get( '.streaming-widget-section' )
 			.should( 'be.visible' );
 	} );
 
 	it( 'Checks that the setting sections are shown or hidden depending on whether the Streaming support widget is enabled', () => {
 		// By default the streaming support widget is enabled.
 		cy
-			.get( '.streaming-support-widget-section' )
+			.get( '.streaming-widget-section' )
 			.should( 'be.visible' );
 
 		// Disable the Streaming support widget and check that the other settings are hidden.
@@ -31,7 +31,7 @@ describe( 'Streaming support widget settings tab', () => {
 			.click();
 
 		cy
-			.get( '.streaming-support-widget-section' )
+			.get( '.streaming-widget-section' )
 			.should( 'not.be.visible' );
 
 		// Enabling the Streaming support widget should reveal the other settings.
@@ -40,7 +40,7 @@ describe( 'Streaming support widget settings tab', () => {
 			.click();
 
 		cy
-			.get( '.streaming-support-widget-section' )
+			.get( '.streaming-widget-section' )
 			.should( 'be.visible' );
 	} );
 
@@ -54,7 +54,7 @@ describe( 'Streaming support widget settings tab', () => {
 		cy.reload();
 
 		cy
-			.get( '.streaming-support-widget-section' )
+			.get( '.streaming-widget-section' )
 			.should( 'not.be.visible' );
 	} );
 } );

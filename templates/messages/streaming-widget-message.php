@@ -1,5 +1,5 @@
-<script type="text/template" id="tmpl-streaming-support-widget-message">
-	<div class="streaming-support-widget">
+<script type="text/template" id="tmpl-streaming-widget-message">
+	<div class="streaming-widget">
 		<# if ( data.button.href ) { #>
 			<a target="_blank" href="{{data.button.href}}">
 				<# if ( data.headerLogo ) { #>
@@ -12,6 +12,6 @@
 				<# } #>
 			</a>
 		<# } #>
-		<span class="streaming-support-widget-dismiss" id="js-streaming-support-widget-dismiss">&times;</span>
+		<span class="streaming-widget-dismiss" id="js-streaming-widget-dismiss">&times;</span>
 	</div>
 </script>

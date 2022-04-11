@@ -30,13 +30,13 @@ describe( 'Streaming support widget for WM-enabled users', function() {
 		cy.visit( '/monetized-and-public/' );
 
 		cy
-			.get( '.streaming-support-widget' )
+			.get( '.streaming-widget' )
 			.should( 'be.visible' );
 
 		cy.startWebMonetization();
 
 		cy
-			.get( '.streaming-support-widget' )
+			.get( '.streaming-widget' )
 			.should( 'not.exist' );
 	} );
 
@@ -55,7 +55,7 @@ describe( 'Streaming support widget for WM-enabled users', function() {
 		cy.startWebMonetization();
 
 		cy
-			.get( '.streaming-support-widget' )
+			.get( '.streaming-widget' )
 			.should( 'not.exist' );
 	} );
 
@@ -80,10 +80,10 @@ describe( 'Streaming support widget for WM-enabled users', function() {
 		cy.startWebMonetization();
 
 		cy
-			.get( '.streaming-support-widget' )
+			.get( '.streaming-widget' )
 			.should( 'be.visible' );
 		cy
-			.get( '.streaming-support-widget > a' )
+			.get( '.streaming-widget > a' )
 			.should( 'contain', buttonMemberText );
 	} );
 
@@ -91,14 +91,14 @@ describe( 'Streaming support widget for WM-enabled users', function() {
 		cy.visit( '/monetized-and-public/' );
 		cy.startWebMonetization();
 
-		cy.get( '.streaming-support-widget a img' ).invoke( 'attr', 'src' ).should( 'match', /coil-icn-white-streaming.svg/ );
+		cy.get( '.streaming-widget a img' ).invoke( 'attr', 'src' ).should( 'match', /coil-icn-white-streaming.svg/ );
 	} );
 
 	it( 'Checks the streaming support widget displays correctly on posts that are monetized and public', () => {
 		cy.visit( '/monetized-and-public/' );
 		cy.startWebMonetization();
 		cy
-			.get( '.streaming-support-widget' )
+			.get( '.streaming-widget' )
 			.should( 'be.visible' );
 	} );
 
@@ -106,7 +106,7 @@ describe( 'Streaming support widget for WM-enabled users', function() {
 		cy.visit( '/coil-members-only/' );
 		cy.startWebMonetization();
 		cy
-			.get( '.streaming-support-widget' )
+			.get( '.streaming-widget' )
 			.should( 'be.visible' );
 	} );
 } );
@@ -121,14 +121,14 @@ describe( 'Streaming support widget for non WM-enabled users', function() {
 		// The streaming support widget doesn't display on pages which are not monetized.
 		cy.visit( '/no-monetization/' );
 		cy
-			.get( '.streaming-support-widget' )
+			.get( '.streaming-widget' )
 			.should( 'not.exist' );
 	} );
 
 	it( 'Checks the streaming support widget display does not display in conjunction with the paywall on exclusive posts', () => {
 		cy.visit( '/coil-members-only/' );
 		cy
-			.get( '.streaming-support-widget' )
+			.get( '.streaming-widget' )
 			.should( 'not.exist' );
 	} );
 
@@ -145,7 +145,7 @@ describe( 'Streaming support widget for non WM-enabled users', function() {
 
 		cy.visit( '/monetized-and-public/' );
 		cy
-			.get( '.streaming-support-widget' )
+			.get( '.streaming-widget' )
 			.should( 'not.exist' );
 
 		// Enable the streaming support widget and set it to display.
@@ -166,7 +166,7 @@ describe( 'Streaming support widget for non WM-enabled users', function() {
 
 		cy.visit( '/monetized-and-public/' );
 		cy
-			.get( '.streaming-support-widget' )
+			.get( '.streaming-widget' )
 			.should( 'be.visible' );
 	} );
 
@@ -193,10 +193,10 @@ describe( 'Streaming support widget for non WM-enabled users', function() {
 		cy.visit( '/monetized-and-public/' );
 
 		cy
-			.get( '.streaming-support-widget > a' )
+			.get( '.streaming-widget > a' )
 			.should( 'contain', buttonText );
 		cy
-			.get( '.streaming-support-widget > a' )
+			.get( '.streaming-widget > a' )
 			.should( 'have.attr', 'href', buttonLink );
 	} );
 
@@ -235,7 +235,7 @@ describe( 'Streaming support widget for non WM-enabled users', function() {
 			.should( 'exist' );
 
 		cy
-			.get( '.streaming-support-widget' )
+			.get( '.streaming-widget' )
 			.should( 'have.attr', 'style', 'margin: 0px 0px -40px 32px;' );
 	} );
 
@@ -253,47 +253,47 @@ describe( 'Streaming support widget for non WM-enabled users', function() {
 		cy.visit( '/monetized-and-public/' );
 
 		cy
-			.get( '.streaming-support-widget' )
+			.get( '.streaming-widget' )
 			.should( 'not.exist' );
 
 		// Hiding the streaming support widget for posts shouldn't affect their display on pages
 		cy.visit( '/monetized-and-public-page/' );
 
 		cy
-			.get( '.streaming-support-widget' )
+			.get( '.streaming-widget' )
 			.should( 'exist' );
 	} );
 
 	it( 'Checks that you can dissmiss the streaming support widget', () => {
 		cy.visit( '/monetized-and-public/' );
 		cy
-			.get( '.streaming-support-widget' )
+			.get( '.streaming-widget' )
 			.should( 'be.visible' );
 
 		cy
-			.get( '#js-streaming-support-widget-dismiss' )
+			.get( '#js-streaming-widget-dismiss' )
 			.should( 'not.be.visible' );
 
 		cy
-			.get( '.streaming-support-widget' )
+			.get( '.streaming-widget' )
 			.trigger( 'mouseover' );
 
 		cy
-			.get( '#js-streaming-support-widget-dismiss' )
+			.get( '#js-streaming-widget-dismiss' )
 			.should( 'be.visible' );
 
 		cy
-			.get( '#js-streaming-support-widget-dismiss' )
+			.get( '#js-streaming-widget-dismiss' )
 			.click();
 
 		cy
-			.get( '.streaming-support-widget' )
+			.get( '.streaming-widget' )
 			.should( 'not.exist' );
 
 		cy.reload();
 
 		cy
-			.get( '.streaming-support-widget' )
+			.get( '.streaming-widget' )
 			.should( 'not.exist' );
 
 		cy

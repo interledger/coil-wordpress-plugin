@@ -238,19 +238,19 @@
 	}
 
 	// Streaming support widget tab
-	if ( activeTabID === 'streaming-support-widget-settings' ) {
+	if ( activeTabID === 'streaming-widget-settings' ) {
 		// Initial set-up
 		const streamingWidgetEnabled = $( 'input[name="streaming_widget_settings_group[streaming_widget_toggle]"]' ).is( ':checked' ),
-			streamingWidgetPreviewSelector = 'div.coil-preview.coil-non-members .streaming-support-widget div > div',
-			streamingWidgetMemberPreviewSelector = 'div.coil-preview.coil-members .streaming-support-widget div > div',
+			streamingWidgetPreviewSelector = 'div.coil-preview.coil-non-members .streaming-widget div > div',
+			streamingWidgetMemberPreviewSelector = 'div.coil-preview.coil-members .streaming-widget div > div',
 			streamingWidget = $( '#streaming_widget_text' ),
 			coilMembersWidget = $( '#members_streaming_widget_text' ),
 			onlyWhiteSpace = /^\s+$/,
 			position = streamingWidgetPosition.split( '-' );
 		if ( streamingWidgetEnabled ) {
-			$( '*.streaming-support-widget-section' ).show();
+			$( '*.streaming-widget-section' ).show();
 		} else {
-			$( '*.streaming-support-widget-section' ).hide();
+			$( '*.streaming-widget-section' ).hide();
 		}
 
 		// Hide the streaming support widget text div if the text is only white space
@@ -453,11 +453,11 @@
 	* ------------------------------------------------------------------------ */
 
 	$( document ).on( 'change', 'input[name="streaming_widget_settings_group[streaming_widget_toggle]"]', function() {
-		$( '.streaming-support-widget-section' ).toggle();
+		$( '.streaming-widget-section' ).toggle();
 	} );
 
 	$( document ).on( 'input', '#streaming_widget_text', function() {
-		const previewSelector = 'div.coil-preview.coil-non-members .streaming-support-widget div > div',
+		const previewSelector = 'div.coil-preview.coil-non-members .streaming-widget div > div',
 			onlyWhiteSpace = /^\s+$/;
 		if ( $( this ).val() !== '' ) {
 			if ( ! onlyWhiteSpace.test( $( this ).val() ) ) {
@@ -489,7 +489,7 @@
 	} );
 
 	$( document ).on( 'input', '#members_streaming_widget_text', function() {
-		const previewSelector = 'div.coil-preview.coil-members .streaming-support-widget div > div',
+		const previewSelector = 'div.coil-preview.coil-members .streaming-widget div > div',
 			onlyWhiteSpace = /^\s+$/;
 		if ( $( this ).val() !== '' ) {
 			if ( ! onlyWhiteSpace.test( $( this ).val() ) ) {
@@ -510,7 +510,7 @@
 		let logoSrc = '',
 			logoStreamingSrc = '';
 
-		$( '.coil-preview .streaming-support-widget' ).attr( 'data-theme', coilTheme );
+		$( '.coil-preview .streaming-widget' ).attr( 'data-theme', coilTheme );
 
 		if ( 'light' === coilTheme ) {
 			logoSrc = lightCoilLogoUrl;
@@ -520,8 +520,8 @@
 			logoStreamingSrc = darkStreamingCoilLogoUrl;
 		}
 
-		$( '.coil-preview.coil-non-members .streaming-support-widget-image' ).attr( 'src', logoSrc );
-		$( '.coil-preview.coil-members .streaming-support-widget-image' ).attr( 'src', logoStreamingSrc );
+		$( '.coil-preview.coil-non-members .streaming-widget-image' ).attr( 'src', logoSrc );
+		$( '.coil-preview.coil-members .streaming-widget-image' ).attr( 'src', logoStreamingSrc );
 	} );
 
 	$( document ).on( 'change', 'input[name="streaming_widget_settings_group[streaming_widget_member_display]"]', function() {
@@ -531,14 +531,14 @@
 	$( document ).on( 'change', 'input[name="streaming_widget_settings_group[streaming_widget_size]"]', function() {
 		const buttonSize = $( this ).val();
 
-		$( '.coil-preview .streaming-support-widget' ).attr( 'data-size', buttonSize );
+		$( '.coil-preview .streaming-widget' ).attr( 'data-size', buttonSize );
 	} );
 
 	$( document ).on( 'change', 'select[name="streaming_widget_settings_group[streaming_widget_position]"]', function() {
 		const buttonPosition = $( this ).val(),
 			position = buttonPosition.split( '-' );
 
-		$( '.coil-preview .streaming-support-widget' ).attr( 'data-position', buttonPosition );
+		$( '.coil-preview .streaming-widget' ).attr( 'data-position', buttonPosition );
 
 		// Display only the two margin input cells that are relevent to the streaming support widget's position
 		if ( position[ 0 ] === 'top' ) {

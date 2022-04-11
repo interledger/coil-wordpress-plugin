@@ -727,7 +727,7 @@ function get_streaming_widget_status( $object_id ) {
 	if ( ! empty( $streaming_widget_settings ) && ! empty( $post ) && isset( $streaming_widget_settings[ $post->post_type . '_streaming_widget_visibility' ] ) ) {
 		$status = $streaming_widget_settings[ $post->post_type . '_streaming_widget_visibility' ];
 		if ( $status === 'show' ) {
-			$streaming_widget_class = 'show-streaming-support-widget';
+			$streaming_widget_class = 'show-streaming-widget';
 		}
 	}
 

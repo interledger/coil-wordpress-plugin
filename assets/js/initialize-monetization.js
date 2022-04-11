@@ -72,7 +72,7 @@
 		fontSelection = Boolean( coilParams.font_selection );
 
 	const subscriberOnlyMessage = wp.template( 'subscriber-only-message' );
-	const streamingWidgetMessage = wp.template( 'streaming-support-widget-message' );
+	const streamingWidgetMessage = wp.template( 'streaming-widget-message' );
 
 	const messageWrapper = $( 'p.monetize-msg' );
 
@@ -143,7 +143,7 @@
 		$( 'body' ).append( streamingWidget );
 		// Hides the text div if there is no text
 		if ( onlyWhiteSpace.test( message ) ) {
-			$( '.streaming-support-widget a div' ).hide();
+			$( '.streaming-widget a div' ).hide();
 		}
 		addButtonDismissClickHandler();
 		addWidgetDismissAppearanceHandler();
@@ -205,7 +205,7 @@
 			bottomMargin = checkMarginValues( WidgetMarginBottom );
 		}
 
-		$( modalContainer ).find( '.streaming-support-widget' ).css( { 'margin-top': topMargin + 'px', 'margin-right': rightMargin + 'px', 'margin-bottom': bottomMargin + 'px', 'margin-left': leftMargin + 'px' } );
+		$( modalContainer ).find( '.streaming-widget' ).css( { 'margin-top': topMargin + 'px', 'margin-right': rightMargin + 'px', 'margin-bottom': bottomMargin + 'px', 'margin-left': leftMargin + 'px' } );
 		return modalContainer;
 	}
 
@@ -311,7 +311,7 @@
 	 * the streaming support widget enabled
 	*/
 	function hasStreamingWidgetEnabled() {
-		return streamingWidgetGloballyEnabled && document.body.classList.contains( 'show-streaming-support-widget' );
+		return streamingWidgetGloballyEnabled && document.body.classList.contains( 'show-streaming-widget' );
 	}
 
 	/**
@@ -387,7 +387,7 @@
 	 */
 	function addButtonDismissClickHandler() {
 		const cookieName = 'ShowStreamingWidgetMsg';
-		$( '#js-streaming-support-widget-dismiss' ).on( 'click', function() {
+		$( '#js-streaming-widget-dismiss' ).on( 'click', function() {
 			if ( ! hasStreamingWidget() ) {
 				Cookies.set( cookieName, 1, { expires: 14 } );
 				$( this ).parent().parent().remove();
@@ -401,11 +401,11 @@
 	 *
 	 */
 	function addWidgetDismissAppearanceHandler() {
-		$( '.streaming-support-widget' ).hover(
+		$( '.streaming-widget' ).hover(
 			function() {
-				$( '#js-streaming-support-widget-dismiss' ).css( 'display', 'block' );
+				$( '#js-streaming-widget-dismiss' ).css( 'display', 'block' );
 			}, function() {
-				$( '#js-streaming-support-widget-dismiss' ).css( 'display', 'none' );
+				$( '#js-streaming-widget-dismiss' ).css( 'display', 'none' );
 			},
 		);
 	}
@@ -632,13 +632,13 @@
 			if ( buttonEnabled && ! buttonDismissed ) {
 				if ( buttonAlreadyExists ) {
 					// The text needs to change to the member message
-					$( '.streaming-support-widget div' ).text( streamingWidgetPaidMessage );
+					$( '.streaming-widget div' ).text( streamingWidgetPaidMessage );
 				} else {
 					showStreamingWidget( streamingWidgetPaidMessage );
 				}
-				$( '.streaming-support-widget a' ).removeAttr( 'href' ).css( 'cursor', 'default' );
-				$( '.streaming-support-widget a' ).css( 'cursor', 'default' );
-				$( '.streaming-support-widget a img' ).attr( 'src', brandingLogo );
+				$( '.streaming-widget a' ).removeAttr( 'href' ).css( 'cursor', 'default' );
+				$( '.streaming-widget a' ).css( 'cursor', 'default' );
+				$( '.streaming-widget a img' ).attr( 'src', brandingLogo );
 			}
 		}
 	}

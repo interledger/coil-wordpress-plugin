@@ -326,7 +326,7 @@ class Test_Coil_Button_Settings extends WP_UnitTestCase {
 
 		$button_status = Admin\get_streaming_widget_status( $post_obj->ID );
 
-		$this->assertSame( 'show-streaming-support-widget', $button_status );
+		$this->assertSame( 'show-streaming-widget', $button_status );
 
 		// Set the streaming support widget to be hidden on posts
 		$streaming_widget_settings = [ 'post_streaming_widget_visibility' => 'hide' ];

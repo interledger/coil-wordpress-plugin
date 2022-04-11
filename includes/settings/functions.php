@@ -1204,7 +1204,7 @@ function coil_settings_enable_streaming_widget_toggle_render_callback() {
 */
 function coil_settings_streaming_widget_settings_render_callback() {
 	?>
-	<div class="tab-styling streaming-support-widget-section">
+	<div class="tab-styling streaming-widget-section">
 		<div class="coil-row">
 			<div class="coil-column-7">
 				<?php
@@ -1291,18 +1291,18 @@ function coil_settings_streaming_widget_settings_render_callback() {
 
 				<div class="coil-preview coil-non-members stacked">
 					<p><?php _e( 'Without Coil Membership', 'coil-web-monetization' ); ?></p>
-					<div class="streaming-support-widget" data-theme="<?php echo esc_attr( $streaming_widget_theme ); ?>" data-position="<?php echo esc_attr( $streaming_widget_position ); ?>" data-size="<?php echo esc_attr( $streaming_widget_size ); ?>">
+					<div class="streaming-widget" data-theme="<?php echo esc_attr( $streaming_widget_theme ); ?>" data-position="<?php echo esc_attr( $streaming_widget_position ); ?>" data-size="<?php echo esc_attr( $streaming_widget_size ); ?>">
 						<div>
-							<?php printf( '<img class="%s" src="%s" />', 'streaming-support-widget-image', plugin_dir_url( COIL__FILE__ ) . 'assets/images/coil-icn-' . $coil_logo_type . '.svg' ); ?>
+							<?php printf( '<img class="%s" src="%s" />', 'streaming-widget-image', plugin_dir_url( COIL__FILE__ ) . 'assets/images/coil-icn-' . $coil_logo_type . '.svg' ); ?>
 							<div><?php echo Admin\get_streaming_widget_setting( 'streaming_widget_text', true ); ?></div>
 						</div>
 					</div>
 				</div>
 				<div class="coil-preview coil-members stacked <?php echo $streaming_widget_member_display === true ? '' : 'hide'; ?>">
 					<p><?php _e( 'With Coil Membership', 'coil-web-monetization' ); ?></p>
-					<div class="streaming-support-widget" data-theme="<?php echo esc_attr( $streaming_widget_theme ); ?>" data-position="<?php echo esc_attr( $streaming_widget_position ); ?>" data-size="<?php echo esc_attr( $streaming_widget_size ); ?>">
+					<div class="streaming-widget" data-theme="<?php echo esc_attr( $streaming_widget_theme ); ?>" data-position="<?php echo esc_attr( $streaming_widget_position ); ?>" data-size="<?php echo esc_attr( $streaming_widget_size ); ?>">
 						<div>
-							<?php printf( '<img class="%s" src="%s" />', 'streaming-support-widget-image', plugin_dir_url( COIL__FILE__ ) . 'assets/images/coil-icn-' . $coil_logo_type . '-streaming.svg' ); ?>
+							<?php printf( '<img class="%s" src="%s" />', 'streaming-widget-image', plugin_dir_url( COIL__FILE__ ) . 'assets/images/coil-icn-' . $coil_logo_type . '-streaming.svg' ); ?>
 							<div><?php echo Admin\get_streaming_widget_setting( 'members_streaming_widget_text', true ); ?></div>
 						</div>
 					</div>
@@ -1464,7 +1464,7 @@ function render_streaming_widget_margin_settings() {
 */
 function coil_settings_streaming_widget_visibility_render_callback() {
 	?>
-	<div class="tab-styling streaming-support-widget-section">
+	<div class="tab-styling streaming-widget-section">
 		<?php
 		Rendering\render_settings_section_heading(
 			__( 'Visibility', 'coil-web-monetization' ),
@@ -1601,7 +1601,7 @@ function render_coil_settings_screen() : void {
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=welcome' ); ?>" id="coil-welcome-settings" class="nav-tab <?php echo $active_tab === 'welcome' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Welcome', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=general_settings' ); ?>" id="coil-general-settings" class="nav-tab <?php echo $active_tab === 'general_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'General Settings', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=exclusive_settings' ); ?>" id="coil-exclusive-settings" class="nav-tab <?php echo $active_tab === 'exclusive_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Exclusive Content', 'coil-web-monetization' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=streaming_widget' ); ?>" id="streaming-support-widget-settings" class="nav-tab <?php echo $active_tab === 'streaming_widget' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Streaming Support Widget', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=streaming_widget' ); ?>" id="streaming-widget-settings" class="nav-tab <?php echo $active_tab === 'streaming_widget' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Streaming Support Widget', 'coil-web-monetization' ); ?></a>
 		</h2>
 	</div>
 	<div class="wrap coil plugin-settings">
