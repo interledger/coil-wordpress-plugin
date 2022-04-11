@@ -145,7 +145,7 @@
 		if ( onlyWhiteSpace.test( message ) ) {
 			$( '.streaming-widget a div' ).hide();
 		}
-		addButtonDismissClickHandler();
+		addStreamingWidgetDismissClickHandler();
 		addWidgetDismissAppearanceHandler();
 	}
 
@@ -385,7 +385,7 @@
 	 *
 	 * @see https://github.com/js-cookie/js-cookie
 	 */
-	function addButtonDismissClickHandler() {
+	function addStreamingWidgetDismissClickHandler() {
 		const cookieName = 'ShowStreamingWidgetMsg';
 		$( '#js-streaming-widget-dismiss' ).on( 'click', function() {
 			if ( ! hasStreamingWidget() ) {
