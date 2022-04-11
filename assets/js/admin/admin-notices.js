@@ -449,7 +449,7 @@
 	} );
 
 	/* ------------------------------------------------------------------------ *
-	* Streaming support widget tab
+	* Streaming Support Widget Tab
 	* ------------------------------------------------------------------------ */
 
 	$( document ).on( 'change', 'input[name="streaming_widget_settings_group[streaming_widget_toggle]"]', function() {

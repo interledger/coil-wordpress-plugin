@@ -82,7 +82,7 @@
 	 * @param {String} message The message to display inside the tag.
 	 * @param {String} customClass Any extra custom classes to add to this tag.
 	 * @return {object} Output a monetization message when the state is changing.
-	 */
+	*/
 	function showMonetizationMessage( message, customClass ) {
 		const elem = document.createElement( 'p' );
 		elem.classList.add( 'monetize-msg' );
@@ -97,7 +97,7 @@
 	 * @param {String} message from coilParams.
 	 * @return {object} Output the gated content message when content is
 	 * set to Member Only
-	 */
+	*/
 	function showSubscriberOnlyMessage( message ) {
 		const modalContainer = document.createElement( 'div' );
 		modalContainer.classList.add( 'entry-content', 'coil-message-container' );
@@ -133,7 +133,7 @@
 	}
 
 	/**
-	 * Adds the streaming support widget to the body oif the document and adds it's handler functions.
+	 * Adds the streaming support widget to the body of the document and adds it's handler functions.
 	 * @param {String} message Message shown to thank Coil members, or to encourage users to sign up.
 	 * @return {void}
 	*/
@@ -145,7 +145,7 @@
 		if ( onlyWhiteSpace.test( message ) ) {
 			$( '.streaming-widget a div' ).hide();
 		}
-		addStreamingWidgetDismissClickHandler();
+		addWidgetDismissClickHandler();
 		addWidgetDismissAppearanceHandler();
 	}
 
@@ -229,7 +229,7 @@
 	 * Ensures that the margin value assigned to the streaming support widget has an integer value as expected.
 	 * @param {String} marginValue from coilParams.
 	 * @return {String} A string containing only digits and possibly a minus sign.
-	 */
+	*/
 	function checkMarginValues( marginValue ) {
 		// If the value is invalid simply set it to 0.
 		if ( marginValue.search( /[^1234567890-]/i ) >= 0 ) {
@@ -240,7 +240,7 @@
 
 	/**
 	 * Show the content container.
-	 */
+	*/
 	function showContentContainer() {
 		const container = document.querySelector( contentContainer );
 
@@ -262,7 +262,7 @@
 
 	/**
 	 * Hide the content container.
-	 */
+	*/
 	function hideContentContainer() {
 		const container = document.querySelector( contentContainer );
 
@@ -301,7 +301,7 @@
 	/**
 	 * @return {bool} Helper function to determine if the content has
 	 * monetization enabled and is visible to Coil members only
-	 */
+	*/
 	function isSubscribersOnly() {
 		return document.body.classList.contains( 'coil-exclusive' );
 	}
@@ -317,35 +317,35 @@
 	/**
 	 * @return {bool} Helper function to determine if the payment pointer is not
 	 * set on the body.
-	 */
+	*/
 	function isPaymentPointerMissing() {
 		return document.body.classList.contains( 'coil-missing-id' );
 	}
 
 	/**
 	 * @return {bool} Helper function to determine if the user is logged in.
-	 */
+	*/
 	function isViewingAdmin() {
 		return document.body.classList.contains( 'coil-show-admin-notice' );
 	}
 
 	/**
 	 * @return {bool} Determine if the content container is default.
-	 */
+	*/
 	function usingDefaultContentContainer() {
 		return contentContainer === '.content-area .entry-content, main .entry-content';
 	}
 
 	/**
 	 * @return {bool} Determine if the excerpt is set to show for this post.
-	 */
+	*/
 	function isExcerptEnabled() {
 		return ( document.body.classList.contains( 'coil-show-excerpt' ) ) ? true : false;
 	}
 
 	/**
 	 * Displays a message based on the body classes and verification outcome.
-	 */
+	*/
 	function showVerificationFailureMessage() {
 		if ( $( 'p.monetize-msg' ).length > 0 ) {
 			$( 'p.monetize-msg' ).remove();
@@ -375,7 +375,7 @@
 	 * Checks class is missing on <body>.
 	 *
 	 * @return {bool} Determine if Coil is initialized.
-	 */
+	*/
 	function monetizationInitialized() {
 		return ! document.body.classList.contains( 'monetization-not-initialized' );
 	}
@@ -384,8 +384,8 @@
 	 * Add a function to remove the streaming support widget and set a Cookie.
 	 *
 	 * @see https://github.com/js-cookie/js-cookie
-	 */
-	function addStreamingWidgetDismissClickHandler() {
+	*/
+	function addWidgetDismissClickHandler() {
 		const cookieName = 'ShowStreamingWidgetMsg';
 		$( '#js-streaming-widget-dismiss' ).on( 'click', function() {
 			if ( ! hasStreamingWidget() ) {
@@ -399,7 +399,7 @@
 	 * Add a function to show or hide the streaming support widget dismiss
 	 * depending on whether you are hovering over the widget or not.
 	 *
-	 */
+	*/
 	function addWidgetDismissAppearanceHandler() {
 		$( '.streaming-widget' ).hover(
 			function() {
@@ -414,7 +414,7 @@
 	 * Checks if the streaming support widget is dismissed.
 	 *
 	 * @return {bool} True if set to '1', otherwise false.
-	 */
+	*/
 	function hasStreamingWidget() {
 		const cookieName = 'ShowStreamingWidgetMsg';
 		const currentCookie = Cookies.get( cookieName );
@@ -429,7 +429,7 @@
 	 * Handles an undefined monetization object.
 	 *
 	 * @return {void}
-	 */
+	*/
 	function handleUndefinedMonetization() {
 		// Skip if we're testing in Cypress; we can't easily reset the app state from the changes made here.
 		if ( window.Cypress && window.Cypress.monetized ) {
@@ -463,7 +463,7 @@
 	 * Handles the 'pending' monetization state.
 	 *
 	 * @return {void}
-	 */
+	*/
 	function handlePendingMonetization() {
 		// If the site is missing it's payment pointer ID.
 		if ( isPaymentPointerMissing() ) {
@@ -506,7 +506,7 @@
 	 * Handles the 'started' monetization state.
 	 *
 	 * @return {void}
-	 */
+	*/
 	function handleStartedMonetization() {
 		// User account verified, loading content. Monetization state: Started
 
@@ -529,7 +529,7 @@
 	 * Handles the 'stopped' monetization state.
 	 *
 	 * @return {void}
-	 */
+	*/
 	function handleStoppedMonetization() {
 		if ( isSubscribersOnly() && hasCoilDivider && $( 'p.monetize-msg' ).length === 0 ) {
 			$( '.coil-restricted-content' ).after( showMonetizationMessage( loadingContent, '' ) );
@@ -569,7 +569,7 @@
 	 * @param {object} event The monetizationstart event
 	 *
 	 * @return {void}
-	 */
+	*/
 	function monetizationStartListener( event ) {
 		monetizationStartEventOccurred = true;
 		let brandingLogo = '';
@@ -648,7 +648,7 @@
 	 * @param {object} event The monetizationprogress event
 	 *
 	 * @return {void}
-	 */
+	*/
 	function monetizationProgressListener( event ) {
 		// Connect to backend to validate the payment.
 		const paymentPointer = event.detail.paymentPointer,
@@ -670,7 +670,7 @@
 
 	/**
 	 * Init monetissation process.
-	 */
+	*/
 	function bootstrapCoil() {
 		// Bail early - monetization initialised successfully.
 		if ( monetizationInitialized() ) {
