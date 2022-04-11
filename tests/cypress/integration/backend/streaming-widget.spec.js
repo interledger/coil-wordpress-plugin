@@ -64,7 +64,7 @@ describe( 'Streaming support widget settings tab', () => {
 		checkMemberWidgetOptionsVisibility( 'hidden' );
 	} );
 
-	it( 'Checks the widget settings can be changed', () => {
+	it( 'Checks the streaming support widget settings can be changed', () => {
 		const widgetText = 'Coil Eyes Only';
 		const widgetLink = 'https://example.com/';
 		const widgetMemberText = 'Thank you for using Coil!';
