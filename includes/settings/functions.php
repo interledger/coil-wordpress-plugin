@@ -1677,14 +1677,9 @@ function coil_add_term_custom_meta( $term ) {
 		'exclusive' => 'Coil Members Only',
 	];
 
-	// Retrieve the monetization and visibility meta saved on the term.
-	// If these meta fields are empty they return 'default'.
-	$term_monetization = Gating\get_term_status( $term->term_id, '_coil_monetization_term_status' );
-	$term_visibility   = Gating\get_term_status( $term->term_id, '_coil_visibility_term_status' );
-	// There is no 'default' button for visibility so if it is set to default then select the option that it is defaulting to in the exclusive settings group.
-	if ( $term_visibility === 'default' ) {
-		$term_visibility = Admin\get_visibility_default();
-	}
+	// Set the default monetization and visibility statuses.
+	$term_monetization = 'default';
+	$term_visibility   = Admin\get_visibility_default();
 
 	?>
 	<div id="coil_dropdown">
