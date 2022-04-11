@@ -373,15 +373,15 @@ body.coil-exclusive.coil-extension-not-found.show-excerpt-message .coil-message-
 body.coil-hide-excerpt.show-fw-message .entry-content {
   display: none; }
 
-.streaming-support-widget-message-container {
+.streaming-widget-container {
   display: flex;
   position: fixed;
   width: 100%;
   z-index: 200; }
   @media only screen and (max-width: 768px) {
-    .streaming-support-widget-message-container {
+    .streaming-widget-container {
       display: none; } }
-  .streaming-support-widget-message-container .streaming-support-widget {
+  .streaming-widget-container .streaming-support-widget {
     background-color: #2d333a;
     border-radius: 6px;
     box-shadow: 0 6px 10px 0 rgba(194, 194, 194, 0.1);
@@ -392,25 +392,25 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
     overflow: visible;
     position: relative;
     text-align: center; }
-    .streaming-support-widget-message-container .streaming-support-widget a {
+    .streaming-widget-container .streaming-support-widget a {
       border-radius: 6px;
       display: flex;
       flex-direction: row;
       padding: 8px;
       text-decoration: none; }
-      .streaming-support-widget-message-container .streaming-support-widget a div {
+      .streaming-widget-container .streaming-support-widget a div {
         color: #fff;
         margin: auto;
         padding-left: 8px;
         padding-right: 8px; }
-      .streaming-support-widget-message-container .streaming-support-widget a img {
+      .streaming-widget-container .streaming-support-widget a img {
         height: 24px;
         width: 24px; }
     @media only screen and (min-width: 768px) {
-      .streaming-support-widget-message-container .streaming-support-widget {
+      .streaming-widget-container .streaming-support-widget {
         justify-content: space-around;
         max-width: 434px; } }
-    .streaming-support-widget-message-container .streaming-support-widget .streaming-support-widget-dismiss {
+    .streaming-widget-container .streaming-support-widget .streaming-support-widget-dismiss {
       background-color: #777;
       border-radius: 100%;
       color: #fff;
@@ -424,39 +424,39 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
       right: -7px;
       top: -7px;
       width: 20px; }
-      .streaming-support-widget-message-container .streaming-support-widget .streaming-support-widget-dismiss:hover {
+      .streaming-widget-container .streaming-support-widget .streaming-support-widget-dismiss:hover {
         background-color: #c92c2c; }
 
-.streaming-support-widget-message-container.bottom {
+.streaming-widget-container.bottom {
   bottom: 0; }
 
-.streaming-support-widget-message-container.top {
+.streaming-widget-container.top {
   top: 0; }
 
-.streaming-support-widget-message-container.right {
+.streaming-widget-container.right {
   justify-content: right; }
 
-.streaming-support-widget-message-container.left {
+.streaming-widget-container.left {
   justify-content: left; }
 
-.streaming-support-widget-message-container.coil-light-theme .streaming-support-widget {
+.streaming-widget-container.coil-light-theme .streaming-support-widget {
   background-color: #fff; }
-  .streaming-support-widget-message-container.coil-light-theme .streaming-support-widget a div {
+  .streaming-widget-container.coil-light-theme .streaming-support-widget a div {
     color: #000; }
 
-body:not(.monetization-initialized) .streaming-support-widget-message-container .streaming-support-widget:hover {
+body:not(.monetization-initialized) .streaming-widget-container .streaming-support-widget:hover {
   background-color: #444; }
 
-body:not(.monetization-initialized) .streaming-support-widget-message-container.coil-light-theme .streaming-support-widget:hover {
+body:not(.monetization-initialized) .streaming-widget-container.coil-light-theme .streaming-support-widget:hover {
   background-color: #e3e5e9; }
 
-.streaming-support-widget-message-container.streaming-support-widget-small .streaming-support-widget {
+.streaming-widget-container.streaming-widget-small .streaming-support-widget {
   font-size: 14px;
   line-height: 17px; }
-  .streaming-support-widget-message-container.streaming-support-widget-small .streaming-support-widget a img {
+  .streaming-widget-container.streaming-widget-small .streaming-support-widget a img {
     height: 16px;
     width: 16px; }
-  .streaming-support-widget-message-container.streaming-support-widget-small .streaming-support-widget .streaming-support-widget-dismiss {
+  .streaming-widget-container.streaming-widget-small .streaming-support-widget .streaming-support-widget-dismiss {
     font-size: 14px;
     height: 14px;
     line-height: 14px;

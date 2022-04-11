@@ -58,10 +58,10 @@
 		streamingWidgetTheme = coilParams.streaming_widget_theme,
 		streamingWidgetSize = coilParams.streaming_widget_size,
 		streamingWidgetPosition = coilParams.streaming_widget_position,
-		ButtonMarginTop = coilParams.button_margin_top,
-		ButtonMarginRight = coilParams.button_margin_right,
-		ButtonMarginBottom = coilParams.button_margin_bottom,
-		ButtonMarginLeft = coilParams.button_margin_left,
+		WidgetMarginTop = coilParams.streaming_widget_margin_top,
+		WidgetMarginRight = coilParams.streaming_widget_margin_right,
+		WidgetMarginBottom = coilParams.streaming_widget_margin_bottom,
+		WidgetMarginLeft = coilParams.streaming_widget_margin_left,
 		streamingWidgetGloballyEnabled = Boolean( coilParams.streaming_widget_enabled ), // Cast to boolean - wp_localize_script forces string values.
 		siteLogo = coilParams.site_logo,
 		coilLogo = coilParams.coil_logo,
@@ -163,7 +163,7 @@
 			leftMargin;
 
 		const modalContainer = document.createElement( 'div' );
-		$( modalContainer ).addClass( 'streaming-support-widget-message-container' + ' ' + verticalPosition + ' ' + horizontalPosition );
+		$( modalContainer ).addClass( 'streaming-widget-container' + ' ' + verticalPosition + ' ' + horizontalPosition );
 
 		let brandingLogo = '';
 
@@ -175,7 +175,7 @@
 		}
 
 		if ( streamingWidgetSize === 'small' ) {
-			modalContainer.classList.add( 'streaming-support-widget-small' );
+			modalContainer.classList.add( 'streaming-widget-small' );
 		}
 
 		const modalData = {
@@ -191,18 +191,18 @@
 		// Set the margins only for the two applicable sides of the streaming support widget based on the position selected.
 		if ( horizontalPosition === 'left' ) {
 			rightMargin = '0';
-			leftMargin = checkMarginValues( ButtonMarginLeft );
+			leftMargin = checkMarginValues( WidgetMarginLeft );
 		} else {
-			rightMargin = checkMarginValues( ButtonMarginRight );
+			rightMargin = checkMarginValues( WidgetMarginRight );
 			leftMargin = '0';
 		}
 
 		if ( verticalPosition === 'top' ) {
-			topMargin = checkMarginValues( ButtonMarginTop );
+			topMargin = checkMarginValues( WidgetMarginTop );
 			bottomMargin = '0';
 		} else {
 			topMargin = '0';
-			bottomMargin = checkMarginValues( ButtonMarginBottom );
+			bottomMargin = checkMarginValues( WidgetMarginBottom );
 		}
 
 		$( modalContainer ).find( '.streaming-support-widget' ).css( { 'margin-top': topMargin + 'px', 'margin-right': rightMargin + 'px', 'margin-bottom': bottomMargin + 'px', 'margin-left': leftMargin + 'px' } );
@@ -216,7 +216,7 @@
 	 */
 	function maybeAddStreamingWidget() {
 		const buttonEnabled = hasStreamingWidgetEnabled();
-		const buttonAlreadyExists = $( '.streaming-support-widget-message-container' ).length !== 0 ? true : false;
+		const buttonAlreadyExists = $( '.streaming-widget-container' ).length !== 0 ? true : false;
 		const buttonDismissed = hasStreamingWidget();
 		const pendingMessageDisplayed = $( 'p.monetize-msg' ).length !== 0 ? true : false;
 		const paywallDisplayed = $( '.coil-message-container' ).length !== 0 ? true : false;
@@ -618,10 +618,10 @@
 		jQuery( window ).trigger( 'resize' );
 
 		if ( ! showStreamingWidgetToMembers ) {
-			$( '.streaming-support-widget-message-container' ).remove();
+			$( '.streaming-widget-container' ).remove();
 		} else {
 			const buttonEnabled = hasStreamingWidgetEnabled();
-			const buttonAlreadyExists = $( '.streaming-support-widget-message-container' ).length !== 0 ? true : false;
+			const buttonAlreadyExists = $( '.streaming-widget-container' ).length !== 0 ? true : false;
 			const buttonDismissed = hasStreamingWidget();
 			if ( streamingWidgetTheme === 'light' ) {
 				brandingLogo = coilLogoStreaming;

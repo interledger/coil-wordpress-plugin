@@ -231,7 +231,7 @@ describe( 'Streaming support widget for non WM-enabled users', function() {
 		cy.visit( '/monetized-and-public/' );
 
 		cy
-			.get( '.streaming-support-widget-message-container.bottom.left.coil-light-theme.streaming-support-widget-small' )
+			.get( '.streaming-widget-container.bottom.left.coil-light-theme.streaming-widget-small' )
 			.should( 'exist' );
 
 		cy

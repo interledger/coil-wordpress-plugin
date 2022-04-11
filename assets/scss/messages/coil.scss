@@ -150,7 +150,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 }
 
 // Scenario 3 - streaming support widget
-.streaming-support-widget-message-container {
+.streaming-widget-container {
 	// Hide the streaming support widget on mobile
 	@media only screen and (max-width: $message_mobile_breakpoint) {
 		display: none;
@@ -219,24 +219,24 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 	}
 }
 
-.streaming-support-widget-message-container.bottom {
+.streaming-widget-container.bottom {
 	bottom: 0;
 }
 
-.streaming-support-widget-message-container.top {
+.streaming-widget-container.top {
 	top: 0;
 }
 
-.streaming-support-widget-message-container.right {
+.streaming-widget-container.right {
 	justify-content: right;
 }
 
-.streaming-support-widget-message-container.left {
+.streaming-widget-container.left {
 	justify-content: left;
 }
 
 // Changes streaming support widget to implement light theme
-.streaming-support-widget-message-container.coil-light-theme {
+.streaming-widget-container.coil-light-theme {
 	.streaming-support-widget {
 		background-color: $streaming_widget_message_color_light_theme;
 
@@ -249,21 +249,21 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 }
 
 // Implement hover effect
-body:not( .monetization-initialized ) .streaming-support-widget-message-container .streaming-support-widget {
+body:not( .monetization-initialized ) .streaming-widget-container .streaming-support-widget {
 	&:hover {
 		background-color: $streaming_widget_message_hover_color;
 	}
 }
 
 // Implement hover effect for the light theme
-body:not( .monetization-initialized ) .streaming-support-widget-message-container.coil-light-theme .streaming-support-widget {
+body:not( .monetization-initialized ) .streaming-widget-container.coil-light-theme .streaming-support-widget {
 	&:hover {
 		background-color: $streaming_widget_message_hover_color_light_theme;
 	}
 }
 
 // Changes streaming support widget to implement the small size
-.streaming-support-widget-message-container.streaming-support-widget-small {
+.streaming-widget-container.streaming-widget-small {
 	.streaming-support-widget {
 		font-size: 14px;
 		line-height: 17px;
