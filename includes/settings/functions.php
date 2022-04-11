@@ -1786,13 +1786,13 @@ function coil_edit_term_custom_meta( $term ) {
 
 	// Get monetization and visibility options.
 	$monetization_options = [
-		'default'       => 'Default',
-		'monetized'     => 'Enabled',
-		'not-monetized' => 'Disabled',
+		'default'       => esc_html__( 'Default', 'coil-web-monetization' ),
+		'monetized'     => esc_html__( 'Enabled', 'coil-web-monetization' ),
+		'not-monetized' => esc_html__( 'Disabled', 'coil-web-monetization' ),
 	];
 	$visibility_options   = [
-		'public'    => 'Everyone',
-		'exclusive' => 'Coil Members Only',
+		'public'    => esc_html__( 'Everyone', 'coil-web-monetization' ),
+		'exclusive' => esc_html__( 'Coil Members Only', 'coil-web-monetization' ),
 	];
 
 	// Retrieve the monetization and visibility meta saved on the term.
