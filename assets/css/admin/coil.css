@@ -216,7 +216,8 @@
 						** TODO: Update this by cleaning it up according to the available fonts etc
 						**/ }
           .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container[data-theme='dark'] {
-            background: #2d333a; }
+            background: #2d333a;
+            border: 1px solid #4f4f4f; }
             .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container[data-theme='dark'] h3, .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container[data-theme='dark'] p {
               color: #fff; }
             .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container[data-theme='dark'] a {

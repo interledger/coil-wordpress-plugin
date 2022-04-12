@@ -327,6 +327,7 @@ body.coil-exclusive.coil-extension-not-found.show-excerpt-message .coil-message-
 body.monetization-not-initialized.coil-exclusive.show-excerpt-message .coil-message-container.coil-dark-theme .coil-message-inner,
 body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container.coil-dark-theme .coil-message-inner {
   background: #2d333a;
+  border: 1px solid #4f4f4f;
   color: #fff;
   opacity: 0.9; }
 

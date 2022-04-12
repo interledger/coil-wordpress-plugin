@@ -318,6 +318,7 @@
 
 						&[data-theme='dark'] {
 							background: $paywall_dark_theme_background_color;
+							border: 1px solid $message_border_colour_dark_theme;
 
 							h3, p {
 								color: $paywall_dark_theme_text_color;

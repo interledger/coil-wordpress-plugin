@@ -100,6 +100,7 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 
 		.coil-message-inner {
 			background: $paywall_dark_theme_background_color;
+			border: 1px solid $message_border_colour_dark_theme;
 			color: $paywall_dark_theme_text_color;
 			opacity: 0.9;
 		}
