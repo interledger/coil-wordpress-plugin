@@ -310,7 +310,7 @@
 
 					.coil-paywall-container {
 						background: $paywall_background_color;
-						border: 1px solid $message_border_colour;
+						border: 1px solid $message_border_color;
 						border-radius: $message_border_radius;
 						box-sizing: border-box;
 						padding: 15px;
@@ -318,7 +318,7 @@
 
 						&[data-theme='dark'] {
 							background: $paywall_dark_theme_background_color;
-							border: 1px solid $message_border_colour_dark_theme;
+							border: 1px solid $message_border_color_dark_theme;
 
 							h3, p {
 								color: $paywall_dark_theme_text_color;

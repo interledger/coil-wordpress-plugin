@@ -486,7 +486,7 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
 }
 
 /**
- * @return array Valid colour theme states
+ * @return array Valid color theme states
  */
 function get_theme_color_types() {
 
