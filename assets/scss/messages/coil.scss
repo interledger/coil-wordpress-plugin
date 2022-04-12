@@ -10,13 +10,13 @@ body.monetization-not-initialized.coil-exclusive.show-excerpt-message,
 body.monetization-not-initialized.coil-missing-id.show-fw-message {
 
 	.coil-message-container {
-		color: $message_font_colour;
+		color: $paywall_text_color;
 		display: block !important;
 		font-family: 'Open Sans', sans-serif;
 		text-align: center;
 
 		.coil-message-inner {
-			background: $message_background_colour;
+			background: $paywall_background_color;
 			border: 1px solid $message_border_colour;
 			border-radius: $message_border_radius;
 			margin: auto;
@@ -71,9 +71,9 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 			}
 
 			a.coil-message-button {
-				background-color: $message_font_colour;
+				background-color: $paywall_button_color;
 				border-radius: 6px;
-				color: $white;
+				color: $paywall_button_font_color;
 				display: inline-block;
 				font-size: $message_spacing_baseline * 2;
 				font-weight: 600;
@@ -85,7 +85,7 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 				text-decoration: none;
 
 				&:hover {
-					background-color: $message_content_conceal_colour;
+					background-color: $paywall_button_hover_color;
 				}
 
 				@media only screen and (min-width: $message_desktop_breakpoint) {
@@ -99,18 +99,18 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 	.coil-message-container.coil-dark-theme {
 
 		.coil-message-inner {
-			background: $black-000;
-			color: $message_background_colour;
+			background: $paywall_dark_theme_background_color;
+			color: $paywall_dark_theme_text_color;
 			opacity: 0.9;
 		}
 
 		.coil-message-header {
 			a.coil-message-button {
-				background-color: $message_background_colour;
-				color: $message_font_colour;
+				background-color: $paywall_dark_theme_button_color;
+				color: $paywall_dark_theme_button_font_color;
 
 				&:hover {
-					background-color: $message_content_conceal_colour_dark_theme;
+					background-color: $paywall_dark_theme_button_hover_color;
 				}
 			}
 		}
@@ -284,30 +284,6 @@ body:not( .monetization-initialized ) .streaming-widget-container.coil-light-the
 			top: -5px;
 			width: 14px;
 		}
-	}
-}
-
-a.coil-serverside-message-button {
-	background-color: $message_font_colour;
-	border-radius: 6px;
-	color: $white;
-	display: inline-block;
-	font-family: 'Open Sans', sans-serif;
-	font-size: $message_spacing_baseline * 2;
-	font-weight: 600;
-	line-height: $message_spacing_baseline * 3;
-	margin-bottom: $message_spacing_baseline * 3;
-	max-width: 232px;
-	padding: 13px $message_spacing_baseline * 2;
-	text-align: center;
-	text-decoration: none;
-
-	&:hover {
-		background-color: $message_content_conceal_colour;
-	}
-
-	@media only screen and (min-width: $message_desktop_breakpoint) {
-		margin-bottom: 0;
 	}
 }
 

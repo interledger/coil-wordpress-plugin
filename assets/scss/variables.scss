@@ -25,20 +25,26 @@ $yellow: #f1e865;
 $orange: #f36d0a;
 $lightorange: #f1a165;
 
+// Paywall
 $message_spacing_baseline: 8px;
-$message_background_colour: #fff;
 $message_border_radius: 6px;
-$message_content_conceal_colour: rgba( 69, 69, 69, 0.9 );
-$message_font_colour: #2c333a;
 $message_border_colour: #d9d9d9;
 $message_mobile_breakpoint: 768px;
 $message_desktop_breakpoint: 1168px;
+$paywall_button_color: #2d333a;
+$paywall_button_hover_color: #444;
+$paywall_button_font_color: #fff;
+$paywall_text_color: #32373C;
+$paywall_background_color: #fff;
 
-// Dark Theme
-$message_content_conceal_colour_dark_theme: #ccc;
-$message_border_colour_dark_theme: rgb(79, 79, 79);
+// Paywall Dark Theme
+$paywall_dark_theme_button_color: #fff;
+$paywall_dark_theme_button_hover_color: #e3e5e9;
+$paywall_dark_theme_button_font_color: #000;
+$paywall_dark_theme_text_color: #fff;
+$paywall_dark_theme_background_color: #2d333a;
 
-// Streaming support widget
+// Streaming Support Widget
 $streaming_widget_message_color: #2d333a;
 $streaming_widget_font_color: #fff;
 $streaming_widget_dismiss_font_color: #fff;
@@ -47,7 +53,7 @@ $streaming_widget_dismiss_hover_color: #c92c2c;
 $streaming_widget_message_dismiss_color: #777;
 $streaming_widget_message_shadow_color: rgba( 194, 194, 194, 0.1 );
 
-// Light Theme
+// Streaming Support Widget Light Theme
 $streaming_widget_message_color_light_theme: #fff;
 $streaming_widget_font_color_light_theme: #000;
 $streaming_widget_message_hover_color_light_theme: #e3e5e9;
