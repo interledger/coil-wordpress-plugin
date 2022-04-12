@@ -193,7 +193,7 @@ body.monetization-not-initialized.coil-exclusive.show-fw-message .coil-message-c
 body.coil-exclusive.coil-extension-not-found.show-excerpt-message .coil-message-container,
 body.monetization-not-initialized.coil-exclusive.show-excerpt-message .coil-message-container,
 body.monetization-not-initialized.coil-missing-id.show-fw-message .coil-message-container {
-  color: #32373C;
+  color: #32373c;
   display: block !important;
   font-family: 'Open Sans', sans-serif;
   text-align: center; }

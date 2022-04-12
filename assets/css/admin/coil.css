@@ -207,7 +207,7 @@
               margin-right: 6px; }
         .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container {
           background: #fff;
-          border: 1px solid #ccc;
+          border: 1px solid #d9d9d9;
           border-radius: 6px;
           box-sizing: border-box;
           padding: 15px;
@@ -216,12 +216,12 @@
 						** TODO: Update this by cleaning it up according to the available fonts etc
 						**/ }
           .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container[data-theme='dark'] {
-            background: #444; }
+            background: #2d333a; }
             .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container[data-theme='dark'] h3, .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container[data-theme='dark'] p {
               color: #fff; }
             .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container[data-theme='dark'] a {
               background: #fff;
-              color: #444; }
+              color: #000; }
           .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container .coil-paywall-image {
             max-height: 50px;
             max-width: 50px; }
@@ -242,7 +242,7 @@
             line-height: 16px;
             text-align: center; }
           .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container .coil-paywall-cta {
-            background: #000;
+            background: #2d333a;
             border-radius: 3px;
             color: #fff;
             display: block;

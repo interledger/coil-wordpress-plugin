@@ -309,23 +309,23 @@
 					}
 
 					.coil-paywall-container {
-						background: #fff;
-						border: 1px solid #ccc;
-						border-radius: 6px;
+						background: $paywall_background_color;
+						border: 1px solid $message_border_colour;
+						border-radius: $message_border_radius;
 						box-sizing: border-box;
 						padding: 15px;
 						text-align: center;
 
 						&[data-theme='dark'] {
-							background: #444;
+							background: $paywall_dark_theme_background_color;
 
 							h3, p {
-								color: #fff;
+								color: $paywall_dark_theme_text_color;
 							}
 
 							a {
-								background: #fff;
-								color: #444;
+								background: $paywall_dark_theme_button_color;
+								color: $paywall_dark_theme_button_font_color;
 							}
 						}
 
@@ -351,7 +351,7 @@
 						}
 
 						.coil-paywall-body {
-							color: #32373c;
+							color: $paywall_text_color;
 							font-size: 13px;
 							font-style: normal;
 							font-weight: 400;
@@ -360,9 +360,9 @@
 						}
 
 						.coil-paywall-cta {
-							background: #000;
+							background: $paywall_button_color;
 							border-radius: 3px;
-							color: #fff;
+							color: $paywall_button_font_color;
 							display: block;
 							margin: auto;
 							margin-top: 15px;
