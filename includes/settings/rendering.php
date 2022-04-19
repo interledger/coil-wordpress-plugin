@@ -122,7 +122,7 @@ function render_toggle( $id, $name, $value ) {
 		$checked_input = '';
 	}
 	echo sprintf(
-		'<label class="coil-checkbox" for="%1$s"><input type="%2$s" name="%3$s" id="%1$s" %4$s /><span></span><i></i></label>',
+		'<div class="coil-checkbox-container"><label class="coil-checkbox" for="%1$s"><input type="%2$s" name="%3$s" id="%1$s" %4$s /><span></span><i></i></label></div>',
 		esc_attr( $id ),
 		esc_attr( 'checkbox' ),
 		esc_attr( $name ),
