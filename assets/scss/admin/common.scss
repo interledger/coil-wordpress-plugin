@@ -537,53 +537,53 @@
 		justify-content: flex-end;
 
 		label.coil-checkbox {
-		  display: block;
-		  float: right;
-		  height: 20px;
-		  width: 95px;
+			display: block;
+			float: right;
+			height: 20px;
+			width: 95px;
 		}
 
 		label.coil-checkbox input {
-		  display: none;
+			display: none;
 		}
 
 		label.coil-checkbox span {
-		  background: #c1c5cd;
-		  border-radius: 25px;
-		  display: block;
-		  float: right;
-		  height: 20px;
-		  position: relative;
-		  width: 35px;
+			background: #c1c5cd;
+			border-radius: 25px;
+			display: block;
+			float: right;
+			height: 20px;
+			position: relative;
+			width: 35px;
 		}
 
 		label.coil-checkbox input + span::after {
-		  background: #fff;
-		  border-radius: 18px;
-		  content: '';
-		  display: block;
-		  height: 16px;
-		  left: 2px;
-		  position: absolute;
-		  top: 2px;
-		  width: 16px;
+			background: #fff;
+			border-radius: 18px;
+			content: '';
+			display: block;
+			height: 16px;
+			left: 2px;
+			position: absolute;
+			top: 2px;
+			width: 16px;
 		}
 
 		label.coil-checkbox input:checked + span {
-		  background: #4fa3d5;
+			background: #4fa3d5;
 		}
 
 		label.coil-checkbox input:checked + span::after {
-		  left: unset;
-		  right: 2px;
+			left: unset;
+			right: 2px;
 		}
 
 		label.coil-checkbox input + span + i::before {
-		  content: 'Disabled';
+			content: 'Disabled';
 		}
 
 		label.coil-checkbox input:checked + span + i::before {
-		  content: 'Enabled';
+			content: 'Enabled';
 		}
 
 	}
