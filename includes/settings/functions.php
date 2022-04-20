@@ -298,7 +298,7 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 			}
 		} else {
 			// If no CSS selector is set then the default value must be used
-			if ( $field_name === 'coil_content_container' && ( ! isset( $exclusive_settings[ $field_name ] ) || $exclusive_settings[ $field_name ] === '' ) ) {
+			if ( $field_name === 'coil_content_container' && ( ! isset( $exclusive_settings[ $field_name ] ) || sanitize_text_field( $exclusive_settings[ $field_name ] ) === '' ) ) {
 				$final_settings[ $field_name ] = Admin\get_css_selector_default();
 			} elseif ( ( $field_name === 'coil_paywall_title' || $field_name === 'coil_paywall_message' ) && isset( $exclusive_settings[ $field_name ] ) && ctype_space( $exclusive_settings[ $field_name ] ) ) {
 				// Allows the option of saving whitespace in the title or message as a way of eliminating it from the paywall.
