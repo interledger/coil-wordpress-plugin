@@ -47,7 +47,7 @@ describe( 'Plugin Settings Panel', function() {
 
 		cy
 			.get( '#coil_payment_pointer' )
-			.should( 'have.value', 'https://' + invalidInput );
+			.should( 'have.value', '' );
 
 		checkForInvalidAlert( false );
 	} );
