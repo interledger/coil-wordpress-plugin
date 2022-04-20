@@ -200,12 +200,12 @@ function coil_general_settings_group_validation( $general_settings ) : array {
 
 	// Validate the payment pointer
 	if ( in_array( 'coil_payment_pointer', $general_settings_keys, true ) ) {
-		$final_settings['coil_payment_pointer'] = sanitize_text_field( $general_settings['coil_payment_pointer'] );
-		// check if url starts with https://, http://, or $
-		$correct_format = preg_match( '/^(https:\/\/)|^(http:\/\/)|^[\$]/', $final_settings['coil_payment_pointer'] );
-		if ( $correct_format !== 1 && ! empty( $final_settings['coil_payment_pointer'] ) ) {
-			// Insert https:// atthe beginning
-			$final_settings['coil_payment_pointer'] = esc_url( 'https://' . $final_settings['coil_payment_pointer'] );
+		$general_settings['coil_payment_pointer'] = sanitize_text_field( $general_settings['coil_payment_pointer'] );
+		// check if url starts with https://, or $
+		$correct_format = preg_match( '/^(https:\/\/.)|^[\$]./', $general_settings['coil_payment_pointer'] );
+		// If the payment pointer is invalid it won't be saved.
+		if ( $correct_format === 1 ) {
+			$final_settings['coil_payment_pointer'] = $general_settings['coil_payment_pointer'];
 		}
 	}
 
@@ -289,9 +289,13 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 	];
 
 	foreach ( $text_fields as $field_name ) {
-
 		if ( $field_name === 'coil_paywall_button_link' ) {
-			$final_settings[ $field_name ] = ( isset( $exclusive_settings[ $field_name ] ) ) ? esc_url_raw( $exclusive_settings[ $field_name ] ) : '';
+			// Check the URL has something dot something to be valid. Only save it if valid.
+			if ( isset( $exclusive_settings[ $field_name ] ) && preg_match( '/.+\..+/', $exclusive_settings[ $field_name ] ) === 1 ) {
+				$final_settings[ $field_name ] = esc_url_raw( $exclusive_settings[ $field_name ] );
+			} else {
+				$final_settings[ $field_name ] = '';
+			}
 		} else {
 			// If no CSS selector is set then the default value must be used
 			if ( $field_name === 'coil_content_container' && ( ! isset( $exclusive_settings[ $field_name ] ) || $exclusive_settings[ $field_name ] === '' ) ) {
@@ -369,7 +373,12 @@ function streaming_widget_settings_group_validation( $streaming_widget_settings 
 	foreach ( $text_fields as $field_name ) {
 
 		if ( $field_name === 'streaming_widget_link' ) {
-			$final_settings[ $field_name ] = ( isset( $streaming_widget_settings[ $field_name ] ) ) ? esc_url_raw( $streaming_widget_settings[ $field_name ] ) : '';
+			// Check the URL has something dot something to be valid. Only save it if valid.
+			if ( isset( $streaming_widget_settings[ $field_name ] ) && preg_match( '/.+\..+/', $streaming_widget_settings[ $field_name ] ) === 1 ) {
+				$final_settings[ $field_name ] = esc_url_raw( $streaming_widget_settings[ $field_name ] );
+			} else {
+				$final_settings[ $field_name ] = '';
+			}
 		} elseif ( ( $field_name === 'streaming_widget_text' || $field_name === 'members_streaming_widget_text' ) && isset( $streaming_widget_settings[ $field_name ] ) && ctype_space( $streaming_widget_settings[ $field_name ] ) ) {
 			// Allows the option of saving whitespace in the streaming support widget text as a way of eliminating it to only show the icon.
 			$final_settings[ $field_name ] = ' ';
@@ -1091,7 +1100,7 @@ function coil_settings_css_selector_render_callback() {
 		$exclusive_settings = Admin\get_exclusive_settings();
 
 		printf(
-			'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" required="required"/>',
+			'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s"/>',
 			esc_attr( 'wide-input' ),
 			esc_attr( 'text' ),
 			esc_attr( 'coil_exclusive_settings_group[coil_content_container]' ),

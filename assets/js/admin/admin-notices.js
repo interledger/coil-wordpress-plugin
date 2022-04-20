@@ -181,13 +181,8 @@
 
 	// Returns a boolean indicating whether a URL is valid (true) or invalid (false)
 	function isValidUrl( string ) {
-		let url;
-		try {
-			url = new URL( string );
-		} catch ( _ ) {
-			return false;
-		}
-		return url.protocol === 'http:' || url.protocol === 'https:';
+		const pattern = /.+\..+/;
+		return pattern.test( string );
 	}
 
 	/* ------------------------------------------------------------------------ *
