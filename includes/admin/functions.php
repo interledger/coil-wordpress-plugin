@@ -210,7 +210,7 @@ function load_admin_assets() : void {
 			'invalid_blank_input_msg'     => __( 'Field cannot be blank', 'coil-web-monetization' ),
 			'invalid_url_msg'             => __( 'Please provide a valid URL', 'coil-web-monetization' ),
 			'invalid_margin_value_msg'    => __( 'Please enter a number', 'coil-web-monetization' ),
-			'coil_button_position'        => $position = get_coil_button_setting( 'coil_button_position' ),
+			'streaming_widget_position'   => $position = get_streaming_widget_setting( 'streaming_widget_position' ),
 		]
 	);
 
@@ -400,9 +400,9 @@ function get_exclusive_settings(): array {
  * @return bool setting stored in options
  */
 function is_exclusive_content_enabled() {
-	$exclusive_options   = get_exclusive_settings();
-	$exclusive_toggle_id = 'coil_exclusive_toggle';
-	return isset( $exclusive_options[ $exclusive_toggle_id ] ) ? $exclusive_options[ $exclusive_toggle_id ] : get_exclusive_content_enabled_default();
+	$exclusive_options = get_exclusive_settings();
+	$toggle_id         = 'coil_exclusive_toggle';
+	return isset( $exclusive_options[ $toggle_id ] ) ? $exclusive_options[ $toggle_id ] : get_exclusive_content_enabled_default();
 }
 
 /**
@@ -486,7 +486,7 @@ function get_paywall_appearance_setting( $field_id, $use_text_default = false ) 
 }
 
 /**
- * @return array Valid colour theme states
+ * @return array Valid color theme states
  */
 function get_theme_color_types() {
 
@@ -654,125 +654,125 @@ function get_css_selector_default() {
 }
 
 /**
- * Retrieve the Coil button settings.
+ * Retrieve the streaming support widget settings.
  * @return array Setting stored in options.
  */
-function get_coil_button_settings() : array {
+function get_streaming_widget_settings() : array {
 
-	$coil_button_settings = get_option( 'coil_button_settings_group', [] );
-	return $coil_button_settings;
+	$streaming_widget_settings = get_option( 'streaming_widget_settings_group', [] );
+	return $streaming_widget_settings;
 }
 
 /**
- * Retrieve the Coil button toggle setting
+ * Retrieve the streaming support widget toggle setting
  *
  * @return bool setting stored in options
  */
-function is_coil_button_enabled() {
-	$coil_button_options = get_coil_button_settings();
-	$exclusive_toggle_id = 'coil_button_toggle';
-	return isset( $coil_button_options[ $exclusive_toggle_id ] ) ? $coil_button_options[ $exclusive_toggle_id ] : false;
+function is_streaming_widget_enabled() {
+	$streaming_widget_options = get_streaming_widget_settings();
+	$toggle_id                = 'streaming_widget_toggle';
+	return isset( $streaming_widget_options[ $toggle_id ] ) ? $streaming_widget_options[ $toggle_id ] : false;
 }
 
 /**
- * Retrieve the Coil button settings.
+ * Retrieve the streaming support widget settings.
  * @param string $field_name
  * @return string Setting stored in options.
  */
-function get_coil_button_setting( $field_id, $use_text_default = false ) {
+function get_streaming_widget_setting( $field_id, $use_text_default = false ) {
 
-	$coil_button_settings = get_coil_button_settings();
-	$value                = false;
-	$text_fields          = [ 'coil_button_text', 'coil_button_link', 'coil_members_button_text' ];
-	$margin_keys          = array_keys( get_button_margin_key_defaults() );
-	$default_settings     = get_coil_button_defaults();
+	$streaming_widget_settings = get_streaming_widget_settings();
+	$value                     = false;
+	$text_fields               = [ 'streaming_widget_text', 'streaming_widget_link', 'members_streaming_widget_text' ];
+	$margin_keys               = array_keys( get_streaming_widget_margin_key_defaults() );
+	$default_settings          = get_streaming_widget_defaults();
 	// Text inputs can be empty strings, in which the placeholder text will display or the default text will be returned.
 	if ( in_array( $field_id, $text_fields, true ) ) {
-		if ( $use_text_default && empty( $coil_button_settings[ $field_id ] ) ) {
+		if ( $use_text_default && empty( $streaming_widget_settings[ $field_id ] ) ) {
 			$value = $default_settings[ $field_id ];
 		} else {
-			$value = ( ! empty( $coil_button_settings[ $field_id ] ) ) ? $coil_button_settings[ $field_id ] : '';
+			$value = ( ! empty( $streaming_widget_settings[ $field_id ] ) ) ? $streaming_widget_settings[ $field_id ] : '';
 		}
 	} elseif ( in_array( $field_id, $margin_keys, true ) ) {
-		if ( $use_text_default && ( ! isset( $coil_button_settings[ $field_id ] ) || $coil_button_settings[ $field_id ] === '' ) ) {
+		if ( $use_text_default && ( ! isset( $streaming_widget_settings[ $field_id ] ) || $streaming_widget_settings[ $field_id ] === '' ) ) {
 			$value = $default_settings[ $field_id ];
 		} else {
-			if ( isset( $coil_button_settings[ $field_id ] ) ) {
-				$filtered_int = filter_var( $coil_button_settings[ $field_id ], FILTER_SANITIZE_NUMBER_INT );
+			if ( isset( $streaming_widget_settings[ $field_id ] ) ) {
+				$filtered_int = filter_var( $streaming_widget_settings[ $field_id ], FILTER_SANITIZE_NUMBER_INT );
 				$value        = ( $filtered_int !== false ) ? $filtered_int : '';
 			} else {
 				$value = '';
 			}
 		}
 	} elseif ( in_array( $field_id, array_keys( $default_settings ), true ) ) {
-		$value = isset( $coil_button_settings[ $field_id ] ) ? $coil_button_settings[ $field_id ] : $default_settings[ $field_id ];
+		$value = isset( $streaming_widget_settings[ $field_id ] ) ? $streaming_widget_settings[ $field_id ] : $default_settings[ $field_id ];
 	}
 
 	return $value;
 }
 
 /**
- * Return the Coil button visibility status
+ * Return the streaming support widget visibility status
  * based on the global defaults.
  *
  * @param integer $post_id
- * @return string Coil button status.
+ * @return string streaming support widget status.
  */
-function get_coil_button_status( $object_id ) {
-	$coil_button_class    = '';
-	$post_id              = (int) $object_id;
-	$post                 = get_post( $post_id );
-	$coil_button_settings = get_coil_button_settings();
+function get_streaming_widget_status( $object_id ) {
+	$streaming_widget_class    = '';
+	$post_id                   = (int) $object_id;
+	$post                      = get_post( $post_id );
+	$streaming_widget_settings = get_streaming_widget_settings();
 
-	if ( ! empty( $coil_button_settings ) && ! empty( $post ) && isset( $coil_button_settings[ $post->post_type . '_button_visibility' ] ) ) {
-		$status = $coil_button_settings[ $post->post_type . '_button_visibility' ];
+	if ( ! empty( $streaming_widget_settings ) && ! empty( $post ) && isset( $streaming_widget_settings[ $post->post_type . '_streaming_widget_visibility' ] ) ) {
+		$status = $streaming_widget_settings[ $post->post_type . '_streaming_widget_visibility' ];
 		if ( $status === 'show' ) {
-			$coil_button_class = 'show-coil-button';
+			$streaming_widget_class = 'show-streaming-widget';
 		}
 	}
 
-	return $coil_button_class;
+	return $streaming_widget_class;
 }
 
 /**
- * Retrieve the Coil button settings defaults
+ * Retrieve the streaming support widget settings defaults
  *
  * @return array Default values
  */
-function get_coil_button_defaults() {
+function get_streaming_widget_defaults() {
 	// Set up defaults.
 	$settings        = [
-		'coil_button_toggle'          => true,
-		'coil_button_member_display'  => true,
-		'coil_button_text'            => __( 'Support us with Coil', 'coil-web-monetization' ),
-		'coil_button_link'            => __( 'https://coil.com/', 'coil-web-monetization' ),
-		'coil_members_button_text'    => __( 'Thanks for your support!', 'coil-web-monetization' ),
-		'coil_button_color_theme'     => 'dark',
-		'coil_button_size'            => 'large',
-		'coil_button_position'        => 'bottom-right',
-		'post_type_button_visibility' => 'show', // a generic default for all post-types
+		'streaming_widget_toggle'         => true,
+		'streaming_widget_member_display' => true,
+		'streaming_widget_text'           => __( 'Support us with Coil', 'coil-web-monetization' ),
+		'streaming_widget_link'           => __( 'https://coil.com/', 'coil-web-monetization' ),
+		'members_streaming_widget_text'   => __( 'Thanks for your support!', 'coil-web-monetization' ),
+		'streaming_widget_color_theme'    => 'dark',
+		'streaming_widget_size'           => 'large',
+		'streaming_widget_position'       => 'bottom-right',
+		'post_type_widget_visibility'     => 'show', // a generic default for all post-types
 	];
-	$margin_defaults = get_button_margin_key_defaults();
+	$margin_defaults = get_streaming_widget_margin_key_defaults();
 	return array_merge( $settings, $margin_defaults );
 }
 
 /**
- * @return array Default margins for the Coil button.
+ * @return array Default margins for the streaming support widget.
  */
-function get_button_margin_key_defaults() {
+function get_streaming_widget_margin_key_defaults() {
 	$margin_baseline = '32';
 	return [
-		'coil_button_top_margin'    => $margin_baseline,
-		'coil_button_right_margin'  => $margin_baseline,
-		'coil_button_bottom_margin' => $margin_baseline,
-		'coil_button_left_margin'   => $margin_baseline,
+		'streaming_widget_top_margin'    => $margin_baseline,
+		'streaming_widget_right_margin'  => $margin_baseline,
+		'streaming_widget_bottom_margin' => $margin_baseline,
+		'streaming_widget_left_margin'   => $margin_baseline,
 	];
 }
 
 /**
- * @return array Valid button sizes.
+ * @return array Valid streaming support widget sizes.
  */
-function get_button_size_options() {
+function get_streaming_widget_size_options() {
 
 	$sizes = [ 'large', 'small' ];
 
@@ -780,9 +780,9 @@ function get_button_size_options() {
 }
 
 /**
- * @return array Valid button positions.
+ * @return array Valid streaming support widget positions.
  */
-function get_button_position_options() {
+function get_streaming_widget_position_options() {
 
 	$position_options = [
 		'bottom-right' => 'Bottom - Right',

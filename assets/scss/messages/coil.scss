@@ -10,14 +10,14 @@ body.monetization-not-initialized.coil-exclusive.show-excerpt-message,
 body.monetization-not-initialized.coil-missing-id.show-fw-message {
 
 	.coil-message-container {
-		color: $message_font_colour;
+		color: $paywall_text_color;
 		display: block !important;
 		font-family: 'Open Sans', sans-serif;
 		text-align: center;
 
 		.coil-message-inner {
-			background: $message_background_colour;
-			border: 1px solid $message_border_colour;
+			background: $paywall_background_color;
+			border: 1px solid $message_border_color;
 			border-radius: $message_border_radius;
 			margin: auto;
 			max-width: 660px;
@@ -71,9 +71,9 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 			}
 
 			a.coil-message-button {
-				background-color: $message_font_colour;
+				background-color: $paywall_button_color;
 				border-radius: 6px;
-				color: $white;
+				color: $paywall_button_font_color;
 				display: inline-block;
 				font-size: $message_spacing_baseline * 2;
 				font-weight: 600;
@@ -85,7 +85,7 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 				text-decoration: none;
 
 				&:hover {
-					background-color: $message_content_conceal_colour;
+					background-color: $paywall_button_hover_color;
 				}
 
 				@media only screen and (min-width: $message_desktop_breakpoint) {
@@ -99,18 +99,19 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 	.coil-message-container.coil-dark-theme {
 
 		.coil-message-inner {
-			background: $black-000;
-			color: $message_background_colour;
+			background: $paywall_dark_theme_background_color;
+			border: 1px solid $message_border_color_dark_theme;
+			color: $paywall_dark_theme_text_color;
 			opacity: 0.9;
 		}
 
 		.coil-message-header {
 			a.coil-message-button {
-				background-color: $message_background_colour;
-				color: $message_font_colour;
+				background-color: $paywall_dark_theme_button_color;
+				color: $paywall_dark_theme_button_font_color;
 
 				&:hover {
-					background-color: $message_content_conceal_colour_dark_theme;
+					background-color: $paywall_dark_theme_button_hover_color;
 				}
 			}
 		}
@@ -149,9 +150,9 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 	display: none;
 }
 
-// Scenario 3 - Coil button
-.coil-button-message-container {
-	// Hide the Coil button on mobile
+// Scenario 3 - streaming support widget
+.streaming-widget-container {
+	// Hide the streaming support widget on mobile
 	@media only screen and (max-width: $message_mobile_breakpoint) {
 		display: none;
 	}
@@ -161,10 +162,10 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 	width: 100%;
 	z-index: 200;
 
-	.coil-button {
-		background-color: $coil_button_message_color;
+	.streaming-widget {
+		background-color: $streaming_widget_message_color;
 		border-radius: 6px;
-		box-shadow: 0 6px 10px 0 $coil_button_message_shadow_color;
+		box-shadow: 0 6px 10px 0 $streaming_widget_message_shadow_color;
 		font-family: 'Open Sans', sans-serif;
 		font-size: 17px;
 		font-weight: 600;
@@ -180,7 +181,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 			padding: $message_spacing_baseline;
 			text-decoration: none;
 			div {
-				color: $coil_button_font_color;
+				color: $streaming_widget_font_color;
 				margin: auto;
 				padding-left: $message_spacing_baseline;
 				padding-right: $message_spacing_baseline;
@@ -197,10 +198,10 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 			max-width: 434px;
 		}
 
-		.coil-button-dismiss {
-			background-color: $coil_button_message_dismiss_color;
+		.streaming-widget-dismiss {
+			background-color: $streaming_widget_message_dismiss_color;
 			border-radius: 100%;
-			color: $coil_dismiss_font_color;
+			color: $streaming_widget_dismiss_font_color;
 			cursor: pointer;
 			display: none;
 			font-size: 20px;
@@ -213,58 +214,58 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 			width: 20px;
 
 			&:hover {
-				background-color: $coil_dismiss_hover_color;
+				background-color: $streaming_widget_dismiss_hover_color;
 			}
 		}
 	}
 }
 
-.coil-button-message-container.bottom {
+.streaming-widget-container.bottom {
 	bottom: 0;
 }
 
-.coil-button-message-container.top {
+.streaming-widget-container.top {
 	top: 0;
 }
 
-.coil-button-message-container.right {
+.streaming-widget-container.right {
 	justify-content: right;
 }
 
-.coil-button-message-container.left {
+.streaming-widget-container.left {
 	justify-content: left;
 }
 
-// Changes Coil button to implement light theme
-.coil-button-message-container.coil-light-theme {
-	.coil-button {
-		background-color: $coil_button_message_color_light_theme;
+// Changes streaming support widget to implement light theme
+.streaming-widget-container.coil-light-theme {
+	.streaming-widget {
+		background-color: $streaming_widget_message_color_light_theme;
 
 		a {
 			div {
-				color: $coil_button_font_color_light_theme;
+				color: $streaming_widget_font_color_light_theme;
 			}
 		}
 	}
 }
 
 // Implement hover effect
-body:not( .monetization-initialized ) .coil-button-message-container .coil-button {
+body:not( .monetization-initialized ) .streaming-widget-container .streaming-widget {
 	&:hover {
-		background-color: $coil_button_message_hover_color;
+		background-color: $streaming_widget_message_hover_color;
 	}
 }
 
 // Implement hover effect for the light theme
-body:not( .monetization-initialized ) .coil-button-message-container.coil-light-theme .coil-button {
+body:not( .monetization-initialized ) .streaming-widget-container.coil-light-theme .streaming-widget {
 	&:hover {
-		background-color: $coil_button_message_hover_color_light_theme;
+		background-color: $streaming_widget_message_hover_color_light_theme;
 	}
 }
 
-// Changes Coil button to implement the small size
-.coil-button-message-container.coil-button-small {
-	.coil-button {
+// Changes streaming support widget to implement the small size
+.streaming-widget-container.streaming-widget-small {
+	.streaming-widget {
 		font-size: 14px;
 		line-height: 17px;
 
@@ -276,7 +277,7 @@ body:not( .monetization-initialized ) .coil-button-message-container.coil-light-
 			}
 		}
 
-		.coil-button-dismiss {
+		.streaming-widget-dismiss {
 			font-size: 14px;
 			height: 14px;
 			line-height: 14px;
@@ -284,30 +285,6 @@ body:not( .monetization-initialized ) .coil-button-message-container.coil-light-
 			top: -5px;
 			width: 14px;
 		}
-	}
-}
-
-a.coil-serverside-message-button {
-	background-color: $message_font_colour;
-	border-radius: 6px;
-	color: $white;
-	display: inline-block;
-	font-family: 'Open Sans', sans-serif;
-	font-size: $message_spacing_baseline * 2;
-	font-weight: 600;
-	line-height: $message_spacing_baseline * 3;
-	margin-bottom: $message_spacing_baseline * 3;
-	max-width: 232px;
-	padding: 13px $message_spacing_baseline * 2;
-	text-align: center;
-	text-decoration: none;
-
-	&:hover {
-		background-color: $message_content_conceal_colour;
-	}
-
-	@media only screen and (min-width: $message_desktop_breakpoint) {
-		margin-bottom: 0;
 	}
 }
 

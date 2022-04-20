@@ -139,35 +139,35 @@ function register_admin_content_settings() {
 		'coil_css_selector_section'
 	);
 
-	// Tab 4 - Coil Button
+	// Tab 4 - Streaming Support Widget
 	register_setting(
-		'coil_button_settings_group',
-		'coil_button_settings_group',
-		__NAMESPACE__ . '\coil_button_settings_group_validation'
+		'streaming_widget_settings_group',
+		'streaming_widget_settings_group',
+		__NAMESPACE__ . '\streaming_widget_settings_group_validation'
 	);
 
 	// ==== Enable / Disable
 	add_settings_section(
-		'coil_enable_button_section',
+		'coil_enable_streaming_widget_section',
 		false,
-		__NAMESPACE__ . '\coil_settings_enable_coil_button_toggle_render_callback',
-		'coil_enable_button_section'
+		__NAMESPACE__ . '\coil_settings_enable_streaming_widget_toggle_render_callback',
+		'coil_enable_streaming_widget_section'
 	);
 
-	// ==== Button Settings
+	// ==== Streaming Support Widget Settings
 	add_settings_section(
-		'coil_button_settings_section',
+		'streaming_widget_settings_section',
 		false,
-		__NAMESPACE__ . '\coil_settings_coil_button_settings_render_callback',
-		'coil_button_settings_section'
+		__NAMESPACE__ . '\coil_settings_streaming_widget_settings_render_callback',
+		'streaming_widget_settings_section'
 	);
 
-	// ==== Button Visibility
+	// ==== Streaming Support Widget Visibility
 	add_settings_section(
-		'coil_button_visibility_section',
+		'streaming_widget_visibility_section',
 		false,
-		__NAMESPACE__ . '\coil_settings_coil_button_visibility_render_callback',
-		'coil_button_visibility_section'
+		__NAMESPACE__ . '\coil_settings_streaming_widget_visibility_render_callback',
+		'streaming_widget_visibility_section'
 	);
 }
 
@@ -200,12 +200,12 @@ function coil_general_settings_group_validation( $general_settings ) : array {
 
 	// Validate the payment pointer
 	if ( in_array( 'coil_payment_pointer', $general_settings_keys, true ) ) {
-		$final_settings['coil_payment_pointer'] = sanitize_text_field( $general_settings['coil_payment_pointer'] );
-		// check if url starts with https://, http://, or $
-		$correct_format = preg_match( '/^(https:\/\/)|^(http:\/\/)|^[\$]/', $final_settings['coil_payment_pointer'] );
-		if ( $correct_format !== 1 && ! empty( $final_settings['coil_payment_pointer'] ) ) {
-			// Insert https:// atthe beginning
-			$final_settings['coil_payment_pointer'] = esc_url( 'https://' . $final_settings['coil_payment_pointer'] );
+		$general_settings['coil_payment_pointer'] = sanitize_text_field( $general_settings['coil_payment_pointer'] );
+		// check if url starts with https://, or $
+		$correct_format = preg_match( '/^(https:\/\/.)|^[\$]./', $general_settings['coil_payment_pointer'] );
+		// If the payment pointer is invalid it won't be saved.
+		if ( $correct_format === 1 ) {
+			$final_settings['coil_payment_pointer'] = $general_settings['coil_payment_pointer'];
 		}
 	}
 
@@ -289,12 +289,16 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 	];
 
 	foreach ( $text_fields as $field_name ) {
-
 		if ( $field_name === 'coil_paywall_button_link' ) {
-			$final_settings[ $field_name ] = ( isset( $exclusive_settings[ $field_name ] ) ) ? esc_url_raw( $exclusive_settings[ $field_name ] ) : '';
+			// Check the URL has something dot something to be valid. Only save it if valid.
+			if ( isset( $exclusive_settings[ $field_name ] ) && preg_match( '/.+\..+/', $exclusive_settings[ $field_name ] ) === 1 ) {
+				$final_settings[ $field_name ] = esc_url_raw( $exclusive_settings[ $field_name ] );
+			} else {
+				$final_settings[ $field_name ] = '';
+			}
 		} else {
 			// If no CSS selector is set then the default value must be used
-			if ( $field_name === 'coil_content_container' && ( ! isset( $exclusive_settings[ $field_name ] ) || $exclusive_settings[ $field_name ] === '' ) ) {
+			if ( $field_name === 'coil_content_container' && ( ! isset( $exclusive_settings[ $field_name ] ) || sanitize_text_field( $exclusive_settings[ $field_name ] ) === '' ) ) {
 				$final_settings[ $field_name ] = Admin\get_css_selector_default();
 			} elseif ( ( $field_name === 'coil_paywall_title' || $field_name === 'coil_paywall_message' ) && isset( $exclusive_settings[ $field_name ] ) && ctype_space( $exclusive_settings[ $field_name ] ) ) {
 				// Allows the option of saving whitespace in the title or message as a way of eliminating it from the paywall.
@@ -350,48 +354,52 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 }
 
 /**
- * Validates the Coil button settings.
+ * Validates the streaming support widget settings.
  *
- * @param array $coil_button_settings
+ * @param array $streaming_widget_settings
  * @return array
 */
-function coil_button_settings_group_validation( $coil_button_settings ): array {
+function streaming_widget_settings_group_validation( $streaming_widget_settings ): array {
 	$final_settings = [];
-	$defaults       = Admin\get_coil_button_defaults();
+	$defaults       = Admin\get_streaming_widget_defaults();
 
 	// Validates all text input fields
 	$text_fields = [
-		'coil_button_text',
-		'coil_button_link',
-		'coil_members_button_text',
+		'streaming_widget_text',
+		'streaming_widget_link',
+		'members_streaming_widget_text',
 	];
 
 	foreach ( $text_fields as $field_name ) {
 
-		if ( $field_name === 'coil_button_link' ) {
-			$final_settings[ $field_name ] = ( isset( $coil_button_settings[ $field_name ] ) ) ? esc_url_raw( $coil_button_settings[ $field_name ] ) : '';
-		} elseif ( ( $field_name === 'coil_button_text' || $field_name === 'coil_members_button_text' ) && isset( $coil_button_settings[ $field_name ] ) && ctype_space( $coil_button_settings[ $field_name ] ) ) {
-			// Allows the option of saving whitespace in the button text as a way of eliminating it
-			// from the paywall message
+		if ( $field_name === 'streaming_widget_link' ) {
+			// Check the URL has something dot something to be valid. Only save it if valid.
+			if ( isset( $streaming_widget_settings[ $field_name ] ) && preg_match( '/.+\..+/', $streaming_widget_settings[ $field_name ] ) === 1 ) {
+				$final_settings[ $field_name ] = esc_url_raw( $streaming_widget_settings[ $field_name ] );
+			} else {
+				$final_settings[ $field_name ] = '';
+			}
+		} elseif ( ( $field_name === 'streaming_widget_text' || $field_name === 'members_streaming_widget_text' ) && isset( $streaming_widget_settings[ $field_name ] ) && ctype_space( $streaming_widget_settings[ $field_name ] ) ) {
+			// Allows the option of saving whitespace in the streaming support widget text as a way of eliminating it to only show the icon.
 			$final_settings[ $field_name ] = ' ';
 		} else {
-			$final_settings[ $field_name ] = ( isset( $coil_button_settings[ $field_name ] ) ) ? sanitize_text_field( $coil_button_settings[ $field_name ] ) : '';
+			$final_settings[ $field_name ] = ( isset( $streaming_widget_settings[ $field_name ] ) ) ? sanitize_text_field( $streaming_widget_settings[ $field_name ] ) : '';
 		}
 	}
 
-	$checkbox_fields = [ 'coil_button_toggle', 'coil_button_member_display' ];
+	$checkbox_fields = [ 'streaming_widget_toggle', 'streaming_widget_member_display' ];
 
 	foreach ( $checkbox_fields as $field_name ) {
-		$final_settings[ $field_name ] = isset( $coil_button_settings[ $field_name ] ) && ( $coil_button_settings[ $field_name ] === 'on' || $coil_button_settings[ $field_name ] === true ) ? true : false;
+		$final_settings[ $field_name ] = isset( $streaming_widget_settings[ $field_name ] ) && ( $streaming_widget_settings[ $field_name ] === 'on' || $streaming_widget_settings[ $field_name ] === true ) ? true : false;
 	}
 
-	// Validates button margins
-	$margin_fields = Admin\get_button_margin_key_defaults();
+	// Validates streaming support widget margins
+	$margin_fields = Admin\get_streaming_widget_margin_key_defaults();
 
 	foreach ( $margin_fields as $field_name => $default ) {
 
-		if ( isset( $coil_button_settings[ $field_name ] ) ) {
-			$number                        = filter_var( $coil_button_settings[ $field_name ], FILTER_SANITIZE_NUMBER_INT );
+		if ( isset( $streaming_widget_settings[ $field_name ] ) ) {
+			$number                        = filter_var( $streaming_widget_settings[ $field_name ], FILTER_SANITIZE_NUMBER_INT );
 			$final_settings[ $field_name ] = $number !== false ? $number : $default;
 		} else {
 			$final_settings[ $field_name ] = '';
@@ -401,34 +409,34 @@ function coil_button_settings_group_validation( $coil_button_settings ): array {
 	// A list of valid post types
 	$post_type_options = Coil\get_supported_post_types( 'objects' );
 	foreach ( $post_type_options as $post_type ) {
-		// Validates Coil button visibility settings
-		$button_visibility_setting_key = $post_type->name . '_button_visibility';
+		// Validates streaming support widget visibility settings
+		$widget_visibility_setting_key = $post_type->name . '_streaming_widget_visibility';
 		$valid_options                 = [ 'show', 'hide' ];
 
 		// The default value is to show
-		$final_settings[ $button_visibility_setting_key ] = isset( $coil_button_settings[ $button_visibility_setting_key ] ) && in_array( $coil_button_settings[ $button_visibility_setting_key ], $valid_options, true ) ? sanitize_key( $coil_button_settings[ $button_visibility_setting_key ] ) : $defaults['post_type_button_visibility'];
+		$final_settings[ $widget_visibility_setting_key ] = isset( $streaming_widget_settings[ $widget_visibility_setting_key ] ) && in_array( $streaming_widget_settings[ $widget_visibility_setting_key ], $valid_options, true ) ? sanitize_key( $streaming_widget_settings[ $widget_visibility_setting_key ] ) : $defaults['post_type_widget_visibility'];
 	}
 
-	// Theme validation, button size, and button position validation
+	// Validates the streaming support widget's color theme, size, and position.
 	$additional_fields = [
 		[
-			'field_name'    => 'coil_button_color_theme',
+			'field_name'    => 'streaming_widget_color_theme',
 			'valid_choices' => Admin\get_theme_color_types(),
 		],
 		[
-			'field_name'    => 'coil_button_size',
-			'valid_choices' => Admin\get_button_size_options(),
+			'field_name'    => 'streaming_widget_size',
+			'valid_choices' => Admin\get_streaming_widget_size_options(),
 		],
 		[
-			'field_name'    => 'coil_button_position',
-			'valid_choices' => array_keys( Admin\get_button_position_options() ),
+			'field_name'    => 'streaming_widget_position',
+			'valid_choices' => array_keys( Admin\get_streaming_widget_position_options() ),
 		],
 	];
 
 	foreach ( $additional_fields as $field_item ) {
 		$field_name                    = $field_item['field_name'];
 		$valid_choices                 = $field_item['valid_choices'];
-		$final_settings[ $field_name ] = isset( $coil_button_settings[ $field_name ] ) && in_array( $coil_button_settings[ $field_name ], $valid_choices, true ) ? sanitize_key( $coil_button_settings[ $field_name ] ) : $defaults[ $field_name ];
+		$final_settings[ $field_name ] = isset( $streaming_widget_settings[ $field_name ] ) && in_array( $streaming_widget_settings[ $field_name ], $valid_choices, true ) ? sanitize_key( $streaming_widget_settings[ $field_name ] ) : $defaults[ $field_name ];
 	}
 
 	return $final_settings;
@@ -467,12 +475,12 @@ function coil_settings_welcome_render_callback() {
 			__( 'Enable Exclusive Content', 'coil-web-monetization' )
 		);
 
-		// Coil Button Section
+		// Streaming Support Widget Section
 		Rendering\render_welcome_section(
-			__( 'Coil Button', 'coil-web-monetization' ),
-			__( 'Show that you accept support from Coil members by displaying a Coil button on your page.', 'coil-web-monetization' ),
-			'coil_button',
-			__( 'Add Coil Button', 'coil-web-monetization' )
+			__( 'Streaming Support Widget', 'coil-web-monetization' ),
+			__( 'Show that you accept support from Coil members by displaying a widget on certain pages of your site. If you choose to show the widget to active Coil members, the widget\'s text changes to thank them for their support.', 'coil-web-monetization' ),
+			'streaming_widget',
+			__( 'Add Widget', 'coil-web-monetization' )
 		);
 
 		?>
@@ -638,7 +646,7 @@ function coil_settings_enable_exclusive_toggle_render_callback() {
 
 		printf(
 			'<p>%s</p>',
-			esc_html__( 'Disabling exclusive content will make all content publicly available. ', 'coil-web-monetization' )
+			esc_html__( 'Disabling exclusive content will make all content publicly available.', 'coil-web-monetization' )
 		);
 
 		$exclusive_toggle_id = 'coil_exclusive_toggle';
@@ -1092,7 +1100,7 @@ function coil_settings_css_selector_render_callback() {
 		$exclusive_settings = Admin\get_exclusive_settings();
 
 		printf(
-			'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s" required="required"/>',
+			'<input class="%s" type="%s" name="%s" id="%s" value="%s" placeholder="%s"/>',
 			esc_attr( 'wide-input' ),
 			esc_attr( 'text' ),
 			esc_attr( 'coil_exclusive_settings_group[coil_content_container]' ),
@@ -1164,22 +1172,35 @@ function coil_paywall_appearance_text_field_settings_render_callback( $field_nam
 }
 
 /**
- * Renders the output of the enable Coil button toggle
+ * Renders the output of the enable streaming support widget toggle
  * @return void
 */
-function coil_settings_enable_coil_button_toggle_render_callback() {
+function coil_settings_enable_streaming_widget_toggle_render_callback() {
 	?>
 	<div class="tab-styling">
 		<?php
 		Rendering\render_settings_section_heading(
-			__( 'Floating \'Support\' Button', 'coil-web-monetization' )
+			__( 'Streaming Support Widget', 'coil-web-monetization' )
 		);
 
-		$coil_button_toggle_id = 'coil_button_toggle';
+		printf(
+			'<p>%s</p>',
+			esc_html__( 'Encourage your audience to support you through Coil by adding a Coil-branded widget to selected post types. You\'ll receive streaming payments for each second a Coil member spends on your web monetized content.', 'coil-web-monetization' )
+		);
+
+		printf(
+			'<p>%s</p><ul><li>%s</li><li>%s</li><li>%s</li></ul>',
+			esc_html__( 'When enabled, the widget will not appear:', 'coil-web-monetization' ),
+			esc_html__( 'On post types set to Not Monetized.', 'coil-web-monetization' ),
+			esc_html__( 'When a visitor dismisses the widget. The widget reappears after the cookie expires (2 weeks) or sooner if the visitor clears their cache.', 'coil-web-monetization' ),
+			esc_html__( 'When a visitor is not a Coil member and a post is either set to Exclusive or contains the exclusive content divider. Non-members will see your paywall. Coil members will see your content and the widget unless you\'ve chosen to hide the widget from members.', 'coil-web-monetization' )
+		);
+
+		$streaming_widget_toggle_id = 'streaming_widget_toggle';
 		Rendering\render_toggle(
-			$coil_button_toggle_id,
-			'coil_button_settings_group[' . $coil_button_toggle_id . ']',
-			Admin\is_coil_button_enabled()
+			$streaming_widget_toggle_id,
+			'streaming_widget_settings_group[' . $streaming_widget_toggle_id . ']',
+			Admin\is_streaming_widget_enabled()
 		);
 		?>
 	</div>
@@ -1187,79 +1208,80 @@ function coil_settings_enable_coil_button_toggle_render_callback() {
 }
 
 /**
- * Renders the Coil button customization settings
+ * Renders the streaming support widget customization settings
  * @return void
 */
-function coil_settings_coil_button_settings_render_callback() {
+function coil_settings_streaming_widget_settings_render_callback() {
 	?>
-	<div class="tab-styling coil-button-section">
+	<div class="tab-styling streaming-widget-section">
 		<div class="coil-row">
 			<div class="coil-column-7">
 				<?php
-				$defaults = Admin\get_coil_button_defaults();
+				$defaults = Admin\get_streaming_widget_defaults();
 
 				Rendering\render_settings_section_heading(
-					__( 'Button Settings', 'coil-web-monetization' )
+					__( 'Widget Settings', 'coil-web-monetization' )
 				);
 
-				// Render the Coil button text input field
-				$coil_button_text_id = 'coil_button_text';
+				// Render the streaming support widget text input field
+				$streaming_widget_text_id = 'streaming_widget_text';
 				Rendering\render_text_input_field(
-					$coil_button_text_id,
-					'coil_button_settings_group[' . $coil_button_text_id . ']',
-					Admin\get_coil_button_setting( $coil_button_text_id ),
-					$defaults[ $coil_button_text_id ],
-					__( 'Button Text', 'coil-web-monetization' )
+					$streaming_widget_text_id,
+					'streaming_widget_settings_group[' . $streaming_widget_text_id . ']',
+					Admin\get_streaming_widget_setting( $streaming_widget_text_id ),
+					$defaults[ $streaming_widget_text_id ],
+					__( 'Text', 'coil-web-monetization' )
 				);
 
-				// Render the Coil button link input field
-				$coil_button_link_id = 'coil_button_link';
+				// Render the streaming support widget link input field
+				$streaming_widget_link_id = 'streaming_widget_link';
 				Rendering\render_text_input_field(
-					$coil_button_link_id,
-					'coil_button_settings_group[' . $coil_button_link_id . ']',
-					Admin\get_coil_button_setting( $coil_button_link_id ),
-					$defaults[ $coil_button_link_id ],
-					__( 'Button Link', 'coil-web-monetization' ),
+					$streaming_widget_link_id,
+					'streaming_widget_settings_group[' . $streaming_widget_link_id . ']',
+					Admin\get_streaming_widget_setting( $streaming_widget_link_id ),
+					$defaults[ $streaming_widget_link_id ],
+					__( 'Link', 'coil-web-monetization' ),
 					__( 'If you have an affiliate link add it here.', 'coil-web-monetization' )
 				);
 
-				$coil_button_member_display_id = 'coil_button_member_display';
+				// Render the streaming support widget member's display checkbox
+				$streaming_widget_member_display_id = 'streaming_widget_member_display';
 				Rendering\render_checkbox_that_toggles_content(
-					$coil_button_member_display_id,
-					'coil_button_settings_group[' . $coil_button_member_display_id . ']',
-					__( 'Show button for Coil Members', 'coil-web-monetization' ),
-					Admin\get_coil_button_setting( $coil_button_member_display_id )
+					$streaming_widget_member_display_id,
+					'streaming_widget_settings_group[' . $streaming_widget_member_display_id . ']',
+					__( 'Show widget to Coil members', 'coil-web-monetization' ),
+					Admin\get_streaming_widget_setting( $streaming_widget_member_display_id )
 				);
 
-				// Render the Coil button member text input field
-				$coil_button_member_text_id = 'coil_members_button_text';
+				// Render the streaming support widget's member text input field
+				$streaming_widget_member_text_id = 'members_streaming_widget_text';
 				Rendering\render_text_input_field(
-					$coil_button_member_text_id,
-					'coil_button_settings_group[' . $coil_button_member_text_id . ']',
-					Admin\get_coil_button_setting( $coil_button_member_text_id ),
-					$defaults[ $coil_button_member_text_id ],
-					__( 'Message for Coil Members', 'coil-web-monetization' )
+					$streaming_widget_member_text_id,
+					'streaming_widget_settings_group[' . $streaming_widget_member_text_id . ']',
+					Admin\get_streaming_widget_setting( $streaming_widget_member_text_id ),
+					$defaults[ $streaming_widget_member_text_id ],
+					__( 'Message for Coil members', 'coil-web-monetization' )
 				);
 
 				Rendering\render_input_field_heading(
 					__( 'Color Theme', 'coil-web-monetization' )
 				);
-				button_theme_render_callback();
+				streaming_widget_theme_render_callback();
 
 				Rendering\render_input_field_heading(
-					__( 'Button Size', 'coil-web-monetization' )
+					__( 'Widget Size', 'coil-web-monetization' )
 				);
-				button_size_render_callback();
+				streaming_widget_size_render_callback();
 
 				Rendering\render_input_field_heading(
-					__( 'Button Position on Screen', 'coil-web-monetization' )
+					__( 'Position on Screen', 'coil-web-monetization' )
 				);
-				buton_position_dropdown();
+				streaming_widget_position_dropdown();
 
 				Rendering\render_input_field_heading(
-					__( 'Button Margin', 'coil-web-monetization' )
+					__( 'Margin', 'coil-web-monetization' )
 				);
-				render_buton_margin_settings();
+				render_streaming_widget_margin_settings();
 				?>
 			</div>
 			<div class="coil-column-5">
@@ -1268,29 +1290,29 @@ function coil_settings_coil_button_settings_render_callback() {
 					__( 'Preview', 'coil-web-monetization' )
 				);
 
-				$coil_button_position       = Admin\get_coil_button_setting( 'coil_button_position' );
-				$coil_button_size           = Admin\get_coil_button_setting( 'coil_button_size' );
-				$coil_button_theme          = Admin\get_coil_button_setting( 'coil_button_color_theme' );
-				$coil_button_member_display = Admin\get_coil_button_setting( 'coil_button_member_display' );
+				$streaming_widget_position       = Admin\get_streaming_widget_setting( 'streaming_widget_position' );
+				$streaming_widget_size           = Admin\get_streaming_widget_setting( 'streaming_widget_size' );
+				$streaming_widget_theme          = Admin\get_streaming_widget_setting( 'streaming_widget_color_theme' );
+				$streaming_widget_member_display = Admin\get_streaming_widget_setting( 'streaming_widget_member_display' );
 
-				$coil_logo_type = ( $coil_button_theme === 'light' ? 'black' : 'white' );
+				$coil_logo_type = ( $streaming_widget_theme === 'light' ? 'black' : 'white' );
 				?>
 
 				<div class="coil-preview coil-non-members stacked">
 					<p><?php _e( 'Without Coil Membership', 'coil-web-monetization' ); ?></p>
-					<div class="coil-button" data-theme="<?php echo esc_attr( $coil_button_theme ); ?>" data-position="<?php echo esc_attr( $coil_button_position ); ?>" data-size="<?php echo esc_attr( $coil_button_size ); ?>">
+					<div class="streaming-widget" data-theme="<?php echo esc_attr( $streaming_widget_theme ); ?>" data-position="<?php echo esc_attr( $streaming_widget_position ); ?>" data-size="<?php echo esc_attr( $streaming_widget_size ); ?>">
 						<div>
-							<?php printf( '<img class="%s" src="%s" />', 'coil-button-image', plugin_dir_url( COIL__FILE__ ) . 'assets/images/coil-icn-' . $coil_logo_type . '.svg' ); ?>
-							<div><?php echo Admin\get_coil_button_setting( 'coil_button_text', true ); ?></div>
+							<?php printf( '<img class="%s" src="%s" />', 'streaming-widget-image', plugin_dir_url( COIL__FILE__ ) . 'assets/images/coil-icn-' . $coil_logo_type . '.svg' ); ?>
+							<div><?php echo Admin\get_streaming_widget_setting( 'streaming_widget_text', true ); ?></div>
 						</div>
 					</div>
 				</div>
-				<div class="coil-preview coil-members stacked <?php echo $coil_button_member_display === true ? '' : 'hide'; ?>">
+				<div class="coil-preview coil-members stacked <?php echo $streaming_widget_member_display === true ? '' : 'hide'; ?>">
 					<p><?php _e( 'With Coil Membership', 'coil-web-monetization' ); ?></p>
-					<div class="coil-button" data-theme="<?php echo esc_attr( $coil_button_theme ); ?>" data-position="<?php echo esc_attr( $coil_button_position ); ?>" data-size="<?php echo esc_attr( $coil_button_size ); ?>">
+					<div class="streaming-widget" data-theme="<?php echo esc_attr( $streaming_widget_theme ); ?>" data-position="<?php echo esc_attr( $streaming_widget_position ); ?>" data-size="<?php echo esc_attr( $streaming_widget_size ); ?>">
 						<div>
-							<?php printf( '<img class="%s" src="%s" />', 'coil-button-image', plugin_dir_url( COIL__FILE__ ) . 'assets/images/coil-icn-' . $coil_logo_type . '-streaming.svg' ); ?>
-							<div><?php echo Admin\get_coil_button_setting( 'coil_members_button_text', true ); ?></div>
+							<?php printf( '<img class="%s" src="%s" />', 'streaming-widget-image', plugin_dir_url( COIL__FILE__ ) . 'assets/images/coil-icn-' . $coil_logo_type . '-streaming.svg' ); ?>
+							<div><?php echo Admin\get_streaming_widget_setting( 'members_streaming_widget_text', true ); ?></div>
 						</div>
 					</div>
 				</div>
@@ -1301,83 +1323,83 @@ function coil_settings_coil_button_settings_render_callback() {
 }
 
 /**
- * Renders the output of the Coil button theme radio button settings.
+ * Renders the output of the streaming support widget theme radio button settings.
  *
  * @return void
 */
-function button_theme_render_callback() {
+function streaming_widget_theme_render_callback() {
 
 	// Set the theme color settingcoil-preview
-	$button_color_theme = Admin\get_coil_button_setting( 'coil_button_color_theme' );
+	$widget_color_theme = Admin\get_streaming_widget_setting( 'streaming_widget_color_theme' );
 
 	echo '<div class="coil-radio-group">';
 
 	Rendering\render_radio_button_field(
 		'dark_color_theme',
-		'coil_button_settings_group[coil_button_color_theme]',
+		'streaming_widget_settings_group[streaming_widget_color_theme]',
 		'dark',
 		__( 'Dark', 'coil-web-monetization' ),
-		$button_color_theme,
+		$widget_color_theme,
 		true
 	);
 
 	Rendering\render_radio_button_field(
 		'light_color_theme',
-		'coil_button_settings_group[coil_button_color_theme]',
+		'streaming_widget_settings_group[streaming_widget_color_theme]',
 		'light',
 		__( 'Light', 'coil-web-monetization' ),
-		$button_color_theme
+		$widget_color_theme
 	);
 
 	echo '</div>';
 }
 
 /**
- * Renders the output of the Coil button size radio button settings.
+ * Renders the output of the streaming support widget size radio button settings.
  *
  * @return void
 */
-function button_size_render_callback() {
+function streaming_widget_size_render_callback() {
 
-	// Set the theme color settingcoil-preview
-	$button_size = Admin\get_coil_button_setting( 'coil_button_size' );
+	// Set the theme color setting coil-preview
+	$widget_size = Admin\get_streaming_widget_setting( 'streaming_widget_size' );
 
 	echo '<div class="coil-radio-group">';
 
 	Rendering\render_radio_button_field(
 		'large_size',
-		'coil_button_settings_group[coil_button_size]',
+		'streaming_widget_settings_group[streaming_widget_size]',
 		'large',
 		__( 'Large', 'coil-web-monetization' ),
-		$button_size,
+		$widget_size,
 		true
 	);
 
 	Rendering\render_radio_button_field(
 		'small_size',
-		'coil_button_settings_group[coil_button_size]',
+		'streaming_widget_settings_group[streaming_widget_size]',
 		'small',
 		__( 'Small', 'coil-web-monetization' ),
-		$button_size
+		$widget_size
 	);
 
 	echo '</div>';
 }
 
 /**
- * Renders the output of the Coil button position dropdown.
+ * Renders the output of the streaming support widget position dropdown.
  *
  * @return void
 */
-function buton_position_dropdown() {
-	$position = Admin\get_coil_button_setting( 'coil_button_position' );
+function streaming_widget_position_dropdown() {
+	$position = Admin\get_streaming_widget_setting( 'streaming_widget_position' );
 	echo sprintf(
 		'<select name="%s" id="%s">',
-		'coil_button_settings_group[coil_button_position]',
+		'streaming_widget_settings_group[streaming_widget_position]',
 		'position_dropdown'
 	);
 
-	$position_options = Admin\get_button_position_options();
+	$position_options = Admin\get_streaming_widget_position_options();
 
 	foreach ( $position_options as $setting_key => $setting_value ) {
 		printf(
@@ -1391,46 +1413,46 @@ function buton_position_dropdown() {
 }
 
 /**
- * Renders the output of the Coil margin table.
+ * Renders the output of the streaming support widget margin table.
  *
  * @return void
 */
-function render_buton_margin_settings() {
+function render_streaming_widget_margin_settings() {
 	echo '<div class="coil-margin-input-group">';
 
 	$margins = [
-		'coil_button_top_margin'    => Admin\get_coil_button_setting( 'coil_button_top_margin' ) !== false ? Admin\get_coil_button_setting( 'coil_button_top_margin' ) : '',
-		'coil_button_bottom_margin' => Admin\get_coil_button_setting( 'coil_button_bottom_margin' ) !== false ? Admin\get_coil_button_setting( 'coil_button_bottom_margin' ) : '',
-		'coil_button_right_margin'  => Admin\get_coil_button_setting( 'coil_button_right_margin' ) !== false ? Admin\get_coil_button_setting( 'coil_button_right_margin' ) : '',
-		'coil_button_left_margin'   => Admin\get_coil_button_setting( 'coil_button_left_margin' ) !== false ? Admin\get_coil_button_setting( 'coil_button_left_margin' ) : '',
+		'streaming_widget_top_margin'    => Admin\get_streaming_widget_setting( 'streaming_widget_top_margin' ) !== false ? Admin\get_streaming_widget_setting( 'streaming_widget_top_margin' ) : '',
+		'streaming_widget_bottom_margin' => Admin\get_streaming_widget_setting( 'streaming_widget_bottom_margin' ) !== false ? Admin\get_streaming_widget_setting( 'streaming_widget_bottom_margin' ) : '',
+		'streaming_widget_right_margin'  => Admin\get_streaming_widget_setting( 'streaming_widget_right_margin' ) !== false ? Admin\get_streaming_widget_setting( 'streaming_widget_right_margin' ) : '',
+		'streaming_widget_left_margin'   => Admin\get_streaming_widget_setting( 'streaming_widget_left_margin' ) !== false ? Admin\get_streaming_widget_setting( 'streaming_widget_left_margin' ) : '',
 	];
 
-	$placeholders = Admin\get_button_margin_key_defaults();
+	$placeholders = Admin\get_streaming_widget_margin_key_defaults();
 
 	$desciptions = [
-		'coil_button_top_margin'    => esc_html__( 'TOP', 'coil-web-monetization' ),
-		'coil_button_bottom_margin' => esc_html__( 'BOTTOM', 'coil-web-monetization' ),
-		'coil_button_right_margin'  => esc_html__( 'RIGHT', 'coil-web-monetization' ),
-		'coil_button_left_margin'   => esc_html__( 'LEFT', 'coil-web-monetization' ),
+		'streaming_widget_top_margin'    => esc_html__( 'TOP', 'coil-web-monetization' ),
+		'streaming_widget_bottom_margin' => esc_html__( 'BOTTOM', 'coil-web-monetization' ),
+		'streaming_widget_right_margin'  => esc_html__( 'RIGHT', 'coil-web-monetization' ),
+		'streaming_widget_left_margin'   => esc_html__( 'LEFT', 'coil-web-monetization' ),
 
 	];
 
 	foreach ( $margins as $id => $setting ) {
-		$location = str_replace( 'coil_button_', '', $id );
+		$location = str_replace( 'streaming_widget_', '', $id );
 		$location = str_replace( '_margin', '', $location );
 		printf(
 			'<div class="%s" style="%s">',
 			esc_attr( 'margin-' . $location ),
 			esc_attr( 'display:none' )
 		);
-		// Render the Coil button margin text input fields
+		// Render the streaming support widget margin text input fields
 		if ( $setting !== '' ) {
 
 			$setting = strval( $setting ) . 'px';
 		}
 		Rendering\render_text_input_field(
 			$id,
-			'coil_button_settings_group[' . $id . ']',
+			'streaming_widget_settings_group[' . $id . ']',
 			esc_attr( $setting ),
 			esc_attr( $placeholders[ $id ] . 'px' )
 		);
@@ -1446,16 +1468,16 @@ function render_buton_margin_settings() {
 }
 
 /**
- * Renders the Coil button visibility settings
+ * Renders the streaming support widget visibility settings
  * @return void
 */
-function coil_settings_coil_button_visibility_render_callback() {
+function coil_settings_streaming_widget_visibility_render_callback() {
 	?>
-	<div class="tab-styling coil-button-section">
+	<div class="tab-styling streaming-widget-section">
 		<?php
 		Rendering\render_settings_section_heading(
 			__( 'Visibility', 'coil-web-monetization' ),
-			__( 'Select where you want the floating button to show up by default. You can hide the button on specific pages in the Page Editor Settings.', 'coil-web-monetization' )
+			__( 'Select whether to show or hide the widget on specific post types.', 'coil-web-monetization' )
 		);
 
 		// Using a function to generate the table with the post type excerpt checkboxes.
@@ -1464,11 +1486,11 @@ function coil_settings_coil_button_visibility_render_callback() {
 			'hide' => 'Hide',
 		];
 		Rendering\render_generic_post_type_table(
-			'coil_button_settings_group',
+			'streaming_widget_settings_group',
 			$columns,
 			'radio',
-			'button_visibility',
-			Admin\get_coil_button_settings()
+			'streaming_widget_visibility',
+			Admin\get_streaming_widget_settings()
 		);
 		?>
 	</div>
@@ -1588,7 +1610,7 @@ function render_coil_settings_screen() : void {
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=welcome' ); ?>" id="coil-welcome-settings" class="nav-tab <?php echo $active_tab === 'welcome' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Welcome', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=general_settings' ); ?>" id="coil-general-settings" class="nav-tab <?php echo $active_tab === 'general_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'General Settings', 'coil-web-monetization' ); ?></a>
 			<a href="<?php echo esc_url( '?page=coil_settings&tab=exclusive_settings' ); ?>" id="coil-exclusive-settings" class="nav-tab <?php echo $active_tab === 'exclusive_settings' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Exclusive Content', 'coil-web-monetization' ); ?></a>
-			<a href="<?php echo esc_url( '?page=coil_settings&tab=coil_button' ); ?>" id="coil-button-settings" class="nav-tab <?php echo $active_tab === 'coil_button' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Coil Button', 'coil-web-monetization' ); ?></a>
+			<a href="<?php echo esc_url( '?page=coil_settings&tab=streaming_widget' ); ?>" id="streaming-widget-settings" class="nav-tab <?php echo $active_tab === 'streaming_widget' ? esc_attr( 'nav-tab-active' ) : ''; ?>"><?php esc_html_e( 'Streaming Support Widget', 'coil-web-monetization' ); ?></a>
 		</h2>
 	</div>
 	<div class="wrap coil plugin-settings">
@@ -1625,12 +1647,12 @@ function render_coil_settings_screen() : void {
 					submit_button();
 					echo '</div>';
 					break;
-				case 'coil_button':
+				case 'streaming_widget':
 					echo '<div class="settings-main">';
-					settings_fields( 'coil_button_settings_group' );
-					do_settings_sections( 'coil_enable_button_section' );
-					do_settings_sections( 'coil_button_settings_section' );
-					do_settings_sections( 'coil_button_visibility_section' );
+					settings_fields( 'streaming_widget_settings_group' );
+					do_settings_sections( 'coil_enable_streaming_widget_section' );
+					do_settings_sections( 'streaming_widget_settings_section' );
+					do_settings_sections( 'streaming_widget_visibility_section' );
 					submit_button();
 					echo '</div>';
 					break;
@@ -1648,28 +1670,6 @@ function render_coil_settings_screen() : void {
  * @return void
 */
 function coil_add_term_custom_meta( $term ) {
-	coil_term_custom_meta( 'add', $term );
-}
-
-/**
- * Add Coil status controls to the "Edit Term" screen.
- *
- * @param WP_Term_Object $term
- * @return void
-*/
-function coil_edit_term_custom_meta( $term ) {
-	coil_term_custom_meta( 'edit', $term );
-}
-
-/**
- * Add Coil status controls to the "Add Term" and "Edit Term" screens.
- * The functions differ slightly in structure due to the html requirements of the different screens.
- *
- * @param String $action {'add' | 'edit'}
- * @param WP_Term_Object $term
- * @return void
-*/
-function coil_term_custom_meta( $action, $term ) {
 
 	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
 		return;
@@ -1686,33 +1686,15 @@ function coil_term_custom_meta( $action, $term ) {
 		'exclusive' => 'Coil Members Only',
 	];
 
-	// Retrieve the monetization and visibility meta saved on the term.
-	// If these meta fields are empty they return 'default'.
-	$term_monetization = Gating\get_term_status( $term->term_id, '_coil_monetization_term_status' );
-	$term_visibility   = Gating\get_term_status( $term->term_id, '_coil_visibility_term_status' );
+	// Set the default monetization and visibility statuses.
+	$term_monetization = 'default';
+	$term_visibility   = Admin\get_visibility_default();
 
-	// There is no 'default' button for visibility so if it is set to default then select the option that it is defaulting to in the exclusive settings group.
-	if ( $term_visibility === 'default' ) {
-		$term_visibility = Admin\get_visibility_default();
-	}
-
-	if ( $action === 'add' ) {
-		?>
-		<div id="coil_dropdown">
-			<label for="_coil_monetization_term_status"><?php esc_html_e( 'Select a Web Monetization status', 'coil-web-monetization' ); ?></label>
-		<?php
-	} else {
-		?>
-		<tr class="form-field">
-		<th>
-			<?php esc_html_e( 'Select a Web Monetization status', 'coil-web-monetization' ); ?>
-		</th>
-		<td id="coil_dropdown">
-		<?php
-	}
 	?>
+	<div id="coil_dropdown">
+		<label for="_coil_monetization_term_status"><?php esc_html_e( 'Select a Web Monetization status', 'coil-web-monetization' ); ?></label>
 
-	<select name="_coil_monetization_term_status" id="monetization_dropdown" onchange="javascript: handleRadioOptionsDisplay('<?php echo esc_attr( $term_visibility ); ?>')">
+		<select name="_coil_monetization_term_status" id="monetization_dropdown" onchange="javascript: handleRadioOptionsDisplay('<?php echo esc_attr( $term_visibility ); ?>')">
 		<?php
 		foreach ( $monetization_options as $setting_key => $setting_value ) {
 			printf(
@@ -1723,7 +1705,9 @@ function coil_term_custom_meta( $action, $term ) {
 			);
 		}
 		?>
-	</select>
+		</select>
+	</div><br>
+
 	<?php
 	// Use the output buffer to set the content for the visibility settings
 	ob_start();
@@ -1745,22 +1729,10 @@ function coil_term_custom_meta( $action, $term ) {
 	endforeach;
 	$visibility_options = ob_get_contents();
 	ob_end_clean();
+	?>
 
-	if ( $action === 'add' ) {
-		?>
-		</div>
-		<br />
-		<div id="coil-radio-selection" style="display: none;">
-			<label><?php esc_html_e( 'Who can access this content?', 'coil-web-monetization' ); ?></label>
-			<fieldset id="coil-visibility-settings">
-				<?php echo $visibility_options; ?>
-			</fieldset>
-		</div>
-		<?php
-	} else {
-		?>
-		</tr>
-		<tr class="form-field" id="coil-radio-selection" style="display: none">
+	<div id="coil-radio-selection" style="display: none">
+		<tr class="form-field">
 			<th scope="row">
 				<label><?php esc_html_e( 'Who can access this content?', 'coil-web-monetization' ); ?></label>
 			</th>
@@ -1770,33 +1742,155 @@ function coil_term_custom_meta( $action, $term ) {
 				</fieldset>
 			</td>
 		</tr>
-		<?php
-	}
-	?>
-	<script>
-		/**
-		 *
-		 * Ensures the appropriate visibility radio button is selected.
-		 * @param {String} The visibility status slug
-		 * @return {void}
-		*/
-		function handleRadioOptionsDisplay( element ) {
-			var radioButtons = document.getElementById("coil-radio-selection");
-			if (document.getElementById("monetization_dropdown").value === 'monetized') {
-				// If monetization is enabled then the visibility options should appear
-				radioButtons.removeAttribute("style");
-				// Checks the button associated with the default visibility value rather than just the last button that had been selected.
-				if (element !== '' ) {
-					document.getElementById(element).checked = true;
-				}
-			} else {
-				// If monetization is not enabled then the visibility options should disappear
-				radioButtons.setAttribute("style", "display: none" );
-			}
-		}
+	</div>
+	<br>
 
-		// For the edit screen this function is called so that the radio buttons are hidden or displayed based on the existing settings.
-		handleRadioOptionsDisplay('');
+	<script>
+	/**
+	 *
+	 * Ensures the appropriate visibility radio button is selected.
+	 * @param {String} The visibility status slug
+	 * @return {void}
+	*/
+	function handleRadioOptionsDisplay( element ) {
+		var radioButtons = document.getElementById("coil-radio-selection");
+		if (document.getElementById("monetization_dropdown").value === 'monetized') {
+			// If monetization is enabled then the visibility options should appear
+			radioButtons.removeAttribute("style");
+			// Checks the button associated with the default visibility value rather than just the last button that had been selected.
+			if (element !== '' ) {
+				document.getElementById(element).checked = true;
+			}
+		} else {
+			// If monetization is not enabled then the visibility options should disappear
+			radioButtons.setAttribute("style", "display: none" );
+		}
+	}
+
+	// For the edit screen this function is called so that the radio buttons are hidden or displayed based on the existing settings.
+	handleRadioOptionsDisplay('');
+
+	</script>
+
+	<?php
+	wp_nonce_field( 'coil_term_gating_nonce_action', 'term_gating_nonce' );
+}
+
+/**
+ * Add Coil status controls to the "Edit Term" screen.
+ *
+ * @param WP_Term_Object $term
+ * @return void
+*/
+function coil_edit_term_custom_meta( $term ) {
+
+	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
+		return;
+	}
+
+	// Get monetization and visibility options.
+	$monetization_options = [
+		'default'       => esc_html__( 'Default', 'coil-web-monetization' ),
+		'monetized'     => esc_html__( 'Enabled', 'coil-web-monetization' ),
+		'not-monetized' => esc_html__( 'Disabled', 'coil-web-monetization' ),
+	];
+	$visibility_options   = [
+		'public'    => esc_html__( 'Everyone', 'coil-web-monetization' ),
+		'exclusive' => esc_html__( 'Coil Members Only', 'coil-web-monetization' ),
+	];
+
+	// Retrieve the monetization and visibility meta saved on the term.
+	// If these meta fields are empty they return 'default'.
+	$term_monetization = Gating\get_term_status( $term->term_id, '_coil_monetization_term_status' );
+	$term_visibility   = Gating\get_term_status( $term->term_id, '_coil_visibility_term_status' );
+	// There is no 'default' button for visibility so if it is set to default then select the option that it is defaulting to in the exclusive settings group.
+	if ( $term_visibility === 'default' ) {
+		$term_visibility = Admin\get_visibility_default();
+	}
+
+	?>
+	<tr class="form-field">
+		<th>
+			<?php esc_html_e( 'Select a Web Monetization status', 'coil-web-monetization' ); ?>
+		</th>
+		<td id="coil_dropdown">
+
+			<select name="_coil_monetization_term_status" id="monetization_dropdown" onchange="javascript: handleRadioOptionsDisplay('<?php echo esc_attr( $term_visibility ); ?>')">
+			<?php
+			foreach ( $monetization_options as $setting_key => $setting_value ) {
+				printf(
+					'<option value="%s"%s>%s</option>',
+					esc_attr( $setting_key ),
+					selected( $setting_key, $term_monetization ),
+					$setting_key === 'default' ? esc_html__( 'Default', 'coil-web-monetization' ) : $setting_value
+				);
+			}
+			?>
+			</select>
+			<br>
+		</td>
+	</tr>
+
+	<?php
+	// Use the output buffer to set the content for the visibility settings
+	ob_start();
+	foreach ( $visibility_options as $setting_key => $setting_value ) :
+		?>
+		<label for="<?php echo esc_attr( $setting_key ); ?>">
+			<?php
+			printf(
+				'<input type="radio" name="%s" id="%s" value="%s"%s />%s',
+				esc_attr( '_coil_visibility_term_status' ),
+				esc_attr( $setting_key ),
+				esc_attr( $setting_key ),
+				! empty( $term_visibility ) ? checked( $setting_key, $term_visibility, false ) : '',
+				esc_attr( $setting_value )
+			);
+			?>
+		</label><br>
+		<?php
+	endforeach;
+	$visibility_options = ob_get_contents();
+	ob_end_clean();
+	?>
+
+	<tr class="form-field" id="coil-radio-selection" style="display: none">
+
+		<th scope="row">
+			<label><?php esc_html_e( 'Who can access this content?', 'coil-web-monetization' ); ?></label>
+		</th>
+		<td>
+			<fieldset id="coil-visibility-settings">
+				<?php echo $visibility_options; ?>
+			</fieldset>
+		</td>
+	</tr>
+
+	<script>
+	/**
+	 *
+	 * Ensures the appropriate visibility radio button is selected.
+	 * @param {String} The visibility status slug
+	 * @return {void}
+	*/
+	function handleRadioOptionsDisplay( element ) {
+		var radioButtons = document.getElementById("coil-radio-selection");
+		if (document.getElementById("monetization_dropdown").value === 'monetized') {
+			// If monetization is enabled then the visibility options should appear
+			radioButtons.removeAttribute("style");
+			// Checks the button associated with the default visibility value rather than just the last button that had been selected.
+			if (element !== '' ) {
+				document.getElementById(element).checked = true;
+			}
+		} else {
+			// If monetization is not enabled then the visibility options should disappear
+			radioButtons.setAttribute("style", "display: none" );
+		}
+	}
+
+	// For the edit screen this function is called so that the radio buttons are hidden or displayed based on the existing settings.
+	handleRadioOptionsDisplay('');
+
 	</script>
 
 	<?php

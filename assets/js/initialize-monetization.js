@@ -45,24 +45,24 @@
 		paywallTitle = coilParams.paywall_title,
 		loadingContent = coilParams.loading_content,
 		paywallMessage = coilParams.paywall_message,
-		coilButtonUnpaidMessage = coilParams.coil_button_unpaid_message,
-		coilButtonPaidMessage = coilParams.coil_button_paid_message,
-		showCoilButtonToMembers = Boolean( coilParams.show_coil_button_to_members ),
-		coilButtonLink = coilParams.coil_button_link,
+		streamingWidgetUnpaidMessage = coilParams.streaming_widget_unpaid_message,
+		streamingWidgetPaidMessage = coilParams.streaming_widget_paid_message,
+		showStreamingWidgetToMembers = Boolean( coilParams.show_streaming_widget_to_members ),
+		streamingWidgetLink = coilParams.streaming_widget_link,
 		postExcerpt = coilParams.post_excerpt,
 		hasCoilDivider = Boolean( coilParams.has_coil_divider ),
 		adminMissingIdNotice = coilParams.admin_missing_id_notice,
 		paywallButtonText = coilParams.paywall_button_text,
 		paywallButtonLink = coilParams.paywall_button_link,
 		coilMessageBranding = coilParams.coil_message_branding,
-		coilButtonTheme = coilParams.coil_button_theme,
-		coilButtonSize = coilParams.coil_button_size,
-		coilButtonPosition = coilParams.coil_button_position,
-		ButtonMarginTop = coilParams.button_margin_top,
-		ButtonMarginRight = coilParams.button_margin_right,
-		ButtonMarginBottom = coilParams.button_margin_bottom,
-		ButtonMarginLeft = coilParams.button_margin_left,
-		coilButtonGloballyEnabled = Boolean( coilParams.coil_button_enabled ), // Cast to boolean - wp_localize_script forces string values.
+		streamingWidgetTheme = coilParams.streaming_widget_theme,
+		streamingWidgetSize = coilParams.streaming_widget_size,
+		streamingWidgetPosition = coilParams.streaming_widget_position,
+		WidgetMarginTop = coilParams.streaming_widget_margin_top,
+		WidgetMarginRight = coilParams.streaming_widget_margin_right,
+		WidgetMarginBottom = coilParams.streaming_widget_margin_bottom,
+		WidgetMarginLeft = coilParams.streaming_widget_margin_left,
+		streamingWidgetGloballyEnabled = Boolean( coilParams.streaming_widget_enabled ), // Cast to boolean - wp_localize_script forces string values.
 		siteLogo = coilParams.site_logo,
 		coilLogo = coilParams.coil_logo,
 		coilLogoStreaming = coilParams.coil_logo_streaming,
@@ -72,7 +72,7 @@
 		fontSelection = Boolean( coilParams.font_selection );
 
 	const subscriberOnlyMessage = wp.template( 'subscriber-only-message' );
-	const coilButtonMessage = wp.template( 'coil-button-message' );
+	const streamingWidgetMessage = wp.template( 'streaming-widget-message' );
 
 	const messageWrapper = $( 'p.monetize-msg' );
 
@@ -82,7 +82,7 @@
 	 * @param {String} message The message to display inside the tag.
 	 * @param {String} customClass Any extra custom classes to add to this tag.
 	 * @return {object} Output a monetization message when the state is changing.
-	 */
+	*/
 	function showMonetizationMessage( message, customClass ) {
 		const elem = document.createElement( 'p' );
 		elem.classList.add( 'monetize-msg' );
@@ -97,7 +97,7 @@
 	 * @param {String} message from coilParams.
 	 * @return {object} Output the gated content message when content is
 	 * set to Member Only
-	 */
+	*/
 	function showSubscriberOnlyMessage( message ) {
 		const modalContainer = document.createElement( 'div' );
 		modalContainer.classList.add( 'entry-content', 'coil-message-container' );
@@ -133,28 +133,28 @@
 	}
 
 	/**
-	 * Adds the Coil button to the body oif the document and adds it's handler functions.
+	 * Adds the streaming support widget to the body of the document and adds it's handler functions.
 	 * @param {String} message Message shown to thank Coil members, or to encourage users to sign up.
 	 * @return {void}
 	*/
-	function showCoilButton( message ) {
-		const coilButton = createCoilButton( message );
+	function showStreamingWidget( message ) {
+		const streamingWidget = createStreamingWidget( message );
 		const onlyWhiteSpace = /^\s+$/;
-		$( 'body' ).append( coilButton );
+		$( 'body' ).append( streamingWidget );
 		// Hides the text div if there is no text
 		if ( onlyWhiteSpace.test( message ) ) {
-			$( '.coil-button a div' ).hide();
+			$( '.streaming-widget a div' ).hide();
 		}
-		addButtonDismissClickHandler();
-		addButtonDismissAppearanceHandler();
+		addWidgetDismissClickHandler();
+		addWidgetDismissAppearanceHandler();
 	}
 
 	/**
 	 * @param {String} message Message shown to thank Coil members, or to encourage users to sign up.
-	 * @return {object} Output a Coil button message.
+	 * @return {object} Output a streaming support widget.
 	*/
-	function createCoilButton( message ) {
-		const positionArray = coilButtonPosition.split( '-' );
+	function createStreamingWidget( message ) {
+		const positionArray = streamingWidgetPosition.split( '-' );
 		const verticalPosition = positionArray[ 0 ];
 		const horizontalPosition = positionArray[ 1 ];
 		let topMargin,
@@ -163,73 +163,73 @@
 			leftMargin;
 
 		const modalContainer = document.createElement( 'div' );
-		$( modalContainer ).addClass( 'coil-button-message-container' + ' ' + verticalPosition + ' ' + horizontalPosition );
+		$( modalContainer ).addClass( 'streaming-widget-container' + ' ' + verticalPosition + ' ' + horizontalPosition );
 
 		let brandingLogo = '';
 
-		if ( coilButtonTheme === 'light' ) {
+		if ( streamingWidgetTheme === 'light' ) {
 			modalContainer.classList.add( 'coil-light-theme' );
 			brandingLogo = coilLogo;
 		} else {
 			brandingLogo = coilLogoWhite;
 		}
 
-		if ( coilButtonSize === 'small' ) {
-			modalContainer.classList.add( 'coil-button-small' );
+		if ( streamingWidgetSize === 'small' ) {
+			modalContainer.classList.add( 'streaming-widget-small' );
 		}
 
 		const modalData = {
 			headerLogo: brandingLogo,
-			button: {
+			widget: {
 				text: message,
-				href: coilButtonLink,
+				href: streamingWidgetLink,
 			},
 		};
 
-		$( modalContainer ).append( coilButtonMessage( modalData ) );
+		$( modalContainer ).append( streamingWidgetMessage( modalData ) );
 
-		// Set the margins only for the two applicable sides of the Coil button based on the position selected.
+		// Set the margins only for the two applicable sides of the streaming support widget based on the position selected.
 		if ( horizontalPosition === 'left' ) {
 			rightMargin = '0';
-			leftMargin = checkMarginValues( ButtonMarginLeft );
+			leftMargin = checkMarginValues( WidgetMarginLeft );
 		} else {
-			rightMargin = checkMarginValues( ButtonMarginRight );
+			rightMargin = checkMarginValues( WidgetMarginRight );
 			leftMargin = '0';
 		}
 
 		if ( verticalPosition === 'top' ) {
-			topMargin = checkMarginValues( ButtonMarginTop );
+			topMargin = checkMarginValues( WidgetMarginTop );
 			bottomMargin = '0';
 		} else {
 			topMargin = '0';
-			bottomMargin = checkMarginValues( ButtonMarginBottom );
+			bottomMargin = checkMarginValues( WidgetMarginBottom );
 		}
 
-		$( modalContainer ).find( '.coil-button' ).css( { 'margin-top': topMargin + 'px', 'margin-right': rightMargin + 'px', 'margin-bottom': bottomMargin + 'px', 'margin-left': leftMargin + 'px' } );
+		$( modalContainer ).find( '.streaming-widget' ).css( { 'margin-top': topMargin + 'px', 'margin-right': rightMargin + 'px', 'margin-bottom': bottomMargin + 'px', 'margin-left': leftMargin + 'px' } );
 		return modalContainer;
 	}
 
 	/**
-	 * Determines whether a Coil button element should be added to the page.
-	 * The button will only be added if it is not already present, it is globally enabled, the browser doesn't have a dismiss cookie for it,
-	 * and neither the pending message nor paywall are being displayed.
-	 */
-	function maybeAddCoilButton() {
-		const buttonEnabled = hasCoilButtonEnabled();
-		const buttonAlreadyExists = $( '.coil-button-message-container' ).length !== 0 ? true : false;
-		const buttonDismissed = hasButtonDismissCookie();
+	 * Determines whether a streaming support widget should be added to the page.
+	 * The widget will only be added if the post is monetized, it is not already present, it is globally enabled,
+	 * the browser doesn't have a dismiss cookie for it, and neither the pending message nor paywall are being displayed.
+	*/
+	function maybeAddStreamingWidget() {
+		const streamingWidgetEnabled = hasStreamingWidgetEnabled();
+		const streamingWidgetAlreadyExists = $( '.streaming-widget-container' ).length !== 0 ? true : false;
+		const streamingWidgetDismissed = hasStreamingWidgetDismissCookie();
 		const pendingMessageDisplayed = $( 'p.monetize-msg' ).length !== 0 ? true : false;
 		const paywallDisplayed = $( '.coil-message-container' ).length !== 0 ? true : false;
-		if ( buttonEnabled && ! buttonAlreadyExists && ! buttonDismissed && ! pendingMessageDisplayed && ! paywallDisplayed ) {
-			showCoilButton( coilButtonUnpaidMessage );
+		if ( streamingWidgetEnabled && ! streamingWidgetAlreadyExists && ! streamingWidgetDismissed && ! pendingMessageDisplayed && ! paywallDisplayed ) {
+			showStreamingWidget( streamingWidgetUnpaidMessage );
 		}
 	}
 
 	/**
-	 * Ensures that the margin value assigned to the Coil button has an integer value as expected.
+	 * Ensures that the margin value assigned to the streaming support widget has an integer value as expected.
 	 * @param {String} marginValue from coilParams.
 	 * @return {String} A string containing only digits and possibly a minus sign.
-	 */
+	*/
 	function checkMarginValues( marginValue ) {
 		// If the value is invalid simply set it to 0.
 		if ( marginValue.search( /[^1234567890-]/i ) >= 0 ) {
@@ -240,7 +240,7 @@
 
 	/**
 	 * Show the content container.
-	 */
+	*/
 	function showContentContainer() {
 		const container = document.querySelector( contentContainer );
 
@@ -262,7 +262,7 @@
 
 	/**
 	 * Hide the content container.
-	 */
+	*/
 	function hideContentContainer() {
 		const container = document.querySelector( contentContainer );
 
@@ -301,51 +301,51 @@
 	/**
 	 * @return {bool} Helper function to determine if the content has
 	 * monetization enabled and is visible to Coil members only
-	 */
+	*/
 	function isSubscribersOnly() {
 		return document.body.classList.contains( 'coil-exclusive' );
 	}
 
 	/**
-	 * @return {bool} Helper function to determine if the content has
-	 * the Coil button enabled
+	 * @return {bool} Helper function to determine if the
+	 * streaming support widget is enabled
 	*/
-	function hasCoilButtonEnabled() {
-		return coilButtonGloballyEnabled && document.body.classList.contains( 'show-coil-button' );
+	function hasStreamingWidgetEnabled() {
+		return streamingWidgetGloballyEnabled && document.body.classList.contains( 'show-streaming-widget' );
 	}
 
 	/**
 	 * @return {bool} Helper function to determine if the payment pointer is not
 	 * set on the body.
-	 */
+	*/
 	function isPaymentPointerMissing() {
 		return document.body.classList.contains( 'coil-missing-id' );
 	}
 
 	/**
 	 * @return {bool} Helper function to determine if the user is logged in.
-	 */
+	*/
 	function isViewingAdmin() {
 		return document.body.classList.contains( 'coil-show-admin-notice' );
 	}
 
 	/**
 	 * @return {bool} Determine if the content container is default.
-	 */
+	*/
 	function usingDefaultContentContainer() {
 		return contentContainer === '.content-area .entry-content, main .entry-content';
 	}
 
 	/**
 	 * @return {bool} Determine if the excerpt is set to show for this post.
-	 */
+	*/
 	function isExcerptEnabled() {
 		return ( document.body.classList.contains( 'coil-show-excerpt' ) ) ? true : false;
 	}
 
 	/**
 	 * Displays a message based on the body classes and verification outcome.
-	 */
+	*/
 	function showVerificationFailureMessage() {
 		if ( $( 'p.monetize-msg' ).length > 0 ) {
 			$( 'p.monetize-msg' ).remove();
@@ -375,20 +375,20 @@
 	 * Checks class is missing on <body>.
 	 *
 	 * @return {bool} Determine if Coil is initialized.
-	 */
+	*/
 	function monetizationInitialized() {
 		return ! document.body.classList.contains( 'monetization-not-initialized' );
 	}
 
 	/**
-	 * Add a function to remove the Coil button and set a Cookie.
+	 * Add a function to remove the streaming support widget and set a Cookie.
 	 *
 	 * @see https://github.com/js-cookie/js-cookie
-	 */
-	function addButtonDismissClickHandler() {
-		const cookieName = 'ShowCoilButtonMsg';
-		$( '#js-coil-button-dismiss' ).on( 'click', function() {
-			if ( ! hasButtonDismissCookie() ) {
+	*/
+	function addWidgetDismissClickHandler() {
+		const cookieName = 'ShowStreamingWidgetMsg';
+		$( '#js-streaming-widget-dismiss' ).on( 'click', function() {
+			if ( ! hasStreamingWidgetDismissCookie() ) {
 				Cookies.set( cookieName, 1, { expires: 14 } );
 				$( this ).parent().parent().remove();
 			}
@@ -396,27 +396,27 @@
 	}
 
 	/**
-	 * Add a function to show or hide the Coil button dismiss
-	 * depending on whether you are hovering over the button or not.
+	 * Add a function to show or hide the streaming support widget dismiss
+	 * depending on whether you are hovering over the widget or not.
 	 *
-	 */
-	function addButtonDismissAppearanceHandler() {
-		$( '.coil-button' ).hover(
+	*/
+	function addWidgetDismissAppearanceHandler() {
+		$( '.streaming-widget' ).hover(
 			function() {
-				$( '#js-coil-button-dismiss' ).css( 'display', 'block' );
+				$( '#js-streaming-widget-dismiss' ).css( 'display', 'block' );
 			}, function() {
-				$( '#js-coil-button-dismiss' ).css( 'display', 'none' );
+				$( '#js-streaming-widget-dismiss' ).css( 'display', 'none' );
 			},
 		);
 	}
 
 	/**
-	 * Checks if the Coil button is dismissed.
+	 * Checks if the streaming support widget is dismissed.
 	 *
 	 * @return {bool} True if set to '1', otherwise false.
-	 */
-	function hasButtonDismissCookie() {
-		const cookieName = 'ShowCoilButtonMsg';
+	*/
+	function hasStreamingWidgetDismissCookie() {
+		const cookieName = 'ShowStreamingWidgetMsg';
 		const currentCookie = Cookies.get( cookieName );
 
 		if ( ( typeof currentCookie !== 'undefined' ) ) {
@@ -429,7 +429,7 @@
 	 * Handles an undefined monetization object.
 	 *
 	 * @return {void}
-	 */
+	*/
 	function handleUndefinedMonetization() {
 		// Skip if we're testing in Cypress; we can't easily reset the app state from the changes made here.
 		if ( window.Cypress && window.Cypress.monetized ) {
@@ -452,7 +452,7 @@
 				$( contentContainer ).last().before( showSubscriberOnlyMessage( paywallMessage ) );
 			}
 		} else {
-			maybeAddCoilButton();
+			maybeAddStreamingWidget();
 		}
 
 		// Trigger an event.
@@ -463,7 +463,7 @@
 	 * Handles the 'pending' monetization state.
 	 *
 	 * @return {void}
-	 */
+	*/
 	function handlePendingMonetization() {
 		// If the site is missing it's payment pointer ID.
 		if ( isPaymentPointerMissing() ) {
@@ -506,7 +506,7 @@
 	 * Handles the 'started' monetization state.
 	 *
 	 * @return {void}
-	 */
+	*/
 	function handleStartedMonetization() {
 		// User account verified, loading content. Monetization state: Started
 
@@ -529,7 +529,7 @@
 	 * Handles the 'stopped' monetization state.
 	 *
 	 * @return {void}
-	 */
+	*/
 	function handleStoppedMonetization() {
 		if ( isSubscribersOnly() && hasCoilDivider && $( 'p.monetize-msg' ).length === 0 ) {
 			$( '.coil-restricted-content' ).after( showMonetizationMessage( loadingContent, '' ) );
@@ -560,7 +560,7 @@
 			}
 		}, 5000 );
 
-		maybeAddCoilButton();
+		maybeAddStreamingWidget();
 	}
 
 	/**
@@ -569,7 +569,7 @@
 	 * @param {object} event The monetizationstart event
 	 *
 	 * @return {void}
-	 */
+	*/
 	function monetizationStartListener( event ) {
 		monetizationStartEventOccurred = true;
 		let brandingLogo = '';
@@ -617,28 +617,28 @@
 		// Manually triggering resize to ensure elements get sized corretly after the verification proccess has been completed and they are no longer hidden.
 		jQuery( window ).trigger( 'resize' );
 
-		if ( ! showCoilButtonToMembers ) {
-			$( '.coil-button-message-container' ).remove();
+		if ( ! showStreamingWidgetToMembers ) {
+			$( '.streaming-widget-container' ).remove();
 		} else {
-			const buttonEnabled = hasCoilButtonEnabled();
-			const buttonAlreadyExists = $( '.coil-button-message-container' ).length !== 0 ? true : false;
-			const buttonDismissed = hasButtonDismissCookie();
-			if ( coilButtonTheme === 'light' ) {
+			const streamingWidgetEnabled = hasStreamingWidgetEnabled();
+			const streamingWidgetAlreadyExists = $( '.streaming-widget-container' ).length !== 0 ? true : false;
+			const streamingWidgetDismissed = hasStreamingWidgetDismissCookie();
+			if ( streamingWidgetTheme === 'light' ) {
 				brandingLogo = coilLogoStreaming;
 			} else {
 				brandingLogo = coilLogoWhiteStreaming;
 			}
 
-			if ( buttonEnabled && ! buttonDismissed ) {
-				if ( buttonAlreadyExists ) {
+			if ( streamingWidgetEnabled && ! streamingWidgetDismissed ) {
+				if ( streamingWidgetAlreadyExists ) {
 					// The text needs to change to the member message
-					$( '.coil-button div' ).text( coilButtonPaidMessage );
+					$( '.streaming-widget div' ).text( streamingWidgetPaidMessage );
 				} else {
-					showCoilButton( coilButtonPaidMessage );
+					showStreamingWidget( streamingWidgetPaidMessage );
 				}
-				$( '.coil-button a' ).removeAttr( 'href' ).css( 'cursor', 'default' );
-				$( '.coil-button a' ).css( 'cursor', 'default' );
-				$( '.coil-button a img' ).attr( 'src', brandingLogo );
+				$( '.streaming-widget a' ).removeAttr( 'href' ).css( 'cursor', 'default' );
+				$( '.streaming-widget a' ).css( 'cursor', 'default' );
+				$( '.streaming-widget a img' ).attr( 'src', brandingLogo );
 			}
 		}
 	}
@@ -648,7 +648,7 @@
 	 * @param {object} event The monetizationprogress event
 	 *
 	 * @return {void}
-	 */
+	*/
 	function monetizationProgressListener( event ) {
 		// Connect to backend to validate the payment.
 		const paymentPointer = event.detail.paymentPointer,
@@ -670,7 +670,7 @@
 
 	/**
 	 * Init monetissation process.
-	 */
+	*/
 	function bootstrapCoil() {
 		// Bail early - monetization initialised successfully.
 		if ( monetizationInitialized() ) {
