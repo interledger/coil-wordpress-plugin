@@ -188,6 +188,9 @@ function load_admin_assets() : void {
 		return;
 	}
 
+	// Get a list of the posts so that we can get the first post in our post library
+	$get_posts = get_posts(['numberposts' => 1]);
+
 	$suffix       = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 	$admin_params = apply_filters(
 		'coil_admin_js_params',
@@ -211,6 +214,8 @@ function load_admin_assets() : void {
 			'invalid_url_msg'             => __( 'Please provide a valid URL', 'coil-web-monetization' ),
 			'invalid_margin_value_msg'    => __( 'Please enter a number', 'coil-web-monetization' ),
 			'streaming_widget_position'   => $position = get_streaming_widget_setting( 'streaming_widget_position' ),
+			'latest_post'				  => ( !empty( $get_posts ) ? $get_posts[0]->guid : FALSE ),
+			'latest_post_id'				  => ( !empty( $get_posts ) ? $get_posts[0]->ID : FALSE ),
 		]
 	);
 

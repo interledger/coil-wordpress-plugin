@@ -1108,6 +1108,13 @@ function coil_settings_css_selector_render_callback() {
 			esc_attr( $exclusive_settings['coil_content_container'] ),
 			esc_attr( Admin\get_css_selector_default() )
 		);
+
+		printf(
+				'<p><button class="%s" id="%s">%s</button></p>',
+				esc_attr( 'button btn-primary' ),
+				esc_attr( 'css_selector_button' ),
+				esc_attr( 'Get CSS Selector Automatically' ),
+		);
 		?>
 	</div>
 	<?php
