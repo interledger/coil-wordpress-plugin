@@ -200,7 +200,7 @@ function maybe_restrict_content( string $content ) : string {
 		return $content;
 	}
 
-	if( isset( $_GET['coil-get-css-selector' ] ) ) {
+	if ( isset( $_GET['coil-get-css-selector'] ) ) {
 		return '<span id="coil-content"></span>';
 	}
 

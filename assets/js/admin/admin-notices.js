@@ -585,46 +585,45 @@
 		marginFocusOutValidityHandler( $( '#streaming_widget_left_margin' ) );
 	} );
 
-	$( document ).on( 'click', '#css_selector_button', function(e) {
+	$( document ).on( 'click', '#css_selector_button', function( e ) {
 		e.preventDefault();
 
 		$.get(
-			coilAdminParams.latest_post + "&coil-get-css-selector=1",
+			coilAdminParams.latest_post + '&coil-get-css-selector=1',
 			function( data ) {
-				const postContent = $( data ).find( "#coil-content" );
-				let postContainer = postContent.parent(),
-					postWrapper =  postContainer.parent(),
+				const postContent = $( data ).find( '#coil-content' ),
+					postContainer = postContent.parent(),
 					cssSelectorArray = [];
 
-				// If we actually have a post container (in case we fetch null?)
-				if( postContainer.length > 0 ) {
+				let postWrapper = postContainer.parent();
 
+				// If we actually have a post container (in case we fetch null?)
+				if ( postContainer.length > 0 ) {
 					// Search for the nearest tag that's not a div, this will likely be <main> or <article>
-					while ( 'DIV' == postWrapper.prop("tagName") ) {
+					while ( 'DIV' === postWrapper.prop( 'tagName' ) ) {
 						postWrapper = postWrapper.parent();
 					}
 
 					// Once we've gotten the tag name add it to the selector array
-					if( 'DIV' !== postWrapper.prop("tagName") ) {
-						cssSelectorArray.push( postWrapper.prop("tagName").toLowerCase() );
+					if ( 'DIV' !== postWrapper.prop( 'tagName' ) ) {
+						cssSelectorArray.push( postWrapper.prop( 'tagName' ).toLowerCase() );
 					}
 
-					let containerClassList = postContainer.prop("classList");
-					if( postContainer.hasClass( 'entry-content' ) ) {
+					const containerClassList = postContainer.prop( 'classList' );
+					if ( postContainer.hasClass( 'entry-content' ) ) {
 						cssSelectorArray.push( '.entry-content' );
 					} else {
-						cssSelectorArray.push( '.' + containerClassList[0] );
+						cssSelectorArray.push( '.' + containerClassList[ 0 ] );
 					}
 
-					let cssSelectorString = cssSelectorArray.join( ' ' );
+					const cssSelectorString = cssSelectorArray.join( ' ' );
 
-					var setClassesConfirm = confirm( "Would you like to set your CSS selector to " + cssSelectorString  + "?" );
-
-					if( setClassesConfirm ) $( '#coil_content_container' ).val( cssSelectorString );
+					if ( confirm( 'Would you like to set your CSS selector to ' + cssSelectorString + '?' ) ) { //eslint-disable-line
+						$( '#coil_content_container' ).val( cssSelectorString );
+					}
 				} else {
-					alert( "We could not find any containers to use, you'll need to enter in your CSS Selector manually." );
+					alert( "We could not find any containers to use, you'll need to enter in your CSS Selector manually." ); //eslint-disable-line
 				}
-			}
-		);
-	} )
+			} );
+	} );
 }( jQuery ) );
