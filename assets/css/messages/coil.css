@@ -360,7 +360,6 @@ body.coil-exclusive.coil-extension-not-found.show-excerpt-message .coil-message-
   display: block !important; }
   body.monetization-not-initialized.coil-exclusive.show-excerpt-message .coil-message-container .coil-message-inner,
   body.coil-exclusive.coil-extension-not-found.show-excerpt-message .coil-message-container .coil-message-inner {
-    margin-top: -20px;
     position: relative; }
     body.monetization-not-initialized.coil-exclusive.show-excerpt-message .coil-message-container .coil-message-inner::before,
     body.coil-exclusive.coil-extension-not-found.show-excerpt-message .coil-message-container .coil-message-inner::before {
