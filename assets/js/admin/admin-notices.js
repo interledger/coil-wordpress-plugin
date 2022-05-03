@@ -291,7 +291,7 @@
 	$( document ).on( 'focusout', '#coil_payment_pointer', function() {
 		const paymentPointer = $( '#coil_payment_pointer' ),
 			pattern = /^(https:\/\/.)|^[\$]./,
-			validityCondition = pattern.test( $( this ).val() );
+			validityCondition = pattern.test( $( this ).val() ) || $( this ).val().length === 0;
 		focusOutValidityHandler( paymentPointer, validityCondition, invalidPaymentPointerMsg );
 	} );
 
