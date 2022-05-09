@@ -215,7 +215,6 @@ function load_admin_assets() : void {
 			'invalid_margin_value_msg'    => __( 'Please enter a number', 'coil-web-monetization' ),
 			'streaming_widget_position'   => $position = get_streaming_widget_setting( 'streaming_widget_position' ),
 			'latest_post'                 => ( ! empty( $get_posts ) ? $get_posts[0]->guid : false ),
-			'latest_post_id'              => ( ! empty( $get_posts ) ? $get_posts[0]->ID : false ),
 		]
 	);
 

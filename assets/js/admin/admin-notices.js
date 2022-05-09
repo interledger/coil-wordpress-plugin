@@ -592,20 +592,19 @@
 			coilAdminParams.latest_post + '&coil-get-css-selector=1',
 			function( data ) {
 				const postContent = $( data ).find( '#coil-content' ),
-					postContainer = postContent.parent(),
+					postContainer = postContent.length > 0 ? postContent.parent() : false,
 					cssSelectorArray = [];
 
-				let postWrapper = postContainer.parent();
-
-				// If we actually have a post container (in case we fetch null?)
-				if ( postContainer.length > 0 ) {
+				// If a post container is found then continue to find it's parents
+				if ( postContainer !== false && postContainer.length > 0 ) {
+					let postWrapper = postContainer.parent();
 					// Search for the nearest tag that's not a div, this will likely be <main> or <article>
-					while ( 'DIV' === postWrapper.prop( 'tagName' ) ) {
+					while ( postWrapper.length !== 0 && 'DIV' === postWrapper.prop( 'tagName' ) ) {
 						postWrapper = postWrapper.parent();
 					}
 
 					// Once we've gotten the tag name add it to the selector array
-					if ( 'DIV' !== postWrapper.prop( 'tagName' ) ) {
+					if ( postWrapper.length !== 0 && 'DIV' !== postWrapper.prop( 'tagName' ) ) {
 						cssSelectorArray.push( postWrapper.prop( 'tagName' ).toLowerCase() );
 					}
 
@@ -624,6 +623,7 @@
 				} else {
 					alert( "We could not find any containers to use, you'll need to enter in your CSS Selector manually." ); //eslint-disable-line
 				}
-			} );
+			},
+		);
 	} );
 }( jQuery ) );
