@@ -89,7 +89,7 @@ function init_plugin() : void {
  * Enqueue block frontend assets.
  *
  * @return void
- */
+*/
 function load_block_frontend_assets() : void {
 
 	if ( ! in_array( $GLOBALS['post']->post_type, get_supported_post_types(), true ) ) {

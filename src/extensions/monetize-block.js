@@ -1,5 +1,6 @@
 // Editor and Frontend Styles
 import './styles/editor.scss';
+import './styles/style.scss';
 
 /**
  * WordPress dependencies
