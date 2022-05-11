@@ -72,8 +72,12 @@ const PostMetaFields = withDispatch( ( dispatch, props ) => {
 				/>
 			</div>
 			<div
-				className={ `coil-post-monetization-level ${ props[ props.monetizationMetaFieldName ] ? props[ props.monetizationMetaFieldName ] : 'default'
-				}` }
+				className={`
+					coil-post-monetization-level
+					${ props[ props.monetizationMetaFieldName ] ? props[ props.monetizationMetaFieldName ] : 'default' }
+					${ props[ props.visibilityMetaFieldName ] ? props[ props.visibilityMetaFieldName ] : '' }
+					${ 'exclusive-content-' + coilEditorParams.exclusiveContentStatus }
+				`}
 			>
 				<RadioControl
 					label={ __( 'Who can access this content?', 'coil-web-monetization' ) }
@@ -92,6 +96,10 @@ const PostMetaFields = withDispatch( ( dispatch, props ) => {
 					] }
 					onChange={ ( value ) => props.updateVisibilityMetaValue( value ) }
 				/>
+
+				<p className="coil-hint">
+					{ __( 'Exclusive Content is currently disabled, enable it under Coil > Exclusive Content.', 'coil-web-monetization' ) }
+				</p>
 			</div>
 		</div>
 	) ),

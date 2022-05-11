@@ -33,8 +33,8 @@
 		z-index: 1;
 
 		p {
-			font-size: 14px;
-			font-weight: 500;
+			font-size: 14px !important;
+			font-weight: 500 !important;
 		}
 	}
 }
@@ -43,5 +43,34 @@
 	&.default,
 	&.not-monetized {
 		display: none;
+	}
+
+	p {
+		&.coil-hint {
+			display: none;
+		}
+	}
+
+	&.exclusive-content-off.exclusive {
+		input {
+		  	border-color: #666;
+
+			&:checked {
+				background-color: #666;
+			}
+		}
+
+		label {
+		  	color: #666;
+		}
+
+	  	p {
+			 &.coil-hint {
+				 color: #666;
+				 display: inline-block;
+				 font-size: 13px;
+				 margin-top: 5px;
+			 }
+		}
 	}
 }

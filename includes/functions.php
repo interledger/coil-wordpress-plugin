@@ -145,14 +145,19 @@ function load_block_editor_assets() : void {
 	$monetization_settings = get_option( 'coil_general_settings_group' );
 	// If nothing is set in the wp_options table then the Coil Web Monetization menus will open showing the monetization dropdown "Default" element.
 	$monetization_default = isset( $monetization_settings[ get_current_screen()->post_type . '_monetization' ] ) ? $monetization_settings[ get_current_screen()->post_type . '_monetization' ] : 'default';
+
 	$visibility_settings  = get_option( 'coil_exclusive_settings_group' );
 	// If nothing has been saved in the wp_options table then visibility should default to public (In the menu visibility has no 'default' option).
 	$visibility_default = isset( $visibility_settings[ get_current_screen()->post_type . '_visibility' ] ) ? $visibility_settings[ get_current_screen()->post_type . '_visibility' ] : Admin\get_visibility_default();
+
+	// Get the status of the exclusive content global setting
+	$exclusive_content_setting = $visibility_settings[ 'coil_exclusive_toggle' ] ? "on" : "off";
 
 	wp_localize_script(
 		'coil-editor',
 		'coilEditorParams',
 		[
+			'exclusiveContentStatus' => $exclusive_content_setting,
 			'monetizationDefault' => $monetization_default,
 			'visibilityDefault'   => $visibility_default,
 		]
