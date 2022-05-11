@@ -1530,7 +1530,15 @@ function admin_welcome_notice() {
 	<div class="notice is-dismissible coil-welcome-notice">
 		<div class="coil-welcome-notice__content">
 			<h3><?php esc_html_e( 'Welcome to Coil Web Monetization for WordPress', 'coil-web-monetization' ); ?></h3>
-			<p><?php esc_html_e( 'Add your payment pointer to start using the plugin.', 'coil-web-monetization' ); ?></p>
+			<?php
+			printf(
+				'<p>%s (<a href="%s" target="%s" >%s</a>)</p>',
+				esc_html__( 'Before you begin, add your payment pointer.', 'coil-web-monetization' ),
+				esc_url( 'https://webmonetization.org/docs/ilp-wallets' ),
+				esc_attr( '_blank' ),
+				esc_html__( 'Learn more', 'coil-web-monetization' )
+			);
+			?>
 			<p>
 				<?php
 					echo sprintf(
