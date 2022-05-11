@@ -72,12 +72,12 @@ const PostMetaFields = withDispatch( ( dispatch, props ) => {
 				/>
 			</div>
 			<div
-				className={`
+				className={ `
 					coil-post-monetization-level
 					${ props[ props.monetizationMetaFieldName ] ? props[ props.monetizationMetaFieldName ] : 'default' }
 					${ props[ props.visibilityMetaFieldName ] ? props[ props.visibilityMetaFieldName ] : '' }
-					${ 'exclusive-content-' + coilEditorParams.exclusiveContentStatus }
-				`}
+					${ 'exclusive-content-' + coilEditorParams.exclusiveContentStatus /* eslint-disable-line no-undef */ }
+				` }
 			>
 				<RadioControl
 					label={ __( 'Who can access this content?', 'coil-web-monetization' ) }
