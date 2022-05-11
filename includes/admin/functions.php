@@ -604,8 +604,8 @@ function get_exclusive_post_defaults(): array {
 function get_visibility_types() : array {
 
 	$visibility_types = [
-		'public'    => 'Keep public',
-		'exclusive' => 'Make exclusive',
+		'public'    => 'Keep Public',
+		'exclusive' => 'Make Exclusive',
 	];
 
 	return $visibility_types;
