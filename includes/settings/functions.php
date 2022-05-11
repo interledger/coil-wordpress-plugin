@@ -99,20 +99,12 @@ function register_admin_content_settings() {
 		'coil_enable_exclusive_section'
 	);
 
-	// ==== Paywall Appearance
+	// ==== CSS Selectors
 	add_settings_section(
-		'coil_paywall_settings',
+		'coil_css_selector_section',
 		false,
-		__NAMESPACE__ . '\coil_settings_paywall_render_callback',
-		'coil_paywall_section'
-	);
-
-	// ==== Exclusive Post Appearance
-	add_settings_section(
-		'coil_exclusive_post_section',
-		false,
-		__NAMESPACE__ . '\coil_settings_exclusive_post_render_callback',
-		'coil_exclusive_post_section'
+		__NAMESPACE__ . '\coil_settings_css_selector_render_callback',
+		'coil_css_selector_section'
 	);
 
 	// ==== Global Visibility Defaults
@@ -131,12 +123,20 @@ function register_admin_content_settings() {
 		'coil_excerpt_display_section'
 	);
 
-	// ==== CSS Selectors
+	// ==== Paywall Appearance
 	add_settings_section(
-		'coil_css_selector_section',
+		'coil_paywall_settings',
 		false,
-		__NAMESPACE__ . '\coil_settings_css_selector_render_callback',
-		'coil_css_selector_section'
+		__NAMESPACE__ . '\coil_settings_paywall_render_callback',
+		'coil_paywall_section'
+	);
+
+	// ==== Exclusive Post Appearance
+	add_settings_section(
+		'coil_exclusive_post_section',
+		false,
+		__NAMESPACE__ . '\coil_settings_exclusive_post_render_callback',
+		'coil_exclusive_post_section'
 	);
 
 	// Tab 4 - Streaming Support Widget
@@ -1639,11 +1639,11 @@ function render_coil_settings_screen() : void {
 					echo '<div class="settings-main">';
 					settings_fields( 'coil_exclusive_settings_group' );
 					do_settings_sections( 'coil_enable_exclusive_section' );
-					do_settings_sections( 'coil_paywall_section' );
-					do_settings_sections( 'coil_exclusive_post_section' );
+					do_settings_sections( 'coil_css_selector_section' );
 					do_settings_sections( 'coil_post_visibility_section' );
 					do_settings_sections( 'coil_excerpt_display_section' );
-					do_settings_sections( 'coil_css_selector_section' );
+					do_settings_sections( 'coil_paywall_section' );
+					do_settings_sections( 'coil_exclusive_post_section' );
 					submit_button();
 					echo '</div>';
 					break;
