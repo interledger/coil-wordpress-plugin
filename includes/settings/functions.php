@@ -133,10 +133,10 @@ function register_admin_content_settings() {
 
 	// ==== Exclusive Post Appearance
 	add_settings_section(
-		'coil_exclusive_post_section',
+		'coil_exclusive_icon_section',
 		false,
-		__NAMESPACE__ . '\coil_settings_exclusive_post_render_callback',
-		'coil_exclusive_post_section'
+		__NAMESPACE__ . '\coil_settings_exclusive_icon_render_callback',
+		'coil_exclusive_icon_section'
 	);
 
 	// Tab 4 - Streaming Support Widget
@@ -869,13 +869,13 @@ function paywall_font_render_callback() {
  *
  * @return void
 */
-function coil_settings_exclusive_post_render_callback() {
+function coil_settings_exclusive_icon_render_callback() {
 
 	?>
 	<div class="tab-styling exclusive-content-section">
 		<?php
 		Rendering\render_settings_section_heading(
-			__( 'Exclusive Post Appearance', 'coil-web-monetization' ),
+			__( 'Exclusive Icon Appearance', 'coil-web-monetization' ),
 			__( 'Customize the appearance of exclusive posts on archive pages.', 'coil-web-monetization' )
 		);
 		?>
@@ -1643,7 +1643,7 @@ function render_coil_settings_screen() : void {
 					do_settings_sections( 'coil_post_visibility_section' );
 					do_settings_sections( 'coil_excerpt_display_section' );
 					do_settings_sections( 'coil_paywall_section' );
-					do_settings_sections( 'coil_exclusive_post_section' );
+					do_settings_sections( 'coil_exclusive_icon_section' );
 					submit_button();
 					echo '</div>';
 					break;
