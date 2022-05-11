@@ -58,9 +58,11 @@ function render_input_field_heading( $heading, $id = '' ) {
 */
 function render_welcome_section( $heading, $explanation, $tab = '', $button_text = '' ) {
 	?>
-	<div style="padding-top: 10px;">
+	<div>
 			<?php
-			echo '<h2>' . esc_html( $heading ) . '</h2>';
+			if ( $heading !== '' ) {
+				echo '<h2 style="padding-top: 10px;">' . esc_html( $heading ) . '</h2>';
+			}
 			echo '<p>' . esc_html( $explanation ) . '</p>';
 
 			if ( $link !== '' && $button_text !== '' ) {

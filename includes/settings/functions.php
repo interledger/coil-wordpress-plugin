@@ -463,7 +463,7 @@ function coil_settings_welcome_render_callback() {
 
 		// Monetization Section
 		Rendering\render_welcome_section(
-			__( 'Web Monetization', 'coil-web-monetization' ),
+			'',
 			__( 'The Coil WordPress Plugin lets you enable Web Monetization on your website. With Web Monetization, you automatically receive streaming payments whenever Coil members visit your site.', 'coil-web-monetization' )
 		);
 
