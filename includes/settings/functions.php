@@ -1561,12 +1561,19 @@ function admin_welcome_notice() {
 			<p>
 				<?php
 				printf(
-					'<p>%s <a href="%s" >%s</a> %s</p>',
-					esc_html__( 'Please ensure the CSS selector is correct for your site\'s theme. You can automatically detect your CSS selector and set it in the', 'coil-web-monetization' ),
-					esc_url( admin_url( 'admin.php?page=coil_settings&tab=' . 'exclusive_settings', COIL__FILE__ ) ),
-					esc_html__( 'Exclusive Content', 'coil-web-monetization' ),
-					esc_html__( 'tab.', 'coil-web-monetization' )
+					'<p>%s</p>',
+					esc_html__( 'Please ensure the CSS selector is correct for your site\'s theme.', 'coil-web-monetization' )
 				);
+				?>
+			</p>
+			<p>
+				<?php
+					echo sprintf(
+						'<a class="%1$s" href="%2$s">%3$s</a>',
+						'button button-primary',
+						esc_url( '?page=coil_settings&tab=exclusive_settings' ),
+						esc_html__( 'Check CSS Selector', 'coil-web-monetization' )
+					);
 				?>
 			</p>
 		</div>
