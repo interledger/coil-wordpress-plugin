@@ -31,7 +31,8 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 		img {
 			display: block;
 			margin: 0 auto $message_spacing_baseline * 2;
-			max-width: 91px;
+			max-height: 50px;
+			max-width: 50px;
 			text-align: center;
 
 			@media only screen and (min-width: $message_mobile_breakpoint) {
@@ -43,10 +44,6 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 
 			@media only screen and (min-width: $message_desktop_breakpoint) {
 				margin: 0 0 $message_spacing_baseline * 2;
-			}
-
-			img {
-				height: 32px;
 			}
 
 			.coil-message-title {
