@@ -230,6 +230,13 @@
 		} else {
 			$( '.set-site-logo-description' ).hide();
 		}
+
+		const brandingLogo = $( '.no_logo, .site_logo, .coil_logo' );
+		if ( brandingLogo.attr( 'src' ) === '' ) {
+			brandingLogo.hide();
+		} else {
+			brandingLogo.show();
+		}
 	}
 
 	// Streaming support widget tab
@@ -407,11 +414,12 @@
 			}
 		} else if ( logoSetting === 'site_logo' ) {
 			logoSrc = siteLogoUrl;
-			if ( logoSrc === '' ) {
-				$( '.site_logo' ).hide();
-			} else {
-				$( '.site_logo' ).show();
-			}
+		}
+
+		if ( logoSrc === '' ) {
+			$( '.' + logoSetting ).hide();
+		} else {
+			$( '.' + logoSetting ).show();
 		}
 
 		$( '.coil-paywall-image' ).attr( 'src', logoSrc );
