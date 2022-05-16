@@ -74,9 +74,9 @@
 			inputElement.css( 'border-color', red );
 			if ( invalidMsgElement === null ) {
 				inputElement.after( '<p class="invalid-input" style="color: ' + red + '">' + msg + '</p>' );
-				const position = inputElement.prev().position();
+				const position = inputElement.prev() !== null ? inputElement.prev().position() : null;
 				let top;
-				if ( position !== undefined ) {
+				if ( position !== undefined && position !== null ) {
 					top = position.top;
 				} else {
 					top = 0;
@@ -96,7 +96,7 @@
 	// Adds or removes alerting functionality for invalid streaming support widget margin input that is detected when focus leaves the field.
 	function marginFocusOutValidityHandler( marginInputElement ) {
 		const validMargin = /(^(-)?[0-9]+((p)|(px)|(P)|(PX))?$)/,
-			nextElement = marginInputElement.next().next(), // checking element below the description
+			nextElement = marginInputElement.next() !== null ? marginInputElement.next().next() : null, // checking element below the description
 			screen = $( document ).scrollTop();
 		const validCondition = validMargin.test( marginInputElement.val() ) || marginInputElement.val() === '';
 		let invalidMsgElement = null;
@@ -153,7 +153,7 @@
 
 	// Adds or removes alerting functionality for invalid margin inputs that are detected during changes to an input field.
 	function marginInputValidityHandler( inputElement ) {
-		const nextElement = inputElement.next().next(), // checking element below the description
+		const nextElement = inputElement.next() !== null ? inputElement.next().next() : null, // checking element below the description
 			onlyWhiteSpace = /^\s+$/,
 			validMarginValue = /(^(-)?[0-9]+((p)|(px)|(P)|(PX))?$)/,
 			whiteSpaceValidCondition = ! onlyWhiteSpace.test( inputElement.val() ),
