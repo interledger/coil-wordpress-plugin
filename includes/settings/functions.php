@@ -1202,7 +1202,7 @@ function coil_settings_enable_streaming_widget_toggle_render_callback() {
 			esc_html__( 'When enabled, the widget will not appear:', 'coil-web-monetization' ),
 			esc_html__( 'On post types set to Not Monetized.', 'coil-web-monetization' ),
 			esc_html__( 'When a visitor dismisses the widget. The widget reappears after the cookie expires (2 weeks) or sooner if the visitor clears their cache.', 'coil-web-monetization' ),
-			esc_html__( 'When a visitor is not a Coil member and a post is either set to Exclusive or contains the exclusive content divider. Non-members will see your paywall. Coil members will see your content and the widget unless you\'ve chosen to hide the widget from members.', 'coil-web-monetization' )
+			esc_html__( 'When a visitor is not a Coil member and a post is set to Exclusive. Non-members will see your paywall. Coil members will see your content and the widget unless you\'ve chosen to hide the widget from members.', 'coil-web-monetization' )
 		);
 
 		$streaming_widget_toggle_id = 'streaming_widget_toggle';
@@ -1556,6 +1556,17 @@ function admin_welcome_notice() {
 						esc_url( '?page=coil_settings&tab=general_settings' ),
 						esc_html__( 'Add Payment Pointer', 'coil-web-monetization' )
 					);
+				?>
+			</p>
+			<p>
+				<?php
+				printf(
+					'<p>%s <a href="%s" >%s</a> %s</p>',
+					esc_html__( 'Please ensure the CSS selector is correct for your site\'s theme. You can automatically detect your CSS selector and set it in the', 'coil-web-monetization' ),
+					esc_url( admin_url( 'admin.php?page=coil_settings&tab=' . 'exclusive_settings', COIL__FILE__ ) ),
+					esc_html__( 'Exclusive Content', 'coil-web-monetization' ),
+					esc_html__( 'tab.', 'coil-web-monetization' )
+				);
 				?>
 			</p>
 		</div>
