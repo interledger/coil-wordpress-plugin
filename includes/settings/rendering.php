@@ -65,7 +65,7 @@ function render_welcome_section( $heading, $explanation, $tab = '', $button_text
 			}
 			echo '<p>' . esc_html( $explanation ) . '</p>';
 
-			if ( $link !== '' && $button_text !== '' ) {
+			if ( $tab !== '' && $button_text !== '' ) {
 				printf(
 					'<a class="button button-primary" href="%s">%s</a>',
 					esc_url( admin_url( 'admin.php?page=coil_settings&tab=' . $tab, COIL__FILE__ ) ),
