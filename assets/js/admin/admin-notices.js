@@ -584,4 +584,46 @@
 	$( document ).on( 'focusout', '#streaming_widget_left_margin', function() {
 		marginFocusOutValidityHandler( $( '#streaming_widget_left_margin' ) );
 	} );
+
+	$( document ).on( 'click', '#css_selector_button', function( e ) {
+		e.preventDefault();
+
+		$.get(
+			coilAdminParams.latest_post + '&coil-get-css-selector=1',
+			function( data ) {
+				const postContent = $( data ).find( '#coil-content' ),
+					postContainer = postContent.length > 0 ? postContent.parent() : false,
+					cssSelectorArray = [];
+
+				// If a post container is found then continue to find it's parents
+				if ( postContainer !== false && postContainer.length > 0 ) {
+					let postWrapper = postContainer.parent();
+					// Search for the nearest tag that's not a div, this will likely be <main> or <article>
+					while ( postWrapper.length !== 0 && 'DIV' === postWrapper.prop( 'tagName' ) ) {
+						postWrapper = postWrapper.parent();
+					}
+
+					// Once we've gotten the tag name add it to the selector array
+					if ( postWrapper.length !== 0 && 'DIV' !== postWrapper.prop( 'tagName' ) ) {
+						cssSelectorArray.push( postWrapper.prop( 'tagName' ).toLowerCase() );
+					}
+
+					const containerClassList = postContainer.prop( 'classList' );
+					if ( postContainer.hasClass( 'entry-content' ) ) {
+						cssSelectorArray.push( '.entry-content' );
+					} else {
+						cssSelectorArray.push( '.' + containerClassList[ 0 ] );
+					}
+
+					const cssSelectorString = cssSelectorArray.join( ' ' );
+
+					if ( confirm( 'Would you like to set your CSS selector to ' + cssSelectorString + '?' ) ) { //eslint-disable-line
+						$( '#coil_content_container' ).val( cssSelectorString );
+					}
+				} else {
+					alert( "We could not find any containers to use, you'll need to enter in your CSS Selector manually." ); //eslint-disable-line
+				}
+			},
+		);
+	} );
 }( jQuery ) );

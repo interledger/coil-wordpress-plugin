@@ -200,6 +200,10 @@ function maybe_restrict_content( string $content ) : string {
 		return $content;
 	}
 
+	if ( isset( $_GET['coil-get-css-selector'] ) ) {
+		return '<span id="coil-content"></span>';
+	}
+
 	// If exclusive content has been disabled then nothing will be restricted
 	if ( ! Admin\is_exclusive_content_enabled() ) {
 		return $content;
