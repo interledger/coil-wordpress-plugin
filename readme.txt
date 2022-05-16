@@ -6,7 +6,7 @@ Tags: coil, content, monetization, payment, interledger, ilp
 Requires at least: 5.0+
 Requires PHP: 7.1
 Tested up to: 5.3
-Stable tag: 1.9.0
+Stable tag: 2.0.0
 License: Apache-2.0
 License URI: http://www.apache.org/licenses/LICENSE-2.0.txt
 
@@ -25,7 +25,7 @@ Coil's official WordPress plugin makes it easy for you to get paid instantly whi
 
 To learn more about Coil, visit us at [coil.com](https://coil.com/).
 
-For user documentation, visit our [help center](https://help.coil.com/for-creators/wordpress-plugin).
+For user documentation, visit our [help center](https://help.coil.com/docs/monetize/content/wp-overview/).
 
 == Installation ==
 
@@ -73,7 +73,7 @@ Yes! Translations can be contributed at [translate.wordpress.org](https://transl
 
 = Where can I ask for help? =
 
-If you get stuck, check out our [help center](https://help.coil.com/for-creators/wordpress-plugin) or post a question to the [Coil Web Monetization support forum](https://wordpress.org/support/plugin/coil-web-monetization/).
+If you get stuck, check out our [help center](https://help.coil.com/docs/monetize/content/wp-overview/) or post a question to the [Coil Web Monetization support forum](https://wordpress.org/support/plugin/coil-web-monetization/).
 
 == Screenshots ==
 

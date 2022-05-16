@@ -333,7 +333,8 @@
 	 * @return {bool} Determine if the content container is default.
 	*/
 	function usingDefaultContentContainer() {
-		return contentContainer === '.content-area .entry-content, main .entry-content';
+		// Include the previous default as well because the CSS is set up for it already.
+		return contentContainer === '.content-area .entry-content, main .entry-content' || contentContainer === '.content-area .entry-content';
 	}
 
 	/**
@@ -680,7 +681,11 @@
 		// Hide content entry area if not default selector.
 		if ( ! isMonetizedAndPublic() && ! usingDefaultContentContainer() ) {
 			if ( hasCoilDivider ) {
-				$( contentContainer + ' .coil-restricted-content' ).hide();
+				// In case there are multiple selectors they are each dealt with individually.
+				const selectors = contentContainer.split( ', ' );
+				selectors.forEach( ( selector ) => {
+					$( selector + ' .coil-restricted-content' ).hide();
+				} );
 			} else {
 				$( contentContainer ).not( '.coil-post-excerpt' ).hide();
 			}
