@@ -210,10 +210,7 @@
           border-radius: 6px;
           box-sizing: border-box;
           padding: 15px;
-          text-align: center;
-          /**
-						** TODO: Update this by cleaning it up according to the available fonts etc
-						**/ }
+          text-align: center; }
           .coil form .settings-main .tab-styling .coil-preview .coil-paywall-container[data-theme='dark'] {
             background: #2d333a;
             border: 1px solid #4f4f4f; }

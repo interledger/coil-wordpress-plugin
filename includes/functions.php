@@ -14,12 +14,12 @@ use \Coil\User;
 /**
  * @var string Plugin version number.
  */
-const PLUGIN_VERSION = '1.10.0';
+const PLUGIN_VERSION = '2.0.0';
 
 /**
  * @var string Database version number.
  */
-const DB_VERSION = '1.10.0';
+const DB_VERSION = '2.0.0';
 
 /**
  * @var string Plugin root folder.
@@ -89,7 +89,7 @@ function init_plugin() : void {
  * Enqueue block frontend assets.
  *
  * @return void
- */
+*/
 function load_block_frontend_assets() : void {
 
 	if ( ! in_array( $GLOBALS['post']->post_type, get_supported_post_types(), true ) ) {
@@ -145,16 +145,21 @@ function load_block_editor_assets() : void {
 	$monetization_settings = get_option( 'coil_general_settings_group' );
 	// If nothing is set in the wp_options table then the Coil Web Monetization menus will open showing the monetization dropdown "Default" element.
 	$monetization_default = isset( $monetization_settings[ get_current_screen()->post_type . '_monetization' ] ) ? $monetization_settings[ get_current_screen()->post_type . '_monetization' ] : 'default';
-	$visibility_settings  = get_option( 'coil_exclusive_settings_group' );
+
+	$visibility_settings = get_option( 'coil_exclusive_settings_group' );
 	// If nothing has been saved in the wp_options table then visibility should default to public (In the menu visibility has no 'default' option).
 	$visibility_default = isset( $visibility_settings[ get_current_screen()->post_type . '_visibility' ] ) ? $visibility_settings[ get_current_screen()->post_type . '_visibility' ] : Admin\get_visibility_default();
+
+	// Get the status of the exclusive content global setting
+	$exclusive_content_setting = $visibility_settings['coil_exclusive_toggle'] ? 'on' : 'off';
 
 	wp_localize_script(
 		'coil-editor',
 		'coilEditorParams',
 		[
-			'monetizationDefault' => $monetization_default,
-			'visibilityDefault'   => $visibility_default,
+			'exclusiveContentStatus' => $exclusive_content_setting,
+			'monetizationDefault'    => $monetization_default,
+			'visibilityDefault'      => $visibility_default,
 		]
 	);
 
@@ -398,7 +403,7 @@ function maybe_update_database() {
 	// The transfer functions will override the defaults that were loaded if neccessary.
 	Transfers\maybe_load_database_defaults();
 
-	if ( false === $db_version || version_compare( '1.10.0', $db_version, '>' ) ) {
+	if ( false === $db_version || version_compare( '2.0.0', $db_version, '>' ) ) {
 		// Transfer settings saved in the customizer
 		Transfers\transfer_customizer_message_settings();
 		Transfers\transfer_customizer_appearance_settings();

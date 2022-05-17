@@ -99,20 +99,12 @@ function register_admin_content_settings() {
 		'coil_enable_exclusive_section'
 	);
 
-	// ==== Paywall Appearance
+	// ==== CSS Selectors
 	add_settings_section(
-		'coil_paywall_settings',
+		'coil_css_selector_section',
 		false,
-		__NAMESPACE__ . '\coil_settings_paywall_render_callback',
-		'coil_paywall_section'
-	);
-
-	// ==== Exclusive Post Appearance
-	add_settings_section(
-		'coil_exclusive_post_section',
-		false,
-		__NAMESPACE__ . '\coil_settings_exclusive_post_render_callback',
-		'coil_exclusive_post_section'
+		__NAMESPACE__ . '\coil_settings_css_selector_render_callback',
+		'coil_css_selector_section'
 	);
 
 	// ==== Global Visibility Defaults
@@ -131,12 +123,20 @@ function register_admin_content_settings() {
 		'coil_excerpt_display_section'
 	);
 
-	// ==== CSS Selectors
+	// ==== Paywall Appearance
 	add_settings_section(
-		'coil_css_selector_section',
+		'coil_paywall_settings',
 		false,
-		__NAMESPACE__ . '\coil_settings_css_selector_render_callback',
-		'coil_css_selector_section'
+		__NAMESPACE__ . '\coil_settings_paywall_render_callback',
+		'coil_paywall_section'
+	);
+
+	// ==== Exclusive Post Appearance
+	add_settings_section(
+		'coil_exclusive_icon_section',
+		false,
+		__NAMESPACE__ . '\coil_settings_exclusive_icon_render_callback',
+		'coil_exclusive_icon_section'
 	);
 
 	// Tab 4 - Streaming Support Widget
@@ -463,7 +463,7 @@ function coil_settings_welcome_render_callback() {
 
 		// Monetization Section
 		Rendering\render_welcome_section(
-			__( 'Web Monetization', 'coil-web-monetization' ),
+			'',
 			__( 'The Coil WordPress Plugin lets you enable Web Monetization on your website. With Web Monetization, you automatically receive streaming payments whenever Coil members visit your site.', 'coil-web-monetization' )
 		);
 
@@ -516,12 +516,6 @@ function coil_settings_sidebar_render_callback() {
 						'<li><a target="_blank" href="%1$s">%2$s</a></li>',
 						esc_url( 'https://help.coil.com/docs/monetize/content/wp-overview/' ),
 						esc_html__( 'How to configure the Coil plugin', 'coil-web-monetization' )
-					);
-
-					printf(
-						'<li><a target="_blank" href="%1$s">%2$s</a></li>',
-						esc_url( 'https://help.coil.com/docs/monetize/content/wp-faq-troubleshooting' ),
-						esc_html__( 'FAQs and Troubleshooting', 'coil-web-monetization' )
 					);
 
 					printf(
@@ -638,8 +632,16 @@ function coil_settings_enable_exclusive_toggle_render_callback() {
 
 		printf(
 			'<p>%s (<a href="%s" target="%s" >%s</a>)</p>',
-			esc_html__( 'Exclusive content is only available to Coil members. Coil members must use the Coil extension or supported mobile browser to unlock exclusive content.', 'coil-web-monetization' ),
-			esc_url( 'https://help.coil.com/docs/membership/coil-extension/index.html' ),
+			esc_html__( 'Exclusive content is only available to Coil members.', 'coil-web-monetization' ),
+			esc_url( 'https://help.coil.com/docs/monetize/content/wp-exclusive content' ),
+			esc_attr( '_blank' ),
+			esc_html__( 'Learn more', 'coil-web-monetization' )
+		);
+
+		printf(
+			'<p>%s (<a href="%s" target="%s" >%s</a>)</p>',
+			esc_html__( 'Coil members must use the Coil extension or supported mobile browser to unlock exclusive content.', 'coil-web-monetization' ),
+			esc_url( 'https://help.coil.com/docs/membership/coil-extension/' ),
 			esc_attr( '_blank' ),
 			esc_html__( 'Learn more', 'coil-web-monetization' )
 		);
@@ -869,13 +871,13 @@ function paywall_font_render_callback() {
  *
  * @return void
 */
-function coil_settings_exclusive_post_render_callback() {
+function coil_settings_exclusive_icon_render_callback() {
 
 	?>
 	<div class="tab-styling exclusive-content-section">
 		<?php
 		Rendering\render_settings_section_heading(
-			__( 'Exclusive Post Appearance', 'coil-web-monetization' ),
+			__( 'Exclusive Icon Appearance', 'coil-web-monetization' ),
 			__( 'Customize the appearance of exclusive posts on archive pages.', 'coil-web-monetization' )
 		);
 		?>
@@ -1093,7 +1095,7 @@ function coil_settings_css_selector_render_callback() {
 			'<p>%s (<a href="%s" target="_blank">%s</a>)</p>',
 			/* translators: 1) HTML link open tag, 2) HTML link close tag, 3) HTML link open tag, 4) HTML link close tag. */
 			esc_html__( 'This plugin uses CSS selectors to control exclusive content. Many themes use the plugin\'s default selectors. If your exclusive content is being incorrectly shown or hidden, there\'s a strong possibility your theme is using different selectors. Enter your theme\'s CSS selectors here.', 'coil-web-monetization' ),
-			esc_url( 'https://help.coil.com/docs/monetize/content/wp-faq-troubleshooting#everyoneno-one-can-see-my-monetized-content-why' ),
+			esc_url( 'https://help.coil.com/docs/monetize/content/wp-exclusive-content#adjust-the-css-selectors-used-by-the-plugin-as-needed' ),
 			esc_html__( 'Learn more', 'coil-web-monetization' )
 		);
 
@@ -1200,7 +1202,7 @@ function coil_settings_enable_streaming_widget_toggle_render_callback() {
 			esc_html__( 'When enabled, the widget will not appear:', 'coil-web-monetization' ),
 			esc_html__( 'On post types set to Not Monetized.', 'coil-web-monetization' ),
 			esc_html__( 'When a visitor dismisses the widget. The widget reappears after the cookie expires (2 weeks) or sooner if the visitor clears their cache.', 'coil-web-monetization' ),
-			esc_html__( 'When a visitor is not a Coil member and a post is either set to Exclusive or contains the exclusive content divider. Non-members will see your paywall. Coil members will see your content and the widget unless you\'ve chosen to hide the widget from members.', 'coil-web-monetization' )
+			esc_html__( 'When a visitor is not a Coil member and a post is set to Exclusive. Non-members will see your paywall. Coil members will see your content and the widget unless you\'ve chosen to hide the widget from members.', 'coil-web-monetization' )
 		);
 
 		$streaming_widget_toggle_id = 'streaming_widget_toggle';
@@ -1537,7 +1539,15 @@ function admin_welcome_notice() {
 	<div class="notice is-dismissible coil-welcome-notice">
 		<div class="coil-welcome-notice__content">
 			<h3><?php esc_html_e( 'Welcome to Coil Web Monetization for WordPress', 'coil-web-monetization' ); ?></h3>
-			<p><?php esc_html_e( 'Add your payment pointer to start using the plugin.', 'coil-web-monetization' ); ?></p>
+			<?php
+			printf(
+				'<p>%s (<a href="%s" target="%s" >%s</a>)</p>',
+				esc_html__( 'Before you begin, add your payment pointer.', 'coil-web-monetization' ),
+				esc_url( 'https://webmonetization.org/docs/ilp-wallets' ),
+				esc_attr( '_blank' ),
+				esc_html__( 'Learn more', 'coil-web-monetization' )
+			);
+			?>
 			<p>
 				<?php
 					echo sprintf(
@@ -1545,6 +1555,24 @@ function admin_welcome_notice() {
 						'button button-primary',
 						esc_url( '?page=coil_settings&tab=general_settings' ),
 						esc_html__( 'Add Payment Pointer', 'coil-web-monetization' )
+					);
+				?>
+			</p>
+			<p>
+				<?php
+				printf(
+					'<p>%s</p>',
+					esc_html__( 'Please ensure the CSS selector is correct for your site\'s theme.', 'coil-web-monetization' )
+				);
+				?>
+			</p>
+			<p>
+				<?php
+					echo sprintf(
+						'<a class="%1$s" href="%2$s">%3$s</a>',
+						'button button-primary',
+						esc_url( '?page=coil_settings&tab=exclusive_settings' ),
+						esc_html__( 'Check CSS Selector', 'coil-web-monetization' )
 					);
 				?>
 			</p>
@@ -1646,11 +1674,11 @@ function render_coil_settings_screen() : void {
 					echo '<div class="settings-main">';
 					settings_fields( 'coil_exclusive_settings_group' );
 					do_settings_sections( 'coil_enable_exclusive_section' );
-					do_settings_sections( 'coil_paywall_section' );
-					do_settings_sections( 'coil_exclusive_post_section' );
+					do_settings_sections( 'coil_css_selector_section' );
 					do_settings_sections( 'coil_post_visibility_section' );
 					do_settings_sections( 'coil_excerpt_display_section' );
-					do_settings_sections( 'coil_css_selector_section' );
+					do_settings_sections( 'coil_paywall_section' );
+					do_settings_sections( 'coil_exclusive_icon_section' );
 					submit_button();
 					echo '</div>';
 					break;

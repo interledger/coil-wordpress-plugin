@@ -1,12 +1,12 @@
 === Coil Web Monetization ===
 Author URI: https://coil.com
 Plugin URI: https://coil.com
-Contributors: coil, pragmaticagency
+Contributors: coil, obox, pragmaticagency
 Tags: coil, content, monetization, payment, interledger, ilp
 Requires at least: 5.0+
-Requires PHP: 7.1
-Tested up to: 5.3
-Stable tag: 1.9.0
+Requires PHP: 7.2+
+Tested up to: 5.9
+Stable tag: 2.0.0
 License: Apache-2.0
 License URI: http://www.apache.org/licenses/LICENSE-2.0.txt
 
@@ -14,50 +14,54 @@ Coil makes it easy for you to get paid for your online content.
 
 == Description ==
 
-Coil's official WordPress plugin makes it easy for you to get paid instantly while Coil members browse your content.
+Coil's official Web Monetization plugin makes it easy for you to get paid instantly while Coil members browse your content. All you need to do is add your payment pointer, then you’ll receive a stream of micropayments from Coil for every second that a Coil member views your content.
 
 ### How it works
 
 1. Coil members pay a monthly fee.
-2. You create an account with an ILP-enabled digital wallet.
+2. You create an account with an ILP-enabled digital wallet and receive a payment pointer.
 3. You install the WordPress plugin.
 4. Coil streams payments to your wallet while Coil members enjoy your content.
 
 To learn more about Coil, visit us at [coil.com](https://coil.com/).
 
-For user documentation, visit our [help center](https://help.coil.com/for-creators/wordpress-plugin).
+For user documentation, visit our [help center](https://help.coil.com/docs/monetize/content/wp-overview/).
 
 == Installation ==
 
 1. Install the official Coil Web Monetization plugin.
 2. Activate the plugin through the 'Plugins' screen in WordPress.
 3. Select 'Coil' in the Admin menu.
-4. Select the 'Global Settings' tab and enter your payment pointer.
+4. Select 'Add Payment Pointer' which will take you to the 'General Settings' tab where you can enter your payment pointer.
 5. Click 'Save Changes'.
 
 == Features ==
 
-Our plugin lets you add monetization to all or some of your pages and posts.
+Our plugin lets you add Web Monetization to all or some of your content.
 
-* Monetization enabled and visible to everyone (default) - Allow all visitors to see the content, get paid when your visitor is a Coil Member
-* Monetization enabled and visible to Coil members only - Only allow Coil members to see the content
-* Monetization disabled - Allow all visitors to see the content, don't get paid when your visitor is a Coil Member
+* When monetization is enabled, you get paid when Coil members visit your content
+* When monetization is disabled, you don't get paid when people visit that content, even if they are Coil members
 
-The plugin is supported with the Classic and Block/Gutenberg editors. Monetization can be assigned globally to pages and posts, to individual pages and posts, and to tags and categories. If you're using the Gutenberg editor, you can choose to monetize at the block level.
+When content is monetized it can:
+* Remain visible to everyone (default) - Allow all visitors to see the content, get paid when your visitor is a Coil member
+* Be made exclusive - Only allow Coil members to see the content and get paid when they do. People who are not Coil members will see a paywall instead. Use the Coil Exclusive Content Divider to specify exactly how much content on a single post should be public and from what point it should become exclusive.
+
+The plugin is supported with the Block/Gutenberg editor. Monetization and visibility settings can be assigned globally to post types, to individual pages and posts, and to tags and categories.
 
 == Frequently Asked Questions ==
 
 = How do I start using the Coil Web Monetization plugin? =
 
-Simply install the plugin. Once activated, you must enter your payment pointer in the plugin's 'Global Settings' tab.
+Simply install the plugin. Once activated, you must enter your payment pointer in the plugin's 'General Settings' tab. The defaults will monetize your content while keeping it visible for everyone to see.
+If your exclusive content is displaying incorrectly, check your CSS selector. There is a button in the Exclusive Content tab that will attempt to detect your CSS selector automatically for you.
+
+= What's a payment pointer? =
+
+A payment pointer is like an email address for your digital wallet. It's how we know where to stream your payments. Your payment pointer is assigned to you by your ILP wallet provider.
 
 = What's an ILP-enabled digital wallet? =
 
 The Interledger Protocol (ILP) is an open protocol that Coil uses to stream payments. A digital wallet provider must support this protocol to receive payments from us. For more information about supported digital wallets, see [Digital Wallets](https://webmonetization.org/docs/ilp-wallets).
-
-= What's a payment pointer? =
-
-A payment pointer is like an email address for your digital wallet. It's how we know where to stream your payments. Your payment pointer is assigned to you by your wallet provider.
 
 = Do I have to sign up for a Coil membership? =
 
@@ -73,7 +77,7 @@ Yes! Translations can be contributed at [translate.wordpress.org](https://transl
 
 = Where can I ask for help? =
 
-If you get stuck, check out our [help center](https://help.coil.com/for-creators/wordpress-plugin) or post a question to the [Coil Web Monetization support forum](https://wordpress.org/support/plugin/coil-web-monetization/).
+If you get stuck, check out our [help center](https://help.coil.com/docs/monetize/content/wp-overview/) or post a question to the [Coil Web Monetization support forum](https://wordpress.org/support/plugin/coil-web-monetization/).
 
 == Screenshots ==
 
@@ -83,9 +87,45 @@ If you get stuck, check out our [help center](https://help.coil.com/for-creators
 
 == Changelog ==
 
-= v1.7.0 =
+= v2.0.0 =
 
-First release.
+= 18 May 2022 =
+
+* Enhancement - Coil’s new Exclusive Content Divider (ECD) Block has been added to the editor to indicate the start of exclusive content. When placed in a post, all content above the ECD will be visible to everyone and all content below it will be exclusive to Coil members. Type /Coil, and select the ECD from the Block Inserter menu.
+* Enhancement - The ECD replaces the Split Content functionality. If you previously used Split Content, upgrading to v2.0.0 will cause the ECD to be inserted before the first exclusive block on each applicable post.
+* Enhancement - We’ve added a button that can automatically detect your theme’s CSS selectors for you.
+* Enhancement - Web Monetization and content visibility settings have been separated, making it easier to manage either setting.
+* Enhancement - All exclusive content settings are now in the Exclusive Content tab, where you can enable or disable exclusive content globally.
+* Enhancement - The paywall that appears for visitors without a Coil membership can now be managed and customized in the Exclusive Content tab. Customizations can be seen with a live preview.
+* Enhancement - Encourage your audience to support you through Coil by adding the Coil-branded streaming support widget to selected post types. With this customizable, dismissable widget, paying Coil members will be thanked for their contribution, while non-paying viewers will be prompted to become Coil members to support your amazing content.
+* Enhancement - We’ve added more customization options for the icon that appears next to an exclusive post’s title. Choose from four icons, including the padlock, and select to place the icon before or after the post’s title. 
+
+* Tweak - The padlock icon no longer appears next to post titles in menus.
+* Tweak - When excerpts are enabled for exclusive posts they will be visible during the pending phase (while the monetization state is being determined) so that users can start reading immediately.
+* Tweak - The user-facing message that appears while the browser determines a visitor’s Coil membership status can no longer be customized.
+* Tweak - The CSS selector default has been adjusted to support the new Twenty Twenty-Two theme.
+* Tweak - We no longer support the Classic Editor.
+
+= v1.9.0 =
+
+= 15 July 2021 =
+
+* Fix - Fixed embedded videos that were set to Coil members Only so that they now display correctly once monetization has begun.
+* Fix - The Coil Promotion Bar message no longer displays for Coil members.
+
+* Enhancement - The Coil settings panel's first tab is now the Global Settings tab where the payment pointers and CSS selectors are saved.
+* Enhancement - A sidebar has been added throughout the settings panel with help, FAQ and documentation links.
+* Enhancement - All customization features have been consolidated into the Coil settings panel (including message, button text and link, and padlock and Coil Promotion Bar display customization).
+* Enhancement - The wording explaining message customizations has been simplified for easier reading.
+* Enhancement - The wording describing monetization settings has been adjusted. The new description distinguishes between monetization being enabled or disabled. If it is enabled users can select who the content is visible to: everyone (previously Monetized and Public), Coil members only or split.
+* Enhancement - When creating posts / pages the monetization options have been made easier to understand. A simple Enabled / Disabled selector has been added with extra options for fine tuning the monetization level.
+* Enhancement - When creating posts / pages the default monetization setting is listed next to "Default" so there is no need to remember what it was set to.
+* Enhancement - The new default monetization setting for pages and posts is now enabled and visible to everyone instead of having monetization disabled by default.
+
+* Tweak - Certain messages have been deprecated. These include the fully and partially gated excerpt messages, as well as the unable to verify message which has been merged with the unsupported message.
+* Tweak - Code has been linted.
+* Tweak - Eslint is the new linting tool being used instead of JSHint.
+* Tweak - The Grunt watch task now also includes minifying the relevant CSS files as well to reflect SCSS changes made in real time during development.
 
 = v1.8.0 =
 
@@ -107,23 +147,6 @@ First release.
 
 * Security - Added extra checks on the Theme Options partial loader logic.
 
-= v1.9.0 =
+= v1.7.0 =
 
-= 15 July 2021 =
-
-* Fix - Fixed embedded videos that were set to Coil members Only so that they now display correctly once monetization has begun.
-* Fix - The Coil Promotion Bar message no longer displays for Coil members.
-
-* Enhancement - The Coil settings panel's first tab is now the Global Settings tab where the payment pointers and CSS selectors are saved.
-* Enhancement - A sidebar has been added throughout the settings panel with help, FAQ and documentation links.
-* Enhancement - All customization features have been consolidated into the Coil settings panel (including message, button text and link, and padlock and Coil Promotion Bar display customization).
-* Enhancement - The wording explaining message customizations has been simplified for easier reading.
-* Enhancement - The wording describing monetization settings has been adjusted. The new description distinguishes between monetization being enabled or disabled. If it is enabled users can select who the content is visible to: everyone (previously Monetized and Public), Coil members only or split.
-* Enhancement - When creating posts / pages the monetization options have been made easier to understand. A simple Enabled / Disabled selector has been added with extra options for fine tuning the monetization level.
-* Enhancement - When creating posts / pgaes the default monetization setting is listed next to "Default" so there is no need to remember what it was set to.
-* Enhancement - The new default monetization setting for pages and posts is now enabled and visible to everyone instead of having monetization disabled by default.
-
-* Tweak - Certain messages have been deprecated. These include the fully and partially gated excerpt messages, as well as the unable to verify message which has been merged with the unsupported message.
-* Tweak - Code has been linted.
-* Tweak - Eslint is the new linting tool being used instead of JSHint.
-* Tweak - The Grunt watch task now also includes minifying the relevant CSS files as well to reflect SCSS changes made in real time during development.
+First release.

@@ -1,0 +1,17 @@
+// Monetization has not started and the divider is present
+body.coil-extension-not-found.coil-monetized.coil-exclusive.coil-divider:not( .coil-public ),
+body.monetization-not-initialized.coil-monetized.coil-exclusive.coil-divider:not( .coil-public ) {
+
+	.content-area .entry-content .coil-restricted-content,
+	main .entry-content .coil-restricted-content,
+	#main #content .entry-content .coil-restricted-content,
+	.site-content #content .entry-content .coil-restricted-content,
+	.site-content .entry-content .coil-restricted-content,
+	.site-main #content .entry-content .coil-restricted-content,
+	.site-main .entry-content .coil-restricted-content,
+	.site-content #primary .site-main .entry-content .coil-restricted-content,
+	#site-content .post-inner .entry-content .coil-restricted-content {
+		display: none;
+	}
+
+}

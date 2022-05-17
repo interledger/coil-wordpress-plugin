@@ -3,10 +3,10 @@
  * Plugin Name: Coil Web Monetization
  * Plugin URI: https://wordpress.org/plugins/coil-web-monetization/
  * Description: Coil offers an effortless way to share WordPress content online, and get paid for it.
- * Requires PHP: 7.2
+ * Requires PHP: 7.2+
  * Author: Coil
  * Author URI: https://coil.com
- * Version: 1.9.0
+ * Version: 2.0.0
  * License: Apache-2.0
  * License URI: http://www.apache.org/licenses/LICENSE-2.0.txt
  * Text Domain: coil-web-monetization
