@@ -8,7 +8,6 @@ namespace Coil\Admin;
 
 use Coil;
 use Coil\Gating;
-use const Coil\COIL__FILE__;
 use const Coil\PLUGIN_VERSION;
 
 /**
@@ -241,57 +240,6 @@ function load_admin_assets() : void {
 
 	// Enqueue localized script.
 	wp_enqueue_script( 'coil_admin_notices' );
-}
-
-/**
- * Adds a Coil Web Monetization section to the Customizer that redirects users from the customizer
- * (where these customization settings were found previously)
- * to the Coil Settings panel.
- *
- * @param \WP_Customize_Manager $wp_customize WordPress Customizer object.
- * @return void
- */
-function add_redirect_customizer_section( $wp_customize ) : void {
-
-	// Message and Monetization customization options relocation section.
-	$redirect_section = 'coil_customizer_section';
-
-	$wp_customize->add_section(
-		$redirect_section,
-		[
-			'title'      => __( 'Coil Web Monetization', 'coil-web-monetization' ),
-			'capability' => apply_filters( 'coil_settings_capability', 'manage_options' ),
-		]
-	);
-
-	$redirect_setting_id = 'customization-redirect-id';
-
-	$wp_customize->add_setting(
-		$redirect_setting_id,
-		[
-			'capability' => apply_filters( 'coil_settings_capability', 'manage_options' ),
-			'default'    => true,
-		]
-	);
-
-	$description  = '<p>' . sprintf(
-		__( 'Message customization and post visibility settings have moved to the ', 'coil-web-monetization' ) . '<a href="%s">' . __( 'Exclusive Content tab', 'coil-web-monetization' ) . '</a>' . '.',
-		esc_url( admin_url( 'admin.php?page=coil_settings&tab=exclusive_settings', COIL__FILE__ ) )
-	) . '</p>';
-	$description .= '<p>' . sprintf(
-		__( 'Monetization options have been moved to the ', 'coil-web-monetization' ) . '<a href="%s">' . __( 'General Settings tab', 'coil-web-monetization' ) . '</a>' . '.',
-		esc_url( admin_url( 'admin.php?page=coil_settings&tab=general_settings', COIL__FILE__ ) )
-	) . '</p>';
-
-	$wp_customize->add_control(
-		$redirect_setting_id,
-		[
-			'type'        => 'hidden',
-			'section'     => $redirect_section,
-			'label'       => __( 'Customization options have all been moved to the Coil settings panel.', 'coil-web-monetization' ),
-			'description' => $description,
-		]
-	);
 }
 
 /**
