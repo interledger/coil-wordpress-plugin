@@ -74,9 +74,9 @@
 			inputElement.css( 'border-color', red );
 			if ( invalidMsgElement === null ) {
 				inputElement.after( '<p class="invalid-input" style="color: ' + red + '">' + msg + '</p>' );
-				const position = inputElement.prev().position();
+				const position = inputElement.prev() !== null ? inputElement.prev().position() : null;
 				let top;
-				if ( position !== undefined ) {
+				if ( position !== undefined && position !== null ) {
 					top = position.top;
 				} else {
 					top = 0;
@@ -96,7 +96,7 @@
 	// Adds or removes alerting functionality for invalid streaming support widget margin input that is detected when focus leaves the field.
 	function marginFocusOutValidityHandler( marginInputElement ) {
 		const validMargin = /(^(-)?[0-9]+((p)|(px)|(P)|(PX))?$)/,
-			nextElement = marginInputElement.next().next(), // checking element below the description
+			nextElement = marginInputElement.next() !== null ? marginInputElement.next().next() : null, // checking element below the description
 			screen = $( document ).scrollTop();
 		const validCondition = validMargin.test( marginInputElement.val() ) || marginInputElement.val() === '';
 		let invalidMsgElement = null;
@@ -153,7 +153,7 @@
 
 	// Adds or removes alerting functionality for invalid margin inputs that are detected during changes to an input field.
 	function marginInputValidityHandler( inputElement ) {
-		const nextElement = inputElement.next().next(), // checking element below the description
+		const nextElement = inputElement.next() !== null ? inputElement.next().next() : null, // checking element below the description
 			onlyWhiteSpace = /^\s+$/,
 			validMarginValue = /(^(-)?[0-9]+((p)|(px)|(P)|(PX))?$)/,
 			whiteSpaceValidCondition = ! onlyWhiteSpace.test( inputElement.val() ),
@@ -230,6 +230,13 @@
 		} else {
 			$( '.set-site-logo-description' ).hide();
 		}
+
+		const brandingLogo = $( '.no_logo, .site_logo, .coil_logo' );
+		if ( brandingLogo.attr( 'src' ) === '' ) {
+			brandingLogo.hide();
+		} else {
+			brandingLogo.show();
+		}
 	}
 
 	// Streaming support widget tab
@@ -291,7 +298,7 @@
 	$( document ).on( 'focusout', '#coil_payment_pointer', function() {
 		const paymentPointer = $( '#coil_payment_pointer' ),
 			pattern = /^(https:\/\/.)|^[\$]./,
-			validityCondition = pattern.test( $( this ).val() );
+			validityCondition = pattern.test( $( this ).val() ) || $( this ).val().length === 0;
 		focusOutValidityHandler( paymentPointer, validityCondition, invalidPaymentPointerMsg );
 	} );
 
@@ -407,11 +414,12 @@
 			}
 		} else if ( logoSetting === 'site_logo' ) {
 			logoSrc = siteLogoUrl;
-			if ( logoSrc === '' ) {
-				$( '.site_logo' ).hide();
-			} else {
-				$( '.site_logo' ).show();
-			}
+		}
+
+		if ( logoSrc === '' ) {
+			$( '.' + logoSetting ).hide();
+		} else {
+			$( '.' + logoSetting ).show();
 		}
 
 		$( '.coil-paywall-image' ).attr( 'src', logoSrc );
@@ -583,5 +591,47 @@
 
 	$( document ).on( 'focusout', '#streaming_widget_left_margin', function() {
 		marginFocusOutValidityHandler( $( '#streaming_widget_left_margin' ) );
+	} );
+
+	$( document ).on( 'click', '#css_selector_button', function( e ) {
+		e.preventDefault();
+
+		$.get(
+			coilAdminParams.latest_post + '&coil-get-css-selector=1',
+			function( data ) {
+				const postContent = $( data ).find( '#coil-content' ),
+					postContainer = postContent.length > 0 ? postContent.parent() : false,
+					cssSelectorArray = [];
+
+				// If a post container is found then continue to find it's parents
+				if ( postContainer !== false && postContainer.length > 0 ) {
+					let postWrapper = postContainer.parent();
+					// Search for the nearest tag that's not a div, this will likely be <main> or <article>
+					while ( postWrapper.length !== 0 && 'DIV' === postWrapper.prop( 'tagName' ) ) {
+						postWrapper = postWrapper.parent();
+					}
+
+					// Once we've gotten the tag name add it to the selector array
+					if ( postWrapper.length !== 0 && 'DIV' !== postWrapper.prop( 'tagName' ) ) {
+						cssSelectorArray.push( postWrapper.prop( 'tagName' ).toLowerCase() );
+					}
+
+					const containerClassList = postContainer.prop( 'classList' );
+					if ( postContainer.hasClass( 'entry-content' ) ) {
+						cssSelectorArray.push( '.entry-content' );
+					} else {
+						cssSelectorArray.push( '.' + containerClassList[ 0 ] );
+					}
+
+					const cssSelectorString = cssSelectorArray.join( ' ' );
+
+					if ( confirm( 'Would you like to set your CSS selector to ' + cssSelectorString + '?' ) ) { //eslint-disable-line
+						$( '#coil_content_container' ).val( cssSelectorString );
+					}
+				} else {
+					alert( "We could not find any containers to use, you'll need to enter in your CSS Selector manually." ); //eslint-disable-line
+				}
+			},
+		);
 	} );
 }( jQuery ) );

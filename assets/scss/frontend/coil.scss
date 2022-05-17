@@ -18,28 +18,9 @@ body.monetization-not-initialized.coil-exclusive:not( .coil-divider ) {
 
 }
 
-// Monetization has not started and the divider is present
-body.monetization-not-initialized.coil-divider:not( .coil-monetized.coil-public ):not( .coil-hide-excerpt ),
-body.coil-extension-not-found.coil-exclusive.coil-divider,
-body.monetization-not-initialized.coil-exclusive.coil-divider {
-
-	.content-area .entry-content .coil-restricted-content,
-	main .entry-content .coil-restricted-content,
-	#main #content .entry-content .coil-restricted-content,
-	.site-content #content .entry-content .coil-restricted-content,
-	.site-content .entry-content .coil-restricted-content,
-	.site-main #content .entry-content .coil-restricted-content,
-	.site-main .entry-content .coil-restricted-content,
-	.site-content #primary .site-main .entry-content .coil-restricted-content,
-	#site-content .post-inner .entry-content .coil-restricted-content {
-		display: none;
-	}
-
-}
-
 // If the reader is not viewing a single post/page then hide monetized content.
 body:not( .single ):not( .page ) {
-	.coil-show-monetize-users {
+	.coil-restricted-content {
 		display: none;
 	}
 }
