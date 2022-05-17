@@ -154,20 +154,20 @@ function register_admin_content_settings() {
 		'coil_enable_streaming_widget_section'
 	);
 
-	// ==== Streaming Support Widget Settings
-	add_settings_section(
-		'streaming_widget_settings_section',
-		false,
-		__NAMESPACE__ . '\coil_settings_streaming_widget_settings_render_callback',
-		'streaming_widget_settings_section'
-	);
-
 	// ==== Streaming Support Widget Visibility
 	add_settings_section(
 		'streaming_widget_visibility_section',
 		false,
 		__NAMESPACE__ . '\coil_settings_streaming_widget_visibility_render_callback',
 		'streaming_widget_visibility_section'
+	);
+
+	// ==== Streaming Support Widget Settings
+	add_settings_section(
+		'streaming_widget_settings_section',
+		false,
+		__NAMESPACE__ . '\coil_settings_streaming_widget_settings_render_callback',
+		'streaming_widget_settings_section'
 	);
 }
 
@@ -1217,6 +1217,36 @@ function coil_settings_enable_streaming_widget_toggle_render_callback() {
 }
 
 /**
+ * Renders the streaming support widget visibility settings
+ * @return void
+*/
+function coil_settings_streaming_widget_visibility_render_callback() {
+	?>
+	<div class="tab-styling streaming-widget-section">
+		<?php
+		Rendering\render_settings_section_heading(
+			__( 'Visibility', 'coil-web-monetization' ),
+			__( 'Select whether to show or hide the widget on specific post types.', 'coil-web-monetization' )
+		);
+
+		// Using a function to generate the table with the post type excerpt checkboxes.
+		$columns = [
+			'show' => 'Show',
+			'hide' => 'Hide',
+		];
+		Rendering\render_generic_post_type_table(
+			'streaming_widget_settings_group',
+			$columns,
+			'radio',
+			'streaming_widget_visibility',
+			Admin\get_streaming_widget_settings()
+		);
+		?>
+	</div>
+	<?php
+}
+
+/**
  * Renders the streaming support widget customization settings
  * @return void
 */
@@ -1477,36 +1507,6 @@ function render_streaming_widget_margin_settings() {
 }
 
 /**
- * Renders the streaming support widget visibility settings
- * @return void
-*/
-function coil_settings_streaming_widget_visibility_render_callback() {
-	?>
-	<div class="tab-styling streaming-widget-section">
-		<?php
-		Rendering\render_settings_section_heading(
-			__( 'Visibility', 'coil-web-monetization' ),
-			__( 'Select whether to show or hide the widget on specific post types.', 'coil-web-monetization' )
-		);
-
-		// Using a function to generate the table with the post type excerpt checkboxes.
-		$columns = [
-			'show' => 'Show',
-			'hide' => 'Hide',
-		];
-		Rendering\render_generic_post_type_table(
-			'streaming_widget_settings_group',
-			$columns,
-			'radio',
-			'streaming_widget_visibility',
-			Admin\get_streaming_widget_settings()
-		);
-		?>
-	</div>
-	<?php
-}
-
-/**
  * Creates dismissable welcome notice on coil admin screen
  * @return void
 */
@@ -1686,8 +1686,8 @@ function render_coil_settings_screen() : void {
 					echo '<div class="settings-main">';
 					settings_fields( 'streaming_widget_settings_group' );
 					do_settings_sections( 'coil_enable_streaming_widget_section' );
-					do_settings_sections( 'streaming_widget_settings_section' );
 					do_settings_sections( 'streaming_widget_visibility_section' );
+					do_settings_sections( 'streaming_widget_settings_section' );
 					submit_button();
 					echo '</div>';
 					break;
