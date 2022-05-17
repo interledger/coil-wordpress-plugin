@@ -110,7 +110,7 @@ If you get stuck, check out our [help center](https://help.coil.com/docs/monetiz
 
 = 15 July 2021 =
 
-* Fix - Fixed embedded videos that were set to Coil members Only so that they now display correctly once monetization has begun.
+* Fix - Fixed embedded videos that were set to Coil Members Only so that they now display correctly once monetization has begun.
 * Fix - The Coil Promotion Bar message no longer displays for Coil members.
 
 * Enhancement - The Coil settings panel's first tab is now the Global Settings tab where the payment pointers and CSS selectors are saved.
