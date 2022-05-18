@@ -1,86 +1,17 @@
-// Monetization not initialized.
-body.monetization-not-initialized:not( .coil-no-gating ) {
+// Monetization has not started and the divider is present
+body.coil-extension-not-found.coil-monetized.coil-exclusive.coil-divider:not( .coil-public ),
+body.monetization-not-initialized.coil-monetized.coil-exclusive.coil-divider:not( .coil-public ) {
 
-	*.coil-show-monetize-users {
-		display: block;
-		position: relative;
-
-		&::before {
-			bottom: 0;
-			content: ' ';
-			left: 0;
-			position: absolute;
-			right: 0;
-			top: 0;
-			z-index: 1;
-		}
-
-		&::after {
-			align-items: center;
-			background: #fff;
-			bottom: 0;
-			color: #000;
-			content: ' ';
-			cursor: pointer;
-			display: flex;
-			height: inherit;
-			justify-content: center;
-			left: 0;
-			opacity: 0.8;
-			position: absolute;
-			right: 0;
-			text-align: center;
-			text-transform: uppercase;
-			top: 0;
-			white-space: nowrap;
-			width: inherit;
-			z-index: 100;
-		}
-	}
-}
-
-// Monetization initialized.
-body.monetization-initialized:not( .coil-no-gating ) {
-	*.coil-hide-monetize-users {
-		display: none;
-	}
-}
-
-// Coil Browser Extension not found or...
-// Coil Payment Pointer ID not found.
-// Only content that is set to show for all will show.
-body.coil-extension-not-found:not( .coil-no-gating ),
-body.coil-missing-id:not( .coil-no-gating ),
-body.monetization-not-initialized.coil-gate-tagged-blocks:not( .coil-no-gating ) {
-
-	*.coil-hide-monetize-users {
+	.content-area .entry-content .coil-restricted-content,
+	main .entry-content .coil-restricted-content,
+	#main #content .entry-content .coil-restricted-content,
+	.site-content #content .entry-content .coil-restricted-content,
+	.site-content .entry-content .coil-restricted-content,
+	.site-main #content .entry-content .coil-restricted-content,
+	.site-main .entry-content .coil-restricted-content,
+	.site-content #primary .site-main .entry-content .coil-restricted-content,
+	#site-content .post-inner .entry-content .coil-restricted-content {
 		display: none;
 	}
 
-	*.coil-show-monetize-users {
-		padding: 50px;
-		position: relative;
-		&::after {
-			align-items: center;
-			background: none;
-			bottom: 0;
-			color: #fff;
-			content: ' ';
-			display: flex;
-			font-family: 'Open Sans', sans-serif;
-			font-size: 18px;
-			height: inherit;
-			justify-content: center;
-			left: 0;
-			line-height: 27px;
-			overflow-y: auto;
-			position: absolute;
-			right: 0;
-			text-align: center;
-			top: 0;
-			white-space: nowrap;
-			width: inherit;
-			z-index: 100;
-		}
-	}
 }

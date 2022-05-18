@@ -1,8 +1,3 @@
-/**
- * External Dependencies
- */
-import classnames from 'classnames';
-
 // Editor and Frontend Styles
 import './styles/editor.scss';
 import './styles/style.scss';
@@ -11,401 +6,105 @@ import './styles/style.scss';
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { addFilter } = wp.hooks;
-const { Fragment } = wp.element;
-const { InspectorControls } = wp.blockEditor || wp.editor; // wp.editor for WP < 5.2.
 const { withSelect, withDispatch } = wp.data;
-const { createHigherOrderComponent } = wp.compose;
-const { PanelBody, RadioControl, SelectControl } = wp.components;
+const { RadioControl, SelectControl } = wp.components;
 const { registerPlugin } = wp.plugins;
 const { PluginDocumentSettingPanel } = wp.editPost; // WP >= 5.3.
 
-// // Allow only specific blocks to use the extension attribute. - Disabled for now!
-// const allowedBlocks = [
-// 	'core/paragraph',
-// 	'core/heading',
-// 	'core/image',
-// 	'core/gallery',
-// 	'core/verse',
-// 	'core/spacer',
-// 	'core/subhead',
-// 	'core/preformatted',
-// 	'core/code',
-// 	'core/cover',
-// 	'core/group',
-// 	'core/columns',
-// 	'core/media-text',
-// 	'core/pullquote',
-// 	'core/quote',
-// 	'core/button',
-// 	'core/list',
-// 	'core/separator',
-// 	'core/text-columns',
-// 	'core/video',
-// 	'core/audio',
-// 	'core-embed',
-// 	'core-embed/youtube',
-// 	'core-embed/twitter',
-// 	'core-embed/facebook',
-// 	'core-embed/instagram',
-// 	'core-embed/wordpress',
-// 	'core-embed/soundcloud',
-// 	'core-embed/spotify',
-// 	'core-embed/flickr',
-// 	'core-embed/vimeo',
-// 	'core-embed/animoto',
-// 	'core-embed/cloudup',
-// 	'core-embed/collegehumor',
-// 	'core-embed/crowdsignal',
-// 	'core-embed/dailymotion',
-// 	'core-embed/hulu',
-// 	'core-embed/imgur',
-// 	'core-embed/issuu',
-// 	'core-embed/kickstarter',
-// 	'core-embed/meetup-com',
-// 	'core-embed/mixcloud',
-// 	'core-embed/reddit',
-// 	'core-embed/reverbnation',
-// 	'core-embed/screencast',
-// 	'core-embed/scribd',
-// 	'core-embed/slideshare',
-// 	'core-embed/smugmug',
-// 	'core-embed/speaker-deck',
-// 	'core-embed/ted',
-// 	'core-embed/tumblr',
-// 	'core-embed/videopress',
-// 	'core-embed/wordpress-tv',
-// 	'core-embed/amazon-kindle',
-// ];
-
-// // Restrict the blocks the extension attribute can not be applied to. - Disabled for now!
-// const restrictedBlocks = [
-// 	'core/block',
-// 	'core/freeform',
-// 	'core/shortcode',
-// 	'core/template',
-// 	'core/nextpage',
-// ];
-
-// - Disabled for now!
-// /**
-//  * Is the block allowed to support monetization.
-//  *
-//  * @param {string} name The name of the block.
-//  */
-// function allowedBlockTypes( name ) {
-// 	return allowedBlocks.includes( name );
-// }
-
-// - Disabled for now!
-// /**
-//  * Is the block not allowed to support monetization.
-//  *
-//  * @param {string} name The name of the block.
-//  */
-// function restrictedBlockTypes( name ) {
-// 	return restrictedBlocks.includes( name );
-// }
-
-/**
-/**
- * Adds our attributes for our monetization data and restrict to allowed blocks.
- *
- * @param  {Object} settings Settings for the block.
- * @return {Object} settings Modified settings.
- */
-function addAttributes( settings ) {
-	// If this block is not allowed to use the extension attribute then move on to the next. - Disabled for now!
-	/*if ( ! restrictedBlockTypes( settings.name ) ) {
-		return settings;
-	}*/
-
-	// Check if this block is allowed to use the extension attribute. - Disabled for now!
-	/*if ( ! allowedBlockTypes( settings.name ) ) {
-		return settings;
-	}*/
-
-	// Check if object exists for old Gutenberg version compatibility.
-	// Set default to "always-show" for all currently added blocks and new blocks added.
-	if ( typeof settings.attributes !== 'undefined' ) {
-		settings.attributes = Object.assign( settings.attributes, {
-			monetizeBlockDisplay: {
-				type: 'string',
-				default: 'always-show',
-			},
-		} );
-	}
-
-	return settings;
-}
-
-/**
- * Override the default edit UI to include a new block inspector control for
- * assigning monetization, if the block supports it.
- *
- * @param  {function|Component} BlockEdit Original component.
- * @return {string} Wrapped component.
- */
-const monetizeBlockControls = createHigherOrderComponent( ( BlockEdit ) => {
-	return ( props ) => {
-		let showInspector = false;
-
-		const {
-			// name, - Disabled for now!
-			attributes,
-			setAttributes,
-			isSelected,
-		} = props;
-
-		const {
-			monetizeBlockDisplay,
-		} = attributes;
-
-		// Fetch the post meta.
-		const meta = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' );
-
-		// If the block is not supported then don't show the inspector.
-		/*if ( ! allowedBlockTypes( props.name ) || ! restrictedBlockTypes( props.name ) || ! props.isSelected ) {
-			return <BlockEdit { ...props } />;
-		}*/
-
-		// Only show inspector options if set for block level monetization.
-		showInspector = false;
-		if ( typeof meta !== 'undefined' ) {
-			if ( typeof meta._coil_monetize_post_status === 'undefined' || ( typeof meta._coil_monetize_post_status !== 'undefined' && meta._coil_monetize_post_status === 'gate-tagged-blocks' ) ) {
-				showInspector = true;
+// Post monetization and visibility meta fields
+const PostMetaFields = withDispatch( ( dispatch, props ) => {
+	return {
+		// Updates the visibility meta value when a visibility radio button is selected.
+		updateVisibilityMetaValue: ( value ) => {
+			dispatch( 'core/editor' ).editPost( {
+				meta: {
+					[ props.visibilityMetaFieldName ]: value,
+				},
+			} );
+		},
+		// Updates the monetization and visibility meta values when an option is selected from the monetization dropdown menu.
+		// When the monetization status is selected the visibility status must remain compatible.
+		// When monetization is disabled visibility must be public.
+		// When monetization is default, visibility must also be on default (radio buttons should not appear).
+		// If Enabled is selected, then visibility will be default until that is overwritten by the radio button selection.
+		updateMetaValues: ( value ) => {
+			let visibility = 'public';
+			if ( value === 'default' ) {
+				visibility = 'default';
+			} else if ( value === 'monetized' ) {
+				visibility = coilEditorParams.visibilityDefault; // eslint-disable-line no-undef
 			}
-		}
-
-		return (
-			<Fragment>
-				<BlockEdit { ...props } />
-				{ isSelected && showInspector &&
-					<InspectorControls>
-						<PanelBody
-							title={ __( 'Coil Web Monetization' ) }
-							initialOpen={ false }
-							className="coil-panel"
-						>
-							<RadioControl
-								label={ __( 'Set the block\'s visibility.', 'coil-web-monetization' ) }
-								selected={ monetizeBlockDisplay }
-								options={
-									[
-										{
-											label: __( 'Always Show' ),
-											value: 'always-show',
-										},
-										{
-											label: __( 'Only Show Coil Members' ),
-											value: 'show-monetize-users',
-										},
-										{
-											label: __( 'Hide For Coil Members' ),
-											value: 'hide-monetize-users',
-										},
-									]
-								}
-								onChange={ ( value ) => setAttributes( { monetizeBlockDisplay: value } ) }
-							/>
-
-						</PanelBody>
-					</InspectorControls>
-				}
-			</Fragment>
-		);
+			dispatch( 'core/editor' ).editPost( {
+				meta: {
+					[ props.monetizationMetaFieldName ]: value,
+					[ props.visibilityMetaFieldName ]: visibility,
+				},
+			} );
+		},
 	};
-}, 'monetizeBlockControls' );
+} )(
+	withSelect( ( select, props ) => {
+		const meta = select( 'core/editor' ).getEditedPostAttribute( 'meta' );
+		let defaultLabel = __( 'Enabled & Public' );
 
-/**
- * Add custom element class in save element.
- *
- * @param  {Object} extraProps Additional props applied to save element.
- * @param  {Object} blockType  Block type.
- * @param  {Object} attributes Current block attributes.
- * @return {Object} extraProps Filtered props applied to save element.
- */
-function applyExtraClass( extraProps, blockType, attributes ) {
-	const {
-		monetizeBlockDisplay,
-	} = attributes;
-
-	// If this block is not allowed to use the extension attribute then move on to the next. - Disabled for now!
-	/*if ( ! restrictedBlockTypes( blockType.name ) ) {
-		return extraProps;
-	}*/
-
-	// Check if this block is allowed to use the extension attribute. - Disabled for now!
-	/*if ( ! allowedBlockTypes( blockType.name ) ) {
-		return extraProps;
-	}*/
-
-	// Check if object exists for old Gutenberg version compatibility.
-	// Add class only when monetizeBlockDisplay is set and is not always show.
-	if ( typeof monetizeBlockDisplay !== 'undefined' && monetizeBlockDisplay !== 'always-show' ) {
-		extraProps.className = classnames( extraProps.className, 'coil-' + monetizeBlockDisplay );
-	}
-
-	return extraProps;
-}
-
-/**
- * Adds a wrapper class around the block in the editor to identify the monetization status.
- */
-const wrapperClass = createHigherOrderComponent( ( BlockListBlock ) => {
-	return ( props ) => {
-		let wrapperProps = props.wrapperProps;
-		let customData = {};
-		let allowBlockIdentity = false; // Note: Boolean value is in reverse.
-
-		const {
-			attributes,
-		} = props;
-
-		const {
-			monetizeBlockDisplay,
-		} = attributes;
-
-		// Fetch the post meta.
-		const meta = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' );
-
-		if ( ! meta || typeof meta._coil_monetize_post_status === 'undefined' || ( typeof meta._coil_monetize_post_status !== 'undefined' && meta._coil_monetize_post_status === 'gate-tagged-blocks' ) ) {
-			allowBlockIdentity = true;
-		} else {
-			allowBlockIdentity = false;
+		if ( 'not-monetized' === coilEditorParams.monetizationDefault ) { // eslint-disable-line no-undef
+			defaultLabel = __( 'Disabled' );
+		} else if ( 'exclusive' === coilEditorParams.visibilityDefault ) { // eslint-disable-line no-undef
+			defaultLabel = __( 'Enabled & Exclusive' );
 		}
 
-		customData = Object.assign( customData, {
-			'data-coil-is-monetized': 1,
-		} );
-
-		wrapperProps = {
-			...wrapperProps,
-			...customData,
+		return {
+			[ props.monetizationMetaFieldName ]: meta && meta._coil_monetization_post_status,
+			[ props.visibilityMetaFieldName ]: meta && meta._coil_visibility_post_status,
+			defaultLabel: defaultLabel,
 		};
-
-		// Apply custom block wrapper class if monetization is set at the document level and block level.
-		if ( typeof monetizeBlockDisplay !== 'undefined' && monetizeBlockDisplay !== 'always-show' && allowBlockIdentity ) {
-			return <BlockListBlock { ...props } className={ 'coil-' + monetizeBlockDisplay } wrapperProps={ wrapperProps } />;
-		}
-		return <BlockListBlock { ...props } />;
-	};
-}, 'wrapperClass' );
-
-// Add filters
-addFilter(
-	'blocks.registerBlockType',
-	'coil/addAttributes',
-	addAttributes
-);
-
-addFilter(
-	'editor.BlockEdit',
-	'coil/monetizeBlockControls',
-	monetizeBlockControls
-);
-
-addFilter(
-	'blocks.getSaveContent.extraProps',
-	'coil/applyExtraClass',
-	applyExtraClass
-);
-
-addFilter(
-	'editor.BlockListBlock',
-	'coil/wrapperClass',
-	wrapperClass
-);
-
-// Post Monetization Fields
-const PostMonetizationFields = withDispatch( ( dispatch, props ) => {
-	return {
-		updateMetaValue: ( value ) => {
-			dispatch( 'core/editor' ).editPost( {
-				meta: {
-					[ props.metaFieldName ]: value,
-				},
-			} );
-		},
-		updateSelectValue: ( value ) => {
-			// This the reverse of updateMetaValueOnSelect where we compare the value Selected and update the radio button values
-			if ( 'gate-all' === value || 'no-gating' === value || 'gate-tagged-blocks' === value ) {
-				return 'enabled';
-			} else if ( 'no' === value ) {
-				return 'disabled';
-			}
-			return 'default';
-		},
-		updateMetaValueOnSelect: ( value ) => {
-			let metaValue = 'no';
-
-			if ( 'enabled' === value ) {
-				metaValue = coilEditorParams.monetizationDefault === 'gate-all' ? 'gate-all' : 'no-gating'; // eslint-disable-line no-undef
-			} else if ( 'default' === value ) {
-				metaValue = 'default';
-			}
-
-			dispatch( 'core/editor' ).editPost( {
-				meta: {
-					[ props.metaFieldName ]: metaValue,
-				},
-			} );
-		},
-	};
-} )( withSelect( ( select, props ) => {
-	const meta = select( 'core/editor' ).getEditedPostAttribute( 'meta' );
-	let defaultLabel = __( 'Enabled & Exclusive' );
-
-	if ( 'no' === coilEditorParams.monetizationDefault ) { // eslint-disable-line no-undef
-		defaultLabel = __( 'Disabled' );
-	} else if ( 'no-gating' === coilEditorParams.monetizationDefault ) { // eslint-disable-line no-undef
-		defaultLabel = __( 'Enabled & Public' );
-	}
-	return {
-		[ props.metaFieldName ]: meta && meta._coil_monetize_post_status,
-		defaultLabel: defaultLabel,
-	};
-} )( ( props ) => (
-	<div>
+	} )( ( props ) => (
 		<div>
-			<SelectControl
-				label={ __( 'Select a monetization status', 'coil-web-monetization' ) }
-				value={ props.updateSelectValue( props[ props.metaFieldName ] ) }
-				onChange={ ( value ) => props.updateMetaValueOnSelect( value ) }
-				options={ [
-					{ value: 'default', label: 'Default (' + props.defaultLabel + ')' },
-					{ value: 'enabled', label: 'Enabled' },
-					{ value: 'disabled', label: 'Disabled' },
-				] }
-			/>
-		</div>
-		<div
-			className={ `coil-post-monetization-level ${ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : 'default' }` }
-		>
-			<RadioControl
-				label={ __( 'Who can access this content?', 'coil-web-monetization' ) }
-				selected={ props[ props.metaFieldName ] ? props[ props.metaFieldName ] : 'default' }
-				options={
-					[
+			<div>
+				<SelectControl
+					label={ __( 'Select a monetization status', 'coil-web-monetization' ) }
+					value={ props[ props.monetizationMetaFieldName ] ? props[ props.monetizationMetaFieldName ] : 'default' }
+					onChange={ ( value ) => props.updateMetaValues( value ) }
+					options={ [
+						{ value: 'default', label: 'Default (' + props.defaultLabel + ')' },
+						{ value: 'monetized', label: 'Enabled' },
+						{ value: 'not-monetized', label: 'Disabled' },
+					] }
+				/>
+			</div>
+			<div
+				className={ `
+					coil-post-monetization-level
+					${ props[ props.monetizationMetaFieldName ] ? props[ props.monetizationMetaFieldName ] : 'default' }
+					${ props[ props.visibilityMetaFieldName ] ? props[ props.visibilityMetaFieldName ] : '' }
+					${ 'exclusive-content-' + coilEditorParams.exclusiveContentStatus /* eslint-disable-line no-undef */ }
+				` }
+			>
+				<RadioControl
+					label={ __( 'Who can access this content?', 'coil-web-monetization' ) }
+					selected={
+						props[ props.visibilityMetaFieldName ] && props[ props.visibilityMetaFieldName ] !== 'default' ? props[ props.visibilityMetaFieldName ] : coilEditorParams.visibilityDefault // eslint-disable-line no-undef
+					}
+					options={ [
 						{
 							label: __( 'Everyone', 'coil-web-monetization' ),
-							value: 'no-gating',
+							value: 'public',
 						},
 						{
 							label: __( 'Coil Members Only', 'coil-web-monetization' ),
-							value: 'gate-all',
+							value: 'exclusive',
 						},
-						{
-							label: __( 'Split', 'coil-web-monetization' ),
-							value: 'gate-tagged-blocks',
-						},
-					]
-				}
-				onChange={ ( value ) => props.updateMetaValue( value ) }
-			/>
+					] }
+					onChange={ ( value ) => props.updateVisibilityMetaValue( value ) }
+				/>
+
+				<p className="coil-hint">
+					{ __( 'Exclusive Content is currently disabled, enable it under Coil > Exclusive Content.', 'coil-web-monetization' ) }
+				</p>
+			</div>
 		</div>
-	</div>
-) ) );
+	) ),
+);
 
 // WP >= 5.3 only - register the panel.
 if ( PluginDocumentSettingPanel ) {
@@ -418,7 +117,7 @@ if ( PluginDocumentSettingPanel ) {
 					initialOpen={ false }
 					className="coil-document-panel"
 				>
-					<PostMonetizationFields metaFieldName="_coil_monetize_post_status" />
+					<PostMetaFields monetizationMetaFieldName="_coil_monetization_post_status" visibilityMetaFieldName="_coil_visibility_post_status" />
 				</PluginDocumentSettingPanel>
 			);
 		},
