@@ -1095,7 +1095,7 @@ function coil_settings_css_selector_render_callback() {
 			'<p>%s (<a href="%s" target="_blank">%s</a>)</p>',
 			/* translators: 1) HTML link open tag, 2) HTML link close tag, 3) HTML link open tag, 4) HTML link close tag. */
 			esc_html__( 'This plugin uses CSS selectors to control exclusive content. Many themes use the plugin\'s default selectors. If your exclusive content is being incorrectly shown or hidden, there\'s a strong possibility your theme is using different selectors. Enter your theme\'s CSS selectors here.', 'coil-web-monetization' ),
-			esc_url( 'https://help.coil.com/docs/monetize/content/wp-exclusive-content#adjust-the-css-selectors-used-by-the-plugin-as-needed' ),
+			esc_url( 'https://help.coil.com/docs/monetize/content/wp-exclusive-content/#adjust-the-css-selectors-used-by-the-plugin-as-needed' ),
 			esc_html__( 'Learn more', 'coil-web-monetization' )
 		);
 
