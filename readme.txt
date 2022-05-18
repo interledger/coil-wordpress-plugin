@@ -87,6 +87,11 @@ If you get stuck, check out our [help center](https://help.coil.com/docs/monetiz
 
 == Changelog ==
 
+= What to expect when updating to version 2.0.0 =
+Please be aware that Split content is no longer supported. We're replacing Split content with the Exclusive Content Divider (ECD). If you had posts that were using Split content we will insert the ECD above the first instance of a block that is set to Coil Members Only. Everything above the ECD will be publicly visible and everything below it will be exclusive for Coil Members.
+There is no longer an option to hide content from Coil members.
+Please don’t hesitate to be in touch with us about the plugin or the new release. You can reach us on the [Coil Web Monetization support forum](https://wordpress.org/support/plugin/coil-web-monetization/).
+
 = v2.0.0 =
 
 = 18 May 2022 =
