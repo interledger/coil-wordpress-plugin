@@ -3,9 +3,13 @@
 }
 
 .coil {
-
 	&.plugin-header {
 		margin-bottom: 20px;
+	}
+
+	.notice.notice-success {
+		border-radius: 4px;
+		max-width: calc( 880px - 38px - 15px ); //Accounting for the default padding + margins
 	}
 
 	.container {
@@ -15,7 +19,6 @@
 		box-shadow: 0 2px 30px $shadow;
 		color: $black;
 		margin: 20px auto 80px;
-		max-width: 692px;
 		text-align: left;
 		width: calc(100% - 20px);
 
@@ -88,13 +91,23 @@
 	.coil-welcome-notice,
 	.coil-no-payment-pointer-notice {
 		align-items: center;
-		border-left-width: 1px; // Core notice style override.
+		border-left: 4px solid #ee8249;
+		border-radius: 3px;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: nowrap;
 		margin-bottom: 20px;
 		margin-top: 20px;
+		max-width: calc( 840px - 3px );
 		padding: 20px;
+
+		&.notice.is-dismissible {
+			padding-right: 20px;
+
+			.notice-dismiss {
+				display: none;
+			}
+		}
 	}
 
 	.coil-welcome-notice__icon,
@@ -118,57 +131,378 @@
 	}
 
 	form {
-		float: left;
+		display: flex;
+		flex-direction: row;
+		justify-content: start;
 
-		width: 70%;
-	}
+		.settings-main {
+			max-width: 880px;
+			width: 100%;
 
-	.settings-sidebar {
-		background: #fff;
-		border: 1px solid #d5d5d5;
-		border-radius: 4px;
-		display: block;
-		float: right;
-
-		width: 25%;
-
-		header {
-
-			border-bottom: 1px solid #dedede;
-			margin-bottom: 0;
-			padding: 15px;
-
-			svg {
-				float: left;
-				margin-right: 6px;
-				margin-top: -2px;
+			&.has-sidebar {
+				max-width: 580px;
+				width: 70%;
 			}
 
-			h3 {
-				margin: 0;
-			}
-		}
-		section {
+			.tab-styling {
+				background: #fff;
+				border: 1px solid #d5d5d5;
+				border-radius: 4px;
+				margin-bottom: 20px;
+				padding: 15px;
 
-			padding: 15px;
+				h3 {
+					font-size: 17px;
+					margin-top: 0;
+				}
 
-			ul {
+				h4 {
+					font-size: 14px;
+					margin: 15px 0 10px;
+				}
 
-				list-style: disc;
-				margin-left: 20px;
-				margin-top: 0;
+				ul {
 
-				a {
-					text-decoration: none;
+					list-style: disc;
+					margin-left: 20px;
+					margin-top: 0;
+				}
+
+				.coil-margin-input-group {
+					display: flex;
+					flex-direction: row;
+					width: 90%;
+
+					input, p {
+						border-radius: 0;
+						text-align: center;
+						width: 100%;
+					}
+
+					div:first-child input {
+						border-radius: 4px 0 0 4px;
+					}
+
+					div:last-child input {
+						border-radius: 0 4px 4px 0;
+					}
+				}
+
+				#coil_title_padlock:not( :checked ) {
+					+ label {
+						+ #coil_icon_position_label {
+							display: none;
+							+ .coil-radio-group {
+								display: none;
+								+ #coil_icon_style_label {
+									display: none;
+									+ .coil-radio-group {
+										display: none;
+									}
+								}
+							}
+						}
+					}
+				}
+
+				#streaming_widget_member_display:not( :checked ) {
+					+ label {
+						+ h4 {
+							display: none;
+							+ input {
+								display: none;
+							}
+						}
+					}
+				}
+
+				.coil-radio-group {
+					align-items: center;
+					display: flex;
+					flex-direction: row;
+
+					label {
+						align-items: center;
+						display: flex;
+						padding-right: 10px;
+					}
+
+					label:first-child {
+						margin-left: 0;
+					}
+				}
+
+				.coil-preview {
+					align-items: center;
+					background: #f1f1f1;
+					border: 1px solid #ccc;
+					border-radius: 3px;
+					display: flex;
+					flex-direction: column;
+					height: calc( 100% - 80px );
+					justify-content: center;
+					min-height: 350px;
+					padding: 15px;
+					position: relative;
+
+					&.stacked {
+						height: auto;
+						margin-bottom: 20px;
+						min-height: 240px;
+					}
+
+					&.hide {
+						display: none;
+					}
+
+					.coil-title-preview-container {
+						display: flex;
+						flex-direction: column;
+						width: 156px;
+
+						.coil-title-preview-row {
+							align-items: center;
+							display: flex;
+							flex-direction: row;
+							margin-bottom: 4px;
+
+							.coil-padlock-icon {
+								display: flex;
+							}
+
+							.coil-title-preview-bar {
+								background: #c4c4c4;
+								border-radius: 3px;
+
+								&.title {
+									height: 17px;
+									justify-self: flex-end;
+									margin-left: 6px;
+									width: 100%;
+								}
+
+								&.sub-title {
+									height: 7px;
+									margin-bottom: 8px;
+								}
+
+								&.body {
+									height: 9px;
+								}
+							}
+						}
+
+						&[data-padlock-icon-position='after'] {
+							.coil-title-preview-row {
+								&.coil-title-padlock-row {
+									flex-direction: row-reverse;
+									.coil-title-preview-bar {
+										&.title {
+											margin-left: 0;
+											margin-right: 6px;
+										}
+									}
+								}
+							}
+						}
+					}
+
+					.coil-paywall-container {
+						background: $paywall_background_color;
+						border: 1px solid $message_border_color;
+						border-radius: $message_border_radius;
+						box-sizing: border-box;
+						padding: 15px;
+						text-align: center;
+
+						&[data-theme='dark'] {
+							background: $paywall_dark_theme_background_color;
+							border: 1px solid $message_border_color_dark_theme;
+
+							h3, p {
+								color: $paywall_dark_theme_text_color;
+							}
+
+							a {
+								background: $paywall_dark_theme_button_color;
+								color: $paywall_dark_theme_button_font_color;
+							}
+						}
+
+						.coil-paywall-image {
+							max-height: 50px;
+							max-width: 50px;
+
+							&.no_logo {
+								display: none;
+							}
+						}
+
+						.coil-paywall-heading {
+							font-size: 24px;
+							font-style: normal;
+							font-weight: 600;
+							line-height: 29px;
+							margin-bottom: 0;
+							text-align: center;
+						}
+
+						.coil-paywall-body {
+							color: $paywall_text_color;
+							font-size: 13px;
+							font-style: normal;
+							font-weight: 400;
+							line-height: 16px;
+							text-align: center;
+						}
+
+						.coil-paywall-cta {
+							background: $paywall_button_color;
+							border-radius: 3px;
+							color: $paywall_button_font_color;
+							display: block;
+							margin: auto;
+							margin-top: 15px;
+							padding: 12px;
+							width: 164px;
+						}
+					}
+
+					.streaming-widget {
+						background-color: $streaming_widget_message_color;
+						border-radius: 6px;
+						bottom: 10px;
+						box-shadow: 0 6px 10px 0 $streaming_widget_message_shadow_color;
+						font-family: 'Open Sans', sans-serif;
+						font-size: 14px;
+						font-weight: 600;
+						line-height: 20px;
+						overflow: visible;
+						position: absolute;
+						right: 10px;
+						text-align: center;
+
+						&[data-position='top-left'] {
+							bottom: unset;
+							left: 10px;
+							right: unset;
+							top: 10px;
+						}
+
+						&[data-position='top-right'] {
+							bottom: unset;
+							top: 10px;
+						}
+
+						&[data-position='bottom-left'] {
+							bottom: 10px;
+							left: 10px;
+							right: unset;
+						}
+
+						div {
+							align-items: center;
+							border-radius: 6px;
+							display: flex;
+							flex-direction: row;
+							padding: $message_spacing_baseline;
+							text-decoration: none;
+
+							div {
+								color: $streaming_widget_font_color;
+								margin: auto;
+								padding: 0 $message_spacing_baseline 0 $message_spacing_baseline;
+							}
+
+							img {
+								height: 16px;
+								width: 16px;
+							}
+						}
+
+						// Changes streaming support widget to implement light theme
+						&[data-theme='light'] {
+							background-color: $streaming_widget_message_color_light_theme;
+
+							div {
+								div {
+									color: $streaming_widget_font_color_light_theme;
+								}
+							}
+						}
+
+						&[data-size='large'] {
+							div {
+								div {
+									font-size: 17px;
+									line-height: 20px;
+								}
+							}
+							img {
+								height: 24px;
+								width: 24px;
+							}
+						}
+					}
 				}
 			}
+
+			.exclusive-content-section {
+				display: none;
+			}
+
+			.streaming-widget-section {
+				display: none;
+			}
+		}
+
+		.settings-sidebar {
+			border-radius: 4px;
+			margin-left: 30px;
+			max-width: 30%;
+
+			.settings-sidebar-body {
+				background: #fff;
+				border: 1px solid #d5d5d5;
+				border-radius: 3px;
+
+				header {
+					border-bottom: 1px solid #dedede;
+					margin-bottom: 0;
+					padding: 15px;
+
+					svg {
+						float: left;
+						margin-right: 6px;
+						margin-top: -2px;
+					}
+
+					h3 {
+						font-size: 15px;
+						margin: 0;
+					}
+				}
+
+				section {
+					padding: 15px;
+
+					ul {
+
+						list-style: disc;
+						margin-left: 20px;
+						margin-top: 0;
+
+						a {
+							text-decoration: none;
+						}
+					}
+				}
+
+			}
 		}
 	}
 
-	p {
-		max-width: 660px;
-	}
-
+	select,
 	input[type='text'],
 	textarea {
 
@@ -176,11 +510,79 @@
 		border: 1px solid #d0d0d0;
 		box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08);
 		box-sizing: border-box;
-		width: 440px;
+		width: 90%;
+	}
+
+	input[type='radio'] {
+		margin: 0;
+		margin-right: 5px;
 	}
 
 	textarea {
 		min-height: 90px;
+	}
+
+	label.coil-clear-left {
+		clear: left;
+		display: block;
+		margin-top: 15px;
+	}
+
+	.coil-checkbox-container {
+		clear: both;
+		display: flex;
+		justify-content: flex-end;
+
+		label.coil-checkbox {
+			display: block;
+			float: right;
+			height: 20px;
+			width: 95px;
+		}
+
+		label.coil-checkbox input {
+			display: none;
+		}
+
+		label.coil-checkbox span {
+			background: #c1c5cd;
+			border-radius: 25px;
+			display: block;
+			float: right;
+			height: 20px;
+			position: relative;
+			width: 35px;
+		}
+
+		label.coil-checkbox input + span::after {
+			background: #fff;
+			border-radius: 18px;
+			content: '';
+			display: block;
+			height: 16px;
+			left: 2px;
+			position: absolute;
+			top: 2px;
+			width: 16px;
+		}
+
+		label.coil-checkbox input:checked + span {
+			background: #4fa3d5;
+		}
+
+		label.coil-checkbox input:checked + span::after {
+			left: unset;
+			right: 2px;
+		}
+
+		label.coil-checkbox input + span + i::before {
+			content: 'Disabled';
+		}
+
+		label.coil-checkbox input:checked + span + i::before {
+			content: 'Enabled';
+		}
+
 	}
 
 	@media only screen and (max-width: $message_mobile_breakpoint) {

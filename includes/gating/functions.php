@@ -15,7 +15,20 @@ function register_content_meta() : void {
 
 	register_meta(
 		'post',
-		'_coil_monetize_post_status',
+		'_coil_monetization_post_status',
+		[
+			'auth_callback' => function() {
+				return current_user_can( 'edit_posts' );
+			},
+			'show_in_rest'  => true,
+			'single'        => true,
+			'type'          => 'string',
+		]
+	);
+
+	register_meta(
+		'post',
+		'_coil_visibility_post_status',
 		[
 			'auth_callback' => function() {
 				return current_user_can( 'edit_posts' );
@@ -36,7 +49,21 @@ function register_term_meta() {
 
 	register_meta(
 		'term',
-		'_coil_monetize_term_status',
+		'_coil_monetization_term_status',
+		[
+			'auth_callback' => function() {
+
+				return current_user_can( 'edit_posts' );
+			},
+			'show_in_rest'  => true,
+			'single'        => true,
+			'type'          => 'string',
+		]
+	);
+
+	register_meta(
+		'term',
+		'_coil_visibility_term_status',
 		[
 			'auth_callback' => function() {
 
@@ -50,53 +77,65 @@ function register_term_meta() {
 }
 
 /**
- * Store the monetization options.
- *
- * @param bool $show_default Whether or not to show the default option.
- * @return array
- */
-function get_monetization_setting_types( $show_default = false ) : array {
-
-	$settings = [];
-
-	if ( true === $show_default ) {
-		$settings['default'] = esc_html__( 'Use Default', 'coil-web-monetization' );
-	}
-
-	$settings['no']        = esc_html__( 'Disabled', 'coil-web-monetization' );
-	$settings['no-gating'] = esc_html__( 'Enabled & Public', 'coil-web-monetization' );
-	$settings['gate-all']  = esc_html__( 'Enabled & Exclusive', 'coil-web-monetization' );
-
-	return $settings;
-}
-
-/**
- * Declare all the valid gating slugs used as a reference
+ * Declare all the valid monetization slugs used as a reference
  * before the particular option is saved in the database.
  *
- * @return array An array of valid gating slug types.
+ * @return array An array of valid monetization slug types.
  */
-function get_valid_gating_types() {
+function get_valid_monetization_types() {
 
 	$valid = [
-		'gate-all', // Monetization is enabled and content is visable to Coil members only.
-		'gate-tagged-blocks', // split content.
-		'no', // Monetization is disabled.
-		'no-gating', // Monetization is enabled and visable to everyone.
+		'monetized', // Monetization is enabled.
+		'not-monetized', // Monetization is disabled.
 		'default', // Whatever is set on the post to revert back.
 	];
 	return $valid;
 }
 
 /**
+ * Declare all the valid visibility slugs used as a reference
+ * before the particular option is saved in the database.
+ *
+ * @return array An array of valid visibility slug types.
+ */
+function get_valid_visibility_types() {
+
+	$valid = [
+		'public', // visible to everyone.
+		'exclusive', // visible to Coil members only.
+		'default', // Whatever is set on the post to revert back.
+	];
+	return $valid;
+}
+
+/**
+ * Restore default post/page title in navigation
+ *
+ * @param string   $title The menu item's title.
+ * @param WP_Post  $item  The current menu item.
+ * @param stdClass $args  An object of wp_nav_menu() arguments.
+ * @param int      $depth Depth of menu item. Used for padding.
+ *
+ * @return string Restored post title
+ */
+function restore_title_in_menus( $title, $item, $args, $depth ) {
+
+	// Remove filter to not affect title
+	remove_filter( 'the_title', __NAMESPACE__ . '\maybe_add_padlock_to_title', 10, 2 );
+
+	$post_id = $item->object_id;
+	$title   = get_the_title( $post_id );
+
+	// Add the title filter back
+	add_filter( 'the_title', __NAMESPACE__ . '\maybe_add_padlock_to_title', 10, 2 );
+
+	return $title;
+}
+
+/**
  * Maybe prefix a padlock emoji to the post title.
  *
- * Used on archive pages to represent if a post is gated.
- *
- * @param string $title The post title.
- * @param int    $id    The post ID. Optional.
- *
- * @return string The updated post title.
+ * This actually deactivates the title filter
  */
 function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 
@@ -108,26 +147,47 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 		return $title;
 	}
 
-	if ( ! Admin\get_appearance_settings( 'coil_title_padlock' ) ) {
+	// Do not show the padlock on the menu items
+	if ( ! in_the_loop() && ! is_singular() ) {
 		return $title;
 	}
 
-	$status = get_content_gating( $id );
-	if ( $status !== 'gate-all' ) {
+	if ( ! Admin\get_exlusive_post_setting( 'coil_title_padlock' ) ) {
 		return $title;
 	}
 
-	$post_title = sprintf(
-		/* translators: %s: Gated post title. */
-		__( '🔒 %s', 'coil-web-monetization' ),
-		$title
-	);
+	$status = get_content_status( $id, 'visibility' );
+	if ( $status !== 'exclusive' || ! Admin\is_exclusive_content_enabled() ) {
+		return $title;
+	}
+
+	$padlock_icon_styles = Admin\get_padlock_icon_styles();
+	$padlock_icon        = Admin\get_exlusive_post_setting( 'coil_padlock_icon_style', 'lock' );
+	$padlock_location    = Admin\get_exlusive_post_setting( 'coil_padlock_icon_position' );
+
+	if ( $padlock_location === 'after' ) {
+		$post_title = sprintf(
+			/* translators: %s: Gated post title. */
+			__( '%1$s %2$s', 'coil-web-monetization' ),
+			$title,
+			$padlock_icon_styles[ $padlock_icon ]
+		);
+	} else {
+		$post_title = sprintf(
+			/* translators: %s: Gated post title. */
+			__( '%1$s %2$s', 'coil-web-monetization' ),
+			$padlock_icon_styles[ $padlock_icon ],
+			$title
+		);
+	}
 
 	return apply_filters( 'coil_maybe_add_padlock_to_title', $post_title, $title, $id );
 }
 
 /**
  * Maybe restrict (gate) visibility of the post content on archive pages, home pages, and feeds.
+ * If the post is exclusive then no excerpt will show unless one has been set explicitly.
+ * If the Coil Exclusive Content Divider is being used then only the content which is above the divider will appear publicly.
  *
  * @param string $content Post content.
  *
@@ -136,20 +196,39 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 function maybe_restrict_content( string $content ) : string {
 
 	// Plugins can call the `the_content` filter outside of the post loop.
-	if ( is_singular() || ! get_the_ID() ) {
+	if ( ! get_the_ID() ) {
 		return $content;
 	}
 
-	$coil_status     = get_content_gating( get_the_ID() );
-	$post_obj        = get_post( get_the_ID() );
-	$content_excerpt = $post_obj->post_excerpt;
-	$public_content  = '';
+	if ( isset( $_GET['coil-get-css-selector'] ) ) {
+		return '<span id="coil-content"></span>';
+	}
 
-	switch ( $coil_status ) {
-		case 'gate-all':
-		case 'gate-tagged-blocks':
-			// Restrict all / some excerpt content based on gating settings.
-			if ( get_excerpt_gating( get_queried_object_id() ) ) {
+	// If exclusive content has been disabled then nothing will be restricted
+	if ( ! Admin\is_exclusive_content_enabled() ) {
+		return $content;
+	}
+
+	$coil_divider_string    = get_coil_divider_string();
+	$coil_visibility_status = get_content_status( get_the_ID(), 'visibility' );
+	$post_obj               = get_post( get_the_ID() );
+	$content_excerpt        = $post_obj->post_excerpt;
+	$public_content         = '';
+
+	// If it's a single post which doesn't have a read more block, just return the content
+	if ( is_singular() && ! has_coil_divider( $content ) ) {
+		return $content;
+	}
+
+	switch ( $coil_visibility_status ) {
+		case 'exclusive':
+			// Restrict content beneath the Coil Read More block
+			if ( has_coil_divider( $content ) ) {
+
+				$content        = str_replace( $coil_divider_string, '<div class="coil-restricted-content">', $content );
+				$content       .= '</div>';
+				$public_content = $content;
+			} elseif ( is_excerpt_visible( get_queried_object_id() ) ) { // Restrict all / some excerpt content based on visibility settings.
 				$public_content .= sprintf(
 					'<p>%s</p>',
 					$content_excerpt
@@ -159,36 +238,40 @@ function maybe_restrict_content( string $content ) : string {
 
 		/**
 		 * case 'default': doesn't exist in this context because the last possible
-		 * saved option will be 'no', after a post has fallen back to the taxonomy
+		 * saved option will be 'public', after a post has fallen back to the taxonomy
 		 * and then the default post options.
 		 */
-		case 'no':
-		case 'no-gating':
+		case 'public':
 		default:
 			$public_content = $content;
 			break;
 	}
 
-	return apply_filters( 'coil_maybe_restrict_content', $public_content, $content, $coil_status );
+	return apply_filters( 'coil_maybe_restrict_content', $public_content, $content, $coil_visibility_status );
 }
 
 /**
- * Get the gating type for the specified post.
+ * Check whether or not the Coil read more block is present
  *
- * @param integer $post_id The post to check.
+ * @param string $content Post content.
  *
- * @return string Either "no-gating" (default), "no-gating", "gate-all", "gate-tagged-blocks".
+ * @return bool true if the block is present
  */
-function get_post_gating( $post_id ) : string {
+function has_coil_divider( $content ) : bool {
 
-	$post_id = (int) $post_id;
-	$gating  = get_post_meta( $post_id, '_coil_monetize_post_status', true );
-
-	if ( empty( $gating ) ) {
-		$gating = 'default';
+	$coil_divider_string = get_coil_divider_string();
+	if ( false !== strpos( $content, $coil_divider_string ) ) {
+		return true;
 	}
 
-	return $gating;
+	return false;
+}
+
+/**
+ * @return string returns the Coil divider string as it is isnerted by the editor when the Coil Exclusive Content divider is added to a post.
+ */
+function get_coil_divider_string() : string {
+	return '<span class="wp-block-coil-exclusive-content-divider"></span>';
 }
 
 /**
@@ -197,48 +280,54 @@ function get_post_gating( $post_id ) : string {
  * @param integer $post_id The post to check.
  * @return bool true show excerpt, false hide excerpt.
  */
-function get_excerpt_gating( $post_id ) : bool {
+function is_excerpt_visible( $post_id ) : bool {
 
 	$post_id   = (int) $post_id;
 	$post_type = get_post_type( $post_id );
 
-	$display_excerpt  = false;
-	$excerpt_settings = get_global_excerpt_settings();
-	if ( ! empty( $excerpt_settings ) && isset( $excerpt_settings[ $post_type ] ) ) {
-		$display_excerpt = $excerpt_settings[ $post_type ];
+	$display_excerpt = false;
+	// A post cannot display an excerpt if it uses the Coil Exclusive Content Divider.
+	// In which case the public content replaces the need for an excerpt altogether.
+	if ( has_coil_divider( get_the_content() ) ) {
+		return false;
+	}
+	$exclusive_options = Admin\get_exclusive_settings();
+	if ( ! empty( $exclusive_options ) && isset( $exclusive_options[ $post_type . '_excerpt' ] ) ) {
+		$display_excerpt = $exclusive_options[ $post_type . '_excerpt' ];
 	}
 	return $display_excerpt;
 }
 
 
 /**
- * Get the gating type for the specified term.
+ * Get the Coil status for the specified term.
  *
  * @param integer $term_id The term_id to check.
+ * @param string $meta_key { '_coil_monetization_term_status' | '_coil_visibility_term_status' }
  *
- * @return string Either "default" (default), "no", "no-gating", "gate-all".
+ * @return string Either "default" (default), or the applicable status.
  */
-function get_term_gating( $term_id ) {
+function get_term_status( $term_id, $meta_key ) {
 
 	$term_id     = (int) $term_id;
-	$term_gating = get_term_meta( $term_id, '_coil_monetize_term_status', true );
+	$term_status = get_term_meta( $term_id, $meta_key, true );
 
-	if ( empty( $term_gating ) ) {
-		$term_gating = 'default';
+	if ( empty( $term_status ) ) {
+		$term_status = 'default';
 	}
-	return $term_gating;
+	return $term_status;
 }
 
 /**
- * Get any terms attached to the post and return their gating status,
- * ranked by priority order.
+ * Get any terms attached to the post and return their highest priority Coil status.
  *
- * @return string Gating type.
+ * @param string $meta_key { '_coil_monetization_term_status' | '_coil_visibility_term_status' }
+ * @return string Coil status.
  */
-function get_taxonomy_term_gating( $post_id ) {
+function get_taxonomy_term_status( $post_id, $meta_key ) {
 
-	$post_id      = (int) $post_id;
-	$term_default = 'default';
+	$post_id           = (int) $post_id;
+	$final_term_status = 'default';
 
 	$valid_taxonomies = Admin\get_valid_taxonomies();
 
@@ -251,73 +340,80 @@ function get_taxonomy_term_gating( $post_id ) {
 		]
 	);
 
-	// 2) Do these terms have gating?
-	$term_gating_options = [];
+	// 2) Has a Coil status been attached to this taxonomy?
 	if ( ! is_wp_error( $post_terms ) && ! empty( $post_terms ) ) {
+
+		// Specifies the highest status possible
+		if ( $meta_key === '_coil_monetization_term_status' ) {
+			$priority_state = 'monetized';
+		} elseif ( $meta_key === '_coil_visibility_term_status' ) {
+			$priority_state = 'exclusive';
+		} else {
+			// Invalid meta key was used.
+			// Returns default because then the term status won't be considered in determining the content status.
+			return $final_term_status;
+		}
 
 		foreach ( $post_terms as $term_id ) {
 
-			$post_term_gating = get_term_gating( $term_id );
-			if ( ! in_array( $post_term_gating, $term_gating_options, true ) ) {
-				$term_gating_options[] = $post_term_gating;
+			$post_term_status = get_term_status( $term_id, $meta_key );
+			// If a term is assigned the highest status simply break out of loop and return.
+			if ( $post_term_status === $priority_state ) {
+				$final_term_status = $post_term_status;
+				break;
+				// If a term's status has been set then save it - in contrast to it being 'default'.
+				// Don't break yet, keep checking for a higher state.
+			} elseif ( $post_term_status !== 'default' ) {
+				$final_term_status = $post_term_status;
 			}
 		}
 	}
 
-	if ( empty( $term_gating_options ) ) {
-		return $term_default;
-	}
-
-	// 3) If terms have gating, rank by priority.
-	if ( in_array( 'gate-all', $term_gating_options, true ) ) {
-
-		// Priority 1 - Monetization is enabled and visable to Coil members only.
-		return 'gate-all';
-
-	} elseif ( in_array( 'no-gating', $term_gating_options, true ) ) {
-
-		// Priority 2 - Monetization is enabled and visable to everyone.
-		return 'no-gating';
-
-	} elseif ( in_array( 'no', $term_gating_options, true ) ) {
-
-		// Priority 3 - Monetization is disabled.
-		return 'no';
-
-	} else {
-		return $term_default;
-	}
+	return $final_term_status;
 }
 
 /**
- * Return the single source of truth for post gating based on the fallback
- * options if the post gating selection is 'default'. E.g.
+ * Return the post monetization & visibility status
+ * based on the global defaults, taxonomies, and post metafields.
  * If return value of each function is default, move onto the next function,
  * otherwise return immediately.
+ * Note: even if the content's visibility status is 'exclusive' this can still be disabled on a gloabl level.
  *
  * @param integer $post_id
- * @return string $content_gating Gating slug type.
+ * @param string $status_type {'monetization' | 'visibility'}
+ * @return string $content_status Coil status slug.
  */
-function get_content_gating( $post_id ) : string {
+function get_content_status( $post_id, $status_type ) : string {
 
-	$post_id     = (int) $post_id;
-	$post_gating = get_post_gating( $post_id );
+	$post_id = (int) $post_id;
 
-	// Set a default monetization value.
-	$content_gating = 'no-gating';
+	// Set a metakey and a default value in case nothing has been set on the post or in the database.
+	if ( $status_type === 'monetization' ) {
+		$content_status = Admin\get_monetization_default();
+		$meta_key       = '_coil_monetization_term_status';
+	} elseif ( $status_type === 'visibility' ) {
+		$content_status = Admin\get_visibility_default();
+		$meta_key       = '_coil_visibility_term_status';
+	} else {
+		// Return if an unrecognised status type is being used
+		return '';
+	}
 
 	// Hierarchy 1 - Check what is set on the post.
-	if ( 'default' !== $post_gating ) {
+	$post_status = get_post_status( $post_id, $status_type );
 
-		$content_gating = $post_gating; // Honour what is set on the post.
+	if ( 'default' !== $post_status ) {
+
+		$content_status = $post_status; // Honour what is set on the post.
 
 	} else {
 
 		// Hierarchy 2 - Check what is set on the taxonomy.
-		$taxonomy_gating = get_taxonomy_term_gating( $post_id );
-		if ( 'default' !== $taxonomy_gating ) {
+		$term_status = get_taxonomy_term_status( $post_id, $meta_key );
 
-			$content_gating = $taxonomy_gating; // Honour what is set on the taxonomy.
+		if ( 'default' !== $term_status ) {
+
+			$content_status = $term_status; // Honour what is set on the taxonomy.
 
 		} else {
 
@@ -325,99 +421,113 @@ function get_content_gating( $post_id ) : string {
 			// Get the post type for this post to check against what is set for default.
 			$post = get_post( $post_id );
 
-			// Get the post type from what is saved in global options
-			$global_gating_settings = get_global_posts_gating();
-
-			if ( ! empty( $global_gating_settings ) && ! empty( $post ) && isset( $global_gating_settings[ $post->post_type ] ) ) {
-				$content_gating = $global_gating_settings[ $post->post_type ];
+			if ( $status_type === 'monetization' ) {
+				// Get the post type from what is saved in the general options
+				$settings = Admin\get_general_settings();
+			} elseif ( $status_type === 'visibility' ) {
+				// Get the post type from what is saved in the exclusive options
+				$settings = Admin\get_exclusive_settings();
+			}
+			if ( ! empty( $settings ) && ! empty( $post ) && isset( $settings[ $post->post_type . '_' . $status_type ] ) ) {
+				$content_status = $settings[ $post->post_type . '_' . $status_type ];
 			}
 		}
 	}
 
-	return $content_gating;
+	return $content_status;
 }
 
 /**
- * Get whatever settings are stored in the plugin as the default
- * content gating settings (post, page, cpt etc).
+ * Set the Coil status for the specified term.
+ * If the status that is passed in is invalid a default will be used in its place.
+ * It's better to pass in a safe default than risk an incompatible state.
  *
- * @return array Setting stored in options, or blank array.
- */
-function get_global_posts_gating() : array {
-
-	$global_settings = get_option( 'coil_content_settings_posts_group' );
-	if ( ! empty( $global_settings ) ) {
-		return $global_settings;
-	}
-
-	return [];
-}
-
-/**
- * Get whatever settings are stored in the plugin as the default
- * excerpt settings for the various content types.
+ * @param integer $term_id  The term to set the status for.
+ * @param string $meta_key  { '_coil_monetization_term_status' | '_coil_visibility_term_status' }
+ * @param string $status    Monetization or visibility state.
  *
  * @return void
  */
-function get_global_excerpt_settings() {
-
-	$global_excerpt_settings = get_option( 'coil_content_settings_excerpt_group' );
-	if ( ! empty( $global_excerpt_settings ) ) {
-		return $global_excerpt_settings;
-	}
-
-	return [];
-}
-
-/**
- * Set the gating type for the specified post.
- *
- * @param integer $post_id    The post to set gating for.
- * @param string $gating_type Either "default", "no", "no-gating", "gate-all", "gate-tagged-blocks".
- *
- * @return void
- */
-function set_post_gating( $post_id, string $gating_type ) : void {
-
-	$post_id = (int) $post_id;
-
-	$valid_gating_types = get_valid_gating_types();
-	if ( ! in_array( $gating_type, $valid_gating_types, true ) ) {
-		return;
-	}
-
-	update_post_meta( $post_id, '_coil_monetize_post_status', $gating_type );
-}
-
-/**
- * Set the gating type for the specified term.
- *
- * @param integer $term_id    The term to set gating for.
- * @param string $gating_type Either "default", "no", "no-gating", "gate-all", "gate-tagged-blocks".
- *
- * @return void
- */
-function set_term_gating( $term_id, string $gating_type ) : void {
+function set_term_status( $term_id, string $meta_key, string $status ) : void {
 
 	$term_id = (int) $term_id;
 
-	$valid_gating_types = get_valid_gating_types();
-	if ( ! in_array( $gating_type, $valid_gating_types, true ) ) {
+	if ( $meta_key === '_coil_monetization_term_status' ) {
+		$valid_status_options = get_valid_monetization_types();
+		$status               = in_array( $status, $valid_status_options, true ) ? $status : Admin\get_monetization_default();
+	} elseif ( $meta_key === '_coil_visibility_term_status' ) {
+		$valid_status_options = get_valid_visibility_types();
+		$status               = in_array( $status, $valid_status_options, true ) ? $status : Admin\get_visibility_default();
+	} else {
+		// Invalid meta key.
 		return;
 	}
-
-	update_term_meta( $term_id, '_coil_monetize_term_status', $gating_type );
+	update_term_meta( $term_id, $meta_key, $status );
 }
 
 /**
  * New function to determine if the content is monetized
- * based on the output of get_content_gating.
+ * based on the output of get_content_status.
  *
  * @param int $post_id
  * @return boolean
  */
 function is_content_monetized( $post_id ) : bool {
 
-	$coil_status = get_content_gating( $post_id );
-	return ( $coil_status === 'no' ) ? false : true;
+	$monetization_status = get_content_status( $post_id, 'monetization' );
+	return ( $monetization_status === 'monetized' ) ? true : false;
+}
+
+/**
+ * Get the Coil status for the specified post.
+ *
+ * @param integer $post_id The post to check.
+ * @param string $status_type
+ *
+ * @return string Coil status.
+ */
+function get_post_status( $post_id, $status_type ) : string {
+
+	$post_id = (int) $post_id;
+	if ( $status_type === 'monetization' ) {
+		$status = get_post_meta( $post_id, '_coil_monetization_post_status', true );
+	} elseif ( $status_type === 'visibility' ) {
+		$status = get_post_meta( $post_id, '_coil_visibility_post_status', true );
+	}
+
+	if ( empty( $status ) ) {
+		// Returns default because then the post status won't be considered in determining the content status.
+		$status = 'default';
+	}
+
+	return $status;
+}
+
+/**
+ * Set the Coil status for the specified post.
+ *
+ * @param integer $post_id The post to set status for.
+ * @param string $meta_key { '_coil_monetization_post_status' | '_coil_visibility_post_status' }
+ * @param string $post_status Coil status (monetization and visibility settings).
+ *
+ * @return void
+ */
+function set_post_status( $post_id, string $meta_key, string $post_status ) : void {
+
+	$post_id = (int) $post_id;
+
+	if ( $meta_key === '_coil_monetization_post_status' ) {
+		$valid_status_options = get_valid_monetization_types();
+	} elseif ( $meta_key === '_coil_visibility_post_status' ) {
+		$valid_status_options = get_valid_visibility_types();
+	} else {
+		// Unrecognised meta key.
+		return;
+	}
+
+	if ( ! in_array( $post_status, $valid_status_options, true ) ) {
+		$post_status = 'default';
+	}
+
+	update_post_meta( $post_id, $meta_key, $post_status );
 }

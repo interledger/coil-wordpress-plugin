@@ -18,8 +18,8 @@ export class MonetizedMode extends Component {
 	sync() {
 		const { isActive } = this.props;
 
-		// Adds 'is-monetized' class to the html body if the content's gating is not undefined and does not have monetization disabled.
-		if ( typeof isActive !== 'undefined' && isActive !== 'no' ) {
+		// Adds 'is-monetized' class to the html body if the content's status is not undefined and does not have monetization disabled.
+		if ( typeof isActive !== 'undefined' && isActive !== 'not-monetized' ) {
 			document.body.classList.add( 'is-monetized' );
 		} else {
 			document.body.classList.remove( 'is-monetized' );
@@ -33,14 +33,14 @@ export class MonetizedMode extends Component {
 
 export default compose( [
 	withSelect( ( select ) => ( {
-		isActive: select( 'core/editor' ).getEditedPostAttribute( 'meta' )[ '_coil_monetize_post_status' ], // eslint-disable-line
+		isActive: select( 'core/editor' ).getEditedPostAttribute( 'meta' ), // eslint-disable-line
 	} ) ),
-	withDispatch( ( dispatch ) => ( {
-		isActive: dispatch( 'core/editor' ).editPost( {
-			meta: {
-				[ '_coil_monetize_post_status' ]: isActive // eslint-disable-line
+	withDispatch( ( dispatch ) => {
+		return {
+			setPostMeta( isActive ) {
+				dispatch( 'core/editor' ).editPost( { meta: isActive } );
 			},
-		} ),
-	} ) ),
+		};
+	} ),
 	withSpokenMessages,
 ] )( MonetizedMode );
