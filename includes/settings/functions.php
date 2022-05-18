@@ -633,7 +633,7 @@ function coil_settings_enable_exclusive_toggle_render_callback() {
 		printf(
 			'<p>%s (<a href="%s" target="%s" >%s</a>)</p>',
 			esc_html__( 'Exclusive content is only available to Coil members.', 'coil-web-monetization' ),
-			esc_url( 'https://help.coil.com/docs/monetize/content/wp-exclusive content' ),
+			esc_url( 'https://help.coil.com/docs/monetize/content/wp-exclusive-content' ),
 			esc_attr( '_blank' ),
 			esc_html__( 'Learn more', 'coil-web-monetization' )
 		);
