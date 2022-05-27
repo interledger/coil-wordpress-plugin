@@ -124,7 +124,7 @@ function restore_title_in_menus( $title, $item, $args, $depth ) {
 	remove_filter( 'the_title', __NAMESPACE__ . '\maybe_add_padlock_to_title', 10, 2 );
 
 	$post_id = $item->object_id;
-	$title   = get_the_title( $post_id );
+	$title   = $item->title;
 
 	// Add the title filter back
 	add_filter( 'the_title', __NAMESPACE__ . '\maybe_add_padlock_to_title', 10, 2 );
