@@ -6,7 +6,7 @@ Tags: coil, content, monetization, payment, interledger, ilp
 Requires at least: 5.0+
 Requires PHP: 7.2+
 Tested up to: 5.9
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: Apache-2.0
 License URI: http://www.apache.org/licenses/LICENSE-2.0.txt
 
@@ -43,6 +43,7 @@ Our plugin lets you add Web Monetization to all or some of your content.
 * When monetization is disabled, you don't get paid when people visit that content, even if they are Coil members
 
 When content is monetized it can:
+
 * Remain visible to everyone (default) - Allow all visitors to see the content, get paid when your visitor is a Coil member
 * Be made exclusive - Only allow Coil members to see the content and get paid when they do. People who are not Coil members will see a paywall instead. Use the Coil Exclusive Content Divider to specify exactly how much content on a single post should be public and from what point it should become exclusive.
 
@@ -87,10 +88,16 @@ If you get stuck, check out our [help center](https://help.coil.com/docs/monetiz
 
 == Changelog ==
 
-= What to expect when updating to version 2.0.0 =
+= What to expect when updating to version 2 =
 Please be aware that Split content is no longer supported. We're replacing Split content with the Exclusive Content Divider (ECD). If you had posts that were using Split content we will insert the ECD above the first instance of a block that is set to Coil Members Only. Everything above the ECD will be publicly visible and everything below it will be exclusive for Coil Members.
 There is no longer an option to hide content from Coil members.
 Please don’t hesitate to be in touch with us about the plugin or the new release. You can reach us on the [Coil Web Monetization support forum](https://wordpress.org/support/plugin/coil-web-monetization/).
+
+= v2.0.1 =
+
+= 18 May 2022 =
+
+* Fix - Custom menu labels were being incorrectly displayed.
 
 = v2.0.0 =
 

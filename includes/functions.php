@@ -14,7 +14,7 @@ use \Coil\User;
 /**
  * @var string Plugin version number.
  */
-const PLUGIN_VERSION = '2.0.0';
+const PLUGIN_VERSION = '2.0.1';
 
 /**
  * @var string Database version number.
