@@ -95,7 +95,7 @@ Please don’t hesitate to be in touch with us about the plugin or the new relea
 
 = v2.0.1 =
 
-= 18 May 2022 =
+= 1 June 2022 =
 
 * Fix - Custom menu labels were being incorrectly displayed.
 
@@ -110,7 +110,7 @@ Please don’t hesitate to be in touch with us about the plugin or the new relea
 * Enhancement - All exclusive content settings are now in the Exclusive Content tab, where you can enable or disable exclusive content globally.
 * Enhancement - The paywall that appears for visitors without a Coil membership can now be managed and customized in the Exclusive Content tab. Customizations can be seen with a live preview.
 * Enhancement - Encourage your audience to support you through Coil by adding the Coil-branded streaming support widget to selected post types. With this customizable, dismissable widget, paying Coil members will be thanked for their contribution, while non-paying viewers will be prompted to become Coil members to support your amazing content.
-* Enhancement - We’ve added more customization options for the icon that appears next to an exclusive post’s title. Choose from four icons, including the padlock, and select to place the icon before or after the post’s title. 
+* Enhancement - We’ve added more customization options for the icon that appears next to an exclusive post’s title. Choose from four icons, including the padlock, and select to place the icon before or after the post’s title.
 
 * Tweak - The padlock icon no longer appears next to post titles in menus.
 * Tweak - When excerpts are enabled for exclusive posts they will be visible during the pending phase (while the monetization state is being determined) so that users can start reading immediately.
