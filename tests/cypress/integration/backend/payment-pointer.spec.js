@@ -94,6 +94,6 @@ function checkForInvalidAlert( active ) {
 
 		cy
 			.get( '.invalid-input' )
-			.should( 'not.be.visible' );
+			.should( 'not.exist' );
 	}
 }
