@@ -31,12 +31,12 @@
 		"cypress:run": "cypress run --project ./tests"
 	},
 	"devDependencies": {
-		"async": "^3.2.2",
+		"async": "^3.2.4",
 		"cypress": "^5.4.0",
 		"eslint-plugin-cypress": "^2.11.3",
 		"grunt": "^1.5.3",
 		"grunt-checktextdomain": "~1.0.1",
-		"grunt-contrib-clean": "~2.0.0",
+		"grunt-contrib-clean": "^2.0.1",
 		"grunt-contrib-compress": "^1.6.0",
 		"grunt-contrib-copy": "^1.0.0",
 		"grunt-contrib-cssmin": "~3.0.0",
@@ -51,14 +51,14 @@
 		"grunt-stylelint": "~0.10.1",
 		"grunt-text-replace": "^0.4.0",
 		"load-grunt-tasks": "~4.0.0",
-		"node-sass": "^7.0.0",
+		"node-sass": "^7.0.1",
 		"sass-loader": "^6.0.7",
 		"stylelint-config-prettier": "^3.1.0",
 		"stylelint-config-wordpress": "^13.1.0",
 		"stylelint-order": "^0.8.1"
 	},
 	"dependencies": {
-		"cgb-scripts": "1.21.0",
+		"cgb-scripts": "1.23.1",
 		"classnames": "^2.2.6",
 		"grunt-cli": "^1.4.3"
 	}
