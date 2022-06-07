@@ -31,7 +31,6 @@
 		"cypress:run": "cypress run --project ./tests"
 	},
 	"devDependencies": {
-		"async": "^3.2.4",
 		"cypress": "^9.7.0",
 		"eslint-plugin-cypress": "^2.11.3",
 		"grunt": "^1.5.3",
