@@ -25,7 +25,7 @@ Ensure you have the prerequisite software installed:
 * [PHP](https://php.net/) 7.2+
 * [Composer](https://getcomposer.org/) 1.8+, installed globally.
 * [Local By Flywheel](https://localwp.com/releases/6.4.0/) 6.4.0
-* [Node](https://nodejs.org/) 12.0.0
+* [Node](https://nodejs.org/) 14.0.0
 * An account on [Coil.com](https://coil.com/).
 
 Install the development environment:
