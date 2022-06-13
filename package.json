@@ -53,13 +53,12 @@
 		"load-grunt-tasks": "^5.1.0",
 		"node-sass": "^7.0.1",
 		"postcss": "^8.4.14",
-		"sass-loader": "^13.0.0",
 		"stylelint": "^14.9.1",
 		"stylelint-config-prettier-scss": "0.0.1",
 		"stylelint-order": "^5.0.0"
 	},
 	"dependencies": {
-		"cgb-scripts": "1.23.1",
+		"cgb-scripts": "^1.23.0",
 		"classnames": "^2.2.6",
 		"grunt-cli": "^1.4.3"
 	}
