@@ -20,6 +20,7 @@ body.monetization-not-initialized.coil-exclusive:not( .coil-divider ) {
 
 // If the reader is not viewing a single post/page then hide monetized content.
 body:not( .single ):not( .page ) {
+
 	.coil-restricted-content {
 		display: none;
 	}
