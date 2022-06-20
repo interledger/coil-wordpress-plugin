@@ -8,17 +8,6 @@ describe( 'Default  visibility settings for pages and posts', () => {
 		cy.resetSite();
 	} );
 
-	it( 'Checks that the default visibility is preset to public', () => {
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );
-		cy
-			.get( '#post_visibility_public' )
-			.should( 'be.checked' );
-
-		cy
-			.get( '#page_visibility_public' )
-			.should( 'be.checked' );
-	} );
-
 	it( 'Checks that the default can be set to different values which reflect correctly in the frontend', () => {
 		// Make content on pages and posts exclusive
 		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );

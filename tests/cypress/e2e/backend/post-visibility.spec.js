@@ -16,15 +16,16 @@ describe( 'Tests for visibility settings in editor', () => {
 	} );
 
 	it( 'Checks that visibility settings of a post can be changed in Gutenberg', () => {
-		const monetizationDropDown = '#inspector-select-control-1';
+		const monetizationDropDown = '#coil-monetization-dropdown';
+		const visibilityOptions = '.coil-post-monetization-level input';
 		const monetizationAndVisibilityCombinations = [
 			{
 				monetization: 'Enabled',
-				visibility: '#inspector-radio-control-0-0', // Enabled for Everyone
+				visibility: 'public', // Enabled for Everyone
 			},
 			{
 				monetization: 'Enabled',
-				visibility: '#inspector-radio-control-0-1', // Enabled for Coil Members Only
+				visibility: 'exclusive', // Enabled for Coil Members Only
 			},
 			{
 				monetization: 'Disabled',
@@ -45,21 +46,21 @@ describe( 'Tests for visibility settings in editor', () => {
 					.should( 'contain', selection.monetization );
 			} else {
 				cy
-					.get( selection.visibility )
-					.check();
+					.get( visibilityOptions )
+					.check( selection.visibility );
 				cy
 					.get( '.editor-post-publish-button' )
 					.click();
 
 				// Check the correct setting is still there
 				cy
-					.get( selection.visibility )
-					.should( 'be.checked' );
+					.get( visibilityOptions + ':checked' )
+					.should( 'have.value', selection.visibility );
 			}
 		} );
 	} );
 	it( 'Checks that the Default status label is correct', () => {
-		const monetizationDropDown = '#inspector-select-control-1';
+		const monetizationDropDown = '#coil-monetization-dropdown';
 
 		// Initially Default text should be Enabled & Public
 		cy

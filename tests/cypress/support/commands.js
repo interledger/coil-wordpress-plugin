@@ -75,7 +75,6 @@ Cypress.Commands.add( 'stopWebMonetization', () => {
  * @param {Array} settings The data to be inserted in the form of an array of objects which have key and value properties.
  */
 Cypress.Commands.add( 'addSetting', ( optionName, settings ) => {
-	cy.exec( 'wp db query \'DELETE FROM wp_options WHERE option_name IN ("' + optionName + '");\' --allow-root' );
 	const numItems = settings.length;
 	let optionString = 'a:' + numItems + ':{';
 	for ( let i = 0; i < numItems; i++ ) {
@@ -90,7 +89,7 @@ Cypress.Commands.add( 'addSetting', ( optionName, settings ) => {
 	}
 	optionString += '}';
 
-	cy.exec( 'wp db query \'INSERT INTO wp_options (option_name, option_value) VALUES ( \"' + optionName + '\", \"' + optionString + '\");\' --allow-root' );
+	cy.exec( 'wp db query \'DELETE FROM wp_options WHERE option_name IN ("' + optionName + '");\' --allow-root && wp db query \'INSERT INTO wp_options (option_name, option_value) VALUES ( "' + optionName + '", "' + optionString + '");\' --allow-root' );
 } );
 
 /**

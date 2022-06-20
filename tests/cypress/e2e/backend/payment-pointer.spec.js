@@ -31,8 +31,7 @@ describe( 'Plugin Settings Panel', function() {
 
 		cy
 			.get( '#coil_payment_pointer' )
-			.type( `{selectall}${ validInput }` )
-			.blur();
+			.type( `{selectall}${ validInput }` );
 
 		checkForInvalidAlert( false );
 

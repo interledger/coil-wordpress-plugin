@@ -9,7 +9,7 @@ describe( 'Exclusive Content settings tab', () => {
 		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );
 	} );
 
-	it( 'Checks Exclusive Content visibility defaults', () => {
+	it( 'Checks that the default visibility is preset to public', () => {
 		cy
 			.get( '#post_visibility_public' )
 			.should( 'be.checked' );
