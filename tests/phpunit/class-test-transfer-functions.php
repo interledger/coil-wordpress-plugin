@@ -151,7 +151,7 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
-			'coil_title_padlock' => Admin\get_exlusive_post_setting( 'coil_title_padlock' ),
+			'coil_title_padlock' => Admin\get_exlusive_icon_setting( 'coil_title_padlock' ),
 		];
 
 		// Checking that all appearance settings that were retrieved are correct
@@ -182,7 +182,7 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 
 		// Creating an array of the appearance settings that were retrieved from the wp_options table.
 		$appearance_settings = [
-			'coil_title_padlock' => Admin\get_exlusive_post_setting( 'coil_title_padlock' ),
+			'coil_title_padlock' => Admin\get_exlusive_icon_setting( 'coil_title_padlock' ),
 		];
 
 		// Checking that all appearance settings that were retrieved are correct
@@ -361,7 +361,7 @@ class Test_Transfer_Functions extends WP_UnitTestCase {
 
 		// Creating an array of the settings that were retrieved.
 		$retrieved_settings = [
-			'coil_title_padlock' => Admin\get_exlusive_post_setting( 'coil_title_padlock' ),
+			'coil_title_padlock' => Admin\get_exlusive_icon_setting( 'coil_title_padlock' ),
 		];
 
 		// Checking that all settings that were retrieved are correct

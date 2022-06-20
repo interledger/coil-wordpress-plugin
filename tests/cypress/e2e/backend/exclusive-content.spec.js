@@ -9,6 +9,70 @@ describe( 'Exclusive Content settings tab', () => {
 		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );
 	} );
 
+	it( 'Checks Exclusive Content visibility defaults', () => {
+		cy
+			.get( '#post_visibility_public' )
+			.should( 'be.checked' );
+
+		cy
+			.get( '#page_visibility_public' )
+			.should( 'be.checked' );
+	} );
+
+	it( 'Checks Exclusive Content visibility settings can be changed', () => {
+		cy
+			.get( '#post_visibility_exclusive' )
+			.click();
+
+		cy
+			.get( '#page_visibility_exclusive' )
+			.click();
+
+		cy
+			.get( '#submit' )
+			.click();
+
+		cy
+			.get( '#post_visibility_exclusive' )
+			.should( 'be.checked' );
+
+		cy
+			.get( '#page_visibility_exclusive' )
+			.should( 'be.checked' );
+	} );
+
+	it( 'Checks Excerpt Settings defaults', () => {
+		cy
+			.get( '#post_excerpt' )
+			.should( 'not.be.checked' );
+
+		cy
+			.get( '#page_excerpt' )
+			.should( 'not.be.checked' );
+	} );
+
+	it( 'Checks Excerpt Settings can be changed', () => {
+		cy
+			.get( '#post_excerpt' )
+			.click();
+
+		cy
+			.get( '#page_excerpt' )
+			.click();
+
+		cy
+			.get( '#submit' )
+			.click();
+
+		cy
+			.get( '#post_excerpt' )
+			.should( 'be.checked' );
+
+		cy
+			.get( '#page_excerpt' )
+			.should( 'be.checked' );
+	} );
+
 	it( 'Checks paywall appearance defaults', () => {
 		// Checks the button text and link deafults
 		checkTextInputs( '', '', '', '' );
@@ -109,7 +173,7 @@ describe( 'Exclusive Content settings tab', () => {
 			.should( 'be.visible' );
 	} );
 
-	it( 'Checks Exclusive Post Appearance defaults', () => {
+	it( 'Checks Exclusive Icon Appearance defaults', () => {
 		cy
 			.get( '#coil_title_padlock' )
 			.should( 'be.checked' );
@@ -154,7 +218,7 @@ describe( 'Exclusive Content settings tab', () => {
 		checkIconOptionsVisibility( 'hidden' );
 	} );
 
-	it( 'Checks Exclusive Post Appearance settings can be changed', () => {
+	it( 'Checks Exclusive Icon Appearance settings can be changed', () => {
 		cy
 			.get( '#padlock_icon_position_after' )
 			.click();
@@ -173,70 +237,6 @@ describe( 'Exclusive Content settings tab', () => {
 
 		cy
 			.get( '#coil_padlock_icon_style_coil_icon' )
-			.should( 'be.checked' );
-	} );
-
-	it( 'Checks Exclusive Content visibility defaults', () => {
-		cy
-			.get( '#post_visibility_public' )
-			.should( 'be.checked' );
-
-		cy
-			.get( '#page_visibility_public' )
-			.should( 'be.checked' );
-	} );
-
-	it( 'Checks Exclusive Content visibility settings can be changed', () => {
-		cy
-			.get( '#post_visibility_exclusive' )
-			.click();
-
-		cy
-			.get( '#page_visibility_exclusive' )
-			.click();
-
-		cy
-			.get( '#submit' )
-			.click();
-
-		cy
-			.get( '#post_visibility_exclusive' )
-			.should( 'be.checked' );
-
-		cy
-			.get( '#page_visibility_exclusive' )
-			.should( 'be.checked' );
-	} );
-
-	it( 'Checks Excerpt Settings defaults', () => {
-		cy
-			.get( '#post_excerpt' )
-			.should( 'not.be.checked' );
-
-		cy
-			.get( '#page_excerpt' )
-			.should( 'not.be.checked' );
-	} );
-
-	it( 'Checks Excerpt Settings can be changed', () => {
-		cy
-			.get( '#post_excerpt' )
-			.click();
-
-		cy
-			.get( '#page_excerpt' )
-			.click();
-
-		cy
-			.get( '#submit' )
-			.click();
-
-		cy
-			.get( '#post_excerpt' )
-			.should( 'be.checked' );
-
-		cy
-			.get( '#page_excerpt' )
 			.should( 'be.checked' );
 	} );
 } );

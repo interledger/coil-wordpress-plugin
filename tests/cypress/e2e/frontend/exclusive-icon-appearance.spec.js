@@ -1,24 +1,24 @@
 /**
- * Exclusive post settings.
+ * Exclusive icon settings.
 */
 
-describe( 'Exclusive post appearance test', () => {
+describe( 'Exclusive icon appearance test', () => {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
 		cy.resetSite();
 	} );
 
-	it( 'Checks padlock settings', () => {
-		// Padlock should not display when disabled
-		togglePadlock( 'uncheck' );
+	it( 'Checks icon settings', () => {
+		// Icons should not display when disabled
+		toggleIconDisplay( 'uncheck' );
 
 		cy.visit( '/coil-members-only/' );
 		cy
 			.get( '.entry-title > svg' )
 			.should( 'not.exist' );
 
-		// Padlock should display when enabled
-		togglePadlock( 'check' );
+		// Icons should display when enabled
+		toggleIconDisplay( 'check' );
 
 		cy.visit( '/coil-members-only/' );
 		cy
@@ -26,8 +26,8 @@ describe( 'Exclusive post appearance test', () => {
 			.should( 'exist' );
 	} );
 
-	it( 'check that no padlock is added when exclusive content has been disabled.', function() {
-		// Ensure exclusive content is disabled and the padlock display is enabled
+	it( 'check that no icon is added when exclusive content has been disabled.', function() {
+		// Ensure exclusive content is disabled and the icon display is enabled
 		cy.addSetting( 'coil_exclusive_settings_group', [
 			{
 				key: 'coil_exclusive_toggle',
@@ -41,7 +41,7 @@ describe( 'Exclusive post appearance test', () => {
 
 		cy.visit( '/coil-members-only/' );
 
-		// Even though the padlock is enabled it should not be displayed.
+		// Even though the icon is enabled it should not be displayed.
 		cy
 			.get( '.entry-title > svg' )
 			.should( 'not.exist' );
@@ -49,11 +49,11 @@ describe( 'Exclusive post appearance test', () => {
 } );
 
 /**
- * Checks or unchecks the display padlock option
+ * Checks or unchecks the display icon option
  *
- * @param {('check'|'uncheck')} checkboxState state for the padlock display
+ * @param {('check'|'uncheck')} checkboxState state for the icon display
  */
-function togglePadlock( checkboxState ) {
+function toggleIconDisplay( checkboxState ) {
 	cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );
 
 	switch ( checkboxState ) {
