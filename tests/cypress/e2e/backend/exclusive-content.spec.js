@@ -9,6 +9,16 @@ describe( 'Exclusive Content settings tab', () => {
 		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );
 	} );
 
+	it( 'checks the css selector sugestor is working', () => {
+		// click the button causing the confirm to fire
+		cy.get( '#css_selector_button' ).click();
+
+		cy.on( 'window:confirm', ( text ) => {
+			expect( text ).to.eq( 'Would you like to set your CSS selector to main .entry-content?' );
+			cy.log( text );
+		} );
+	} );
+
 	it( 'Checks that the default visibility is preset to public', () => {
 		cy
 			.get( '#post_visibility_public' )

@@ -9,6 +9,38 @@ describe( 'Streaming support widget settings tab', () => {
 		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=streaming_widget' );
 	} );
 
+	it( 'Checks streaming support widget visibility defaults', () => {
+		cy
+			.get( '#post_streaming_widget_visibility_show' )
+			.should( 'be.checked' );
+
+		cy
+			.get( '#page_streaming_widget_visibility_show' )
+			.should( 'be.checked' );
+	} );
+
+	it( 'Checks streaming support widget visibility settings can be changed', () => {
+		cy
+			.get( '#post_streaming_widget_visibility_hide' )
+			.click();
+
+		cy
+			.get( '#page_streaming_widget_visibility_hide' )
+			.click();
+
+		cy
+			.get( '#submit' )
+			.click();
+
+		cy
+			.get( '#post_streaming_widget_visibility_hide' )
+			.should( 'be.checked' );
+
+		cy
+			.get( '#page_streaming_widget_visibility_hide' )
+			.should( 'be.checked' );
+	} );
+
 	it( 'Checks streaming support widget setting defaults', () => {
 		// Checks the widget text and link deafults
 		checkWidgetText( '', '', '' );
@@ -128,38 +160,6 @@ describe( 'Streaming support widget settings tab', () => {
 			.should( 'have.value', 'top-left' );
 
 		checkWidgetMargins( '0px', '', '', '5px' );
-	} );
-
-	it( 'Checks streaming support widget visibility defaults', () => {
-		cy
-			.get( '#post_streaming_widget_visibility_show' )
-			.should( 'be.checked' );
-
-		cy
-			.get( '#page_streaming_widget_visibility_show' )
-			.should( 'be.checked' );
-	} );
-
-	it( 'Checks streaming support widget visibility settings can be changed', () => {
-		cy
-			.get( '#post_streaming_widget_visibility_hide' )
-			.click();
-
-		cy
-			.get( '#page_streaming_widget_visibility_hide' )
-			.click();
-
-		cy
-			.get( '#submit' )
-			.click();
-
-		cy
-			.get( '#post_streaming_widget_visibility_hide' )
-			.should( 'be.checked' );
-
-		cy
-			.get( '#page_streaming_widget_visibility_hide' )
-			.should( 'be.checked' );
 	} );
 } );
 
