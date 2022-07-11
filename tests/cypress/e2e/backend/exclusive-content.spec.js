@@ -9,6 +9,8 @@ describe( 'Exclusive Content settings tab', () => {
 		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );
 	} );
 
+	// TODO: cross origin issue because importing posts with baseUrl 127.0.0.1
+	// Might work in Circle CI though.
 	it( 'checks the css selector sugestor is working', () => {
 		// click the button causing the confirm to fire
 		cy.get( '#css_selector_button' ).click();
