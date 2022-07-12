@@ -9,16 +9,15 @@ describe( 'Exclusive Content settings tab', () => {
 		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );
 	} );
 
-	// TODO: cross origin issue because importing posts with baseUrl 127.0.0.1
-	// Might work in Circle CI though.
-	it( 'checks the css selector sugestor is working', () => {
-		// click the button causing the confirm to fire
-		cy.get( '#css_selector_button' ).click();
-
+	it.only( 'checks the css selector sugestor is working', () => {
 		cy.on( 'window:confirm', ( text ) => {
-			expect( text ).to.eq( 'Would you like to set your CSS selector to main .entry-content?' );
-			cy.log( text );
+			expect( text ).to.contains( 'Would you like to set your CSS selector to' );
+			return true;
 		} );
+		cy.get( '#css_selector_button' ).click();
+		// The assertion above doesn't fail the test as it should when it fails.
+		// To be safe the changed value needs to be explicitly checked.
+		cy.get( '#coil_content_container' ).should( 'have.value', 'main .entry-content' );
 	} );
 
 	it( 'Checks that the default visibility is preset to public', () => {

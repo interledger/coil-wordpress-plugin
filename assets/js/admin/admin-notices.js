@@ -596,8 +596,14 @@
 	$( document ).on( 'click', '#css_selector_button', function( e ) {
 		e.preventDefault();
 
+		// When posts are imported their GUID doesn't have the question mark to separate the query yet.
+		let postUrl = coilAdminParams.latest_post;
+		if ( ! postUrl.includes( '?' ) ) {
+			postUrl = postUrl + '?';
+		}
+
 		$.get(
-			coilAdminParams.latest_post + '&coil-get-css-selector=1',
+			postUrl + '&coil-get-css-selector=1',
 			function( data ) {
 				const postContent = $( data ).find( '#coil-content' ),
 					postContainer = postContent.length > 0 ? postContent.parent() : false,

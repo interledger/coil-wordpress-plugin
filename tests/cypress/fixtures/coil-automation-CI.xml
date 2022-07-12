@@ -27,13 +27,13 @@
 
 <channel>
 	<title>coil</title>
-	<link>http://127.0.0.1:80</link>
+	<link>127.0.0.1:80</link>
 	<description>Just another WordPress site</description>
 	<pubDate>Mon, 06 Dec 2021 11:08:53 +0000</pubDate>
 	<language>en-US</language>
 	<wp:wxr_version>1.2</wp:wxr_version>
-	<wp:base_site_url>http://127.0.0.1:80</wp:base_site_url>
-	<wp:base_blog_url>http://127.0.0.1:80</wp:base_blog_url>
+	<wp:base_site_url>127.0.0.1:80</wp:base_site_url>
+	<wp:base_blog_url>127.0.0.1:80</wp:base_blog_url>
 
 		<wp:author><wp:author_id>1</wp:author_id><wp:author_login><![CDATA[admin]]></wp:author_login><wp:author_email><![CDATA[dev-email@flywheel.local]]></wp:author_email><wp:author_display_name><![CDATA[admin]]></wp:author_display_name><wp:author_first_name><![CDATA[]]></wp:author_first_name><wp:author_last_name><![CDATA[]]></wp:author_last_name></wp:author>
 
@@ -55,10 +55,10 @@
 
 		<item>
 		<title><![CDATA[Hello world!]]></title>
-		<link>http://127.0.0.1:80/hello-world/</link>
+		<link>127.0.0.1:80/hello-world/</link>
 		<pubDate>Mon, 06 Dec 2021 10:46:16 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?p=1</guid>
+		<guid isPermaLink="false">127.0.0.1:80/?p=1</guid>
 		<description></description>
 		<content:encoded><![CDATA[<!-- wp:paragraph -->
 <p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>
@@ -98,10 +98,10 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 					</item>
 					<item>
 		<title><![CDATA[Block Visibility]]></title>
-		<link>http://127.0.0.1:80/block-visibility/</link>
+		<link>127.0.0.1:80/block-visibility/</link>
 		<pubDate>Mon, 06 Dec 2021 10:58:30 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?p=6</guid>
+		<guid isPermaLink="false">127.0.0.1:80/?p=6</guid>
 		<description></description>
 		<content:encoded><![CDATA[<!-- wp:paragraph -->
 <p>This block is public.</p>
@@ -141,10 +141,10 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 							</item>
 					<item>
 		<title><![CDATA[No Monetization]]></title>
-		<link>http://127.0.0.1:80/no-monetization/</link>
+		<link>127.0.0.1:80/no-monetization/</link>
 		<pubDate>Mon, 06 Dec 2021 10:59:00 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?p=8</guid>
+		<guid isPermaLink="false">127.0.0.1:80/?p=8</guid>
 		<description></description>
 		<content:encoded><![CDATA[<!-- wp:paragraph -->
 <p>Everything is visible in this post with no monetization.</p>
@@ -180,10 +180,10 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 							</item>
 					<item>
 		<title><![CDATA[Coil Members Only]]></title>
-		<link>http://127.0.0.1:80/coil-members-only/</link>
+		<link>127.0.0.1:80/coil-members-only/</link>
 		<pubDate>Mon, 06 Dec 2021 10:59:33 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?p=10</guid>
+		<guid isPermaLink="false">127.0.0.1:80/?p=10</guid>
 		<description></description>
 		<content:encoded><![CDATA[<!-- wp:paragraph -->
 <p>This is a test post for the Coil Members Only state.</p>
@@ -219,10 +219,10 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 							</item>
 					<item>
 		<title><![CDATA[Excerpt Post]]></title>
-		<link>http://127.0.0.1:80/excerpt-post/</link>
+		<link>127.0.0.1:80/excerpt-post/</link>
 		<pubDate>Mon, 06 Dec 2021 11:00:00 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?p=12</guid>
+		<guid isPermaLink="false">127.0.0.1:80/?p=12</guid>
 		<description></description>
 		<content:encoded><![CDATA[<!-- wp:paragraph -->
 <p>This content should be visible as an excerpt.</p>
@@ -258,10 +258,10 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 							</item>
 					<item>
 		<title><![CDATA[Monetized and Public]]></title>
-		<link>http://127.0.0.1:80/monetized-and-public/</link>
+		<link>127.0.0.1:80/monetized-and-public/</link>
 		<pubDate>Mon, 06 Dec 2021 11:01:06 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?p=14</guid>
+		<guid isPermaLink="false">127.0.0.1:80/?p=14</guid>
 		<description></description>
 		<content:encoded><![CDATA[<!-- wp:paragraph -->
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
@@ -293,10 +293,10 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 							</item>
 					<item>
 		<title><![CDATA[Default Status Post]]></title>
-		<link>http://127.0.0.1:80/default-status-post/</link>
+		<link>127.0.0.1:80/default-status-post/</link>
 		<pubDate>Mon, 06 Dec 2021 11:01:34 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?p=16</guid>
+		<guid isPermaLink="false">127.0.0.1:80/?p=16</guid>
 		<description></description>
 		<content:encoded><![CDATA[<!-- wp:paragraph -->
 <p>This post reflects the default monetization state.</p>
@@ -324,10 +324,10 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 						</item>
 					<item>
 		<title><![CDATA[Post Visibility]]></title>
-		<link>http://127.0.0.1:80/post-visibility/</link>
+		<link>127.0.0.1:80/post-visibility/</link>
 		<pubDate>Mon, 06 Dec 2021 11:01:51 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?p=18</guid>
+		<guid isPermaLink="false">127.0.0.1:80/?p=18</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
@@ -349,10 +349,10 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 						</item>
 					<item>
 		<title><![CDATA[Block Visibility Page]]></title>
-		<link>http://127.0.0.1:80/block-visibility-page/</link>
+		<link>127.0.0.1:80/block-visibility-page/</link>
 		<pubDate>Mon, 06 Dec 2021 11:02:57 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?page_id=22</guid>
+		<guid isPermaLink="false">127.0.0.1:80/?page_id=22</guid>
 		<description></description>
 		<content:encoded><![CDATA[<!-- wp:paragraph -->
 <p id="block-37194f9d-bf3d-4c32-863e-dd0465f9cedb"><br>This block is public.</p>
@@ -391,10 +391,10 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 							</item>
 					<item>
 		<title><![CDATA[No Monetization Page]]></title>
-		<link>http://127.0.0.1:80/no-monetization-page/</link>
+		<link>127.0.0.1:80/no-monetization-page/</link>
 		<pubDate>Mon, 06 Dec 2021 11:03:21 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?page_id=24</guid>
+		<guid isPermaLink="false">127.0.0.1:80/?page_id=24</guid>
 		<description></description>
 		<content:encoded><![CDATA[<!-- wp:paragraph -->
 <p>Everything is visible in this post with no monetization.</p>
@@ -429,10 +429,10 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 							</item>
 					<item>
 		<title><![CDATA[Coil Members Only Page]]></title>
-		<link>http://127.0.0.1:80/coil-members-only-page/</link>
+		<link>127.0.0.1:80/coil-members-only-page/</link>
 		<pubDate>Mon, 06 Dec 2021 11:03:45 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?page_id=26</guid>
+		<guid isPermaLink="false">127.0.0.1:80/?page_id=26</guid>
 		<description></description>
 		<content:encoded><![CDATA[<!-- wp:paragraph -->
 <p>This is a test post for the Coil Members Only state.</p>
@@ -467,10 +467,10 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 							</item>
 					<item>
 		<title><![CDATA[Excerpt Page]]></title>
-		<link>http://127.0.0.1:80/excerpt-page/</link>
+		<link>127.0.0.1:80/excerpt-page/</link>
 		<pubDate>Mon, 06 Dec 2021 11:04:10 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?page_id=28</guid>
+		<guid isPermaLink="false">127.0.0.1:80/?page_id=28</guid>
 		<description></description>
 		<content:encoded><![CDATA[<!-- wp:paragraph -->
 <p>This content should be visible as an excerpt.</p>
@@ -505,10 +505,10 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 							</item>
 					<item>
 		<title><![CDATA[Monetized and Public Page]]></title>
-		<link>http://127.0.0.1:80/monetized-and-public-page/</link>
+		<link>127.0.0.1:80/monetized-and-public-page/</link>
 		<pubDate>Mon, 06 Dec 2021 11:04:34 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?page_id=30</guid>
+		<guid isPermaLink="false">127.0.0.1:80/?page_id=30</guid>
 		<description></description>
 		<content:encoded><![CDATA[<!-- wp:paragraph -->
 <p>enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
@@ -539,10 +539,10 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 							</item>
 					<item>
 		<title><![CDATA[Default Status Page]]></title>
-		<link>http://127.0.0.1:80/default-status-page/</link>
+		<link>127.0.0.1:80/default-status-page/</link>
 		<pubDate>Mon, 06 Dec 2021 11:05:32 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?page_id=32</guid>
+		<guid isPermaLink="false">127.0.0.1:80/?page_id=32</guid>
 		<description></description>
 		<content:encoded><![CDATA[<!-- wp:paragraph -->
 <p>This page reflects the default Coil settings for monetization and visibility.</p>
@@ -569,10 +569,10 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.]]></wp:
 														</item>
 					<item>
 		<title><![CDATA[Page Visibility]]></title>
-		<link>http://127.0.0.1:80/page-visibility/</link>
+		<link>127.0.0.1:80/page-visibility/</link>
 		<pubDate>Mon, 06 Dec 2021 11:08:00 +0000</pubDate>
 		<dc:creator><![CDATA[admin]]></dc:creator>
-		<guid isPermaLink="false">http://127.0.0.1:80/?page_id=34</guid>
+		<guid isPermaLink="false">127.0.0.1:80/?page_id=34</guid>
 		<description></description>
 		<content:encoded><![CDATA[]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
