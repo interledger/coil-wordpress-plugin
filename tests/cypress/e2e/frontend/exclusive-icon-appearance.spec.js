@@ -14,7 +14,7 @@ describe( 'Exclusive icon appearance test', () => {
 
 		cy.visit( '/coil-members-only/' );
 		cy
-			.get( '.entry-title > svg' )
+			.get( 'h1 > svg' )
 			.should( 'not.exist' );
 
 		// Icons should display when enabled
@@ -22,7 +22,7 @@ describe( 'Exclusive icon appearance test', () => {
 
 		cy.visit( '/coil-members-only/' );
 		cy
-			.get( '.entry-title > svg' )
+			.get( 'h1 > svg' )
 			.should( 'exist' );
 	} );
 
@@ -43,7 +43,7 @@ describe( 'Exclusive icon appearance test', () => {
 
 		// Even though the icon is enabled it should not be displayed.
 		cy
-			.get( '.entry-title > svg' )
+			.get( 'h1 > svg' )
 			.should( 'not.exist' );
 	} );
 } );
