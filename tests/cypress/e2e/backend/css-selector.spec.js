@@ -2,8 +2,6 @@
  * CSS selector tests.
 */
 
-const red = 'rgb(238, 72, 82)';
-
 describe( 'Plugin Settings Panel', function() {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
@@ -42,19 +40,19 @@ describe( 'Plugin Settings Panel', function() {
 			.get( '#coil_content_container' )
 			.type( `{selectall}${ '   ' }` );
 
-		checkForInvalidAlert( true );
+		cy.checkForInvalidAlert( true, '#coil_content_container' );
 
 		cy
 			.get( '#coil_content_container' )
 			.type( '.' );
 
-		checkForInvalidAlert( false );
+		cy.checkForInvalidAlert( false, '#coil_content_container' );
 
 		cy
 			.get( '#coil_content_container' )
 			.clear();
 
-		checkForInvalidAlert( false );
+		cy.checkForInvalidAlert( false, '#coil_content_container' );
 	} );
 
 	it( 'checks that when the CSS input is removed it saves as the deafualt value', () => {
@@ -69,28 +67,3 @@ describe( 'Plugin Settings Panel', function() {
 			.should( 'have.value', '.content-area .entry-content, main .entry-content' );
 	} );
 } );
-
-/**
- * Checks the border color and appearance of the helper text
- * to determine if the invalid alert is active.
- *  @param {bool} active specifies whether the alert should be active or not.
-*/
-function checkForInvalidAlert( active ) {
-	if ( active ) {
-		cy
-			.get( '#coil_content_container' )
-			.should( 'have.css', 'border-color', red );
-
-		cy
-			.get( '.invalid-input' )
-			.should( 'be.visible' );
-	} else {
-		cy
-			.get( '#coil_content_container' )
-			.should( 'not.have.attr', 'style' );
-
-		cy
-			.get( '.invalid-input' )
-			.should( 'not.exist' );
-	}
-}

@@ -76,6 +76,62 @@ describe( 'Paywall settings', () => {
 			.should( 'be.checked' );
 	} );
 
+	it( 'Checks the paywall title and message input can be blank', () => {
+		cy
+			.get( '#coil_paywall_title' )
+			.type( `{selectall}${ ' ' }` )
+			.blur();
+		cy
+			.get( '#coil_paywall_message' )
+			.type( `{selectall}${ ' ' }` )
+			.blur();
+
+		// Title and message can be blank
+		cy.checkForInvalidAlert( false, '#coil_paywall_title' );
+		cy.checkForInvalidAlert( false, '#coil_paywall_message' );
+	} );
+
+	it( 'Checks the paywall button text cannot be blank', () => {
+		cy
+			.get( '#coil_paywall_button_text' )
+			.type( `{selectall}${ ' ' }` )
+			.blur();
+
+		// Button text cannot be blank
+		cy.checkForInvalidAlert( true, '#coil_paywall_button_text' );
+	} );
+
+	it( 'Checks the paywall button link is validated', () => {
+		cy
+			.get( '#coil_paywall_button_link' )
+			.type( `{selectall}${ ' ' }` )
+			.blur();
+
+		// Button link cannot be white space
+		cy.checkForInvalidAlert( true, '#coil_paywall_button_link' );
+
+		cy
+			.get( '#coil_paywall_button_link' )
+			.clear();
+
+		cy.checkForInvalidAlert( false, '#coil_paywall_button_link' );
+
+		cy
+			.get( '#coil_paywall_button_link' )
+			.type( `{selectall}${ 'a.' }` )
+			.blur();
+
+		// Button link must have something dot something
+		cy.checkForInvalidAlert( true, '#coil_paywall_button_link' );
+
+		cy
+			.get( '#coil_paywall_button_link' )
+			.type( 'a' )
+			.blur();
+
+		cy.checkForInvalidAlert( false, '#coil_paywall_button_link' );
+	} );
+
 	it( 'Checks that link to Appearance Settings only appears when site_logo is selected', () => {
 		cy
 			.get( '.set-site-logo-description' )
@@ -107,6 +163,81 @@ describe( 'Paywall settings', () => {
 		cy
 			.get( '.set-site-logo-description' )
 			.should( 'be.visible' );
+	} );
+
+	it( 'Checks the paywall preview defaults', () => {
+		cy
+			.get( '.coil-paywall-container h3' )
+			.should( 'contain', 'Keep Reading with Coil' );
+
+		cy
+			.get( '.coil-paywall-container p' )
+			.should( 'contain', 'We partnered with Coil to offer exclusive content. Access this and other great content with a Coil membership.' );
+
+		cy
+			.get( '.coil-paywall-container a' )
+			.should( 'contain', 'Become a Coil Member' );
+
+		cy
+			.get( '.coil-paywall-container' )
+			.should( 'have.attr', 'data-theme' )
+			.and( 'equal', 'light' );
+
+		cy
+			.get( '.coil-paywall-container img.coil_logo' )
+			.should( 'exist' );
+	} );
+
+	it( 'Checks that the paywall preview displays correctly', () => {
+		const title = 'Coil Eyes Only';
+		const message = ' ';
+		const buttonText = 'Coil Eyes Only';
+
+		cy.addSetting( 'coil_exclusive_settings_group', [
+			{
+				key: 'coil_paywall_title',
+				value: title,
+			},
+			{
+				key: 'coil_paywall_message',
+				value: message,
+			},
+			{
+				key: 'coil_paywall_button_text',
+				value: buttonText,
+			},
+			{
+				key: 'coil_message_color_theme',
+				value: 'dark',
+			},
+			{
+				key: 'coil_message_branding',
+				value: 'no_logo',
+			},
+		] );
+
+		cy.reload();
+
+		cy
+			.get( '.coil-paywall-container h3' )
+			.should( 'contain', title );
+
+		cy
+			.get( '.coil-paywall-container p' )
+			.should( 'contain', message );
+
+		cy
+			.get( '.coil-paywall-container a' )
+			.should( 'contain', buttonText );
+
+		cy
+			.get( '.coil-paywall-container' )
+			.should( 'have.attr', 'data-theme' )
+			.and( 'equal', 'dark' );
+
+		cy
+			.get( '.coil-paywall-container img.no_logo' )
+			.should( 'have.attr', 'style', 'display: none;' );
 	} );
 } );
 

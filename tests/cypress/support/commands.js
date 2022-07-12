@@ -112,3 +112,31 @@ Cypress.Commands.add( 'resetSite', () => {
 	cy.exec( 'wp import cypress/fixtures/coil-automation-CI.xml --authors=create  --allow-root' );
 	cy.exec( 'wp rewrite structure \'/%postname%/\' --allow-root' );
 } );
+
+/**
+ * Checks the border color and appearance of the helper text
+ * to determine if the invalid alert is active.
+ *  @param {bool} isInvalid specifies whether the alert should be active or not.
+ *  @param {String} inputSelector specifies the input element.
+*/
+Cypress.Commands.add( 'checkForInvalidAlert', ( isInvalid, inputSelector ) => {
+	const red = 'rgb(238, 72, 82)';
+
+	if ( isInvalid ) {
+		cy
+			.get( inputSelector )
+			.should( 'have.css', 'border-color', red );
+
+		cy
+			.get( '.invalid-input' )
+			.should( 'be.visible' );
+	} else {
+		cy
+			.get( inputSelector )
+			.should( 'not.have.attr', 'style' );
+
+		cy
+			.get( '.invalid-input' )
+			.should( 'not.exist' );
+	}
+} );
