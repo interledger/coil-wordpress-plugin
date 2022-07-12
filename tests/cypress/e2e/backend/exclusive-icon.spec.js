@@ -23,6 +23,17 @@ describe( 'Exclusive icon settings', () => {
 			.should( 'be.checked' );
 	} );
 
+	it( 'Checks the icon preview', () => {
+		cy.get( '.coil-preview svg' ).then( ( $previewIcon ) => {
+			cy.get( '[for="coil_padlock_icon_style_lock"] > svg' ).then( ( $icon ) => {
+				const s = new XMLSerializer();
+				const previewSvg = s.serializeToString( $previewIcon[ 0 ] );
+				const lockIconSvg = s.serializeToString( $icon[ 0 ] );
+				expect( previewSvg === lockIconSvg ).to.be.true; // eslint-disable-line no-unused-expressions
+			} );
+		} );
+	} );
+
 	it( 'Checks that the icon options are shown or hidden depending on whether the title icon is selected', () => {
 		// By default the icon is displayed to members.
 		checkIconOptionsVisibility( 'show' );
