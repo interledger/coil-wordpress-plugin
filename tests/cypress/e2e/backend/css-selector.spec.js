@@ -25,7 +25,7 @@ describe( 'Plugin Settings Panel', function() {
 		cy.get( '.notice' ).should( 'have.class', 'notice-success' );
 	} );
 
-	it( 'checks the css selector sugestor is working', () => {
+	it( 'checks the CSS selector sugestor is working', () => {
 		cy.on( 'window:confirm', ( text ) => {
 			expect( text ).to.contains( 'Would you like to set your CSS selector to' );
 			return true;
@@ -35,6 +35,38 @@ describe( 'Plugin Settings Panel', function() {
 		// To be safe the changed value needs to be explicitly checked.
 		// Note: this test assumes the Twenty Twenty-Two theme
 		cy.get( '#coil_content_container' ).should( 'have.value', 'main .entry-content' );
+	} );
+
+	it( 'checks that the CSS input cannot be filled with whitespace', () => {
+		cy
+			.get( '#coil_content_container' )
+			.type( `{selectall}${ '   ' }` );
+
+		checkForInvalidAlert( true );
+
+		cy
+			.get( '#coil_content_container' )
+			.type( '.' );
+
+		checkForInvalidAlert( false );
+
+		cy
+			.get( '#coil_content_container' )
+			.clear();
+
+		checkForInvalidAlert( false );
+	} );
+
+	it( 'checks that when the CSS input is removed it saves as the deafualt value', () => {
+		cy
+			.get( '#coil_content_container' )
+			.clear();
+
+		cy.get( '#submit' ).click();
+
+		cy
+			.get( '#coil_content_container' )
+			.should( 'have.value', '.content-area .entry-content, main .entry-content' );
 	} );
 } );
 
