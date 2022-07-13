@@ -253,6 +253,52 @@ describe( 'Streaming support widget settings', () => {
 			.contains( 'Thanks for your support!' )
 			.should( 'not.be.visible' );
 	} );
+
+	it( 'Checks the widget message input can be blank', () => {
+		cy
+			.get( '#streaming_widget_text' )
+			.type( `{selectall}${ ' ' }` )
+			.blur();
+		cy
+			.get( '#members_streaming_widget_text' )
+			.type( `{selectall}${ ' ' }` )
+			.blur();
+
+		// Message can be blank
+		cy.checkForInvalidAlert( false, '#streaming_widget_text' );
+		cy.checkForInvalidAlert( false, '#members_streaming_widget_text' );
+	} );
+
+	it( 'Checks the widget link is validated', () => {
+		cy
+			.get( '#streaming_widget_link' )
+			.type( `{selectall}${ '  ' }` )
+			.blur();
+
+		// Widget link cannot be blank
+		cy.checkForInvalidAlert( true, '#streaming_widget_link' );
+
+		cy
+			.get( '#streaming_widget_link' )
+			.clear();
+
+		cy.checkForInvalidAlert( false, '#streaming_widget_link' );
+
+		cy
+			.get( '#streaming_widget_link' )
+			.type( `{selectall}${ ' example' }` )
+			.blur();
+
+		// Button link must have something dot something
+		cy.checkForInvalidAlert( true, '#streaming_widget_link' );
+
+		cy
+			.get( '#streaming_widget_link' )
+			.type( '.com' )
+			.blur();
+
+		cy.checkForInvalidAlert( false, '#streaming_widget_link' );
+	} );
 } );
 
 /**
@@ -326,5 +372,9 @@ function checkMemberWidgetOptionsVisibility( visibilityStatus ) {
 
 	cy
 		.get( '#members_streaming_widget_text' )
+		.should( assertion );
+
+	cy
+		.get( '.coil-preview.coil-members' )
 		.should( assertion );
 }
