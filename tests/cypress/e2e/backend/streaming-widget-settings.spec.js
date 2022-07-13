@@ -129,6 +129,112 @@ describe( 'Streaming support widget settings', () => {
 
 		checkWidgetMargins( '0px', '', '', '5px' );
 	} );
+
+	it( 'Checks the widget preview defaults', () => {
+		cy
+			.get( '.coil-preview.coil-non-members .streaming-widget' )
+			.contains( 'Support us with Coil' )
+			.should( 'be.visible' );
+
+		cy
+			.get( '.coil-preview.coil-non-members .streaming-widget' )
+			.should( 'have.attr', 'data-theme' )
+			.and( 'equal', 'dark' );
+
+		cy
+			.get( '.coil-preview.coil-non-members .streaming-widget' )
+			.and( 'have.attr', 'data-position' )
+			.and( 'equal', 'bottom-right' );
+
+		cy
+			.get( '.coil-preview.coil-non-members .streaming-widget' )
+			.and( 'have.attr', 'data-size' )
+			.and( 'equal', 'large' );
+
+		cy
+			.get( '.coil-preview.coil-members .streaming-widget' )
+			.contains( 'Thanks for your support!' )
+			.should( 'be.visible' );
+
+		cy
+			.get( '.coil-preview.coil-members .streaming-widget' )
+			.should( 'have.attr', 'data-theme' )
+			.and( 'equal', 'dark' );
+
+		cy
+			.get( '.coil-preview.coil-members .streaming-widget' )
+			.and( 'have.attr', 'data-position' )
+			.and( 'equal', 'bottom-right' );
+
+		cy
+			.get( '.coil-preview.coil-members .streaming-widget' )
+			.and( 'have.attr', 'data-size' )
+			.and( 'equal', 'large' );
+	} );
+
+	it( 'Checks that the widget preview reacts correctly', () => {
+		cy
+			.get( '#streaming_widget_text' )
+			.type( `{selectall}${ 'Sign up with Coil' }` );
+
+		cy
+			.get( '#members_streaming_widget_text' )
+			.type( `{selectall}${ 'Thanks!' }` );
+
+		cy
+			.get( '#light_color_theme' )
+			.click();
+
+		cy
+			.get( '#small_size' )
+			.click();
+
+		cy
+			.get( '#position_dropdown' )
+			.select( 'top-left' );
+
+		cy.get( '#submit' ).click();
+
+		cy
+			.get( '.coil-preview.coil-non-members .streaming-widget' )
+			.contains( 'Sign up with Coil' )
+			.should( 'be.visible' );
+
+		cy
+			.get( '.coil-preview.coil-non-members .streaming-widget' )
+			.should( 'have.attr', 'data-theme' )
+			.and( 'equal', 'light' );
+
+		cy
+			.get( '.coil-preview.coil-non-members .streaming-widget' )
+			.and( 'have.attr', 'data-position' )
+			.and( 'equal', 'top-left' );
+
+		cy
+			.get( '.coil-preview.coil-non-members .streaming-widget' )
+			.and( 'have.attr', 'data-size' )
+			.and( 'equal', 'small' );
+
+		cy
+			.get( '.coil-preview.coil-members .streaming-widget' )
+			.contains( 'Thanks!' )
+			.should( 'be.visible' );
+
+		cy
+			.get( '.coil-preview.coil-members .streaming-widget' )
+			.should( 'have.attr', 'data-theme' )
+			.and( 'equal', 'light' );
+
+		cy
+			.get( '.coil-preview.coil-members .streaming-widget' )
+			.and( 'have.attr', 'data-position' )
+			.and( 'equal', 'top-left' );
+
+		cy
+			.get( '.coil-preview.coil-members .streaming-widget' )
+			.and( 'have.attr', 'data-size' )
+			.and( 'equal', 'small' );
+	} );
 } );
 
 /**
