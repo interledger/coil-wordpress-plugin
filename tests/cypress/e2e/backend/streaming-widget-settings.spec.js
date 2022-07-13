@@ -193,8 +193,6 @@ describe( 'Streaming support widget settings', () => {
 			.get( '#position_dropdown' )
 			.select( 'top-left' );
 
-		cy.get( '#submit' ).click();
-
 		cy
 			.get( '.coil-preview.coil-non-members .streaming-widget' )
 			.contains( 'Sign up with Coil' )
@@ -234,6 +232,26 @@ describe( 'Streaming support widget settings', () => {
 			.get( '.coil-preview.coil-members .streaming-widget' )
 			.and( 'have.attr', 'data-size' )
 			.and( 'equal', 'small' );
+
+		cy.reload();
+
+		cy
+			.get( '#streaming_widget_text' )
+			.type( `{selectall}${ ' ' }` );
+
+		cy
+			.get( '#members_streaming_widget_text' )
+			.type( `{selectall}${ ' ' }` );
+
+		cy
+			.get( '.coil-preview.coil-non-members .streaming-widget' )
+			.contains( 'Support us with Coil' )
+			.should( 'not.be.visible' );
+
+		cy
+			.get( '.coil-preview.coil-members .streaming-widget' )
+			.contains( 'Thanks for your support!' )
+			.should( 'not.be.visible' );
 	} );
 } );
 
