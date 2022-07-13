@@ -188,7 +188,7 @@ describe( 'Paywall settings', () => {
 			.should( 'exist' );
 	} );
 
-	it( 'Checks that the paywall preview displays correctly', () => {
+	it( 'Checks that the paywall preview reacts correctly', () => {
 		const title = 'Coil Eyes Only';
 		const message = ' ';
 		const buttonText = 'Coil Eyes Only';
