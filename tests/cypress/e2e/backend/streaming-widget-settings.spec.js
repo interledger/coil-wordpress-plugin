@@ -299,6 +299,76 @@ describe( 'Streaming support widget settings', () => {
 
 		cy.checkForInvalidAlert( false, '#streaming_widget_link' );
 	} );
+
+	it( 'Checks the widget margin inputs are validated', () => {
+		cy
+			.get( '#streaming_widget_bottom_margin' )
+			.type( `{selectall}${ '   ' }` )
+			.blur();
+
+		cy.checkForInvalidAlert( true, '#streaming_widget_bottom_margin' );
+
+		cy
+			.get( '#streaming_widget_bottom_margin' )
+			.type( `{selectall}${ '32' }` )
+			.blur();
+
+		cy.checkForInvalidAlert( false, '#streaming_widget_bottom_margin' );
+
+		cy
+			.get( '#streaming_widget_bottom_margin' )
+			.type( 'aa' )
+			.blur();
+
+		cy.checkForInvalidAlert( true, '#streaming_widget_bottom_margin' );
+
+		cy
+			.get( '#streaming_widget_bottom_margin' )
+			.type( `{selectall}${ '32px' }` )
+			.blur();
+
+		cy.checkForInvalidAlert( false, '#streaming_widget_bottom_margin' );
+	} );
+
+	it.only( 'Checks the correct margin boxes display', () => {
+		cy
+			.get( '#streaming_widget_bottom_margin' )
+			.should( 'be.visible' );
+
+		cy
+			.get( '#streaming_widget_right_margin' )
+			.should( 'be.visible' );
+
+		cy
+			.get( '#streaming_widget_top_margin' )
+			.should( 'not.be.visible' );
+
+		cy
+			.get( '#streaming_widget_left_margin' )
+			.should( 'not.be.visible' );
+
+		cy
+			.get( '#position_dropdown' )
+			.select( 'top-left' );
+
+
+
+		cy
+			.get( '#streaming_widget_bottom_margin' )
+			.should( 'not.be.visible' );
+
+		cy
+			.get( '#streaming_widget_right_margin' )
+			.should( 'not.be.visible' );
+
+		cy
+			.get( '#streaming_widget_top_margin' )
+			.should( 'be.visible' );
+
+		cy
+			.get( '#streaming_widget_left_margin' )
+			.should( 'be.visible' );
+	} );
 } );
 
 /**
