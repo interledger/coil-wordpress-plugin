@@ -129,7 +129,7 @@ describe( 'Tests for visibility settings in editor', () => {
 			.should( 'have.text', 'Default (Enabled & Public)' );
 	} );
 
-	it( 'Checks that a warning is displayed when exclusivity has been toggled off', () => {
+	it( 'Checks that a warning is displayed when exclusivity has been disabled', () => {
 		cy.addSetting( 'coil_exclusive_settings_group', [
 			{
 				key: 'coil_exclusive_toggle',
@@ -173,5 +173,29 @@ describe( 'Tests for visibility settings in editor', () => {
 		cy
 			.get( '.coil-hint' )
 			.should( 'not.be.visible' );
+	} );
+
+	it( 'Checks the ECD appears in the post editor', () => {
+		cy
+			.get( '.components-button.block-editor-inserter__toggle' )
+			.click();
+
+		cy
+			.get( '.components-search-control__input' )
+			.type( `{selectall}${ 'coil' }` );
+
+		cy
+			.get( '.block-editor-block-types-list__item-title' )
+			.contains( 'Coil Exclusive Content Divider' )
+			.should( 'be.visible' );
+
+		cy
+			.get( '.block-editor-block-types-list__item-title' )
+			.click();
+
+		cy
+			.get( '.coil-exclusive-content-divider-inner' )
+			.should( 'be.visible' )
+			.and( 'contain', 'Exclusive content for Coil members starts below' );
 	} );
 } );
