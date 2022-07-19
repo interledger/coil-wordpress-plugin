@@ -59,6 +59,7 @@ describe( 'Tests for visibility settings in editor', () => {
 			}
 		} );
 	} );
+
 	it( 'Checks that the Default status label is correct', () => {
 		const monetizationDropDown = '#coil-monetization-dropdown';
 
@@ -126,5 +127,51 @@ describe( 'Tests for visibility settings in editor', () => {
 			.get( monetizationDropDown )
 			.find( 'option:selected' )
 			.should( 'have.text', 'Default (Enabled & Public)' );
+	} );
+
+	it( 'Checks that a warning is displayed when exclusivity has been toggled off', () => {
+		cy.addSetting( 'coil_exclusive_settings_group', [
+			{
+				key: 'coil_exclusive_toggle',
+				value: '0',
+			},
+		] );
+
+		cy.reload();
+
+		// A hint should appear if exclusivity has been disabled and a post is set to be exclusive.
+		cy
+			.get( '#coil-monetization-dropdown' )
+			.select( 'monetized' );
+
+		cy
+			.contains( 'Coil Members Only' )
+			.click();
+
+		cy
+			.get( '.coil-hint' )
+			.should( 'be.visible' );
+
+		cy.addSetting( 'coil_exclusive_settings_group', [
+			{
+				key: 'coil_exclusive_toggle',
+				value: '1',
+			},
+		] );
+
+		cy.reload();
+
+		// The hint should not appear if exclusivity is enabled.
+		cy
+			.get( '#coil-monetization-dropdown' )
+			.select( 'monetized' );
+
+		cy
+			.contains( 'Coil Members Only' )
+			.click();
+
+		cy
+			.get( '.coil-hint' )
+			.should( 'not.be.visible' );
 	} );
 } );

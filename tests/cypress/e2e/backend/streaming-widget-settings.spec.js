@@ -330,7 +330,7 @@ describe( 'Streaming support widget settings', () => {
 		cy.checkForInvalidAlert( false, '#streaming_widget_bottom_margin' );
 	} );
 
-	it.only( 'Checks the correct margin boxes display', () => {
+	it( 'Checks the correct margin boxes display', () => {
 		cy
 			.get( '#streaming_widget_bottom_margin' )
 			.should( 'be.visible' );
@@ -350,8 +350,6 @@ describe( 'Streaming support widget settings', () => {
 		cy
 			.get( '#position_dropdown' )
 			.select( 'top-left' );
-
-
 
 		cy
 			.get( '#streaming_widget_bottom_margin' )
