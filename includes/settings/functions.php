@@ -1147,12 +1147,6 @@ function coil_paywall_appearance_text_field_settings_render_callback( $field_nam
 			break;
 	}
 
-	if ( $field_name === 'coil_paywall_button_link' ) {
-		$description = __( 'If you have an affiliate link add it here.', 'coil-web-monetization' );
-	} else {
-		$description = '';
-	}
-
 	if ( 'text' === $field_type ) {
 		// Render the text input fields
 		Rendering\render_text_input_field(
@@ -1161,7 +1155,7 @@ function coil_paywall_appearance_text_field_settings_render_callback( $field_nam
 			Admin\get_paywall_appearance_setting( $field_name ),
 			$defaults[ $field_name ],
 			$heading,
-			$description
+			''
 		);
 	} else {
 		// Print <textarea> field for the paywall message
@@ -1279,11 +1273,11 @@ function coil_settings_streaming_widget_settings_render_callback() {
 					'streaming_widget_settings_group[' . $streaming_widget_link_id . ']',
 					Admin\get_streaming_widget_setting( $streaming_widget_link_id ),
 					$defaults[ $streaming_widget_link_id ],
-					__( 'Link', 'coil-web-monetization' ),
-					__( 'If you have an affiliate link add it here.', 'coil-web-monetization' )
+					__( 'Link', 'coil-web-monetization' )
 				);
 
 				// Render the streaming support widget member's display checkbox
+				echo '<br>';
 				$streaming_widget_member_display_id = 'streaming_widget_member_display';
 				Rendering\render_checkbox_that_toggles_content(
 					$streaming_widget_member_display_id,
