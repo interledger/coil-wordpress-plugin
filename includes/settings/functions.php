@@ -918,7 +918,7 @@ function coil_settings_exclusive_icon_render_callback() {
 					__( 'Preview', 'coil-web-monetization' )
 				);
 				?>
-				<div class="coil-preview">
+				<div class="coil-preview short">
 					<div class="coil-title-preview-container" data-padlock-icon-position="<?php echo esc_attr( Admin\get_exlusive_post_setting( 'coil_padlock_icon_position' ) ); ?>">
 						<div class="coil-title-preview-row coil-title-padlock-row">
 							<span class="coil-padlock-icon">
