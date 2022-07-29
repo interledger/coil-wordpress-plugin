@@ -245,13 +245,13 @@
 					padding: 15px;
 					position: relative;
 
-				  	&.short {
-					  min-height: 150px;
+					&.short {
+						min-height: 150px;
 					}
 
 					&.stacked {
 						height: auto;
-						margin-bottom: 20px;
+					  	margin-bottom: 20px;
 						min-height: 240px;
 					}
 
