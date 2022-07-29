@@ -70,6 +70,7 @@ Cypress.Commands.add( 'stopWebMonetization', () => {
 /**
  * Inserts settings into the wp_options table in the database
  * This function only supports strings
+ * Note: never use this in the same test twice for the same option name.
  *
  * @param {String} optionName The name of the settings group
  * @param {Array} settings The data to be inserted in the form of an array of objects which have key and value properties.
