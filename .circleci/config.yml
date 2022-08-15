@@ -9,7 +9,7 @@ jobs:
       - run: npx grunt test
   php_testing:
     docker:
-      - image: cimg/php:7.4.19
+      - image: cimg/php:7.4.14
       - image: circleci/mysql:8.0.16
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
@@ -52,72 +52,39 @@ jobs:
           name: PHP linting
           command: composer phpcs
   cypress_tests:
-    docker:
-      - image: php:7-apache
-      - image: mysql
-        environment:
-          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-          MYSQL_USER: admin
-          MYSQL_PASSWORD: "password"
-          MYSQL_ROOT_PASSWORD: "password"
-          MYSQL_DATABASE: wordpress
-          MYSQL_HOST: 127.0.0.1
-    working_directory: /var/www/html
+    machine:
+      image: ubuntu-2004:202008-01
+    working_directory: /home/circleci/project/coil-wordpress-plugin
     steps:
-      - checkout
-      - run: mkdir /coil-wordpress-plugin && mv * /coil-wordpress-plugin
+      - checkout           
       - run:
-          name: Install extensions
+          name: Setup wordpress infrastructure
           command: |
-            docker-php-ext-install mysqli
-            docker-php-ext-install pdo pdo_mysql
+            cd /home/circleci/project/coil-wordpress-plugin/tests/ci
+            mkdir wordpress
+            chmod 777 wordpress
+            docker-compose up -d db
+            sleep 5
+            docker-compose up -d wordpress
+            sleep 10
       - run:
-          name: Installing wp-cli.phar
+          name: Installing and activating WordPress and the plugins
           command: |
-            curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-            chmod +x wp-cli.phar
-            mv wp-cli.phar /usr/local/bin/wp
+            cd /home/circleci/project/coil-wordpress-plugin/tests/ci
+            docker-compose run wordpress-cli wp core install --url="http://wordpress" --title=wordpress --admin_user=admin --admin_password=password --admin_email=admin@example.com --skip-email
+            docker-compose run wordpress-cli wp plugin install wordpress-importer --activate
+            sudo rsync -av --exclude='coil-wordpress-plugin/tests/ci' /home/circleci/project/coil-wordpress-plugin wordpress/wp-content/plugins/
+            docker-compose run wordpress-cli wp plugin activate coil-wordpress-plugin
       - run:
-          name: Installing mysql-client
+          name: Build Cypress container
           command: |
-            apt update
-            apt install default-mysql-client -y
+            cd /home/circleci/project/coil-wordpress-plugin/tests/ci
+            docker-compose build tester
       - run:
-          name: Installing WordPress
+          name: Run Cypress tests
           command: |
-              apt install -y libzip-dev zip && docker-php-ext-install zip
-              wp core download --version=5.8 --allow-root
-              mv /coil-wordpress-plugin /var/www/html/wp-content/plugins
-      - run:
-          name: Adjusting the wp-config.php and vars.php files appropriately for the context
-          command: |
-            cp wp-config-sample.php wp-config.php
-            sed -i "s/database_name_here/wordpress/" "wp-config.php"
-            sed -i "s/username_here/admin/" "wp-config.php"
-            sed -i "s/password_here/password/" "wp-config.php"
-            sed -i "s/localhost/127.0.0.1/" "wp-config.php"
-            mv /var/www/html/wp-content/plugins/coil-wordpress-plugin/scripts/vars.php /var/www/html/wp-includes
-      - run:
-          name: Running apache and installing the mod_rewrite package
-          command: |
-            a2enmod rewrite
-            bash /var/www/html/wp-content/plugins/coil-wordpress-plugin/scripts/apache2-background.sh
-      - run:
-          name: Initializing the database, importing data, and activating the plugin
-          command: |
-            wp core install --url="http://127.0.0.1" --title=wordpress --admin_user=admin --admin_password=password --admin_email=admin@example.com --skip-email --allow-root
-            mv /var/www/html/wp-content/plugins/coil-wordpress-plugin/scripts/.htaccess /var/www/html/
-            wp plugin install wordpress-importer --activate  --allow-root
-            wp plugin activate coil-wordpress-plugin --allow-root
-      - run:
-          name: Installing npm and running Cypress tests
-          command: |
-            apt install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -y
-            curl -o install.sh https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh
-            bash install.sh
-            groupadd --gid 1000 node && useradd --uid 1000 --gid node -G sudo --shell /bin/bash --create-home node
-            cd /var/www/html/wp-content/plugins/coil-wordpress-plugin
-            source ~/.nvm/nvm.sh && nvm install 12 && nvm use 12 && nvm install-latest-npm && npm install cypress && npx cypress run --project ./tests --config baseUrl="http://127.0.0.1:80/" --record --key=$CYPRESS_PROJECT_KEY
+            cd /home/circleci/project/coil-wordpress-plugin/tests/ci
+            docker-compose run tester --project /var/www/html/wp-content/plugins/coil-wordpress-plugin/tests --config baseUrl="http://wordpress:80/" --record --key=$CYPRESS_PROJECT_KEY
 workflows:
   version: 2
   test:

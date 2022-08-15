@@ -1,13 +1,12 @@
 {
 	"extends": [
-		"stylelint-config-wordpress/scss",
-		"stylelint-config-prettier"
+		"@wordpress/stylelint-config/scss",
+		"stylelint-config-prettier-scss"
 	],
 	"plugins": [
 		"stylelint-order"
 	],
 	"rules": {
-		"at-rule-empty-line-before": null,
 		"no-descending-specificity": null,
 		"order/properties-alphabetical-order": true,
 
@@ -34,7 +33,7 @@
 
 		"unit-case": "lower",
 		"unit-no-unknown": true,
-		"unit-whitelist": ["px", "%", "deg", "ms", "em", "vh", "vw", "rem", "s", "ex", "pt", "cm"],
+		"unit-allowed-list": ["px", "%", "deg", "ms", "em", "vh", "vw", "rem", "s", "ex", "pt", "cm"],
 
 		"value-list-comma-space-after": "always-single-line",
 		"value-list-comma-space-before": "never",
@@ -57,6 +56,8 @@
 		"block-opening-brace-newline-after": "always-multi-line",
 		"block-opening-brace-space-before": "always",
 
+		"selector-class-pattern": null,
+		"selector-id-pattern": null,
 		"selector-attribute-brackets-space-inside": "never",
 		"selector-attribute-operator-space-after": "never",
 		"selector-attribute-operator-space-before": "never",

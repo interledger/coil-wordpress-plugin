@@ -25,7 +25,11 @@
 		"preferred-install": "dist",
 		"sort-packages": true,
 		"autoloader-suffix": "coil",
-		"process-timeout": 600
+		"process-timeout": 600,
+		"allow-plugins": {
+			"composer/installers": true,
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
 	},
 	"scripts": {
 		"cghooks": "vendor/bin/cghooks",

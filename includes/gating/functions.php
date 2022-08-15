@@ -151,7 +151,7 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 		return $title;
 	}
 
-	if ( ! Admin\get_exlusive_post_setting( 'coil_title_padlock' ) ) {
+	if ( ! Admin\get_exlusive_icon_setting( 'coil_title_padlock' ) ) {
 		return $title;
 	}
 
@@ -161,8 +161,8 @@ function maybe_add_padlock_to_title( string $title, int $id = 0 ) : string {
 	}
 
 	$padlock_icon_styles = Admin\get_padlock_icon_styles();
-	$padlock_icon        = Admin\get_exlusive_post_setting( 'coil_padlock_icon_style', 'lock' );
-	$padlock_location    = Admin\get_exlusive_post_setting( 'coil_padlock_icon_position' );
+	$padlock_icon        = Admin\get_exlusive_icon_setting( 'coil_padlock_icon_style', 'lock' );
+	$padlock_location    = Admin\get_exlusive_icon_setting( 'coil_padlock_icon_position' );
 
 	if ( $padlock_location === 'after' ) {
 		$post_title = sprintf(
