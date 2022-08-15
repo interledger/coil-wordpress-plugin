@@ -6,7 +6,7 @@ Tags: coil, content, monetization, payment, interledger, ilp
 Requires at least: 5.0+
 Requires PHP: 7.2+
 Tested up to: 5.9
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: Apache-2.0
 License URI: http://www.apache.org/licenses/LICENSE-2.0.txt
 
@@ -43,6 +43,7 @@ Our plugin lets you add Web Monetization to all or some of your content.
 * When monetization is disabled, you don't get paid when people visit that content, even if they are Coil members
 
 When content is monetized it can:
+
 * Remain visible to everyone (default) - Allow all visitors to see the content, get paid when your visitor is a Coil member
 * Be made exclusive - Only allow Coil members to see the content and get paid when they do. People who are not Coil members will see a paywall instead. Use the Coil Exclusive Content Divider to specify exactly how much content on a single post should be public and from what point it should become exclusive.
 
@@ -87,10 +88,16 @@ If you get stuck, check out our [help center](https://help.coil.com/docs/monetiz
 
 == Changelog ==
 
-= What to expect when updating to version 2.0.0 =
+= What to expect when updating to version 2 =
 Please be aware that Split content is no longer supported. We're replacing Split content with the Exclusive Content Divider (ECD). If you had posts that were using Split content we will insert the ECD above the first instance of a block that is set to Coil Members Only. Everything above the ECD will be publicly visible and everything below it will be exclusive for Coil Members.
 There is no longer an option to hide content from Coil members.
 Please don’t hesitate to be in touch with us about the plugin or the new release. You can reach us on the [Coil Web Monetization support forum](https://wordpress.org/support/plugin/coil-web-monetization/).
+
+= v2.0.1 =
+
+= 1 June 2022 =
+
+* Fix - Custom menu labels were being incorrectly displayed.
 
 = v2.0.0 =
 
@@ -103,7 +110,7 @@ Please don’t hesitate to be in touch with us about the plugin or the new relea
 * Enhancement - All exclusive content settings are now in the Exclusive Content tab, where you can enable or disable exclusive content globally.
 * Enhancement - The paywall that appears for visitors without a Coil membership can now be managed and customized in the Exclusive Content tab. Customizations can be seen with a live preview.
 * Enhancement - Encourage your audience to support you through Coil by adding the Coil-branded streaming support widget to selected post types. With this customizable, dismissable widget, paying Coil members will be thanked for their contribution, while non-paying viewers will be prompted to become Coil members to support your amazing content.
-* Enhancement - We’ve added more customization options for the icon that appears next to an exclusive post’s title. Choose from four icons, including the padlock, and select to place the icon before or after the post’s title. 
+* Enhancement - We’ve added more customization options for the icon that appears next to an exclusive post’s title. Choose from four icons, including the padlock, and select to place the icon before or after the post’s title.
 
 * Tweak - The padlock icon no longer appears next to post titles in menus.
 * Tweak - When excerpts are enabled for exclusive posts they will be visible during the pending phase (while the monetization state is being determined) so that users can start reading immediately.
