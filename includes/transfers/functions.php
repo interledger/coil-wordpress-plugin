@@ -18,7 +18,7 @@ use Coil\Gating;
 /**
  * If certain database entries are empty this functions adds them.
  * This includes the post monetization defaults, paywall appearance settings,
- * exclusive post settings, and post and excerpt visibility settings.
+ * exclusive icon settings, and post and excerpt visibility settings.
  *
  * @return void
  */
@@ -41,13 +41,13 @@ function maybe_load_database_defaults() {
 	}
 
 	// Loads applicable exclusive setting defaults if they have not yet been entered into the database.
-	// This includes paywall appearance settings, exclusive post settings, post visibility, and excerpt display settings.
+	// This includes paywall appearance settings, exclusive icon settings, post visibility, and excerpt display settings.
 	$exclusive_settings = get_option( 'coil_exclusive_settings_group', 'absent' );
 
 	if ( $exclusive_settings === 'absent' ) {
 
 		$paywall_appearance_settings = Admin\get_paywall_appearance_defaults();
-		$exclusive_post_settings     = Admin\get_exclusive_post_defaults();
+		$exclusive_icon_settings     = Admin\get_exclusive_icon_defaults();
 
 		// Visibility default is 'public'
 		$post_visibility_default = Admin\get_visibility_default();
@@ -67,7 +67,7 @@ function maybe_load_database_defaults() {
 		}
 
 		// Merges all the sections together and updates the option group in the database.
-		$new_exclusive_settings = array_merge( $paywall_appearance_settings, $exclusive_post_settings, $post_visibility_settings, $excerpt_display_settings, $exclusive_toggle_settings );
+		$new_exclusive_settings = array_merge( $paywall_appearance_settings, $exclusive_icon_settings, $post_visibility_settings, $excerpt_display_settings, $exclusive_toggle_settings );
 		add_option( 'coil_exclusive_settings_group', $new_exclusive_settings );
 	}
 
