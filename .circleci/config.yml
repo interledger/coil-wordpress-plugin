@@ -94,7 +94,8 @@ jobs:
       - run: npm install
       - run: npm run build
       - run: npx grunt build
-      - run: rm -r node_modules tests scripts .circleci ./assets/scss .git
+      - run: rm -r node_modules tests scripts .circleci ./assets/scss
+      - run: sudo rm -r .git
       - run: rm ./assets/css/admin/coil.css ./assets/css/frontend/coil.css ./assets/css/messages/coil.css
       - run: rm ./assets/js/initialize-monetization.js ./assets/js/admin/admin-notices.js
       - run: rm .editorconfig .eslintignore .eslintrc.json .gitattributes .gitignore .stylelintrc.json composer.json composer.lock Gruntfile.js package-lock.json package.json phpcs.xml.dist phpunit.xml.dist README.md yarn.lock
