@@ -85,6 +85,17 @@ jobs:
           command: |
             cd /home/circleci/project/coil-wordpress-plugin/tests/ci
             docker-compose run tester --project /var/www/html/wp-content/plugins/coil-wordpress-plugin/tests --config baseUrl="http://wordpress:80/" --record --key=$CYPRESS_PROJECT_KEY
+  build:
+    docker:
+      - image: cimg/node:14.10.1
+    working_directory: /home/circleci/project/coil-wordpress-plugin
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run build
+      - run: npx grunt build
+      - store_artifacts:
+          path: /home/circleci/project/coil-wordpress-plugin/assets/js/initialize-monetization.min.js
 workflows:
   version: 2
   test:
@@ -94,3 +105,4 @@ workflows:
       - cypress_tests:
           requires:
             - php_testing
+      - build
