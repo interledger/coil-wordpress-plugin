@@ -94,8 +94,10 @@ jobs:
       - run: npm install
       - run: npm run build
       - run: npx grunt build
+      - run: rm -r node_modules tests scripts
+      - run: zip -r /tmp/coil-web-monetization-plugin.zip .
       - store_artifacts:
-          path: /home/circleci/project/coil-wordpress-plugin/assets/js/initialize-monetization.min.js
+          path: /tmp/coil-web-monetization-plugin.zip
 workflows:
   version: 2
   test:
