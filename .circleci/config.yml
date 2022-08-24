@@ -85,7 +85,7 @@ jobs:
           command: |
             cd /home/circleci/project/coil-wordpress-plugin/tests/ci
             docker-compose run tester --project /var/www/html/wp-content/plugins/coil-wordpress-plugin/tests --config baseUrl="http://wordpress:80/" --record --key=$CYPRESS_PROJECT_KEY
-  build:
+  build_step:
     docker:
       - image: cimg/node:14.10.1
     working_directory: /home/circleci/project/coil-wordpress-plugin
@@ -96,7 +96,7 @@ jobs:
       - run: npx grunt build
       - run: rm -r node_modules tests scripts .circleci ./assets/scss
       - run: sudo rm -r .git
-      - run: rm ./assets/css/admin/coil.css ./assets/css/frontend/coil.css ./assets/css/messages/coil.css
+      - run: rm ./assets/css/admin/coil.css ./assets/css/frontend/coil.css ./assets/css/messages/coil.css ./src
       - run: rm ./assets/js/initialize-monetization.js ./assets/js/admin/admin-notices.js
       - run: rm .editorconfig .eslintignore .eslintrc.json .gitattributes .gitignore .stylelintrc.json composer.json composer.lock Gruntfile.js package-lock.json package.json phpcs.xml.dist phpunit.xml.dist README.md yarn.lock
       - run: zip -r /home/circleci/coil-web-monetization-plugin.zip .
@@ -104,11 +104,19 @@ jobs:
           path: /home/circleci/coil-web-monetization-plugin.zip
 workflows:
   version: 2
-  test:
+  test-and-build:
     jobs:
       - js_scss_linting
       - php_testing
       - cypress_tests:
           requires:
             - php_testing
-      - build
+      - build_step:
+          requires:
+            - js_scss_linting
+            - cypress_tests
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
