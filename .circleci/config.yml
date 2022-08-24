@@ -99,9 +99,9 @@ jobs:
           root: .
           paths:
             - .
-  load_assets:
+  bundle:
     docker:
-      - image: cimg/node:14.10.1
+      - image: cimg/base:2021.04
     working_directory: /home/circleci/project/coil-wordpress-plugin
     steps:
       - attach_workspace:
@@ -125,7 +125,7 @@ workflows:
           requires:
             - build_step
             - php_testing
-      - load_assets:
+      - bundle:
           requires:
             - build_step
             - js_scss_linting
