@@ -118,13 +118,22 @@ workflows:
   version: 2
   test-and-build:
     jobs:
-      - js_scss_linting
       - php_testing
-      - build_step
+      - js_scss_linting:
+          filters:
+            tags:
+              only: /^v.*/
+      - build_step:
+          filters:
+            tags:
+              only: /^v.*/
       - cypress_tests:
           requires:
             - build_step
             - php_testing
+          filters:
+            tags:
+              only: /^v.*/
       - bundle:
           requires:
             - build_step
