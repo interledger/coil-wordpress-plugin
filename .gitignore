@@ -15,13 +15,8 @@ npm-debug.lo
 Thumbs.db
 cghooks.lock
 
-# /assets/css/admin/coil.css
-# /assets/css/frontend/coil.css
-# /assets/css/messages/coil.css
-# /assets/js/initialize-monetization.min.js
-# ./assets/js/admin/admin-notices.min.js
 # Build assets
-*.min.js
-*.min.css
-*.css
 /dist
+/assets/css
+/assets/js/initialize-monetization.min.js
+/assets/js/admin/admin-notices.min.js
