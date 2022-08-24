@@ -56,7 +56,8 @@ jobs:
       image: ubuntu-2004:202008-01
     working_directory: /home/circleci/project/coil-wordpress-plugin
     steps:
-      - checkout           
+      - attach_workspace:
+          at: .
       - run:
           name: Setup wordpress infrastructure
           command: |
@@ -94,6 +95,17 @@ jobs:
       - run: npm install
       - run: npm run build
       - run: npx grunt build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  load_assets:
+    docker:
+      - image: cimg/node:14.10.1
+    working_directory: /home/circleci/project/coil-wordpress-plugin
+    steps:
+      - attach_workspace:
+          at: .
       - run: rm -r node_modules tests scripts .circleci ./assets/scss
       - run: sudo rm -r .git
       - run: rm ./assets/css/admin/coil.css ./assets/css/frontend/coil.css ./assets/css/messages/coil.css ./src
@@ -108,11 +120,14 @@ workflows:
     jobs:
       - js_scss_linting
       - php_testing
+      - build_step
       - cypress_tests:
           requires:
+            - build_step
             - php_testing
-      - build_step:
+      - load_assets:
           requires:
+            - build_step
             - js_scss_linting
             - cypress_tests
           filters:
