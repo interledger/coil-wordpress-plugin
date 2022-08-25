@@ -288,4 +288,14 @@ body:not( .monetization-initialized ) .streaming-widget-container.coil-light-the
 svg.coil-post-title-padlock {
 	clear: none;
 	display: inline;
+
+	&.coil-post-title-padlock-medium {
+		margin-left: 10px;
+		transform: scale(1.2);
+	}
+
+	&.coil-post-title-padlock-large {
+		margin-left: 20px;
+		transform: scale(1.6);
+	}
 }

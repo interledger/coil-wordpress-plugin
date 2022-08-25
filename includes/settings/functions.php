@@ -331,6 +331,11 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 					'valid_choices' => Admin\get_padlock_title_icon_style_options(),
 					'default'       => $exclusive_post_defaults['coil_padlock_icon_style'],
 			],
+			[
+					'field_name'    => 'coil_padlock_icon_size',
+					'valid_choices' => Admin\get_padlock_title_icon_size_options(),
+					'default'       => $exclusive_post_defaults['coil_padlock_icon_size'],
+			],
 	];
 
 	foreach ( $additional_fields as $field_item ) {
@@ -1023,7 +1028,7 @@ function coil_padlock_icon_style_selection_render_callback() {
 function coil_padlock_icon_size_selection_render_callback() {
 
 	// Defaults to the Coil logo
-	$coil_padlock_icon_size = Admin\get_paywall_appearance_setting('coil_padlock_icon_size');
+	$coil_padlock_icon_size = Admin\get_exlusive_post_setting('coil_padlock_icon_size');
 
 	printf(
 			'<select name="%s" id="%s">',
@@ -1033,9 +1038,9 @@ function coil_padlock_icon_size_selection_render_callback() {
 
 	printf(
 			'<option value="%s" %s>%s</option>',
-			esc_attr('default'),
-			(!empty($message_branding_value) && $message_branding_value === 'coil_logo' || empty($coil_padlock_icon_size) ? 'selected="selected"' : false),
-			esc_attr('Default')
+			esc_attr('small'),
+			(!empty($coil_padlock_icon_size) && $coil_padlock_icon_size === 'small' || empty($coil_padlock_icon_size) ? 'selected="selected"' : false),
+			esc_attr('Small')
 	);
 
 	printf(
@@ -1053,15 +1058,6 @@ function coil_padlock_icon_size_selection_render_callback() {
 	);
 
 	echo '</select>';
-
-	printf(
-			'<p class="%s" style="%s">%s<a href="%s">%s</a>.</p>',
-			esc_attr('description set-site-logo-description'),
-			esc_attr('display: none'),
-			esc_html__('You can change your site logo in the ', 'coil-web-monetization'),
-			esc_url(admin_url('customize.php?return=%2Fwp-admin%2Fthemes.php')),
-			esc_html__('Appearance Settings', 'coil-web-monetization')
-	);
 }
 
 /**

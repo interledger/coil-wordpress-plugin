@@ -461,3 +461,9 @@ body:not(.monetization-initialized) .streaming-widget-container.coil-light-theme
 svg.coil-post-title-padlock {
   clear: none;
   display: inline; }
+  svg.coil-post-title-padlock.coil-post-title-padlock-medium {
+    transform: scale(1.2);
+    margin-left: 10px; }
+  svg.coil-post-title-padlock.coil-post-title-padlock-large {
+    transform: scale(1.6);
+    margin-left: 20px; }

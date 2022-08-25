@@ -333,15 +333,18 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 			'coil_padlock_icon_position' => 'before',
 			'coil_padlock_icon_style'    => 'exclusive',
 		];
+
 		update_option( 'coil_exclusive_settings_group', $padlock_settings );
 
 		$padlock_display  = Admin\get_exlusive_post_setting( 'coil_title_padlock' );
 		$padlock_position = Admin\get_exlusive_post_setting( 'coil_padlock_icon_position' );
 		$padlock_style    = Admin\get_exlusive_post_setting( 'coil_padlock_icon_style' );
+		$padlock_size    = Admin\get_exlusive_post_setting( 'coil_padlock_icon_size' );
 
 		$this->assertSame( $padlock_settings['coil_title_padlock'], $padlock_display );
 		$this->assertSame( $padlock_settings['coil_padlock_icon_position'], $padlock_position );
 		$this->assertSame( $padlock_settings['coil_padlock_icon_style'], $padlock_style );
+		$this->assertSame( $padlock_settings['coil_padlock_icon_size'], $padlock_size );
 	}
 
 	/**
