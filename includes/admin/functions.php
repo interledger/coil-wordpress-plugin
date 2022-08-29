@@ -804,7 +804,7 @@ function get_post_types_with_status( $status_type, $status ) {
 */
 function get_padlock_icon_styles() {
 
-	$padlock_size       = get_exlusive_post_setting( 'coil_padlock_icon_size' );
+	$padlock_size       = get_exlusive_icon_setting( 'coil_padlock_icon_size' );
 	$padlock_size_class = 'coil-post-title-padlock-' . $padlock_size;
 
 	$icon_styles = [

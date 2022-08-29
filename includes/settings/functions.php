@@ -913,8 +913,8 @@ function coil_settings_exclusive_icon_render_callback() {
 				coil_padlock_icon_style_selection_render_callback();
 
 				$padlock_icon_styles  = Admin\get_padlock_icon_styles();
-				$padlock_icon         = Admin\get_exlusive_post_setting( 'coil_padlock_icon_style', true );
-				$padlock_icon_enabled = Admin\get_exlusive_post_setting( 'coil_title_padlock' );
+				$padlock_icon         = Admin\get_exlusive_icon_setting( 'coil_padlock_icon_style', true );
+				$padlock_icon_enabled = Admin\get_exlusive_icon_setting( 'coil_title_padlock' );
 
 				// Renders the icon size radio buttons
 				Rendering\render_input_field_heading(
@@ -1028,7 +1028,7 @@ function coil_padlock_icon_style_selection_render_callback() {
 function coil_padlock_icon_size_selection_render_callback() {
 
 	// Defaults to the Coil logo
-	$coil_padlock_icon_size = Admin\get_exlusive_post_setting( 'coil_padlock_icon_size' );
+	$coil_padlock_icon_size = Admin\get_exlusive_icon_setting( 'coil_padlock_icon_size' );
 
 	printf(
 		'<select name="%s" id="%s">',

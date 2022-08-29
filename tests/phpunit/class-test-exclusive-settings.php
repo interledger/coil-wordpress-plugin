@@ -300,10 +300,12 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 		$padlock_display  = Admin\get_exlusive_icon_setting( 'coil_title_padlock' );
 		$padlock_position = Admin\get_exlusive_icon_setting( 'coil_padlock_icon_position' );
 		$padlock_style    = Admin\get_exlusive_icon_setting( 'coil_padlock_icon_style' );
+		$padlock_size     = Admin\get_exlusive_icon_setting( 'coil_padlock_icon_size' );
 
 		$this->assertSame( true, $padlock_display );
 		$this->assertSame( 'before', $padlock_position );
 		$this->assertSame( 'lock', $padlock_style );
+		$this->assertSame( 'small', $padlock_size );
 	}
 
 	/**
@@ -317,29 +319,33 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 			'coil_title_padlock'         => false,
 			'coil_padlock_icon_position' => 'after',
 			'coil_padlock_icon_style'    => 'bonus',
+			'coil_padlock_icon_size'     => 'medium',
 		];
 		update_option( 'coil_exclusive_settings_group', $padlock_settings );
 
 		$padlock_display  = Admin\get_exlusive_icon_setting( 'coil_title_padlock' );
 		$padlock_position = Admin\get_exlusive_icon_setting( 'coil_padlock_icon_position' );
 		$padlock_style    = Admin\get_exlusive_icon_setting( 'coil_padlock_icon_style' );
+		$padlock_size     = Admin\get_exlusive_icon_setting( 'coil_padlock_icon_size' );
 
 		$this->assertSame( $padlock_settings['coil_title_padlock'], $padlock_display );
 		$this->assertSame( $padlock_settings['coil_padlock_icon_position'], $padlock_position );
 		$this->assertSame( $padlock_settings['coil_padlock_icon_style'], $padlock_style );
+		$this->assertSame( $padlock_settings['coil_padlock_icon_size'], $padlock_size );
 
 		$padlock_settings = [
 			'coil_title_padlock'         => true,
 			'coil_padlock_icon_position' => 'before',
 			'coil_padlock_icon_style'    => 'exclusive',
+			'coil_padlock_icon_size'     => 'large',
 		];
 
 		update_option( 'coil_exclusive_settings_group', $padlock_settings );
 
-		$padlock_display  = Admin\get_exlusive_post_setting( 'coil_title_padlock' );
-		$padlock_position = Admin\get_exlusive_post_setting( 'coil_padlock_icon_position' );
-		$padlock_style    = Admin\get_exlusive_post_setting( 'coil_padlock_icon_style' );
-		$padlock_size     = Admin\get_exlusive_post_setting( 'coil_padlock_icon_size' );
+		$padlock_display  = Admin\get_exlusive_icon_setting( 'coil_title_padlock' );
+		$padlock_position = Admin\get_exlusive_icon_setting( 'coil_padlock_icon_position' );
+		$padlock_style    = Admin\get_exlusive_icon_setting( 'coil_padlock_icon_style' );
+		$padlock_size     = Admin\get_exlusive_icon_setting( 'coil_padlock_icon_size' );
 
 		$this->assertSame( $padlock_settings['coil_title_padlock'], $padlock_display );
 		$this->assertSame( $padlock_settings['coil_padlock_icon_position'], $padlock_position );
