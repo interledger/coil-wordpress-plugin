@@ -1,8 +1,8 @@
 /**
- * Streaming support widget settings.
+ * Streaming support widget toggle.
 */
 
-describe( 'Streaming support widget settings tab', () => {
+describe( 'Streaming support widget toggle', () => {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
 		cy.resetSite();

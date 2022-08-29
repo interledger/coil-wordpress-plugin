@@ -131,7 +131,7 @@ function register_admin_content_settings() {
 		'coil_paywall_section'
 	);
 
-	// ==== Exclusive Post Appearance
+	// ==== Exclusive Icon Appearance
 	add_settings_section(
 		'coil_exclusive_icon_section',
 		false,
@@ -233,7 +233,7 @@ function coil_general_settings_group_validation( $general_settings ) : array {
  * Validates the post type default visibility settings.
  * Validates text inputs (the paywall title, message, button text and link and the CSS selector).
  * Validates paywall appearance settings.
- * Validates exclusive post appearance settings
+ * Validates exclusive icon appearance settings
  * Validates the excerpt visibility setings per post type.
  *
  * @param array $exclusive_settings The posted text input fields.
@@ -246,7 +246,7 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 	}
 
 	$paywall_defaults        = Admin\get_paywall_appearance_defaults();
-	$exclusive_post_defaults = Admin\get_exclusive_post_defaults();
+	$exclusive_post_defaults = Admin\get_exclusive_icon_defaults();
 	$final_settings          = [];
 
 	// Posts default to being publicly visible
@@ -866,7 +866,7 @@ function paywall_font_render_callback() {
 }
 
 /**
- * Renders the output of the exclusive post appearance settings.
+ * Renders the output of the exclusive icon appearance settings.
  * This includes choosing whether to tdisplay the padloc, where to display it and which icon to use.
  *
  * @return void
@@ -890,7 +890,7 @@ function coil_settings_exclusive_icon_render_callback() {
 					$padlock_input_id,
 					'coil_exclusive_settings_group[' . $padlock_input_id . ']',
 					__( 'Show icon next to exclusive post titles', 'coil-web-monetization' ),
-					Admin\get_exlusive_post_setting( $padlock_input_id )
+					Admin\get_exlusive_icon_setting( $padlock_input_id )
 				);
 
 				// Renders the icon position radio buttons
@@ -908,8 +908,8 @@ function coil_settings_exclusive_icon_render_callback() {
 				coil_padlock_icon_style_selection_render_callback();
 
 				$padlock_icon_styles  = Admin\get_padlock_icon_styles();
-				$padlock_icon         = Admin\get_exlusive_post_setting( 'coil_padlock_icon_style', true );
-				$padlock_icon_enabled = Admin\get_exlusive_post_setting( 'coil_title_padlock' )
+				$padlock_icon         = Admin\get_exlusive_icon_setting( 'coil_padlock_icon_style', true );
+				$padlock_icon_enabled = Admin\get_exlusive_icon_setting( 'coil_title_padlock' )
 				?>
 			</div>
 			<div class="coil-column-5 <?php echo esc_attr( $padlock_icon_enabled ? '' : 'hidden' ); ?>">
@@ -957,7 +957,7 @@ function coil_settings_exclusive_icon_render_callback() {
 function coil_padlock_icon_position_selection_render_callback() {
 
 	// Set the icon position
-	$padlock_icon_position = Admin\get_exlusive_post_setting( 'coil_padlock_icon_position' );
+	$padlock_icon_position = Admin\get_exlusive_icon_setting( 'coil_padlock_icon_position' );
 	$name                  = 'coil_exclusive_settings_group[coil_padlock_icon_position]';
 
 	echo '<div class="coil-radio-group">';
@@ -990,7 +990,7 @@ function coil_padlock_icon_position_selection_render_callback() {
 function coil_padlock_icon_style_selection_render_callback() {
 
 	// Set the icon style
-	$padlock_icon_style = Admin\get_exlusive_post_setting( 'coil_padlock_icon_style' );
+	$padlock_icon_style = Admin\get_exlusive_icon_setting( 'coil_padlock_icon_style' );
 
 	$padlock_icon_styles = Admin\get_padlock_icon_styles();
 
@@ -1147,12 +1147,6 @@ function coil_paywall_appearance_text_field_settings_render_callback( $field_nam
 			break;
 	}
 
-	if ( $field_name === 'coil_paywall_button_link' ) {
-		$description = __( 'If you have an affiliate link add it here.', 'coil-web-monetization' );
-	} else {
-		$description = '';
-	}
-
 	if ( 'text' === $field_type ) {
 		// Render the text input fields
 		Rendering\render_text_input_field(
@@ -1161,7 +1155,7 @@ function coil_paywall_appearance_text_field_settings_render_callback( $field_nam
 			Admin\get_paywall_appearance_setting( $field_name ),
 			$defaults[ $field_name ],
 			$heading,
-			$description
+			''
 		);
 	} else {
 		// Print <textarea> field for the paywall message
@@ -1279,11 +1273,11 @@ function coil_settings_streaming_widget_settings_render_callback() {
 					'streaming_widget_settings_group[' . $streaming_widget_link_id . ']',
 					Admin\get_streaming_widget_setting( $streaming_widget_link_id ),
 					$defaults[ $streaming_widget_link_id ],
-					__( 'Link', 'coil-web-monetization' ),
-					__( 'If you have an affiliate link add it here.', 'coil-web-monetization' )
+					__( 'Link', 'coil-web-monetization' )
 				);
 
 				// Render the streaming support widget member's display checkbox
+				echo '<br>';
 				$streaming_widget_member_display_id = 'streaming_widget_member_display';
 				Rendering\render_checkbox_that_toggles_content(
 					$streaming_widget_member_display_id,

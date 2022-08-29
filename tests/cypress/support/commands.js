@@ -70,12 +70,12 @@ Cypress.Commands.add( 'stopWebMonetization', () => {
 /**
  * Inserts settings into the wp_options table in the database
  * This function only supports strings
+ * Note: never use this in the same test twice for the same option name.
  *
  * @param {String} optionName The name of the settings group
  * @param {Array} settings The data to be inserted in the form of an array of objects which have key and value properties.
  */
 Cypress.Commands.add( 'addSetting', ( optionName, settings ) => {
-	cy.exec( 'wp db query \'DELETE FROM wp_options WHERE option_name IN ("' + optionName + '");\' --allow-root' );
 	const numItems = settings.length;
 	let optionString = 'a:' + numItems + ':{';
 	for ( let i = 0; i < numItems; i++ ) {
@@ -90,7 +90,7 @@ Cypress.Commands.add( 'addSetting', ( optionName, settings ) => {
 	}
 	optionString += '}';
 
-	cy.exec( 'wp db query \'INSERT INTO wp_options (option_name, option_value) VALUES ( \"' + optionName + '\", \"' + optionString + '\");\' --allow-root' );
+	cy.exec( 'wp db query \'DELETE FROM wp_options WHERE option_name IN ("' + optionName + '");\' --allow-root && wp db query \'INSERT INTO wp_options (option_name, option_value) VALUES ( "' + optionName + '", "' + optionString + '");\' --allow-root' );
 } );
 
 /**
@@ -112,4 +112,32 @@ Cypress.Commands.add( 'resetSite', () => {
 	// Adds site data back into the database
 	cy.exec( 'wp import cypress/fixtures/coil-automation-CI.xml --authors=create  --allow-root' );
 	cy.exec( 'wp rewrite structure \'/%postname%/\' --allow-root' );
+} );
+
+/**
+ * Checks the border color and appearance of the helper text
+ * to determine if the invalid alert is active.
+ *  @param {bool} isInvalid specifies whether the alert should be active or not.
+ *  @param {String} inputSelector specifies the input element.
+*/
+Cypress.Commands.add( 'checkForInvalidAlert', ( isInvalid, inputSelector ) => {
+	const red = 'rgb(238, 72, 82)';
+
+	if ( isInvalid ) {
+		cy
+			.get( inputSelector )
+			.should( 'have.css', 'border-color', red );
+
+		cy
+			.get( '.invalid-input' )
+			.should( 'be.visible' );
+	} else {
+		cy
+			.get( inputSelector )
+			.should( 'not.have.attr', 'style' );
+
+		cy
+			.get( '.invalid-input' )
+			.should( 'not.exist' );
+	}
 } );

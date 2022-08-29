@@ -46,12 +46,17 @@ describe( 'Single Posts', function() {
 
 	it( 'check that content is visible when exclusive content has been disabled.', function() {
 		// Ensure exclusive content is disabled
-		cy.addSetting( 'coil_exclusive_settings_group', [
-			{
-				key: 'coil_exclusive_toggle',
-				value: '0',
-			},
-		] );
+		cy.visit( 'wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );
+
+		cy
+			.get( '.coil-checkbox' )
+			.click();
+		cy
+			.get( '#coil_exclusive_toggle' )
+			.should( 'not.be.checked' );
+		cy
+			.get( '#submit' )
+			.click();
 
 		cy.visit( '/coil-members-only/' );
 

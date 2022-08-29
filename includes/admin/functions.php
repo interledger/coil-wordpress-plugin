@@ -512,18 +512,18 @@ function get_paywall_appearance_defaults(): array {
 }
 
 /**
- * Retrieve the exclusive post appearance settings
+ * Retrieve the exclusive icon appearance settings
  * using a key from coil_exclusive_settings_group (serialized).
  *
  * @param string $field_id The named key in the wp_options serialized array.
  * @return string
  */
-function get_exlusive_post_setting( $field_id ) {
+function get_exlusive_icon_setting( $field_id ) {
 
 	$padloack_settings = [ 'coil_padlock_icon_position', 'coil_padlock_icon_style' ];
 
 	$exclusive_options  = get_exclusive_settings();
-	$exclusive_defaults = get_exclusive_post_defaults();
+	$exclusive_defaults = get_exclusive_icon_defaults();
 
 	if ( $field_id === 'coil_title_padlock' ) {
 		$setting_value = isset( $exclusive_options[ $field_id ] ) ? $exclusive_options[ $field_id ] : false;
@@ -540,7 +540,7 @@ function get_exlusive_post_setting( $field_id ) {
  *
  * @return array
  */
-function get_exclusive_post_defaults(): array {
+function get_exclusive_icon_defaults(): array {
 	$exclusive_post_defaults = [
 		'coil_title_padlock'         => true,
 		'coil_padlock_icon_position' => 'before',

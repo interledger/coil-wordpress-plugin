@@ -153,7 +153,7 @@ module.exports = function( grunt ) {
 		// Check for JavaScript errors with "eslint"
 		eslint: {
 			options: {
-				configFile: '.eslintrc.json',
+				overrideConfigFile: '.eslintrc.json',
 			},
 			all: [
 				'assets/js/**/*.js',

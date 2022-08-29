@@ -1,0 +1,57 @@
+# Used for weaving together containers used for testing the plugin
+# use the do-tests.sh script to run the containers in the correct order
+version: "3.3"
+services:
+    db:
+        image: mysql:8
+        environment:
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+            MYSQL_USER: admin
+            MYSQL_PASSWORD: password
+            MYSQL_DATABASE: wordpress
+            MYSQL_HOST: 127.0.0.1
+    wordpress:
+        image: wordpress:6.0
+        environment:
+            WORDPRESS_DB_HOST: db
+            WORDPRESS_DB_USER: admin
+            WORDPRESS_DB_PASSWORD: password
+            WORDPRESS_DB_NAME: wordpress
+        ports:
+            -   "80:80"
+        volumes:
+            - type: bind
+              source: ./wordpress
+              target: /var/www/html
+        depends_on:
+            - db
+    wordpress-cli:
+        image: wordpress:cli
+        environment:
+            WORDPRESS_DB_HOST: db
+            WORDPRESS_DB_USER: admin
+            WORDPRESS_DB_PASSWORD: password
+            WORDPRESS_DB_NAME: wordpress
+        volumes:
+            - type: bind
+              source: ./wordpress
+              target: /var/www/html
+        user: xfs
+        depends_on:
+            - wordpress
+
+    tester:
+        build: tester
+        
+        environment:
+            WORDPRESS_DB_HOST: db
+            WORDPRESS_DB_USER: admin
+            WORDPRESS_DB_PASSWORD: password
+            WORDPRESS_DB_NAME: wordpress
+        volumes:
+            - type: bind
+              source: ./wordpress
+              target: /var/www/html
+        depends_on:
+            - wordpress
+            - db        
