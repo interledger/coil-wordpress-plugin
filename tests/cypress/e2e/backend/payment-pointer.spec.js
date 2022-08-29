@@ -2,8 +2,6 @@
  * Payment pointer tests.
 */
 
-const red = 'rgb(238, 72, 82)';
-
 describe( 'Plugin Settings Panel', function() {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
@@ -27,21 +25,20 @@ describe( 'Plugin Settings Panel', function() {
 			.type( `{selectall}${ invalidInput }` )
 			.blur();
 
-		checkForInvalidAlert( true );
+		cy.checkForInvalidAlert( true, '#coil_payment_pointer' );
 
 		cy
 			.get( '#coil_payment_pointer' )
-			.type( `{selectall}${ validInput }` )
-			.blur();
+			.type( `{selectall}${ validInput }` );
 
-		checkForInvalidAlert( false );
+		cy.checkForInvalidAlert( false, '#coil_payment_pointer' );
 
 		cy
 			.get( '#coil_payment_pointer' )
 			.type( `{selectall}${ invalidInput }` )
 			.blur();
 
-		checkForInvalidAlert( true );
+		cy.checkForInvalidAlert( true, '#coil_payment_pointer' );
 
 		cy.get( '#submit' ).click();
 
@@ -49,7 +46,7 @@ describe( 'Plugin Settings Panel', function() {
 			.get( '#coil_payment_pointer' )
 			.should( 'have.value', '' );
 
-		checkForInvalidAlert( false );
+		cy.checkForInvalidAlert( false, '#coil_payment_pointer' );
 	} );
 
 	it( 'check that the payment pointer can be set', function() {
@@ -72,28 +69,3 @@ describe( 'Plugin Settings Panel', function() {
 		cy.get( 'head meta[name="monetization"]' ).should( 'have.attr', 'content', paymentPointer );
 	} );
 } );
-
-/**
- * Checks the border color and appearance of the helper text
- * to determine if the invalid alert is active.
- *  @param {bool} active specifies whether the alert should be active or not.
-*/
-function checkForInvalidAlert( active ) {
-	if ( active ) {
-		cy
-			.get( '#coil_payment_pointer' )
-			.should( 'have.css', 'border-color', red );
-
-		cy
-			.get( '.invalid-input' )
-			.should( 'be.visible' );
-	} else {
-		cy
-			.get( '#coil_payment_pointer' )
-			.should( 'not.have.attr', 'style' );
-
-		cy
-			.get( '.invalid-input' )
-			.should( 'not.be.visible' );
-	}
-}

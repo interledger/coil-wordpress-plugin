@@ -17,12 +17,4 @@ describe( 'Plugin Settings Panel', function() {
 
 		cy.get( 'div.plugin-branding > .plugin-branding' ).should( 'contain', 'Coil Web Monetization' );
 	} );
-
-	it( 'check that the "Useful links & how to guides" is visible', function() {
-		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=welcome' );
-		cy.get( '.coil .settings-sidebar' )
-			.should( 'be.visible' );
-
-		cy.get( 'div.plugin-branding > .plugin-branding' ).should( 'contain', 'Coil Web Monetization' );
-	} );
 } );

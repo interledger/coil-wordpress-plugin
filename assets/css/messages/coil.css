@@ -462,8 +462,8 @@ svg.coil-post-title-padlock {
   clear: none;
   display: inline; }
   svg.coil-post-title-padlock.coil-post-title-padlock-medium {
-    transform: scale(1.2);
-    margin-left: 10px; }
+    margin-left: 10px;
+    transform: scale(1.2); }
   svg.coil-post-title-padlock.coil-post-title-padlock-large {
-    transform: scale(1.6);
-    margin-left: 20px; }
+    margin-left: 20px;
+    transform: scale(1.6); }

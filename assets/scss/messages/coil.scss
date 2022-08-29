@@ -103,6 +103,7 @@ body.monetization-not-initialized.coil-missing-id.show-fw-message {
 		}
 
 		.coil-message-header {
+
 			a.coil-message-button {
 				background-color: $paywall_dark_theme_button_color;
 				color: $paywall_dark_theme_button_font_color;
@@ -128,8 +129,10 @@ body.coil-exclusive.coil-extension-not-found.show-excerpt-message {
 
 	.coil-message-container {
 		display: block !important;
+
 		.coil-message-inner {
 			position: relative;
+
 			&::before {
 				content: '';
 				height: 150px;
@@ -176,6 +179,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 			flex-direction: row;
 			padding: $message_spacing_baseline;
 			text-decoration: none;
+
 			div {
 				color: $streaming_widget_font_color;
 				margin: auto;
@@ -234,10 +238,12 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 
 // Changes streaming support widget to implement light theme
 .streaming-widget-container.coil-light-theme {
+
 	.streaming-widget {
 		background-color: $streaming_widget_message_color_light_theme;
 
 		a {
+
 			div {
 				color: $streaming_widget_font_color_light_theme;
 			}
@@ -247,6 +253,7 @@ body.coil-hide-excerpt.show-fw-message .entry-content {
 
 // Implement hover effect
 body:not( .monetization-initialized ) .streaming-widget-container .streaming-widget {
+
 	&:hover {
 		background-color: $streaming_widget_message_hover_color;
 	}
@@ -254,6 +261,7 @@ body:not( .monetization-initialized ) .streaming-widget-container .streaming-wid
 
 // Implement hover effect for the light theme
 body:not( .monetization-initialized ) .streaming-widget-container.coil-light-theme .streaming-widget {
+
 	&:hover {
 		background-color: $streaming_widget_message_hover_color_light_theme;
 	}
@@ -261,6 +269,7 @@ body:not( .monetization-initialized ) .streaming-widget-container.coil-light-the
 
 // Changes streaming support widget to implement the small size
 .streaming-widget-container.streaming-widget-small {
+
 	.streaming-widget {
 		font-size: 14px;
 		line-height: 17px;
