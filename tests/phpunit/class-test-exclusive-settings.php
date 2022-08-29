@@ -339,7 +339,7 @@ class Test_Exclusive_Settings extends WP_UnitTestCase {
 		$padlock_display  = Admin\get_exlusive_post_setting( 'coil_title_padlock' );
 		$padlock_position = Admin\get_exlusive_post_setting( 'coil_padlock_icon_position' );
 		$padlock_style    = Admin\get_exlusive_post_setting( 'coil_padlock_icon_style' );
-		$padlock_size    = Admin\get_exlusive_post_setting( 'coil_padlock_icon_size' );
+		$padlock_size     = Admin\get_exlusive_post_setting( 'coil_padlock_icon_size' );
 
 		$this->assertSame( $padlock_settings['coil_title_padlock'], $padlock_display );
 		$this->assertSame( $padlock_settings['coil_padlock_icon_position'], $padlock_position );
