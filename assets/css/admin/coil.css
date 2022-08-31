@@ -169,6 +169,8 @@
         min-height: 350px;
         padding: 15px;
         position: relative; }
+        .coil form .settings-main .tab-styling .coil-preview.short {
+          min-height: 150px; }
         .coil form .settings-main .tab-styling .coil-preview.stacked {
           height: auto;
           margin-bottom: 20px;
