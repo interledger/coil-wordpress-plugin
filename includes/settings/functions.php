@@ -919,7 +919,7 @@ function coil_settings_exclusive_icon_render_callback() {
 				);
 				?>
 				<div class="coil-preview short">
-					<div class="coil-title-preview-container" data-padlock-icon-position="<?php echo esc_attr( Admin\get_exlusive_post_setting( 'coil_padlock_icon_position' ) ); ?>">
+					<div class="coil-title-preview-container" data-padlock-icon-position="<?php echo esc_attr( Admin\get_exlusive_icon_setting( 'coil_padlock_icon_position' ) ); ?>">
 						<div class="coil-title-preview-row coil-title-padlock-row">
 							<span class="coil-padlock-icon">
 								<?php echo $padlock_icon_styles[ $padlock_icon ]; ?>
