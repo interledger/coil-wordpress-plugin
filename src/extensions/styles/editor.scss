@@ -32,10 +32,35 @@
 		width: 100%;
 		z-index: 1;
 
+		.coil-exclusive-content-divider-text {
+			flex-direction: column;
+		}
+
 		p {
 			font-size: 14px !important;
 			font-weight: 500 !important;
 			margin: 0;
+		}
+
+		.coil-hint {
+			display: none;
+		}
+	}
+
+	&.exclusive-content-off {
+
+		.coil-exclusive-content-divider-inner {
+
+			padding: 8px;
+
+			.coil-hint {
+				display: inherit;
+			}
+
+			p {
+				color: #666;
+				font-size: 13px;
+			}
 		}
 	}
 }
