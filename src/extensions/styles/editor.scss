@@ -41,24 +41,21 @@
 			font-weight: 500 !important;
 			margin: 0;
 		}
-
-		.coil-hint {
-			display: none;
-		}
 	}
 
 	&.exclusive-content-off {
 
+		&::before,
+		&::after {
+			width: calc( ( 100% - 520px ) / 2 );
+		}
+
 		.coil-exclusive-content-divider-inner {
 
-			padding: 8px;
-
-			.coil-hint {
-				display: inherit;
-			}
+			max-width: 500px;
 
 			p {
-				color: #666;
+				color: #aaa;
 				font-size: 13px;
 			}
 		}
