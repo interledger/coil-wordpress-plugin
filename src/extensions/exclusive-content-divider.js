@@ -3,7 +3,7 @@ const { registerBlockType } = window.wp.blocks;
 const { useBlockProps } = wp.blockEditor;
 const { __ } = window.wp.i18n;
 
-import { ExclusiveContentDivider } from '../../assets/js/gutenberg-blocks/exclusive-content-divider-component.js';
+import { ExclusiveContentDivider } from './gutenberg-blocks/exclusive-content-divider-component.js';
 
 const exclusiveContentStatus = coilEditorParams.exclusiveContentStatus;/* eslint-disable-line no-undef */
 
