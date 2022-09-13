@@ -12,7 +12,7 @@ registerBlockType(
 	'coil/exclusive-content-divider',
 	{
 		// Localize title using wp.i18n.__()
-		title: __( 'Coil Exclusive Content Divider' ),
+		title: __( 'Coil Exclusive Content Divider', 'coil-web-monetization' ),
 		// Category Options: common, formatting, layout, widgets, embed
 		category: 'common',
 
