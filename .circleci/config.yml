@@ -56,7 +56,8 @@ jobs:
       image: ubuntu-2004:202008-01
     working_directory: /home/circleci/project/coil-wordpress-plugin
     steps:
-      - checkout           
+      - attach_workspace:
+          at: .
       - run:
           name: Setup wordpress infrastructure
           command: |
@@ -85,12 +86,65 @@ jobs:
           command: |
             cd /home/circleci/project/coil-wordpress-plugin/tests/ci
             docker-compose run tester --project /var/www/html/wp-content/plugins/coil-wordpress-plugin/tests --config baseUrl="http://wordpress:80/" --record --key=$CYPRESS_PROJECT_KEY
+  build_step:
+    docker:
+      - image: cimg/node:14.10.1
+    working_directory: /home/circleci/project/coil-wordpress-plugin
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run build
+      - run: npx grunt build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  bundle:
+    docker:
+      - image: cimg/base:2021.04
+    working_directory: /home/circleci/project/coil-wordpress-plugin
+    steps:
+      - attach_workspace:
+          at: .
+      - run: rm -r node_modules tests scripts .circleci ./assets/scss ./src
+      - run: sudo rm -r .git
+      - run: rm ./assets/css/admin/coil.css ./assets/css/frontend/coil.css ./assets/css/messages/coil.css
+      - run: rm ./assets/js/initialize-monetization.js ./assets/js/admin/admin-notices.js
+      - run: rm .editorconfig .eslintignore .eslintrc.json .gitattributes .gitignore .stylelintrc.json composer.json composer.lock Gruntfile.js package-lock.json package.json phpcs.xml.dist phpunit.xml.dist README.md yarn.lock
+      - run: zip -r /home/circleci/coil-web-monetization-plugin.zip .
+      - store_artifacts:
+          path: /home/circleci/coil-web-monetization-plugin.zip
 workflows:
   version: 2
-  test:
+  test-and-build:
     jobs:
-      - js_scss_linting
-      - php_testing
+      - php_testing:
+          filters:
+            tags:
+              only: /^v.*/
+      - js_scss_linting:
+          filters:
+            tags:
+              only: /^v.*/
+      - build_step:
+          filters:
+            tags:
+              only: /^v.*/
       - cypress_tests:
           requires:
+            - build_step
             - php_testing
+          filters:
+            tags:
+              only: /^v.*/
+      - bundle:
+          requires:
+            - php_testing
+            - build_step
+            - js_scss_linting
+            - cypress_tests
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/

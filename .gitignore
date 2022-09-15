@@ -15,3 +15,8 @@ npm-debug.lo
 Thumbs.db
 cghooks.lock
 
+# Build assets
+/dist
+/assets/css
+/assets/js/initialize-monetization.min.js
+/assets/js/admin/admin-notices.min.js
