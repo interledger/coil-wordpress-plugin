@@ -48,7 +48,7 @@ function init_plugin() : void {
 	add_filter( 'the_content', __NAMESPACE__ . '\Gating\maybe_restrict_content' );
 	add_filter( 'the_title', __NAMESPACE__ . '\Gating\maybe_add_padlock_to_title', 10, 2 );
 	add_filter( 'nav_menu_item_title', __NAMESPACE__ . '\Gating\restore_title_in_menus', 10, 4 );
-	add_action( 'wp_head', __NAMESPACE__ . '\print_meta_tag' );
+	add_action( 'wp_head', __NAMESPACE__ . '\print_link_tag' );
 
 	// Admin screens and settings.
 	add_filter( 'plugin_action_links_coil-web-monetization/plugin.php', __NAMESPACE__ . '\Admin\add_plugin_action_links' );
@@ -358,10 +358,9 @@ function add_body_class( $classes ) : array {
  *
  * @return void
  */
-function print_meta_tag() : void {
+function print_link_tag() : void {
 
-	$payment_pointer_id  = get_payment_pointer();
-	$payment_pointer_url = $payment_pointer_id;
+	$payment_pointer_url = get_payment_pointer();
 
 	// check if url starts with $
 	if ( '' !== $payment_pointer_url && $payment_pointer_url[0] === '$' ) {
@@ -378,8 +377,7 @@ function print_meta_tag() : void {
 		}
 	}
 
-	if ( ! empty( $payment_pointer_id ) ) {
-		echo '<meta name="monetization" content="' . esc_attr( $payment_pointer_id ) . '" />' . PHP_EOL;
+	if ( ! empty( $payment_pointer_url ) ) {
 		echo '<link rel="monetization" href="' . esc_url( $payment_pointer_url ) . '" />' . PHP_EOL;
 	}
 }
