@@ -76,6 +76,8 @@
 
 	const messageWrapper = $( 'p.monetize-msg' );
 
+	let monetizationStartEventOccurred = false;
+
 	/**
 	 * @param {String} message The message to display inside the tag.
 	 * @param {String} customClass Any extra custom classes to add to this tag.
@@ -487,6 +489,13 @@
 			setTimeout( function() {
 				showVerificationFailureMessage();
 			}, 5000 );
+		} else {
+			// Update Streaming Support Widget if browser extension is unable to verify user.
+			setTimeout( function() {
+				if ( monetizationStartEventOccurred === false ) {
+					maybeAddStreamingWidget();
+				}
+			}, 5000 );
 		}
 	}
 
@@ -498,6 +507,7 @@
 	 * @return {void}
 	*/
 	function monetizationStartListener( event ) {
+		monetizationStartEventOccurred = true;
 		let brandingLogo = '';
 
 		if ( document.body.classList.contains( 'show-fw-message' ) ) {
