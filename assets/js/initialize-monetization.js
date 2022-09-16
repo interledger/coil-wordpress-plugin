@@ -587,17 +587,17 @@
 	*/
 	function monetizationProgressListener( event ) {
 		// Connect to backend to validate the payment.
-		const paymentPointer = event.detail.paymentPointer,
-			requestId = event.detail.requestId,
-			amount = event.detail.amount,
-			assetCode = event.detail.assetCode,
-			assetScale = event.detail.assetScale;
+		const paymentPointer = event.paymentPointer,
+			receipt = event.receipt,
+			amount = event.amount,
+			assetCode = event.assetCode,
+			assetScale = event.assetScale;
 
 		// Trigger an event.
 		$( 'body' ).trigger( 'coil-monetization-progress', [
 			event,
 			paymentPointer,
-			requestId,
+			receipt,
 			amount,
 			assetCode,
 			assetScale,
