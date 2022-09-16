@@ -76,8 +76,6 @@
 
 	const messageWrapper = $( 'p.monetize-msg' );
 
-	let monetizationStartEventOccurred = false;
-
 	/**
 	 * @param {String} message The message to display inside the tag.
 	 * @param {String} customClass Any extra custom classes to add to this tag.
@@ -257,17 +255,6 @@
 
 		if ( restrictedContent ) {
 			restrictedContent.style.display = 'block';
-		}
-	}
-
-	/**
-	 * Hide the content container.
-	*/
-	function hideContentContainer() {
-		const container = document.querySelector( contentContainer );
-
-		if ( container ) {
-			container.style.display = 'none';
 		}
 	}
 
@@ -504,67 +491,6 @@
 	}
 
 	/**
-	 * Handles the 'started' monetization state.
-	 *
-	 * @return {void}
-	*/
-	function handleStartedMonetization() {
-		// User account verified, loading content. Monetization state: Started
-
-		if ( isSubscribersOnly() && hasCoilDivider && $( 'p.monetize-msg' ).length === 0 ) {
-			$( '.coil-restricted-content' ).after( showMonetizationMessage( loadingContent, '' ) );
-		} else if ( isSubscribersOnly() && isExcerptEnabled() && getContentExcerpt() !== null ) {
-			document.body.classList.add( 'show-excerpt-message' );
-			if ( $( '.coil-post-excerpt' ).length === 0 ) {
-				$( contentContainer ).before( getContentExcerpt() );
-			}
-			if ( $( 'p.monetize-msg' ).length === 0 ) {
-				$( contentContainer ).last().before( showMonetizationMessage( loadingContent, '' ) );
-			}
-		} else if ( hasContentContainer() ) { // Since this code is reachable with an invalid CSS selector an additional check is required.
-			document.querySelector( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
-		}
-	}
-
-	/**
-	 * Handles the 'stopped' monetization state.
-	 *
-	 * @return {void}
-	*/
-	function handleStoppedMonetization() {
-		if ( isSubscribersOnly() && hasCoilDivider && $( 'p.monetize-msg' ).length === 0 ) {
-			$( '.coil-restricted-content' ).after( showMonetizationMessage( loadingContent, '' ) );
-		} else if ( isSubscribersOnly() && isExcerptEnabled() && getContentExcerpt() !== null ) {
-			hideContentContainer();
-			document.body.classList.add( 'show-excerpt-message' );
-			if ( $( '.coil-post-excerpt' ).length === 0 ) {
-				$( contentContainer ).before( getContentExcerpt() );
-			}
-			if ( $( 'p.monetize-msg' ).length === 0 ) {
-				$( contentContainer ).last().before( showMonetizationMessage( loadingContent, '' ) );
-			}
-		} else if ( isSubscribersOnly() ) {
-			hideContentContainer();
-			if ( $( 'p.monetize-msg' ).length === 0 ) {
-				$( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
-			}
-		}
-
-		setTimeout( function() {
-			// If the payment connection event listeners haven't yet been
-			// initialised, display failure message
-			if ( monetizationStartEventOccurred === false ) {
-				if ( $( 'p.monetize-msg' ).text() === loadingContent ) {
-					// Monetization not started and verification failed.
-					showVerificationFailureMessage();
-				}
-			}
-		}, 5000 );
-
-		maybeAddStreamingWidget();
-	}
-
-	/**
 	 * The listener callback for monetization starting.
 	 *
 	 * @param {object} event The monetizationstart event
@@ -572,7 +498,6 @@
 	 * @return {void}
 	*/
 	function monetizationStartListener( event ) {
-		monetizationStartEventOccurred = true;
 		let brandingLogo = '';
 
 		if ( document.body.classList.contains( 'show-fw-message' ) ) {
@@ -699,16 +624,6 @@
 		}
 
 		handlePendingMonetization();
-
-		switch ( document.monetization.state ) {
-			case 'started':
-				handleStartedMonetization();
-				break;
-
-			case 'stopped':
-				handleStoppedMonetization();
-				break;
-		}
 
 		// Monetization has started.
 		link.addEventListener( 'monetization', monetizationStartListener, { once: true } );
