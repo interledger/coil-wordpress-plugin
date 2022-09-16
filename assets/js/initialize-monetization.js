@@ -692,16 +692,15 @@
 		}
 
 		// Check if browser extension exists.
-		if ( typeof document.monetization === 'undefined' ) {
+		const link = document.querySelector( 'link[rel=monetization]' );
+		if ( ! link || ! link.relList.supports( 'monetization' ) ) {
 			handleUndefinedMonetization();
 			return;
 		}
 
-		switch ( document.monetization.state ) {
-			case 'pending':
-				handlePendingMonetization();
-				break;
+		handlePendingMonetization();
 
+		switch ( document.monetization.state ) {
 			case 'started':
 				handleStartedMonetization();
 				break;
@@ -712,10 +711,10 @@
 		}
 
 		// Monetization has started.
-		document.monetization.addEventListener( 'monetizationstart', monetizationStartListener );
+		link.addEventListener( 'monetization', monetizationStartListener, { once: true } );
 
 		// Monetization progress event.
-		document.monetization.addEventListener( 'monetizationprogress', monetizationProgressListener );
+		link.addEventListener( 'monetization', monetizationProgressListener );
 	}
 
 	/**
