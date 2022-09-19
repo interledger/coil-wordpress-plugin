@@ -462,8 +462,18 @@ svg.coil-post-title-padlock {
   clear: none;
   display: inline; }
   svg.coil-post-title-padlock.coil-post-title-padlock-medium {
-    margin-left: 10px;
     transform: scale(1.2); }
+    svg.coil-post-title-padlock.coil-post-title-padlock-medium.coil-post-title-padlock-before {
+      margin-inline-end: 10px;
+      margin-inline-start: 0; }
+    svg.coil-post-title-padlock.coil-post-title-padlock-medium.coil-post-title-padlock-after {
+      margin-inline-end: 0;
+      margin-inline-start: 10px; }
   svg.coil-post-title-padlock.coil-post-title-padlock-large {
-    margin-left: 20px;
     transform: scale(1.6); }
+    svg.coil-post-title-padlock.coil-post-title-padlock-large.coil-post-title-padlock-before {
+      margin-inline-end: 15px;
+      margin-inline-start: 0; }
+    svg.coil-post-title-padlock.coil-post-title-padlock-large.coil-post-title-padlock-after {
+      margin-inline-end: 0;
+      margin-inline-start: 15px; }

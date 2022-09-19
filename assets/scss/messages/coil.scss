@@ -299,12 +299,31 @@ svg.coil-post-title-padlock {
 	display: inline;
 
 	&.coil-post-title-padlock-medium {
-		margin-left: 10px;
 		transform: scale(1.2);
+
+		&.coil-post-title-padlock-before {
+			margin-inline-end:		10px;
+			margin-inline-start:	0;
+		}
+
+		&.coil-post-title-padlock-after {
+			margin-inline-end:		0;
+			margin-inline-start:	10px;
+		}
 	}
 
 	&.coil-post-title-padlock-large {
-		margin-left: 20px;
 		transform: scale(1.6);
+
+		&.coil-post-title-padlock-before {
+			margin-inline-end:		15px;
+			margin-inline-start:	0;
+		}
+
+		&.coil-post-title-padlock-after {
+			margin-inline-end:		0;
+			margin-inline-start:	15px;
+		}
+
 	}
 }
