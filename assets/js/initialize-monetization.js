@@ -627,9 +627,20 @@
 		}
 
 		// Check if browser extension exists.
+		// The newer standard of the extension supports link tags.
 		const link = document.querySelector( 'link[rel=monetization]' );
 		if ( ! link || ! link.relList.supports( 'monetization' ) ) {
-			handleUndefinedMonetization();
+			// Checks for the older version of the Coil browser extension.
+			if ( typeof document.monetization === 'undefined' ) {
+				// No support detected.
+				handleUndefinedMonetization();
+				return;
+			}
+			// Older version of the Coil extension detected.
+			handlePendingMonetization();
+
+			// Monetization has started.
+			document.monetization.addEventListener( 'monetizationstart', monetizationStartListener );
 			return;
 		}
 
