@@ -360,7 +360,8 @@ function add_body_class( $classes ) : array {
  */
 function print_link_tag() : void {
 
-	$payment_pointer_url = get_payment_pointer();
+	$payment_pointer_id  = get_payment_pointer();
+	$payment_pointer_url = $payment_pointer_id;
 
 	// check if url starts with $
 	if ( '' !== $payment_pointer_url && $payment_pointer_url[0] === '$' ) {
@@ -377,7 +378,8 @@ function print_link_tag() : void {
 		}
 	}
 
-	if ( ! empty( $payment_pointer_url ) ) {
+	if ( ! empty( $payment_pointer_id ) ) {
+		echo '<meta name="monetization" content="' . esc_attr( $payment_pointer_id ) . '" />' . PHP_EOL;
 		echo '<link rel="monetization" href="' . esc_url( $payment_pointer_url ) . '" />' . PHP_EOL;
 	}
 }
