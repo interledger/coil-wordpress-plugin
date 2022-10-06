@@ -1033,7 +1033,7 @@ function coil_padlock_icon_size_selection_render_callback() {
 	printf(
 		'<select name="%s" id="%s">',
 		esc_attr( 'coil_exclusive_settings_group[coil_padlock_icon_size]' ),
-		esc_attr( 'coil_branding' )
+		esc_attr( 'coil_padlock_icon_size' )
 	);
 
 	printf(
