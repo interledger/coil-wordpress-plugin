@@ -297,4 +297,33 @@ body:not( .monetization-initialized ) .streaming-widget-container.coil-light-the
 svg.coil-post-title-padlock {
 	clear: none;
 	display: inline;
+
+	&.coil-post-title-padlock-medium {
+		transform: scale(1.2);
+
+		&.coil-post-title-padlock-before {
+			margin-inline-end:		10px;
+			margin-inline-start:	0;
+		}
+
+		&.coil-post-title-padlock-after {
+			margin-inline-end:		0;
+			margin-inline-start:	10px;
+		}
+	}
+
+	&.coil-post-title-padlock-large {
+		transform: scale(1.6);
+
+		&.coil-post-title-padlock-before {
+			margin-inline-end:		15px;
+			margin-inline-start:	0;
+		}
+
+		&.coil-post-title-padlock-after {
+			margin-inline-end:		0;
+			margin-inline-start:	15px;
+		}
+
+	}
 }

@@ -23,6 +23,10 @@ describe( 'Exclusive icon settings', () => {
 		cy
 			.get( '#coil_padlock_icon_style_lock' )
 			.should( 'be.checked' );
+
+		cy
+			.get( '#padlock_icon_size_small' )
+			.should( 'be.checked' );
 	} );
 
 	it( 'Checks the icon preview defaults', () => {
@@ -108,6 +112,10 @@ describe( 'Exclusive icon settings', () => {
 			.click();
 
 		cy
+			.get( '#padlock_icon_size_medium' )
+			.click();
+
+		cy
 			.get( '#submit' )
 			.click();
 
@@ -117,6 +125,10 @@ describe( 'Exclusive icon settings', () => {
 
 		cy
 			.get( '#coil_padlock_icon_style_coil_icon' )
+			.should( 'be.checked' );
+
+		cy
+			.get( '#padlock_icon_size_medium' )
 			.should( 'be.checked' );
 	} );
 } );
@@ -149,6 +161,15 @@ function checkIconOptionsVisibility( visibilityStatus ) {
 
 	cy
 		.get( '#coil_title_padlock + label + h4 + .coil-radio-group + h4 + .coil-radio-group' )
+		.should( assertion );
+
+	cy
+		.get( '#coil_title_padlock + label + h4 + .coil-radio-group + h4 + .coil-radio-group + h4' )
+		.should( 'contain', 'Icon Size' )
+		.should( assertion );
+
+	cy
+		.get( '#coil_title_padlock + label + h4 + .coil-radio-group + h4 + .coil-radio-group + h4 + .coil-radio-group' )
 		.should( assertion );
 
 	cy

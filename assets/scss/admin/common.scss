@@ -204,6 +204,14 @@
 
 									+ .coil-radio-group {
 										display: none;
+
+										+ #coil_icon_size_label {
+											display: none;
+
+											+ .coil-radio-group {
+												display: none;
+											}
+										}
 									}
 								}
 							}
