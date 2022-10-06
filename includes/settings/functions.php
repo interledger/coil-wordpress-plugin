@@ -1027,37 +1027,38 @@ function coil_padlock_icon_style_selection_render_callback() {
  */
 function coil_padlock_icon_size_selection_render_callback() {
 
-	// Defaults to the Coil logo
+	// Defaults to the small size
 	$coil_padlock_icon_size = Admin\get_exlusive_icon_setting( 'coil_padlock_icon_size' );
+	$name                   = 'coil_exclusive_settings_group[coil_padlock_icon_size]';
 
-	printf(
-		'<select name="%s" id="%s">',
-		esc_attr( 'coil_exclusive_settings_group[coil_padlock_icon_size]' ),
-		esc_attr( 'coil_padlock_icon_size' )
-	);
+	echo '<div class="coil-radio-group">';
 
-	printf(
-		'<option value="%s" %s>%s</option>',
+	Rendering\render_radio_button_field(
+		'padlock_icon_size_small',
+		$name,
 		esc_attr( 'small' ),
-		( ! empty( $coil_padlock_icon_size ) && $coil_padlock_icon_size === 'small' || empty( $coil_padlock_icon_size ) ? 'selected="selected"' : false ),
-		esc_attr( 'Small' )
+		__( 'Small', 'coil-web-monetization' ),
+		$coil_padlock_icon_size,
+		true
 	);
 
-	printf(
-		'<option value="%s" %s>%s</option>',
+	Rendering\render_radio_button_field(
+		'padlock_icon_size_medium',
+		$name,
 		esc_attr( 'medium' ),
-		( ! empty( $coil_padlock_icon_size ) && $coil_padlock_icon_size === 'medium' ? 'selected="selected"' : false ),
-		esc_attr( 'Medium' )
+		__( 'Medium', 'coil-web-monetization' ),
+		$coil_padlock_icon_size
 	);
 
-	printf(
-		'<option value="%s" %s>%s</option>',
+	Rendering\render_radio_button_field(
+		'padlock_icon_size_large',
+		$name,
 		esc_attr( 'large' ),
-		( ! empty( $coil_padlock_icon_size ) && $coil_padlock_icon_size === 'large' ? 'selected="selected"' : false ),
-		esc_attr( 'Large' )
+		__( 'Large', 'coil-web-monetization' ),
+		$coil_padlock_icon_size
 	);
 
-	echo '</select>';
+	echo '</div>';
 }
 
 /**
