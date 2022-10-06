@@ -27,14 +27,37 @@
 		justify-content: space-between;
 		margin: auto;
 		max-width: 400px;
-		padding: 12px 8px;
+		padding: 0 8px;
 		text-align: center;
 		width: 100%;
 		z-index: 1;
 
+		.coil-exclusive-content-divider-text {
+			flex-direction: column;
+		}
+
 		p {
 			font-size: 14px !important;
 			font-weight: 500 !important;
+			margin: 0;
+		}
+	}
+
+	&.exclusive-content-off {
+
+		&::before,
+		&::after {
+			width: calc( ( 100% - 520px ) / 2 );
+		}
+
+		.coil-exclusive-content-divider-inner {
+
+			max-width: 500px;
+
+			p {
+				color: #aaa;
+				font-size: 13px;
+			}
 		}
 	}
 }
