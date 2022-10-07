@@ -46,6 +46,39 @@ describe( 'Exclusive icon appearance test', () => {
 			.get( 'h1 > svg' )
 			.should( 'not.exist' );
 	} );
+
+	it( 'check that exclusive icon settings reflect on posts', function() {
+		// Checking the default classes
+		cy.visit( '/coil-members-only/' );
+
+		cy
+			.get( 'h1 > svg' )
+			.should( 'have.class', 'coil-post-title-padlock-small' )
+			.should( 'have.class', 'coil-post-title-padlock-before' );
+
+		// Make the icon display after the title with a large size
+		cy.addSetting( 'coil_exclusive_settings_group', [
+			{
+				key: 'coil_title_padlock',
+				value: '1',
+			},
+			{
+				key: 'coil_padlock_icon_position',
+				value: 'after',
+			},
+			{
+				key: 'coil_padlock_icon_size',
+				value: 'large',
+			},
+		] );
+
+		cy.visit( '/coil-members-only/' );
+
+		cy
+			.get( 'h1 > svg' )
+			.should( 'have.class', 'coil-post-title-padlock-large' )
+			.should( 'have.class', 'coil-post-title-padlock-after' );
+	} );
 } );
 
 /**

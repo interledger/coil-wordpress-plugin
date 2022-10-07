@@ -331,6 +331,11 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
 			'valid_choices' => Admin\get_padlock_title_icon_style_options(),
 			'default'       => $exclusive_post_defaults['coil_padlock_icon_style'],
 		],
+		[
+			'field_name'    => 'coil_padlock_icon_size',
+			'valid_choices' => Admin\get_padlock_title_icon_size_options(),
+			'default'       => $exclusive_post_defaults['coil_padlock_icon_size'],
+		],
 	];
 
 	foreach ( $additional_fields as $field_item ) {
@@ -358,7 +363,7 @@ function coil_exclusive_settings_group_validation( $exclusive_settings ) : array
  *
  * @param array $streaming_widget_settings
  * @return array
-*/
+ */
 function streaming_widget_settings_group_validation( $streaming_widget_settings ): array {
 	$final_settings = [];
 	$defaults       = Admin\get_streaming_widget_defaults();
@@ -451,7 +456,7 @@ function streaming_widget_settings_group_validation( $streaming_widget_settings 
  * This contains the payment pointer and also acts as a guide for the other tabs.
  *
  * @return void
-*/
+ */
 function coil_settings_welcome_render_callback() {
 	?>
 	<div class="tab-styling">
@@ -492,7 +497,7 @@ function coil_settings_welcome_render_callback() {
  * Renders the output of the help links sidebar tab.
  *
  * @return void
-*/
+ */
 function coil_settings_sidebar_render_callback() {
 
 	?>
@@ -547,7 +552,7 @@ function coil_settings_sidebar_render_callback() {
  * Renders the output of the payment pointer input field.
  *
  * @return void
-*/
+ */
 function coil_settings_payment_pointer_render_callback() {
 	?>
 	<div class="tab-styling">
@@ -586,7 +591,7 @@ function coil_settings_payment_pointer_render_callback() {
  * showing radio buttons based on the post types available in WordPress.
  *
  * @return void
-*/
+ */
 function coil_settings_monetization_render_callback() {
 	?>
 	<div class="tab-styling">
@@ -621,7 +626,7 @@ function coil_settings_monetization_render_callback() {
  * This includes custom messages, color theme, branding, and font options.
  *
  * @return void
-*/
+ */
 function coil_settings_enable_exclusive_toggle_render_callback() {
 	?>
 	<div class="tab-styling">
@@ -667,7 +672,7 @@ function coil_settings_enable_exclusive_toggle_render_callback() {
  * This includes custom messages, color theme, branding, and font options.
  *
  * @return void
-*/
+ */
 function coil_settings_paywall_render_callback() {
 	?>
 	<div class="tab-styling exclusive-content-section">
@@ -744,7 +749,7 @@ function coil_settings_paywall_render_callback() {
  * Returns the path for which ever image is being used for the preview
  *
  * @return void
-*/
+ */
 function get_paywall_theme_logo() {
 	$logo_setting = Admin\get_paywall_appearance_setting( 'coil_message_branding', true );
 
@@ -770,7 +775,7 @@ function get_paywall_theme_logo() {
  * Renders the output of the paywall theme radio button settings.
  *
  * @return void
-*/
+ */
 function paywall_theme_render_callback() {
 
 	// Set the theme color
@@ -803,7 +808,7 @@ function paywall_theme_render_callback() {
  * Renders the output of the branding selection box settings.
  *
  * @return void
-*/
+ */
 function paywall_branding_render_callback() {
 
 	// Defaults to the Coil logo
@@ -852,7 +857,7 @@ function paywall_branding_render_callback() {
  * Renders the output of the font option checkbox
  * The default is unchecked
  * @return void
-*/
+ */
 function paywall_font_render_callback() {
 
 	$font_input_id = 'coil_message_font';
@@ -870,7 +875,7 @@ function paywall_font_render_callback() {
  * This includes choosing whether to tdisplay the padloc, where to display it and which icon to use.
  *
  * @return void
-*/
+ */
 function coil_settings_exclusive_icon_render_callback() {
 
 	?>
@@ -909,7 +914,14 @@ function coil_settings_exclusive_icon_render_callback() {
 
 				$padlock_icon_styles  = Admin\get_padlock_icon_styles();
 				$padlock_icon         = Admin\get_exlusive_icon_setting( 'coil_padlock_icon_style', true );
-				$padlock_icon_enabled = Admin\get_exlusive_icon_setting( 'coil_title_padlock' )
+				$padlock_icon_enabled = Admin\get_exlusive_icon_setting( 'coil_title_padlock' );
+
+				// Renders the icon size radio buttons
+				Rendering\render_input_field_heading(
+					__( 'Icon Size', 'coil-web-monetization' ),
+					'coil_icon_size_label'
+				);
+				coil_padlock_icon_size_selection_render_callback();
 				?>
 			</div>
 			<div class="coil-column-5 <?php echo esc_attr( $padlock_icon_enabled ? '' : 'hidden' ); ?>">
@@ -953,7 +965,7 @@ function coil_settings_exclusive_icon_render_callback() {
  * Renders the output of the padlock position radio button settings.
  *
  * @return void
-*/
+ */
 function coil_padlock_icon_position_selection_render_callback() {
 
 	// Set the icon position
@@ -986,7 +998,7 @@ function coil_padlock_icon_position_selection_render_callback() {
  * Renders the output of the padlock position radio button settings.
  *
  * @return void
-*/
+ */
 function coil_padlock_icon_style_selection_render_callback() {
 
 	// Set the icon style
@@ -1009,10 +1021,51 @@ function coil_padlock_icon_style_selection_render_callback() {
 }
 
 /**
+ * Renders the output of the padlock position radio button settings.
+ *
+ * @return void
+ */
+function coil_padlock_icon_size_selection_render_callback() {
+
+	// Defaults to the small size
+	$coil_padlock_icon_size = Admin\get_exlusive_icon_setting( 'coil_padlock_icon_size' );
+	$name                   = 'coil_exclusive_settings_group[coil_padlock_icon_size]';
+
+	echo '<div class="coil-radio-group">';
+
+	Rendering\render_radio_button_field(
+		'padlock_icon_size_small',
+		$name,
+		esc_attr( 'small' ),
+		__( 'Small', 'coil-web-monetization' ),
+		$coil_padlock_icon_size,
+		true
+	);
+
+	Rendering\render_radio_button_field(
+		'padlock_icon_size_medium',
+		$name,
+		esc_attr( 'medium' ),
+		__( 'Medium', 'coil-web-monetization' ),
+		$coil_padlock_icon_size
+	);
+
+	Rendering\render_radio_button_field(
+		'padlock_icon_size_large',
+		$name,
+		esc_attr( 'large' ),
+		__( 'Large', 'coil-web-monetization' ),
+		$coil_padlock_icon_size
+	);
+
+	echo '</div>';
+}
+
+/**
  * Renders the output of the global post type visibility default settings
  * showing radio buttons based on the post types available in WordPress.
  * @return void
-*/
+ */
 function coil_settings_post_visibility_render_callback() {
 	?>
 	<div class="tab-styling exclusive-content-section">
@@ -1053,7 +1106,7 @@ function coil_settings_post_visibility_render_callback() {
  * inputs based on the post types available in WordPress.
  *
  * @return void
-*/
+ */
 function coil_settings_excerpt_display_render_callback() {
 
 	?>
@@ -1081,7 +1134,7 @@ function coil_settings_excerpt_display_render_callback() {
  * Render the CSS selector settings input field.
  *
  * @return void
-*/
+ */
 function coil_settings_css_selector_render_callback() {
 
 	?>
@@ -1094,7 +1147,7 @@ function coil_settings_css_selector_render_callback() {
 		printf(
 			'<p>%s (<a href="%s" target="_blank">%s</a>)</p>',
 			/* translators: 1) HTML link open tag, 2) HTML link close tag, 3) HTML link open tag, 4) HTML link close tag. */
-			esc_html__( 'This plugin uses CSS selectors to control exclusive content. Many themes use the plugin\'s default selectors. If your exclusive content is being incorrectly shown or hidden, there\'s a strong possibility your theme is using different selectors. Enter your theme\'s CSS selectors here.', 'coil-web-monetization' ),
+				esc_html__( 'This plugin uses CSS selectors to control exclusive content. Many themes use the plugin\'s default selectors. If your exclusive content is being incorrectly shown or hidden, there\'s a strong possibility your theme is using different selectors. Enter your theme\'s CSS selectors here.', 'coil-web-monetization' ),
 			esc_url( 'https://help.coil.com/docs/monetize/content/wp-exclusive-content/#adjust-the-css-selectors-used-by-the-plugin-as-needed' ),
 			esc_html__( 'Learn more', 'coil-web-monetization' )
 		);
@@ -1125,7 +1178,7 @@ function coil_settings_css_selector_render_callback() {
 /**
  * Renders the output of the content messaging customization setting
  * @return void
-*/
+ */
 function coil_paywall_appearance_text_field_settings_render_callback( $field_name, $field_type = 'text' ) {
 	$defaults = Admin\get_paywall_text_defaults();
 
@@ -1177,7 +1230,7 @@ function coil_paywall_appearance_text_field_settings_render_callback( $field_nam
 /**
  * Renders the output of the enable streaming support widget toggle
  * @return void
-*/
+ */
 function coil_settings_enable_streaming_widget_toggle_render_callback() {
 	?>
 	<div class="tab-styling">
@@ -1213,7 +1266,7 @@ function coil_settings_enable_streaming_widget_toggle_render_callback() {
 /**
  * Renders the streaming support widget visibility settings
  * @return void
-*/
+ */
 function coil_settings_streaming_widget_visibility_render_callback() {
 	?>
 	<div class="tab-styling streaming-widget-section">
@@ -1243,7 +1296,7 @@ function coil_settings_streaming_widget_visibility_render_callback() {
 /**
  * Renders the streaming support widget customization settings
  * @return void
-*/
+ */
 function coil_settings_streaming_widget_settings_render_callback() {
 	?>
 	<div class="tab-styling streaming-widget-section">
@@ -1359,7 +1412,7 @@ function coil_settings_streaming_widget_settings_render_callback() {
  * Renders the output of the streaming support widget theme radio button settings.
  *
  * @return void
-*/
+ */
 function streaming_widget_theme_render_callback() {
 
 	// Set the theme color settingcoil-preview
@@ -1391,7 +1444,7 @@ function streaming_widget_theme_render_callback() {
  * Renders the output of the streaming support widget size radio button settings.
  *
  * @return void
-*/
+ */
 function streaming_widget_size_render_callback() {
 
 	// Set the theme color setting coil-preview
@@ -1423,7 +1476,7 @@ function streaming_widget_size_render_callback() {
  * Renders the output of the streaming support widget position dropdown.
  *
  * @return void
-*/
+ */
 function streaming_widget_position_dropdown() {
 	$position = Admin\get_streaming_widget_setting( 'streaming_widget_position' );
 	echo sprintf(
@@ -1449,7 +1502,7 @@ function streaming_widget_position_dropdown() {
  * Renders the output of the streaming support widget margin table.
  *
  * @return void
-*/
+ */
 function render_streaming_widget_margin_settings() {
 	echo '<div class="coil-margin-input-group">';
 
@@ -1503,7 +1556,7 @@ function render_streaming_widget_margin_settings() {
 /**
  * Creates dismissable welcome notice on coil admin screen
  * @return void
-*/
+ */
 function admin_welcome_notice() {
 
 	global $current_user;
@@ -1544,12 +1597,12 @@ function admin_welcome_notice() {
 			?>
 			<p>
 				<?php
-					echo sprintf(
-						'<a class="%1$s" href="%2$s">%3$s</a>',
-						'button button-primary',
-						esc_url( '?page=coil_settings&tab=general_settings' ),
-						esc_html__( 'Add Payment Pointer', 'coil-web-monetization' )
-					);
+				echo sprintf(
+					'<a class="%1$s" href="%2$s">%3$s</a>',
+					'button button-primary',
+					esc_url( '?page=coil_settings&tab=general_settings' ),
+					esc_html__( 'Add Payment Pointer', 'coil-web-monetization' )
+				);
 				?>
 			</p>
 			<p>
@@ -1562,12 +1615,12 @@ function admin_welcome_notice() {
 			</p>
 			<p>
 				<?php
-					echo sprintf(
-						'<a class="%1$s" href="%2$s">%3$s</a>',
-						'button button-primary',
-						esc_url( '?page=coil_settings&tab=exclusive_settings' ),
-						esc_html__( 'Check CSS Selector', 'coil-web-monetization' )
-					);
+				echo sprintf(
+					'<a class="%1$s" href="%2$s">%3$s</a>',
+					'button button-primary',
+					esc_url( '?page=coil_settings&tab=exclusive_settings' ),
+					esc_html__( 'Check CSS Selector', 'coil-web-monetization' )
+				);
 				?>
 			</p>
 		</div>
@@ -1578,7 +1631,7 @@ function admin_welcome_notice() {
 /**
  * Admin notice to ensure payment pointer has been set
  * @return void
-*/
+ */
 function admin_no_payment_pointer_notice() {
 
 	// Only nag admins that can manage coil settings
@@ -1623,7 +1676,7 @@ function admin_no_payment_pointer_notice() {
  * and taxonomy content types.
  *
  * @return void
-*/
+ */
 function render_coil_settings_screen() : void {
 
 	?>
@@ -1697,7 +1750,7 @@ function render_coil_settings_screen() : void {
  *
  * @param WP_Term_Object $term
  * @return void
-*/
+ */
 function coil_add_term_custom_meta( $term ) {
 
 	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
@@ -1724,16 +1777,16 @@ function coil_add_term_custom_meta( $term ) {
 		<label for="_coil_monetization_term_status"><?php esc_html_e( 'Select a Web Monetization status', 'coil-web-monetization' ); ?></label>
 
 		<select name="_coil_monetization_term_status" id="monetization_dropdown" onchange="javascript: handleRadioOptionsDisplay('<?php echo esc_attr( $term_visibility ); ?>')">
-		<?php
-		foreach ( $monetization_options as $setting_key => $setting_value ) {
-			printf(
-				'<option value="%s"%s>%s</option>',
-				esc_attr( $setting_key ),
-				selected( $setting_key, $term_monetization ),
-				$setting_key === 'default' ? esc_html__( 'Default', 'coil-web-monetization' ) : $setting_value
-			);
-		}
-		?>
+			<?php
+			foreach ( $monetization_options as $setting_key => $setting_value ) {
+				printf(
+					'<option value="%s"%s>%s</option>',
+					esc_attr( $setting_key ),
+					selected( $setting_key, $term_monetization ),
+					$setting_key === 'default' ? esc_html__( 'Default', 'coil-web-monetization' ) : $setting_value
+				);
+			}
+			?>
 		</select>
 	</div><br>
 
@@ -1775,29 +1828,29 @@ function coil_add_term_custom_meta( $term ) {
 	<br>
 
 	<script>
-	/**
-	 *
-	 * Ensures the appropriate visibility radio button is selected.
-	 * @param {String} The visibility status slug
-	 * @return {void}
-	*/
-	function handleRadioOptionsDisplay( element ) {
-		var radioButtons = document.getElementById("coil-radio-selection");
-		if (document.getElementById("monetization_dropdown").value === 'monetized') {
-			// If monetization is enabled then the visibility options should appear
-			radioButtons.removeAttribute("style");
-			// Checks the button associated with the default visibility value rather than just the last button that had been selected.
-			if (element !== '' ) {
-				document.getElementById(element).checked = true;
+		/**
+		 *
+		 * Ensures the appropriate visibility radio button is selected.
+		 * @param {String} The visibility status slug
+		 * @return {void}
+		 */
+		function handleRadioOptionsDisplay( element ) {
+			var radioButtons = document.getElementById("coil-radio-selection");
+			if (document.getElementById("monetization_dropdown").value === 'monetized') {
+				// If monetization is enabled then the visibility options should appear
+				radioButtons.removeAttribute("style");
+				// Checks the button associated with the default visibility value rather than just the last button that had been selected.
+				if (element !== '' ) {
+					document.getElementById(element).checked = true;
+				}
+			} else {
+				// If monetization is not enabled then the visibility options should disappear
+				radioButtons.setAttribute("style", "display: none" );
 			}
-		} else {
-			// If monetization is not enabled then the visibility options should disappear
-			radioButtons.setAttribute("style", "display: none" );
 		}
-	}
 
-	// For the edit screen this function is called so that the radio buttons are hidden or displayed based on the existing settings.
-	handleRadioOptionsDisplay('');
+		// For the edit screen this function is called so that the radio buttons are hidden or displayed based on the existing settings.
+		handleRadioOptionsDisplay('');
 
 	</script>
 
@@ -1810,7 +1863,7 @@ function coil_add_term_custom_meta( $term ) {
  *
  * @param WP_Term_Object $term
  * @return void
-*/
+ */
 function coil_edit_term_custom_meta( $term ) {
 
 	if ( ! current_user_can( apply_filters( 'coil_settings_capability', 'manage_options' ) ) ) {
@@ -1845,16 +1898,16 @@ function coil_edit_term_custom_meta( $term ) {
 		<td id="coil_dropdown">
 
 			<select name="_coil_monetization_term_status" id="monetization_dropdown" onchange="javascript: handleRadioOptionsDisplay('<?php echo esc_attr( $term_visibility ); ?>')">
-			<?php
-			foreach ( $monetization_options as $setting_key => $setting_value ) {
-				printf(
-					'<option value="%s"%s>%s</option>',
-					esc_attr( $setting_key ),
-					selected( $setting_key, $term_monetization ),
-					$setting_key === 'default' ? esc_html__( 'Default', 'coil-web-monetization' ) : $setting_value
-				);
-			}
-			?>
+				<?php
+				foreach ( $monetization_options as $setting_key => $setting_value ) {
+					printf(
+						'<option value="%s"%s>%s</option>',
+						esc_attr( $setting_key ),
+						selected( $setting_key, $term_monetization ),
+						$setting_key === 'default' ? esc_html__( 'Default', 'coil-web-monetization' ) : $setting_value
+					);
+				}
+				?>
 			</select>
 			<br>
 		</td>
@@ -1896,29 +1949,29 @@ function coil_edit_term_custom_meta( $term ) {
 	</tr>
 
 	<script>
-	/**
-	 *
-	 * Ensures the appropriate visibility radio button is selected.
-	 * @param {String} The visibility status slug
-	 * @return {void}
-	*/
-	function handleRadioOptionsDisplay( element ) {
-		var radioButtons = document.getElementById("coil-radio-selection");
-		if (document.getElementById("monetization_dropdown").value === 'monetized') {
-			// If monetization is enabled then the visibility options should appear
-			radioButtons.removeAttribute("style");
-			// Checks the button associated with the default visibility value rather than just the last button that had been selected.
-			if (element !== '' ) {
-				document.getElementById(element).checked = true;
+		/**
+		 *
+		 * Ensures the appropriate visibility radio button is selected.
+		 * @param {String} The visibility status slug
+		 * @return {void}
+		 */
+		function handleRadioOptionsDisplay( element ) {
+			var radioButtons = document.getElementById("coil-radio-selection");
+			if (document.getElementById("monetization_dropdown").value === 'monetized') {
+				// If monetization is enabled then the visibility options should appear
+				radioButtons.removeAttribute("style");
+				// Checks the button associated with the default visibility value rather than just the last button that had been selected.
+				if (element !== '' ) {
+					document.getElementById(element).checked = true;
+				}
+			} else {
+				// If monetization is not enabled then the visibility options should disappear
+				radioButtons.setAttribute("style", "display: none" );
 			}
-		} else {
-			// If monetization is not enabled then the visibility options should disappear
-			radioButtons.setAttribute("style", "display: none" );
 		}
-	}
 
-	// For the edit screen this function is called so that the radio buttons are hidden or displayed based on the existing settings.
-	handleRadioOptionsDisplay('');
+		// For the edit screen this function is called so that the radio buttons are hidden or displayed based on the existing settings.
+		handleRadioOptionsDisplay('');
 
 	</script>
 
