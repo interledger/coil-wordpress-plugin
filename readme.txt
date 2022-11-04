@@ -95,12 +95,12 @@ Please don’t hesitate to be in touch with us about the plugin or the new relea
 
 = v2.0.2 =
 
-= TODO: Insert Date =
+= 15 November 2022 =
 
 * Enhancement - Added a size selection for exclusive post icons to better match your site's font.
 * Enhancement - Added a warning for the Exclusive Content Divider (ECD) in the post editor when an ECD is added to a post but the post is set to be public. In the case where the post is set to be public the ECD will have no effect.
-* Enhancement - The plugin now supports the new Web Monetization standard, while remaining backward compatible with the older version as well.
 
+* Tweak - added compatibility for the new Web Monetization standard.
 * Tweak - Added an automated build process to Circle CI so that a zip file is created each time a version is tagged.
 * Tweak - Updated dev dependencies.
 
