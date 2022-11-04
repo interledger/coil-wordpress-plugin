@@ -6,7 +6,7 @@ Tags: coil, content, monetization, payment, interledger, ilp
 Requires at least: 5.0+
 Requires PHP: 7.2+
 Tested up to: 5.9
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 License: Apache-2.0
 License URI: http://www.apache.org/licenses/LICENSE-2.0.txt
 
@@ -89,9 +89,20 @@ If you get stuck, check out our [help center](https://help.coil.com/docs/monetiz
 == Changelog ==
 
 = What to expect when updating to version 2 =
-Please be aware that Split content is no longer supported. We're replacing Split content with the Exclusive Content Divider (ECD). If you had posts that were using Split content we will insert the ECD above the first instance of a block that is set to Coil Members Only. Everything above the ECD will be publicly visible and everything below it will be exclusive for Coil Members.
+Please be aware that Split content is no longer supported. We're replacing Split content with the Exclusive Content Divider (ECD). If you had posts that were using Split content we will insert the ECD above the first instance of a block that is set to Coil members Only. Everything above the ECD will be publicly visible and everything below it will be exclusive for Coil members.
 There is no longer an option to hide content from Coil members.
 Please don’t hesitate to be in touch with us about the plugin or the new release. You can reach us on the [Coil Web Monetization support forum](https://wordpress.org/support/plugin/coil-web-monetization/).
+
+= v2.0.2 =
+
+= TODO: Insert Date =
+
+* Enhancement - Added a size selection for exclusive post icons to better match your site's font.
+* Enhancement - Added a warning for the Exclusive Content Divider (ECD) in the post editor when an ECD is added to a post but the post is set to be public. In the case where the post is set to be public the ECD will have no effect.
+* Enhancement - The plugin now supports the new Web Monetization standard, while remaining backward compatible with the older version as well.
+
+* Tweak - Added an automated build process to Circle CI so that a zip file is created each time a version is tagged.
+* Tweak - Updated dev dependencies.
 
 = v2.0.1 =
 
