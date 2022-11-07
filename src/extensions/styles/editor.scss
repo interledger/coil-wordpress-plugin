@@ -43,16 +43,16 @@
 		}
 	}
 
-	&.exclusive-content-off {
+	&.post-visibility-public, &.exclusive-content-off {
 
 		&::before,
 		&::after {
-			width: calc( ( 100% - 520px ) / 2 );
+			width: calc( ( 100% - 570px ) / 2 );
 		}
 
 		.coil-exclusive-content-divider-inner {
 
-			max-width: 500px;
+			max-width: 550px;
 
 			p {
 				color: #aaa;
