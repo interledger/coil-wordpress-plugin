@@ -5,8 +5,6 @@ const { __ } = window.wp.i18n;
 
 import { ExclusiveContentDivider } from './gutenberg-blocks/exclusive-content-divider-component.js';
 
-const exclusiveContentStatus = coilEditorParams.exclusiveContentStatus;/* eslint-disable-line no-undef */
-
 // Use registerBlockType to create a custom block
 registerBlockType(
 	'coil/exclusive-content-divider',
@@ -57,10 +55,9 @@ registerBlockType(
 				className: 'coil-exclusive-content-divider',
 			} );
 			return (
-				<ExclusiveContentDivider className={ `
+				<ExclusiveContentDivider blockTypeClassName={ `
 				${ props.className }
-            	${ 'exclusive-content-' + exclusiveContentStatus }
-				` } exclusiveContentStatus={ exclusiveContentStatus }
+				` }
 				/>
 			);
 		},

@@ -8,16 +8,32 @@ describe( 'Tests for visibility settings in editor', () => {
 	beforeEach( () => {
 		cy.logInToWordPress( 'admin', 'password' );
 		cy.resetSite();
-		cy.visit( '/wp-admin/post.php?post=1&action=edit' );
+		// Usually the below code goes here but with some bugs in WordPress version 6.1 we're using a workaround measure
+		// cy.visit( '/wp-admin/post.php?post=1&action=edit' );
+		// // Removal nag modal and open panel.
+		// cy
+		// 	.get( '.interface-complementary-area' )
+		// 	.contains( 'Coil Web Monetization' )
+		// 	.click( { force: true } );
+	} );
 
+	// Workaround measures for WordPress version 6.1 bugs
+	it( 'Checks that the Coil Web Monetization menu has been expanded', () => {
+		cy.visit( '/wp-admin/post.php?post=1&action=edit' );
 		// Removal nag modal and open panel.
 		cy
 			.get( '.interface-complementary-area' )
 			.contains( 'Coil Web Monetization' )
 			.click( { force: true } );
+
+		cy
+			.get( monetizationDropDown )
+			.should( 'be.visible' );
 	} );
 
 	it( 'Checks that visibility settings of a post can be changed in Gutenberg', () => {
+		cy.visit( '/wp-admin/post.php?post=1&action=edit' );
+
 		const visibilityOptions = '.coil-post-monetization-level input';
 		const monetizationAndVisibilityCombinations = [
 			{
@@ -32,6 +48,7 @@ describe( 'Tests for visibility settings in editor', () => {
 				monetization: 'Disabled',
 			},
 		];
+
 		monetizationAndVisibilityCombinations.forEach( ( selection ) => {
 			cy
 				.get( monetizationDropDown )
@@ -62,6 +79,8 @@ describe( 'Tests for visibility settings in editor', () => {
 	} );
 
 	it( 'Checks that the Default status label is correct', () => {
+		cy.visit( '/wp-admin/post.php?post=1&action=edit' );
+
 		// Initially Default text should be Enabled & Public
 		cy
 			.get( monetizationDropDown )
@@ -109,10 +128,12 @@ describe( 'Tests for visibility settings in editor', () => {
 	} );
 
 	it( 'Checks that a warning is not displayed when exclusivity is enabled', () => {
+		cy.visit( '/wp-admin/post.php?post=1&action=edit' );
+
 		// Exclusivity is enabled by default
 		// The hint should not appear if exclusivity is enabled.
 		cy
-			.get( '#coil-monetization-dropdown' )
+			.get( monetizationDropDown )
 			.select( 'monetized' );
 
 		cy
@@ -125,18 +146,19 @@ describe( 'Tests for visibility settings in editor', () => {
 	} );
 
 	it( 'Checks that a warning is displayed when exclusivity has been disabled', () => {
-		cy.addSetting( 'coil_exclusive_settings_group', [
-			{
-				key: 'coil_exclusive_toggle',
-				value: '0',
-			},
-		] );
+		cy.visit( '/wp-admin/admin.php?page=coil_settings&tab=exclusive_settings' );
 
-		cy.reload();
+		cy
+			.get( '.coil-checkbox' )
+			.click();
+
+		cy.get( '#submit' ).click();
+
+		cy.visit( '/wp-admin/post.php?post=1&action=edit' );
 
 		// A hint should appear if exclusivity has been disabled and a post is set to be exclusive.
 		cy
-			.get( '#coil-monetization-dropdown' )
+			.get( monetizationDropDown )
 			.select( 'monetized' );
 
 		cy
@@ -149,6 +171,9 @@ describe( 'Tests for visibility settings in editor', () => {
 	} );
 
 	it( 'Checks the ECD appears in the post editor', () => {
+		selectVisibilityStatus( 'exclusive' );
+		cy.visit( '/wp-admin/post.php?post=1&action=edit' );
+
 		cy
 			.get( '.components-button.block-editor-inserter__toggle' )
 			.click();
@@ -170,6 +195,68 @@ describe( 'Tests for visibility settings in editor', () => {
 			.get( '.coil-exclusive-content-divider-inner' )
 			.should( 'be.visible' )
 			.and( 'contain', 'Exclusive content for Coil members starts below' );
+	} );
+
+	it( 'Checks the ECD contains a warning when post is set to public', () => {
+		cy.visit( '/wp-admin/post.php?post=1&action=edit' );
+
+		cy
+			.get( '.components-button.block-editor-inserter__toggle' )
+			.click();
+
+		cy
+			.get( '.components-search-control__input' )
+			.type( `{selectall}${ 'coil' }` );
+
+		cy
+			.get( '.block-editor-block-types-list__item-title' )
+			.contains( 'Coil Exclusive Content Divider' )
+			.should( 'be.visible' );
+
+		cy
+			.get( '.block-editor-block-types-list__item-title' )
+			.click();
+
+		cy
+			.get( '.coil-exclusive-content-divider-inner' )
+			.should( 'be.visible' )
+			.and( 'contain', 'Exclusive content disabled for this post. Content below is visible to everyone.' );
+	} );
+
+	it( 'Checks the ECD contains a warning when exclusivity has been disabled', () => {
+		// Set the post default to exclusive and disable exclusivity globally
+		selectVisibilityStatus( 'exclusive' );
+
+		cy
+			.get( '.coil-checkbox' )
+			.click();
+
+		cy.get( '#submit' ).click();
+
+		cy.visit( '/wp-admin/post.php?post=1&action=edit' );
+
+		// Add the ECD
+		cy
+			.get( '.components-button.block-editor-inserter__toggle' )
+			.click();
+
+		cy
+			.get( '.components-search-control__input' )
+			.type( `{selectall}${ 'coil' }` );
+
+		cy
+			.get( '.block-editor-block-types-list__item-title' )
+			.contains( 'Coil Exclusive Content Divider' )
+			.should( 'be.visible' );
+
+		cy
+			.get( '.block-editor-block-types-list__item-title' )
+			.click();
+
+		cy
+			.get( '.coil-exclusive-content-divider-inner' )
+			.should( 'be.visible' )
+			.and( 'contain', 'Exclusive content disabled for this site. Content below is visible to everyone.' );
 	} );
 } );
 
