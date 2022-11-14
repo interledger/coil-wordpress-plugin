@@ -133,11 +133,11 @@ describe( 'Default  visibility settings for pages and posts', () => {
 		// Check there is a monetization meta tag because monetization should be enabled
 		// and that the coil-exclusive class should be added
 		cy.visit( '/default-status-post/' );
-		cy.get( 'head meta[name="monetization"]' ).should( 'exist' );
+		cy.get( 'link[rel="monetization"]' ).should( 'exist' );
 		cy.get( 'body' ).should( 'have.class', 'coil-exclusive' );
 		cy.get( 'body' ).should( 'have.class', 'coil-monetized' );
 		cy.visit( '/default-status-page/' );
-		cy.get( 'head meta[name="monetization"]' ).should( 'exist' );
+		cy.get( 'link[rel="monetization"]' ).should( 'exist' );
 		cy.get( 'body' ).should( 'have.class', 'coil-exclusive' );
 		cy.get( 'body' ).should( 'have.class', 'coil-monetized' );
 	} );

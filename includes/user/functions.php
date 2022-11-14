@@ -60,7 +60,7 @@ function maybe_save_user_profile_payment_pointer_option( $user_id ) : void {
 /**
  * Output a different payment pointer in the meta tag, if set on the user.
  *
- * @see Coil\print_meta_tag()
+ * @see Coil\print_link_tag()
  * @param string $payment_pointer The currently defined payment pointer.
  * @return string The $payment_pointer from the global settings page or a user.
  */

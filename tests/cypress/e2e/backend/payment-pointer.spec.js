@@ -66,6 +66,6 @@ describe( 'Plugin Settings Panel', function() {
 		// Check the payment pointer is output in a post's HTML.
 		// The Hello World post is set to the default settings with monetization enabled and full visibility
 		cy.visit( '/hello-world/' );
-		cy.get( 'head meta[name="monetization"]' ).should( 'have.attr', 'content', paymentPointer );
+		cy.get( 'link[rel="monetization"]' ).should( 'have.attr', 'href', paymentPointer );
 	} );
 } );
