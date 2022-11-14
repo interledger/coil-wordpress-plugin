@@ -14,7 +14,7 @@ describe( 'Single Posts', function() {
 
 	it( 'check that the payment pointer is printed when viewing a single post.', function() {
 		cy.visit( '/monetized-and-public/' );
-		cy.get( 'head meta[name="monetization"]' ).should( 'have.attr', 'content', paymentPointer );
+		cy.get( 'link[rel="monetization"]' ).should( 'have.attr', 'href', paymentPointer );
 	} );
 
 	it( 'check that I can view single post set to monetized and public.', function() {
@@ -27,7 +27,7 @@ describe( 'Single Posts', function() {
 
 	it( 'check that I can view single post set to no monetization.', function() {
 		cy.visit( '/no-monetization/' );
-		cy.get( 'head meta[name="monetization"]', { timeout: 0 } ).should( 'not.exist' );
+		cy.get( 'link[rel="monetization"]', { timeout: 0 } ).should( 'not.exist' );
 		cy
 			.get( '.entry-content > p' )
 			.should( 'be.visible' )

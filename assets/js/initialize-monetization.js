@@ -261,17 +261,6 @@
 	}
 
 	/**
-	 * Hide the content container.
-	*/
-	function hideContentContainer() {
-		const container = document.querySelector( contentContainer );
-
-		if ( container ) {
-			container.style.display = 'none';
-		}
-	}
-
-	/**
 	 * @return {(null|object)} Get the post excerpt, if available.
 	*/
 	function getContentExcerpt() {
@@ -500,68 +489,14 @@
 			setTimeout( function() {
 				showVerificationFailureMessage();
 			}, 5000 );
-		}
-	}
-
-	/**
-	 * Handles the 'started' monetization state.
-	 *
-	 * @return {void}
-	*/
-	function handleStartedMonetization() {
-		// User account verified, loading content. Monetization state: Started
-
-		if ( isSubscribersOnly() && hasCoilDivider && $( 'p.monetize-msg' ).length === 0 ) {
-			$( '.coil-restricted-content' ).after( showMonetizationMessage( loadingContent, '' ) );
-		} else if ( isSubscribersOnly() && isExcerptEnabled() && getContentExcerpt() !== null ) {
-			document.body.classList.add( 'show-excerpt-message' );
-			if ( $( '.coil-post-excerpt' ).length === 0 ) {
-				$( contentContainer ).before( getContentExcerpt() );
-			}
-			if ( $( 'p.monetize-msg' ).length === 0 ) {
-				$( contentContainer ).last().before( showMonetizationMessage( loadingContent, '' ) );
-			}
-		} else if ( hasContentContainer() ) { // Since this code is reachable with an invalid CSS selector an additional check is required.
-			document.querySelector( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
-		}
-	}
-
-	/**
-	 * Handles the 'stopped' monetization state.
-	 *
-	 * @return {void}
-	*/
-	function handleStoppedMonetization() {
-		if ( isSubscribersOnly() && hasCoilDivider && $( 'p.monetize-msg' ).length === 0 ) {
-			$( '.coil-restricted-content' ).after( showMonetizationMessage( loadingContent, '' ) );
-		} else if ( isSubscribersOnly() && isExcerptEnabled() && getContentExcerpt() !== null ) {
-			hideContentContainer();
-			document.body.classList.add( 'show-excerpt-message' );
-			if ( $( '.coil-post-excerpt' ).length === 0 ) {
-				$( contentContainer ).before( getContentExcerpt() );
-			}
-			if ( $( 'p.monetize-msg' ).length === 0 ) {
-				$( contentContainer ).last().before( showMonetizationMessage( loadingContent, '' ) );
-			}
-		} else if ( isSubscribersOnly() ) {
-			hideContentContainer();
-			if ( $( 'p.monetize-msg' ).length === 0 ) {
-				$( contentContainer ).before( showMonetizationMessage( loadingContent, '' ) );
-			}
-		}
-
-		setTimeout( function() {
-			// If the payment connection event listeners haven't yet been
-			// initialised, display failure message
-			if ( monetizationStartEventOccurred === false ) {
-				if ( $( 'p.monetize-msg' ).text() === loadingContent ) {
-					// Monetization not started and verification failed.
-					showVerificationFailureMessage();
+		} else {
+			// Update Streaming Support Widget if browser extension is unable to verify user.
+			setTimeout( function() {
+				if ( monetizationStartEventOccurred === false ) {
+					maybeAddStreamingWidget();
 				}
-			}
-		}, 5000 );
-
-		maybeAddStreamingWidget();
+			}, 5000 );
+		}
 	}
 
 	/**
@@ -652,17 +587,17 @@
 	*/
 	function monetizationProgressListener( event ) {
 		// Connect to backend to validate the payment.
-		const paymentPointer = event.detail.paymentPointer,
-			requestId = event.detail.requestId,
-			amount = event.detail.amount,
-			assetCode = event.detail.assetCode,
-			assetScale = event.detail.assetScale;
+		const paymentPointer = event.paymentPointer,
+			receipt = event.receipt,
+			amount = event.amount,
+			assetCode = event.assetCode,
+			assetScale = event.assetScale;
 
 		// Trigger an event.
 		$( 'body' ).trigger( 'coil-monetization-progress', [
 			event,
 			paymentPointer,
-			requestId,
+			receipt,
 			amount,
 			assetCode,
 			assetScale,
@@ -692,30 +627,30 @@
 		}
 
 		// Check if browser extension exists.
-		if ( typeof document.monetization === 'undefined' ) {
-			handleUndefinedMonetization();
+		// The newer standard of the extension supports link tags.
+		const link = document.querySelector( 'link[rel=monetization]' );
+		if ( ! link || ! link.relList.supports( 'monetization' ) ) {
+			// Checks for the older version of the Coil browser extension.
+			if ( typeof document.monetization === 'undefined' ) {
+				// No support detected.
+				handleUndefinedMonetization();
+				return;
+			}
+			// Older version of the Coil extension detected.
+			handlePendingMonetization();
+
+			// Monetization has started.
+			document.monetization.addEventListener( 'monetizationstart', monetizationStartListener );
 			return;
 		}
 
-		switch ( document.monetization.state ) {
-			case 'pending':
-				handlePendingMonetization();
-				break;
-
-			case 'started':
-				handleStartedMonetization();
-				break;
-
-			case 'stopped':
-				handleStoppedMonetization();
-				break;
-		}
+		handlePendingMonetization();
 
 		// Monetization has started.
-		document.monetization.addEventListener( 'monetizationstart', monetizationStartListener );
+		link.addEventListener( 'monetization', monetizationStartListener, { once: true } );
 
 		// Monetization progress event.
-		document.monetization.addEventListener( 'monetizationprogress', monetizationProgressListener );
+		link.addEventListener( 'monetization', monetizationProgressListener );
 	}
 
 	/**
