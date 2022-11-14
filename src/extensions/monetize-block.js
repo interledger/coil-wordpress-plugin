@@ -100,7 +100,7 @@ const PostMetaFields = withDispatch( ( dispatch, props ) => {
 				/>
 
 				<p className="coil-hint">
-					{ __( 'Exclusive Content is currently disabled, enable it under Coil > Exclusive Content.', 'coil-web-monetization' ) }
+					{ __( 'Exclusive Content is currently disabled. Enable it under WP Admin > Coil > Exclusive Content.', 'coil-web-monetization' ) }
 				</p>
 			</div>
 		</div>
