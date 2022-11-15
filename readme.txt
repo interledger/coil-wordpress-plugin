@@ -4,8 +4,8 @@ Plugin URI: https://coil.com
 Contributors: coil, obox, pragmaticagency
 Tags: coil, content, monetization, payment, interledger, ilp
 Requires at least: 5.0+
-Requires PHP: 7.2+
-Tested up to: 5.9
+Requires PHP: 7.2
+Tested up to: 6.1
 Stable tag: 2.0.2
 License: Apache-2.0
 License URI: http://www.apache.org/licenses/LICENSE-2.0.txt
@@ -83,15 +83,12 @@ If you get stuck, check out our [help center](https://help.coil.com/docs/monetiz
 == Screenshots ==
 
 1. Simple setup
-2. Great support
+2. Easy customization
 3. Exclusive content
+4. Great experience
+5. Thank supporters
 
 == Changelog ==
-
-= What to expect when updating to version 2 =
-Please be aware that Split content is no longer supported. We're replacing Split content with the Exclusive Content Divider (ECD). If you had posts that were using Split content we will insert the ECD above the first instance of a block that is set to Coil members Only. Everything above the ECD will be publicly visible and everything below it will be exclusive for Coil members.
-There is no longer an option to hide content from Coil members.
-Please don’t hesitate to be in touch with us about the plugin or the new release. You can reach us on the [Coil Web Monetization support forum](https://wordpress.org/support/plugin/coil-web-monetization/).
 
 = v2.0.2 =
 
@@ -173,3 +170,10 @@ Please don’t hesitate to be in touch with us about the plugin or the new relea
 = v1.7.0 =
 
 First release.
+
+== Upgrade Notice ==
+
+= What to expect when updating to version 2 =
+Please be aware that Split content is no longer supported. We're replacing Split content with the Exclusive Content Divider (ECD). If you had posts that were using Split content we will insert the ECD above the first instance of a block that is set to Coil Members Only. Everything above the ECD will be publicly visible and everything below it will be exclusive for Coil members.
+There is no longer an option to hide content from Coil members.
+Please don’t hesitate to be in touch with us about the plugin or the new release. You can reach us on the [Coil Web Monetization support forum](https://wordpress.org/support/plugin/coil-web-monetization/).
